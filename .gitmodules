@@ -4,6 +4,7 @@
 [submodule "ADL"]
 	path = ADL
 	url = https://github.com/ByteChkR/ADL
+	branch = develop
 [submodule "ext-pp"]
 	path = ext-pp
 	url = https://github.com/ByteChkR/ext-pp
