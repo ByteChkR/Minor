@@ -1,3 +1,9 @@
 [submodule "opencl-dotnet"]
 	path = opencl-dotnet
 	url = https://github.com/ByteChkR/opencl-dotnet
+[submodule "ADL"]
+	path = ADL
+	url = https://github.com/ByteChkR/ADL
+[submodule "ext-pp"]
+	path = ext-pp
+	url = https://github.com/ByteChkR/ext-pp
