@@ -19,6 +19,7 @@ script:
   - dotnet build ADL/ADL/ADL/ADL.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.Crash/ADL.Crash.csproj -c $BUILDCONFIG
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
+  - dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
 
 after_script:
