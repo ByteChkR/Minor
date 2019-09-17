@@ -8,9 +8,12 @@ namespace FilterLanguage.Tests
 {
     public class InterpreterTests
     {
+#if NO_CL
+#else
         [Fact]
         public void FLInterpreterTest()
         {
+
             string path = Path.GetFullPath("../../../resources");
             string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
 
@@ -26,7 +29,7 @@ namespace FilterLanguage.Tests
                     P.Step();
                 }
             }
-
         }
+#endif
     }
 }

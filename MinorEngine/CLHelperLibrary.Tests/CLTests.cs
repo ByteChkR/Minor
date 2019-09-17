@@ -8,6 +8,8 @@ namespace CLHelperLibrary.Tests
 {
     public class CLTests
     {
+#if NO_CL
+#else
         [Fact]
         public void CL_CreateBuffer()
         {
@@ -73,7 +75,8 @@ namespace CLHelperLibrary.Tests
             }
             Assert.True(working);
         }
-
+        
+#endif
         [Fact]
         public void CL_KernelSignatureAnalysis()
         {
@@ -83,7 +86,6 @@ namespace CLHelperLibrary.Tests
             Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel));
             
             Assert.True(kernel.name=="addval");
-            Assert.True(kernel.kernel != null);
             Assert.True(kernel.parameter.Count == 5);
 
             Assert.True(kernel.parameter.ElementAt(0).Value.isArray);
