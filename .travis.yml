@@ -21,9 +21,7 @@ script:
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
   - dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
-  - cp extern/* MinorEngine/CLHelperLibrary.Tests/bin/Release/netcoreapp2.1/
-  - mv extern/* MinorEngine/FilterLanguage.Tests/bin/Release/netcoreapp2.1/
 
 after_script:
-  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release
+  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=NO_CL
   - bash <(curl -s https://codecov.io/bash)
