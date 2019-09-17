@@ -10,10 +10,16 @@ matrix:
 
 
 install:
+  - dotnet restore ADL/
   - dotnet restore MinorEngine/
+  - dotnet restore ext-pp/
+  - dotnet restore opencl-dotnet/
 
 script:
+  - dotnet build ADL/ADL/ADL.sln -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
+  - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
+  - dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c $BUILDCONFIG
 
 after_script:
   - dotnet test $SOLUTION --collect:"XPlat Code Coverage"
