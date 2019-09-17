@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "CLHelperLibrary.Tests": {
+      "commandName": "Project",
+      "workingDirectory": "resources"
+    }
+  }
+}

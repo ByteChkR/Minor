@@ -1,0 +1,3 @@
+--define texture other: "TEST.png"
+Main:
+	set other

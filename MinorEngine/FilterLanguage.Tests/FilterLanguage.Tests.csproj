@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CLHelperLibrary\CLHelperLibrary.csproj" />
+    <ProjectReference Include="..\FilterLanguage\FilterLanguage.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="OpenCl.DotNetCore">
+      <HintPath>..\..\opencl-dotnet\OpenCl.DotNetCore\bin\Release\netstandard2.0\OpenCl.DotNetCore.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenCl.DotNetCore.Interop">
+      <HintPath>..\..\opencl-dotnet\OpenCl.DotNetCore\bin\Release\netstandard2.0\OpenCl.DotNetCore.Interop.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "GameEngine": {
+      "commandName": "Project",
+      "workingDirectory": "assets"
+    }
+  }
+}

@@ -1,0 +1,8 @@
+--define texture mask: "blackDot.png"
+--define texture other: "TEST.png"
+
+Main:
+	setactive 3
+	setvalb 255
+	setactive 0 1 2
+	addtextexmaskwrap mask other

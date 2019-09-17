@@ -1,0 +1,20 @@
+language: csharp
+mono: none
+
+matrix:
+  include:
+    - dotnet: 2.2
+      env:
+        - SOLUTION="MinorEngine/MinorEngine.sln"
+        - BUILDCONFIG="Release"
+
+
+install:
+  - dotnet restore MinorEngine/
+
+script:
+  - dotnet build $SOLUTION -c $BUILDCONFIG
+
+after_script:
+  - dotnet test $SOLUTION --collect:"XPlat Code Coverage"
+  - bash <(curl -s https://codecov.io/bash)

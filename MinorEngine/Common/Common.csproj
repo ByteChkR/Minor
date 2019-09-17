@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="ADL">
+      <HintPath>..\..\ADL\ADL\ADL\bin\Release\netstandard2.0\ADL.dll</HintPath>
+    </Reference>
+    <Reference Include="ADL.Crash">
+      <HintPath>..\..\ADL\ADL\ADL.Crash\bin\Release\netstandard2.0\ADL.Crash.dll</HintPath>
+    </Reference>
+    <Reference Include="ext_pp">
+      <HintPath>..\..\ext-pp\ext_pp\bin\Release\netcoreapp2.1\ext_pp.dll</HintPath>
+    </Reference>
+    <Reference Include="ext_pp_base">
+      <HintPath>..\..\ext-pp\ext_pp_base\bin\Release\netcoreapp2.1\ext_pp_base.dll</HintPath>
+    </Reference>
+    <Reference Include="ext_pp_plugins">
+      <HintPath>..\..\ext-pp\ext_pp_plugins\bin\Release\netcoreapp2.1\ext_pp_plugins.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
