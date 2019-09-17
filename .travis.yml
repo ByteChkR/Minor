@@ -10,7 +10,7 @@ matrix:
 
 
 install:
-  - dotnet restore ADL/
+  - dotnet restore ADL/ADL/
   - dotnet restore MinorEngine/
   - dotnet restore ext-pp/
   - dotnet restore opencl-dotnet/
