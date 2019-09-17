@@ -1,0 +1,3 @@
+[submodule "opencl-dotnet"]
+	path = opencl-dotnet
+	url = https://github.com/ByteChkR/opencl-dotnet
