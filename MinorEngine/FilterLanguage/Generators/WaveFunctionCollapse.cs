@@ -12,72 +12,72 @@ The software is provided "as is", without warranty of any kind, express or impli
 
 namespace FilterLanguage.Generators
 {
-    
+
 
     public abstract class WaveFunctionCollapse
     {
-        protected bool[][] wave;
+        protected bool[][] Wave;
 
-        protected int[][][] propagator;
-        int[][][] compatible;
-        protected int[] observed;
+        protected int[][][] Propagator;
+        private int[][][] _compatible;
+        protected int[] Observed;
 
-        (int, int)[] stack;
-        int stacksize;
+        private (int, int)[] _stack;
+        private int _stacksize;
 
-        protected Random random;
-        protected int FMX, FMY, T;
-        protected bool periodic;
+        protected Random Random;
+        protected int Fmx, Fmy, T;
+        protected bool Periodic;
 
-        protected double[] weights;
-        double[] weightLogWeights;
+        protected double[] Weights;
+        private double[] _weightLogWeights;
 
-        int[] sumsOfOnes;
-        double sumOfWeights, sumOfWeightLogWeights, startingEntropy;
-        double[] sumsOfWeights, sumsOfWeightLogWeights, entropies;
+        private int[] _sumsOfOnes;
+        private double _sumOfWeights, _sumOfWeightLogWeights, _startingEntropy;
+        private double[] _sumsOfWeights, _sumsOfWeightLogWeights, _entropies;
 
         protected WaveFunctionCollapse(int width, int height)
         {
-            FMX = width;
-            FMY = height;
+            Fmx = width;
+            Fmy = height;
         }
 
         //If having a fixed random buffer the size is: limit*wave.length+limit
 
         void Init()
         {
-            wave = new bool[FMX * FMY][];
-            compatible = new int[wave.Length][][];
-            for (int i = 0; i < wave.Length; i++)
+            Wave = new bool[Fmx * Fmy][];
+            _compatible = new int[Wave.Length][][];
+            for (int i = 0; i < Wave.Length; i++)
             {
-                wave[i] = new bool[T];
-                compatible[i] = new int[T][];
+                Wave[i] = new bool[T];
+                _compatible[i] = new int[T][];
                 for (int t = 0; t < T; t++)
                 {
-                    compatible[i][t] = new int[4];
+                    _compatible[i][t] = new int[4];
                 }
             }
 
-            weightLogWeights = new double[T];
-            sumOfWeights = 0;
-            sumOfWeightLogWeights = 0;
+            _weightLogWeights = new double[T];
+            _sumOfWeights = 0;
+            _sumOfWeightLogWeights = 0;
 
             for (int t = 0; t < T; t++)
             {
-                weightLogWeights[t] = weights[t] * Math.Log(weights[t]);
-                sumOfWeights += weights[t];
-                sumOfWeightLogWeights += weightLogWeights[t];
+                _weightLogWeights[t] = Weights[t] * Math.Log(Weights[t]);
+                _sumOfWeights += Weights[t];
+                _sumOfWeightLogWeights += _weightLogWeights[t];
             }
 
-            startingEntropy = Math.Log(sumOfWeights) - sumOfWeightLogWeights / sumOfWeights;
+            _startingEntropy = Math.Log(_sumOfWeights) - _sumOfWeightLogWeights / _sumOfWeights;
 
-            sumsOfOnes = new int[FMX * FMY];
-            sumsOfWeights = new double[FMX * FMY];
-            sumsOfWeightLogWeights = new double[FMX * FMY];
-            entropies = new double[FMX * FMY];
+            _sumsOfOnes = new int[Fmx * Fmy];
+            _sumsOfWeights = new double[Fmx * Fmy];
+            _sumsOfWeightLogWeights = new double[Fmx * Fmy];
+            _entropies = new double[Fmx * Fmy];
 
-            stack = new (int, int)[wave.Length * T];
-            stacksize = 0;
+            _stack = new (int, int)[Wave.Length * T];
+            _stacksize = 0;
         }
 
         bool? Observe()
@@ -85,17 +85,23 @@ namespace FilterLanguage.Generators
             double min = 1E+3;
             int argmin = -1;
 
-            for (int i = 0; i < wave.Length; i++)
+            for (int i = 0; i < Wave.Length; i++)
             {
-                if (OnBoundary(i % FMX, i / FMX)) continue;
+                if (OnBoundary(i % Fmx, i / Fmx))
+                {
+                    continue;
+                }
 
-                int amount = sumsOfOnes[i];
-                if (amount == 0) return false;
+                int amount = _sumsOfOnes[i];
+                if (amount == 0)
+                {
+                    return false;
+                }
 
-                double entropy = entropies[i];
+                double entropy = _entropies[i];
                 if (amount > 1 && entropy <= min)
                 {
-                    double noise = 1E-6 * random.NextDouble();
+                    double noise = 1E-6 * Random.NextDouble();
                     if (entropy + noise < min)
                     {
                         min = entropy + noise;
@@ -106,25 +112,29 @@ namespace FilterLanguage.Generators
 
             if (argmin == -1)
             {
-                observed = new int[FMX * FMY];
-                for (int i = 0; i < wave.Length; i++)
+                Observed = new int[Fmx * Fmy];
+                for (int i = 0; i < Wave.Length; i++)
+                {
                     for (int t = 0; t < T; t++)
-                        if (wave[i][t])
+                    {
+                        if (Wave[i][t])
                         {
-                            observed[i] = t;
+                            Observed[i] = t;
                             break;
                         }
+                    }
+                }
                 return true;
             }
 
             double[] distribution = new double[T];
             for (int t = 0; t < T; t++)
             {
-                distribution[t] = wave[argmin][t] ? weights[t] : 0;
+                distribution[t] = Wave[argmin][t] ? Weights[t] : 0;
             }
-            int r = distribution.Random(random.NextDouble());
+            int r = distribution.Random(Random.NextDouble());
 
-            bool[] w = wave[argmin];
+            bool[] w = Wave[argmin];
             for (int t = 0; t < T; t++)
             {
                 if (w[t] != (t == r))
@@ -138,17 +148,17 @@ namespace FilterLanguage.Generators
 
         protected void Propagate()
         {
-            while (stacksize > 0)
+            while (_stacksize > 0)
             {
-                var e1 = stack[stacksize - 1];
-                stacksize--;
+                var e1 = _stack[_stacksize - 1];
+                _stacksize--;
 
                 int i1 = e1.Item1;
-                int x1 = i1 % FMX, y1 = i1 / FMX;
+                int x1 = i1 % Fmx, y1 = i1 / Fmx;
 
                 for (int d = 0; d < 4; d++)
                 {
-                    int dx = DX[d], dy = DY[d];
+                    int dx = Dx[d], dy = Dy[d];
                     int x2 = x1 + dx, y2 = y1 + dy;
                     if (OnBoundary(x2, y2))
                     {
@@ -157,24 +167,24 @@ namespace FilterLanguage.Generators
 
                     if (x2 < 0)
                     {
-                        x2 += FMX;
+                        x2 += Fmx;
                     }
-                    else if (x2 >= FMX)
+                    else if (x2 >= Fmx)
                     {
-                        x2 -= FMX;
+                        x2 -= Fmx;
                     }
                     if (y2 < 0)
                     {
-                        y2 += FMY;
+                        y2 += Fmy;
                     }
-                    else if (y2 >= FMY)
+                    else if (y2 >= Fmy)
                     {
-                        y2 -= FMY;
+                        y2 -= Fmy;
                     }
 
-                    int i2 = x2 + y2 * FMX;
-                    int[] p = propagator[d][e1.Item2];
-                    int[][] compat = compatible[i2];
+                    int i2 = x2 + y2 * Fmx;
+                    int[] p = Propagator[d][e1.Item2];
+                    int[][] compat = _compatible[i2];
 
                     for (int l = 0; l < p.Length; l++)
                     {
@@ -193,13 +203,13 @@ namespace FilterLanguage.Generators
 
         public bool Run(int limit)
         {
-            if (wave == null)
+            if (Wave == null)
             {
                 Init();
             }
 
             Clear();
-            random = new Random();
+            Random = new Random();
 
             for (int l = 0; l < limit || limit == 0; l++)
             {
@@ -217,13 +227,13 @@ namespace FilterLanguage.Generators
 
         public bool Run(int seed, int limit)
         {
-            if (wave == null)
+            if (Wave == null)
             {
                 Init();
             }
 
             Clear();
-            random = new Random(seed);
+            Random = new Random(seed);
 
             for (int l = 0; l < limit || limit == 0; l++)
             {
@@ -241,49 +251,49 @@ namespace FilterLanguage.Generators
 
         protected void Ban(int i, int t)
         {
-            wave[i][t] = false;
+            Wave[i][t] = false;
 
-            int[] comp = compatible[i][t];
+            int[] comp = _compatible[i][t];
             for (int d = 0; d < 4; d++)
             {
                 comp[d] = 0;
             }
-            stack[stacksize] = (i, t);
-            stacksize++;
+            _stack[_stacksize] = (i, t);
+            _stacksize++;
 
-            sumsOfOnes[i] -= 1;
-            sumsOfWeights[i] -= weights[t];
-            sumsOfWeightLogWeights[i] -= weightLogWeights[t];
+            _sumsOfOnes[i] -= 1;
+            _sumsOfWeights[i] -= Weights[t];
+            _sumsOfWeightLogWeights[i] -= _weightLogWeights[t];
 
-            double sum = sumsOfWeights[i];
-            entropies[i] = Math.Log(sum) - sumsOfWeightLogWeights[i] / sum;
+            double sum = _sumsOfWeights[i];
+            _entropies[i] = Math.Log(sum) - _sumsOfWeightLogWeights[i] / sum;
         }
 
         protected virtual void Clear()
         {
-            for (int i = 0; i < wave.Length; i++)
+            for (int i = 0; i < Wave.Length; i++)
             {
                 for (int t = 0; t < T; t++)
                 {
-                    wave[i][t] = true;
+                    Wave[i][t] = true;
                     for (int d = 0; d < 4; d++)
                     {
-                        compatible[i][t][d] = propagator[opposite[d]][t].Length;
+                        _compatible[i][t][d] = Propagator[Opposite[d]][t].Length;
                     }
                 }
 
-                sumsOfOnes[i] = weights.Length;
-                sumsOfWeights[i] = sumOfWeights;
-                sumsOfWeightLogWeights[i] = sumOfWeightLogWeights;
-                entropies[i] = startingEntropy;
+                _sumsOfOnes[i] = Weights.Length;
+                _sumsOfWeights[i] = _sumOfWeights;
+                _sumsOfWeightLogWeights[i] = _sumOfWeightLogWeights;
+                _entropies[i] = _startingEntropy;
             }
         }
 
         protected abstract bool OnBoundary(int x, int y);
         public abstract System.Drawing.Bitmap Graphics();
 
-        protected static int[] DX = { -1, 0, 1, 0 };
-        protected static int[] DY = { 0, 1, 0, -1 };
-        static int[] opposite = { 2, 3, 0, 1 };
+        protected static readonly int[] Dx = { -1, 0, 1, 0 };
+        protected static readonly int[] Dy = { 0, 1, 0, -1 };
+        private static readonly int[] Opposite = { 2, 3, 0, 1 };
     }
 }

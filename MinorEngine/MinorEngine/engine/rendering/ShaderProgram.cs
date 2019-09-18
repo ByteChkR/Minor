@@ -8,10 +8,10 @@ namespace GameEngine.engine.rendering
 {
     public class ShaderProgram
     {
-        private int _prgID;
+        private readonly int _prgId;
         private ShaderProgram()
         {
-            _prgID = GL.CreateProgram();
+            _prgId = GL.CreateProgram();
         }
 
         public static bool TryCreate(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
@@ -27,7 +27,9 @@ namespace GameEngine.engine.rendering
                 bool r = TryCompileShader(shader.Key, code, out int id);
                 ret &= r;
                 if (r)
+                {
                     shaders.Add(id);
+                }
             }
 
 
@@ -35,16 +37,16 @@ namespace GameEngine.engine.rendering
             for (int i = 0; i < shaders.Count; i++)
             {
                 program.Log("Attaching Shader to Program: " + subshaders.ElementAt(i), DebugChannel.Log);
-                GL.AttachShader(program._prgID, shaders[i]);
+                GL.AttachShader(program._prgId, shaders[i]);
             }
 
             program.Log("Linking Program...", DebugChannel.Log);
-            GL.LinkProgram(program._prgID);
+            GL.LinkProgram(program._prgId);
 
-            GL.GetProgram(program._prgID, GetProgramParameterName.LinkStatus, out int success);
+            GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out int success);
             if (success == 0)
             {
-                program.Log(GL.GetProgramInfoLog(program._prgID), DebugChannel.Error);
+                program.Log(GL.GetProgramInfoLog(program._prgId), DebugChannel.Error);
                 return false;
             }
 
@@ -55,18 +57,18 @@ namespace GameEngine.engine.rendering
 
         public void Use()
         {
-            GL.UseProgram(_prgID);
+            GL.UseProgram(_prgId);
         }
 
         public int GetAttribLocation(string name)
         {
-            int loc = GL.GetAttribLocation(_prgID, name);
+            int loc = GL.GetAttribLocation(_prgId, name);
             return loc;
         }
 
         public int GetUniformLocation(string name)
         {
-            int loc = GL.GetUniformLocation(_prgID, name);
+            int loc = GL.GetUniformLocation(_prgId, name);
             return loc;
         }
 

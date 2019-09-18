@@ -22,7 +22,6 @@ namespace CLHelperLibrary
         private static CL Instance => _instance ?? (_instance = new CL());
 
         private Context _context = null;
-        private Device _device = null;
         private CommandQueue _commandQueue = null;
         private CL()
         {
@@ -38,8 +37,8 @@ namespace CLHelperLibrary
             Console.WriteLine();
 
             _context = Context.CreateContext(chosenDevice);
-            _device = chosenDevice;
-            _commandQueue = CommandQueue.CreateCommandQueue(_context, _device);
+            Device CLDevice = chosenDevice;
+            _commandQueue = CommandQueue.CreateCommandQueue(_context, CLDevice);
         }
 
 

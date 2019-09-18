@@ -15,13 +15,13 @@ namespace GameEngine.engine.rendering
     public class GameTexture
     {
 
-        public int textureID;
-        public TextureType texType;
-        public string path;
+        public int TextureId;
+        public TextureType TexType;
+        public string Path;
         private GameTexture()
         {
-            texType = TextureType.Diffuse;
-            GL.GenTextures(1, out textureID);
+            TexType = TextureType.Diffuse;
+            GL.GenTextures(1, out TextureId);
         }
 
 
@@ -61,7 +61,7 @@ namespace GameEngine.engine.rendering
             tex.Log($"Loading Texture... Width: {tex.Width} Height: {tex.Height}", DebugChannel.Log);
             GameTexture ret = new GameTexture();
 
-            GL.BindTexture(TextureTarget.Texture2D, ret.textureID);
+            GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
 
             byte[] flatBytes = flattenImageData(tex.NonCompressedData);
 
@@ -94,7 +94,7 @@ namespace GameEngine.engine.rendering
                 SYSPixelFormat.Format32bppArgb);
 
             GameTexture ret = new GameTexture();
-            GL.BindTexture(TextureTarget.Texture2D, ret.textureID);
+            GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
             bmp.UnlockBits(data);
 
@@ -110,7 +110,7 @@ namespace GameEngine.engine.rendering
 
         public static void Update(GameTexture tex, byte[] buffer, int width, int height)
         {
-            GL.BindTexture(TextureTarget.Texture2D, tex.textureID);
+            GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
             GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int)width, (int)height, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
 
         }
@@ -120,7 +120,7 @@ namespace GameEngine.engine.rendering
             GameTexture ret = new GameTexture();
             ret.Log($"Loading Texture... Width: {width} Height: {height}", DebugChannel.Log);
 
-            GL.BindTexture(TextureTarget.Texture2D, ret.textureID);
+            GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
 
 

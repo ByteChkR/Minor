@@ -41,8 +41,8 @@ namespace GameEngine.components
         {
             if (e.KeyChar == 'r')
             {
-                GL.DeleteTexture(owner.model.meshes[0].textures[0].textureID);
-                owner.model.meshes[0].textures[0] = GameTexture.Load("runicfloor.png");
+                GL.DeleteTexture(owner.Model.meshes[0].Textures[0].TextureId);
+                owner.Model.meshes[0].Textures[0] = GameTexture.Load("runicfloor.png");
                 isDebuggingInterpreter = false;
             }
             else if (e.KeyChar == 'f' || isDebuggingInterpreter)
@@ -72,18 +72,24 @@ namespace GameEngine.components
 
                 do
                 {
-                    if (res.triggeredDebug)
+                    if (res.TriggeredDebug)
                     {
                         this.Log("Triggered Debug.", DebugChannel.Log);
                         isDebuggingInterpreter = true;
-                        buf = CL.ReadBuffer<byte>(res.debugBuffer, (int)res.debugBuffer.Size);
+                        buf = CL.ReadBuffer<byte>(res.DebugBuffer, (int)res.DebugBuffer.Size);
                         break;
                     }
-                } while (!(res = fli.Step()).terminated);
+                } while (!(res = fli.Step()).Terminated);
 
-                if (!isDebuggingInterpreter) buf = fli.GetResult<byte>();
-                else if (buf == null) throw new InvalidOperationException("FUCK");
-                GameTexture.Update(owner.model.meshes[0].textures[0], buf, 512, 512);
+                if (!isDebuggingInterpreter)
+                {
+                    buf = fli.GetResult<byte>();
+                }
+                else if (buf == null)
+                {
+                    throw new InvalidOperationException("FUCK");
+                }
+                GameTexture.Update(owner.Model.meshes[0].Textures[0], buf, 512, 512);
             }
             else if (e.KeyChar == 't')
             {
@@ -102,27 +108,12 @@ namespace GameEngine.components
                     }
 
                 }
-                GL.DeleteTexture(owner.model.meshes[0].textures[0].textureID);
-                owner.model.meshes[0].textures[0] = GameTexture.Load("textures/runicfloor.png");
+                GL.DeleteTexture(owner.Model.meshes[0].Textures[0].TextureId);
+                owner.Model.meshes[0].Textures[0] = GameTexture.Load("textures/runicfloor.png");
 
                 this.Log("Finished Running Tests", DebugChannel.Log);
 
             }
         }
-
-        //private void CreateWorley()
-        //{
-        //    List<float> points = new List<float>();
-        //    Random rnd = new Random();
-        //    for (int i = 0; i < 240; i++)
-        //    {
-        //        points.Add((float)rnd.NextDouble());
-        //    }
-        //    GL.DeleteTexture(owner.model.meshes[0].textures[0].textureID);
-        //    owner.model.meshes[0].textures[0] = CLFilterAPI.GetInstance().GetWorley(points, 512, 512);
-
-
-
-        //}
     }
 }

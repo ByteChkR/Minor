@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Programs;
@@ -7,20 +8,20 @@ namespace CLHelperLibrary
 {
     public class CLProgram
     {
-        public string FilePath;
+        private string _filePath;
         public Dictionary<string, CLKernel> ContainedKernels;
         public Program CLProgramHandle = null;
 
         public CLProgram(string FilePath)
         {
-            this.FilePath = FilePath;
+            this._filePath = FilePath;
             Initialize();
         }
 
 
         private void Initialize()
         {
-            string source = TextProcessorAPI.PreprocessSource(FilePath, null);
+            string source = TextProcessorAPI.PreprocessSource(_filePath, null);
             string[] kernelNames = FindKernelNames(source);
 
             ContainedKernels = new Dictionary<string, CLKernel>();
@@ -36,13 +37,13 @@ namespace CLHelperLibrary
 #else
                 Kernel k = CLProgramHandle.CreateKernel(kernelName);
 #endif
-                int kernelNameIndex = source.IndexOf(" " + kernelName + " ");
-                kernelNameIndex = (kernelNameIndex == -1) ? source.IndexOf(" " + kernelName + "(") : kernelNameIndex;
+                int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
+                kernelNameIndex = (kernelNameIndex == -1) ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture) : kernelNameIndex;
                 KernelParameter[] parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
                     kernelNameIndex,
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
                 
-                ContainedKernels.Add(kernelName, new CLKernel(kernelName, k, parameter));
+                ContainedKernels.Add(kernelName, new CLKernel(k, parameter));
             }
 
         }
@@ -65,12 +66,14 @@ namespace CLHelperLibrary
                     if (i < parts.Count - 2 && parts[i + 1] == "void")
                     {
                         if (parts[i + 2].Contains('('))
+                        {
                             kernelNames.Add(
                                 parts[i + 2]. //The Kernel name
                                     Substring(0,
                                         parts[i + 2].IndexOf('(')
                                     )
                             );
+                        }
                         else kernelNames.Add(parts[i + 2]);
                     }
                 }

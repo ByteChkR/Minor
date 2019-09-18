@@ -75,11 +75,11 @@ namespace CLHelperLibrary
     public class KernelParameter
     {
 
-        public string name;
-        public DataTypes dataType;
-        public bool isArray;
-        public int id;
-        public MemoryScope memScope;
+        public string Name;
+        public DataTypes DataType;
+        public bool IsArray;
+        public int Id;
+        public MemoryScope MemScope;
 
         private static Type[] Converters => new[]
         {
@@ -142,15 +142,15 @@ namespace CLHelperLibrary
 
         public object CastToType(object value)
         {
-            if (isArray)
+            if (IsArray)
             {
                 object[] data = (object[])value;
 
-                return CL.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) dataType], x)),
-                    Converters[(int) dataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
+                return CL.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
+                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
 
             }
-            return CastToType(Converters[(int)dataType], value);
+            return CastToType(Converters[(int)DataType], value);
         }
 
         private static object CastToType(Type t, object value)
@@ -172,12 +172,12 @@ namespace CLHelperLibrary
 
                 ret[i] = new KernelParameter
                 {
-                    name = parametr[parametr.Length - 1].Replace('*', ' ').Trim(),
-                    dataType = GetDataType(parametr[parametr.Length - 2].Replace('*', ' ').Trim()),
-                    memScope = GetMemoryScope(parametr.Length == 3 ? parametr[0] : ""),
-                    isArray = (parametr[parametr.Length - 2].IndexOf("*") != -1 ||
+                    Name = parametr[parametr.Length - 1].Replace('*', ' ').Trim(),
+                    DataType = GetDataType(parametr[parametr.Length - 2].Replace('*', ' ').Trim()),
+                    MemScope = GetMemoryScope(parametr.Length == 3 ? parametr[0] : ""),
+                    IsArray = (parametr[parametr.Length - 2].IndexOf("*") != -1 ||
                                parametr[parametr.Length - 1].IndexOf("*") != -1),
-                    id = i
+                    Id = i
                 };
             }
             return ret;

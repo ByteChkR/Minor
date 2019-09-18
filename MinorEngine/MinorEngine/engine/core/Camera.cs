@@ -4,8 +4,7 @@ namespace GameEngine.engine.core
 {
     public class Camera : GameObject
     {
-        public Matrix4 Projection;
-
+        public Matrix4 Projection { get; set; }
 
 
         public Camera(Matrix4 projection, Vector3 position) : base(position, "Camera")

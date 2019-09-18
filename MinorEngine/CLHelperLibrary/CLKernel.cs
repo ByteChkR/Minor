@@ -13,23 +13,21 @@ namespace CLHelperLibrary
     {
         public Dictionary<string, KernelParameter> parameter;
         public Kernel kernel;
-        public string name;
 
-        public CLKernel(string name, Kernel k, KernelParameter[] parameter)
+        public CLKernel(Kernel k, KernelParameter[] parameter)
         {
-            this.name = name;
             kernel = k;
-            this.parameter = new Dictionary<string, KernelParameter>(parameter.Select(x => new KeyValuePair<string, KernelParameter>(x.name, x)));
+            this.parameter = new Dictionary<string, KernelParameter>(parameter.Select(x => new KeyValuePair<string, KernelParameter>(x.Name, x)));
         }
 
         public void SetBuffer(string parameterName, MemoryObject obj)
         {
-            SetBuffer(parameter[parameterName].id, obj);
+            SetBuffer(parameter[parameterName].Id, obj);
         }
 
         public void SetArg(string parameterName, object value)
         {
-            SetArg(parameter[parameterName].id, parameter[parameterName].CastToType(value));
+            SetArg(parameter[parameterName].Id, parameter[parameterName].CastToType(value));
         }
 
         public void SetBuffer(int index, MemoryObject obj)
@@ -45,7 +43,7 @@ namespace CLHelperLibrary
                 return;
             }
 
-            if (parameter.ElementAt(index).Value.isArray)
+            if (parameter.ElementAt(index).Value.IsArray)
             {
 
                 //TODO Buffer handling

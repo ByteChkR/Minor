@@ -8,29 +8,37 @@ namespace GameEngine.engine.core
 {
     public class GameObject
     {
-        public ShaderProgram shader { get; set; } = null;
-        public GameModel model { get; set; } = null;
+        public ShaderProgram Shader { get; set; } = null;
+        public GameModel Model { get; set; } = null;
         public Matrix4 Transform = Matrix4.Identity;
         protected World world { get; set; } = null;
         private static int _objID = 0;
-        private Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
-        private List<GameObject> _children = new List<GameObject>();
+        private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
+        private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
         public int ChildCount => _children.Count;
 
-        public GameObject parent { get; private set; } = null;
+        public GameObject Parent { get; private set; } = null;
 
 
-        public GameObject(Vector3 position = new Vector3(), string name = "", GameObject parent = null)
+        public GameObject(Vector3 position, string name, GameObject parent)
         {
             Transform *= Matrix4.CreateTranslation(position);
             this.world = world;
-            this.parent = parent;
+            this.Parent = parent;
             if (name == string.Empty)
             {
                 Name = "Gameobject" + _objID;
                 _objID++;
             }
+        }
+
+        public GameObject(Vector3 position, string name) : this(position, name, null)
+        {
+        }
+
+        public GameObject(string name):this(new Vector3(), name, null)
+        {
         }
 
 
@@ -74,7 +82,7 @@ namespace GameEngine.engine.core
                 if (_children[i] == child)
                 {
                     _children.RemoveAt(i);
-                    child.parent = null;
+                    child.Parent = null;
                     return;
                 }
             }
@@ -83,7 +91,7 @@ namespace GameEngine.engine.core
         private void innerAdd(GameObject child)
         {
             _children.Add(child);
-            child.parent = this;
+            child.Parent = this;
         }
 
 
@@ -99,11 +107,17 @@ namespace GameEngine.engine.core
 
         public void SetParent(GameObject newParent)
         {
-            parent?.innerRemove(this);
+            Parent?.innerRemove(this);
             newParent?.innerAdd(this);
 
-            if (parent != null) setWorldRecursively(parent.world);
-            else setWorldRecursively(null);
+            if (Parent != null)
+            {
+                setWorldRecursively(Parent.world);
+            }
+            else
+            {
+                setWorldRecursively(null);
+            }
         }
 
         public void Update(float deltaTime)
@@ -154,8 +168,8 @@ namespace GameEngine.engine.core
 
         public Matrix4 GetWorldTransform()
         {
-            if (parent == null) return Transform;
-            else return parent.GetWorldTransform() * Transform;
+            if (Parent == null) return Transform;
+            else return Parent.GetWorldTransform() * Transform;
         }
 
         public Vector3 GetLocalPosition()

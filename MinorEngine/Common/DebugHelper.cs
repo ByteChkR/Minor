@@ -47,14 +47,20 @@ namespace Common
 
         public static void Log(this object obj, string message, DebugChannel channel)
         {
-            if(!_initialized) Initialize();
+            if(!_initialized)
+            {
+                Initialize();
+            }
             
             Debug.LogGen(channel, message);
         }
 
         public static void Crash(this object obj, ApplicationException ex)
         {
-            if (!_initialized) Initialize();
+            if (!_initialized)
+            {
+                Initialize();
+            }
             CrashHandler.Log(ex, (int)DebugChannel.Internal_Error);
 
             if (_crashOnExeption)

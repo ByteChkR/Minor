@@ -56,7 +56,10 @@ namespace GameEngine.engine.rendering
             }
 
             directory = Path.GetDirectoryName(path);
-            if (directory == string.Empty) directory = ".";
+            if (directory == string.Empty)
+            {
+                directory = ".";
+            }
 
 
             this.Log("Loading Model Finished.", DebugChannel.Log);
@@ -79,10 +82,12 @@ namespace GameEngine.engine.rendering
             }
 
             if (node.HasChildren)
+            {
                 for (int i = 0; i < node.Children.Count; i++)
                 {
                     processNode(node.Children[i], s);
                 }
+            }
         }
 
         private GameMesh processMesh(Mesh mesh, Scene s)
@@ -109,7 +114,7 @@ namespace GameEngine.engine.rendering
                     Position = new Vector3(vert.X, vert.Y, vert.Z),
                     Normal = new Vector3(norm.X, norm.Y, norm.Z),
                     UV = new Vector2(uv.X, uv.Y),
-                    Bitangent = new Vector3(bit.X, bit.Y, bit.Z),
+                    Bittangent = new Vector3(bit.X, bit.Y, bit.Z),
                     Tangent = new Vector3(tan.X, tan.Y, tan.Z)
                 };
 
@@ -149,8 +154,8 @@ namespace GameEngine.engine.rendering
                 TextureSlot s;
                 m.GetMaterialTexture(texType, i, out s);
                 GameTexture tx = GameTexture.Load(directory + s.FilePath);
-                tx.texType = texType;
-                tx.path = s.FilePath;
+                tx.TexType = texType;
+                tx.Path = s.FilePath;
                 ret.Add(tx);
             }
 

@@ -7,7 +7,7 @@ namespace CLHelperLibrary
 {
     public class KernelDatabase
     {
-        private string folderName;
+        private readonly string _folderName;
         private Dictionary<string, CLKernel> loadedKernels;
         public KernelDatabase(string folderName)
         {
@@ -17,14 +17,14 @@ namespace CLHelperLibrary
                 return;
             }
 
-            this.folderName = folderName;
+            this._folderName = folderName;
             loadedKernels = new Dictionary<string, CLKernel>();
             Initialize();
         }
 
         private void Initialize()
         {
-            string[] files = Directory.GetFiles(folderName, "*.cl");
+            string[] files = Directory.GetFiles(_folderName, "*.cl");
 
             foreach (string file in files)
             {

@@ -22,24 +22,23 @@ namespace GameEngine.engine.rendering
         [FieldOffset(32)]
         public OpenTK.Vector3 Tangent;
         [FieldOffset(44)]
-        public OpenTK.Vector3 Bitangent;
+        public OpenTK.Vector3 Bittangent;
 
         public static int Size = sizeof(float) * 14;
     }
 
     public class GameMesh
     {
-        private GameVertex[] vertices;
-        private uint[] indices;
-        public GameTexture[] textures;
-        //private int idxBuffer, vertexBuffer, normalBuffer, uvBuffer, tanBuffer, bitanBuffer;
-        private int VAO, VBO, EBO;
+        private readonly GameVertex[] _vertices;
+        private readonly uint[] _indices;
+        public GameTexture[] Textures;
+        private int _vao, _vbo, _ebo;
 
         public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures)
         {
-            this.vertices = vertices.ToArray();
-            this.indices = indices.ToArray();
-            this.textures = textures.ToArray();
+            this._vertices = vertices.ToArray();
+            this._indices = indices.ToArray();
+            this.Textures = textures.ToArray();
             setupMesh();
 
         }
@@ -50,13 +49,13 @@ namespace GameEngine.engine.rendering
             uint diff, spec, norm, hegt;
             diff = spec = norm = hegt = 1;
 
-            for (int i = 0; i < textures.Length; i++)
+            for (int i = 0; i < Textures.Length; i++)
             {
                 GL.ActiveTexture(TextureUnit.Texture0 + i);
 
                 string name = "";
                 string number = "";
-                switch (textures[i].texType)
+                switch (Textures[i].TexType)
                 {
                     case TextureType.Diffuse:
                         name = "texture_diffuse";
@@ -77,13 +76,13 @@ namespace GameEngine.engine.rendering
                 }
 
                 GL.Uniform1(prog.GetUniformLocation(name + number), i);
-                GL.BindTexture(TextureTarget.Texture2D, textures[i].textureID);
+                GL.BindTexture(TextureTarget.Texture2D, Textures[i].TextureId);
             }
 
 
 
-            GL.BindVertexArray(VAO);
-            GL.DrawElements(PrimitiveType.Triangles, indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.BindVertexArray(_vao);
+            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
 
 
             GL.BindVertexArray(0);
@@ -93,21 +92,21 @@ namespace GameEngine.engine.rendering
 
         private void setupMesh()
         {
-            GL.GenVertexArrays(1, out VAO);
-            GL.GenBuffers(1, out VBO);
-            GL.GenBuffers(1, out EBO);
+            GL.GenVertexArrays(1, out _vao);
+            GL.GenBuffers(1, out _vbo);
+            GL.GenBuffers(1, out _ebo);
 
             //VAO
-            GL.BindVertexArray(VAO);
+            GL.BindVertexArray(_vao);
 
             //VBO
-            GL.BindBuffer(BufferTarget.ArrayBuffer, VBO);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * GameVertex.Size), vertices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_vertices.Length * GameVertex.Size), _vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, EBO);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _ebo);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(_indices.Length * sizeof(uint)), _indices, BufferUsageHint.StaticDraw);
 
             //Attribute Pointers
             GL.EnableVertexAttribArray(0);
@@ -123,7 +122,7 @@ namespace GameEngine.engine.rendering
             GL.VertexAttribPointer(3, 3, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("Tangent"));
 
             GL.EnableVertexAttribArray(4);
-            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("Bitangent"));
+            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("Bittangent"));
 
 
 
