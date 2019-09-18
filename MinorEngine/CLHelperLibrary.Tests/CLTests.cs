@@ -35,8 +35,7 @@ namespace CLHelperLibrary.Tests
             }
 
             MemoryBuffer buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
-
-            bool working = true;
+            
             float[] c = CL.ReadBuffer<float>(buffer, b.Length);
 
 
@@ -101,7 +100,7 @@ namespace CLHelperLibrary.Tests
 
         }
 
-        private bool CheckValues(float[] values, float[] reference)
+        private static bool CheckValues(float[] values, float[] reference)
         {
             bool working=true;
             for (int i = 0; i < values.Length; i++)
