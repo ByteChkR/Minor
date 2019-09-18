@@ -117,7 +117,7 @@ namespace FilterLanguage.Generators
                 }
 
                 return result;
-            };
+            }
 
             Dictionary<long, int> weights = new Dictionary<long, int>();
             List<long> ordering = new List<long>();

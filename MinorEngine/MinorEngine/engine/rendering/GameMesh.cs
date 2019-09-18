@@ -24,7 +24,7 @@ namespace GameEngine.engine.rendering
         [FieldOffset(44)]
         public OpenTK.Vector3 Bittangent;
 
-        public const int VERTEX_BYTE_SIZE = sizeof(float) * 14;
+        public static readonly int VERTEX_BYTE_SIZE = sizeof(float) * 14;
 
         public bool Equals(GameVertex other)
         {
