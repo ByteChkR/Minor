@@ -8,6 +8,8 @@ matrix:
         - SOLUTION="MinorEngine/MinorEngine.sln"
         - BUILDCONFIG="Release"
 
+before_install:
+  - ./.travis/setup.sh
 
 install:
   - dotnet restore ADL/ADL/
@@ -23,5 +25,5 @@ script:
   - dotnet build $SOLUTION -c $BUILDCONFIG
 
 after_script:
-  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=NO_CL
+  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release
   - bash <(curl -s https://codecov.io/bash)
