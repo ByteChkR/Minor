@@ -1,5 +1,6 @@
 language: csharp
 mono: none
+sudo: required
 
 matrix:
   include:
@@ -9,7 +10,7 @@ matrix:
         - BUILDCONFIG="Release"
 
 before_install:
-  - ./.travis/setup.sh
+  - sudo ./.travis/setup.sh
 
 install:
   - dotnet restore ADL/ADL/
