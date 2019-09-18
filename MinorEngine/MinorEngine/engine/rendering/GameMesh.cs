@@ -26,9 +26,9 @@ namespace GameEngine.engine.rendering
 
         public const int VERTEX_BYTE_SIZE = sizeof(float) * 14;
 
-        public bool Equals(GameVertex vert)
+        public bool Equals(GameVertex other)
         {
-            return Vector3.Distance(Position, vert.Position) < 0.001f;
+            return Vector3.Distance(Position, other.Position) < 0.001f;
         }
     }
 

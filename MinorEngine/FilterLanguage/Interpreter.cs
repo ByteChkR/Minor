@@ -29,7 +29,7 @@ namespace FilterLanguage
             public bool TriggeredDebug { get; set; }
             public MemoryBuffer DebugBuffer { get; set; }
 
-            public bool Equals(InterpreterStepResult res)
+            public bool Equals(InterpreterStepResult other)
             {
                 throw new NotImplementedException();
             }
