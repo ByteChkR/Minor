@@ -11,7 +11,7 @@ namespace CLHelperLibrary
 {
     public class CLKernel
     {
-        public readonly Dictionary<string, KernelParameter> Parameter;
+        public Dictionary<string, KernelParameter> Parameter { get; }
         public Kernel Kernel { get; }
 
         public CLKernel(Kernel k, KernelParameter[] parameter)

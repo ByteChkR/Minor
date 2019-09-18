@@ -13,7 +13,7 @@ namespace GameEngine.engine.core
         public GameModel Model { get; set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
         protected World World { get; set; }
-        private static int _objId;
+        private static int _objId = 1;
         private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
@@ -38,7 +38,7 @@ namespace GameEngine.engine.core
         {
         }
 
-        public GameObject(string name):this(new Vector3(), name, null)
+        public GameObject(string name) : this(new Vector3(), name, null)
         {
         }
 
@@ -101,7 +101,7 @@ namespace GameEngine.engine.core
             child.SetParent(this);
         }
 
-        public void Remove(GameObject child)
+        public static void Remove(GameObject child)
         {
             child.SetParent(null);
         }
@@ -147,7 +147,10 @@ namespace GameEngine.engine.core
 
         public GameObject GetChildAt(int idx)
         {
-            if (idx >= 0 && idx < _children.Count) return _children[idx];
+            if (idx >= 0 && idx < _children.Count)
+            {
+                return _children[idx];
+            }
             return null;
         }
 
@@ -201,7 +204,7 @@ namespace GameEngine.engine.core
             up = Vector3.UnitY;
             Transform = Matrix4.LookAt(eye, target, up);
         }
-        
+
 
     }
 }

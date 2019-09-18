@@ -24,7 +24,7 @@ namespace GameEngine.engine.rendering
         [FieldOffset(44)]
         public OpenTK.Vector3 Bittangent;
 
-        public static int Size = sizeof(float) * 14;
+        public const int VERTEX_BYTE_SIZE = sizeof(float) * 14;
     }
 
     public class GameMesh
@@ -32,7 +32,7 @@ namespace GameEngine.engine.rendering
         private readonly GameVertex[] _vertices;
         private readonly uint[] _indices;
         public GameTexture[] Textures { get; set; }
-        private int _vao, _vbo;// _ebo;
+        private int _vao;
 
         public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures)
         {
@@ -46,8 +46,8 @@ namespace GameEngine.engine.rendering
         public void Draw(ShaderProgram prog)
         {
 
-            uint diff, spec, norm, hegt;
-            diff = spec = norm = hegt = 1;
+            uint diff, spec, norm, hegt, unknown;
+            diff = spec = norm = hegt = unknown = 1;
 
             for (int i = 0; i < Textures.Length; i++)
             {
@@ -74,8 +74,8 @@ namespace GameEngine.engine.rendering
                         number = (hegt++).ToString();
                         break;
                     default:
-                        name = "texture_diffuse";
-                        number = (diff++).ToString();
+                        name = "texture";
+                        number = (unknown++).ToString();
                         break;
 
                 }
@@ -97,7 +97,7 @@ namespace GameEngine.engine.rendering
 
         private void setupMesh()
         {
-            int _ebo;
+            int _ebo, _vbo;
             GL.GenVertexArrays(1, out _vao);
             GL.GenBuffers(1, out _vbo);
             GL.GenBuffers(1, out _ebo);
@@ -107,7 +107,7 @@ namespace GameEngine.engine.rendering
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_vertices.Length * GameVertex.Size), _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_vertices.Length * GameVertex.VERTEX_BYTE_SIZE), _vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
@@ -116,19 +116,19 @@ namespace GameEngine.engine.rendering
 
             //Attribute Pointers
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, GameVertex.Size, IntPtr.Zero);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, IntPtr.Zero);
 
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("Normal"));
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("Normal"));
 
             GL.EnableVertexAttribArray(2);
-            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("UV"));
+            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("UV"));
 
             GL.EnableVertexAttribArray(3);
-            GL.VertexAttribPointer(3, 3, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("Tangent"));
+            GL.VertexAttribPointer(3, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("Tangent"));
 
             GL.EnableVertexAttribArray(4);
-            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Float, false, GameVertex.Size, offsetOf("Bittangent"));
+            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("Bittangent"));
 
 
 
@@ -137,7 +137,7 @@ namespace GameEngine.engine.rendering
 
         }
 
-        private IntPtr offsetOf(string name)
+        private static IntPtr offsetOf(string name)
         {
             IntPtr off = Marshal.OffsetOf(typeof(GameVertex), name);
             return off;

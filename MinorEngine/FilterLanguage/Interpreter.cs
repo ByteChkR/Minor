@@ -21,6 +21,7 @@ namespace FilterLanguage
         private const string DefineKey = "--define texture ";
         private static readonly CultureInfo NumberParsingHelper = new CultureInfo(CultureInfo.InvariantCulture.LCID);
         private delegate void FlFunction();
+        private readonly Random rnd = new Random();
         public struct InterpreterStepResult
         {
             public bool HasJumped { get; set; }
@@ -133,7 +134,6 @@ namespace FilterLanguage
 
         }
 
-        private Random rnd = new Random();
         private byte randombytesource()
         {
             return (byte)rnd.Next();
@@ -428,7 +428,7 @@ namespace FilterLanguage
             _currentIndex = EntryIndex;
             _currentWord = 1;
         }
-        private bool IsSurroundedBy(string text, string surrStr)
+        private static bool IsSurroundedBy(string text, string surrStr)
         {
             return text.StartsWith(surrStr) && text.EndsWith(surrStr);
         }

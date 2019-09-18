@@ -9,7 +9,7 @@ namespace CLHelperLibrary
     public class CLProgram
     {
         private readonly string _filePath;
-        public readonly Dictionary<string, CLKernel> ContainedKernels;
+        public Dictionary<string, CLKernel> ContainedKernels { get; }
         public Program ClProgramHandle { get; set; }
 
         public CLProgram(string FilePath)
@@ -52,7 +52,7 @@ namespace CLHelperLibrary
 
 
 
-        private string[] FindKernelNames(string source)
+        private static string[] FindKernelNames(string source)
         {
             List<string> kernelNames = new List<string>();
             string[] s = source.Split(' ');

@@ -28,12 +28,12 @@ namespace GameEngine
             GameModel plane = new GameModel("models/plane.obj");
 
             GameTexture runic = GameTexture.Load("textures/runicfloor.png");
-            plane.meshes[0].Textures = new[] { runic };
-            sphere.meshes[0].Textures = new[] { runic };
+            plane.Meshes[0].Textures = new[] { runic };
+            sphere.Meshes[0].Textures = new[] { runic };
 
             Matrix4.CreatePerspectiveFieldOfView(ToRadians(60), 4f / 3f, 0.1f, 1000f, out Matrix4 projection);
 
-            bool ret = ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/texture.fs"},
                 {ShaderType.VertexShader, "shader/texture.vs"},

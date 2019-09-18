@@ -350,6 +350,9 @@ namespace CLHelperLibrary
                 case "ulong16":
                     dt = DataTypes.ULONG16;
                     break;
+                default:
+                    dt = DataTypes.UNKNOWN;
+                    break;
             }
 
             return dt;

@@ -16,7 +16,6 @@ namespace Common
     public static class DebugHelper
     {
         private static bool _initialized;
-        private static LogTextStream _lts;
         private static readonly CrashLogDictionary CrashLog = new CrashLogDictionary();
         private static readonly bool CrashOnException = true;
 
@@ -40,8 +39,7 @@ namespace Common
             c.CheckForUpdates = false;
             CrashHandler.Initialize(c);
 
-
-            _lts = new LogTextStream(Console.OpenStandardOutput(), BitMask.WildCard, MatchType.MatchAll, true);
+            LogTextStream _lts = new LogTextStream(Console.OpenStandardOutput(), BitMask.WildCard, MatchType.MatchAll, true);
             Debug.AddOutputStream(_lts);
         }
 

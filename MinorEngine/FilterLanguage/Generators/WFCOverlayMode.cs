@@ -122,7 +122,9 @@ namespace FilterLanguage.Generators
             Dictionary<long, int> weights = new Dictionary<long, int>();
             List<long> ordering = new List<long>();
 
-            for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++) for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
+            for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
+            {
+                for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
                 {
                     byte[][] ps = new byte[8][];
 
@@ -138,7 +140,10 @@ namespace FilterLanguage.Generators
                     for (int k = 0; k < symmetry; k++)
                     {
                         long ind = index(ps[k]);
-                        if (weights.ContainsKey(ind)) weights[ind]++;
+                        if (weights.ContainsKey(ind))
+                        {
+                            weights[ind]++;
+                        }
                         else
                         {
                             weights.Add(ind, 1);
@@ -146,6 +151,7 @@ namespace FilterLanguage.Generators
                         }
                     }
                 }
+            }
 
             T = weights.Count;
             this._ground = (ground + T) % T;
@@ -163,7 +169,16 @@ namespace FilterLanguage.Generators
             bool agrees(byte[] p1, byte[] p2, int dx, int dy)
             {
                 int xmin = dx < 0 ? 0 : dx, xmax = dx < 0 ? dx + N : N, ymin = dy < 0 ? 0 : dy, ymax = dy < 0 ? dy + N : N;
-                for (int y = ymin; y < ymax; y++) for (int x = xmin; x < xmax; x++) if (p1[x + N * y] != p2[x - dx + N * (y - dy)]) return false;
+                for (int y = ymin; y < ymax; y++)
+                {
+                    for (int x = xmin; x < xmax; x++)
+                    {
+                        if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
+                        {
+                            return false;
+                        }
+                    }
+                }
                 return true;
             };
 

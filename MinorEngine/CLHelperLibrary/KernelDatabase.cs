@@ -8,7 +8,7 @@ namespace CLHelperLibrary
     public class KernelDatabase
     {
         private readonly string _folderName;
-        private Dictionary<string, CLKernel> loadedKernels;
+        private readonly Dictionary<string, CLKernel> _loadedKernels;
         public KernelDatabase(string folderName)
         {
             if (!Directory.Exists(folderName))
@@ -18,7 +18,7 @@ namespace CLHelperLibrary
             }
 
             this._folderName = folderName;
-            loadedKernels = new Dictionary<string, CLKernel>();
+            _loadedKernels = new Dictionary<string, CLKernel>();
             Initialize();
         }
 
@@ -49,9 +49,9 @@ namespace CLHelperLibrary
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {
-                if (!loadedKernels.ContainsKey(containedKernel.Key))
+                if (!_loadedKernels.ContainsKey(containedKernel.Key))
                 {
-                    loadedKernels.Add(containedKernel.Key, containedKernel.Value);
+                    _loadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
                 {
@@ -62,9 +62,9 @@ namespace CLHelperLibrary
 
         public bool TryGetCLKernel(string name, out CLKernel kernel)
         {
-            if (loadedKernels.ContainsKey(name))
+            if (_loadedKernels.ContainsKey(name))
             {
-                kernel = loadedKernels[name];
+                kernel = _loadedKernels[name];
                 return true;
             }
             kernel = null;

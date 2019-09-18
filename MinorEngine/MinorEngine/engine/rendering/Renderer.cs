@@ -14,6 +14,7 @@ namespace GameEngine.engine.rendering
                 _clearColor = value;
                 GL.ClearColor(_clearColor);
             }
+            get => _clearColor;
         }
 
         public Renderer()

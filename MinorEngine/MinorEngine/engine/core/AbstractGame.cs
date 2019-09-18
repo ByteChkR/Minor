@@ -22,10 +22,7 @@ namespace GameEngine.engine.core
         protected Renderer Renderer;
         protected GameWindow Window;
         protected EngineSettings Settings;
-
-        private bool _paused;
-        private int _frameCounter;
-        private float _time;
+        
 
         public AbstractGame(EngineSettings settings)
         {
@@ -89,12 +86,11 @@ namespace GameEngine.engine.core
 
         protected virtual void Update(object sender, FrameEventArgs e)
         {
-            if (!_paused)
-            {
-                World.Update((float)e.Time);
-                _time += (float)e.Time;
 
-            }
+            World.Update((float)e.Time);
+
+
+
             //TODO: Decide on how to Update the components
         }
 
@@ -104,19 +100,14 @@ namespace GameEngine.engine.core
             GL.Viewport(0, 0, Window.Width, Window.Height);
         }
 
-        
+
 
         private void OnRender(object o, EventArgs e)
         {
-            _frameCounter++;
 
             Renderer.Render(World);
 
-            if (_time >= 1)
-            {
-                _time = 0;
-                _frameCounter = 0;
-            }
+            
 
             Window.SwapBuffers();
 

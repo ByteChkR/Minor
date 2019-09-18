@@ -12,7 +12,7 @@ namespace GameEngine.engine.rendering
 {
     public class GameModel
     {
-        public List<GameMesh> meshes = new List<GameMesh>();
+        public List<GameMesh> Meshes { get; } = new List<GameMesh>();
         private string directory;
 
         public GameModel(string file)
@@ -34,7 +34,7 @@ namespace GameEngine.engine.rendering
             Matrix4 mvp = modelMat * viewMat * projMat;
             GL.UniformMatrix4(shader.GetUniformLocation("mvpMatrix"), false, ref mvp);
 
-            foreach (GameMesh gameMesh in meshes)
+            foreach (GameMesh gameMesh in Meshes)
             {
                 gameMesh.Draw(shader);
             }
@@ -77,7 +77,7 @@ namespace GameEngine.engine.rendering
                 this.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
                 for (int i = 0; i < node.MeshCount; i++)
                 {
-                    meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s));
+                    Meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s));
                 }
             }
 

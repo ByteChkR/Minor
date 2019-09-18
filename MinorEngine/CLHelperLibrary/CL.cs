@@ -83,11 +83,16 @@ namespace CLHelperLibrary
         }
 
         public delegate T RandomFunc<out T>() where T : struct;
-        private static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform = true) where T : struct
+        private static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform) where T : struct
         {
             T[] buffer = new T[size];
             WriteRandom(buffer, channelEnableState, rnd, uniform);
             return buffer;
+        }
+
+        private static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd) where T : struct
+        {
+            return CreateRandom(size, channelEnableState, rnd, true);
         }
 
         private static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd,
@@ -109,11 +114,22 @@ namespace CLHelperLibrary
             
         }
 
-        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform = true) where T: struct
+        private static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd) where T : struct
+        {
+            WriteRandom(buffer, channelEnableState, rnd, true);
+        }
+
+        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform) where T: struct
         {
             T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int) buf.Size);
             WriteRandom(data, enabledChannels, rnd, uniform);
             Instance._commandQueue.EnqueueWriteBuffer(buf, data);
+        }
+
+        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels)
+            where T : struct
+        {
+            WriteRandom(buf, rnd, enabledChannels, true);
         }
 
 

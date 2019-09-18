@@ -13,12 +13,11 @@ namespace GameEngine.components
 {
     public class TextureChanger : AbstractComponent
     {
-        private readonly GameTexture overlay;
 
 
         public TextureChanger(GameWindow window)
         {
-            overlay = GameTexture.Load("textures/overlay.png");
+            
 
             window.KeyPress += OnKeyPress;
         }
@@ -32,40 +31,40 @@ namespace GameEngine.components
             }
         }
 
-        private bool isDebuggingInterpreter = false;
+        private bool _isDebuggingInterpreter;
 
-        private FilterLanguage.Interpreter fli = null;
-        private KernelDatabase db = new KernelDatabase("kernel/");
+        private FilterLanguage.Interpreter _fli;
+        private readonly KernelDatabase _db = new KernelDatabase("kernel/");
 
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 'r')
             {
-                GL.DeleteTexture(Owner.Model.meshes[0].Textures[0].TextureId);
-                Owner.Model.meshes[0].Textures[0] = GameTexture.Load("runicfloor.png");
-                isDebuggingInterpreter = false;
+                GL.DeleteTexture(Owner.Model.Meshes[0].Textures[0].TextureId);
+                Owner.Model.Meshes[0].Textures[0] = GameTexture.Load("runicfloor.png");
+                _isDebuggingInterpreter = false;
             }
-            else if (e.KeyChar == 'f' || isDebuggingInterpreter)
+            else if (e.KeyChar == 'f' || _isDebuggingInterpreter)
             {
 
 
-                if (!isDebuggingInterpreter)
+                if (!_isDebuggingInterpreter)
                 {
                     string filename = Console.ReadLine();
                     while (!File.Exists(filename))
                     {
                         filename = Console.ReadLine();
                     }
-                    fli = new FilterLanguage.Interpreter(filename, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, db);
+                    _fli = new FilterLanguage.Interpreter(filename, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, _db);
                 }
 
                 FilterLanguage.Interpreter.InterpreterStepResult res = new FilterLanguage.Interpreter.InterpreterStepResult();
 
-                if (isDebuggingInterpreter)
+                if (_isDebuggingInterpreter)
                 {
 
                     this.Log("Continuing Execution", DebugChannel.Log);
-                    isDebuggingInterpreter = false;
+                    _isDebuggingInterpreter = false;
                 }
 
                 byte[] buf = null;
@@ -75,23 +74,23 @@ namespace GameEngine.components
                     if (res.TriggeredDebug)
                     {
                         this.Log("Triggered Debug.", DebugChannel.Log);
-                        isDebuggingInterpreter = true;
+                        _isDebuggingInterpreter = true;
                         buf = CL.ReadBuffer<byte>(res.DebugBuffer, (int)res.DebugBuffer.Size);
                         break;
                     }
 
-                    res = fli.Step();
+                    res = _fli.Step();
                 } while (!res.Terminated);
 
-                if (!isDebuggingInterpreter)
+                if (!_isDebuggingInterpreter)
                 {
-                    buf = fli.GetResult<byte>();
+                    buf = _fli.GetResult<byte>();
                 }
                 else if (buf == null)
                 {
                     throw new InvalidOperationException("FUCK");
                 }
-                GameTexture.Update(Owner.Model.meshes[0].Textures[0], buf, 512, 512);
+                GameTexture.Update(Owner.Model.Meshes[0].Textures[0], buf, 512, 512);
             }
             else if (e.KeyChar == 't')
             {
@@ -99,19 +98,19 @@ namespace GameEngine.components
                 this.Log("Running tests...", DebugChannel.Log);
                 foreach (string filename in filenames)
                 {
-                    fli = new FilterLanguage.Interpreter(filename, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, db);
+                    _fli = new FilterLanguage.Interpreter(filename, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, _db);
 
                     this.Log("Running Test File: " + filename, DebugChannel.Log);
 
 
-                    while (!fli.Terminated)
+                    while (!_fli.Terminated)
                     {
-                        fli.Step();
+                        _fli.Step();
                     }
 
                 }
-                GL.DeleteTexture(Owner.Model.meshes[0].Textures[0].TextureId);
-                Owner.Model.meshes[0].Textures[0] = GameTexture.Load("textures/runicfloor.png");
+                GL.DeleteTexture(Owner.Model.Meshes[0].Textures[0].TextureId);
+                Owner.Model.Meshes[0].Textures[0] = GameTexture.Load("textures/runicfloor.png");
 
                 this.Log("Finished Running Tests", DebugChannel.Log);
 

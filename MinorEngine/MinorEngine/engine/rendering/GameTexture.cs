@@ -30,9 +30,15 @@ namespace GameEngine.engine.rendering
 
         public static GameTexture[] LoadTextures(Scene scene)
         {
-            if (!scene.HasTextures) return new GameTexture[0];
+            if (!scene.HasTextures)
+            {
+                return new GameTexture[0];
+            }
             List<GameTexture> list = new List<GameTexture>();
-            foreach (var x in scene.Textures) list.Add(ConvertToTexture(x));
+            foreach (var x in scene.Textures)
+            {
+                list.Add(ConvertToTexture(x));
+            }
 
             return list.ToArray();
         }
