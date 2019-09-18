@@ -9,12 +9,17 @@ matrix:
         - SOLUTION="MinorEngine/MinorEngine.sln"
         - BUILDCONFIG="Release"
 
+#Restore the Submodules and the Project
 install:
   - dotnet restore ADL/ADL/
-  - dotnet restore MinorEngine/
   - dotnet restore ext-pp/
   - dotnet restore opencl-dotnet/
+  - dotnet restore MinorEngine/
 
+
+#Build the projects
+#ADL has to be splitted into its subprojects since 2 of them are .Net Framework based and will not compile with .net Core
+#Also the build order matters since the MinorEngine solution needs references from the other submodules
 script:
   - dotnet build ADL/ADL/ADL/ADL.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.Crash/ADL.Crash.csproj -c $BUILDCONFIG
@@ -26,8 +31,9 @@ script:
   - dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
 
+#Testing all included projects.
 after_script:
   - dotnet test ext-pp/ext_pp.sln --collect:"XPlat Code Coverage" -p:Configuration=Release
   - dotnet test ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj --collect:"XPlat Code Coverage" -p:Configuration=Release
   - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=NO_CL
-  - bash <(curl -s https://codecov.io/bash)
+  - bash <(curl -s https://codecov.io/bash) #Uploading the coverage report to Codecov.
