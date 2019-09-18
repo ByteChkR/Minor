@@ -201,7 +201,14 @@ namespace FilterLanguage.Generators
             }
         }
 
+        
         public bool Run(int limit)
+        {
+            Random = new Random();
+            return RunModel(limit);
+        }
+
+        private bool RunModel(int limit)
         {
             if (Wave == null)
             {
@@ -209,7 +216,6 @@ namespace FilterLanguage.Generators
             }
 
             Clear();
-            Random = new Random();
 
             for (int l = 0; l < limit || limit == 0; l++)
             {
@@ -230,29 +236,9 @@ namespace FilterLanguage.Generators
 
         public bool Run(int seed, int limit)
         {
-            if (Wave == null)
-            {
-                Init();
-            }
-
-            Clear();
             Random = new Random(seed);
-
-            for (int l = 0; l < limit || limit == 0; l++)
-            {
-                if (l % 250 == 0)
-                {
-                    this.Log("Starting Iteration: " + l, DebugChannel.Log);
-                }
-                bool? result = Observe();
-                if (result != null)
-                {
-                    return (bool)result;
-                }
-                Propagate();
-            }
-
-            return true;
+            
+            return RunModel(limit);
         }
 
         protected void Ban(int i, int t)

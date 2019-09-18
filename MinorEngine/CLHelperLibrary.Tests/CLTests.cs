@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using CLHelperLibrary.CLStructs;
 using Xunit;
 using OpenCl.DotNetCore.Memory;
 namespace CLHelperLibrary.Tests
