@@ -75,7 +75,7 @@ namespace FilterLanguage.Generators
                     }
                 }
                 return result;
-            };
+            }
 
             byte[] patternFromSample(int x, int y) => pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
             byte[] rotate(byte[] p) => pattern((x, y) => p[N - 1 - y + x * N]);
@@ -90,7 +90,7 @@ namespace FilterLanguage.Generators
                     power *= C;
                 }
                 return result;
-            };
+            }
 
             byte[] patternFromIndex(long ind)
             {

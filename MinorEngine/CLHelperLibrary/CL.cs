@@ -114,7 +114,7 @@ namespace CLHelperLibrary
 
         }
 
-        private static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd) where T : struct
+        public static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd) where T : struct
         {
             WriteRandom(buffer, channelEnableState, rnd, true);
         }
