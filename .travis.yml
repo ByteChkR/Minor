@@ -10,6 +10,7 @@ matrix:
         - BUILDCONFIG="Release"
 
 before_install:
+  - chmod -v 777 ./.travis/setup.sh
   - ./.travis/setup.sh
 
 install:
