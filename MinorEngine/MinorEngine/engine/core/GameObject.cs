@@ -13,7 +13,7 @@ namespace GameEngine.engine.core
         public GameModel Model { get; set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
         protected World World { get; set; }
-        private static int _objId = 1;
+        private static int _objId;
         private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
@@ -30,8 +30,13 @@ namespace GameEngine.engine.core
             if (name == string.Empty)
             {
                 Name = "Gameobject" + _objId;
-                _objId++;
+                addObjCount();
             }
+        }
+
+        private static void addObjCount()
+        {
+            _objId++;
         }
 
         public GameObject(Vector3 position, string name) : this(position, name, null)
@@ -160,9 +165,9 @@ namespace GameEngine.engine.core
             Transform *= Matrix4.CreateTranslation(translation);
         }
 
-        public void Scale(Vector3 scale)
+        public void Scale(Vector3 scaleAmount)
         {
-            Transform *= Matrix4.CreateScale(scale);
+            Transform *= Matrix4.CreateScale(scaleAmount);
         }
 
         public void Rotate(Vector3 axis, float angle)

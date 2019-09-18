@@ -22,12 +22,12 @@ namespace GameEngine.components
             window.KeyPress += OnKeyPress;
         }
 
-        private bool init = false;
+        private bool _init;
         public override void Update(float deltaTime)
         {
-            if (!init && Owner != null)
+            if (!_init && Owner != null)
             {
-                init = true;
+                _init = true;
             }
         }
 
