@@ -38,14 +38,9 @@ namespace CLHelperLibrary.Tests
 
             bool working = true;
             float[] c = CL.ReadBuffer<float>(buffer, b.Length);
-            for (int i = 0; i < b.Length; i++)
-            {
-                if (Math.Abs(b[i] - c[i]) > 0.01f)
-                {
-                    working = false;
-                }
-            }
-            Assert.True(working);
+
+
+            Assert.True(CheckValues(c, b));
         }
 
         [Fact]
@@ -58,21 +53,14 @@ namespace CLHelperLibrary.Tests
             }
 
             MemoryBuffer buffer = CL.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
-
-            bool working = true;
+            
 
             CL.WriteToBuffer<float>(buffer, b);
 
             float[] c = CL.ReadBuffer<float>(buffer, b.Length);
 
-            for (int i = 0; i < b.Length; i++)
-            {
-                if (Math.Abs(b[i] - c[i]) > 0.01f)
-                {
-                    working = false;
-                }
-            }
-            Assert.True(working);
+            
+            Assert.True(CheckValues(c,b));
         }
         
 #endif
@@ -111,6 +99,20 @@ namespace CLHelperLibrary.Tests
             Assert.True(kernel.Parameter.ElementAt(4).Value.Id == 4);
             Assert.True(kernel.Parameter.ElementAt(4).Value.Name == "value");
 
+        }
+
+        private bool CheckValues(float[] values, float[] reference)
+        {
+            bool working=true;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (Math.Abs(values[i] - reference[i]) > 0.01f)
+                {
+                    working = false;
+                }
+            }
+
+            return working;
         }
     }
 }
