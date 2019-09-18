@@ -9,10 +9,6 @@ matrix:
         - SOLUTION="MinorEngine/MinorEngine.sln"
         - BUILDCONFIG="Release"
 
-before_install:
-  - chmod -v 777 ./.travis/setup.sh
-  - ./.travis/setup.sh
-
 install:
   - dotnet restore ADL/ADL/
   - dotnet restore MinorEngine/
@@ -22,10 +18,16 @@ install:
 script:
   - dotnet build ADL/ADL/ADL/ADL.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.Crash/ADL.Crash.csproj -c $BUILDCONFIG
+  - dotnet build ADL/ADL/ADL.Network.Client/ADL.Network.Client.csproj -c $BUILDCONFIG
+  - dotnet build ADL/ADL/ADL.Network.Server/ADL.Network.Server.csproj -c $BUILDCONFIG
+  - dotnet build ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj -c $BUILDCONFIG
+  - dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c $BUILDCONFIG
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
   - dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
 
 after_script:
-  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release
+  - dotnet test ext-pp/ext_pp.sln --collect:"XPlat Code Coverage" -p:Configuration=Release
+  - dotnet test ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj --collect:"XPlat Code Coverage" -p:Configuration=Release
+  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=NO_CL
   - bash <(curl -s https://codecov.io/bash)
