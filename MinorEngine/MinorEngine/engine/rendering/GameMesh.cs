@@ -10,7 +10,7 @@ using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
 namespace GameEngine.engine.rendering
 {
     [StructLayout(LayoutKind.Explicit)]
-    public struct GameVertex
+    public struct GameVertex:IEquatable<GameVertex>
     {
 
         [FieldOffset(0)]
@@ -25,6 +25,11 @@ namespace GameEngine.engine.rendering
         public OpenTK.Vector3 Bittangent;
 
         public const int VERTEX_BYTE_SIZE = sizeof(float) * 14;
+
+        public bool Equals(GameVertex vert)
+        {
+            return Vector3.Distance(Position, vert.Position) < 0.001f;
+        }
     }
 
     public class GameMesh

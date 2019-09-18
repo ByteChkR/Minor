@@ -83,14 +83,14 @@ namespace CLHelperLibrary
         }
 
         public delegate T RandomFunc<out T>() where T : struct;
-        private static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform) where T : struct
+        public static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform) where T : struct
         {
             T[] buffer = new T[size];
             WriteRandom(buffer, channelEnableState, rnd, uniform);
             return buffer;
         }
 
-        private static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd) where T : struct
+        public static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd) where T : struct
         {
             return CreateRandom(size, channelEnableState, rnd, true);
         }

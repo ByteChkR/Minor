@@ -22,12 +22,17 @@ namespace FilterLanguage
         private static readonly CultureInfo NumberParsingHelper = new CultureInfo(CultureInfo.InvariantCulture.LCID);
         private delegate void FlFunction();
         private readonly Random rnd = new Random();
-        public struct InterpreterStepResult
+        public struct InterpreterStepResult:IEquatable<InterpreterStepResult>
         {
             public bool HasJumped { get; set; }
             public bool Terminated { get; set; }
             public bool TriggeredDebug { get; set; }
             public MemoryBuffer DebugBuffer { get; set; }
+
+            public bool Equals(InterpreterStepResult res)
+            {
+                throw new NotImplementedException();
+            }
         }
 
 
@@ -199,7 +204,7 @@ namespace FilterLanguage
             {
                 {"setactive", cmd_setactive },
                 {"random", cmd_writerandom },
-                {"jmp", cmd_setactive },
+                {"jmp", cmd_jump },
                 {"brk", cmd_break }
             };
 

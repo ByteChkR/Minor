@@ -185,7 +185,7 @@ namespace CLHelperLibrary
 
         private static DataTypes GetDataType(string type)
         {
-            DataTypes dt = DataTypes.UNKNOWN;
+            DataTypes dt;
             switch (type)
             {
                 case "float":

@@ -180,7 +180,7 @@ namespace FilterLanguage.Generators
                     }
                 }
                 return true;
-            };
+            }
 
             Propagator = new int[4][][];
             for (int d = 0; d < 4; d++)

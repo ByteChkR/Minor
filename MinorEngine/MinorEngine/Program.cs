@@ -11,7 +11,7 @@ namespace GameEngine
         static void Main(string[] args)
         {
 
-            EngineSettings es = new EngineSettings()
+            EngineSettings es = new EngineSettings
             {
                 WindowFlags = GameWindowFlags.Default,
                 Mode = GraphicsMode.Default,

@@ -109,7 +109,7 @@ namespace GameEngine.engine.rendering
                 Vector3D bit = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0);
                 Vector3D uv = mesh.HasTextureCoords(0) ? mesh.TextureCoordinateChannels[0][i] : new Vector3D(0);
 
-                GameVertex v = new GameVertex()
+                GameVertex v = new GameVertex
                 {
                     Position = new Vector3(vert.X, vert.Y, vert.Z),
                     Normal = new Vector3(norm.X, norm.Y, norm.Z),
