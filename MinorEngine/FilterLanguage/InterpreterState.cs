@@ -5,9 +5,9 @@ namespace FilterLanguage
 {
     public class InterpreterState
     {
-        public int Line;
-        public MemoryBuffer ActiveBuffer;
-        public Stack<object> ArgumentStack;
+        public int Line { get; }
+        public MemoryBuffer ActiveBuffer { get; }
+        public Stack<object> ArgumentStack { get; }
 
         public InterpreterState(int line, MemoryBuffer activeBuffer, Stack<object> argumentStack)
         {

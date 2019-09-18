@@ -4,7 +4,8 @@ namespace GameEngine.engine.components
 {
     public abstract class AbstractComponent
     {
-        public GameObject owner;
+        public GameObject Owner { get; set; }
+
         public virtual void Update(float deltaTime)
         {
 

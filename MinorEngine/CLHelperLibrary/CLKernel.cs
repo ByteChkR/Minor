@@ -11,28 +11,28 @@ namespace CLHelperLibrary
 {
     public class CLKernel
     {
-        public Dictionary<string, KernelParameter> parameter;
-        public Kernel kernel;
+        public readonly Dictionary<string, KernelParameter> Parameter;
+        public Kernel Kernel { get; }
 
         public CLKernel(Kernel k, KernelParameter[] parameter)
         {
-            kernel = k;
-            this.parameter = new Dictionary<string, KernelParameter>(parameter.Select(x => new KeyValuePair<string, KernelParameter>(x.Name, x)));
+            Kernel = k;
+            this.Parameter = new Dictionary<string, KernelParameter>(parameter.Select(x => new KeyValuePair<string, KernelParameter>(x.Name, x)));
         }
 
         public void SetBuffer(string parameterName, MemoryObject obj)
         {
-            SetBuffer(parameter[parameterName].Id, obj);
+            SetBuffer(Parameter[parameterName].Id, obj);
         }
 
         public void SetArg(string parameterName, object value)
         {
-            SetArg(parameter[parameterName].Id, parameter[parameterName].CastToType(value));
+            SetArg(Parameter[parameterName].Id, Parameter[parameterName].CastToType(value));
         }
 
         public void SetBuffer(int index, MemoryObject obj)
         {
-            kernel.SetKernelArgument(index, obj);
+            Kernel.SetKernelArgument(index, obj);
         }
 
         public void SetArg(int index, object value)
@@ -43,14 +43,14 @@ namespace CLHelperLibrary
                 return;
             }
 
-            if (parameter.ElementAt(index).Value.IsArray)
+            if (Parameter.ElementAt(index).Value.IsArray)
             {
 
                 //TODO Buffer handling
             }
             else
             {
-                kernel.SetKernelArgumentVal(index, parameter.ElementAt(index).Value.CastToType(value));
+                Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
             }
 
         }
@@ -63,7 +63,7 @@ namespace CLHelperLibrary
             SetArg(1, dimensions);
             SetArg(2, channelCount);
             SetArg(3, enabledChannels);
-            cq.EnqueueNDRangeKernel(kernel, 1, size);
+            cq.EnqueueNDRangeKernel(Kernel, 1, size);
             
         }
     }

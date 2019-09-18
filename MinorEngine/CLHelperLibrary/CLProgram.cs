@@ -8,13 +8,16 @@ namespace CLHelperLibrary
 {
     public class CLProgram
     {
-        private string _filePath;
-        public Dictionary<string, CLKernel> ContainedKernels;
-        public Program CLProgramHandle = null;
+        private readonly string _filePath;
+        public readonly Dictionary<string, CLKernel> ContainedKernels;
+        public Program ClProgramHandle { get; set; }
 
         public CLProgram(string FilePath)
         {
             this._filePath = FilePath;
+
+            ContainedKernels = new Dictionary<string, CLKernel>();
+
             Initialize();
         }
 
@@ -24,10 +27,9 @@ namespace CLHelperLibrary
             string source = TextProcessorAPI.PreprocessSource(_filePath, null);
             string[] kernelNames = FindKernelNames(source);
 
-            ContainedKernels = new Dictionary<string, CLKernel>();
 #if NO_CL
 #else
-            CLProgramHandle = CL.CreateCLProgramFromSource(source);
+            ClProgramHandle = CL.CreateCLProgramFromSource(source);
 
 #endif
             foreach (string kernelName in kernelNames)
@@ -35,7 +37,7 @@ namespace CLHelperLibrary
 #if NO_CL
                 Kernel k = null;
 #else
-                Kernel k = CLProgramHandle.CreateKernel(kernelName);
+                Kernel k = ClProgramHandle.CreateKernel(kernelName);
 #endif
                 int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = (kernelNameIndex == -1) ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture) : kernelNameIndex;
@@ -74,7 +76,10 @@ namespace CLHelperLibrary
                                     )
                             );
                         }
-                        else kernelNames.Add(parts[i + 2]);
+                        else
+                        {
+                            kernelNames.Add(parts[i + 2]);
+                        }
                     }
                 }
             }

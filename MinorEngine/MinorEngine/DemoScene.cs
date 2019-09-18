@@ -33,7 +33,7 @@ namespace GameEngine
 
             Matrix4.CreatePerspectiveFieldOfView(ToRadians(60), 4f / 3f, 0.1f, 1000f, out Matrix4 projection);
 
-            bool ret = ShaderProgram.TryCreate(new Dictionary<ShaderType, string>()
+            bool ret = ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/texture.fs"},
                 {ShaderType.VertexShader, "shader/texture.vs"},
@@ -46,7 +46,7 @@ namespace GameEngine
             GameObject planeObj = new GameObject(Vector3.Zero, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
             planeObj.Model = plane;
-            planeObj.AddComponent(new TextureChanger(window));
+            planeObj.AddComponent(new TextureChanger(Window));
             planeObj.Shader = shader;
 
             GameObject sphereObj = new GameObject(Vector3.Zero, "Sphere");
@@ -57,12 +57,12 @@ namespace GameEngine
             sphereObj.Shader = shader;
 
 
-            world.Add(planeObj);
-            world.Add(sphereObj);
-            world.Add(c);
-            world.SetCamera(c);
+            World.Add(planeObj);
+            World.Add(sphereObj);
+            World.Add(c);
+            World.SetCamera(c);
 
-            renderer.ClearColor = new Color((int)(0.2f * 255), (int)(0.3f * 255), (int)(255 * 0.3f), 255);
+            Renderer.ClearColor = new Color((int)(0.2f * 255), (int)(0.3f * 255), (int)(255 * 0.3f), 255);
 
         }
     }

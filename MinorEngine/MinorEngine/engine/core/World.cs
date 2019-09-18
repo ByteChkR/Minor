@@ -4,16 +4,19 @@ namespace GameEngine.engine.core
 {
     public class World : GameObject
     {
-        public Camera camera { get; private set; } = null;
+        public Camera Camera { get; private set; }
 
         public World() : base(Vector3.Zero, "World", null)
         {
-            world = this;
+            World = this;
         }
 
         public void SetCamera(Camera c)
         {
-            if (c != null) camera = c;
+            if (c != null)
+            {
+                Camera = c;
+            }
         }
     }
 }

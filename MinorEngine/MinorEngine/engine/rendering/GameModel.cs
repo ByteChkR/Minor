@@ -136,15 +136,15 @@ namespace GameEngine.engine.rendering
 
             this.Log("Loading Baked Material: " + m.Name, DebugChannel.Log);
 
-            textures.AddRange(loadMaterialTextures(m, TextureType.Diffuse, "texture_diffuse"));
-            textures.AddRange(loadMaterialTextures(m, TextureType.Specular, "texture_specular"));
-            textures.AddRange(loadMaterialTextures(m, TextureType.Normals, "texture_normal"));
-            textures.AddRange(loadMaterialTextures(m, TextureType.Height, "texture_height"));
+            textures.AddRange(loadMaterialTextures(m, TextureType.Diffuse));
+            textures.AddRange(loadMaterialTextures(m, TextureType.Specular));
+            textures.AddRange(loadMaterialTextures(m, TextureType.Normals));
+            textures.AddRange(loadMaterialTextures(m, TextureType.Height));
             return new GameMesh(vertices, indices, textures);
         }
 
 
-        private List<GameTexture> loadMaterialTextures(Material m, TextureType texType, string typeName)
+        private List<GameTexture> loadMaterialTextures(Material m, TextureType texType)
         {
             List<GameTexture> ret = new List<GameTexture>();
 

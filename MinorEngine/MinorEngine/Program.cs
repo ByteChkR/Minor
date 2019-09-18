@@ -13,11 +13,11 @@ namespace GameEngine
 
             EngineSettings es = new EngineSettings()
             {
-                gameWindowFlags = GameWindowFlags.Default,
-                graphicsMode = GraphicsMode.Default,
-                width = 1334,
-                height = 1000,
-                title = "Test"
+                WindowFlags = GameWindowFlags.Default,
+                Mode = GraphicsMode.Default,
+                Width = 1334,
+                Height = 1000,
+                Title = "Test"
             };
 
             DemoScene demo = new DemoScene(es);

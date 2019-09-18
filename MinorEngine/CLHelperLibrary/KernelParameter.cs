@@ -74,12 +74,11 @@ namespace CLHelperLibrary
 
     public class KernelParameter
     {
-
-        public string Name;
-        public DataTypes DataType;
-        public bool IsArray;
-        public int Id;
-        public MemoryScope MemScope;
+        public string Name { get; set; }
+        public DataTypes DataType { get; set; }
+        public bool IsArray { get; set; }
+        public int Id { get; set; }
+        public MemoryScope MemScope { get; set; }
 
         private static Type[] Converters => new[]
         {
@@ -175,8 +174,8 @@ namespace CLHelperLibrary
                     Name = parametr[parametr.Length - 1].Replace('*', ' ').Trim(),
                     DataType = GetDataType(parametr[parametr.Length - 2].Replace('*', ' ').Trim()),
                     MemScope = GetMemoryScope(parametr.Length == 3 ? parametr[0] : ""),
-                    IsArray = (parametr[parametr.Length - 2].IndexOf("*") != -1 ||
-                               parametr[parametr.Length - 1].IndexOf("*") != -1),
+                    IsArray = (parametr[parametr.Length - 2].IndexOf("*", StringComparison.InvariantCulture) != -1 ||
+                               parametr[parametr.Length - 1].IndexOf("*", StringComparison.InvariantCulture) != -1),
                     Id = i
                 };
             }

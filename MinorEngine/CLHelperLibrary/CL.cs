@@ -18,11 +18,11 @@ namespace CLHelperLibrary
 {
     public class CL
     {
-        private static CL _instance = null;
+        private static CL _instance;
         private static CL Instance => _instance ?? (_instance = new CL());
 
-        private Context _context = null;
-        private CommandQueue _commandQueue = null;
+        private Context _context;
+        private CommandQueue _commandQueue;
         private CL()
         {
             InitializeOpenCL();
@@ -33,8 +33,6 @@ namespace CLHelperLibrary
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
             Device chosenDevice = platforms.FirstOrDefault().GetDevices(DeviceType.All).FirstOrDefault();
-            Console.WriteLine($"Using: {chosenDevice.Name} ({chosenDevice.Vendor})");
-            Console.WriteLine();
 
             _context = Context.CreateContext(chosenDevice);
             Device CLDevice = chosenDevice;
@@ -84,7 +82,7 @@ namespace CLHelperLibrary
             return mb;
         }
 
-        public delegate T RandomFunc<T>() where T : struct;
+        public delegate T RandomFunc<out T>() where T : struct;
         private static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform = true) where T : struct
         {
             T[] buffer = new T[size];
@@ -93,7 +91,7 @@ namespace CLHelperLibrary
         }
 
         private static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd,
-            bool uniform = true)where T:struct
+            bool uniform)where T:struct
         {
             T val = rnd.Invoke();
             for (int i = 0; i < buffer.Length; i++)
@@ -117,6 +115,8 @@ namespace CLHelperLibrary
             WriteRandom(data, enabledChannels, rnd, uniform);
             Instance._commandQueue.EnqueueWriteBuffer(buf, data);
         }
+
+
 
         public static void WriteToBuffer<T>(MemoryBuffer buf, T[] values) where T : struct
         {

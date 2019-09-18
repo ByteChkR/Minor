@@ -26,7 +26,7 @@ namespace GameEngine.components
         private bool init = false;
         public override void Update(float deltaTime)
         {
-            if (!init && owner != null)
+            if (!init && Owner != null)
             {
                 init = true;
             }
@@ -41,8 +41,8 @@ namespace GameEngine.components
         {
             if (e.KeyChar == 'r')
             {
-                GL.DeleteTexture(owner.Model.meshes[0].Textures[0].TextureId);
-                owner.Model.meshes[0].Textures[0] = GameTexture.Load("runicfloor.png");
+                GL.DeleteTexture(Owner.Model.meshes[0].Textures[0].TextureId);
+                Owner.Model.meshes[0].Textures[0] = GameTexture.Load("runicfloor.png");
                 isDebuggingInterpreter = false;
             }
             else if (e.KeyChar == 'f' || isDebuggingInterpreter)
@@ -79,7 +79,9 @@ namespace GameEngine.components
                         buf = CL.ReadBuffer<byte>(res.DebugBuffer, (int)res.DebugBuffer.Size);
                         break;
                     }
-                } while (!(res = fli.Step()).Terminated);
+
+                    res = fli.Step();
+                } while (!res.Terminated);
 
                 if (!isDebuggingInterpreter)
                 {
@@ -89,7 +91,7 @@ namespace GameEngine.components
                 {
                     throw new InvalidOperationException("FUCK");
                 }
-                GameTexture.Update(owner.Model.meshes[0].Textures[0], buf, 512, 512);
+                GameTexture.Update(Owner.Model.meshes[0].Textures[0], buf, 512, 512);
             }
             else if (e.KeyChar == 't')
             {
@@ -108,8 +110,8 @@ namespace GameEngine.components
                     }
 
                 }
-                GL.DeleteTexture(owner.Model.meshes[0].Textures[0].TextureId);
-                owner.Model.meshes[0].Textures[0] = GameTexture.Load("textures/runicfloor.png");
+                GL.DeleteTexture(Owner.Model.meshes[0].Textures[0].TextureId);
+                Owner.Model.meshes[0].Textures[0] = GameTexture.Load("textures/runicfloor.png");
 
                 this.Log("Finished Running Tests", DebugChannel.Log);
 

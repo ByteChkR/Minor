@@ -45,11 +45,17 @@ namespace FilterLanguage.Generators
                     int i = 0;
                     foreach (var c in _colors)
                     {
-                        if (c == color) break;
+                        if (c == color)
+                        {
+                            break;
+                        }
                         i++;
                     }
 
-                    if (i == _colors.Count) _colors.Add(color);
+                    if (i == _colors.Count)
+                    {
+                        _colors.Add(color);
+                    }
                     sample[x, y] = (byte) i;
                 }
             }
@@ -211,13 +217,21 @@ namespace FilterLanguage.Generators
                     int contributors = 0, r = 0, g = 0, b = 0;
                     int x = i % Fmx, y = i / Fmx;
 
-                    for (int dy = 0; dy < _n; dy++) for (int dx = 0; dx < _n; dx++)
+                    for (int dy = 0; dy < _n; dy++)
+                    {
+                        for (int dx = 0; dx < _n; dx++)
                         {
                             int sx = x - dx;
-                            if (sx < 0) sx += Fmx;
+                            if (sx < 0)
+                            {
+                                sx += Fmx;
+                            }
 
                             int sy = y - dy;
-                            if (sy < 0) sy += Fmy;
+                            if (sy < 0)
+                            {
+                                sy += Fmy;
+                            }
 
                             int s = sx + sy * Fmx;
                             if (OnBoundary(sx, sy))
@@ -236,6 +250,7 @@ namespace FilterLanguage.Generators
                                 }
                             }
                         }
+                    }
 
                     if (contributors == 0)
                     {

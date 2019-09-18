@@ -9,7 +9,7 @@ namespace GameEngine.components
         public override void Update(float deltaTime)
         {
 
-            owner.Rotate(new Vector3(1, 1, 0), (MathF.PI / 4) * deltaTime);
+            Owner.Rotate(new Vector3(1, 1, 0), (MathF.PI / 4) * deltaTime);
 
         }
     }

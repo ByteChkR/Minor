@@ -23,16 +23,16 @@ namespace FilterLanguage
         private delegate void FlFunction();
         public struct InterpreterStepResult
         {
-            public bool HasJumped;
-            public bool Terminated;
-            public bool TriggeredDebug;
-            public MemoryBuffer DebugBuffer;
+            public bool HasJumped { get; set; }
+            public bool Terminated { get; set; }
+            public bool TriggeredDebug { get; set; }
+            public MemoryBuffer DebugBuffer { get; set; }
         }
 
 
-        private static Dictionary<string, FlFunction> _flFunctions;
+        private readonly Dictionary<string, FlFunction> _flFunctions;
 
-        private KernelDatabase _kernelDb = null;
+        private KernelDatabase _kernelDb;
 
         private List<string> _source;
         private int _currentIndex;
@@ -48,16 +48,18 @@ namespace FilterLanguage
 
         private readonly Dictionary<string, MemoryBuffer> _definedBuffers = new Dictionary<string, MemoryBuffer>();
         private readonly Dictionary<string, int> _jumpLocations = new Dictionary<string, int>();
-        private bool _leaveStack = false;
-        private bool _ignoreDebug = false;
-        private InterpreterStepResult stepResult;
+        private bool _leaveStack;
+        private bool _ignoreDebug;
+        private InterpreterStepResult _stepResult;
         private int EntryIndex
         {
             get
             {
                 int idx = _source.IndexOf("Main:");
                 if (idx == -1 || _source.Count - 1 == idx)
-                    throw new Exception("There needs to be a main function.");
+                {
+                    throw new FL_InvalidEntyPoint("There needs to be a main function.");
+                }
                 return idx + 1;
             }
         }
@@ -156,7 +158,7 @@ namespace FilterLanguage
 
         private void cmd_jump() //Dummy function. Implementation in Analyze(code) function(look for isDirectExecute)
         {
-
+            this.Log("Jumping.", DebugChannel.Log);
         }
 
         private void cmd_break()
@@ -165,10 +167,10 @@ namespace FilterLanguage
             {
                 return;
             }
-            stepResult.TriggeredDebug = true;
+            _stepResult.TriggeredDebug = true;
             if (_currentArgStack.Count == 0)
             {
-                stepResult.DebugBuffer = _currentBuffer;
+                _stepResult.DebugBuffer = _currentBuffer;
             }
             else if (_currentArgStack.Count == 1)
             {
@@ -177,7 +179,7 @@ namespace FilterLanguage
                 {
                     throw new InvalidOperationException("Argument has the wrong type or is null");
                 }
-                stepResult.DebugBuffer = obj as MemoryBuffer;
+                _stepResult.DebugBuffer = obj as MemoryBuffer;
 
             }
             else
@@ -193,7 +195,7 @@ namespace FilterLanguage
         public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, KernelDatabase kernelDB,
             bool ignoreDebug)
         {
-            _flFunctions = new Dictionary<string, FlFunction>()
+            _flFunctions = new Dictionary<string, FlFunction>
             {
                 {"setactive", cmd_setactive },
                 {"random", cmd_writerandom },
@@ -271,10 +273,10 @@ namespace FilterLanguage
         public InterpreterStepResult Step()
         {
 
-            stepResult = new InterpreterStepResult();
+            _stepResult = new InterpreterStepResult();
             if (Terminated)
             {
-                stepResult.Terminated = true;
+                _stepResult.Terminated = true;
 
             }
             else
@@ -299,7 +301,7 @@ namespace FilterLanguage
             }
 
 
-            return stepResult;
+            return _stepResult;
         }
 
 
@@ -369,14 +371,14 @@ namespace FilterLanguage
                 {
                     _flFunctions[function](); //Execute baked function
                 }
-                else if (kernel == null || words.Length - 1 != kernel.parameter.Count - 4)
+                else if (kernel == null || words.Length - 1 != kernel.Parameter.Count - 4)
                 {
-                    throw new Exception("Not the right amount of arguments.");
+                    throw new FL_InvalidFunctionUse(function, "Not the right amount of arguments.");
                 }
                 else
                 {
                     //Execute filter
-                    for (int i = kernel.parameter.Count - 1; i >= 4; i--)
+                    for (int i = kernel.Parameter.Count - 1; i >= 4; i--)
                     {
                         object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
                         kernel.SetArg(i, obj);
@@ -494,39 +496,39 @@ namespace FilterLanguage
                     {
                         if (args.Length < 10)
                         {
-                            throw new Exception("Invalid Define statement at line " + i);
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement at line " + i);
                         }
                         if (!int.TryParse(args[2], out int n))
                         {
-                            throw new Exception("Invalid N argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid N argument");
                         }
                         if (!int.TryParse(args[3], out int width))
                         {
-                            throw new Exception("Invalid width argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid width argument");
                         }
                         if (!int.TryParse(args[4], out int height))
                         {
-                            throw new Exception("Invalid height argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid height argument");
                         }
                         if (!bool.TryParse(args[5], out bool periodicInput))
                         {
-                            throw new Exception("Invalid periodicInput argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid periodicInput argument");
                         }
                         if (!bool.TryParse(args[6], out bool periodicOutput))
                         {
-                            throw new Exception("Invalid periodicOutput argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid periodicOutput argument");
                         }
                         if (!int.TryParse(args[7], out int symetry))
                         {
-                            throw new Exception("Invalid symmetry argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid symmetry argument");
                         }
                         if (!int.TryParse(args[8], out int ground))
                         {
-                            throw new Exception("Invalid ground argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid ground argument");
                         }
                         if (!int.TryParse(args[9], out int limit))
                         {
-                            throw new Exception("Invalid limit argument");
+                            throw new FL_InvalidFunctionUse("wfc", "Invalid limit argument");
                         }
 
                         WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace("\"", ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
@@ -545,7 +547,7 @@ namespace FilterLanguage
                 }
             }
         }
-        bool DetectEnd()
+        void DetectEnd()
         {
             if (_currentIndex == _source.Count || _source[_currentIndex].EndsWith(":"))
             {
@@ -554,7 +556,6 @@ namespace FilterLanguage
                     this.Log("Reached End of Code", DebugChannel.Log);
 
                     Terminated = true;
-                    return true;
                 }
                 else
                 {
@@ -576,18 +577,15 @@ namespace FilterLanguage
                     _currentBuffer = lastState.ActiveBuffer;
 
                     _currentWord = lastState.ArgumentStack.Count + 1;
-                    return true;
                 }
             }
-
-            return false;
+            
         }
 
         void JumpTo(int index, bool keepBuffer = false)
         {
-            //currentArgStack.Push(null);
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
-            stepResult.HasJumped = true;
+            _stepResult.HasJumped = true;
             int size = (int)_currentBuffer.Size;
             if (!keepBuffer)
             {

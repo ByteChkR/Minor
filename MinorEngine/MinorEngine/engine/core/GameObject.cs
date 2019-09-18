@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Assimp;
 using GameEngine.engine.components;
 using GameEngine.engine.rendering;
 using OpenTK;
@@ -8,28 +9,28 @@ namespace GameEngine.engine.core
 {
     public class GameObject
     {
-        public ShaderProgram Shader { get; set; } = null;
-        public GameModel Model { get; set; } = null;
-        public Matrix4 Transform = Matrix4.Identity;
-        protected World world { get; set; } = null;
-        private static int _objID = 0;
+        public ShaderProgram Shader { get; set; }
+        public GameModel Model { get; set; }
+        public Matrix4 Transform { get; set; } = Matrix4.Identity;
+        protected World World { get; set; }
+        private static int _objId;
         private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
         public int ChildCount => _children.Count;
 
-        public GameObject Parent { get; private set; } = null;
+        public GameObject Parent { get; private set; }
 
 
         public GameObject(Vector3 position, string name, GameObject parent)
         {
             Transform *= Matrix4.CreateTranslation(position);
-            this.world = world;
+            this.World = World;
             this.Parent = parent;
             if (name == string.Empty)
             {
-                Name = "Gameobject" + _objID;
-                _objID++;
+                Name = "Gameobject" + _objId;
+                _objId++;
             }
         }
 
@@ -50,7 +51,7 @@ namespace GameEngine.engine.core
             if (!_components.ContainsKey(t))
             {
                 _components.Add(t, component);
-                component.owner = this;
+                component.Owner = this;
             }
         }
 
@@ -61,7 +62,7 @@ namespace GameEngine.engine.core
             {
                 AbstractComponent component = _components[t];
                 _components.Remove(t);
-                component.owner = null;
+                component.Owner = null;
             }
         }
 
@@ -112,7 +113,7 @@ namespace GameEngine.engine.core
 
             if (Parent != null)
             {
-                setWorldRecursively(Parent.world);
+                setWorldRecursively(Parent.World);
             }
             else
             {
@@ -136,7 +137,7 @@ namespace GameEngine.engine.core
 
         private void setWorldRecursively(World newWorld)
         {
-            world = newWorld;
+            World = newWorld;
 
             for (int i = 0; i < _children.Count; i++)
             {
@@ -168,8 +169,14 @@ namespace GameEngine.engine.core
 
         public Matrix4 GetWorldTransform()
         {
-            if (Parent == null) return Transform;
-            else return Parent.GetWorldTransform() * Transform;
+            if (Parent == null)
+            {
+                return Transform;
+            }
+            else
+            {
+                return Parent.GetWorldTransform() * Transform;
+            }
         }
 
         public Vector3 GetLocalPosition()
@@ -179,7 +186,9 @@ namespace GameEngine.engine.core
 
         public void SetLocalPosition(Vector3 pos)
         {
-            Transform.Row3 = new Vector4(pos, 1);
+            Matrix4 f = Transform;
+            f.Row3 = new Vector4(pos, 1);
+            Transform = f;
         }
 
         public void LookAt(GameObject other)

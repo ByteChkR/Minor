@@ -84,32 +84,32 @@ namespace CLHelperLibrary.Tests
 
             Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel));
             
-            Assert.True(kernel.parameter.Count == 5);
+            Assert.True(kernel.Parameter.Count == 5);
 
-            Assert.True(kernel.parameter.ElementAt(0).Value.IsArray);
-            Assert.True(kernel.parameter.ElementAt(0).Value.DataType == DataTypes.UCHAR1);
-            Assert.True(kernel.parameter.ElementAt(0).Value.Id == 0);
-            Assert.True(kernel.parameter.ElementAt(0).Value.Name == "image");
+            Assert.True(kernel.Parameter.ElementAt(0).Value.IsArray);
+            Assert.True(kernel.Parameter.ElementAt(0).Value.DataType == DataTypes.UCHAR1);
+            Assert.True(kernel.Parameter.ElementAt(0).Value.Id == 0);
+            Assert.True(kernel.Parameter.ElementAt(0).Value.Name == "image");
 
-            Assert.False(kernel.parameter.ElementAt(1).Value.IsArray);
-            Assert.True(kernel.parameter.ElementAt(1).Value.DataType == DataTypes.INT3);
-            Assert.True(kernel.parameter.ElementAt(1).Value.Id == 1);
-            Assert.True(kernel.parameter.ElementAt(1).Value.Name == "dimensions");
+            Assert.False(kernel.Parameter.ElementAt(1).Value.IsArray);
+            Assert.True(kernel.Parameter.ElementAt(1).Value.DataType == DataTypes.INT3);
+            Assert.True(kernel.Parameter.ElementAt(1).Value.Id == 1);
+            Assert.True(kernel.Parameter.ElementAt(1).Value.Name == "dimensions");
 
-            Assert.False(kernel.parameter.ElementAt(2).Value.IsArray);
-            Assert.True(kernel.parameter.ElementAt(2).Value.DataType == DataTypes.INT1);
-            Assert.True(kernel.parameter.ElementAt(2).Value.Id == 2);
-            Assert.True(kernel.parameter.ElementAt(2).Value.Name == "channelCount");
+            Assert.False(kernel.Parameter.ElementAt(2).Value.IsArray);
+            Assert.True(kernel.Parameter.ElementAt(2).Value.DataType == DataTypes.INT1);
+            Assert.True(kernel.Parameter.ElementAt(2).Value.Id == 2);
+            Assert.True(kernel.Parameter.ElementAt(2).Value.Name == "channelCount");
 
-            Assert.True(kernel.parameter.ElementAt(3).Value.IsArray);
-            Assert.True(kernel.parameter.ElementAt(3).Value.DataType == DataTypes.UCHAR1);
-            Assert.True(kernel.parameter.ElementAt(3).Value.Id == 3);
-            Assert.True(kernel.parameter.ElementAt(3).Value.Name == "channelEnableState");
+            Assert.True(kernel.Parameter.ElementAt(3).Value.IsArray);
+            Assert.True(kernel.Parameter.ElementAt(3).Value.DataType == DataTypes.UCHAR1);
+            Assert.True(kernel.Parameter.ElementAt(3).Value.Id == 3);
+            Assert.True(kernel.Parameter.ElementAt(3).Value.Name == "channelEnableState");
 
-            Assert.False(kernel.parameter.ElementAt(4).Value.IsArray);
-            Assert.True(kernel.parameter.ElementAt(4).Value.DataType == DataTypes.UCHAR1);
-            Assert.True(kernel.parameter.ElementAt(4).Value.Id == 4);
-            Assert.True(kernel.parameter.ElementAt(4).Value.Name == "value");
+            Assert.False(kernel.Parameter.ElementAt(4).Value.IsArray);
+            Assert.True(kernel.Parameter.ElementAt(4).Value.DataType == DataTypes.UCHAR1);
+            Assert.True(kernel.Parameter.ElementAt(4).Value.Id == 4);
+            Assert.True(kernel.Parameter.ElementAt(4).Value.Name == "value");
 
         }
     }

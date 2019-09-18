@@ -7,26 +7,29 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.core
 {
-    public struct EngineSettings
+    public class EngineSettings
     {
-        public GraphicsMode graphicsMode;
-        public int width;
-        public int height;
-        public string title;
-        public GameWindowFlags gameWindowFlags;
-
+        public GraphicsMode Mode { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public string Title { get; set; }
+        public GameWindowFlags WindowFlags { get; set; }
     }
 
     public class AbstractGame
     {
-        public World world;
-        protected Renderer renderer;
-        protected GameWindow window;
-        protected EngineSettings settings;
+        public World World { get; set; }
+        protected Renderer Renderer;
+        protected GameWindow Window;
+        protected EngineSettings Settings;
+
+        private bool _paused;
+        private int _frameCounter;
+        private float _time;
 
         public AbstractGame(EngineSettings settings)
         {
-            this.settings = settings;
+            this.Settings = settings;
 
 
         }
@@ -45,10 +48,10 @@ namespace GameEngine.engine.core
 
             this.Log("Initializing Window..", DebugChannel.Log);
             this.Log(
-                $"Width: {settings.width} Height: {settings.height}, Title: {settings.title}, FSAA Samples: {settings.graphicsMode.Samples}", DebugChannel.Log);
-            window = new GameWindow(settings.width, settings.height, settings.graphicsMode, settings.title, settings.gameWindowFlags);
-            window.UpdateFrame += Update;
-            window.Resize += OnResize;
+                $"Width: {Settings.Width} Height: {Settings.Height}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}", DebugChannel.Log);
+            Window = new GameWindow(Settings.Width, Settings.Height, Settings.Mode, Settings.Title, Settings.WindowFlags);
+            Window.UpdateFrame += Update;
+            Window.Resize += OnResize;
         }
 
 
@@ -58,14 +61,14 @@ namespace GameEngine.engine.core
             //TODO
 
             this.Log("Initializing Renderer..", DebugChannel.Log);
-            renderer = new Renderer();
-            window.RenderFrame += OnRender;
+            Renderer = new Renderer();
+            Window.RenderFrame += OnRender;
         }
         private void initializeWorld()
         {
 
             this.Log("Initializing World..", DebugChannel.Log);
-            world = new World();
+            World = new World();
         }
 
         protected virtual void initializeScene()
@@ -74,23 +77,22 @@ namespace GameEngine.engine.core
             this.Log("Initializing Scene..", DebugChannel.Log);
         }
 
-        private bool paused = false;
 
 
 
         public void Run()
         {
             this.Log("Running Game Loop..", DebugChannel.Log);
-            window.VSync = VSyncMode.Off;
-            window.Run(0, 0);
+            Window.VSync = VSyncMode.Off;
+            Window.Run(0, 0);
         }
 
         protected virtual void Update(object sender, FrameEventArgs e)
         {
-            if (!paused)
+            if (!_paused)
             {
-                world.Update((float)e.Time);
-                time += (float)e.Time;
+                World.Update((float)e.Time);
+                _time += (float)e.Time;
 
             }
             //TODO: Decide on how to Update the components
@@ -99,25 +101,24 @@ namespace GameEngine.engine.core
 
         private void OnResize(object o, System.EventArgs e)
         {
-            GL.Viewport(0, 0, window.Width, window.Height);
+            GL.Viewport(0, 0, Window.Width, Window.Height);
         }
 
-        private int frameCounter = 0;
-        private float time = 0;
+        
 
         private void OnRender(object o, EventArgs e)
         {
-            frameCounter++;
+            _frameCounter++;
 
-            renderer.Render(world);
+            Renderer.Render(World);
 
-            if (time >= 1)
+            if (_time >= 1)
             {
-                time = 0;
-                frameCounter = 0;
+                _time = 0;
+                _frameCounter = 0;
             }
 
-            window.SwapBuffers();
+            Window.SwapBuffers();
 
         }
 

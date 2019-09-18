@@ -32,7 +32,7 @@ namespace GameEngine.engine.rendering
         {
             GL.ClearColor(_clearColor);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-            Render(world, world, world.camera, true);
+            Render(world, world, world.Camera, true);
 
         }
 
@@ -46,7 +46,9 @@ namespace GameEngine.engine.rendering
         {
             RenderSelf(world, obj, modelMat, viewMat, projMat);
             if (recursive)
+            {
                 RenderChildren(world, obj, modelMat, viewMat, projMat, recursive);
+            }
 
         }
 
@@ -73,7 +75,10 @@ namespace GameEngine.engine.rendering
 
         public static void Render(World world, ShaderProgram prog, GameModel model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            if (model != null && prog != null) model.Render(prog, modelMat, viewMat, projMat);
+            if (model != null && prog != null)
+            {
+                model.Render(prog, modelMat, viewMat, projMat);
+            }
         }
 
 

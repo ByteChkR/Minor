@@ -14,14 +14,16 @@ namespace GameEngine.engine.rendering
 {
     public class GameTexture
     {
+        public int TextureId { get; }
+        public TextureType TexType { get; set; }
+        public string Path { get; set; }
 
-        public int TextureId;
-        public TextureType TexType;
-        public string Path;
         private GameTexture()
         {
             TexType = TextureType.Diffuse;
-            GL.GenTextures(1, out TextureId);
+            int id;
+            GL.GenTextures(1, out id);
+            TextureId = id;
         }
 
 
@@ -111,7 +113,7 @@ namespace GameEngine.engine.rendering
         public static void Update(GameTexture tex, byte[] buffer, int width, int height)
         {
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
-            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, (int)width, (int)height, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, width, height, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
 
         }
 

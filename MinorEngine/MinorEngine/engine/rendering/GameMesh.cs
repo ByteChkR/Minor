@@ -31,8 +31,8 @@ namespace GameEngine.engine.rendering
     {
         private readonly GameVertex[] _vertices;
         private readonly uint[] _indices;
-        public GameTexture[] Textures;
-        private int _vao, _vbo, _ebo;
+        public GameTexture[] Textures { get; set; }
+        private int _vao, _vbo;// _ebo;
 
         public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures)
         {
@@ -73,6 +73,11 @@ namespace GameEngine.engine.rendering
                         name = "texture_height";
                         number = (hegt++).ToString();
                         break;
+                    default:
+                        name = "texture_diffuse";
+                        number = (diff++).ToString();
+                        break;
+
                 }
 
                 GL.Uniform1(prog.GetUniformLocation(name + number), i);
@@ -92,6 +97,7 @@ namespace GameEngine.engine.rendering
 
         private void setupMesh()
         {
+            int _ebo;
             GL.GenVertexArrays(1, out _vao);
             GL.GenBuffers(1, out _vbo);
             GL.GenBuffers(1, out _ebo);

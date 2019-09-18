@@ -15,10 +15,10 @@ namespace Common
 
     public static class DebugHelper
     {
-        private static bool _initialized=false;
-        private static LogTextStream _lts = null;
-        private static CrashLogDictionary _crashLog = new CrashLogDictionary();
-        private static bool _crashOnExeption = true;
+        private static bool _initialized;
+        private static LogTextStream _lts;
+        private static readonly CrashLogDictionary CrashLog = new CrashLogDictionary();
+        private static readonly bool CrashOnException = true;
 
 
         private static void Initialize()
@@ -63,12 +63,12 @@ namespace Common
             }
             CrashHandler.Log(ex, (int)DebugChannel.Internal_Error);
 
-            if (_crashOnExeption)
+            if (CrashOnException)
             {
                 throw ex;
             }
-            _crashLog.Keys.Add(ADL.Utils.TimeStamp);
-            _crashLog.Values.Add(ex);
+            CrashLog.Keys.Add(ADL.Utils.TimeStamp);
+            CrashLog.Values.Add(ex);
         }
 
 

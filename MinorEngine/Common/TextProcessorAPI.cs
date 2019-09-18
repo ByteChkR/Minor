@@ -14,7 +14,7 @@ namespace Common
             PreProcessor pp = new PreProcessor();
 
 
-            List<AbstractPlugin> plugins = new List<AbstractPlugin>()
+            List<AbstractPlugin> plugins = new List<AbstractPlugin>
             {
                 new FakeGenericsPlugin(),
                 new IncludePlugin(),
@@ -28,10 +28,17 @@ namespace Common
 
             pp.SetFileProcessingChain(plugins);
 
+            Definitions definitions;
+            if (defs == null)
+            {
+                definitions = new Definitions();
+            }
+            else
+            {
+                definitions = new Definitions(defs);
+            }
 
-            if (defs == null) defs = new Dictionary<string, bool>();
-
-            return pp.Run(new[] { filename }, new Settings(), new Definitions(defs));
+            return pp.Run(new[] { filename }, new Settings(), definitions);
         }
 
         public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
