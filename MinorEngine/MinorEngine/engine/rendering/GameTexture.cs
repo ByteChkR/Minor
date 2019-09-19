@@ -96,9 +96,9 @@ namespace GameEngine.engine.rendering
 
         public static GameTexture Load(string filename)
         {
+            filename.Log($"Loading Texture: " + filename, DebugChannel.Log);
             Bitmap bmp = new Bitmap(filename);
 
-            bmp.Log($"Loading Texture: " + filename, DebugChannel.Log);
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,

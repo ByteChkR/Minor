@@ -11,33 +11,6 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
-  #Install OpenCL Libs and Tools
-  - sudo apt install ocl-icd-libopencl1
-  - sudo apt install opencl-headers
-  - sudo apt -V --print-uris install clinfo
-  - sudo apt install ocl-icd-opencl-dev
-  - sudo apt install fakeroot
-  #Preparing OpenCL Runtime
-  #Downloading and unpacking
-  - sudo apt-get install -y rpm alien libnuma1
-  - wget http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz
-  - tar -xvf l_opencl_p_18.1.0.015.tgz 
-  #Converting rpm packages to deb packages to be able to install them with dpkg
-  - cd l_opencl_p_18.1.0.015/rpm/
-  - fakeroot alien --to-deb intel-openclrt-18.1.0.015-18.1.0-015.x86_64.rpm
-  - fakeroot alien --to-deb intel-openclrt-pset-18.1.0.015-18.1.0-015.noarch.rpm
-  #Install the converted packages.
-  - sudo dpkg -i intel-openclrt-18.1.0.015_18.1.0-16_amd64.deb
-  - sudo dpkg -i intel-openclrt-pset-18.1.0.015_18.1.0-16_all.deb
-  #Set up the package configs
-  - sudo touch /etc/ld.so.conf.d/intelOpenCL.conf
-  - sudo bash -c 'echo "/opt/intel/opencl_compilers_and_libraries_18.1.0.015/linux/compiler/lib/intel64_lin/cl" >> /etc/ld.so.conf.d/intelOpenCL.conf'
-  - sudo mkdir -p /etc/OpenCL/vendors
-  - sudo ln /opt/intel/opencl_compilers_and_libraries_18.1.0.015/linux/etc/intel64.icd /etc/OpenCL/vendors/intel64.icd
-  - sudo ldconfig
-  #Testing if it worked
-  - clinfo
-
     #Install GDI+
   - sudo apt-get install libgdiplus
   #Restore Projects

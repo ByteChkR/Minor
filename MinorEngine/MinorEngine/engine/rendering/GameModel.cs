@@ -17,7 +17,7 @@ namespace GameEngine.engine.rendering
 
         public GameModel(string file)
         {
-            this.Log("Loading Model File: " + file, DebugChannel.Log);
+            this.Log("Loading Model File: " + Path.GetFullPath(file), DebugChannel.Log);
             LoadModel(file);
         }
 

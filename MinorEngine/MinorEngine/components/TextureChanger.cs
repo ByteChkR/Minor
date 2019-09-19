@@ -41,7 +41,7 @@ namespace GameEngine.components
             if (e.KeyChar == 'r')
             {
                 GL.DeleteTexture(Owner.Model.Meshes[0].Textures[0].TextureId);
-                Owner.Model.Meshes[0].Textures[0] = GameTexture.Load("runicfloor.png");
+                Owner.Model.Meshes[0].Textures[0] = GameTexture.Load("textures/runicfloor.png");
                 _isDebuggingInterpreter = false;
             }
             else if (e.KeyChar == 'f' || _isDebuggingInterpreter)
