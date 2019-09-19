@@ -11,6 +11,7 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
+  - apt-get install libgdiplus
   - dotnet restore ADL/ADL/
   - dotnet restore ext-pp/
   - dotnet restore opencl-dotnet/
