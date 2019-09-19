@@ -486,8 +486,13 @@ namespace FilterLanguage
 
                     if (IsSurroundedBy(filename, "\""))
                     {
+#if HEADLESS
+                        Bitmap bmp = null;
+#else
+                        Bitmap bmp = (Bitmap) Image.FromFile(filename.Replace("\"", ""));
+#endif
                         _definedBuffers.Add(varname,
-                            CL.CreateFromImage((Bitmap)Image.FromFile(filename.Replace("\"", "")),
+                            CL.CreateFromImage(bmp,
                                 MemoryFlag.CopyHostPointer | flags));
                     }
                     else if (filename == "random")
@@ -542,7 +547,11 @@ namespace FilterLanguage
                         WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace("\"", ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
 
                         wfc.Run(limit);
+#if HEADLESS
+                        Bitmap bmp = null;
+#else
                         Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(this._width, this._height)); //Apply scaling
+#endif
                         _definedBuffers.Add(varname,
                             CL.CreateFromImage(bmp,
                                 MemoryFlag.CopyHostPointer | flags));
