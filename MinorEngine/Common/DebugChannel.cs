@@ -1,5 +1,8 @@
 ﻿namespace Common
 {
+    /// <summary>
+    /// An enum of Channels that can be used to send logs
+    /// </summary>
     public enum DebugChannel
     {
         ALL = -1,

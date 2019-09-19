@@ -7,8 +7,18 @@ using ext_pp_plugins;
 
 namespace Common
 {
+    /// <summary>
+    /// A static Wrapper class around the ext_pp project.
+    /// </summary>
     public static class TextProcessorAPI
     {
+
+        /// <summary>
+        /// Loads and preprocesses the file specified
+        /// </summary>
+        /// <param name="filename">the filepath</param>
+        /// <param name="defs">definitions</param>
+        /// <returns>the source in lines</returns>
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
         {
 
@@ -45,6 +55,12 @@ namespace Common
             return pp.Run(new[] { filename }, new Settings(), definitions);
         }
 
+        /// <summary>
+        /// Loads and preprocesses the file specified
+        /// </summary>
+        /// <param name="filename">the filepath</param>
+        /// <param name="defs">definitions</param>
+        /// <returns>the source as string</returns>
         public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
         {
             StringBuilder sb = new StringBuilder();

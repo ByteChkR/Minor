@@ -7,6 +7,9 @@ using ADL.Crash;
 
 namespace Common
 {
+    /// <summary>
+    /// Internal Class to Log Crashes in a Dictionary
+    /// </summary>
     internal class CrashLogDictionary : SerializableDictionary<string, ApplicationException>
     {
         public CrashLogDictionary():this( new Dictionary<string, ApplicationException>()) { }
@@ -15,11 +18,29 @@ namespace Common
 
     public static class DebugHelper
     {
+        /// <summary>
+        /// a field to test of the DebugHelper has been initialized yet
+        /// </summary>
         private static bool _initialized;
+
+        /// <summary>
+        /// The dictionary of crash logs
+        /// </summary>
         private static readonly CrashLogDictionary CrashLog = new CrashLogDictionary();
+
+        /// <summary>
+        /// A flag that can change the behavior of the program when encountering an exception
+        /// </summary>
         private static readonly bool CrashOnException = true;
+
+        /// <summary>
+        /// The log text stream that is used to send messages to the ADL Library
+        /// </summary>
         private static LogTextStream _lts;
 
+        /// <summary>
+        /// The listening mask that is applied to the text output
+        /// </summary>
         public static DebugChannel ListeningMask
         {
             get
@@ -38,7 +59,9 @@ namespace Common
             }
         }
 
-
+        /// <summary>
+        /// Initializes ADL and the DebugHelper
+        /// </summary>
         private static void Initialize()
         {
             _initialized = true;
@@ -62,6 +85,12 @@ namespace Common
             Debug.AddOutputStream(_lts);
         }
 
+        /// <summary>
+        /// A static extension to receive logs from every point in the code base.
+        /// </summary>
+        /// <param name="obj">The object sending a message</param>
+        /// <param name="message">The message</param>
+        /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
         public static void Log(this object obj, string message, DebugChannel channel)
         {
             if(!_initialized)
@@ -72,6 +101,11 @@ namespace Common
             Debug.LogGen(channel, message);
         }
 
+        /// <summary>
+        /// A static extension to throw exceptions at one place to have a better control what to throw and when to throw
+        /// </summary>
+        /// <param name="obj">The object throwing the exception</param>
+        /// <param name="ex">The exception that led to the crash</param>
         public static void Crash(this object obj, ApplicationException ex)
         {
             if (!_initialized)

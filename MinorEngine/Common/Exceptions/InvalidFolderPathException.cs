@@ -2,6 +2,9 @@
 
 namespace Common.Exceptions
 {
+    /// <summary>
+    /// This exception gets thrown when the specified file was not found.
+    /// </summary>
     public class InvalidFolderPathException : ApplicationException
     {
 
