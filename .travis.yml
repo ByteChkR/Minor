@@ -14,7 +14,7 @@ install:
   #Install OpenCL Libs and Tools
   - sudo apt install ocl-icd-libopencl1
   - sudo apt install opencl-headers
-  - sudo apt install clinfo
+  - sudo apt -V --print-uris install clinfo
   - sudo apt install ocl-icd-opencl-dev
   - sudo apt install fakeroot
   #Preparing OpenCL Runtime
@@ -31,7 +31,7 @@ install:
   - sudo dpkg -i intel-openclrt-pset-18.1.0.015_18.1.0-16_all.deb
   #Set up the package configs
   - sudo touch /etc/ld.so.conf.d/intelOpenCL.conf
-  - sudo bash -c 'echo "/opt/intel/opencl-1.2-6.4.0.25/lib64/clinfo" >> /etc/ld.so.conf.d/intelOpenCL.conf'
+  - sudo bash -c 'echo "/opt/intel/opencl_compilers_and_libraries_18.1.0.015/linux/compiler/lib/intel64_lin/cl" >> /etc/ld.so.conf.d/intelOpenCL.conf'
   - sudo mkdir -p /etc/OpenCL/vendors
   - sudo ln /opt/intel/opencl_compilers_and_libraries_18.1.0.015/linux/etc/intel64.icd /etc/OpenCL/vendors/intel64.icd
   - sudo ldconfig
