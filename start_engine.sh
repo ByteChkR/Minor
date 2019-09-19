@@ -1,6 +1,5 @@
 #!/bin/bash
 
-@echo off
 
 echo Checking Build Status:
 if [ ! -f MinorEngine/MinorEngine/bin/Release/netcoreapp2.1/MinorEngine.dll ]; then

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-@echo off
 
 echo Building Project:
 
