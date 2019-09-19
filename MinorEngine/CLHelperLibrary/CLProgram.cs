@@ -27,25 +27,20 @@ namespace CLHelperLibrary
             string source = TextProcessorAPI.PreprocessSource(_filePath, null);
             string[] kernelNames = FindKernelNames(source);
 
-#if NO_CL
-#else
+
             ClProgramHandle = CL.CreateCLProgramFromSource(source);
 
-#endif
             foreach (string kernelName in kernelNames)
             {
-#if NO_CL
-                Kernel k = null;
-#else
-                Kernel k = ClProgramHandle.CreateKernel(kernelName);
-#endif
+
+                Kernel k = CL.CreateKernelFromName(ClProgramHandle, kernelName);
                 int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = (kernelNameIndex == -1) ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture) : kernelNameIndex;
                 KernelParameter[] parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
                     kernelNameIndex,
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
-                
-                ContainedKernels.Add(kernelName, new CLKernel(k, parameter));
+
+                ContainedKernels.Add(kernelName, new CLKernel(k, kernelName, parameter));
             }
 
         }

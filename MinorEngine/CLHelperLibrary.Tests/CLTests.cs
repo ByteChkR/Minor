@@ -62,7 +62,21 @@ namespace CLHelperLibrary.Tests
             
             Assert.True(CheckValues(c,b));
         }
-        
+
+        private static bool CheckValues(float[] values, float[] reference)
+        {
+            bool working = true;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (Math.Abs(values[i] - reference[i]) > 0.01f)
+                {
+                    working = false;
+                }
+            }
+
+            return working;
+        }
+
 #endif
         [Fact]
         public void CL_KernelSignatureAnalysis()
@@ -101,18 +115,6 @@ namespace CLHelperLibrary.Tests
 
         }
 
-        private static bool CheckValues(float[] values, float[] reference)
-        {
-            bool working=true;
-            for (int i = 0; i < values.Length; i++)
-            {
-                if (Math.Abs(values[i] - reference[i]) > 0.01f)
-                {
-                    working = false;
-                }
-            }
-
-            return working;
-        }
+        
     }
 }

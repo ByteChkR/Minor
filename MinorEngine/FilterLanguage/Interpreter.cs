@@ -419,10 +419,13 @@ namespace FilterLanguage
                     val = numberDecimal;
                 }
 
+#if NO_CL
+#else
                 if (val == null)
                 {
                     throw new NotImplementedException("No Baked in functions in arguments");
                 }
+#endif
                 val = val ?? "PLACEHOLDER";
                 return false;
             }
