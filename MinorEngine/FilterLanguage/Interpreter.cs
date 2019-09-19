@@ -486,7 +486,7 @@ namespace FilterLanguage
 
                     if (IsSurroundedBy(filename, "\""))
                     {
-#if HEADLESS
+#if NO_CL
                         Bitmap bmp = null;
 #else
                         Bitmap bmp = (Bitmap) Image.FromFile(filename.Replace("\"", ""));
@@ -547,7 +547,7 @@ namespace FilterLanguage
                         WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace("\"", ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
 
                         wfc.Run(limit);
-#if HEADLESS
+#if NO_CL
                         Bitmap bmp = null;
 #else
                         Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(this._width, this._height)); //Apply scaling

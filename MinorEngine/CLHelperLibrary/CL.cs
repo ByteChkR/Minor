@@ -101,7 +101,7 @@ namespace CLHelperLibrary
 
         public static MemoryBuffer CreateFromImage(Bitmap bmp, MemoryFlag flags)
         {
-#if HEADLESS
+#if NO_CL
             byte[] buffer = new byte[0];
 #else
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
