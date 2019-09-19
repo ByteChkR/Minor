@@ -17,4 +17,4 @@ dotnet build MinorEngine/ -c Release
 
 echo Running Tests on MinorEngine:
 
-dotnet test MinorEngine/ -p:Configuration=Release
+dotnet test MinorEngine/ -p:Configuration=Release -p:DefineConstants=NO_CL
