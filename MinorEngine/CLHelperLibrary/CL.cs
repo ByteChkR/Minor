@@ -167,11 +167,6 @@ namespace CLHelperLibrary
         /// <returns></returns>
         public static MemoryBuffer CreateFromImage(Bitmap bmp, MemoryFlag flags)
         {
-
-#if NO_CL
-            bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
-            return null;
-#else
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
@@ -179,6 +174,10 @@ namespace CLHelperLibrary
             byte[] buffer = new byte[bmp.Width * bmp.Height * 4];
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
+#if NO_CL
+            bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
+            return null;
+#else
             MemoryBuffer mb = CreateBuffer(buffer, flags);
             return mb;
 #endif

@@ -723,11 +723,8 @@ namespace FilterLanguage
 
                     if (IsSurroundedBy(filename, "\""))
                     {
-#if NO_CL
-                        Bitmap bmp = null;
-#else
+
                         Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace("\"", ""));
-#endif
                         _definedBuffers.Add(varname,
                             CL.CreateFromImage(bmp,
                                 MemoryFlag.CopyHostPointer | flags));
