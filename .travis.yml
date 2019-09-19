@@ -14,7 +14,7 @@ install:
   - dotnet restore ADL/ADL/
   - dotnet restore ext-pp/
   - dotnet restore opencl-dotnet/
-  - dotnet restore MinorEngine/
+  - dotnet restore MinorEngine/ #<-- The Project
 
 
 #Build the projects
