@@ -10,5 +10,3 @@ PlainPerlin:
 
 Main:
 	set maintexture
-	setactive 0 1 2
-	overlay PlainPerlin 0.5
