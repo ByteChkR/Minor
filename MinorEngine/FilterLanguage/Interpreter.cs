@@ -547,11 +547,8 @@ namespace FilterLanguage
                         WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace("\"", ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
 
                         wfc.Run(limit);
-#if NO_CL
-                        Bitmap bmp = null;
-#else
+
                         Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(this._width, this._height)); //Apply scaling
-#endif
                         _definedBuffers.Add(varname,
                             CL.CreateFromImage(bmp,
                                 MemoryFlag.CopyHostPointer | flags));

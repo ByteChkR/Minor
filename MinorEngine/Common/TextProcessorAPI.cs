@@ -11,6 +11,11 @@ namespace Common
     {
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
         {
+
+            Logger.VerbosityLevel = Verbosity.LEVEL2;
+            
+            
+
             PreProcessor pp = new PreProcessor();
 
 
@@ -22,7 +27,6 @@ namespace Common
                 new ExceptionPlugin(),
                 new MultiLinePlugin()
             };
-
 
 
 

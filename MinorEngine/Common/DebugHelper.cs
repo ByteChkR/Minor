@@ -18,6 +18,25 @@ namespace Common
         private static bool _initialized;
         private static readonly CrashLogDictionary CrashLog = new CrashLogDictionary();
         private static readonly bool CrashOnException = true;
+        private static LogTextStream _lts;
+
+        public static DebugChannel ListeningMask
+        {
+            get
+            {
+                if (_lts == null) return DebugChannel.ALL;
+                return (DebugChannel) _lts.Mask;
+            }
+            set
+            {
+                if (!_initialized)
+                {
+                    Initialize();
+                }
+
+                _lts.Mask = (int) value;
+            }
+        }
 
 
         private static void Initialize()
@@ -39,7 +58,7 @@ namespace Common
             c.CheckForUpdates = false;
             CrashHandler.Initialize(c);
 
-            LogTextStream _lts = new LogTextStream(Console.OpenStandardOutput(), BitMask.WildCard, MatchType.MatchAll, true);
+            _lts = new LogTextStream(Console.OpenStandardOutput(), BitMask.WildCard, MatchType.MatchAll, true);
             Debug.AddOutputStream(_lts);
         }
 

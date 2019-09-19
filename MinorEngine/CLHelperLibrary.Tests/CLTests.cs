@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using CLHelperLibrary.CLStructs;
+using Common;
 using Xunit;
 using OpenCl.DotNetCore.Memory;
 namespace CLHelperLibrary.Tests
@@ -81,6 +82,8 @@ namespace CLHelperLibrary.Tests
         [Fact]
         public void CL_KernelSignatureAnalysis()
         {
+            DebugHelper.ListeningMask = DebugChannel.Log | DebugChannel.Error | DebugChannel.Internal_Error |
+                                        DebugChannel.Warning;
             string path = Path.GetFullPath("../../../resources");
             KernelDatabase kdb = new KernelDatabase(path);
 
