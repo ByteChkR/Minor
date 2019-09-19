@@ -1,5 +1,9 @@
-﻿namespace CLHelperLibrary.CLStructs
+﻿
+namespace CLHelperLibrary.CLStructs
 {
+    /// <summary>
+    /// An Enum containing all possible data types that plain OpenCL can handle
+    /// </summary>
     public enum DataTypes : int
     {
         UNKNOWN,

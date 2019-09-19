@@ -5,10 +5,25 @@ using Common.Exceptions;
 
 namespace CLHelperLibrary
 {
+    /// <summary>
+    /// A class used to store and manage Kernels
+    /// </summary>
     public class KernelDatabase
     {
+        /// <summary>
+        /// The Folder that will get searched when initializing the database.
+        /// </summary>
         private readonly string _folderName;
+
+        /// <summary>
+        /// The currently loaded kernels
+        /// </summary>
         private readonly Dictionary<string, CLKernel> _loadedKernels;
+
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="folderName">Folder name where the kernels are located</param>
         public KernelDatabase(string folderName)
         {
             if (!Directory.Exists(folderName))
@@ -22,6 +37,10 @@ namespace CLHelperLibrary
             Initialize();
         }
 
+
+        /// <summary>
+        /// Initializes the Kernel Database
+        /// </summary>
         private void Initialize()
         {
             string[] files = Directory.GetFiles(_folderName, "*.cl");
@@ -32,6 +51,11 @@ namespace CLHelperLibrary
             }
         }
 
+
+        /// <summary>
+        /// Manually adds a Program to the database
+        /// </summary>
+        /// <param name="file">Path fo the file</param>
         public void AddProgram(string file)
         {
 
@@ -60,6 +84,12 @@ namespace CLHelperLibrary
             }
         }
 
+        /// <summary>
+        /// Tries to get the CLKernel by the specified name
+        /// </summary>
+        /// <param name="name">The name of the kernel</param>
+        /// <param name="kernel">The kernel. Null if not found</param>
+        /// <returns>Returns True if the kernel has been found</returns>
         public bool TryGetCLKernel(string name, out CLKernel kernel)
         {
             if (_loadedKernels.ContainsKey(name))

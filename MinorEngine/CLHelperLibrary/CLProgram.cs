@@ -6,12 +6,30 @@ using OpenCl.DotNetCore.Programs;
 
 namespace CLHelperLibrary
 {
+    /// <summary>
+    /// A wrapper class for a OpenCL Program.
+    /// </summary>
     public class CLProgram
     {
+        /// <summary>
+        /// The filepath of the program source
+        /// </summary>
         private readonly string _filePath;
+
+        /// <summary>
+        /// The kernels that are contained in the Program
+        /// </summary>
         public Dictionary<string, CLKernel> ContainedKernels { get; }
+
+        /// <summary>
+        /// The Compiled OpenCL Program
+        /// </summary>
         public Program ClProgramHandle { get; set; }
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="FilePath">The FilePath where the source is located</param>
         public CLProgram(string FilePath)
         {
             this._filePath = FilePath;
@@ -21,7 +39,9 @@ namespace CLHelperLibrary
             Initialize();
         }
 
-
+        /// <summary>
+        /// Loads the source and initializes the CLProgram
+        /// </summary>
         private void Initialize()
         {
             string source = TextProcessorAPI.PreprocessSource(_filePath, null);
@@ -46,7 +66,11 @@ namespace CLHelperLibrary
         }
 
 
-
+        /// <summary>
+        /// Extracts the kernel names from the program source
+        /// </summary>
+        /// <param name="source">The complete source of the program</param>
+        /// <returns>A list of kernel names</returns>
         private static string[] FindKernelNames(string source)
         {
             List<string> kernelNames = new List<string>();

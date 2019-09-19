@@ -7,15 +7,39 @@ namespace CLHelperLibrary
 {
 
     
-
+    /// <summary>
+    /// A class containing the logic to parse a kernel argument
+    /// </summary>
     public class KernelParameter
     {
+        /// <summary>
+        /// The name of the argument
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// The Data type
+        /// </summary>
         public DataTypes DataType { get; set; }
+
+        /// <summary>
+        /// Is the Argument an Array?
+        /// </summary>
         public bool IsArray { get; set; }
+
+        /// <summary>
+        /// The Argument id of the Parameter
+        /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// The scope of the argument
+        /// </summary>
         public MemoryScope MemScope { get; set; }
 
+        /// <summary>
+        /// A list of Types(in the same order as the DataType enum
+        /// </summary>
         private static Type[] Converters => new[]
         {
             typeof(object),
@@ -75,6 +99,11 @@ namespace CLHelperLibrary
             typeof(ulong16)
         };
 
+        /// <summary>
+        /// Casts the supplied value to the specified type
+        /// </summary>
+        /// <param name="value">the value casted to the required type for the parameter</param>
+        /// <returns></returns>
         public object CastToType(object value)
         {
             if (IsArray)
@@ -88,12 +117,25 @@ namespace CLHelperLibrary
             return CastToType(Converters[(int)DataType], value);
         }
 
+        /// <summary>
+        /// Casts the supplied value to type t
+        /// </summary>
+        /// <param name="t">the target type</param>
+        /// <param name="value">the value to be casted</param>
+        /// <returns>The casted value</returns>
         private static object CastToType(Type t, object value)
         {
             return Convert.ChangeType(value, t);
         }
 
 
+        /// <summary>
+        /// Parses the kernel parameters from the kernel signature
+        /// </summary>
+        /// <param name="code">The full program code</param>
+        /// <param name="startIndex">The index where the kernel name starts</param>
+        /// <param name="endIndex">the index after the bracket of the signature closed</param>
+        /// <returns>A parsed list of Kernel parameters</returns>
         public static KernelParameter[] CreateKernelParametersFromKernelCode(string code, int startIndex, int endIndex)
         {
             string kernelHeader = code.Substring(startIndex, endIndex);
@@ -119,6 +161,11 @@ namespace CLHelperLibrary
 
         }
 
+        /// <summary>
+        /// returns the Correct DataType enum for the equivalent in OpenCL C99
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
         private static DataTypes GetDataType(string type)
         {
             DataTypes dt;
@@ -296,6 +343,11 @@ namespace CLHelperLibrary
 
         }
 
+        /// <summary>
+        /// Returns the memory scope that is associated with the modifier
+        /// </summary>
+        /// <param name="modifier">The modifier to be tested</param>
+        /// <returns>the MemoryScope</returns>
         private static MemoryScope GetMemoryScope(string modifier)
         {
             switch (modifier)
