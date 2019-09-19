@@ -33,7 +33,7 @@ install:
   - sudo touch /etc/ld.so.conf.d/intelOpenCL.conf
   - sudo bash -c 'echo "/opt/intel/opencl-1.2-6.4.0.25/lib64/clinfo" >> /etc/ld.so.conf.d/intelOpenCL.conf'
   - sudo mkdir -p /etc/OpenCL/vendors
-  - sudo ln /opt/intel/opencl-1.2-6.4.0.25/etc/intel64.icd /etc/OpenCL/vendors/intel64.icd
+  - sudo ln /opt/intel/opencl_compilers_and_libraries_18.1.0.015/linux/etc/intel64.icd /etc/OpenCL/vendors/intel64.icd
   - sudo ldconfig
   #Testing if it worked
   - clinfo
