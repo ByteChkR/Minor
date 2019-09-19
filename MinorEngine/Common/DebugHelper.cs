@@ -45,7 +45,10 @@ namespace Common
         {
             get
             {
-                if (_lts == null) return DebugChannel.ALL;
+                if (_lts == null)
+                {
+                    return DebugChannel.ALL;
+                }
                 return (DebugChannel) _lts.Mask;
             }
             set
