@@ -603,7 +603,7 @@ namespace FilterLanguage
             int size = (int)_currentBuffer.Size;
             if (!keepBuffer)
             {
-                _currentBuffer = CL.CreateEmpty<byte>(size, MemoryFlag.ReadWrite);
+                _currentBuffer = CL.CreateEmpty<byte>(size, MemoryFlag.ReadWrite|MemoryFlag.CopyHostPointer);
             }
             _currentIndex = index;
             _currentWord = 1;
