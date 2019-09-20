@@ -6,4 +6,3 @@ IF NOT EXIST "MinorEngine\MinorEngine\bin\Release\netcoreapp2.1\MinorEngine.dll"
 echo Running Engine...
 cd MinorEngine\MinorEngine\assets
 dotnet run --launch-profile "GameEngine" -p "..\MinorEngine.csproj"
-pause
