@@ -27,6 +27,37 @@ namespace FilterLanguage
         private const string DefineKey = "--define texture ";
 
         /// <summary>
+        /// Everything past this string gets ignored by the interpreter
+        /// </summary>
+        private const string CommentPrefix = "//";
+
+        /// <summary>
+        /// The function name that is used as the starting function
+        /// </summary>
+        private const string EntrySignature = "Main";
+
+        /// <summary>
+        /// A buffer that is defined by default.
+        /// (The input buffer contains the texture that the script is operating on)
+        /// </summary>
+        private const string InputBufferName = "in";
+
+        /// <summary>
+        /// The Symbol that is used to determine if the line is a function header
+        /// </summary>
+        private const string FunctionNamePostfix = ":";
+
+        /// <summary>
+        /// The Separator that is used to separate words(instructions and arguments)
+        /// </summary>
+        private const string WordSeparator = " ";
+
+        /// <summary>
+        /// The Symbol that indicates a filepath. (has to be surrounded e.g. "/path/to/file")
+        /// </summary>
+        private const string FilepathIndicator = "\"";
+
+        /// <summary>
         /// A helper variable to accomodate funky german number parsing
         /// </summary>
         private static readonly CultureInfo NumberParsingHelper = new CultureInfo(CultureInfo.InvariantCulture.LCID);
@@ -179,7 +210,7 @@ namespace FilterLanguage
         {
             get
             {
-                int idx = _source.IndexOf("Main:");
+                int idx = _source.IndexOf(EntrySignature+FunctionNamePostfix);
                 if (idx == -1 || _source.Count - 1 == idx)
                 {
                     throw new FL_InvalidEntyPoint("There needs to be a main function.");
@@ -449,7 +480,7 @@ namespace FilterLanguage
 
             _jumpStack.Clear();
             _definedBuffers.Clear();
-            _definedBuffers.Add("in", input);
+            _definedBuffers.Add(InputBufferName, input);
             _jumpLocations.Clear();
 
 
@@ -482,7 +513,7 @@ namespace FilterLanguage
         }
 
         /// <summary>
-        /// "Simulates a step on a processor
+        /// Simulates a step on a processor
         /// </summary>
         /// <returns>The Information about the current step(mostly for debugging)</returns>
         public InterpreterStepResult Step()
@@ -496,7 +527,7 @@ namespace FilterLanguage
             }
             else
             {
-                string code = _source[_currentIndex].Split("//")[0];
+                string code = _source[_currentIndex].Split(CommentPrefix)[0];
                 if (code == string.Empty)
                 {
                     _currentIndex++; //Next Line since this one is emtpy
@@ -527,7 +558,7 @@ namespace FilterLanguage
         {
             for (int i = _source.Count - 1; i >= 0; i--)
             {
-                if (_source[i].EndsWith(":") && _source.Count - 1 != i)
+                if (_source[i].EndsWith(FunctionNamePostfix) && _source.Count - 1 != i)
                 {
                     _jumpLocations.Add(_source[i].Remove(_source[i].Length - 1, 1), i + 1);
 
@@ -544,7 +575,7 @@ namespace FilterLanguage
         bool Analyze(string code)
         {
 
-            string[] words = code.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+            string[] words = code.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
 
             string function = words.Length == 0 ? "" : words[0];
             CLKernel kernel = null;
@@ -684,7 +715,7 @@ namespace FilterLanguage
             {
                 if (_source[i].StartsWith(DefineKey))
                 {
-                    string[] kvp = _source[i].Remove(0, DefineKey.Length).Split(':');
+                    string[] kvp = _source[i].Remove(0, DefineKey.Length).Split(FunctionNamePostfix);
                     if (kvp.Length < 2)
                     {
                         this.Crash(new FL_InvalidFunctionUse(DefineKey, "Invalid Define statement at line " + i));
@@ -721,10 +752,10 @@ namespace FilterLanguage
 
 
 
-                    if (IsSurroundedBy(filename, "\""))
+                    if (IsSurroundedBy(filename, FilepathIndicator))
                     {
 
-                        Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace("\"", ""));
+                        Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
                         _definedBuffers.Add(varname,
                             CL.CreateFromImage(bmp,
                                 MemoryFlag.CopyHostPointer | flags));
@@ -778,7 +809,7 @@ namespace FilterLanguage
                             throw new FL_InvalidFunctionUse("wfc", "Invalid limit argument");
                         }
 
-                        WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace("\"", ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
+                        WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
 
                         wfc.Run(limit);
 
@@ -802,7 +833,7 @@ namespace FilterLanguage
         /// </summary>
         void DetectEnd()
         {
-            if (_currentIndex == _source.Count || _source[_currentIndex].EndsWith(":"))
+            if (_currentIndex == _source.Count || _source[_currentIndex].EndsWith(FunctionNamePostfix))
             {
                 if (_jumpStack.Count == 0)
                 {
@@ -860,7 +891,7 @@ namespace FilterLanguage
         void LoadSource(string file)
         {
 
-            this.Log($"Loading Source..", DebugChannel.Log);
+            this.Log("Loading Source..", DebugChannel.Log);
 
             Dictionary<string, bool> defs = new Dictionary<string, bool>();
 
@@ -875,13 +906,13 @@ namespace FilterLanguage
             for (var i = lines.Count - 1; i >= 0; i--)
             {
                 var line = lines[i].Trim();
-                if (line.StartsWith("//"))
+                if (line.StartsWith(CommentPrefix))
                 {
                     lines.RemoveAt(i);//Remove otherwise emtpty lines after removing comments
                 }
                 else
                 {
-                    lines[i] = line.Split("//")[0];
+                    lines[i] = line.Split(CommentPrefix)[0];
                 }
             }
 
