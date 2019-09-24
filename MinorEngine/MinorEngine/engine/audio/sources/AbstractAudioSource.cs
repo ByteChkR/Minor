@@ -155,8 +155,7 @@ namespace GameEngine.engine.audio.sources
         {
             IsPlaying = true;
             AL.SourcePlay(source);
-
-            ALError err = AL.GetError();
+            
         }
 
         public void Pause()

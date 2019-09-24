@@ -5,12 +5,12 @@ namespace GameEngine.engine.audio
 {
     public class AudioClip
     {
-        public readonly int Bits;
-        public readonly int Channel;
-        public readonly int BitRate;
-        public readonly int Buffer;
-        public readonly int BufferSize;
-        
+        private readonly int Bits;
+        private readonly int Channel;
+        private readonly int BitRate;
+        public int Buffer { get; }
+        public int BufferSize { get; }
+
         public AudioClip(int bits, int channel, int bitRate, byte[] data)
         {
             this.Bits = bits;
@@ -24,9 +24,10 @@ namespace GameEngine.engine.audio
             AL.BufferData(Buffer, AudioManager.GetSoundFormat(this.Channel, bits), data, data.Length, bitRate);
             
             
-            AL.GetBuffer(Buffer, ALGetBufferi.Size, out BufferSize);
-            
-            
+            AL.GetBuffer(Buffer, ALGetBufferi.Size, out int bufSize);
+
+            BufferSize = bufSize;
+
         }
 
         ~AudioClip()

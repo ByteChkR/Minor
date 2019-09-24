@@ -15,8 +15,11 @@ namespace GameEngine.engine.audio
         public static void Initialize()
         {
             _context = new AudioContext();
+
         }
 
+
+        public static AlcError GetCurrentALcError => _context?.CurrentError ?? AlcError.InvalidContext;
 
 
         private static Dictionary<string, Type> _formats = new Dictionary<string, Type>
