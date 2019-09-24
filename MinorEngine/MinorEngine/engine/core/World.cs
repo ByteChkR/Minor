@@ -2,7 +2,7 @@
 using Common;
 using OpenTK;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public class World : GameObject
     {

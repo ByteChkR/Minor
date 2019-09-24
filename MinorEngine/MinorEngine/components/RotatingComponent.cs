@@ -1,8 +1,8 @@
 ﻿using System;
-using GameEngine.engine.components;
+using MinorEngine.engine.components;
 using OpenTK;
 
-namespace GameEngine.components
+namespace MinorEngine.components
 {
     public class RotatingComponent : AbstractComponent
     {

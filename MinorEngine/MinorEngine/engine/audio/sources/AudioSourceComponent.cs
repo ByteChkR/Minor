@@ -1,10 +1,10 @@
 ﻿using Common;
-using GameEngine.engine.components;
-using GameEngine.engine.core;
+using MinorEngine.engine.components;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Audio.OpenAL;
 
-namespace GameEngine.engine.audio.sources
+namespace MinorEngine.engine.audio.sources
 {
     public class AudioSourceComponent : AbstractAudioSource
     {

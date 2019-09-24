@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK.Audio.OpenAL;
 
-namespace GameEngine.engine.audio.sources
+namespace MinorEngine.engine.audio.sources
 {
     public class BackgroundMusicSource : AbstractAudioSource
     {}

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameEngine.components;
-using GameEngine.engine.audio;
-using GameEngine.engine.audio.sources;
-using GameEngine.engine.core;
-using GameEngine.engine.rendering;
+using MinorEngine.components;
+using MinorEngine.engine.audio;
+using MinorEngine.engine.audio.sources;
+using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

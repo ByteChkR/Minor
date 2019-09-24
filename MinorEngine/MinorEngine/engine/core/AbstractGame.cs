@@ -1,11 +1,11 @@
 ﻿using System;
 using Common;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public class EngineSettings
     {
