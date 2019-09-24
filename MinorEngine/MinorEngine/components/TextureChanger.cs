@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using CLHelperLibrary;
 using Common;
+using GameEngine.engine.audio;
+using GameEngine.engine.audio.sources;
 using GameEngine.engine.components;
 using GameEngine.engine.rendering;
 using OpenCl.DotNetCore.Memory;
@@ -13,11 +15,10 @@ namespace GameEngine.components
 {
     public class TextureChanger : AbstractComponent
     {
-
-
+        private AbstractAudioSource source;
         public TextureChanger(GameWindow window)
         {
-            
+
 
             window.KeyPress += OnKeyPress;
         }
@@ -28,7 +29,17 @@ namespace GameEngine.components
             if (!_init && Owner != null)
             {
                 _init = true;
+
+                source = Owner.GetComponentIterative<AbstractAudioSource>();
+                if (!AudioManager.TryLoad("sounds/test1.wav", out AudioClip clip))
+                {
+                    Console.Read();
+                }
+                
+                source.SetClip(clip);
+                source.Looping = true;
             }
+
         }
 
         private bool _isDebuggingInterpreter;
@@ -114,6 +125,18 @@ namespace GameEngine.components
 
                 this.Log("Finished Running Tests", DebugChannel.Log);
 
+            }
+            else if (e.KeyChar == 'm' && !source.IsPlaying)
+            {
+                source.Play();
+            }
+            else if (e.KeyChar == 'n' && source.IsPlaying)
+            {
+                source.Stop();
+            }
+            else if (e.KeyChar == 'p' && source.IsPlaying)
+            {
+                source.Pause();
             }
         }
     }

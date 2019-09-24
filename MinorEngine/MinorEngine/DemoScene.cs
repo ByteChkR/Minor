@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameEngine.components;
+using GameEngine.engine.audio;
+using GameEngine.engine.audio.sources;
 using GameEngine.engine.core;
 using GameEngine.engine.rendering;
 using OpenTK;
@@ -24,6 +26,8 @@ namespace GameEngine
         {
             base.initializeScene();
 
+            AudioManager.Initialize();
+
             GameModel sphere = new GameModel("models/sphere_smooth.obj");
             GameModel plane = new GameModel("models/plane.obj");
 
@@ -40,13 +44,16 @@ namespace GameEngine
             }, out ShaderProgram shader);
 
             Camera c = new Camera(projection, Vector3.Zero);
+            c.AddComponent(new AudioListener());
             c.Rotate(Vector3.UnitX, ToRadians(-40));
             c.Translate(new Vector3(0, 6, 7));
 
-            GameObject planeObj = new GameObject(Vector3.Zero, "Plane");
+            GameObject planeObj = new GameObject(Vector3.UnitZ*2, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
             planeObj.Model = plane;
             planeObj.AddComponent(new TextureChanger(Window));
+            planeObj.AddComponent(new RotateAroundComponent());
+            planeObj.AddComponent(new AudioSourceComponent());
             planeObj.Shader = shader;
 
             GameObject sphereObj = new GameObject(Vector3.Zero, "Sphere");

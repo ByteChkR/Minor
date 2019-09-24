@@ -12,7 +12,7 @@ namespace GameEngine.engine.core
         public ShaderProgram Shader { get; set; }
         public GameModel Model { get; set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
-        protected World World { get; set; }
+        public World World { get; protected set; }
         private static int _objId;
         private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
         private readonly List<GameObject> _children = new List<GameObject>();
@@ -69,6 +69,19 @@ namespace GameEngine.engine.core
                 _components.Remove(t);
                 component.Owner = null;
             }
+        }
+
+        public T GetComponentIterative<T>() where T : AbstractComponent
+        {
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            {
+                if (typeof(T).IsAssignableFrom(abstractComponent.Key))
+                {
+                    return (T)abstractComponent.Value;
+                }
+            }
+
+            return null;
         }
 
         public T GetComponent<T>() where T : AbstractComponent
