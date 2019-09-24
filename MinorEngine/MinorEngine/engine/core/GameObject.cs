@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assimp;
-using GameEngine.engine.components;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.components;
+using MinorEngine.engine.rendering;
 using OpenTK;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public class GameObject
     {

@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.IO;
 using CLHelperLibrary;
 using Common;
-using GameEngine.engine.audio;
-using GameEngine.engine.audio.sources;
-using GameEngine.engine.components;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.audio;
+using MinorEngine.engine.audio.sources;
+using MinorEngine.engine.components;
+using MinorEngine.engine.rendering;
 using OpenCl.DotNetCore.Memory;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.components
+namespace MinorEngine.components
 {
     public class TextureChanger : AbstractComponent
     {

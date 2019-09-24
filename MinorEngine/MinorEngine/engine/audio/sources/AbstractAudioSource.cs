@@ -1,8 +1,8 @@
 ﻿using System;
-using GameEngine.engine.components;
+using MinorEngine.engine.components;
 using OpenTK.Audio.OpenAL;
 
-namespace GameEngine.engine.audio.sources
+namespace MinorEngine.engine.audio.sources
 {
     public class AbstractAudioSource : AbstractComponent
     {

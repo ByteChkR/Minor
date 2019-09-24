@@ -1,8 +1,8 @@
-﻿using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class Renderer
     {

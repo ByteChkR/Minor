@@ -8,7 +8,7 @@ using Common;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class GameModel
     {

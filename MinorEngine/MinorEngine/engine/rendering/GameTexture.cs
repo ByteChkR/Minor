@@ -10,7 +10,7 @@ using TKPixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using SYSPixelFormat = System.Drawing.Imaging.PixelFormat;
 using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class GameTexture
     {

@@ -1,6 +1,6 @@
-﻿using GameEngine.engine.core;
+﻿using MinorEngine.engine.core;
 
-namespace GameEngine.engine.components
+namespace MinorEngine.engine.components
 {
     public abstract class AbstractComponent
     {

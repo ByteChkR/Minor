@@ -1,6 +1,6 @@
 ﻿using OpenTK;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public class Camera : GameObject
     {

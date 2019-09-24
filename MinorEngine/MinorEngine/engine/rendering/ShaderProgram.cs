@@ -4,7 +4,7 @@ using System.Linq;
 using Common;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class ShaderProgram
     {
