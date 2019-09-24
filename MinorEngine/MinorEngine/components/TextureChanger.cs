@@ -31,7 +31,7 @@ namespace GameEngine.components
                 _init = true;
 
                 source = Owner.GetComponentIterative<AbstractAudioSource>();
-                if (!AudioManager.TryLoad("sounds/test1.wav", out AudioClip clip))
+                if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
                 {
                     Console.Read();
                 }

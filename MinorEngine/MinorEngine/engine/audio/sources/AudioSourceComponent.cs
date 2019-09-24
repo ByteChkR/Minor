@@ -14,7 +14,6 @@ namespace GameEngine.engine.audio.sources
             v *= Owner.GetWorldTransform() * Owner.World.ViewMatrix;
 
             Vector3 v3 = new Vector3(v);
-            this.Log("Distance to listener: " + v3.Length, DebugChannel.Log);
 
             AL.Source(source, ALSource3f.Position, ref v3);
             AL.Source(source, ALSourceb.SourceRelative, true);
