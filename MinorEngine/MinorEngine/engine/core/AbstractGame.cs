@@ -21,13 +21,14 @@ namespace GameEngine.engine.core
         public World World { get; set; }
         protected Renderer Renderer;
         protected GameWindow Window;
-        protected EngineSettings Settings;
-        
+        public EngineSettings Settings { get; private set; }
+        public static AbstractGame Instance;
 
         public AbstractGame(EngineSettings settings)
         {
+            Instance = this;
             this.Settings = settings;
-
+            
 
         }
 
@@ -105,7 +106,7 @@ namespace GameEngine.engine.core
         private void OnRender(object o, EventArgs e)
         {
 
-            Renderer.Render(World);
+            Renderer.RenderAllTargets(World);
 
             
 
