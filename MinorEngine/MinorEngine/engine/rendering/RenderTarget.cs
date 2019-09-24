@@ -14,7 +14,7 @@ namespace GameEngine.engine.rendering
         public int RenderedTexture { get; }
         public int DepthBuffer { get; }
 
-        public RenderTarget(int PassMask, Color ClearColor)
+        protected RenderTarget(int PassMask, Color ClearColor)
         {
             this.PassMask = PassMask;
             this.ClearColor = ClearColor;

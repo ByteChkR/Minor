@@ -22,7 +22,9 @@ namespace MinorEngine.engine.audio.formats
         public bool TryLoadFile(Stream fileStream, out byte[] data, out int channel, out int bits, out int bitRate)
         {
             if (fileStream == null)
+            {
                 throw new ArgumentNullException("stream");
+            }
 
             using (BinaryReader reader = new BinaryReader(fileStream))
             {

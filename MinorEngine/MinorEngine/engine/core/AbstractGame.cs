@@ -22,7 +22,7 @@ namespace MinorEngine.engine.core
         protected Renderer Renderer;
         protected GameWindow Window;
         public EngineSettings Settings { get; private set; }
-        public static AbstractGame Instance;
+        public static AbstractGame Instance { get; private set; }
 
         public AbstractGame(EngineSettings settings)
         {
