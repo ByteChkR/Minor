@@ -9,7 +9,7 @@ namespace MinorEngine.engine.audio
         public override void Update(float deltaTime)
         {
             Vector4 v = new Vector4(Owner.GetLocalPosition(), 1);
-            v *= Owner.GetWorldTransform() * Owner.World.ViewMatrix;
+            v *= Owner.GetWorldTransform() * Owner.World.Camera.ViewMatrix;
 
             Vector3 v3 = new Vector3(v);
 

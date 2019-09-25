@@ -11,7 +11,7 @@ uniform sampler2D otherTexture;
 void main()
 {
     vec3 col = texture(otherTexture, TexCoords).rgb;
-    col *= divWeight;
+    //col *= divWeight;
     FragColor = vec4(col + texture(destinationTexture, TexCoords).rgb, 1.0);
 } 
 

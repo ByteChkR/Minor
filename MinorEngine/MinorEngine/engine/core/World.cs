@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using MinorEngine.engine.rendering;
 using OpenTK;
 
 namespace MinorEngine.engine.core
@@ -8,19 +9,6 @@ namespace MinorEngine.engine.core
     {
         public Camera Camera { get; private set; }
         
-
-        public Matrix4 ViewMatrix
-        {
-            get
-            {
-                if (Camera == null)
-                {
-                    
-                    return Matrix4.Identity;
-                }
-                return Matrix4.Invert(Camera.GetWorldTransform());
-            }
-        }
 
         public World() : base(Vector3.Zero, "World", null)
         {

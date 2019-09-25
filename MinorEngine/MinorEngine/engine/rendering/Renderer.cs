@@ -9,7 +9,8 @@ namespace MinorEngine.engine.rendering
 {
     public class Renderer
     {
-        private readonly List<RenderTarget> _targets = new List<RenderTarget>();
+        public readonly List<RenderTarget> Targets = new List<RenderTarget>();
+        public int CurrentTarget { get; private set; }
         private Color _clearColor = Color.Black;
         public Color ClearColor
         {
@@ -23,53 +24,61 @@ namespace MinorEngine.engine.rendering
 
         public Renderer()
         {
-            
+
             GL.FrontFace(FrontFaceDirection.Ccw);
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            RenderTarget rt = new RenderTarget(0, _clearColor);
+            RenderTarget rt = new RenderTarget(null, 0, _clearColor);
             rt.MergeInScreenBuffer = true;
             AddRenderTarget(rt);
-            RenderTarget rt1 = new RenderTarget(0, _clearColor);
+            RenderTarget rt1 = new RenderTarget(new UICamera(), 0, _clearColor);
             rt1.MergeInScreenBuffer = true;
             AddRenderTarget(rt1);
         }
 
         public void AddRenderTarget(RenderTarget target)
         {
-            _targets.Add(target);
-            _targets.Sort();
+            Targets.Add(target);
+            Targets.Sort();
         }
 
         public void RenderAllTargets(World world)
         {
-            foreach (RenderTarget target in _targets)
+            for (var i = 0; i < Targets.Count; i++)
             {
+                CurrentTarget = i;
+                RenderTarget target = Targets[i];
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
                 GL.Enable(EnableCap.DepthTest);
                 GL.ClearColor(target.ClearColor);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-                Render(target.PassMask, world);
-
+                if (target.PassCamera != null)
+                {
+                    Render(target.PassMask, world, target.PassCamera);
+                }
+                else
+                {
+                    Render(target.PassMask, world, world.Camera);
+                }
             }
 
-            ScreenRenderer.MergeAndDisplayTargets(_targets.Where(x=>x.MergeInScreenBuffer).ToList());
+            ScreenRenderer.MergeAndDisplayTargets(Targets.Where(x => x.MergeInScreenBuffer).ToList());
             //TODO: WRITE RENDERING TO THE SCREEN(COMBINE THE RENDER TARGETS)
             //Maybe its useful to have a flag that defines if the rendertarget should be merged into the screen output
             //To Merge i need a vertex and fragment shader that can iterate over variable amounts of samplers(Can start out with 2)
         }
 
-        public void Render(int PassMask, World world)
+        public void Render(int PassMask, World world, ICamera cam)
         {
-            Render(PassMask, world, world, world.Camera, true);
+
+            Render(PassMask, world, world, cam, true);
 
         }
 
-        public static void Render(int PassMask, World world, GameObject obj, Camera cam, bool recursive)
+        public static void Render(int PassMask, World world, GameObject obj, ICamera cam, bool recursive)
         {
             Render(PassMask, world, obj, obj.GetWorldTransform(), Matrix4.Invert(cam.GetWorldTransform()), cam.Projection, recursive);
         }

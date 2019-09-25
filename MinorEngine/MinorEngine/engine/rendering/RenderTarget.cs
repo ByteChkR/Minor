@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -14,11 +15,14 @@ namespace GameEngine.engine.rendering
         public int RenderedTexture { get; }
         public int DepthBuffer { get; }
         public bool MergeInScreenBuffer { get; set; }
+        internal ICamera PassCamera { get; }
 
-        public RenderTarget(int PassMask, Color ClearColor)
+        public RenderTarget(ICamera cam, int PassMask, Color ClearColor)
         {
             this.PassMask = PassMask;
             this.ClearColor = ClearColor;
+
+            PassCamera = cam;
 
             FrameBuffer = GL.GenFramebuffer();
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBuffer);

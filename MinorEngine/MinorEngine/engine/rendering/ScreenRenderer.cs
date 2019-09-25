@@ -22,7 +22,7 @@ namespace MinorEngine.engine.rendering
         private static bool _init = false;
         private static int _screenVAO;
         private static int _screenVBO;
-        private static RenderTarget _screenTarget = new RenderTarget(int.MaxValue, OpenTK.Color.Black);
+        private static RenderTarget _screenTarget = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
         private static ShaderProgram _mergeShader;
         private static ShaderProgram _screenShader;
         private static void Init()
