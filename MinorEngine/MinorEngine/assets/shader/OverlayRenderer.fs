@@ -3,11 +3,15 @@ out vec4 FragColor;
 
 in vec2 TexCoords;
 
-uniform sampler2D screenTexture;
+uniform float divWeight;
+uniform sampler2D destinationTexture;
+uniform sampler2D otherTexture;
+
 
 void main()
 {
-    vec3 col = texture(screenTexture, TexCoords).rgb;
-    FragColor = vec4(col, 1.0);
+    vec3 col = texture(otherTexture, TexCoords).rgb;
+    col *= divWeight;
+    FragColor = vec4(col + texture(destinationTexture, TexCoords).rgb, 1.0);
 } 
 

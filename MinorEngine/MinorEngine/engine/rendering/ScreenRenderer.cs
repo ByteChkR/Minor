@@ -22,7 +22,9 @@ namespace MinorEngine.engine.rendering
         private static bool _init = false;
         private static int _screenVAO;
         private static int _screenVBO;
+        private static RenderTarget _screenTarget = new RenderTarget(int.MaxValue, OpenTK.Color.Black);
         private static ShaderProgram _mergeShader;
+        private static ShaderProgram _screenShader;
         private static void Init()
         {
 
@@ -36,7 +38,7 @@ namespace MinorEngine.engine.rendering
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)), _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
-            GL.EnableVertexAttribArray(0);
+            GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
@@ -47,40 +49,69 @@ namespace MinorEngine.engine.rendering
                 Console.ReadLine();
             }
 
+            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "shader/QuadRender.fs"},
+                {ShaderType.VertexShader, "shader/OverlayRenderer.vs"}
+            }, out _screenShader))
+            {
+                Console.ReadLine();
+            }
+
 
         }
         public static void MergeAndDisplayTargets(List<RenderTarget> targets)
         {
             if (!_init) Init();
 
+
+
             int divideCount = targets.Count;
-            ErrorCode erc = GL.GetError();
             _mergeShader.Use();
-            erc = GL.GetError();
-            GL.BindVertexArray(_screenVAO);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _screenTarget.FrameBuffer);
+            
+            GL.Disable(EnableCap.DepthTest);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
             foreach (var renderTarget in targets)
             {
-                 ErrorCode ec = GL.GetError();
-                if (ec != ErrorCode.NoError)
-                {
-                    Console.Read();
-                }
-                
-                GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
-                GL.Uniform1(_mergeShader.GetUniformLocation("screenTexture"), renderTarget.RenderedTexture);
+                GL.Uniform1(_mergeShader.GetUniformLocation("divWeight"), 1/(float)divideCount);
 
-                ec = GL.GetError();
-                if (ec != ErrorCode.NoError)
-                {
-                    Console.Read();
-                }
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.Uniform1(_mergeShader.GetUniformLocation("destinationTexture"), 0);
+                GL.BindTexture(TextureTarget.Texture2D, _screenTarget.RenderedTexture);
+
+                GL.ActiveTexture(TextureUnit.Texture1);
+                GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
+                GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
+
+
+                GL.BindVertexArray(_screenVAO);
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-                ec = GL.GetError();
-                if (ec != ErrorCode.NoError)
-                {
-                    Console.Read();
-                }
+
+
+                GL.BindVertexArray(0);
+                GL.ActiveTexture(TextureUnit.Texture0);
             }
+
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.Disable(EnableCap.DepthTest);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.Uniform1(_screenShader.GetUniformLocation("sourceTexture"), 0);
+            GL.BindTexture(TextureTarget.Texture2D, _screenTarget.RenderedTexture);
+            
+
+            GL.BindVertexArray(_screenVAO);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+
+            GL.BindVertexArray(0);
+            GL.ActiveTexture(TextureUnit.Texture0);
+
+            
 
 
 

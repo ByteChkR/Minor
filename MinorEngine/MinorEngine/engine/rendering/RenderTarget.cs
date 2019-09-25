@@ -31,8 +31,9 @@ namespace GameEngine.engine.rendering
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
 
-            GL.FramebufferTexture2D(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, TextureTarget.Texture2D, RenderedTexture, 0);
+            GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0, RenderedTexture, 0);
 
+            GL.DrawBuffers(1, new[] { DrawBuffersEnum.ColorAttachment0 });
 
             DepthBuffer = GL.GenRenderbuffer();
             GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, DepthBuffer);
@@ -40,7 +41,7 @@ namespace GameEngine.engine.rendering
                 AbstractGame.Instance.Settings.Width, AbstractGame.Instance.Settings.Height);
             GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment,
                 RenderbufferTarget.Renderbuffer, DepthBuffer);
-            
+
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
             {
                 Console.ReadLine();

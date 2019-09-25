@@ -10,7 +10,7 @@ namespace MinorEngine.engine.rendering
     public class Renderer
     {
         private readonly List<RenderTarget> _targets = new List<RenderTarget>();
-        private Color _clearColor = Color.Green;
+        private Color _clearColor = Color.Black;
         public Color ClearColor
         {
             set
@@ -33,6 +33,9 @@ namespace MinorEngine.engine.rendering
             RenderTarget rt = new RenderTarget(0, _clearColor);
             rt.MergeInScreenBuffer = true;
             AddRenderTarget(rt);
+            RenderTarget rt1 = new RenderTarget(0, _clearColor);
+            rt1.MergeInScreenBuffer = true;
+            AddRenderTarget(rt1);
         }
 
         public void AddRenderTarget(RenderTarget target)
@@ -52,15 +55,8 @@ namespace MinorEngine.engine.rendering
 
                 Render(target.PassMask, world);
 
-                GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             }
 
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            GL.Disable(EnableCap.DepthTest);
-            GL.ClearColor(_clearColor);
-            GL.Clear(ClearBufferMask.ColorBufferBit);
-            ErrorCode gle = GL.GetError();
-            //Render(0, world);
             ScreenRenderer.MergeAndDisplayTargets(_targets.Where(x=>x.MergeInScreenBuffer).ToList());
             //TODO: WRITE RENDERING TO THE SCREEN(COMBINE THE RENDER TARGETS)
             //Maybe its useful to have a flag that defines if the rendertarget should be merged into the screen output
