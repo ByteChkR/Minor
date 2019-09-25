@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameEngine.engine.rendering;
+using MinorEngine.components;
 using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -34,7 +35,7 @@ namespace MinorEngine.engine.rendering
             RenderTarget rt = new RenderTarget(null, 0, _clearColor);
             rt.MergeInScreenBuffer = true;
             AddRenderTarget(rt);
-            RenderTarget rt1 = new RenderTarget(new UICamera(), 0, _clearColor);
+            RenderTarget rt1 = new RenderTarget(new UICamera(), 1, _clearColor);
             rt1.MergeInScreenBuffer = true;
             AddRenderTarget(rt1);
         }
@@ -96,9 +97,9 @@ namespace MinorEngine.engine.rendering
 
         public static void RenderSelf(int PassMask, World world, GameObject obj, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            if (obj.RenderMask == PassMask)
+            if (obj.RenderingComponent != null && obj.RenderingComponent.RenderMask == PassMask)
             {
-                Render(world, obj.Shader, obj.Model, modelMat, viewMat, projMat);
+                Render(world, obj.RenderingComponent.Shader, obj.RenderingComponent, modelMat, viewMat, projMat);
             }
         }
 
@@ -118,13 +119,10 @@ namespace MinorEngine.engine.rendering
             }
         }
 
-        public static void Render(World world, ShaderProgram prog, GameModel model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
+        public static void Render(World world, ShaderProgram prog, IRenderingComponent model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
             //TODO: HERE GOES THE PASS MASK EVALUATION SO STUFF IGNORES IT(REQUIRES EVERY GAMEOBJECT TO HAVE A MASK AS WELL)
-            if (model != null && prog != null)
-            {
-                model.Render(prog, modelMat, viewMat, projMat);
-            }
+            model?.Render(modelMat, viewMat, projMat);
         }
 
 

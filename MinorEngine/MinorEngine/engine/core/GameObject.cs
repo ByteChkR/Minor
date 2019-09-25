@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assimp;
+using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.rendering;
 using OpenTK;
@@ -9,8 +10,7 @@ namespace MinorEngine.engine.core
 {
     public class GameObject
     {
-        public ShaderProgram Shader { get; set; }
-        public GameModel Model { get; set; }
+        public IRenderingComponent RenderingComponent { get; private set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
         public World World { get; protected set; }
         private static int _objId;
@@ -18,7 +18,6 @@ namespace MinorEngine.engine.core
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
         public int ChildCount => _children.Count;
-        public int RenderMask { get; set; }
 
         public GameObject Parent { get; private set; }
 
@@ -56,6 +55,10 @@ namespace MinorEngine.engine.core
             Type t = component.GetType();
             if (!_components.ContainsKey(t))
             {
+                if (typeof(IRenderingComponent).IsAssignableFrom(t))
+                {
+                    RenderingComponent = (IRenderingComponent)component;
+                }
                 _components.Add(t, component);
                 component.Owner = this;
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameEngine.engine.ui;
 using MinorEngine.components;
 using MinorEngine.engine.audio;
 using MinorEngine.engine.audio.sources;
@@ -32,6 +33,7 @@ namespace GameEngine
             GameModel plane = new GameModel("models/plane.obj");
 
             GameTexture runic = GameTexture.Load("textures/runicfloor.png");
+            GameTexture face = GameTexture.Load("textures/TEST.png");
             plane.Meshes[0].Textures = new[] { runic };
             sphere.Meshes[0].Textures = new[] { runic };
 
@@ -43,6 +45,15 @@ namespace GameEngine
                 {ShaderType.VertexShader, "shader/texture.vs"},
             }, out ShaderProgram shader);
 
+            UIRendererComponent uiElement = new UIRendererComponent(face, null)
+            {
+                Position = new Vector2(0.2f, 0.2f),
+                Scale = new Vector2(0.2f, 0.2f)
+            };
+
+            GameObject uiContainer = new GameObject("UIContainer");
+            uiContainer.AddComponent(uiElement);
+            uiContainer.AddComponent(new UIMovingComponent());
             Camera c = new Camera(projection, Vector3.Zero);
             c.AddComponent(new AudioListener());
             c.Rotate(Vector3.UnitX, ToRadians(-40));
@@ -50,24 +61,23 @@ namespace GameEngine
 
             GameObject planeObj = new GameObject(Vector3.UnitZ*2, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
-            planeObj.Model = plane;
+            planeObj.AddComponent(new MeshRendererComponent(shader, plane, 0));
             planeObj.AddComponent(new TextureChanger(Window));
             planeObj.AddComponent(new RotateAroundComponent());
             planeObj.AddComponent(new AudioSourceComponent());
-            planeObj.Shader = shader;
 
             GameObject sphereObj = new GameObject(Vector3.Zero, "Sphere");
             sphereObj.Scale(new Vector3(2.5f, 2.5f, 2.5f));
             sphereObj.AddComponent(new RotatingComponent());
+            sphereObj.AddComponent(new MeshRendererComponent(shader, sphere, 0));
 
-            sphereObj.Model = sphere;
-            sphereObj.Shader = shader;
 
 
             World.Add(planeObj);
             World.Add(sphereObj);
             World.Add(c);
             World.SetCamera(c);
+            World.Add(uiContainer);
 
             Renderer.ClearColor = new Color((int)(0.2f * 255), (int)(0.3f * 255), (int)(255 * 0.3f), 255);
 
