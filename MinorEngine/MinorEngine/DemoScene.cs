@@ -45,6 +45,18 @@ namespace GameEngine
                 {ShaderType.VertexShader, "shader/texture.vs"},
             }, out ShaderProgram shader);
 
+            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "shader/UITextRender.fs"},
+                {ShaderType.VertexShader, "shader/UITextRender.vs"},
+            }, out ShaderProgram textShader);
+
+            UITextRendererComponent uitElement=new UITextRendererComponent("fonts/font.ttf", 200,100, textShader)
+            {
+                Position = new Vector2(0.2f, 0.2f),
+                Scale = new Vector2(0.2f, 0.2f)
+            };
+
             UIRendererComponent uiElement = new UIRendererComponent(face, null)
             {
                 Position = new Vector2(0.2f, 0.2f),
@@ -52,8 +64,8 @@ namespace GameEngine
             };
 
             GameObject uiContainer = new GameObject("UIContainer");
-            uiContainer.AddComponent(uiElement);
-            uiContainer.AddComponent(new UIMovingComponent());
+            uiContainer.AddComponent(uitElement);
+            //uiContainer.AddComponent(new UIMovingComponent());
             Camera c = new Camera(projection, Vector3.Zero);
             c.AddComponent(new AudioListener());
             c.Rotate(Vector3.UnitX, ToRadians(-40));

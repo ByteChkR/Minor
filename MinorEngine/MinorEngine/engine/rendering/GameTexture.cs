@@ -5,6 +5,7 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Assimp;
 using Common;
+using MinorEngine.engine.core;
 using OpenTK.Graphics.OpenGL;
 using TKPixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using SYSPixelFormat = System.Drawing.Imaging.PixelFormat;
@@ -27,6 +28,18 @@ namespace MinorEngine.engine.rendering
         }
 
 
+        public static GameTexture Create(int width, int height)
+        {
+            GameTexture ret = new GameTexture();
+            
+            GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.CompressedRgb,
+                width, height, 0, TKPixelFormat.Rgb,
+                PixelType.UnsignedByte, IntPtr.Zero);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            return ret;
+        }
 
         public static GameTexture[] LoadTextures(Scene scene)
         {

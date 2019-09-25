@@ -39,6 +39,8 @@ namespace MinorEngine.engine.core
             initializeRenderer();
             initializeWorld();
             initializeScene();
+
+            
         }
 
         private void initializeWindow()
@@ -107,9 +109,7 @@ namespace MinorEngine.engine.core
         {
 
             Renderer.RenderAllTargets(World);
-
             
-
             Window.SwapBuffers();
 
         }

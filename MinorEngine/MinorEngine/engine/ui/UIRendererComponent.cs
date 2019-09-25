@@ -1,5 +1,4 @@
-﻿using System.Drawing.Drawing2D;
-using MinorEngine.components;
+﻿using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.rendering;
 using OpenTK;
@@ -16,8 +15,11 @@ namespace GameEngine.engine.ui
         public Vector2 Scale { get; set; }
 
         private float Alpha { get; set; }
-        protected bool MirrorX { get; set; }
-        protected bool MirrorY { get; set; }
+
+        public UIRendererComponent(int width, int height, ShaderProgram shader) : this(GameTexture.Create(width, height), shader)
+        {
+
+        }
 
         public UIRendererComponent(GameTexture texture, ShaderProgram shader)
         {
@@ -38,7 +40,7 @@ namespace GameEngine.engine.ui
 
 
 
-        public void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
+        public virtual void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
             if (Shader != null)
             {
