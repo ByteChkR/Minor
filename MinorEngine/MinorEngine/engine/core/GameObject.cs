@@ -18,6 +18,7 @@ namespace MinorEngine.engine.core
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
         public int ChildCount => _children.Count;
+        public int RenderMask { get; set; }
 
         public GameObject Parent { get; private set; }
 

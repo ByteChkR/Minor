@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using GameEngine.engine.rendering;
 using MinorEngine.engine.core;
 using OpenTK;
@@ -22,14 +23,16 @@ namespace MinorEngine.engine.rendering
 
         public Renderer()
         {
-
-            GL.Enable(EnableCap.DepthTest);
+            
             GL.FrontFace(FrontFaceDirection.Ccw);
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
+            RenderTarget rt = new RenderTarget(0, _clearColor);
+            rt.MergeInScreenBuffer = true;
+            AddRenderTarget(rt);
         }
 
         public void AddRenderTarget(RenderTarget target)
@@ -43,15 +46,22 @@ namespace MinorEngine.engine.rendering
             foreach (RenderTarget target in _targets)
             {
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
-                GL.GetFramebufferParameter(FramebufferTarget.Framebuffer, FramebufferDefaultParameter.FramebufferDefaultWidth, out int width);
-                GL.GetFramebufferParameter(FramebufferTarget.Framebuffer, FramebufferDefaultParameter.FramebufferDefaultHeight, out int height);
-                GL.Viewport(0, 0, width, height);
+                GL.Enable(EnableCap.DepthTest);
                 GL.ClearColor(target.ClearColor);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
                 Render(target.PassMask, world);
+
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             }
+
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            Render(0, world);
+            GL.Disable(EnableCap.DepthTest);
+            GL.ClearColor(_clearColor);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            ErrorCode gle = GL.GetError();
+            //Render(0, world);
+            ScreenRenderer.MergeAndDisplayTargets(_targets.Where(x=>x.MergeInScreenBuffer).ToList());
             //TODO: WRITE RENDERING TO THE SCREEN(COMBINE THE RENDER TARGETS)
             //Maybe its useful to have a flag that defines if the rendertarget should be merged into the screen output
             //To Merge i need a vertex and fragment shader that can iterate over variable amounts of samplers(Can start out with 2)
@@ -59,8 +69,6 @@ namespace MinorEngine.engine.rendering
 
         public void Render(int PassMask, World world)
         {
-            GL.ClearColor(_clearColor);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             Render(PassMask, world, world, world.Camera, true);
 
         }
@@ -83,7 +91,10 @@ namespace MinorEngine.engine.rendering
 
         public static void RenderSelf(int PassMask, World world, GameObject obj, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            Render(PassMask, world, obj.Shader, obj.Model, modelMat, viewMat, projMat);
+            if (obj.RenderMask == PassMask)
+            {
+                Render(world, obj.Shader, obj.Model, modelMat, viewMat, projMat);
+            }
         }
 
 
@@ -102,7 +113,7 @@ namespace MinorEngine.engine.rendering
             }
         }
 
-        public static void Render(int PassMask, World world, ShaderProgram prog, GameModel model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
+        public static void Render(World world, ShaderProgram prog, GameModel model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
             //TODO: HERE GOES THE PASS MASK EVALUATION SO STUFF IGNORES IT(REQUIRES EVERY GAMEOBJECT TO HAVE A MASK AS WELL)
             if (model != null && prog != null)
