@@ -17,6 +17,11 @@ namespace CLHelperLibrary
         private readonly string _filePath;
 
         /// <summary>
+        /// The gentype the program source is compiled for
+        /// </summary>
+        private readonly string _genType;
+
+        /// <summary>
         /// The kernels that are contained in the Program
         /// </summary>
         public Dictionary<string, CLKernel> ContainedKernels { get; }
@@ -30,9 +35,10 @@ namespace CLHelperLibrary
         /// Public constructor
         /// </summary>
         /// <param name="FilePath">The FilePath where the source is located</param>
-        public CLProgram(string FilePath)
+        public CLProgram(string FilePath, string genType)
         {
             this._filePath = FilePath;
+            _genType = genType;
 
             ContainedKernels = new Dictionary<string, CLKernel>();
 

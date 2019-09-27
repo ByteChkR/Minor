@@ -9,17 +9,48 @@ using ext_pp_plugins;
 
 namespace Common
 {
+
+
+
     /// <summary>
     /// A static Wrapper class around the ext_pp project.
     /// </summary>
     public static class TextProcessorAPI
     {
 
+        public class FileContent : IFileContent
+        {
+            private readonly string[] _lines;
+            private const string Key = "kernel/memoryFile";
+            private static readonly string Path = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(Key));
+
+            public FileContent(string[] lines)
+            {
+                _lines = lines;
+            }
+
+            public bool TryGetLines(out string[] lines)
+            {
+                lines = _lines;
+                return true;
+            }
+
+            public string GetKey()
+            {
+                return Key;
+            }
+        }
+
         public abstract class APreProcessorConfig
         {
             protected abstract Verbosity VerbosityLevel { get; }
             protected abstract List<AbstractPlugin> Plugins { get; }
-            
+
+            public string[] Preprocess(string filename, string genType, Dictionary<string, bool> defs)
+            {
+                
+            }
+
             public string[] Preprocess(string filename, Dictionary<string, bool> defs)
             {
                 PreProcessor pp = new PreProcessor();

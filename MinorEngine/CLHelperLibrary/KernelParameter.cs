@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CLHelperLibrary.CLStructs;
 using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Memory;
@@ -6,7 +7,7 @@ using OpenCl.DotNetCore.Memory;
 namespace CLHelperLibrary
 {
 
-    
+
     /// <summary>
     /// A class containing the logic to parse a kernel argument
     /// </summary>
@@ -99,6 +100,64 @@ namespace CLHelperLibrary
             typeof(ulong16)
         };
 
+        private static List<Tuple<string, DataTypes>> DataTypePairs = new List<Tuple<string, DataTypes>>
+        {
+            new Tuple<string, DataTypes>( "float", DataTypes.FLOAT1),
+            new Tuple<string, DataTypes>( "float2", DataTypes.FLOAT2),
+			new Tuple<string, DataTypes>( "float3", DataTypes.FLOAT3),
+			new Tuple<string, DataTypes>( "float4", DataTypes.FLOAT4),
+			new Tuple<string, DataTypes>( "float8", DataTypes.FLOAT8),
+			new Tuple<string, DataTypes>( "float16", DataTypes.FLOAT16),
+			new Tuple<string, DataTypes>( "int", DataTypes.INT1),
+			new Tuple<string, DataTypes>( "int2", DataTypes.INT2),
+			new Tuple<string, DataTypes>( "int3", DataTypes.INT3),
+			new Tuple<string, DataTypes>( "int4", DataTypes.INT4),
+			new Tuple<string, DataTypes>( "int8", DataTypes.INT8),
+			new Tuple<string, DataTypes>( "int16", DataTypes.INT16),
+			new Tuple<string, DataTypes>( "uint", DataTypes.UINT1),
+			new Tuple<string, DataTypes>( "uint2", DataTypes.UINT2),
+			new Tuple<string, DataTypes>( "uint3", DataTypes.UINT3),
+			new Tuple<string, DataTypes>( "uint4", DataTypes.UINT4),
+			new Tuple<string, DataTypes>( "uint8", DataTypes.UINT8),
+			new Tuple<string, DataTypes>( "uint16", DataTypes.UINT16),
+			new Tuple<string, DataTypes>( "char", DataTypes.CHAR1),
+			new Tuple<string, DataTypes>( "char2", DataTypes.CHAR2),
+			new Tuple<string, DataTypes>( "char3", DataTypes.CHAR3),
+			new Tuple<string, DataTypes>( "char4", DataTypes.CHAR4),
+			new Tuple<string, DataTypes>( "char8", DataTypes.CHAR8),
+			new Tuple<string, DataTypes>( "char16", DataTypes.CHAR16),
+			new Tuple<string, DataTypes>( "uchar", DataTypes.UCHAR1),
+			new Tuple<string, DataTypes>( "uchar2", DataTypes.UCHAR2),
+			new Tuple<string, DataTypes>( "uchar3", DataTypes.UCHAR3),
+			new Tuple<string, DataTypes>( "uchar4", DataTypes.UCHAR4),
+			new Tuple<string, DataTypes>( "uchar8", DataTypes.UCHAR8),
+			new Tuple<string, DataTypes>( "uchar16", DataTypes.UCHAR16),
+			new Tuple<string, DataTypes>( "short", DataTypes.SHORT1),
+			new Tuple<string, DataTypes>( "short2", DataTypes.SHORT2),
+			new Tuple<string, DataTypes>( "short3", DataTypes.SHORT3),
+			new Tuple<string, DataTypes>( "short4", DataTypes.SHORT4),
+			new Tuple<string, DataTypes>( "short8", DataTypes.SHORT8),
+			new Tuple<string, DataTypes>( "short16", DataTypes.SHORT16),
+			new Tuple<string, DataTypes>( "ushort", DataTypes.USHORT1),
+			new Tuple<string, DataTypes>( "ushort2", DataTypes.USHORT2),
+			new Tuple<string, DataTypes>( "ushort3", DataTypes.USHORT3),
+			new Tuple<string, DataTypes>( "ushort4", DataTypes.USHORT4),
+			new Tuple<string, DataTypes>( "ushort8", DataTypes.USHORT8),
+			new Tuple<string, DataTypes>( "ushort16", DataTypes.USHORT16),
+			new Tuple<string, DataTypes>( "long", DataTypes.LONG1),
+			new Tuple<string, DataTypes>( "long2", DataTypes.LONG2),
+			new Tuple<string, DataTypes>( "long3", DataTypes.LONG3),
+			new Tuple<string, DataTypes>( "long4", DataTypes.LONG4),
+			new Tuple<string, DataTypes>( "long8", DataTypes.LONG8),
+			new Tuple<string, DataTypes>( "long16", DataTypes.LONG16),
+			new Tuple<string, DataTypes>( "ulong1", DataTypes.ULONG1),
+			new Tuple<string, DataTypes>( "ulong2", DataTypes.ULONG2),
+			new Tuple<string, DataTypes>( "ulong3", DataTypes.ULONG3),
+			new Tuple<string, DataTypes>( "ulong4", DataTypes.ULONG4),
+			new Tuple<string, DataTypes>( "ulong8", DataTypes.ULONG8),
+			new Tuple<string, DataTypes>( "ulong16", DataTypes.ULONG16),
+        };
+
         /// <summary>
         /// Casts the supplied value to the specified type
         /// </summary>
@@ -110,8 +169,8 @@ namespace CLHelperLibrary
             {
                 object[] data = (object[])value;
 
-                return CL.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
-                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
+                return CL.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int)DataType], x)),
+                    Converters[(int)DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
 
             }
             return CastToType(Converters[(int)DataType], value);
@@ -162,185 +221,38 @@ namespace CLHelperLibrary
         }
 
         /// <summary>
+        /// returns the Correct DataType string for the equivalent in the CL Library
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static string GetDataString(DataTypes type)
+        {
+            foreach (var dataTypePair in DataTypePairs)
+            {
+                if (dataTypePair.Item2==type)
+                {
+                    return dataTypePair.Item1;
+                }
+            }
+            return "UNKNOWN";
+        }
+
+        /// <summary>
         /// returns the Correct DataType enum for the equivalent in OpenCL C99
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
-        private static DataTypes GetDataType(string type)
+        public static DataTypes GetDataType(string str)
         {
-            DataTypes dt;
-            switch (type)
+            foreach (var dataTypePair in DataTypePairs)
             {
-                case "float":
-                    dt = DataTypes.FLOAT1;
-                    break;
-                case "float2":
-                    dt = DataTypes.FLOAT2;
-                    break;
-                case "float3":
-                    dt = DataTypes.FLOAT3;
-                    break;
-                case "float4":
-                    dt = DataTypes.FLOAT4;
-                    break;
-                case "float8":
-                    dt = DataTypes.FLOAT8;
-                    break;
-                case "float16":
-                    dt = DataTypes.FLOAT16;
-                    break;
-                case "int":
-                    dt = DataTypes.INT1;
-                    break;
-                case "int2":
-                    dt = DataTypes.INT2;
-                    break;
-                case "int3":
-                    dt = DataTypes.INT3;
-                    break;
-                case "int4":
-                    dt = DataTypes.INT4;
-                    break;
-                case "int8":
-                    dt = DataTypes.INT8;
-                    break;
-                case "int16":
-                    dt = DataTypes.INT16;
-                    break;
-                case "uint":
-                    dt = DataTypes.UINT1;
-                    break;
-                case "uint2":
-                    dt = DataTypes.UINT2;
-                    break;
-                case "uint3":
-                    dt = DataTypes.UINT3;
-                    break;
-                case "uint4":
-                    dt = DataTypes.UINT4;
-                    break;
-                case "uint8":
-                    dt = DataTypes.UINT8;
-                    break;
-                case "uint16":
-                    dt = DataTypes.UINT16;
-                    break;
-                case "char":
-                    dt = DataTypes.CHAR1;
-                    break;
-                case "char2":
-                    dt = DataTypes.CHAR2;
-                    break;
-                case "char3":
-                    dt = DataTypes.CHAR3;
-                    break;
-                case "char4":
-                    dt = DataTypes.CHAR4;
-                    break;
-                case "char8":
-                    dt = DataTypes.CHAR8;
-                    break;
-                case "char16":
-                    dt = DataTypes.CHAR16;
-                    break;
-                case "uchar":
-                    dt = DataTypes.UCHAR1;
-                    break;
-                case "uchar2":
-                    dt = DataTypes.UCHAR2;
-                    break;
-                case "uchar3":
-                    dt = DataTypes.UCHAR3;
-                    break;
-                case "uchar4":
-                    dt = DataTypes.UCHAR4;
-                    break;
-                case "uchar8":
-                    dt = DataTypes.UCHAR8;
-                    break;
-                case "uchar16":
-                    dt = DataTypes.UCHAR16;
-                    break;
-                case "short":
-                    dt = DataTypes.SHORT1;
-                    break;
-                case "short2":
-                    dt = DataTypes.SHORT2;
-                    break;
-                case "short3":
-                    dt = DataTypes.SHORT3;
-                    break;
-                case "short4":
-                    dt = DataTypes.SHORT4;
-                    break;
-                case "short8":
-                    dt = DataTypes.SHORT8;
-                    break;
-                case "short16":
-                    dt = DataTypes.SHORT16;
-                    break;
-                case "ushort":
-                    dt = DataTypes.USHORT1;
-                    break;
-                case "ushort2":
-                    dt = DataTypes.USHORT2;
-                    break;
-                case "ushort3":
-                    dt = DataTypes.USHORT3;
-                    break;
-                case "ushort4":
-                    dt = DataTypes.USHORT4;
-                    break;
-                case "ushort8":
-                    dt = DataTypes.USHORT8;
-                    break;
-                case "ushort16":
-                    dt = DataTypes.USHORT16;
-                    break;
-                case "long":
-                    dt = DataTypes.LONG1;
-                    break;
-                case "long2":
-                    dt = DataTypes.LONG2;
-                    break;
-                case "long3":
-                    dt = DataTypes.LONG3;
-                    break;
-                case "long4":
-                    dt = DataTypes.LONG4;
-                    break;
-                case "long8":
-                    dt = DataTypes.LONG8;
-                    break;
-                case "long16":
-                    dt = DataTypes.LONG16;
-                    break;
-                case "ulong1":
-                    dt = DataTypes.ULONG1;
-                    break;
-                case "ulong2":
-                    dt = DataTypes.ULONG2;
-                    break;
-                case "ulong3":
-                    dt = DataTypes.ULONG3;
-                    break;
-                case "ulong4":
-                    dt = DataTypes.ULONG4;
-                    break;
-                case "ulong8":
-                    dt = DataTypes.ULONG8;
-                    break;
-                case "ulong16":
-                    dt = DataTypes.ULONG16;
-                    break;
-                default:
-                    dt = DataTypes.UNKNOWN;
-                    break;
+                if (dataTypePair.Item1 == str)
+                {
+                    return dataTypePair.Item2;
+                }
             }
 
-            return dt;
-
-
+            return DataTypes.UNKNOWN;
         }
 
         /// <summary>

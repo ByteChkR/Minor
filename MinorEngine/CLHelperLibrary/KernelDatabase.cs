@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using CLHelperLibrary.CLStructs;
 using Common;
 using Common.Exceptions;
 
@@ -15,6 +16,8 @@ namespace CLHelperLibrary
         /// </summary>
         private readonly string _folderName;
 
+        private readonly string _genDataType;
+
         /// <summary>
         /// The currently loaded kernels
         /// </summary>
@@ -24,8 +27,10 @@ namespace CLHelperLibrary
         /// Public constructor
         /// </summary>
         /// <param name="folderName">Folder name where the kernels are located</param>
-        public KernelDatabase(string folderName)
+        /// <param name="genDataType">The DataTypes used to compile the FL Database</param>
+        public KernelDatabase(string folderName, DataTypes genDataType)
         {
+            _genDataType = KernelParameter.GetDataString(genDataType);
             if (!Directory.Exists(folderName))
             {
                 this.Crash(new InvalidFolderPathException(folderName));
