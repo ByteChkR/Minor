@@ -46,8 +46,7 @@ namespace GameEngine.engine.ui
             {
                 Shader.Use();
                 Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
-                Matrix4 scmat = Matrix4.CreateScale(Scale.X, Scale.Y, 1);
-                Matrix4 m = trmat * scmat;
+                Matrix4 m = trmat;
 
                 GL.UniformMatrix4(Shader.GetUniformLocation("transform"), false, ref m);
 
