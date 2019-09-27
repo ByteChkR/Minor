@@ -8,12 +8,9 @@ namespace MinorEngine.components
     public class UIMovingComponent : AbstractComponent
     {
         private UIRendererComponent comp;
-        public UIMovingComponent()
-        {
+       
 
-        }
-
-        private float time = 0;
+        private float time;
         public override void Update(float deltaTime)
         {
             time += deltaTime;

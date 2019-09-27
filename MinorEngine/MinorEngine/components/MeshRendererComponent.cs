@@ -21,7 +21,9 @@ namespace MinorEngine.components
         public void Render( Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
             if (Model != null && Shader != null)
+            {
                 Model.Render(Shader, modelMat, viewMat, projMat);
+            }
         }
 
     }

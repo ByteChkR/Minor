@@ -17,6 +17,7 @@ namespace GameEngine.engine.rendering
         public bool MergeInScreenBuffer { get; set; }
         internal ICamera PassCamera { get; }
 
+
         public RenderTarget(ICamera cam, int PassMask, Color ClearColor)
         {
             this.PassMask = PassMask;
@@ -59,5 +60,40 @@ namespace GameEngine.engine.rendering
             return PassMask - other.PassMask;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as RenderTarget;
+            if (object.ReferenceEquals(other, null))
+            {
+                return false;
+            }
+            return this.CompareTo(other) == 0;
+        }
+
+        public static bool operator ==(RenderTarget left, RenderTarget right)
+        {
+            if (object.ReferenceEquals(left, null))
+            {
+                return object.ReferenceEquals(right, null);
+            }
+            return left.Equals(right);
+        }
+        public static bool operator > (RenderTarget left, RenderTarget right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+        public static bool operator <(RenderTarget left, RenderTarget right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+        public static bool operator !=(RenderTarget left, RenderTarget right)
+        {
+            return !(left == right);
+        }
     }
 }

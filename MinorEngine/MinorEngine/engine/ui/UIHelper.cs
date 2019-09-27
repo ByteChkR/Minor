@@ -8,7 +8,7 @@ namespace GameEngine.engine.ui
 {
     public class UIHelper
     {
-        private static UIHelper _instance;
+        private static UIHelper _instance = new UIHelper();
         public static UIHelper Instance => _instance ?? (_instance = new UIHelper());
         public int quadVAO { get; private set; }
         public ShaderProgram DefaultUIShader { get; private set; }
@@ -26,7 +26,6 @@ namespace GameEngine.engine.ui
 
         private UIHelper()
         {
-            _instance = this;
             Initialize();
         }
         private static void Initialize()

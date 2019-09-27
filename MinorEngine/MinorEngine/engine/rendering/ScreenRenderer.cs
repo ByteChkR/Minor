@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace MinorEngine.engine.rendering
 {
-    public class ScreenRenderer
+    public static class ScreenRenderer
     {
         private static float[] _screenQuadVertexData = new[]
         {

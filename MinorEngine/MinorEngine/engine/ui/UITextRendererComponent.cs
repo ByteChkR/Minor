@@ -23,12 +23,12 @@ namespace GameEngine.engine.ui
 
     public struct Character
     {
-        public int glTexture;
-        public int width;
-        public int height;
-        public float bearingX;
-        public float bearingY;
-        public float advance;
+        public int GlTexture { get; set; }
+        public int Width { get; set; }
+        public int Height { get; set; }
+        public float BearingX { get; set; }
+        public float BearingY;
+        public float Advance { get; set; }
     }
 
     public class UITextRendererComponent : UIRendererComponent
@@ -107,12 +107,12 @@ namespace GameEngine.engine.ui
                 }
                 Character c = new Character
                 {
-                    glTexture = glTex,
-                    width = s.Width,
-                    height = s.Height,
-                    advance = g.HorizontalMetrics.Advance,
-                    bearingX = g.HorizontalMetrics.Bearing.X,
-                    bearingY = g.HorizontalMetrics.Bearing.Y
+                    GlTexture = glTex,
+                    Width = s.Width,
+                    Height = s.Height,
+                    Advance = g.HorizontalMetrics.Advance,
+                    BearingX = g.HorizontalMetrics.Bearing.X,
+                    BearingY = g.HorizontalMetrics.Bearing.Y
                 };
                 _fontAtlas.Add((char)i, c);
 
@@ -163,11 +163,11 @@ namespace GameEngine.engine.ui
                 {
                     Character chr = _fontAtlas[Text[i]];
 
-                    float xpos = x + chr.bearingX / scrW * Scale.X;
-                    float ypos = Position.Y - (chr.height - chr.bearingY) / scrH * Scale.Y;
+                    float xpos = x + chr.BearingX / scrW * Scale.X;
+                    float ypos = Position.Y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                    float w = chr.width / (float)scrW * Scale.X;
-                    float h = chr.height / (float)scrH * Scale.Y;
+                    float w = chr.Width / (float)scrW * Scale.X;
+                    float h = chr.Height / (float)scrH * Scale.Y;
                     float[] verts = {
                          xpos,     ypos + h,    0.0f, 1.0f ,
                          xpos,     ypos,        0.0f, 0.0f,
@@ -178,9 +178,9 @@ namespace GameEngine.engine.ui
                          xpos + w, ypos + h,    1.0f, 1.0f
                     };
 
-                    if (chr.glTexture != -1)
+                    if (chr.GlTexture != -1)
                     {
-                        GL.BindTexture(TextureTarget.Texture2D, chr.glTexture);
+                        GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture);
                         GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
                         GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
                             verts);
@@ -188,7 +188,7 @@ namespace GameEngine.engine.ui
                         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
                         ErrorCode ec = GL.GetError();
                     }
-                    x += chr.advance / scrW * Scale.X;
+                    x += chr.Advance / scrW * Scale.X;
 
 
                 }
