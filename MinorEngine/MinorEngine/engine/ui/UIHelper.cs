@@ -8,34 +8,38 @@ namespace GameEngine.engine.ui
 {
     public class UIHelper
     {
-        private static UIHelper _instance = new UIHelper();
+        private static UIHelper _instance;
         public static UIHelper Instance => _instance ?? (_instance = new UIHelper());
+
         public int quadVAO { get; private set; }
         public ShaderProgram DefaultUIShader { get; private set; }
+
         private static float[] _screenQuadVertexData = new[]
         {
             // positions   // texCoords
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            -1.0f, -1.0f,  0.0f, 0.0f,
-            1.0f, -1.0f,  1.0f, 0.0f,
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
 
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            1.0f, -1.0f,  1.0f, 0.0f,
-            1.0f,  1.0f,  1.0f, 1.0f
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f
         };
 
         private UIHelper()
         {
             Initialize();
         }
-        private static void Initialize()
+
+        private void Initialize()
         {
-            Instance.quadVAO = GL.GenVertexArray();
+            quadVAO = GL.GenVertexArray();
             int screenVbo = GL.GenBuffer();
-            GL.BindVertexArray(Instance.quadVAO);
+            GL.BindVertexArray(quadVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, screenVbo);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)), _screenQuadVertexData, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+                _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
             GL.EnableVertexAttribArray(1);
@@ -49,7 +53,7 @@ namespace GameEngine.engine.ui
                 Console.ReadLine();
             }
 
-            Instance.DefaultUIShader = shader;
+            DefaultUIShader = shader;
         }
     }
 }
