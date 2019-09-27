@@ -12,9 +12,9 @@ namespace MinorEngine.components
         SPHERE = 0,
         BOX = 1
     }
-    public class ColliderComponent : AbstractComponent
+    public class ColliderComponent : AbstractComponent, IColliderComponent
     {
-        private BodyReference br;
+        public BodyReference BodyReference { get; set; }
         private bool _init;
         private readonly ColliderType type;
         private readonly float radius;
@@ -37,21 +37,21 @@ namespace MinorEngine.components
                 Vector3 pos = Owner.GetLocalPosition();
                 if (type == ColliderType.SPHERE)
                 {
-                    br = Physics.AddSphereDynamic(1f, new System.Numerics.Vector3(pos.X, pos.Y, pos.Z), radius, this);
+                    BodyReference = Physics.AddSphereDynamic(1f, new System.Numerics.Vector3(pos.X, pos.Y, pos.Z), radius);
                 }
                 else
                 {
-                    br = Physics.AddBoxDynamic(1f, new System.Numerics.Vector3(pos.X, pos.Y, pos.Z), new System.Numerics.Vector3(radius), this);
+                    BodyReference = Physics.AddBoxDynamic(1f, new System.Numerics.Vector3(pos.X, pos.Y, pos.Z), new System.Numerics.Vector3(radius));
                 }
 
-                ref Layer l = ref Physics.CollisionFilters.Allocate(br.Handle);
+                ref Layer l = ref Physics.CollisionFilters.Allocate(BodyReference.Handle);
                 l.CollidableSubgroups = collidable;
                 l.SubgroupMembership = layer;
                 l.GroupId = 0;
                 _init = true;
             }
-            Owner.SetLocalPosition(new Vector3(br.Pose.Position.X, br.Pose.Position.Y, br.Pose.Position.Z));
-            Owner.SetRotation(br.Pose.Orientation);
+            Owner.SetLocalPosition(new Vector3(BodyReference.Pose.Position.X, BodyReference.Pose.Position.Y, BodyReference.Pose.Position.Z));
+            Owner.SetRotation(BodyReference.Pose.Orientation);
         }
     }
 }

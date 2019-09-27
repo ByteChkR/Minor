@@ -71,7 +71,7 @@ namespace MinorEngine.engine.physics.callbacks
             //(Note that there's no bounciness property! See here for more details: https://github.com/bepu/bepuphysics2/issues/3)
             pairMaterial.FrictionCoefficient = 1f;
             pairMaterial.MaximumRecoveryVelocity = 2f;
-            pairMaterial.SpringSettings = new SpringSettings(30, 1);
+            pairMaterial.SpringSettings = new SpringSettings(30, 1f);
         }
 
         //Note that there is a unique callback for convex versus nonconvex types. There is no fundamental difference here- it's just a matter of convenience

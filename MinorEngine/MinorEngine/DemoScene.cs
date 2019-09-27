@@ -47,8 +47,11 @@ namespace GameEngine
             GameModel box = new GameModel("models/cube_flat.obj");
 
             GameTexture runic = GameTexture.Load("textures/runicfloor.png");
+            GameTexture bg = GameTexture.Load("textures/ground.png");
             plane.Meshes[0].Textures = new[] { runic };
             sphere.Meshes[0].Textures = new[] { runic };
+            box.Meshes[0].Textures = new[] { runic };
+            //car.Meshes[1].Textures = new[] { GameTexture.Load("textures/car.png") };
 
             Matrix4.CreatePerspectiveFieldOfView(ToRadians(60), 4f / 3f, 0.1f, 1000f, out Matrix4 projection);
 
@@ -76,7 +79,7 @@ namespace GameEngine
             Camera c = new Camera(projection, Vector3.Zero);
             c.AddComponent(new AudioListener());
             c.Rotate(Vector3.UnitX, ToRadians(-40));
-            c.Translate(new Vector3(0, 6, 7));
+            c.Translate(new Vector3(0, 60, 70));
 
             GameObject planeObj = new GameObject(Vector3.UnitZ * 2, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
@@ -85,33 +88,19 @@ namespace GameEngine
             planeObj.AddComponent(new RotateAroundComponent());
             planeObj.AddComponent(new AudioSourceComponent());
 
-            GameObject sphereObj = new GameObject(Vector3.UnitY * 5 + Vector3.UnitX * 0.3f, "Sphere");
-            sphereObj.Scale(new Vector3(1f));
-            sphereObj.AddComponent(new MeshRendererComponent(shader, sphere, 0));
-            sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 1, 1));
-
-            GameObject sphereObj1 = new GameObject(Vector3.UnitY, "Sphere");
-            sphereObj1.Scale(new Vector3(0.4f));
-            sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f, 1, 1));
-            sphereObj1.AddComponent(new MeshRendererComponent(shader, sphere, 0));
-
-            GameObject boxObj = new GameObject(Vector3.UnitZ * 0.2f + Vector3.UnitY * 7, "Box");
-            boxObj.Scale(new Vector3(0.4f));
-            boxObj.AddComponent(new ColliderComponent(ColliderType.BOX, 1f, 1, 1));
-            boxObj.AddComponent(new MeshRendererComponent(shader, box, 0));
-
+            GameObject bgObj = new GameObject(Vector3.Zero, "BG");
+            bgObj.Scale(new Vector3(100, 1, 100));
+            bgObj.AddComponent(new MeshRendererComponent(shader, box, 0));
 
 
             World.Add(planeObj);
-            World.Add(sphereObj);
-            World.Add(sphereObj1);
-            World.Add(boxObj);
             World.Add(c);
+            World.Add(bgObj);
             World.SetCamera(c);
             World.Add(uiContainer);
 
             Renderer.ClearColor = new Color((int)(0.2f * 255), (int)(0.3f * 255), (int)(255 * 0.3f), 255);
-            Console.ReadLine();
+         
         }
     }
 }

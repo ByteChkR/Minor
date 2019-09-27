@@ -12,6 +12,7 @@ using MinorEngine.engine.rendering;
 using OpenCl.DotNetCore.Memory;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using Random = System.Random;
 
 namespace MinorEngine.components
 {
@@ -21,6 +22,7 @@ namespace MinorEngine.components
         private MeshRendererComponent renderer;
         private ShaderProgram _runicShader;
         private GameModel sphere, box;
+
         public TextureChanger(GameWindow window)
         {
 
@@ -38,6 +40,7 @@ namespace MinorEngine.components
                     {ShaderType.FragmentShader, "shader/texture.fs"},
                     {ShaderType.VertexShader, "shader/texture.vs"},
                 }, out _runicShader);
+
 
                 sphere = new GameModel("models/sphere_smooth.obj");
                 box = new GameModel("models/cube_flat.obj");
@@ -154,24 +157,47 @@ namespace MinorEngine.components
             }
             else if (e.KeyChar == 'g')
             {
-                GameObject sphereObj = new GameObject(Vector3.UnitY * 5 + Vector3.UnitX * 0.3f, "Sphere");
-                sphereObj.Scale(new Vector3(1f));
-                sphereObj.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
-                sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 2, 2));
+                Random rnd = new Random();
+                for (int i = 0; i < 50 * 50; i++)
+                {
 
-                GameObject sphereObj1 = new GameObject(Vector3.UnitY, "Sphere");
-                sphereObj1.Scale(new Vector3(0.4f));
-                sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f, 2, 2));
-                sphereObj1.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
+                    Vector3 pos = new Vector3((float)rnd.NextDouble(), 3+(float)rnd.NextDouble(), (float)rnd.NextDouble());
+                    pos -= Vector3.One * 0.5f;
+                    pos *= 50;
 
-                GameObject boxObj = new GameObject(Vector3.UnitZ * 0.2f + Vector3.UnitY * 7, "Box");
-                boxObj.Scale(new Vector3(0.4f));
-                ColliderComponent cc = new ColliderComponent(ColliderType.BOX, 1f, 2, 2);
-                boxObj.AddComponent(cc);
-                boxObj.AddComponent(new MeshRendererComponent(_runicShader, box, 0));
-                Owner.World.Add(boxObj);
-                Owner.World.Add(sphereObj);
-                Owner.World.Add(sphereObj1);
+                    GameObject obj = new GameObject(pos, "Sphere");
+                    float radius = 0.3f + (float)rnd.NextDouble();
+                    obj.Scale(new Vector3(radius));
+                    if (rnd.Next(0, 2) == 1)
+                    {
+                        obj.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
+                        obj.AddComponent(new ColliderComponent(ColliderType.SPHERE, radius, 1, 1));
+                    }
+                    else
+                    {
+                        obj.AddComponent(new ColliderComponent(ColliderType.BOX, radius, 1, 1));
+                        obj.AddComponent(new MeshRendererComponent(_runicShader, box, 0));
+
+                    }
+                    Owner.World.Add(obj);
+                }
+                //GameObject sphereObj = new GameObject(Vector3.UnitX * 2f + Vector3.UnitY * 17, "Sphere");
+                //sphereObj.Scale(new Vector3(1f));
+                //sphereObj.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
+                //sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 1, 1));
+
+                //GameObject sphereObj1 = new GameObject(-Vector3.UnitX * 2f + Vector3.UnitY * 17, "Sphere");
+                //sphereObj1.Scale(new Vector3(0.4f));
+                //sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f, 1, 1));
+                //sphereObj1.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
+
+                //GameObject boxObj = new GameObject(Vector3.UnitX * 2f + Vector3.UnitY * 17, "Box");
+                //boxObj.Scale(new Vector3(0.5f));
+                //boxObj.AddComponent(new ColliderComponent(ColliderType.BOX, 0.5f, 1, 1));
+                //boxObj.AddComponent(new MeshRendererComponent(_runicShader, box, 0));
+                //Owner.World.Add(boxObj);
+                //Owner.World.Add(sphereObj);
+                //Owner.World.Add(sphereObj1);
             }
         }
     }

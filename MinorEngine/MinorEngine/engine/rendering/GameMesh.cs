@@ -48,6 +48,17 @@ namespace MinorEngine.engine.rendering
 
         }
 
+        public Vector3[] ToSequentialVertexList()
+        {
+            Vector3[] verts = new Vector3[_indices.Length];
+            for (int i = 0; i < _indices.Length; i++)
+            {
+                verts[i] = _vertices[_indices[i]].Position;
+            }
+
+            return verts;
+        }
+
         public void Draw(ShaderProgram prog)
         {
 

@@ -29,7 +29,7 @@ namespace GameEngine.engine.physics
             //Note that you can also control the order of internal stage execution using a different ITimestepper implementation.
             //For the purposes of this demo, we just use the default by passing in nothing (which happens to be PositionFirstTimestepper at the time of writing).
             _simulation = Simulation.Create(bufferPool, new NarrowPhase(), new PoseIntegrator(new Vector3(0, -10, 0)));
-
+            
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace GameEngine.engine.physics
             Layer.DisableCollision(ref thisLayer, ref otherLayer);
         }
 
-        internal static BodyReference AddBoxDynamic(float mass, Vector3 position, Vector3 dimensions, ColliderComponent comp)
+        internal static BodyReference AddBoxDynamic(float mass, Vector3 position, Vector3 dimensions)
         {
             Box b = new Box(dimensions.X, dimensions.Y, dimensions.Z);
             b.ComputeInertia(1, out var boxIntertia);
@@ -113,6 +113,16 @@ namespace GameEngine.engine.physics
                     new BodyActivityDescription(0.01f)));
 
 
+            return _simulation.Bodies.GetBodyReference(handle);
+        }
+
+        internal static BodyReference AddMeshDynamic(float mass, Vector3 position, Mesh mesh)
+        {
+            mesh.ComputeClosedInertia(mass, out var intertia);
+            int handle = _simulation.Bodies.Add(
+                BodyDescription.CreateDynamic(position, intertia,
+                    new CollidableDescription(_simulation.Shapes.Add(mesh), 0.1f),
+                    new BodyActivityDescription(0.01f)));
             return _simulation.Bodies.GetBodyReference(handle);
         }
 
@@ -128,7 +138,7 @@ namespace GameEngine.engine.physics
             _simulation.Timestep(deltaTime);
         }
 
-        internal static BodyReference AddSphereDynamic(float mass, Vector3 position, float radius, ColliderComponent comp)
+        internal static BodyReference AddSphereDynamic(float mass, Vector3 position, float radius)
         {
             //Drop a ball on a big static box.
             var sphere = new Sphere(radius);
