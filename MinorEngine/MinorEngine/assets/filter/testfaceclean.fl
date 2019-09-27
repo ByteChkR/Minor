@@ -6,7 +6,7 @@ PlainPerlin:
 	setvalf 1
 	setactive 0 1 2
 	random
-	perlin 0.7 6 //There are "baked" functions like noises
+	perlin 0.7 6 #There are "baked" functions like noises
 
 Main:
 	set maintexture
