@@ -19,9 +19,8 @@ namespace MinorEngine.engine.rendering
             1.0f,  1.0f,  1.0f, 1.0f
         };
 
-        private static bool _init = false;
+        private static bool _init;
         private static int _screenVAO;
-        private static int _screenVBO;
         private static RenderTarget _screenTarget = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
         private static ShaderProgram _mergeShader;
         private static ShaderProgram _screenShader;
@@ -31,7 +30,7 @@ namespace MinorEngine.engine.rendering
 
             _init = true;
             _screenVAO = GL.GenVertexArray();
-            _screenVBO = GL.GenBuffer();
+            int _screenVBO = GL.GenBuffer();
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
@@ -62,7 +61,10 @@ namespace MinorEngine.engine.rendering
         }
         public static void MergeAndDisplayTargets(List<RenderTarget> targets)
         {
-            if (!_init) Init();
+            if (!_init)
+            {
+                Init();
+            }
 
 
 

@@ -21,22 +21,24 @@ using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 namespace GameEngine.engine.ui
 {
 
-    public struct Character
+    public class Character
     {
         public int GlTexture { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public float BearingX { get; set; }
-        public float BearingY;
+        public float BearingY { get; set; }
         public float Advance { get; set; }
     }
 
     public class UITextRendererComponent : UIRendererComponent
     {
-        private FontFace ff;
-        private Dictionary<char, Character> _fontAtlas = new Dictionary<char, Character>();
-        private int vbo, vao;
-        private int scrW, scrH;
+        private readonly FontFace ff;
+        private readonly Dictionary<char, Character> _fontAtlas = new Dictionary<char, Character>();
+        private int vbo;
+        private readonly int vao;
+        private readonly int scrW;
+        private readonly int scrH;
         public string Text { get; set; } = "HELLO";
 
         public UITextRendererComponent(string fontPath, int fontSize,  ShaderProgram shader) : base(null, shader)
@@ -48,7 +50,10 @@ namespace GameEngine.engine.ui
             for (int i = 0; i < ushort.MaxValue; i++)
             {
                 Glyph g = ff.GetGlyph(new CodePoint(i), fontSize);
-                if (g == null) continue;
+                if (g == null)
+                {
+                    continue;
+                }
                 this.Log("Creating GL Texture from Character: " + (char)i, DebugChannel.Log);
 
                 byte[] buf = new byte[g.RenderWidth * g.RenderHeight];
@@ -130,8 +135,6 @@ namespace GameEngine.engine.ui
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
 
-            //GL.EnableVertexAttribArray(0);
-            //GL.VertexAttribPointer(0, 4, VertexAttribPointerType.Float, false, 4 * sizeof(float), 0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
 
@@ -139,9 +142,7 @@ namespace GameEngine.engine.ui
 
         public override void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            //base.Render(modelMat, viewMat, projMat);
-            //return;
-            //base.Render(modelMat, viewMat, projMat);
+            
             if (Shader != null)
             {
                 GL.Enable(EnableCap.Blend);
@@ -186,7 +187,8 @@ namespace GameEngine.engine.ui
                             verts);
 
                         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-                        ErrorCode ec = GL.GetError();
+                        
+                        
                     }
                     x += chr.Advance / scrW * Scale.X;
 

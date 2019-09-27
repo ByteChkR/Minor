@@ -62,7 +62,7 @@ namespace GameEngine.engine.rendering
 
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return RenderedTexture.GetHashCode() ^ FrameBuffer.GetHashCode() ^ DepthBuffer.GetHashCode();
         }
 
         public override bool Equals(object obj)
@@ -83,7 +83,7 @@ namespace GameEngine.engine.rendering
             }
             return left.Equals(right);
         }
-        public static bool operator > (RenderTarget left, RenderTarget right)
+        public static bool operator >(RenderTarget left, RenderTarget right)
         {
             return left.CompareTo(right) > 0;
         }

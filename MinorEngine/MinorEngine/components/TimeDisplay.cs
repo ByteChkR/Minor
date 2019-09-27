@@ -7,7 +7,7 @@ namespace MinorEngine.components
     public class TimeDisplay : AbstractComponent
     {
         private UITextRendererComponent tr;
-        private float time = 0;
+        private float time;
         public override void Update(float deltaTime)
         {
             time += deltaTime;

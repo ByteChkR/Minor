@@ -10,8 +10,8 @@ namespace MinorEngine.engine.rendering
 {
     public class Renderer
     {
-        public readonly List<RenderTarget> Targets = new List<RenderTarget>();
-        public int CurrentTarget { get; private set; }
+        private readonly List<RenderTarget> Targets = new List<RenderTarget>();
+        private int CurrentTarget { get; set; }
         private Color _clearColor = Color.Black;
         public Color ClearColor
         {
