@@ -23,7 +23,8 @@ namespace MinorEngine.engine.rendering
             {
 
                 program.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
-                string code = File.ReadAllText(shader.Value);
+
+                string code = TextProcessorAPI.PreprocessSource(shader.Value, null);//File.ReadAllText(shader.Value);
                 bool r = TryCompileShader(shader.Key, code, out int id);
                 ret &= r;
                 if (r)

@@ -86,7 +86,19 @@ namespace MinorEngine.components
                     {
                         filename = Console.ReadLine();
                     }
-                    _fli = new FilterLanguage.Interpreter(filename, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, _db);
+
+                    if (_fli == null)
+                    {
+                        _fli = new FilterLanguage.Interpreter(filename,
+                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
+                            512, 1, 4, _db);
+                    }
+                    else
+                    {
+                        _fli.Reset(filename,
+                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
+                            512, 1, 4, _db);
+                    }
                 }
 
                 FilterLanguage.Interpreter.InterpreterStepResult res = new FilterLanguage.Interpreter.InterpreterStepResult();

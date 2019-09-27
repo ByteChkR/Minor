@@ -18,7 +18,8 @@ namespace GameEngine
                 Mode = gm,
                 Width = 1334,
                 Height = 1000,
-                Title = "Test"
+                Title = "Test",
+                PhysicsThreadCount = 4
             };
 
             DemoScene demo = new DemoScene(es);

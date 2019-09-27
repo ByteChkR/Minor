@@ -26,10 +26,12 @@ namespace FilterLanguage
         /// </summary>
         private const string DefineKey = "--define texture ";
 
+        private const string ScriptDefineKey = "--define script ";
+
         /// <summary>
         /// Everything past this string gets ignored by the interpreter
         /// </summary>
-        private const string CommentPrefix = "//";
+        private const string CommentPrefix = "#";
 
         /// <summary>
         /// The function name that is used as the starting function
@@ -66,6 +68,165 @@ namespace FilterLanguage
         /// A delegate used for special functions in the interpreter
         /// </summary>
         private delegate void FlFunction();
+
+        private delegate void DefineHandler(string[] arg);
+
+        #region Define Handler
+
+
+        void DefineScript(string[] arg)
+        {
+            if (arg.Length < 2)
+            {
+                this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Invalid Define statement"));
+            }
+            string varname = arg[0].Trim();
+            if (_definedBuffers.ContainsKey(varname))
+            {
+                this.Log("Overwriting " + varname, DebugChannel.Warning);
+                _definedBuffers.Remove(varname);
+            }
+
+            string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+
+            string filename = args[0].Trim();
+
+
+
+            if (IsSurroundedBy(filename, FilepathIndicator))
+            {
+                this.Log("Loading SubScript...", DebugChannel.Log);
+
+                MemoryBuffer buf =
+                    CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
+                Interpreter interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height, _depth, _channelCount, _kernelDb, true);
+
+                do
+                {
+                    interpreter.Step();
+                } while (!interpreter.Terminated);
+
+               
+                _definedBuffers.Add(varname, interpreter.GetResultBuffer());
+            }
+            else
+            {
+                this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Not a valid filepath as argument."));
+            }
+        }
+        void DefineTexture(string[] arg)
+        {
+            if (arg.Length < 2)
+            {
+                this.Crash(new FL_InvalidFunctionUse(DefineKey, "Invalid Define statement"));
+            }
+            string varname = arg[0].Trim();
+
+
+            if (_definedBuffers.ContainsKey(varname))
+            {
+                this.Log("Overwriting " + varname, DebugChannel.Warning);
+                _definedBuffers.Remove(varname);
+            }
+
+            MemoryFlag flags = MemoryFlag.ReadWrite;
+            string[] flagTest = varname.Split(' ');
+            if (flagTest.Length > 1)
+            {
+                varname = flagTest[1];
+                if (flagTest[0] == "r")
+                {
+                    flags = MemoryFlag.ReadOnly;
+                }
+
+                else if (flagTest[0] == "w")
+                {
+                    flags = MemoryFlag.WriteOnly;
+                }
+            }
+
+            string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+
+            string filename = args[0].Trim();
+
+
+
+            if (IsSurroundedBy(filename, FilepathIndicator))
+            {
+
+                Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
+                _definedBuffers.Add(varname,
+                    CL.CreateFromImage(bmp,
+                        MemoryFlag.CopyHostPointer | flags));
+            }
+            else if (filename == "random")
+            {
+                MemoryBuffer buf = CL.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                CL.WriteRandom(buf, randombytesource, _activeChannels);
+                _definedBuffers.Add(varname, buf);
+            }
+            else if (filename == "empty")
+            {
+                _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.CopyHostPointer | flags));
+            }
+            else if (filename == "wfc")
+            {
+                if (args.Length < 10)
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement" );
+                }
+                if (!int.TryParse(args[2], out int n))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid N argument");
+                }
+                if (!int.TryParse(args[3], out int width))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid width argument");
+                }
+                if (!int.TryParse(args[4], out int height))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid height argument");
+                }
+                if (!bool.TryParse(args[5], out bool periodicInput))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid periodicInput argument");
+                }
+                if (!bool.TryParse(args[6], out bool periodicOutput))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid periodicOutput argument");
+                }
+                if (!int.TryParse(args[7], out int symetry))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid symmetry argument");
+                }
+                if (!int.TryParse(args[8], out int ground))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid ground argument");
+                }
+                if (!int.TryParse(args[9], out int limit))
+                {
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid limit argument");
+                }
+
+                WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
+
+                wfc.Run(limit);
+
+                Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(this._width, this._height)); //Apply scaling
+                _definedBuffers.Add(varname,
+                    CL.CreateFromImage(bmp,
+                        MemoryFlag.CopyHostPointer | flags));
+            }
+            else
+            {
+                throw new InvalidOperationException("Can not resolve symbol: " + varname);
+            }
+        }
+
+
+        #endregion
 
         /// <summary>
         /// A random that is used to provide random bytes
@@ -210,7 +371,7 @@ namespace FilterLanguage
         {
             get
             {
-                int idx = _source.IndexOf(EntrySignature+FunctionNamePostfix);
+                int idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
                 if (idx == -1 || _source.Count - 1 == idx)
                 {
                     throw new FL_InvalidEntyPoint("There needs to be a main function.");
@@ -415,7 +576,7 @@ namespace FilterLanguage
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder), false) { }
-        
+
         /// <summary>
         /// A public constructor
         /// </summary>
@@ -486,7 +647,8 @@ namespace FilterLanguage
 
             LoadSource(file);
 
-            ParseDefines();
+            ParseDefines(ScriptDefineKey, DefineScript);
+            ParseDefines(DefineKey, DefineTexture);
             ParseJumpLocations();
 
             Reset();
@@ -709,120 +871,16 @@ namespace FilterLanguage
         /// <summary>
         /// Finds, Parses and Loads all define statements
         /// </summary>
-        private void ParseDefines()
+        private void ParseDefines(string key, DefineHandler handler)
         {
             for (int i = _source.Count - 1; i >= 0; i--)
             {
-                if (_source[i].StartsWith(DefineKey))
+                if (_source[i].StartsWith(key))
                 {
-                    string[] kvp = _source[i].Remove(0, DefineKey.Length).Split(FunctionNamePostfix);
-                    if (kvp.Length < 2)
-                    {
-                        this.Crash(new FL_InvalidFunctionUse(DefineKey, "Invalid Define statement at line " + i));
-                    }
-                    string varname = kvp[0].Trim();
+                    string[] kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
 
-
-                    if (_definedBuffers.ContainsKey(varname))
-                    {
-                        this.Log("Overwriting " + varname, DebugChannel.Warning);
-                        _definedBuffers.Remove(varname);
-                    }
-
-                    MemoryFlag flags = MemoryFlag.ReadWrite;
-                    string[] flagTest = varname.Split(' ');
-                    if (flagTest.Length > 1)
-                    {
-                        varname = flagTest[1];
-                        if (flagTest[0] == "r")
-                        {
-                            flags = MemoryFlag.ReadOnly;
-                        }
-
-                        else if (flagTest[0] == "w")
-                        {
-                            flags = MemoryFlag.WriteOnly;
-                        }
-                    }
-
-                    string[] args = kvp[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
-
-
-                    string filename = args[0].Trim();
-
-
-
-                    if (IsSurroundedBy(filename, FilepathIndicator))
-                    {
-
-                        Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
-                        _definedBuffers.Add(varname,
-                            CL.CreateFromImage(bmp,
-                                MemoryFlag.CopyHostPointer | flags));
-                    }
-                    else if (filename == "random")
-                    {
-                        MemoryBuffer buf = CL.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
-                        CL.WriteRandom(buf, randombytesource, _activeChannels);
-                        _definedBuffers.Add(varname, buf);
-                    }
-                    else if (filename == "empty")
-                    {
-                        _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.CopyHostPointer | flags));
-                    }
-                    else if (filename == "wfc")
-                    {
-                        if (args.Length < 10)
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement at line " + i);
-                        }
-                        if (!int.TryParse(args[2], out int n))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid N argument");
-                        }
-                        if (!int.TryParse(args[3], out int width))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid width argument");
-                        }
-                        if (!int.TryParse(args[4], out int height))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid height argument");
-                        }
-                        if (!bool.TryParse(args[5], out bool periodicInput))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid periodicInput argument");
-                        }
-                        if (!bool.TryParse(args[6], out bool periodicOutput))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid periodicOutput argument");
-                        }
-                        if (!int.TryParse(args[7], out int symetry))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid symmetry argument");
-                        }
-                        if (!int.TryParse(args[8], out int ground))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid ground argument");
-                        }
-                        if (!int.TryParse(args[9], out int limit))
-                        {
-                            throw new FL_InvalidFunctionUse("wfc", "Invalid limit argument");
-                        }
-
-                        WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
-
-                        wfc.Run(limit);
-
-                        Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(this._width, this._height)); //Apply scaling
-                        _definedBuffers.Add(varname,
-                            CL.CreateFromImage(bmp,
-                                MemoryFlag.CopyHostPointer | flags));
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("Can not resolve symbol: " + varname + " in line " + i);
-                    }
-
+                    handler?.Invoke(kvp);
+                    _source.RemoveAt(i);
                 }
             }
         }

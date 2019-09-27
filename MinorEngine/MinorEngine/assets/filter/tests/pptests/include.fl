@@ -1,0 +1,6 @@
+PlainPerlin:
+	setactive 0 1 2
+	#Initializes the active buffer with random data
+ 	random
+	#Parameters are separated with spaces.
+	perlin 0.7 6 #There are "baked" functions like noises

@@ -5,8 +5,10 @@ using System.Runtime.CompilerServices;
 using BepuPhysics;
 using BepuPhysics.Collidables;
 using BepuPhysics.CollisionDetection;
+using BepuUtilities;
 using BepuUtilities.Memory;
 using MinorEngine.components;
+using MinorEngine.engine.core;
 using MinorEngine.engine.physics.callbacks;
 using NarrowPhase = MinorEngine.engine.physics.callbacks.NarrowPhase;
 using Quaternion = BepuUtilities.Quaternion;
@@ -22,6 +24,7 @@ namespace GameEngine.engine.physics
         public static BodyProperty<Layer> CollisionFilters { get; set; }
         public static List<Layer> LayerList { get; } = new List<Layer>();
         public static Vector3 Gravity { get; set; } = new Vector3(0, -10, 0);
+        private static IThreadDispatcher ThreadDispatcher { get; set; } = null;
         public static void Init()
         {
             //The buffer pool is a source of raw memory blobs for the engine to use.
@@ -29,7 +32,7 @@ namespace GameEngine.engine.physics
             //Note that you can also control the order of internal stage execution using a different ITimestepper implementation.
             //For the purposes of this demo, we just use the default by passing in nothing (which happens to be PositionFirstTimestepper at the time of writing).
             _simulation = Simulation.Create(bufferPool, new NarrowPhase(), new PoseIntegrator());
-
+            ThreadDispatcher = new ThreadDispatcher(AbstractGame.Instance.Settings.PhysicsThreadCount);
         }
 
         /// <summary>
@@ -135,7 +138,7 @@ namespace GameEngine.engine.physics
 
         public static void Update(float deltaTime)
         {
-            _simulation.Timestep(deltaTime);
+            _simulation.Timestep(deltaTime, ThreadDispatcher);
         }
 
         internal static BodyReference AddSphereDynamic(float mass, Vector3 position, float radius)
