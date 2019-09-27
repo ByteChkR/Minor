@@ -33,7 +33,6 @@ namespace GameEngine
             GameModel plane = new GameModel("models/plane.obj");
 
             GameTexture runic = GameTexture.Load("textures/runicfloor.png");
-            GameTexture face = GameTexture.Load("textures/TEST.png");
             plane.Meshes[0].Textures = new[] { runic };
             sphere.Meshes[0].Textures = new[] { runic };
 
