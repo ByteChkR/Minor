@@ -103,7 +103,7 @@ namespace GameEngine.engine.ui
 
                     bmp.UnlockBits(data);
 
-                    bmp.Save("fontExport/" + i + "_font.png");
+                    //bmp.Save("fontExport/" + i + "_font.png");
                 }
                 else
                 {
