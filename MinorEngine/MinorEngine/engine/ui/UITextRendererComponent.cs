@@ -33,9 +33,8 @@ namespace GameEngine.engine.ui
 
     public class UITextRendererComponent : UIRendererComponent
     {
-        private readonly FontFace ff;
         private readonly Dictionary<char, Character> _fontAtlas = new Dictionary<char, Character>();
-        private int vbo;
+        private readonly int vbo;
         private readonly int vao;
         private readonly int scrW;
         private readonly int scrH;
@@ -43,7 +42,7 @@ namespace GameEngine.engine.ui
 
         public UITextRendererComponent(string fontPath, int fontSize,  ShaderProgram shader) : base(null, shader)
         {
-            ff = new FontFace(File.OpenRead(fontPath));
+            FontFace ff = new FontFace(File.OpenRead(fontPath));
             int glTex;
             scrW = AbstractGame.Instance.Settings.Width;
             scrH = AbstractGame.Instance.Settings.Height;

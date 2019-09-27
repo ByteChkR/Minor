@@ -72,7 +72,7 @@ namespace MinorEngine.engine.rendering
             //To Merge i need a vertex and fragment shader that can iterate over variable amounts of samplers(Can start out with 2)
         }
 
-        public void Render(int PassMask, World world, ICamera cam)
+        public static void Render(int PassMask, World world, ICamera cam)
         {
 
             Render(PassMask, world, world, cam, true);

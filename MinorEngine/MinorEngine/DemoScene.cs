@@ -57,16 +57,9 @@ namespace GameEngine
                 Scale = new Vector2(2f, 2f)
             };
 
-            UIRendererComponent uiElement = new UIRendererComponent(face, null)
-            {
-                Position = new Vector2(0.2f, 0.2f),
-                Scale = new Vector2(0.2f, 0.2f)
-            };
-
             GameObject uiContainer = new GameObject("UIContainer");
             uiContainer.AddComponent(uitElement);
             uiContainer.AddComponent(new TimeDisplay());
-            //uiContainer.AddComponent(new UIMovingComponent());
             Camera c = new Camera(projection, Vector3.Zero);
             c.AddComponent(new AudioListener());
             c.Rotate(Vector3.UnitX, ToRadians(-40));

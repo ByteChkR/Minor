@@ -91,6 +91,16 @@ namespace GameEngine.engine.rendering
         {
             return left.CompareTo(right) < 0;
         }
+
+        public static bool operator >=(RenderTarget left, RenderTarget right)
+        {
+            return left.CompareTo(right) > 0;
+        }
+        public static bool operator <=(RenderTarget left, RenderTarget right)
+        {
+            return left.CompareTo(right) < 0;
+        }
+
         public static bool operator !=(RenderTarget left, RenderTarget right)
         {
             return !(left == right);
