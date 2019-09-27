@@ -5,6 +5,7 @@ using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.rendering;
 using OpenTK;
+using Quaternion = BepuUtilities.Quaternion;
 
 namespace MinorEngine.engine.core
 {
@@ -190,6 +191,11 @@ namespace MinorEngine.engine.core
         public void Rotate(Vector3 axis, float angle)
         {
             Transform *= Matrix4.CreateFromAxisAngle(axis, angle);
+        }
+
+        public void SetRotation(Quaternion rot)
+        {
+            Transform = Matrix4.CreateFromQuaternion(new OpenTK.Quaternion(rot.X, rot.Y, rot.Z, rot.W)) * Transform.ClearRotation();
         }
 
         public Matrix4 GetWorldTransform()

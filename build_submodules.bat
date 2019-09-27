@@ -12,6 +12,9 @@ echo Setting up opencl-dotnet:
 
 dotnet restore opencl-dotnet/
 
+echo Setting up BepuPhysics2
+
+dotnet restore bepuphysics2/Library.sln
 
 echo Building ADL Project:
 
@@ -21,6 +24,10 @@ dotnet build ADL/ADL/ADL.Network.Client/ADL.Network.Client.csproj -c Release
 dotnet build ADL/ADL/ADL.Network.Server/ADL.Network.Server.csproj -c Release
 dotnet build ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj -c Release
 dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c Release
+
+echo Building BepuPhysics2 Physics Engine
+
+dotnet build bepuphysics2/Library.sln -c Release
 
 echo Building ext-pp Project:
 

@@ -46,6 +46,7 @@ namespace GameEngine.engine.ui
             int glTex;
             scrW = AbstractGame.Instance.Settings.Width;
             scrH = AbstractGame.Instance.Settings.Height;
+            this.Log("Reading Character Glyphs from " + fontPath, DebugChannel.Log);
             for (int i = 0; i < ushort.MaxValue; i++)
             {
                 Glyph g = ff.GetGlyph(new CodePoint(i), fontSize);
@@ -53,7 +54,6 @@ namespace GameEngine.engine.ui
                 {
                     continue;
                 }
-                this.Log("Creating GL Texture from Character: " + (char)i, DebugChannel.Log);
 
                 byte[] buf = new byte[g.RenderWidth * g.RenderHeight];
                 GCHandle handle = GCHandle.Alloc(buf, GCHandleType.Pinned);

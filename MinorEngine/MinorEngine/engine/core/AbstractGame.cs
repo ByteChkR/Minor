@@ -1,5 +1,6 @@
 ﻿using System;
 using Common;
+using GameEngine.engine.physics;
 using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics;
@@ -23,7 +24,6 @@ namespace MinorEngine.engine.core
         protected GameWindow Window;
         public EngineSettings Settings { get; private set; }
         public static AbstractGame Instance { get; private set; }
-
         public AbstractGame(EngineSettings settings)
         {
             Instance = this;
@@ -39,8 +39,6 @@ namespace MinorEngine.engine.core
             initializeRenderer();
             initializeWorld();
             initializeScene();
-
-            
         }
 
         private void initializeWindow()
@@ -89,7 +87,8 @@ namespace MinorEngine.engine.core
 
         protected virtual void Update(object sender, FrameEventArgs e)
         {
-
+            
+            
             World.Update((float)e.Time);
 
 

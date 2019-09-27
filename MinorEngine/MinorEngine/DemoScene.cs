@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using GameEngine.engine.physics;
 using GameEngine.engine.ui;
 using MinorEngine.components;
 using MinorEngine.engine.audio;
@@ -23,14 +24,27 @@ namespace GameEngine
             return MathF.PI * angle / 180;
         }
 
+        protected override void Update(object sender, FrameEventArgs e)
+        {
+            SimpleSelfContainedDemo.Update((float)e.Time);
+            base.Update(sender, e);
+        }
+
         protected override void initializeScene()
         {
             base.initializeScene();
+
+
+            SimpleSelfContainedDemo.Init();
+            SimpleSelfContainedDemo.AddBoxStatic(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(100, 1, 100));
+
+
 
             AudioManager.Initialize();
 
             GameModel sphere = new GameModel("models/sphere_smooth.obj");
             GameModel plane = new GameModel("models/plane.obj");
+            GameModel box = new GameModel("models/cube_flat.obj");
 
             GameTexture runic = GameTexture.Load("textures/runicfloor.png");
             plane.Meshes[0].Textures = new[] { runic };
@@ -50,7 +64,7 @@ namespace GameEngine
                 {ShaderType.VertexShader, "shader/UITextRender.vs"},
             }, out ShaderProgram textShader);
 
-            UITextRendererComponent uitElement=new UITextRendererComponent("fonts/font.ttf", 85, textShader)
+            UITextRendererComponent uitElement = new UITextRendererComponent("fonts/font.ttf", 85, textShader)
             {
                 Position = new Vector2(-0.5f, 0.43f),
                 Scale = new Vector2(2f, 2f)
@@ -64,28 +78,41 @@ namespace GameEngine
             c.Rotate(Vector3.UnitX, ToRadians(-40));
             c.Translate(new Vector3(0, 6, 7));
 
-            GameObject planeObj = new GameObject(Vector3.UnitZ*2, "Plane");
+            GameObject planeObj = new GameObject(Vector3.UnitZ * 2, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
             planeObj.AddComponent(new MeshRendererComponent(shader, plane, 0));
             planeObj.AddComponent(new TextureChanger(Window));
             planeObj.AddComponent(new RotateAroundComponent());
             planeObj.AddComponent(new AudioSourceComponent());
 
-            GameObject sphereObj = new GameObject(Vector3.Zero, "Sphere");
-            sphereObj.Scale(new Vector3(2.5f, 2.5f, 2.5f));
-            sphereObj.AddComponent(new RotatingComponent());
+            GameObject sphereObj = new GameObject(Vector3.UnitY * 5 + Vector3.UnitX * 0.3f, "Sphere");
+            sphereObj.Scale(new Vector3(1f));
+            //sphereObj.AddComponent(new RotatingComponent());
             sphereObj.AddComponent(new MeshRendererComponent(shader, sphere, 0));
+            sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f));
+
+            GameObject sphereObj1 = new GameObject(Vector3.UnitY, "Sphere");
+            sphereObj1.Scale(new Vector3(0.4f));
+            sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f));
+            sphereObj1.AddComponent(new MeshRendererComponent(shader, sphere, 0));
+
+            GameObject boxObj = new GameObject(Vector3.UnitZ * 0.2f + Vector3.UnitY * 7, "Box");
+            boxObj.Scale(new Vector3(0.4f));
+            boxObj.AddComponent(new ColliderComponent(ColliderType.BOX, 1f));
+            boxObj.AddComponent(new MeshRendererComponent(shader, box, 0));
 
 
 
             World.Add(planeObj);
             World.Add(sphereObj);
+            World.Add(sphereObj1);
+            World.Add(boxObj);
             World.Add(c);
             World.SetCamera(c);
             World.Add(uiContainer);
 
             Renderer.ClearColor = new Color((int)(0.2f * 255), (int)(0.3f * 255), (int)(255 * 0.3f), 255);
-
+            Console.ReadLine();
         }
     }
 }
