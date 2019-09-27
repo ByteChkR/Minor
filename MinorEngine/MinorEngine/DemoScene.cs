@@ -26,7 +26,7 @@ namespace GameEngine
 
         protected override void Update(object sender, FrameEventArgs e)
         {
-            SimpleSelfContainedDemo.Update((float)e.Time);
+            Physics.Update((float)e.Time);
             base.Update(sender, e);
         }
 
@@ -35,8 +35,8 @@ namespace GameEngine
             base.initializeScene();
 
 
-            SimpleSelfContainedDemo.Init();
-            SimpleSelfContainedDemo.AddBoxStatic(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(100, 1, 100));
+            Physics.Init();
+            Physics.AddBoxStatic(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(100, 1, 100), 1, 3);
 
 
 
@@ -89,16 +89,16 @@ namespace GameEngine
             sphereObj.Scale(new Vector3(1f));
             //sphereObj.AddComponent(new RotatingComponent());
             sphereObj.AddComponent(new MeshRendererComponent(shader, sphere, 0));
-            sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f));
+            sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 1, 1));
 
             GameObject sphereObj1 = new GameObject(Vector3.UnitY, "Sphere");
             sphereObj1.Scale(new Vector3(0.4f));
-            sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f));
+            sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f, 1, 1));
             sphereObj1.AddComponent(new MeshRendererComponent(shader, sphere, 0));
 
             GameObject boxObj = new GameObject(Vector3.UnitZ * 0.2f + Vector3.UnitY * 7, "Box");
             boxObj.Scale(new Vector3(0.4f));
-            boxObj.AddComponent(new ColliderComponent(ColliderType.BOX, 1f));
+            boxObj.AddComponent(new ColliderComponent(ColliderType.BOX, 1f, 1, 1));
             boxObj.AddComponent(new MeshRendererComponent(shader, box, 0));
 
 

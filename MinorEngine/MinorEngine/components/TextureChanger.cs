@@ -159,16 +159,16 @@ namespace MinorEngine.components
                 GameObject sphereObj = new GameObject(Vector3.UnitY * 5 + Vector3.UnitX * 0.3f, "Sphere");
                 sphereObj.Scale(new Vector3(1f));
                 sphereObj.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
-                sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f));
+                sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 2, 2));
 
                 GameObject sphereObj1 = new GameObject(Vector3.UnitY, "Sphere");
                 sphereObj1.Scale(new Vector3(0.4f));
-                sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f));
+                sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f, 2, 2));
                 sphereObj1.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
 
                 GameObject boxObj = new GameObject(Vector3.UnitZ * 0.2f + Vector3.UnitY * 7, "Box");
                 boxObj.Scale(new Vector3(0.4f));
-                ColliderComponent cc = new ColliderComponent(ColliderType.BOX, 1f);
+                ColliderComponent cc = new ColliderComponent(ColliderType.BOX, 1f, 2, 2);
                 boxObj.AddComponent(cc);
                 boxObj.AddComponent(new MeshRendererComponent(_runicShader, box, 0));
                 Owner.World.Add(boxObj);
