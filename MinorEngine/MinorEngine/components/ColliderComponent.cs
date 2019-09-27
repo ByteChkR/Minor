@@ -16,10 +16,10 @@ namespace MinorEngine.components
     {
         private BodyReference br;
         private bool _init;
-        private ColliderType type;
-        private float radius;
-        private ushort layer = ushort.MaxValue;
-        private ushort collidable = ushort.MaxValue;
+        private readonly ColliderType type;
+        private readonly float radius;
+        private readonly ushort layer = ushort.MaxValue;
+        private readonly ushort collidable = ushort.MaxValue;
         public ColliderComponent(ColliderType type, float radius, ushort collisionLayer, ushort collidableLayers)
         {
             layer = collisionLayer;

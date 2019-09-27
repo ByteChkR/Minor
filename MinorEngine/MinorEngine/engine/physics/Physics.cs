@@ -29,7 +29,7 @@ namespace GameEngine.engine.physics
             //Note that you can also control the order of internal stage execution using a different ITimestepper implementation.
             //For the purposes of this demo, we just use the default by passing in nothing (which happens to be PositionFirstTimestepper at the time of writing).
             _simulation = Simulation.Create(bufferPool, new NarrowPhase(), new PoseIntegrator(new Vector3(0, -10, 0)));
-            
+
         }
 
         /// <summary>
@@ -41,16 +41,19 @@ namespace GameEngine.engine.physics
         /// <returns></returns>
         public static bool IsContainedInMask(int mask, int flag, bool matchType)
         {
-            if (mask == 0 && flag == 0)
-                return true; //Hidden Channel
             if (mask == 0 || flag == 0) return false; //Anti-Wildcard
             if (matchType) //If true it compares the whole mask with the whole flag(if constructed from different flags)
+            {
                 return (mask & flag) == flag;
-
+            }
             var a = GetUniqueMasksSet(flag);
             foreach (var f in a)
+            {
                 if ((mask & f) == f)
+                {
                     return true;
+                }
+            }
 
             return false;
         }
@@ -67,7 +70,10 @@ namespace GameEngine.engine.physics
             for (var i = 0; i < sizeof(int) * sizeof(byte); i++)
             {
                 var f = 1 << i;
-                if (IsContainedInMask(mask, f, true)) ret.Add(f);
+                if (IsContainedInMask(mask, f, true))
+                {
+                    ret.Add(f);
+                }
             }
 
             return ret;
@@ -105,9 +111,9 @@ namespace GameEngine.engine.physics
 
         internal static void AddBoxStatic(Vector3 position, Vector3 dimensions, ushort layer, ushort collidable)
         {
-            int i = _simulation.Statics.Add(new StaticDescription(position,
-                new CollidableDescription(_simulation.Shapes.Add(new Box(dimensions.X, dimensions.Y, dimensions.Z)),
-                    0.1f)));
+            _simulation.Statics.Add(new StaticDescription(position,
+               new CollidableDescription(_simulation.Shapes.Add(new Box(dimensions.X, dimensions.Y, dimensions.Z)),
+                   0.1f)));
         }
 
         public static void Update(float deltaTime)
@@ -130,8 +136,8 @@ namespace GameEngine.engine.physics
 
         internal static void AddBoxStatic(Vector3 position, float radius, ushort layer, ushort collidable)
         {
-            int i  = _simulation.Statics.Add(new StaticDescription(position, new CollidableDescription(_simulation.Shapes.Add(new Sphere(radius)), 0.1f)));
-            
+            _simulation.Statics.Add(new StaticDescription(position, new CollidableDescription(_simulation.Shapes.Add(new Sphere(radius)), 0.1f)));
+
         }
     }
 }

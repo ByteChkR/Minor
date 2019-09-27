@@ -7,13 +7,13 @@ namespace MinorEngine.engine.physics.callbacks
     //Note that the engine does not require any particular form of gravity- it, like all the contact callbacks, is managed by a callback.
     public struct PoseIntegrator : IPoseIntegratorCallbacks
     {
-        public Vector3 Gravity;
+        public Vector3 Gravity { get; }
         Vector3 gravityDt;
 
         /// <summary>
         /// Gets how the pose integrator should handle angular velocity integration.
         /// </summary>
-        public AngularIntegrationMode AngularIntegrationMode => AngularIntegrationMode.Nonconserving; //Don't care about fidelity in this demo!
+        public AngularIntegrationMode AngularIntegrationMode => AngularIntegrationMode.ConserveMomentum;
 
         public PoseIntegrator(Vector3 gravity) : this()
         {

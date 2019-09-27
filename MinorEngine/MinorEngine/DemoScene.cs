@@ -87,7 +87,6 @@ namespace GameEngine
 
             GameObject sphereObj = new GameObject(Vector3.UnitY * 5 + Vector3.UnitX * 0.3f, "Sphere");
             sphereObj.Scale(new Vector3(1f));
-            //sphereObj.AddComponent(new RotatingComponent());
             sphereObj.AddComponent(new MeshRendererComponent(shader, sphere, 0));
             sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 1, 1));
 

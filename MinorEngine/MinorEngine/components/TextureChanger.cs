@@ -20,8 +20,7 @@ namespace MinorEngine.components
         private AbstractAudioSource source;
         private MeshRendererComponent renderer;
         private ShaderProgram _runicShader;
-        private List<BodyReference> _physicsHandles = new List<BodyReference>();
-        private GameModel sphere, plane, box;
+        private GameModel sphere, box;
         public TextureChanger(GameWindow window)
         {
 
@@ -41,7 +40,6 @@ namespace MinorEngine.components
                 }, out _runicShader);
 
                 sphere = new GameModel("models/sphere_smooth.obj");
-                plane = new GameModel("models/plane.obj");
                 box = new GameModel("models/cube_flat.obj");
                 _init = true;
 
