@@ -10,17 +10,17 @@ namespace GameEngine.engine.physics
         /// <summary>
         /// A mask of 16 bits, each set bit representing a collision group that an object belongs to.
         /// </summary>
-        public ushort SubgroupMembership;
+        public ushort SubgroupMembership { get; set; }
 
         /// <summary>
         /// A mask of 16 bits, each set bit representing a collision group that an object can interact with.
         /// </summary>
-        public ushort CollidableSubgroups;
+        public ushort CollidableSubgroups { get; set; }
 
         /// <summary>
         /// Id of the owner of the object. Objects belonging to different groups always collide.
         /// </summary>
-        public int GroupId;
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Initializes a collision filter that collides with everything in the group.
