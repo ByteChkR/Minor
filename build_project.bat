@@ -12,7 +12,7 @@ dotnet restore MinorEngine/
 
 echo Building MinorEngine:
 
-dotnet build MinorEngine/ -c Release /unsafe
+dotnet build MinorEngine/ -c Release
 
 echo Running Tests on MinorEngine:
 
