@@ -13,7 +13,7 @@ namespace MinorEngine.engine.physics.callbacks
         /// <summary>
         /// Gets how the pose integrator should handle angular velocity integration.
         /// </summary>
-        public AngularIntegrationMode AngularIntegrationMode => AngularIntegrationMode.ConserveMomentum;
+        public AngularIntegrationMode AngularIntegrationMode => AngularIntegrationMode.Nonconserving;
 
         public PoseIntegrator(Vector3 gravity) : this()
         {

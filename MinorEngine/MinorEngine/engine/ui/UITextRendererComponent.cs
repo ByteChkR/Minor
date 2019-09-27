@@ -102,8 +102,7 @@ namespace GameEngine.engine.ui
                     GL.TextureParameter(tex, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
                     bmp.UnlockBits(data);
-
-                    //bmp.Save("fontExport/" + i + "_font.png");
+                    
                 }
                 else
                 {
