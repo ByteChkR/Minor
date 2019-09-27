@@ -1,13 +1,13 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using BepuPhysics;
+using GameEngine.engine.physics;
 
 namespace MinorEngine.engine.physics.callbacks
 {
     //Note that the engine does not require any particular form of gravity- it, like all the contact callbacks, is managed by a callback.
     public struct PoseIntegrator : IPoseIntegratorCallbacks
     {
-        public Vector3 Gravity { get; }
         Vector3 gravityDt;
 
         /// <summary>
@@ -15,10 +15,6 @@ namespace MinorEngine.engine.physics.callbacks
         /// </summary>
         public AngularIntegrationMode AngularIntegrationMode => AngularIntegrationMode.Nonconserving;
 
-        public PoseIntegrator(Vector3 gravity) : this()
-        {
-            Gravity = gravity;
-        }
 
         /// <summary>
         /// Called prior to integrating the simulation's active bodies. When used with a substepping timestepper, this could be called multiple times per frame with different time step values.
@@ -27,7 +23,7 @@ namespace MinorEngine.engine.physics.callbacks
         public void PrepareForIntegration(float dt)
         {
             //No reason to recalculate gravity * dt for every body; just cache it ahead of time.
-            gravityDt = Gravity * dt;
+            gravityDt = Physics.Gravity * dt;
         }
 
         /// <summary>

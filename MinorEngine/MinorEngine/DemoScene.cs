@@ -36,7 +36,7 @@ namespace GameEngine
 
 
             Physics.Init();
-            Physics.AddBoxStatic(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(100, 1, 100), 1, 3);
+            Physics.AddBoxStatic(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
 
 
@@ -92,7 +92,7 @@ namespace GameEngine
             planeObj.AddComponent(new AudioSourceComponent());
 
             GameObject bgObj = new GameObject(Vector3.Zero, "BG");
-            bgObj.Scale(new Vector3(100, 1, 100));
+            bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 0));
 
 

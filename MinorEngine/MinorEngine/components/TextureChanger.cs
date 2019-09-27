@@ -4,6 +4,7 @@ using System.IO;
 using BepuPhysics;
 using CLHelperLibrary;
 using Common;
+using GameEngine.engine.physics;
 using MinorEngine.engine.audio;
 using MinorEngine.engine.audio.sources;
 using MinorEngine.engine.components;
@@ -157,10 +158,15 @@ namespace MinorEngine.components
             {
                 source.Pause();
             }
+            else if (e.KeyChar == 'i')
+            {
+                Physics.Gravity *= -1;
+            }
             else if (e.KeyChar == 'g')
             {
+                int nmbrs = int.Parse(Console.ReadLine());
                 Random rnd = new Random();
-                for (int i = 0; i < 50 * 50; i++)
+                for (int i = 0; i < nmbrs; i++)
                 {
 
                     Vector3 pos = new Vector3((float)rnd.NextDouble(), 3+(float)rnd.NextDouble(), (float)rnd.NextDouble());

@@ -21,15 +21,15 @@ namespace GameEngine.engine.physics
         private static Simulation _simulation;
         public static BodyProperty<Layer> CollisionFilters { get; set; }
         public static List<Layer> LayerList { get; } = new List<Layer>();
-
+        public static Vector3 Gravity { get; set; } = new Vector3(0, -10, 0);
         public static void Init()
         {
             //The buffer pool is a source of raw memory blobs for the engine to use.
             var bufferPool = new BufferPool();
             //Note that you can also control the order of internal stage execution using a different ITimestepper implementation.
             //For the purposes of this demo, we just use the default by passing in nothing (which happens to be PositionFirstTimestepper at the time of writing).
-            _simulation = Simulation.Create(bufferPool, new NarrowPhase(), new PoseIntegrator(new Vector3(0, -10, 0)));
-            
+            _simulation = Simulation.Create(bufferPool, new NarrowPhase(), new PoseIntegrator());
+
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace GameEngine.engine.physics
         {
             if (IsUniqueMask(mask))
             {
-                return new List<int> {mask};
+                return new List<int> { mask };
             }
             var ret = new List<int>();
             for (var i = 0; i < sizeof(int) * sizeof(byte); i++)
