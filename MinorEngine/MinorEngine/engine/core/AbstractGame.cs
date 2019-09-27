@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
 using GameEngine.engine.physics;
+using GameEngine.engine.ui;
 using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics;
@@ -67,6 +68,7 @@ namespace MinorEngine.engine.core
 
             this.Log("Initializing World..", DebugChannel.Log);
             World = new World();
+            UIHelper.InitializeUI();
         }
 
         protected virtual void initializeScene()

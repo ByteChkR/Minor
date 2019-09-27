@@ -9,7 +9,9 @@ uniform vec3 textColor;
 
 void main()
 {
-	vec4 sampled = vec4(texture(sourceTexture, TexCoords).rgb, 1.0f);
-    FragColor = sampled * vec4(textColor, 1.0);
+	//vec2(TexCoords.x, 1-TexCoords.y) < When changing how font loading works (flipping y)
+	float f = texture(sourceTexture, TexCoords).r;
+	vec4 sampled = vec4(f,f,f, 1.0f);
+    FragColor = sampled * vec4(textColor, 1.0f);
 } 
 

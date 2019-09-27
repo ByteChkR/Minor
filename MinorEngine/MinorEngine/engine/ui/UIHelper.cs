@@ -11,6 +11,7 @@ namespace GameEngine.engine.ui
         private static UIHelper _instance;
         public static UIHelper Instance => _instance ?? (_instance = new UIHelper());
 
+        public FontLibrary FontLibrary { get; }
         public int quadVAO { get; private set; }
         public ShaderProgram DefaultUIShader { get; private set; }
 
@@ -29,6 +30,12 @@ namespace GameEngine.engine.ui
         private UIHelper()
         {
             Initialize();
+            FontLibrary=new FontLibrary("fonts/");
+        }
+
+        public static void InitializeUI()
+        {
+            _instance=new UIHelper();
         }
 
         private void Initialize()

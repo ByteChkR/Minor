@@ -13,7 +13,7 @@ namespace GameEngine.engine.ui
         public GameTexture Texture { get; set; }
         public Vector2 Position { get; set; }
         public Vector2 Scale { get; set; }
-
+        public bool WorldSpace { get; set; }
         private float Alpha { get; set; }
 
         public UIRendererComponent(int width, int height, ShaderProgram shader) : this(GameTexture.Create(width, height), shader)
@@ -45,8 +45,15 @@ namespace GameEngine.engine.ui
             if (Shader != null)
             {
                 Shader.Use();
-                Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
-                Matrix4 m = trmat;
+                Matrix4 m;
+                if (WorldSpace)
+                {
+                    m = modelMat * viewMat * projMat;
+                }
+                else
+                {
+                    m = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
+                }
 
                 GL.UniformMatrix4(Shader.GetUniformLocation("transform"), false, ref m);
 

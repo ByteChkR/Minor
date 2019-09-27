@@ -44,6 +44,8 @@ namespace MinorEngine.components
 
                 sphere = new GameModel("models/sphere_smooth.obj");
                 box = new GameModel("models/cube_flat.obj");
+                box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+                sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
                 _init = true;
 
                 source = Owner.GetComponentIterative<AbstractAudioSource>();

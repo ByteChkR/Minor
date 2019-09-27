@@ -33,99 +33,21 @@ namespace GameEngine.engine.ui
 
     public class UITextRendererComponent : UIRendererComponent
     {
-        private readonly Dictionary<char, Character> _fontAtlas = new Dictionary<char, Character>();
-        private readonly int vbo;
-        private readonly int vao;
-        private readonly int scrW;
-        private readonly int scrH;
+        private readonly GameFont font;
+        private readonly int _vbo;
+        private readonly int _vao;
         public string Text { get; set; } = "HELLO";
 
-        public UITextRendererComponent(string fontPath, int fontSize,  ShaderProgram shader) : base(null, shader)
+        public UITextRendererComponent(string fontPath, int fontSize, ShaderProgram shader) : base(null, shader)
         {
-            FontFace ff = new FontFace(File.OpenRead(fontPath));
-            int glTex;
-            scrW = AbstractGame.Instance.Settings.Width;
-            scrH = AbstractGame.Instance.Settings.Height;
+            font = UIHelper.Instance.FontLibrary.GetFont("Arial");
+
             this.Log("Reading Character Glyphs from " + fontPath, DebugChannel.Log);
-            for (int i = 0; i < ushort.MaxValue; i++)
-            {
-                Glyph g = ff.GetGlyph(new CodePoint(i), fontSize);
-                if (g == null)
-                {
-                    continue;
-                }
 
-                byte[] buf = new byte[g.RenderWidth * g.RenderHeight];
-                GCHandle handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
-                Surface s = new Surface
-                {
-                    Bits = handle.AddrOfPinnedObject(),
-                    Width = g.RenderWidth,
-                    Height = g.RenderHeight,
-                    Pitch = g.RenderWidth
-                };
-
-                g.RenderTo(s);
-                if (g.RenderWidth != 0 && g.RenderHeight != 0)
-                {
-                    Bitmap bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
-                    BitmapData data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
-                        ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    byte[] iimgBuf = new byte[buf.Length * 4];
-                    for (int j = 0; j < buf.Length; j++)
-                    {
-
-                        iimgBuf[j * 4 + 3] = 255;
-                        iimgBuf[j * 4 + 1] = buf[j];
-                        iimgBuf[j * 4 + 2] = buf[j];
-                        iimgBuf[j * 4] = buf[j];
-                    }
-
-                    Marshal.Copy(iimgBuf, 0, data.Scan0, iimgBuf.Length);
-
-                    bmp.UnlockBits(data);
-
-                    bmp.RotateFlip(RotateFlipType.RotateNoneFlipY); //Rotating hack
-
-                    data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
-                        ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-                    int tex = GL.GenTexture();
-                    glTex = tex;
-                    GL.BindTexture(TextureTarget.Texture2D, tex);
-
-                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, g.RenderWidth, g.RenderHeight,
-                        0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-                    GL.TextureParameter(tex, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-                    GL.TextureParameter(tex, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
-                    GL.TextureParameter(tex, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-                    GL.TextureParameter(tex, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-                    bmp.UnlockBits(data);
-                    
-                }
-                else
-                {
-                    glTex = -1;
-                }
-                Character c = new Character
-                {
-                    GlTexture = glTex,
-                    Width = s.Width,
-                    Height = s.Height,
-                    Advance = g.HorizontalMetrics.Advance,
-                    BearingX = g.HorizontalMetrics.Bearing.X,
-                    BearingY = g.HorizontalMetrics.Bearing.Y
-                };
-                _fontAtlas.Add((char)i, c);
-
-
-            }
-
-            vao = GL.GenVertexArray();
-            vbo = GL.GenBuffer();
-            GL.BindVertexArray(vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            _vao = GL.GenVertexArray();
+            _vbo = GL.GenBuffer();
+            GL.BindVertexArray(_vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * 6 * 4, IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
             GL.EnableVertexAttribArray(0);
@@ -140,30 +62,44 @@ namespace GameEngine.engine.ui
 
         public override void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            
+
             if (Shader != null)
             {
+                int scrW = AbstractGame.Instance.Settings.Width;
+                int scrH = AbstractGame.Instance.Settings.Height;
+
                 GL.Enable(EnableCap.Blend);
                 GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
                 Shader.Use();
 
                 Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
                 Matrix4 m = trmat;
-                
+
                 GL.UniformMatrix4(Shader.GetUniformLocation("transform"), false, ref m);
 
 
                 GL.Uniform3(Shader.GetUniformLocation("textColor"), 1f, 0f, 0f);
                 GL.Uniform1(Shader.GetUniformLocation("sourceTexture"), 0);
                 GL.ActiveTexture(TextureUnit.Texture0);
-                GL.BindVertexArray(vao);
+                GL.BindVertexArray(_vao);
                 float x = Position.X;
+                float y = Position.Y;
                 for (int i = 0; i < Text.Length; i++)
                 {
-                    Character chr = _fontAtlas[Text[i]];
+                    if (Text[i] == '\n')
+                    {
+                        FaceMetrics fm = font.Metrics;
+                        x = Position.X;
+                        y += fm.LineHeight / scrH * Scale.Y;
+                        continue;
+                    }
+                    if (!font.TryGetCharacter(Text[i], out Character chr))
+                    {
+                        font.TryGetCharacter('?', out chr);
+                    }
 
                     float xpos = x + chr.BearingX / scrW * Scale.X;
-                    float ypos = Position.Y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
+                    float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
                     float w = chr.Width / (float)scrW * Scale.X;
                     float h = chr.Height / (float)scrH * Scale.Y;
@@ -180,13 +116,13 @@ namespace GameEngine.engine.ui
                     if (chr.GlTexture != -1)
                     {
                         GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture);
-                        GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+                        GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
                         GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
                             verts);
 
                         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-                        
-                        
+
+
                     }
                     x += chr.Advance / scrW * Scale.X;
 
