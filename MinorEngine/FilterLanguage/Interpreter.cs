@@ -28,7 +28,8 @@ namespace FilterLanguage
         private const string DefineKey = "--define texture ";
 
         private const string ScriptDefineKey = "--define script ";
-
+        
+        private const int FLHeaderArgCount = 5;
         /// <summary>
         /// Everything past this string gets ignored by the interpreter
         /// </summary>
@@ -789,14 +790,14 @@ namespace FilterLanguage
                 {
                     _flFunctions[function](); //Execute baked function
                 }
-                else if (kernel == null || words.Length - 1 != kernel.Parameter.Count - 4)
+                else if (kernel == null || words.Length - 1 != kernel.Parameter.Count - FLHeaderArgCount)
                 {
                     throw new FL_InvalidFunctionUse(function, "Not the right amount of arguments.");
                 }
                 else
                 {
                     //Execute filter
-                    for (int i = kernel.Parameter.Count - 1; i >= 5; i--)
+                    for (int i = kernel.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
                     {
                         object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
                         kernel.SetArg(i, obj);

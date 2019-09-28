@@ -1,12 +1,13 @@
-#include smooth.cl #type0
-#include utils.cl #type0
+#include smooth.cl #type0 #type1
+#include utils.cl #type0 #type1
+#include f_convert.cl #type0 #type1
 
-float GetPerlinNoise(__global #type0* image, int idx, int channel, float maxValue, int width, int height, int depth, float persistence, int octaves)
+#type0 GetPerlinNoise(__global #type0* image, int idx, int channel, float maxValue, int width, int height, int depth, float persistence, int octaves)
 {
 
-	float amplitude = 1;
-	float totalAmplitude = 0;
-	float result = image[idx]/maxValue;
+	#type1 amplitude = (#type1)(1);
+	#type1 totalAmplitude = (#type1)(0);
+	#type1 result = To#type1(image[idx])/(#type1)(maxValue);
 
 	for(int i = octaves-1; i >= 0; i--)
 	{
@@ -18,7 +19,7 @@ float GetPerlinNoise(__global #type0* image, int idx, int channel, float maxValu
 	}
 
 	result /= totalAmplitude;
-	return (#type0)clamp(result*maxValue,0.0f, maxValue);
+	return From#type1(clamp(result*(#type1)maxValue, (#type1)0.0f, (#type1)maxValue));
 }
 __kernel void perlin(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float persistence, int octaves)
 {

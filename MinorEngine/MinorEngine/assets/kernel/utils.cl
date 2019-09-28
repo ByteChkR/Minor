@@ -1,11 +1,12 @@
-#type0 Lerp(#type0 a, #type0 b, float weightB)
+#include f_convert.cl #type0 #type1
+
+
+#type1 Lerpf(#type1 a, #type1 b, #type1 weightB)
 {
-    return (#type0)((float)a * (1 - weightB) + (float)b * weightB);
+    return a * ((#type1)1 - weightB) + b * weightB;
 }
-float Lerpf(float a, float b, float weightB)
-{
-    return a * (1 - weightB) + b * weightB;
-}
+
+
 
 int GetFlattenedIndex(int x, int y, int z, int width, int height)
 {

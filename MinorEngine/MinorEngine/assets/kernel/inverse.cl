@@ -7,7 +7,7 @@ __kernel void inverse(__global #type0* image, int3 dimensions, int channelCount,
 		return;
 	}
 
-	float val = maxValue - image[idx];
+	#type0 val = (#type0)(maxValue) - image[idx];
 	image[idx] = (#type0)val;
 }
 

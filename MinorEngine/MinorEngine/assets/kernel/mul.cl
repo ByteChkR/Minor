@@ -1,3 +1,4 @@
+#include f_convert.cl #type0 #type1
 __kernel void mulval(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float value)
 {
 	int idx = get_global_id(0);
@@ -6,9 +7,9 @@ __kernel void mulval(__global #type0* image, int3 dimensions, int channelCount, 
 	{
 		return;
 	}
-	float imgVal = (float)(image[idx]/maxValue);
-	float otherVal = (float)(value);
-	float val = (float)(imgVal * otherVal * maxValue);
+	#type0 imgVal = (#type0)(image[idx]);
+	float otherVal = value;
+	#type0 val = (#type0)(imgVal * (#type0)(1-otherVal) + (#type0)(otherVal) * (#type0)maxValue);
 	image[idx] = val;
 }
 __kernel void multexvalmask(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global #type0* value)
@@ -20,9 +21,9 @@ __kernel void multexvalmask(__global #type0* image, int3 dimensions, int channel
 		return;
 	}	
 	float weight = (float)(mask);
-	float imgVal = (float)(image[idx] / maxValue);
-	float otherVal = (float)(value[idx] / maxValue);
-	float val = (float)(imgVal * (otherVal * weight) * maxValue);
+	#type0 imgVal = image[idx];
+	#type0 otherVal = value[idx];
+	#type0 val = (#type0)(imgVal * (#type0)(1 - weight) + (otherVal * (#type0)(weight)));
 	image[idx] = (#type0)val;
 }
 
@@ -34,9 +35,9 @@ __kernel void multextexmask(__global #type0* image, int3 dimensions, int channel
 	{
 		return;
 	}
-	float weight = (float)(mask[idx] / maxValue);
-	float imgVal = (float)(image[idx] / maxValue);
-	float otherVal = (float)(value[idx] / maxValue);
-	float val = (float)(imgVal * (otherVal * weight) * maxValue);
+	#type1 weight = To#type1(mask[idx]) / (#type1)(maxValue);
+	#type1 imgVal = To#type1(image[idx]);
+	#type1 otherVal = To#type1(value[idx]);
+	#type0 val = From#type1(imgVal * ((#type1)(maxValue) - weight)) + From#type1(otherVal * weight);
 	image[idx] = (#type0)val;
 }

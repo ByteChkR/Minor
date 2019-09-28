@@ -150,7 +150,7 @@ new Tuple<string, float, DataTypes>( "long3",(float) long.MaxValue, DataTypes.LO
 new Tuple<string, float, DataTypes>( "long4",(float) long.MaxValue, DataTypes.LONG4),
 new Tuple<string, float, DataTypes>( "long8",(float) long.MaxValue, DataTypes.LONG8),
 new Tuple<string, float, DataTypes>( "long16",(float)long.MaxValue, DataTypes.LONG16),
-new Tuple<string, float, DataTypes>( "ulong1",(float)ulong.MaxValue, DataTypes.ULONG1),
+new Tuple<string, float, DataTypes>( "ulong",(float)ulong.MaxValue, DataTypes.ULONG1),
 new Tuple<string, float, DataTypes>( "ulong2",(float)ulong.MaxValue, DataTypes.ULONG2),
 new Tuple<string, float, DataTypes>( "ulong3",(float)ulong.MaxValue, DataTypes.ULONG3),
 new Tuple<string, float, DataTypes>( "ulong4",(float)ulong.MaxValue, DataTypes.ULONG4),

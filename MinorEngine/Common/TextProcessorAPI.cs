@@ -6,6 +6,7 @@ using ext_pp;
 using ext_pp_base;
 using ext_pp_base.settings;
 using ext_pp_plugins;
+using Microsoft.VisualBasic;
 
 namespace Common
 {
@@ -55,7 +56,7 @@ namespace Common
         {
             protected abstract Verbosity VerbosityLevel { get; }
             protected abstract List<AbstractPlugin> Plugins { get; }
-            public abstract string GetGenericInclude(string filename, string genType);
+            public abstract string GetGenericInclude(string filename, string[] genType);
 
             public string[] Preprocess(IFileContent filename, Dictionary<string, bool> defs)
             {
@@ -85,9 +86,14 @@ namespace Common
         public class DefaultPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
-            public override string GetGenericInclude(string filename, string genType)
+            public override string GetGenericInclude(string filename, string[] genType)
             {
-                return "#include " + filename + " " + genType;
+                string s = "";
+                foreach (var gt in genType)
+                {
+                    s += gt + ' ';
+                }
+                return "#include " + filename + " " + s;
             }
             protected override List<AbstractPlugin> Plugins
             {
@@ -108,9 +114,14 @@ namespace Common
         public class GLCLPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL8;
-            public override string GetGenericInclude(string filename, string genType)
+            public override string GetGenericInclude(string filename, string[] genType)
             {
-                return "#include " + filename + " " + genType;
+                string s = "";
+                foreach (var gt in genType)
+                {
+                    s += gt + ' ';
+                }
+                return "#include " + filename + " " + s;
             }
             protected override List<AbstractPlugin> Plugins
             {
@@ -132,9 +143,14 @@ namespace Common
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
 
-            public override string GetGenericInclude(string filename, string genType)
+            public override string GetGenericInclude(string filename, string[] genType)
             {
-                return "pp_include: " + filename + " " + genType;
+                string s = "";
+                foreach (var gt in genType)
+                {
+                    s += gt + ' ';
+                }
+                return "pp_include: " + filename + " " + s;
             }
 
             protected override List<AbstractPlugin> Plugins
@@ -173,7 +189,7 @@ namespace Common
             {"***" , new DefaultPreProcessorConfig()}
         };
 
-        public static string[] GenericIncludeToSource(string ext, string file, string genType)
+        public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
         {
             return new []{ _configs[ext].GetGenericInclude(file, genType) };
         }

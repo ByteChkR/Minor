@@ -1,4 +1,4 @@
-#include utils.cl #type0
+#include utils.cl #type0 #type1
 
 uchar4 Checkerboard(int xIn, int yIn, float length)
 {
@@ -18,5 +18,5 @@ __kernel void overlay(__global #type0* image, int3 dimensions, int channelCount,
 		return;
 	}
 
-	image[idx]=Lerp(image[idx], overlay[idx], weightOverlay);
+	image[idx]=From#type1(Lerpf(To#type1(image[idx]), To#type1(overlay[idx]), (#type1)(weightOverlay)));
 }

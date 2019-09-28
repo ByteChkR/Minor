@@ -1,6 +1,6 @@
-#include utils.cl #type0
+#include utils.cl #type0 #type1
 
-float GetSmoothNoise(__global #type0* image, int idx, int channel, int width, int height, int depth, int samplePeriod, float sampleFrequency)
+#type1 GetSmoothNoise(__global #type0* image, int idx, int channel, int width, int height, int depth, int samplePeriod, float sampleFrequency)
 {
 	int index = idx / 4;
 	int3 index3D = Get3DimensionalIndex(width, height, index);
@@ -26,12 +26,12 @@ float GetSmoothNoise(__global #type0* image, int idx, int channel, int width, in
 	int w0h1d1 = GetFlattenedIndex(sample_w0, sample_h1, sample_d1, width, height) * 4 + channel;
 	int w1h1d1 = GetFlattenedIndex(sample_w1, sample_h1, sample_d1, width, height) * 4 + channel;
 
-	float top0 = Lerpf(image[w0h0d0], image[w1h0d0], horizontalBlend);
-	float top1 = Lerpf(image[w0h0d1], image[w1h0d1], horizontalBlend);
-	float bottom0 = Lerpf(image[w0h1d0], image[w1h1d0], horizontalBlend);
-	float bottom1 = Lerpf(image[w0h1d1], image[w1h1d1], horizontalBlend);
-	float top = Lerpf(top0, top1, depthBlend);
-	float bottom = Lerpf(bottom0, bottom1, depthBlend);
+	#type1 top0 = Lerpf(To#type1(image[w0h0d0]), To#type1(image[w1h0d0]), horizontalBlend);
+	#type1 top1 = Lerpf(To#type1(image[w0h0d1]), To#type1(image[w1h0d1]), horizontalBlend);
+	#type1 bottom0 = Lerpf(To#type1(image[w0h1d0]), To#type1(image[w1h1d0]), horizontalBlend);
+	#type1 bottom1 = Lerpf(To#type1(image[w0h1d1]), To#type1(image[w1h1d1]), horizontalBlend);
+	#type1 top = Lerpf(top0, top1, depthBlend);
+	#type1 bottom = Lerpf(bottom0, bottom1, depthBlend);
 
 	return Lerpf(top, bottom, verticalBlend);
 
@@ -53,5 +53,5 @@ __kernel void smooth(__global #type0* image, int3 dimensions, int channelCount, 
 	int samplePeriod = 1 << octaves;
 	float sampleFrequency = 1.0f / samplePeriod;
 
-	image[idx] = (#type0)(GetSmoothNoise(image, idx, channel, dimensions.x, dimensions.y, dimensions.z, samplePeriod, sampleFrequency)*maxValue);
+	image[idx] = From#type1(GetSmoothNoise(image, idx, channel, dimensions.x, dimensions.y, dimensions.z, samplePeriod, sampleFrequency)*maxValue);
 }

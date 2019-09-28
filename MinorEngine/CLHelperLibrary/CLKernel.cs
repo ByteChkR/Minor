@@ -124,8 +124,8 @@ namespace CLHelperLibrary
             SetArg(0, image);
             SetArg(1, dimensions);
             SetArg(2, channelCount);
-            SetArg(3, enabledChannels);
-            SetArg(4, genTypeMaxVal);
+            SetArg(3, genTypeMaxVal);
+            SetArg(4, enabledChannels);
             cq.EnqueueNDRangeKernel(Kernel, 1, size);
 #endif
         }

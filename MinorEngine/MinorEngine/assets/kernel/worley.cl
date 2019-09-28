@@ -1,4 +1,4 @@
-#include utils.cl #type0
+#include utils.cl #type0 #type1
 
 float GetWorleyDistance(float3 point, float3 worleypoint, float pmax)
 {
@@ -27,11 +27,11 @@ float GetWorleyValue(float3 pos, float3 worleypoint, float max_distance)
 
 	value = GetWorleyDistance(pos, worleypoint, value);
 
-	return clamp((float)(value/max_distance), 0.0f, 1.0f);
+	return clamp((value/max_distance), 0.0f, 1.0f);
 }
 
 
-__kernel void worley(__global uchar *image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global float* positions, int poscount,  float max_distance)
+__kernel void worley(__global #type0 *image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global float* positions, int poscount,  float max_distance)
 {
 	/* code */
 	int idx = get_global_id(0);
@@ -60,9 +60,9 @@ __kernel void worley(__global uchar *image, int3 dimensions, int channelCount, f
 	
 	}
 
-	float result = clamp(value / max_distance, 0.0f, 1.0f);
+	#type1 result = clamp(value / max_distance, 0.0f, 1.0f);
 	
 
-	image[idx] = (uchar)(clamp(result * maxValue, 0.0f, maxValue));
+	image[idx] = From#type1((#type1)(clamp(result * (#type1)maxValue, (#type1)0.0f, (#type1)maxValue)));
 
 }
