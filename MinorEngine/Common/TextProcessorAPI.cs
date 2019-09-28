@@ -18,7 +18,7 @@ namespace Common
     public static class TextProcessorAPI
     {
 
-        public class FileContent : IFileContent
+        public class FileContent// : ext_pp_base.IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
             private readonly string[] _lines;
             private const string Key = "kernel/memoryFile";
@@ -39,6 +39,16 @@ namespace Common
             {
                 return Key;
             }
+
+            public void SetKey(string key)
+            {
+                //Nothing
+            }
+
+            public string GetFilePath()
+            {
+                return Path;
+            }
         }
 
         public abstract class APreProcessorConfig
@@ -46,10 +56,6 @@ namespace Common
             protected abstract Verbosity VerbosityLevel { get; }
             protected abstract List<AbstractPlugin> Plugins { get; }
 
-            public string[] Preprocess(string filename, string genType, Dictionary<string, bool> defs)
-            {
-                
-            }
 
             public string[] Preprocess(string filename, Dictionary<string, bool> defs)
             {
@@ -72,6 +78,27 @@ namespace Common
                 }
 
                 return pp.Run(new[] { filename }, new Settings(), definitions);
+            }
+        }
+
+
+        public class DefaultPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
+        {
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
+
+            protected override List<AbstractPlugin> Plugins
+            {
+                get
+                {
+                    return new List<AbstractPlugin>
+                    {
+                        new FakeGenericsPlugin(),
+                        new IncludePlugin(),
+                        new ConditionalPlugin(),
+                        new ExceptionPlugin(),
+                        new MultiLinePlugin()
+                    };
+                }
             }
         }
 
@@ -133,26 +160,22 @@ namespace Common
             {".vs", new GLCLPreProcessorConfig() },
             {".fs", new GLCLPreProcessorConfig() },
             {".cl", new GLCLPreProcessorConfig() },
-
+            {"***" , new DefaultPreProcessorConfig()}
         };
-        /// <summary>
-        /// Loads and preprocesses the file specified
-        /// </summary>
-        /// <param name="filename">the filepath</param>
-        /// <param name="defs">definitions</param>
-        /// <returns>the source in lines</returns>
-        public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
+
+        public static string[] PreprocessLines(string file, Dictionary<string, bool> defs)
         {
-            string ext = new string(filename.TakeLast(3).ToArray());
+            string ext = new string(file.TakeLast(3).ToArray());
             if (_configs.ContainsKey(ext))
             {
-                filename.Log("Found Matching PreProcessor Config for: " + ext, DebugChannel.Log);
-                return _configs[ext].Preprocess(filename, defs);
+                file.Log("Found Matching PreProcessor Config for: " + ext, DebugChannel.Log);
+                return _configs[ext].Preprocess(file, defs);
             }
-            filename.Log("Loading File without PreProcessing", DebugChannel.Log);
-            return File.ReadAllLines(filename);
-
+            file.Log("Loading File with Default PreProcessing", DebugChannel.Log);
+            return _configs["***"].Preprocess(file, defs); ;
         }
+
+        
 
         /// <summary>
         /// Loads and preprocesses the file specified

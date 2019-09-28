@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using CLHelperLibrary;
+using CLHelperLibrary.CLStructs;
 using Common;
 using OpenCl.DotNetCore.Memory;
 using Xunit;
@@ -18,7 +19,7 @@ namespace FilterLanguage.Tests
             string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
 
             Directory.SetCurrentDirectory(path);
-            KernelDatabase db = new KernelDatabase(path + "/kernel");
+            KernelDatabase db = new KernelDatabase(path + "/kernel", DataTypes.UCHAR1);
 
             foreach (string file in files)
             {

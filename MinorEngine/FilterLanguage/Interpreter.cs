@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Resources;
 using CLHelperLibrary;
+using CLHelperLibrary.CLStructs;
 using Common;
 using Common.Exceptions;
 using FilterLanguage.Generators;
@@ -563,8 +564,8 @@ namespace FilterLanguage
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder,
-            bool ignoreDebug) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder), ignoreDebug) { }
+        public Interpreter(string file, DataTypes genType, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder,
+            bool ignoreDebug) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder, genType), ignoreDebug) { }
 
         /// <summary>
         /// A public constructor
@@ -575,7 +576,7 @@ namespace FilterLanguage
         /// <param name="height">Height of the input buffer</param>
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
-        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder), false) { }
+        public Interpreter(string file, DataTypes genType, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder, genType), false) { }
 
         /// <summary>
         /// A public constructor

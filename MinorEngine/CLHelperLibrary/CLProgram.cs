@@ -50,6 +50,8 @@ namespace CLHelperLibrary
         /// </summary>
         private void Initialize()
         {
+            
+
             string source = TextProcessorAPI.PreprocessSource(_filePath, null);
             string[] kernelNames = FindKernelNames(source);
 

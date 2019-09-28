@@ -74,7 +74,7 @@ namespace CLHelperLibrary
             string path = Path.GetFullPath(file);
 
             this.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
-            CLProgram program = new CLProgram(path);
+            CLProgram program = new CLProgram(path,_genDataType);
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {

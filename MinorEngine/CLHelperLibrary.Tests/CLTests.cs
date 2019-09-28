@@ -85,7 +85,7 @@ namespace CLHelperLibrary.Tests
             DebugHelper.ListeningMask = DebugChannel.Log | DebugChannel.Error | DebugChannel.Internal_Error |
                                         DebugChannel.Warning;
             string path = Path.GetFullPath("../../../resources");
-            KernelDatabase kdb = new KernelDatabase(path);
+            KernelDatabase kdb = new KernelDatabase(path, DataTypes.UCHAR1);
 
             Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel));
             

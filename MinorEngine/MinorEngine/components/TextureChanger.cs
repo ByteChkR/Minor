@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using BepuPhysics;
 using CLHelperLibrary;
+using CLHelperLibrary.CLStructs;
 using Common;
 using GameEngine.engine.physics;
 using MinorEngine.engine.audio;
@@ -65,7 +66,7 @@ namespace MinorEngine.components
         private bool _isDebuggingInterpreter;
 
         private FilterLanguage.Interpreter _fli;
-        private readonly KernelDatabase _db = new KernelDatabase("kernel/");
+        private readonly KernelDatabase _db = new KernelDatabase("kernel/", DataTypes.UCHAR1);
 
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
@@ -135,7 +136,62 @@ namespace MinorEngine.components
                 }
                 GameTexture.Update(renderer.Model.Meshes[0].Textures[0], buf, 512, 512);
             }
-            else if (e.KeyChar == 't')
+            else if (e.KeyChar == 'l')
+            {
+                if (!_isDebuggingInterpreter)
+                {
+                    string filename = Console.ReadLine();
+                    
+
+                    if (_fli == null)
+                    {
+                        _fli = new FilterLanguage.Interpreter(filename,
+                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
+                            512, 1, 4, _db);
+                    }
+                    else
+                    {
+                        _fli.Reset(filename,
+                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
+                            512, 1, 4, _db);
+                    }
+                }
+
+                FilterLanguage.Interpreter.InterpreterStepResult res = new FilterLanguage.Interpreter.InterpreterStepResult();
+
+                if (_isDebuggingInterpreter)
+                {
+
+                    this.Log("Continuing Execution", DebugChannel.Log);
+                    _isDebuggingInterpreter = false;
+                }
+
+                byte[] buf = null;
+
+                do
+                {
+                    if (res.TriggeredDebug)
+                    {
+                        this.Log("Triggered Debug.", DebugChannel.Log);
+                        _isDebuggingInterpreter = true;
+                        buf = CL.ReadBuffer<byte>(res.DebugBuffer, (int)res.DebugBuffer.Size);
+                        break;
+                    }
+
+                    res = _fli.Step();
+                } while (!res.Terminated);
+
+                if (!_isDebuggingInterpreter)
+                {
+                    buf = _fli.GetResult<byte>();
+                }
+                else if (buf == null)
+                {
+                    throw new InvalidOperationException("FUCK");
+                }
+                GameTexture.Update(renderer.Model.Meshes[0].Textures[0], buf, 512, 512);
+            }
+                else if (e.KeyChar == 't')
             {
                 string[] filenames = Directory.GetFiles("filter/tests", "*.fl");
                 this.Log("Running tests...", DebugChannel.Log);
