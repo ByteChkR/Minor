@@ -4,20 +4,42 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Assimp;
+using CLHelperLibrary;
 using Common;
-using MinorEngine.engine.core;
+using GameEngine.engine.core;
+using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
 using TKPixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using SYSPixelFormat = System.Drawing.Imaging.PixelFormat;
 using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
-namespace MinorEngine.engine.rendering
+namespace GameEngine.engine.rendering
 {
     public class GameTexture
     {
         public int TextureId { get; }
         public TextureType TexType { get; set; }
         public string Path { get; set; }
+
+        public float Width
+        {
+            get
+            {
+                GL.BindTexture(TextureTarget.Texture2D, TextureId);
+                GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureWidth, out float width);
+                return width;
+            }
+        }
+        public float Height
+        {
+            get
+            {
+                GL.BindTexture(TextureTarget.Texture2D, TextureId);
+                GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out float height);
+                return height;
+            }
+        }
+        
 
         private GameTexture()
         {
@@ -95,6 +117,32 @@ namespace MinorEngine.engine.rendering
             DefaultTexParameter();
             return ret;
 
+        }
+
+        /// <summary>
+        /// Creates a buffer with the content of an image and the specified Memory Flags
+        /// </summary>
+        /// <param name="bmp">The image that holds the data</param>
+        /// <param name="flags">The memory flags for the buffer creation</param>
+        /// <returns></returns>
+        public static MemoryBuffer CreateFromTexture(GameTexture tex, MemoryFlag flags)
+        {
+
+            byte[] buffer = new byte[(int)(tex.Width * tex.Height * 4)];
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
+
+            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0,0,  (int)tex.Width, (int)tex.Height,1, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
+
+            handle.Free();
+            
+#if NO_CL
+            bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
+            return null;
+#else
+            MemoryBuffer mb = CL.CreateBuffer(buffer, flags);
+            return mb;
+#endif
         }
 
 

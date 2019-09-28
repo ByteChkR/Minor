@@ -6,17 +6,17 @@ using CLHelperLibrary;
 using CLHelperLibrary.CLStructs;
 using Common;
 using GameEngine.engine.physics;
-using MinorEngine.engine.audio;
-using MinorEngine.engine.audio.sources;
-using MinorEngine.engine.components;
-using MinorEngine.engine.core;
-using MinorEngine.engine.rendering;
+using GameEngine.engine.audio;
+using GameEngine.engine.audio.sources;
+using GameEngine.engine.components;
+using GameEngine.engine.core;
+using GameEngine.engine.rendering;
 using OpenCl.DotNetCore.Memory;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Random = System.Random;
 
-namespace MinorEngine.components
+namespace GameEngine.components
 {
     public class TextureChanger : AbstractComponent
     {
@@ -25,41 +25,47 @@ namespace MinorEngine.components
         private ShaderProgram _runicShader;
         private GameModel sphere, box;
 
-        public TextureChanger(GameWindow window)
+        private int texWidth, texHeight, testNr;
+        private string[] filenames;
+
+        public TextureChanger()
         {
-
-
-            window.KeyPress += OnKeyPress;
         }
 
-        private bool _init;
-        public override void Update(float deltaTime)
+        protected override void Awake()
         {
-            if (!_init && Owner != null)
+            base.Awake();
+            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-                {
-                    {ShaderType.FragmentShader, "shader/texture.fs"},
-                    {ShaderType.VertexShader, "shader/texture.vs"},
-                }, out _runicShader);
+                {ShaderType.FragmentShader, "shader/texture.fs"},
+                {ShaderType.VertexShader, "shader/texture.vs"},
+            }, out _runicShader);
 
 
-                sphere = new GameModel("models/sphere_smooth.obj");
-                box = new GameModel("models/cube_flat.obj");
-                box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
-                sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
-                _init = true;
+            sphere = new GameModel("models/sphere_smooth.obj");
+            box = new GameModel("models/cube_flat.obj");
+            box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+            sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+            testNr = -1;
 
-                source = Owner.GetComponentIterative<AbstractAudioSource>();
-                renderer = Owner.GetComponent<MeshRendererComponent>();
-                if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
-                {
-                    Console.Read();
-                }
+            filenames = Directory.GetFiles("filter/tests", "*.fl");
+            source = Owner.GetComponentIterative<AbstractAudioSource>();
+            renderer = Owner.GetComponent<MeshRendererComponent>();
+            GL.BindTexture(TextureTarget.Texture2D, renderer.Model.Meshes[0].Textures[0].TextureId);
+            
 
-                source.SetClip(clip);
-                source.Looping = true;
+            if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
+            {
+                Console.Read();
             }
+
+            source.SetClip(clip);
+            source.Looping = true;
+        }
+
+        protected override void Update(float deltaTime)
+        {
+            
 
         }
 
@@ -68,7 +74,7 @@ namespace MinorEngine.components
         private FilterLanguage.Interpreter _fli;
         private readonly KernelDatabase _db = new KernelDatabase("kernel/", DataTypes.UCHAR1);
 
-        private void OnKeyPress(object sender, KeyPressEventArgs e)
+        protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == 'r')
             {
@@ -91,14 +97,14 @@ namespace MinorEngine.components
                     if (_fli == null)
                     {
                         _fli = new FilterLanguage.Interpreter(filename,
-                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
-                            512, 1, 4, _db);
+                            CL.CreateEmpty<byte>(texWidth * texHeight * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), texWidth,
+                            texHeight, 1, 4, _db);
                     }
                     else
                     {
                         _fli.Reset(filename,
-                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
-                            512, 1, 4, _db);
+                            CL.CreateEmpty<byte>(texWidth * texHeight * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), texWidth,
+                            texHeight, 1, 4, _db);
                     }
                 }
 
@@ -134,70 +140,52 @@ namespace MinorEngine.components
                 {
                     throw new InvalidOperationException("FUCK");
                 }
-                GameTexture.Update(renderer.Model.Meshes[0].Textures[0], buf, 512, 512);
+                GameTexture.Update(renderer.Model.Meshes[0].Textures[0], buf, texWidth, texHeight);
             }
             else if (e.KeyChar == 'l')
             {
-                if (!_isDebuggingInterpreter)
+                if (testNr == -1)
                 {
-                    string filename = Console.ReadLine();
-                    
+                    testNr = 0;
+                }
+                else if (testNr == filenames.Length)
+                {
+                    testNr = -1;
 
-                    if (_fli == null)
-                    {
-                        _fli = new FilterLanguage.Interpreter(filename,
-                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
-                            512, 1, 4, _db);
-                    }
-                    else
-                    {
-                        _fli.Reset(filename,
-                            CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512,
-                            512, 1, 4, _db);
-                    }
+                    this.Log("Finished Running Tests", DebugChannel.Log);
+                }
+                else
+                {
+                    testNr++;
+                }
+                this.Log("Running test...", DebugChannel.Log);
+
+                _fli = new FilterLanguage.Interpreter(filenames[testNr],
+                    CL.CreateEmpty<byte>(texWidth * texHeight * 4,
+                        MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), texWidth, texHeight, 1, 4, _db);
+
+                this.Log("Running Test File: " + filenames[testNr], DebugChannel.Log);
+
+
+                while (!_fli.Terminated)
+                {
+                    _fli.Step();
                 }
 
-                FilterLanguage.Interpreter.InterpreterStepResult res = new FilterLanguage.Interpreter.InterpreterStepResult();
+                GameTexture.Update(renderer.Model.Meshes[0].Textures[0], _fli.GetResult<byte>(), texWidth, texHeight);
 
-                if (_isDebuggingInterpreter)
-                {
 
-                    this.Log("Continuing Execution", DebugChannel.Log);
-                    _isDebuggingInterpreter = false;
-                }
 
-                byte[] buf = null;
-
-                do
-                {
-                    if (res.TriggeredDebug)
-                    {
-                        this.Log("Triggered Debug.", DebugChannel.Log);
-                        _isDebuggingInterpreter = true;
-                        buf = CL.ReadBuffer<byte>(res.DebugBuffer, (int)res.DebugBuffer.Size);
-                        break;
-                    }
-
-                    res = _fli.Step();
-                } while (!res.Terminated);
-
-                if (!_isDebuggingInterpreter)
-                {
-                    buf = _fli.GetResult<byte>();
-                }
-                else if (buf == null)
-                {
-                    throw new InvalidOperationException("FUCK");
-                }
-                GameTexture.Update(renderer.Model.Meshes[0].Textures[0], buf, 512, 512);
             }
-                else if (e.KeyChar == 't')
+            else if (e.KeyChar == 't')
             {
                 string[] filenames = Directory.GetFiles("filter/tests", "*.fl");
                 this.Log("Running tests...", DebugChannel.Log);
                 foreach (string filename in filenames)
                 {
-                    _fli = new FilterLanguage.Interpreter(filename, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, _db);
+                    _fli = new FilterLanguage.Interpreter(filename,
+                        CL.CreateEmpty<byte>(texWidth * texHeight * 4,
+                            MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), texWidth, texHeight, 1, 4, _db);
 
                     this.Log("Running Test File: " + filename, DebugChannel.Log);
 
@@ -237,7 +225,7 @@ namespace MinorEngine.components
                 for (int i = 0; i < nmbrs; i++)
                 {
 
-                    Vector3 pos = new Vector3((float)rnd.NextDouble(), 3+(float)rnd.NextDouble(), (float)rnd.NextDouble());
+                    Vector3 pos = new Vector3((float)rnd.NextDouble(), 3 + (float)rnd.NextDouble(), (float)rnd.NextDouble());
                     pos -= Vector3.One * 0.5f;
                     pos *= 50;
 

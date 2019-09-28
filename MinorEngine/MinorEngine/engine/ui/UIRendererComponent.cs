@@ -1,6 +1,6 @@
-﻿using MinorEngine.components;
-using MinorEngine.engine.components;
-using MinorEngine.engine.rendering;
+﻿using GameEngine.components;
+using GameEngine.engine.components;
+using GameEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

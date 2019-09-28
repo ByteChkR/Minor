@@ -1,8 +1,8 @@
 ﻿using System;
 using GameEngine.engine.ui;
-using MinorEngine.engine.components;
+using GameEngine.engine.components;
 
-namespace MinorEngine.components
+namespace GameEngine.components
 {
     public class TimeDisplay : AbstractComponent
     {
@@ -11,7 +11,14 @@ namespace MinorEngine.components
         private float frameTime = 0;
         private int fpsFrames = 0;
         private int fps = 0;
-        public override void Update(float deltaTime)
+        protected override void Awake()
+        {
+            base.Awake();
+            tr = Owner.GetComponent<UITextRendererComponent>();
+
+        }
+
+        protected override void Update(float deltaTime)
         {
             time += deltaTime;
             frameTime += deltaTime;
@@ -22,15 +29,10 @@ namespace MinorEngine.components
                 fpsFrames = 0;
                 frameTime = 0;
             }
-            if (tr != null)
-            {
-                tr.Text = "DT: " + MathF.Round(time, 3) +
-                    "\nFPS: " + MathF.Round(fps);
-            }
-            else
-            {
-                tr = Owner.GetComponent<UITextRendererComponent>();
-            }
+
+            tr.Text = "DT: " + MathF.Round(time, 3) +
+                "\nFPS: " + MathF.Round(fps);
+
         }
     }
 }

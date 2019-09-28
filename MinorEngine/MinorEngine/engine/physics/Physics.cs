@@ -7,10 +7,10 @@ using BepuPhysics.Collidables;
 using BepuPhysics.CollisionDetection;
 using BepuUtilities;
 using BepuUtilities.Memory;
-using MinorEngine.components;
-using MinorEngine.engine.core;
-using MinorEngine.engine.physics.callbacks;
-using NarrowPhase = MinorEngine.engine.physics.callbacks.NarrowPhase;
+using GameEngine.components;
+using GameEngine.engine.core;
+using GameEngine.engine.physics.callbacks;
+using NarrowPhase = GameEngine.engine.physics.callbacks.NarrowPhase;
 using Quaternion = BepuUtilities.Quaternion;
 
 namespace GameEngine.engine.physics

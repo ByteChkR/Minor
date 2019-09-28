@@ -1,12 +1,73 @@
-﻿using MinorEngine.engine.core;
+﻿using GameEngine.engine.core;
+using OpenTK;
+using OpenTK.Input;
 
-namespace MinorEngine.engine.components
+namespace GameEngine.engine.components
 {
     public abstract class AbstractComponent
     {
         public GameObject Owner { get; set; }
+        private bool _awake;
 
-        public virtual void Update(float deltaTime)
+        protected virtual void Awake()
+        {
+
+        }
+
+        protected virtual void OnKeyPress(object sender, KeyPressEventArgs e)
+        {
+
+        }
+        protected virtual void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+
+        }
+        protected virtual void OnKeyUp(object sender, KeyboardKeyEventArgs e)
+        {
+
+        }
+
+        internal void onPress(object sender, KeyPressEventArgs e)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+            OnKeyPress(sender,e);
+        }
+
+        internal void onKeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+            OnKeyDown(sender, e);
+        }
+
+        internal void onKeyUp(object sender, KeyboardKeyEventArgs e)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+            OnKeyUp(sender, e);
+        }
+
+        internal void updateObject(float deltaTime)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+            Update(deltaTime);
+        }
+
+        protected virtual void Update(float deltaTime)
         {
 
         }

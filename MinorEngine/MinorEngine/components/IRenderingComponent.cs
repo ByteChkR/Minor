@@ -1,8 +1,8 @@
-﻿using MinorEngine.engine.components;
-using MinorEngine.engine.rendering;
+﻿using GameEngine.engine.components;
+using GameEngine.engine.rendering;
 using OpenTK;
 
-namespace MinorEngine.components
+namespace GameEngine.components
 {
     public interface IRenderingComponent
     {

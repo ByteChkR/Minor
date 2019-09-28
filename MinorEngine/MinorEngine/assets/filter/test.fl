@@ -1,70 +1,8 @@
-#Example Filter Lang Script
-#Comments:
-	#Comments can be written at the end of each line by writing the comment after #
-
-
-#Define Statements
-#Define statements are used to define what buffers are created when loading the script.
-#the general syntax is '--define texture <flag> nameofvariable: "path" or key'
-#flags can be r/w/rw which corresponds to read_only write_only read_write
-#The content of the variable is detemined by the supplied string
-#If surrounded by " it is treated as a path to a texture
-#If not it can have the following default values
-	#empty = empty buffer(0 initialized)
-	#random = randomly filled buffer
-
-
---define texture maintexture: "textures/runicfloor.png"
---define texture overlaytexture: "textures/overlay.png"
---define texture noisetextemp: empty
---define texture result: empty
---define texture wfctest: wfc "WFCTiles/testtile.png" 3 128 128 false true 8 0 0 
-#wfc <pathtoinputtexture> N Width Height periodicInput periodicOutput symmetry ground limit
-#set limit to 0 to make it run until its done
-
-#Redefining textures
---define texture in: empty #but why would you want that anyway :)
-
-
-#Filter lang has "jumping" support which enables to define symbols to jump between blocks of code during execution
-#Every "function" returns a texture and has to end with a :
-PlainPerlin:
-	#Initializes the active buffer with random data
- 	random
-	#Parameters are separated with spaces.
-	perlin 0.7 6 #There are "baked" functions like noises
-
-#kernels are used by writing the kernel name and appending the arguments after it.
-#Valid arguments are: every basic data type(int/char/float), defined buffer objects and "functions"
-
-#There are special functions that can be called to change the flow of the program but do not directly relate to opencl
-#one of those is setactive <buffername> which sets the specified buffer as the selected buffer.
-
-CreateWierdTestingTexture:
-	setactive noisetextemp 0 1 2 #Setting active the noisetexture buffer
-	set PlainPerlin #Setting the contents of PlainPerlin
-	setactive result 0 1 2 #Setting active the result buffer
-	set maintexture #Initializing the buffer with the content of main texture
-	overlay overlaytexture 0.5 #Overlaying the overlay and main texture each a half
-	addtexvalmask 1.1 noisetextemp
-
-EmptyImage:
-	setactive 3
-	setvalb 255
-	setactive 0 1 2
-	setvalb 0
-	
-#Main is the starting method of the filter
-#The buffer that is selected by default is called "in"
-#"in" can be redefined by overwriting it with a define statement
-
 Main:
-	#random noisetextemp
-	setactive 3
-	jmp PlainPerlin
+	setvalf 1
 	setactive 0 1 2
-	set wfctest
-
+	random
+	perlin 0.8 6
 
 
 

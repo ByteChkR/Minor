@@ -6,7 +6,7 @@ using BepuPhysics.Constraints;
 using BepuUtilities.Memory;
 using GameEngine.engine.physics;
 
-namespace MinorEngine.engine.physics.callbacks
+namespace GameEngine.engine.physics.callbacks
 {
     //The simulation has a variety of extension points that must be defined. 
     //The demos tend to reuse a few types like the DemoNarrowPhaseCallbacks, but this demo will provide its own (super simple) versions.

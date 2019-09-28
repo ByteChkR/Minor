@@ -22,12 +22,15 @@ namespace Common
         public class FileContent : ext_pp_base.IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
             private readonly string[] _lines;
-            private const string Key = "kernel/memoryFile";
-            private static readonly string Path = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(Key));
+            private readonly string _incDir;
+            private string Key => _incDir + "./memoryFile";
+            private string Path => _incDir + "./memoryFile";
 
-            public FileContent(string[] lines)
+            public FileContent(string[] lines, string incDir)
             {
                 _lines = lines;
+                _incDir = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(incDir));
+
             }
 
             public bool TryGetLines(out string[] lines)
@@ -78,7 +81,7 @@ namespace Common
                     definitions = new Definitions(defs);
                 }
 
-                return pp.Run(new [] { filename }, new Settings(), definitions);
+                return pp.Run(new[] { filename }, new Settings(), definitions);
             }
         }
 
@@ -191,7 +194,7 @@ namespace Common
 
         public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
         {
-            return new []{ _configs[ext].GetGenericInclude(file, genType) };
+            return new[] { _configs[ext].GetGenericInclude(file, genType) };
         }
 
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
@@ -199,9 +202,9 @@ namespace Common
             return PreprocessLines(new FilePathContent(filename), defs);
         }
 
-        public static string[] PreprocessLines(string[] lines, Dictionary<string, bool> defs)
+        public static string[] PreprocessLines(string[] lines, string incDir, Dictionary<string, bool> defs)
         {
-            return PreprocessLines(new FileContent(lines), defs);
+            return PreprocessLines(new FileContent(lines, incDir), defs);
         }
 
         internal static string[] PreprocessLines(IFileContent file, Dictionary<string, bool> defs)
@@ -223,12 +226,12 @@ namespace Common
             return PreprocessSource(new FilePathContent(filename), defs);
         }
 
-        public static string PreprocessSource(string[] lines, Dictionary<string, bool> defs)
+        public static string PreprocessSource(string[] lines, string incDir, Dictionary<string, bool> defs)
         {
-            return PreprocessSource(new FileContent(lines), defs);
+            return PreprocessSource(new FileContent(lines, incDir), defs);
         }
 
-        
+
         /// <summary>
         /// Loads and preprocesses the file specified
         /// </summary>

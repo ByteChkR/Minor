@@ -1,13 +1,14 @@
 ﻿using System;
 using Common;
+using GameEngine.engine.audio;
 using GameEngine.engine.physics;
 using GameEngine.engine.ui;
-using MinorEngine.engine.rendering;
+using GameEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
 
-namespace MinorEngine.engine.core
+namespace GameEngine.engine.core
 {
     public class EngineSettings
     {
@@ -30,17 +31,19 @@ namespace MinorEngine.engine.core
         {
             Instance = this;
             this.Settings = settings;
-            
-
         }
 
-        public virtual void Initialize()
+        public void Initialize()
         {
             this.Log("Initialization started..", DebugChannel.Log);
             initializeWindow();
             initializeRenderer();
+
+            AudioManager.Initialize();
+
             initializeWorld();
             initializeScene();
+
         }
 
         private void initializeWindow()
@@ -50,8 +53,17 @@ namespace MinorEngine.engine.core
             this.Log(
                 $"Width: {Settings.Width} Height: {Settings.Height}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}" , DebugChannel.Log);
             Window = new GameWindow(Settings.Width, Settings.Height, Settings.Mode, Settings.Title, Settings.WindowFlags);
+
+            #region WindowHandles
+
             Window.UpdateFrame += Update;
             Window.Resize += OnResize;
+            Window.KeyDown += GameObject._KeyDown;
+            Window.KeyUp += GameObject._KeyUp;
+            Window.KeyPress += GameObject._KeyPress;
+
+            #endregion
+
         }
 
 

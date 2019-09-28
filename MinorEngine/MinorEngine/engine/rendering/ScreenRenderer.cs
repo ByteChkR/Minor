@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using GameEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 
-namespace MinorEngine.engine.rendering
+namespace GameEngine.engine.rendering
 {
     public static class ScreenRenderer
     {

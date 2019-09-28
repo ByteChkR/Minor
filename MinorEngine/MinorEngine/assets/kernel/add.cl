@@ -1,5 +1,4 @@
-#include mod.cl #type0 #type1
-__kernel void addval(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, #type0 value)
+__kernel void addval(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, uchar value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -8,11 +7,11 @@ __kernel void addval(__global #type0* image, int3 dimensions, int channelCount, 
 		return;
 	}
 
-	#type0 val = (image[idx]) + value;
-	image[idx] = (#type0)(val / 2);
+	int val = image[idx] + value;
+	image[idx] = val / 2;
 }
 
-__kernel void addvalwrap(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, #type0 value)
+__kernel void addvalwrap(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, uchar value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -21,11 +20,11 @@ __kernel void addvalwrap(__global #type0* image, int3 dimensions, int channelCou
 		return;
 	}
 
-	#type0 val = image[idx] + value;
-	image[idx] = Modulus(val, maxValue);
+	int val = image[idx] + value;
+	image[idx] = (uchar)fmod((float)val, 255.0f);
 }
 
-__kernel void addtexvalmask(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global #type0* value)
+__kernel void addtexvalmask(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -34,11 +33,11 @@ __kernel void addtexvalmask(__global #type0* image, int3 dimensions, int channel
 		return;
 	}
 
-	#type0 val = image[idx] + (value[idx] * (#type0)(mask));
-	image[idx] = (#type0)(val / 2);
+	int val = (int)((float)image[idx] + (value[idx] * mask));
+	image[idx] = val / 2;
 }
 
-__kernel void addtexvalmaskwrap(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global #type0* value)
+__kernel void addtexvalmaskwrap(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -47,11 +46,11 @@ __kernel void addtexvalmaskwrap(__global #type0* image, int3 dimensions, int cha
 		return;
 	}
 
-	#type0 val = image[idx] + (value[idx] * (#type0)(mask));
-	image[idx] = Modulus(val, maxValue);
+	int val = (int)((float)image[idx] + (value[idx] * mask));
+	image[idx] = (uchar)fmod((float)val, 255.0f);
 }
 
-__kernel void addtextexmask(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global #type0* mask, __global #type0* value)
+__kernel void addtextexmask(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global uchar* mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -60,12 +59,12 @@ __kernel void addtextexmask(__global #type0* image, int3 dimensions, int channel
 		return;
 	}
 
-	#type0 weight = (#type0)(mask[idx] / (#type0)(maxValue));
-	#type0 val = (#type0)((#type0)image[idx] + (value[idx] * weight));
-	image[idx] = (#type0)(val / 2);
+	float weight = (float)(mask[idx] / 255.0f);
+	int val = (int)((float)image[idx] + (value[idx] * weight));
+	image[idx] = val / 2;
 }
 
-__kernel void addtextexmaskwrap(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global #type0* mask, __global #type0* value)
+__kernel void addtextexmaskwrap(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global uchar* mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -74,8 +73,8 @@ __kernel void addtextexmaskwrap(__global #type0* image, int3 dimensions, int cha
 		return;
 	}
 
-	#type0 weight = (#type0)(mask[idx] / (#type0)maxValue);
+	float weight = (float)(mask[idx] / 255.0f);
 
-	#type0 val = (#type0)((#type0)(image[idx]) + (value[idx] * weight));
-	image[idx] = Modulus(val, maxValue);
+	int val = (int)((float)(image[idx]) + (value[idx] * weight));
+	image[idx] = (uchar)fmod((float)val, 255.0f);
 }

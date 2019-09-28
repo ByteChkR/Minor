@@ -1,13 +1,12 @@
-#include smooth.cl #type0 #type1
-#include utils.cl #type0 #type1
-#include f_convert.cl #type0 #type1
+#include smooth.cl
+#include utils.cl
 
-#type0 GetPerlinNoise(__global #type0* image, int idx, int channel, float maxValue, int width, int height, int depth, float persistence, int octaves)
+uchar GetPerlinNoise(__global uchar* image, int idx, int channel, int width, int height, int depth, float persistence, int octaves)
 {
 
-	#type1 amplitude = (#type1)(1);
-	#type1 totalAmplitude = (#type1)(0);
-	#type1 result = To#type1(image[idx])/(#type1)(maxValue);
+	float amplitude = 1;
+	float totalAmplitude = 0;
+	float result = image[idx];
 
 	for(int i = octaves-1; i >= 0; i--)
 	{
@@ -19,9 +18,10 @@
 	}
 
 	result /= totalAmplitude;
-	return From#type1(clamp(result*(#type1)maxValue, (#type1)0.0f, (#type1)maxValue));
+
+	return (uchar)clamp(result,0.0f, 255.0f);
 }
-__kernel void perlin(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float persistence, int octaves)
+__kernel void perlin(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float persistence, int octaves)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -29,6 +29,6 @@ __kernel void perlin(__global #type0* image, int3 dimensions, int channelCount, 
 	{
 		return;
 	}
-	image[idx] = GetPerlinNoise(image, idx, channel, maxValue, dimensions.x, dimensions.y, dimensions.z, persistence, octaves)*maxValue;
+	image[idx] = GetPerlinNoise(image, idx, channel, dimensions.x, dimensions.y, dimensions.z, persistence, octaves);
 	
 }

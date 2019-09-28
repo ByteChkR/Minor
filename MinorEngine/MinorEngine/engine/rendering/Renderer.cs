@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using GameEngine.engine.rendering;
-using MinorEngine.components;
-using MinorEngine.engine.core;
+using GameEngine.components;
+using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace MinorEngine.engine.rendering
+namespace GameEngine.engine.rendering
 {
     public class Renderer
     {

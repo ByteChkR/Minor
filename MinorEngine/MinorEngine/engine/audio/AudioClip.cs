@@ -1,7 +1,7 @@
 ﻿using System;
 using OpenTK.Audio.OpenAL;
 
-namespace MinorEngine.engine.audio
+namespace GameEngine.engine.audio
 {
     public class AudioClip
     {

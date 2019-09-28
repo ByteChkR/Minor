@@ -183,6 +183,8 @@ namespace CLHelperLibrary
 #endif
         }
 
+        
+
         /// <summary>
         /// A Delegate to create random numbers for every data type
         /// </summary>

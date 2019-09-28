@@ -1,12 +1,12 @@
-﻿using MinorEngine.engine.components;
+﻿using GameEngine.engine.components;
 using OpenTK;
 using OpenTK.Audio.OpenAL;
 
-namespace MinorEngine.engine.audio
+namespace GameEngine.engine.audio
 {
     public class AudioListener : AbstractComponent
     {
-        public override void Update(float deltaTime)
+        protected override void Update(float deltaTime)
         {
             Vector4 v = new Vector4(Owner.GetLocalPosition(), 1);
             v *= Owner.GetWorldTransform() * Owner.World.Camera.ViewMatrix;

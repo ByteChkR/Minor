@@ -10,8 +10,8 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using Common;
-using MinorEngine.engine.core;
-using MinorEngine.engine.rendering;
+using GameEngine.engine.core;
+using GameEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
@@ -38,11 +38,11 @@ namespace GameEngine.engine.ui
         private readonly int _vao;
         public string Text { get; set; } = "HELLO";
 
-        public UITextRendererComponent(string fontPath, int fontSize, ShaderProgram shader) : base(null, shader)
+        public UITextRendererComponent(string fontName, ShaderProgram shader) : base(null, shader)
         {
             font = UIHelper.Instance.FontLibrary.GetFont("Arial");
 
-            this.Log("Reading Character Glyphs from " + fontPath, DebugChannel.Log);
+            this.Log("Reading Character Glyphs from " + fontName, DebugChannel.Log);
 
             _vao = GL.GenVertexArray();
             _vbo = GL.GenBuffer();

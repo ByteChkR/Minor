@@ -1,7 +1,7 @@
 ﻿using System;
 using Common;
-using MinorEngine.engine.core;
-using MinorEngine.engine.rendering;
+using GameEngine.engine.core;
+using GameEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

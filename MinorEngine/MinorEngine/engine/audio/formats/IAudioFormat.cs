@@ -1,4 +1,4 @@
-﻿namespace MinorEngine.engine.audio.formats
+﻿namespace GameEngine.engine.audio.formats
 {
     public interface IAudioFormat
     {

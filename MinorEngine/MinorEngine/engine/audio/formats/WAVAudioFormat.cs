@@ -4,7 +4,7 @@ using System.Text;
 using Common;
 using Common.Exceptions;
 
-namespace MinorEngine.engine.audio.formats
+namespace GameEngine.engine.audio.formats
 {
     public class WAVAudioFormat : IAudioFormat
     {

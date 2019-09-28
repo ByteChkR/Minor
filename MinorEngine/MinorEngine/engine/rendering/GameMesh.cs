@@ -7,7 +7,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
 
-namespace MinorEngine.engine.rendering
+namespace GameEngine.engine.rendering
 {
     [StructLayout(LayoutKind.Explicit)]
     public struct GameVertex:IEquatable<GameVertex>

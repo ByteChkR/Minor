@@ -1,6 +1,6 @@
 Main:
 	setactive 3
-	setvalb 255
-	setactive 0 1 2
-	random
-	perlin 0.8 6
+	setvalf 1
+  setactive 0 1 2
+  random
+  perlin 0.7 8

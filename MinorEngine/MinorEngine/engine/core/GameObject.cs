@@ -1,16 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using Assimp;
-using MinorEngine.components;
-using MinorEngine.engine.components;
-using MinorEngine.engine.rendering;
+using GameEngine.components;
+using GameEngine.engine.components;
+using GameEngine.engine.rendering;
 using OpenTK;
+using OpenTK.Input;
 using Quaternion = BepuUtilities.Quaternion;
 
-namespace MinorEngine.engine.core
+namespace GameEngine.engine.core
 {
     public class GameObject
     {
+        internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+            AbstractGame.Instance.World.OnKeyDown(sender, e);
+        }
+        internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
+        {
+            AbstractGame.Instance.World.OnKeyUp(sender, e);
+
+        }
+        internal static void _KeyPress(object sender, KeyPressEventArgs e)
+        {
+
+            AbstractGame.Instance.World.OnKeyPress(sender, e);
+        }
+
         public IRenderingComponent RenderingComponent { get; private set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
         public World World { get; protected set; }
@@ -28,7 +44,7 @@ namespace MinorEngine.engine.core
             Transform *= Matrix4.CreateTranslation(position);
             this.World = World;
             this.Parent = parent;
-            if (name == string.Empty)
+            if (name == String.Empty)
             {
                 Name = "Gameobject" + _objId;
                 addObjCount();
@@ -144,11 +160,50 @@ namespace MinorEngine.engine.core
             }
         }
 
+        private void OnKeyPress(object sender, KeyPressEventArgs e)
+        {
+            foreach (var abstractComponent in _components)
+            {
+                abstractComponent.Value.onPress(sender, e);
+            }
+
+            for (int i = 0; i < _children.Count; i++)
+            {
+                _children[i].OnKeyPress(sender, e);
+            }
+        }
+
+        private void OnKeyUp(object sender, KeyboardKeyEventArgs e)
+        {
+            foreach (var abstractComponent in _components)
+            {
+                abstractComponent.Value.onKeyUp(sender, e);
+            }
+
+            for (int i = 0; i < _children.Count; i++)
+            {
+                _children[i].OnKeyUp(sender, e);
+            }
+        }
+
+        private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+            foreach (var abstractComponent in _components)
+            {
+                abstractComponent.Value.onKeyDown(sender, e);
+            }
+
+            for (int i = 0; i < _children.Count; i++)
+            {
+                _children[i].OnKeyDown(sender, e);
+            }
+        }
+
         public void Update(float deltaTime)
         {
             foreach (var abstractComponent in _components)
             {
-                abstractComponent.Value.Update(deltaTime);
+                abstractComponent.Value.updateObject(deltaTime);
             }
 
             for (int i = 0; i < _children.Count; i++)
@@ -175,6 +230,36 @@ namespace MinorEngine.engine.core
                 return _children[idx];
             }
             return null;
+        }
+
+        public GameObject GetChildWithName(string name, bool recursive)
+        {
+            if (name == this.Name)
+            {
+                return this;
+            }
+
+            if (!recursive)
+            {
+                return null;
+            }
+
+            foreach (var gameObject in _children)
+            {
+
+                GameObject ret = gameObject.GetChildWithName(name, true);
+                if (ret != null)
+                {
+                    return ret;
+                }
+            }
+
+            return null;
+        }
+
+        public GameObject GetChildWithName(string name)
+        {
+            return GetChildWithName(name, false);
         }
 
 
@@ -232,7 +317,5 @@ namespace MinorEngine.engine.core
             up = Vector3.UnitY;
             Transform = Matrix4.LookAt(eye, target, up);
         }
-
-
     }
 }

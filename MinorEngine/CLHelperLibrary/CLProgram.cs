@@ -81,7 +81,7 @@ namespace CLHelperLibrary
                 int vnum = GetVectorNum(dtStr);
                 string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, dtStr, vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
                 Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
-                source = TextProcessorAPI.PreprocessSource(lines, defs);
+                source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
                 kernelNames = FindKernelNames(source);
                 File.WriteAllText(s, source);
 
@@ -95,7 +95,7 @@ namespace CLHelperLibrary
             int vnum = GetVectorNum(_genType);
             string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType, vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
             Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
-            string source = TextProcessorAPI.PreprocessSource(lines, defs);
+            string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
             string[] kernelNames = FindKernelNames(source);
             
             ClProgramHandle = CL.CreateCLProgramFromSource(source);

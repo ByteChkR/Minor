@@ -1,12 +1,7 @@
-#include f_convert.cl #type0 #type1
-
-
-#type1 Lerpf(#type1 a, #type1 b, #type1 weightB)
+uchar Lerp(uchar a, uchar b, float weightB)
 {
-    return a * ((#type1)1 - weightB) + b * weightB;
+    return (uchar)((float)a * (1 - weightB) + (float)b * weightB);
 }
-
-
 
 int GetFlattenedIndex(int x, int y, int z, int width, int height)
 {
@@ -21,6 +16,11 @@ int3 Get3DimensionalIndex(int width, int height, int index)
     d2 = i / width;
     d1 = (int)fmod((float)i, (float)width);
     return (int3)( d1, d2, d3 );
+}
+
+uchar Mix(uchar a, uchar b, float weightB)
+{
+	return a * (1 - weightB) + b * weightB;
 }
 
 int2 Get2DIndex(int index, int width)

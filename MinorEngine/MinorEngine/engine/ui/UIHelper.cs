@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using MinorEngine.engine.rendering;
+using GameEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.ui

@@ -1,6 +1,7 @@
 ﻿using System;
 using Common;
-using MinorEngine.engine.core;
+using GameEngine.scenes;
+using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -22,7 +23,7 @@ namespace GameEngine
                 PhysicsThreadCount = 4
             };
 
-            DemoScene demo = new DemoScene(es);
+            AbstractGame demo = new FLDemoScene(es);
             demo.Initialize();
             demo.Run();
         }
