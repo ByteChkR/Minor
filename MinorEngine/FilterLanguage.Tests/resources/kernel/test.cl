@@ -9,7 +9,7 @@ uchar4 Checkerboard(int xIn, int yIn, float length)
 
 
 
-__kernel void overlay(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, __global uchar* overlay, float weightOverlay)
+__kernel void overlay(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global uchar* overlay, float weightOverlay)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -22,7 +22,7 @@ __kernel void overlay(__global uchar* image, int3 dimensions, int channelCount, 
 }
 
 
-__kernel void checkerboard(__global uchar4* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, float length)
+__kernel void checkerboard(__global uchar4* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float length)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);

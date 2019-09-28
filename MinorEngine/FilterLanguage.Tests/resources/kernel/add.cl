@@ -1,4 +1,4 @@
-__kernel void addval(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, uchar value)
+__kernel void addval(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, uchar value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -11,7 +11,7 @@ __kernel void addval(__global uchar* image, int3 dimensions, int channelCount, _
 	image[idx] = val / 2;
 }
 
-__kernel void addvalwrap(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, uchar value)
+__kernel void addvalwrap(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, uchar value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -24,7 +24,7 @@ __kernel void addvalwrap(__global uchar* image, int3 dimensions, int channelCoun
 	image[idx] = (uchar)fmod((float)val, 255.0f);
 }
 
-__kernel void addtexvalmask(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, float mask, __global uchar* value)
+__kernel void addtexvalmask(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -37,7 +37,7 @@ __kernel void addtexvalmask(__global uchar* image, int3 dimensions, int channelC
 	image[idx] = val / 2;
 }
 
-__kernel void addtexvalmaskwrap(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, float mask, __global uchar* value)
+__kernel void addtexvalmaskwrap(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -50,7 +50,7 @@ __kernel void addtexvalmaskwrap(__global uchar* image, int3 dimensions, int chan
 	image[idx] = (uchar)fmod((float)val, 255.0f);
 }
 
-__kernel void addtextexmask(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, __global uchar* mask, __global uchar* value)
+__kernel void addtextexmask(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global uchar* mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -64,7 +64,7 @@ __kernel void addtextexmask(__global uchar* image, int3 dimensions, int channelC
 	image[idx] = val / 2;
 }
 
-__kernel void addtextexmaskwrap(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, __global uchar* mask, __global uchar* value)
+__kernel void addtextexmaskwrap(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global uchar* mask, __global uchar* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);

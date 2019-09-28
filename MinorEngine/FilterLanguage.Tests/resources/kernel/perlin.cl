@@ -21,7 +21,7 @@ uchar GetPerlinNoise(__global uchar* image, int idx, int channel, int width, int
 
 	return (uchar)clamp(result,0.0f, 255.0f);
 }
-__kernel void perlin(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, float persistence, int octaves)
+__kernel void perlin(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float persistence, int octaves)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);

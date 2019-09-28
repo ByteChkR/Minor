@@ -39,7 +39,7 @@ uchar GetSmoothNoise(__global uchar* image, int idx, int channel, int width, int
 }
 
 
-__kernel void smooth(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, int octaves)
+__kernel void smooth(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, int octaves)
 {
 
 
