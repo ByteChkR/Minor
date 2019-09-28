@@ -1,6 +1,6 @@
-#type0 Lerp(#type0 a, #type0 b, float weightB)
+float Lerp(float a, float b, float weightB)
 {
-    return (#type0)((float)a * (1 - weightB) + (float)b * weightB);
+    return (float)((float)a * (1 - weightB) + (float)b * weightB);
 }
 float Lerpf(float a, float b, float weightB)
 {

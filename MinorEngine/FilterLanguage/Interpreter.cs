@@ -539,6 +539,7 @@ namespace FilterLanguage
         public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, KernelDatabase kernelDB,
             bool ignoreDebug)
         {
+            
             _flFunctions = new Dictionary<string, FlFunction>
             {
                 {"setactive", cmd_setactive },
@@ -795,14 +796,14 @@ namespace FilterLanguage
                 else
                 {
                     //Execute filter
-                    for (int i = kernel.Parameter.Count - 1; i >= 4; i--)
+                    for (int i = kernel.Parameter.Count - 1; i >= 5; i--)
                     {
                         object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
                         kernel.SetArg(i, obj);
                     }
 
                     this.Log("Running kernel: " + function, DebugChannel.Log);
-                    CL.Run(kernel, _currentBuffer, new int3(_width, _height, _depth), _activeChannelBuffer, _channelCount); //Running the kernel
+                    CL.Run(kernel, _currentBuffer, new int3(_width, _height, _depth), KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer, _channelCount); //Running the kernel
 
                 }
 

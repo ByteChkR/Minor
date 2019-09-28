@@ -339,13 +339,13 @@ namespace CLHelperLibrary
         /// <param name="dimensions">The dimensions of the input buffer</param>
         /// <param name="enabledChannels">The enabled channels for the kernel</param>
         /// <param name="channelCount">The amount of active channels.</param>
-        public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, MemoryBuffer enabledChannels,
+        public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal, MemoryBuffer enabledChannels,
             int channelCount)
         {
 #if NO_CL
             kernel.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
 #else
-            kernel.Run(Instance._commandQueue, image, dimensions, enabledChannels, channelCount);
+            kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
 #endif
         }
 

@@ -16,7 +16,7 @@ namespace CLHelperLibrary
         /// </summary>
         private readonly string _folderName;
 
-        private readonly string _genDataType;
+        public string GenDataType { get; }
 
         /// <summary>
         /// The currently loaded kernels
@@ -30,7 +30,7 @@ namespace CLHelperLibrary
         /// <param name="genDataType">The DataTypes used to compile the FL Database</param>
         public KernelDatabase(string folderName, DataTypes genDataType)
         {
-            _genDataType = KernelParameter.GetDataString(genDataType);
+            GenDataType = KernelParameter.GetDataString(genDataType);
             if (!Directory.Exists(folderName))
             {
                 this.Crash(new InvalidFolderPathException(folderName));
@@ -74,7 +74,7 @@ namespace CLHelperLibrary
             string path = Path.GetFullPath(file);
 
             this.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
-            CLProgram program = new CLProgram(path,_genDataType);
+            CLProgram program = new CLProgram(path,GenDataType);
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {

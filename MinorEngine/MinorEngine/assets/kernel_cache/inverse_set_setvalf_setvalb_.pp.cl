@@ -1,4 +1,4 @@
-__kernel void inverse(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState)
+__kernel void inverse(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -8,11 +8,11 @@ __kernel void inverse(__global #type0* image, int3 dimensions, int channelCount,
 	}
 
 	float val = maxValue - image[idx];
-	image[idx] = (#type0)val;
+	image[idx] = (float)val;
 }
 
 
-__kernel void set(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global #type0* other)
+__kernel void set(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global float* other)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -24,7 +24,7 @@ __kernel void set(__global #type0* image, int3 dimensions, int channelCount, flo
 	image[idx] = other[idx];
 }
 
-__kernel void setvalf(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float other)
+__kernel void setvalf(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float other)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -33,10 +33,10 @@ __kernel void setvalf(__global #type0* image, int3 dimensions, int channelCount,
 		return;
 	}
 
-	image[idx] = (#type0)(other*maxValue);
+	image[idx] = (float)(other*maxValue);
 }
 
-__kernel void setvalb(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, #type0 other)
+__kernel void setvalb(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float other)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);

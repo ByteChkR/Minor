@@ -1,4 +1,4 @@
-__kernel void mulval(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float value)
+__kernel void mulval(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -11,7 +11,7 @@ __kernel void mulval(__global #type0* image, int3 dimensions, int channelCount, 
 	float val = (float)(imgVal * otherVal * maxValue);
 	image[idx] = val;
 }
-__kernel void multexvalmask(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global #type0* value)
+__kernel void multexvalmask(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float mask, __global float* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -23,10 +23,10 @@ __kernel void multexvalmask(__global #type0* image, int3 dimensions, int channel
 	float imgVal = (float)(image[idx] / maxValue);
 	float otherVal = (float)(value[idx] / maxValue);
 	float val = (float)(imgVal * (otherVal * weight) * maxValue);
-	image[idx] = (#type0)val;
+	image[idx] = (float)val;
 }
 
-__kernel void multextexmask(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global #type0* mask, __global #type0* value)
+__kernel void multextexmask(__global float* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global float* mask, __global float* value)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -38,5 +38,5 @@ __kernel void multextexmask(__global #type0* image, int3 dimensions, int channel
 	float imgVal = (float)(image[idx] / maxValue);
 	float otherVal = (float)(value[idx] / maxValue);
 	float val = (float)(imgVal * (otherVal * weight) * maxValue);
-	image[idx] = (#type0)val;
+	image[idx] = (float)val;
 }

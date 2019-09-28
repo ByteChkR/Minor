@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Common;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Programs;
@@ -50,11 +51,25 @@ namespace CLHelperLibrary
         /// </summary>
         private void Initialize()
         {
-            
 
-            string source = TextProcessorAPI.PreprocessSource(_filePath, null);
+            string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType);
+            string source = TextProcessorAPI.PreprocessSource(lines, null);
+
+
+
             string[] kernelNames = FindKernelNames(source);
 
+#if DEBUG
+            string dir = "kernel_cache/";
+            string s = ".pp.cl";
+            for (int i = kernelNames.Length - 1; i >= 0; i--)
+            {
+                s = kernelNames[i] + "_" + s;
+            }
+
+            File.WriteAllText(dir + s, source);
+
+#endif
 
             ClProgramHandle = CL.CreateCLProgramFromSource(source);
 

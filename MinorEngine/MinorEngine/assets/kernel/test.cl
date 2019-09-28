@@ -1,4 +1,4 @@
-#include utils.cl
+#include utils.cl #type0
 
 uchar4 Checkerboard(int xIn, int yIn, float length)
 {
@@ -9,7 +9,7 @@ uchar4 Checkerboard(int xIn, int yIn, float length)
 
 
 
-__kernel void overlay(__global uchar* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, __global uchar* overlay, float weightOverlay)
+__kernel void overlay(__global #type0* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, __global #type0* overlay, float weightOverlay)
 {
 	int idx = get_global_id(0);
 	int channel = (int)fmod((float)idx, (float)channelCount);
@@ -18,19 +18,5 @@ __kernel void overlay(__global uchar* image, int3 dimensions, int channelCount, 
 		return;
 	}
 
-	image[idx]=Mix(image[idx], overlay[idx], weightOverlay);
-}
-
-
-__kernel void checkerboard(__global uchar4* image, int3 dimensions, int channelCount, __global uchar* channelEnableState, float length)
-{
-	int idx = get_global_id(0);
-	int channel = (int)fmod((float)idx, (float)channelCount);
-	if(channelEnableState[channel]==0)
-	{
-		return;
-	}
-
-	int2 idx2d = Get2DIndex(idx, dimensions.x);
-	image[idx]= Checkerboard(idx2d.x, idx2d.y, length);
+	image[idx]=Lerp(image[idx], overlay[idx], weightOverlay);
 }

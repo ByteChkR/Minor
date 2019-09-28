@@ -18,7 +18,7 @@ namespace Common
     public static class TextProcessorAPI
     {
 
-        public class FileContent// : ext_pp_base.IFileContent // For the commits on ext_pp repo that are not ready yet.
+        public class FileContent : ext_pp_base.IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
             private readonly string[] _lines;
             private const string Key = "kernel/memoryFile";
@@ -55,9 +55,9 @@ namespace Common
         {
             protected abstract Verbosity VerbosityLevel { get; }
             protected abstract List<AbstractPlugin> Plugins { get; }
+            public abstract string GetGenericInclude(string filename, string genType);
 
-
-            public string[] Preprocess(string filename, Dictionary<string, bool> defs)
+            public string[] Preprocess(IFileContent filename, Dictionary<string, bool> defs)
             {
                 PreProcessor pp = new PreProcessor();
 
@@ -77,7 +77,7 @@ namespace Common
                     definitions = new Definitions(defs);
                 }
 
-                return pp.Run(new[] { filename }, new Settings(), definitions);
+                return pp.Run(new [] { filename }, new Settings(), definitions);
             }
         }
 
@@ -85,7 +85,10 @@ namespace Common
         public class DefaultPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
-
+            public override string GetGenericInclude(string filename, string genType)
+            {
+                return "#include " + filename + " " + genType;
+            }
             protected override List<AbstractPlugin> Plugins
             {
                 get
@@ -104,8 +107,11 @@ namespace Common
 
         public class GLCLPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
         {
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
-
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL8;
+            public override string GetGenericInclude(string filename, string genType)
+            {
+                return "#include " + filename + " " + genType;
+            }
             protected override List<AbstractPlugin> Plugins
             {
                 get
@@ -126,6 +132,10 @@ namespace Common
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
 
+            public override string GetGenericInclude(string filename, string genType)
+            {
+                return "pp_include: " + filename + " " + genType;
+            }
 
             protected override List<AbstractPlugin> Plugins
             {
@@ -163,9 +173,24 @@ namespace Common
             {"***" , new DefaultPreProcessorConfig()}
         };
 
-        public static string[] PreprocessLines(string file, Dictionary<string, bool> defs)
+        public static string[] GenericIncludeToSource(string ext, string file, string genType)
         {
-            string ext = new string(file.TakeLast(3).ToArray());
+            return new []{ _configs[ext].GetGenericInclude(file, genType) };
+        }
+
+        public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
+        {
+            return PreprocessLines(new FilePathContent(filename), defs);
+        }
+
+        public static string[] PreprocessLines(string[] lines, Dictionary<string, bool> defs)
+        {
+            return PreprocessLines(new FileContent(lines), defs);
+        }
+
+        internal static string[] PreprocessLines(IFileContent file, Dictionary<string, bool> defs)
+        {
+            string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
             if (_configs.ContainsKey(ext))
             {
                 file.Log("Found Matching PreProcessor Config for: " + ext, DebugChannel.Log);
@@ -175,15 +200,26 @@ namespace Common
             return _configs["***"].Preprocess(file, defs); ;
         }
 
-        
 
+
+        public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
+        {
+            return PreprocessSource(new FilePathContent(filename), defs);
+        }
+
+        public static string PreprocessSource(string[] lines, Dictionary<string, bool> defs)
+        {
+            return PreprocessSource(new FileContent(lines), defs);
+        }
+
+        
         /// <summary>
         /// Loads and preprocesses the file specified
         /// </summary>
         /// <param name="filename">the filepath</param>
         /// <param name="defs">definitions</param>
         /// <returns>the source as string</returns>
-        public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
+        internal static string PreprocessSource(IFileContent filename, Dictionary<string, bool> defs)
         {
             StringBuilder sb = new StringBuilder();
             string[] src = PreprocessLines(filename, defs);

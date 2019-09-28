@@ -114,7 +114,7 @@ namespace CLHelperLibrary
         /// <param name="dimensions">The dimensions of the image buffer</param>
         /// <param name="enabledChannels">The enabled channels of the input buffer</param>
         /// <param name="channelCount">The number of channels in use</param>
-        internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, MemoryBuffer enabledChannels, int channelCount)
+        internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, float genTypeMaxVal, MemoryBuffer enabledChannels, int channelCount)
         {
 #if NO_CL
 
@@ -125,6 +125,7 @@ namespace CLHelperLibrary
             SetArg(1, dimensions);
             SetArg(2, channelCount);
             SetArg(3, enabledChannels);
+            SetArg(4, genTypeMaxVal);
             cq.EnqueueNDRangeKernel(Kernel, 1, size);
 #endif
         }
