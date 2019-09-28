@@ -28,7 +28,7 @@ namespace FilterLanguage
         private const string DefineKey = "--define texture ";
 
         private const string ScriptDefineKey = "--define script ";
-        
+
         private const int FLHeaderArgCount = 5;
         /// <summary>
         /// Everything past this string gets ignored by the interpreter
@@ -109,7 +109,7 @@ namespace FilterLanguage
                     interpreter.Step();
                 } while (!interpreter.Terminated);
 
-               
+
                 _definedBuffers.Add(varname, interpreter.GetResultBuffer());
             }
             else
@@ -177,7 +177,7 @@ namespace FilterLanguage
             {
                 if (args.Length < 10)
                 {
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement" );
+                    throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement");
                 }
                 if (!int.TryParse(args[2], out int n))
                 {
@@ -255,10 +255,16 @@ namespace FilterLanguage
             /// </summary>
             public bool TriggeredDebug { get; set; }
 
+
+            public byte[] ActiveChannels { get; set; }
+            public Dictionary<string, MemoryBuffer> DefinedBuffers { get; set; }
+
             /// <summary>
             /// The Currently active buffer.
             /// </summary>
             public MemoryBuffer DebugBuffer { get; set; }
+
+            public string SourceLine { get; set; }
 
             /// <summary>
             /// IEquatable Implementation
@@ -268,6 +274,23 @@ namespace FilterLanguage
             public bool Equals(InterpreterStepResult other)
             {
                 throw new NotImplementedException();
+            }
+
+            public override string ToString()
+            {
+                string channels = "";
+                for (int i = 0; i < ActiveChannels.Length; i++)
+                {
+                    channels += ActiveChannels[i];
+                }
+
+                string definedBuffers = "";
+                foreach (var definedBuffer in DefinedBuffers)
+                {
+                    definedBuffers += $"\n  {definedBuffer.Key}({definedBuffer.Value.Size})";
+                }
+
+                return $"Debug Step Info:\n SourceLine:{SourceLine}\n HasJumped:{HasJumped}\n Triggered Breakpoint:{TriggeredDebug}\n Terminated:{Terminated}\n Active Channels:{channels}\n Defined Buffers:{definedBuffers}";
             }
         }
 
@@ -540,7 +563,7 @@ namespace FilterLanguage
         public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, KernelDatabase kernelDB,
             bool ignoreDebug)
         {
-            
+
             _flFunctions = new Dictionary<string, FlFunction>
             {
                 {"setactive", cmd_setactive },
@@ -684,7 +707,11 @@ namespace FilterLanguage
         public InterpreterStepResult Step()
         {
 
-            _stepResult = new InterpreterStepResult();
+            _stepResult = new InterpreterStepResult()
+            {
+                SourceLine = _source[_currentIndex],
+            };
+
             if (Terminated)
             {
                 _stepResult.Terminated = true;
@@ -710,6 +737,10 @@ namespace FilterLanguage
 
                 DetectEnd();
             }
+
+            _stepResult.DebugBuffer = _currentBuffer;
+            _stepResult.ActiveChannels = _activeChannels;
+            _stepResult.DefinedBuffers = _definedBuffers;
 
 
             return _stepResult;

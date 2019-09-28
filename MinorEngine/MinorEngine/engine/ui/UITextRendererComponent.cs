@@ -90,7 +90,7 @@ namespace GameEngine.engine.ui
                     {
                         FaceMetrics fm = font.Metrics;
                         x = Position.X;
-                        y += fm.LineHeight / scrH * Scale.Y;
+                        y -= fm.LineHeight / scrH * Scale.Y;
                         continue;
                     }
                     if (!font.TryGetCharacter(Text[i], out Character chr))

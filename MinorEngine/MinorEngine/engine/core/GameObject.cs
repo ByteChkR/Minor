@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using Assimp;
 using GameEngine.components;
 using GameEngine.engine.components;
@@ -44,10 +45,15 @@ namespace GameEngine.engine.core
             Transform *= Matrix4.CreateTranslation(position);
             this.World = World;
             this.Parent = parent;
+
             if (name == String.Empty)
             {
                 Name = "Gameobject" + _objId;
                 addObjCount();
+            }
+            else
+            {
+                Name = name;
             }
         }
 
@@ -232,22 +238,18 @@ namespace GameEngine.engine.core
             return null;
         }
 
-        public GameObject GetChildWithName(string name, bool recursive)
+        public GameObject GetChildWithName(string name)
         {
+
             if (name == this.Name)
             {
                 return this;
             }
 
-            if (!recursive)
-            {
-                return null;
-            }
-
             foreach (var gameObject in _children)
             {
 
-                GameObject ret = gameObject.GetChildWithName(name, true);
+                GameObject ret = gameObject.GetChildWithName(name);
                 if (ret != null)
                 {
                     return ret;
@@ -257,14 +259,12 @@ namespace GameEngine.engine.core
             return null;
         }
 
-        public GameObject GetChildWithName(string name)
-        {
-            return GetChildWithName(name, false);
-        }
+
 
 
         public void Translate(Vector3 translation)
         {
+
             Transform *= Matrix4.CreateTranslation(translation);
         }
 
@@ -275,7 +275,9 @@ namespace GameEngine.engine.core
 
         public void Rotate(Vector3 axis, float angle)
         {
-            Transform *= Matrix4.CreateFromAxisAngle(axis, angle);
+            Vector3 translation = GetLocalPosition();
+            Transform = Transform.ClearTranslation() * Matrix4.CreateFromAxisAngle(axis, angle);
+            Translate(translation);
         }
 
         public void SetRotation(Quaternion rot)
