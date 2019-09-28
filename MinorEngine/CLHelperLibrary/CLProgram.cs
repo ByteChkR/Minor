@@ -48,14 +48,32 @@ namespace CLHelperLibrary
             Initialize();
         }
 
-        private int GetVectorNum(string dtStr)
+        private static int GetVectorNum(string dtStr)
         {
-            if (!char.IsNumber(dtStr.Last())) return 1;
-            else if (dtStr.Last() == '2') return 2;
-            else if (dtStr.Last() == '3') return 3;
-            else if (dtStr.Last() == '4') return 4;
-            else if (dtStr.Last() == '8') return 8;
-            else if (dtStr.Last() == '6') return 16;
+            if (!char.IsNumber(dtStr.Last()))
+            {
+                return 1;
+            }
+            if (dtStr.Last() == '2')
+            {
+                return 2;
+            }
+            if (dtStr.Last() == '3')
+            {
+                return 3;
+            }
+            if (dtStr.Last() == '4')
+            {
+                return 4;
+            }
+            if (dtStr.Last() == '8')
+            {
+                return 8;
+            }
+            if (dtStr.Last() == '6')
+            {
+                return 16;
+            }
             return 0;
         }
 
@@ -97,7 +115,7 @@ namespace CLHelperLibrary
             Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
             string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
             string[] kernelNames = FindKernelNames(source);
-            
+
             ClProgramHandle = CL.CreateCLProgramFromSource(source);
 #endif
 

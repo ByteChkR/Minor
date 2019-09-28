@@ -7,51 +7,50 @@ namespace GameEngine.engine.physics
 {
     public class ThreadDispatcher : IThreadDispatcher, IDisposable
     {
-
-        int threadCount;
-        public int ThreadCount => threadCount;
+        private readonly int _threadCount;
+        public int ThreadCount => _threadCount;
         struct Worker
         {
             public Thread Thread;
             public AutoResetEvent Signal;
         }
 
-        Worker[] workers;
-        AutoResetEvent finished;
+        private readonly Worker[] _workers;
+        private readonly AutoResetEvent _finished;
+        private readonly BufferPool[] _bufferPools;
 
-        BufferPool[] bufferPools;
+        volatile Action<int> _workerBody;
+        private int _workerIndex;
+        private int _completedWorkerCounter;
 
         public ThreadDispatcher(int threadCount)
         {
-            this.threadCount = threadCount;
-            workers = new Worker[threadCount - 1];
-            for (int i = 0; i < workers.Length; ++i)
+            this._threadCount = threadCount;
+            _workers = new Worker[threadCount - 1];
+            for (int i = 0; i < _workers.Length; ++i)
             {
-                workers[i] = new Worker { Thread = new Thread(WorkerLoop), Signal = new AutoResetEvent(false) };
-                workers[i].Thread.IsBackground = true;
-                workers[i].Thread.Start(workers[i].Signal);
+                _workers[i] = new Worker { Thread = new Thread(WorkerLoop), Signal = new AutoResetEvent(false) };
+                _workers[i].Thread.IsBackground = true;
+                _workers[i].Thread.Start(_workers[i].Signal);
             }
-            finished = new AutoResetEvent(false);
-            bufferPools = new BufferPool[threadCount];
-            for (int i = 0; i < bufferPools.Length; ++i)
+            _finished = new AutoResetEvent(false);
+            _bufferPools = new BufferPool[threadCount];
+            for (int i = 0; i < _bufferPools.Length; ++i)
             {
-                bufferPools[i] = new BufferPool();
+                _bufferPools[i] = new BufferPool();
             }
         }
 
         void DispatchThread(int workerIndex)
         {
-            workerBody(workerIndex);
+            _workerBody(workerIndex);
 
-            if (Interlocked.Increment(ref completedWorkerCounter) == threadCount)
+            if (Interlocked.Increment(ref _completedWorkerCounter) == _threadCount)
             {
-                finished.Set();
+                _finished.Set();
             }
         }
 
-        volatile Action<int> workerBody;
-        int workerIndex;
-        int completedWorkerCounter;
 
         void WorkerLoop(object untypedSignal)
         {
@@ -60,29 +59,31 @@ namespace GameEngine.engine.physics
             {
                 signal.WaitOne();
                 if (disposed)
+                {
                     return;
-                DispatchThread(Interlocked.Increment(ref workerIndex) - 1);
+                }
+                DispatchThread(Interlocked.Increment(ref _workerIndex) - 1);
             }
         }
 
         void SignalThreads()
         {
-            for (int i = 0; i < workers.Length; ++i)
+            for (int i = 0; i < _workers.Length; ++i)
             {
-                workers[i].Signal.Set();
+                _workers[i].Signal.Set();
             }
         }
 
         public void DispatchWorkers(Action<int> workerBody)
         {
-            workerIndex = 1; //Just make the inline thread worker 0. While the other threads might start executing first, the user should never rely on the dispatch order.
-            completedWorkerCounter = 0;
-            this.workerBody = workerBody;
+            _workerIndex = 1; //Just make the inline thread worker 0. While the other threads might start executing first, the user should never rely on the dispatch order.
+            _completedWorkerCounter = 0;
+            this._workerBody = workerBody;
             SignalThreads();
             //Calling thread does work. No reason to spin up another worker and block this one!
             DispatchThread(0);
-            finished.WaitOne();
-            this.workerBody = null;
+            _finished.WaitOne();
+            this._workerBody = null;
         }
 
         volatile bool disposed;
@@ -92,11 +93,11 @@ namespace GameEngine.engine.physics
             {
                 disposed = true;
                 SignalThreads();
-                for (int i = 0; i < bufferPools.Length; ++i)
+                for (int i = 0; i < _bufferPools.Length; ++i)
                 {
-                    bufferPools[i].Clear();
+                    _bufferPools[i].Clear();
                 }
-                foreach (var worker in workers)
+                foreach (var worker in _workers)
                 {
                     worker.Thread.Join();
                     worker.Signal.Dispose();
@@ -106,7 +107,7 @@ namespace GameEngine.engine.physics
 
         public BufferPool GetThreadMemoryPool(int workerIndex)
         {
-            return bufferPools[workerIndex];
+            return _bufferPools[workerIndex];
         }
 
     }

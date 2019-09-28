@@ -8,8 +8,8 @@ namespace GameEngine.engine.ui
     public class GameFont
     {
         public string Name => _fontFace.FullName;
-        public readonly Dictionary<char, Character> _fontAtlas;
-        public readonly FontFace _fontFace;
+        private readonly Dictionary<char, Character> _fontAtlas;
+        private readonly FontFace _fontFace;
         private readonly int size;
         public FaceMetrics Metrics => _fontFace.GetFaceMetrics(size);
         public GameFont(FontFace ff, int size, Dictionary<char, Character> fontAtlas)

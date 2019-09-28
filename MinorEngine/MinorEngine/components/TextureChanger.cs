@@ -27,10 +27,7 @@ namespace GameEngine.components
 
         private int texWidth, texHeight, testNr;
         private string[] filenames;
-
-        public TextureChanger()
-        {
-        }
+        
 
         protected override void Awake()
         {
@@ -63,11 +60,6 @@ namespace GameEngine.components
             source.Looping = true;
         }
 
-        protected override void Update(float deltaTime)
-        {
-            
-
-        }
 
         private bool _isDebuggingInterpreter;
 
@@ -179,9 +171,9 @@ namespace GameEngine.components
             }
             else if (e.KeyChar == 't')
             {
-                string[] filenames = Directory.GetFiles("filter/tests", "*.fl");
+                string[] files = Directory.GetFiles("filter/tests", "*.fl");
                 this.Log("Running tests...", DebugChannel.Log);
-                foreach (string filename in filenames)
+                foreach (string filename in files)
                 {
                     _fli = new FilterLanguage.Interpreter(filename,
                         CL.CreateEmpty<byte>(texWidth * texHeight * 4,
@@ -245,23 +237,6 @@ namespace GameEngine.components
                     }
                     Owner.World.Add(obj);
                 }
-                //GameObject sphereObj = new GameObject(Vector3.UnitX * 2f + Vector3.UnitY * 17, "Sphere");
-                //sphereObj.Scale(new Vector3(1f));
-                //sphereObj.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
-                //sphereObj.AddComponent(new ColliderComponent(ColliderType.SPHERE, 1f, 1, 1));
-
-                //GameObject sphereObj1 = new GameObject(-Vector3.UnitX * 2f + Vector3.UnitY * 17, "Sphere");
-                //sphereObj1.Scale(new Vector3(0.4f));
-                //sphereObj1.AddComponent(new ColliderComponent(ColliderType.SPHERE, 0.4f, 1, 1));
-                //sphereObj1.AddComponent(new MeshRendererComponent(_runicShader, sphere, 0));
-
-                //GameObject boxObj = new GameObject(Vector3.UnitX * 2f + Vector3.UnitY * 17, "Box");
-                //boxObj.Scale(new Vector3(0.5f));
-                //boxObj.AddComponent(new ColliderComponent(ColliderType.BOX, 0.5f, 1, 1));
-                //boxObj.AddComponent(new MeshRendererComponent(_runicShader, box, 0));
-                //Owner.World.Add(boxObj);
-                //Owner.World.Add(sphereObj);
-                //Owner.World.Add(sphereObj1);
             }
         }
     }

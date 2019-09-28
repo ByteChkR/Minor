@@ -13,9 +13,8 @@ namespace GameEngine.components.fldemo
 {
     public class FLGeneratorComponent : AbstractComponent
     {
-        private List<MeshRendererComponent> _previews;
-        private GameTexture _tex;
-        private Interpreter _interpreter;
+        private readonly List<MeshRendererComponent> _previews;
+        private readonly GameTexture _tex;
         private Interpreter _stepInterpreter;
         private KernelDatabase _db;
         private bool _isInStepMode;
@@ -61,15 +60,15 @@ namespace GameEngine.components.fldemo
         {
             MemoryBuffer buf = GetRendererTextureBuffer();
 
-            _interpreter = new Interpreter(filename, buf, (int)_tex.Width, (int)_tex.Height, 1, 4, _db, true);
+            Interpreter interpreter = new Interpreter(filename, buf, (int)_tex.Width, (int)_tex.Height, 1, 4, _db, true);
 
 
             do
             {
-                _interpreter.Step();
-            } while (!_interpreter.Terminated);
+                interpreter.Step();
+            } while (!interpreter.Terminated);
 
-            GameTexture.Update(_tex, _interpreter.GetResult<byte>(), (int)_tex.Width, (int)_tex.Height);
+            GameTexture.Update(_tex, interpreter.GetResult<byte>(), (int)_tex.Width, (int)_tex.Height);
 
             for (int i = 0; i < _previews.Count; i++)
             {
@@ -84,7 +83,7 @@ namespace GameEngine.components.fldemo
                 return "Not in an active Debugging Session";
             }
 
-            _interpreter = null;
+            _stepInterpreter = null;
             _isInStepMode = false;
 
             return "Session Aborted.";

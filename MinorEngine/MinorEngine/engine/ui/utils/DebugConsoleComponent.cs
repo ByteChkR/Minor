@@ -25,13 +25,13 @@ namespace GameEngine.engine.ui.utils
         private StringBuilder _sb;
         public delegate string ConsoleCommand(string[] args);
 
-        private Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
-        private List<string> CommandHistory = new List<string>();
-        private int currentID;
+        private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
+        private readonly List<string> _commandHistory = new List<string>();
+        private int _currentId;
 
 
         private bool _blinkActive;
-        private float _blinkMaxTime = 0.5f;
+        private readonly float _blinkMaxTime = 0.5f;
         private float _blinkTime;
 
         private bool _showConsole;
@@ -50,11 +50,11 @@ namespace GameEngine.engine.ui.utils
             GameObject obj = new GameObject("Console");
             GameObject _in = new GameObject("ConsoleInput");
             GameObject _out = new GameObject("ConsoleOutput");
-            GameObject _title = new GameObject("Title");
+            GameObject _titleObj = new GameObject("Title");
 
             obj.Add(_in);
             obj.Add(_out);
-            obj.Add(_title);
+            obj.Add(_titleObj);
 
             UITextRendererComponent _tText = new UITextRendererComponent("Arial", textShader)
             {
@@ -79,7 +79,7 @@ namespace GameEngine.engine.ui.utils
             obj.AddComponent(new DebugConsoleComponent());
             _in.AddComponent(_tIn);
             _out.AddComponent(_tOut);
-            _title.AddComponent(_tText);
+            _titleObj.AddComponent(_tText);
             return obj;
 
         }
@@ -134,7 +134,7 @@ namespace GameEngine.engine.ui.utils
 
                 _invalidate = true;
 
-                currentID = CommandHistory.Count;
+                _currentId = _commandHistory.Count;
             }
 
         }
@@ -162,28 +162,28 @@ namespace GameEngine.engine.ui.utils
                     {
                         _consoleOutputCache = "Command Not found";
                     }
-                    CommandHistory.Add(_sb.ToString());
-                    currentID = CommandHistory.Count;
+                    _commandHistory.Add(_sb.ToString());
+                    _currentId = _commandHistory.Count;
                     _invalidate = true;
                     _sb.Clear();
                 }
-                else if (e.Key == Key.Up && currentID != 0)
+                else if (e.Key == Key.Up && _currentId != 0)
                 {
-                    currentID--;
+                    _currentId--;
 
 
                     _sb.Clear();
-                    _sb.Append(CommandHistory[currentID]);
+                    _sb.Append(_commandHistory[_currentId]);
 
                 }
-                else if (e.Key == Key.Down && currentID != CommandHistory.Count)
+                else if (e.Key == Key.Down && _currentId != _commandHistory.Count)
                 {
-                    currentID++;
+                    _currentId++;
 
-                    if (currentID != CommandHistory.Count)
+                    if (_currentId != _commandHistory.Count)
                     {
                         _sb.Clear();
-                        _sb.Append(CommandHistory[currentID]);
+                        _sb.Append(_commandHistory[_currentId]);
                     }
 
                 }
@@ -262,13 +262,13 @@ namespace GameEngine.engine.ui.utils
             if (_showConsole)
             {
                 string input = "Something Went Wrong.";
-                if (currentID == CommandHistory.Count)
+                if (_currentId == _commandHistory.Count)
                 {
                     input = _sb.ToString();
                 }
-                else if (currentID >= 0)
+                else if (_currentId >= 0)
                 {
-                    input = CommandHistory[currentID];
+                    input = _commandHistory[_currentId];
                 }
                 _consoleInput.Text = ">>> " + input + (_blinkActive ? "_" : "");
 
