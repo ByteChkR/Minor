@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -16,19 +17,22 @@ namespace GameEngine.engine.ui.utils
     public class DebugConsoleComponent : AbstractComponent
     {
 
+        private const int MaxConsoleLines = 30;
         private const string HelpText = "Press C to Open the FL Console";
         private const string ConsoleTitle = "Game Console:";
         private UITextRendererComponent _title;
-        private string _consoleOutputCache;
         private UITextRendererComponent _consoleInput;
         private UITextRendererComponent _consoleOutput;
         private StringBuilder _sb;
+        private StringBuilder _outSB;
         public delegate string ConsoleCommand(string[] args);
 
         private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
+        private Queue<string> _consoleOutBuffer;
         private readonly List<string> _commandHistory = new List<string>();
         private int _currentId;
 
+        private int inputIndex = 0;
 
         private bool _blinkActive;
         private readonly float _blinkMaxTime = 0.5f;
@@ -85,18 +89,48 @@ namespace GameEngine.engine.ui.utils
         }
 
 
+        public void WriteToConsole(string text)
+        {
+            string[] arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var s in arr)
+            {
+                _consoleOutBuffer.Enqueue(s);
+            }
+            while (_consoleOutBuffer.Count > MaxConsoleLines)
+            {
+                _consoleOutBuffer.Dequeue();
+            }
+        }
+
+
+        private string ToConsoleText()
+        {
+            _outSB.Clear();
+
+            foreach (var line in _consoleOutBuffer)
+            {
+                _outSB.Append(line + "\n");
+            }
+
+            return _outSB.ToString();
+        }
+
         protected override void Awake()
         {
-            _consoleOutputCache = "Console Initialized..";
+            _consoleOutBuffer = new Queue<string>();
+            _consoleOutBuffer.Enqueue("Console Initialized..");
             _title = Owner.GetChildWithName("Title").GetComponent<UITextRendererComponent>();
             _consoleInput = Owner.GetChildWithName("ConsoleInput").GetComponent<UITextRendererComponent>();
             _consoleOutput = Owner.GetChildWithName("ConsoleOutput").GetComponent<UITextRendererComponent>();
             _sb = new StringBuilder();
+            _outSB = new StringBuilder();
             AddCommand("help", cmd_ListCmds);
             AddCommand("h", cmd_ListCmds);
             AddCommand("q", cmd_Exit);
             AddCommand("exit", cmd_Exit);
             AddCommand("quit", cmd_Exit);
+            AddCommand("clr", cmd_Clear);
+            AddCommand("clear", cmd_Clear);
         }
 
         private string cmd_Exit(string[] args)
@@ -105,7 +139,13 @@ namespace GameEngine.engine.ui.utils
             return "Exited.";
         }
 
-        
+
+        private string cmd_Clear(string[] args)
+        {
+            _consoleOutBuffer.Clear();
+            return "Cleared Output";
+        }
+
         private string cmd_ListCmds(string[] args)
         {
             _sb.Clear();
@@ -114,6 +154,7 @@ namespace GameEngine.engine.ui.utils
             {
                 _sb.Append("\n ");
                 _sb.Append(consoleCommand.Key);
+
             }
 
             return _sb.ToString();
@@ -131,7 +172,16 @@ namespace GameEngine.engine.ui.utils
         {
             if (_showConsole)
             {
-                _sb.Append(e.KeyChar);
+                if (inputIndex >= _sb.Length)
+                {
+                    _sb.Append(e.KeyChar);
+                }
+                else
+                {
+                    _sb.Insert(inputIndex, e.KeyChar);
+                }
+
+                inputIndex++;
 
                 _invalidate = true;
 
@@ -146,6 +196,7 @@ namespace GameEngine.engine.ui.utils
             {
                 if (e.Key == Key.Enter)
                 {
+                    WriteToConsole(_sb.ToString());
                     List<string> words = _sb.ToString().Split(' ').ToList();
 
                     if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
@@ -157,16 +208,27 @@ namespace GameEngine.engine.ui.utils
                             s = "No Return";
                         }
 
-                        _consoleOutputCache = s;
+                        WriteToConsole(s);
                     }
                     else
                     {
-                        _consoleOutputCache = "Command Not found";
+
+                        WriteToConsole("Command Not found");
                     }
+
+                    inputIndex = 0;
                     _commandHistory.Add(_sb.ToString());
                     _currentId = _commandHistory.Count;
                     _invalidate = true;
                     _sb.Clear();
+                }
+                else if (e.Key == Key.Right && inputIndex < _sb.Length)
+                {
+                    inputIndex++;
+                }
+                else if (e.Key == Key.Left && inputIndex > 0)
+                {
+                    inputIndex--;
                 }
                 else if (e.Key == Key.Up && _currentId != 0)
                 {
@@ -175,6 +237,7 @@ namespace GameEngine.engine.ui.utils
 
                     _sb.Clear();
                     _sb.Append(_commandHistory[_currentId]);
+                    inputIndex = _sb.Length;
 
                 }
                 else if (e.Key == Key.Down && _currentId != _commandHistory.Count)
@@ -184,13 +247,24 @@ namespace GameEngine.engine.ui.utils
                     if (_currentId != _commandHistory.Count)
                     {
                         _sb.Clear();
+
                         _sb.Append(_commandHistory[_currentId]);
+                        inputIndex = _sb.Length;
                     }
 
                 }
-                else if (_sb.Length > 0 && e.Key == Key.BackSpace)
+                else if (inputIndex > 0 && e.Key == Key.BackSpace)
                 {
-                    _sb.Remove(_sb.Length - 1, 1);
+                    if (inputIndex == _sb.Length)
+                    {
+                        _sb.Remove(_sb.Length - 1, 1);
+                    }
+                    else
+                    {
+                        _sb.Remove(inputIndex-1, 1);
+                    }
+
+                    inputIndex--;
 
                     _invalidate = true;
                 }
@@ -204,6 +278,8 @@ namespace GameEngine.engine.ui.utils
                 {
                     _sb.Clear();
 
+                    inputIndex = 0;
+
                     _invalidate = true;
                 }
             }
@@ -212,6 +288,8 @@ namespace GameEngine.engine.ui.utils
                 if (e.Key == Key.C)
                 {
                     ToggleConsole(true);
+
+                    inputIndex = 0;
 
                     _invalidate = true;
                 }
@@ -258,7 +336,6 @@ namespace GameEngine.engine.ui.utils
 
         private void Invalidate()
         {
-            _consoleOutput.Text = _consoleOutputCache;
             _invalidate = false;
             if (_showConsole)
             {
@@ -271,13 +348,33 @@ namespace GameEngine.engine.ui.utils
                 {
                     input = _commandHistory[_currentId];
                 }
-                _consoleInput.Text = ">>> " + input + (_blinkActive ? "_" : "");
+
+                string inputCursor;
+
+                if (_blinkActive)
+                {
+                    inputCursor = "|";
+                }
+                else
+                {
+                    inputCursor = " ";
+                }
+                if (inputIndex >= input.Length)
+                {
+                    input = input + inputCursor;
+                }
+                else
+                {
+                    input = input.Insert(inputIndex, inputCursor);
+                }
+
+                _consoleInput.Text = ">>> " + input;
 
 
             }
             _title.Text = _showConsole ? ConsoleTitle : HelpText;
 
-            _consoleOutput.Text = _showConsole ? _consoleOutputCache : "";
+            _consoleOutput.Text = _showConsole ? ToConsoleText() : "";
         }
 
     }

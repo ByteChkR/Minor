@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 using GameEngine.engine.audio.sources;
 using GameEngine.engine.components;
 using GameEngine.engine.core;
@@ -23,6 +24,7 @@ namespace GameEngine.components.fldemo
             GameTexture bg = GameTexture.Load("textures/ground4k.png");
             bgBox.Meshes[0].Textures = new[] { bg };
 
+            
 
 
 
@@ -41,6 +43,33 @@ namespace GameEngine.components.fldemo
 
 
             comp?.AddCommand("rain", cmd_SpawnColliders);
+            comp?.AddCommand("gravity", cmd_SpawnColliders);
+        }
+
+
+        public static string cmd_SetGravity(string[] args)
+        {
+            if (args.Length != 3)
+            {
+                return "Expected 3 component vector";
+            }
+
+            if (float.TryParse(args[0], out float x))
+            {
+                return "Wrong X Component";
+            }
+            if (float.TryParse(args[1], out float y))
+            {
+                return "Wrong Y Component";
+            }
+            if (float.TryParse(args[2], out float z))
+            {
+                return "Wrong Z Component";
+            }
+
+            Physics.Gravity=new System.Numerics.Vector3(x,y,z);
+
+            return "Gravity Set to: " + Physics.Gravity;
         }
 
         public static string cmd_SpawnColliders(string[] args)
