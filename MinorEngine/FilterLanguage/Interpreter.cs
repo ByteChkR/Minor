@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Resources;
+using System.Text;
 using CLHelperLibrary;
 using CLHelperLibrary.CLStructs;
 using Common;
@@ -276,19 +278,23 @@ namespace FilterLanguage
                 throw new NotImplementedException();
             }
 
+            private static StringBuilder _sb = new StringBuilder();
+
             public override string ToString()
             {
-                string channels = "";
+                _sb.Clear();
                 for (int i = 0; i < ActiveChannels.Length; i++)
                 {
-                    channels += ActiveChannels[i];
+                    _sb.Append(ActiveChannels[i]);
                 }
 
-                string definedBuffers = "";
+                string channels = _sb.ToString();
+                _sb.Clear();
                 foreach (var definedBuffer in DefinedBuffers)
                 {
-                    definedBuffers += $"\n  {definedBuffer.Key}({definedBuffer.Value.Size})";
+                    _sb.Append($"\n  {definedBuffer.Key}({definedBuffer.Value.Size})");
                 }
+                string definedBuffers = _sb.ToString();
 
                 return $"Debug Step Info:\n SourceLine:{SourceLine}\n HasJumped:{HasJumped}\n Triggered Breakpoint:{TriggeredDebug}\n Terminated:{Terminated}\n Active Channels:{channels}\n Defined Buffers:{definedBuffers}";
             }

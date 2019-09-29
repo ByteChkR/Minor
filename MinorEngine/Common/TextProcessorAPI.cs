@@ -146,14 +146,16 @@ namespace Common
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
 
+            private static StringBuilder _sb = new StringBuilder();
             public override string GetGenericInclude(string filename, string[] genType)
             {
-                string s = "";
+                _sb.Clear();
                 foreach (var gt in genType)
                 {
-                    s += gt + ' ';
+                    _sb.Append(gt);
+                    _sb.Append(' ');
                 }
-                return "pp_include: " + filename + " " + s;
+                return "pp_include: " + filename + " " + _sb.ToString();
             }
 
             protected override List<AbstractPlugin> Plugins
@@ -216,7 +218,7 @@ namespace Common
                 return _configs[ext].Preprocess(file, defs);
             }
             file.Log("Loading File with Default PreProcessing", DebugChannel.Log);
-            return _configs["***"].Preprocess(file, defs); ;
+            return _configs["***"].Preprocess(file, defs);
         }
 
 

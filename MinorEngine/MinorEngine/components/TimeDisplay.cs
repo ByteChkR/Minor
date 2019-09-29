@@ -8,9 +8,9 @@ namespace GameEngine.components
     {
         private UITextRendererComponent tr;
         private float time;
-        private float frameTime = 0;
-        private int fpsFrames = 0;
-        private int fps = 0;
+        private float frameTime;
+        private int fpsFrames;
+        private int fps;
         protected override void Awake()
         {
             base.Awake();

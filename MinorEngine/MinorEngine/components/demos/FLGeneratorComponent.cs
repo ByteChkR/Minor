@@ -7,6 +7,7 @@ using GameEngine.engine.core;
 using GameEngine.engine.rendering;
 using GameEngine.engine.ui.utils;
 using OpenCl.DotNetCore.Memory;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
 namespace GameEngine.components.fldemo
@@ -14,7 +15,7 @@ namespace GameEngine.components.fldemo
     public class FLGeneratorComponent : AbstractComponent
     {
         private readonly List<MeshRendererComponent> _previews;
-        private readonly GameTexture _tex;
+        private GameTexture Tex { get; set; }
         private Interpreter _stepInterpreter;
         private KernelDatabase _db;
         private bool _isInStepMode;
@@ -22,7 +23,7 @@ namespace GameEngine.components.fldemo
         public FLGeneratorComponent(List<MeshRendererComponent> previews, GameTexture tex)
         {
             _previews = previews;
-            _tex = tex;
+            Tex = tex;
         }
 
         private string cmd_RunFL(string[] args)
@@ -37,14 +38,23 @@ namespace GameEngine.components.fldemo
             return "Command Finished";
         }
 
-        
+        private string cmd_FLReset(string[] args)
+        {
+
+            GL.DeleteTexture(Tex.TextureId);
+            Tex = GameTexture.Load("textures/runicfloor.png");
+            return "Texture Reset.";
+        }
+
+
         protected override void Awake()
         {
             DebugConsoleComponent console = AbstractGame.Instance.World.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
             console?.AddCommand("runfl", cmd_RunFL);
             console?.AddCommand("dbgfl", cmd_RunFLStepped);
             console?.AddCommand("step", cmd_FLStep);
-            console?.AddCommand("dbgstop", cmd_FLStop);
+            console?.AddCommand("r", cmd_FLReset);
+            console?.AddCommand("dbgstop", cmd_FLReset);
             _db = new KernelDatabase("kernel/", DataTypes.UCHAR1);
         }
 
@@ -52,7 +62,7 @@ namespace GameEngine.components.fldemo
 
         private MemoryBuffer GetRendererTextureBuffer()
         {
-            return GameTexture.CreateFromTexture(_tex, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            return GameTexture.CreateFromTexture(Tex, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
         }
 
@@ -60,7 +70,7 @@ namespace GameEngine.components.fldemo
         {
             MemoryBuffer buf = GetRendererTextureBuffer();
 
-            Interpreter interpreter = new Interpreter(filename, buf, (int)_tex.Width, (int)_tex.Height, 1, 4, _db, true);
+            Interpreter interpreter = new Interpreter(filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
 
 
             do
@@ -68,11 +78,11 @@ namespace GameEngine.components.fldemo
                 interpreter.Step();
             } while (!interpreter.Terminated);
 
-            GameTexture.Update(_tex, interpreter.GetResult<byte>(), (int)_tex.Width, (int)_tex.Height);
+            GameTexture.Update(Tex, interpreter.GetResult<byte>(), (int)Tex.Width, (int)Tex.Height);
 
             for (int i = 0; i < _previews.Count; i++)
             {
-                _previews[i].Model.Meshes[0].Textures = new[] { _tex };
+                _previews[i].Model.Meshes[0].Textures = new[] { Tex };
             }
         }
 
@@ -103,11 +113,11 @@ namespace GameEngine.components.fldemo
                 res = _stepInterpreter.GetResultBuffer();
             }
 
-            GameTexture.Update(_tex, CL.ReadBuffer<byte>(res, (int)res.Size), (int)_tex.Width, (int)_tex.Height);
+            GameTexture.Update(Tex, CL.ReadBuffer<byte>(res, (int)res.Size), (int)Tex.Width, (int)Tex.Height);
 
             for (int i = 0; i < _previews.Count; i++)
             {
-                _previews[i].Model.Meshes[0].Textures = new[] { _tex };
+                _previews[i].Model.Meshes[0].Textures = new[] { Tex };
             }
 
             return stepResult.ToString();
@@ -119,14 +129,14 @@ namespace GameEngine.components.fldemo
                 return "No file specified.";
             }
             MemoryBuffer buf = GetRendererTextureBuffer();
-            
-            
-                _isInStepMode = true;
-                _stepInterpreter = new Interpreter(args[0], buf, (int) _tex.Width, (int) _tex.Height, 1, 4, _db, false);
-        
+
+
+            _isInStepMode = true;
+            _stepInterpreter = new Interpreter(args[0], buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, false);
+
             return "Debugging Session Started.";
 
-            
+
         }
     }
 }

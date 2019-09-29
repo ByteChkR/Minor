@@ -1,0 +1,104 @@
+﻿using System;
+using System.Collections.Generic;
+using GameEngine.engine.audio.sources;
+using GameEngine.engine.components;
+using GameEngine.engine.core;
+using GameEngine.engine.physics;
+using GameEngine.engine.rendering;
+using GameEngine.engine.ui.utils;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+
+namespace GameEngine.components.fldemo
+{
+    public class PhysicsDemoComponent : AbstractComponent
+    {
+        private static ShaderProgram _ObjShader;
+        private static GameModel sphere;
+        private static GameModel box;
+
+        protected override void Awake()
+        {
+            GameModel bgBox = new GameModel("models/cube_flat.obj");
+            GameTexture bg = GameTexture.Load("textures/ground4k.png");
+            bgBox.Meshes[0].Textures = new[] { bg };
+
+
+
+
+            Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
+
+            base.Awake();
+            DebugConsoleComponent comp = AbstractGame.Instance.World.GetChildWithName("Console")
+                .GetComponent<DebugConsoleComponent>();
+
+            if (sphere == null)
+            {
+                sphere = new GameModel("models/sphere_smooth.obj");
+            }
+
+            if (box == null)
+            {
+                box = new GameModel("models/cube_flat.obj");
+            }
+
+
+            box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+            sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+
+
+
+
+            comp?.AddCommand("rain", cmd_SpawnColliders);
+        }
+
+        public string cmd_SpawnColliders(string[] args)
+        {
+            if (args.Length != 1 || !int.TryParse(args[0], out int nmbrs))
+            {
+                return "Not a number.";
+            }
+
+            if (_ObjShader == null)
+            {
+                ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+                {
+                    {ShaderType.FragmentShader, "shader/texture.fs"},
+                    {ShaderType.VertexShader, "shader/texture.vs"},
+                }, out _ObjShader);
+
+                Random rnd = new Random();
+                for (int i = 0; i < nmbrs; i++)
+                {
+
+                    Vector3 pos = new Vector3((float)rnd.NextDouble(), 3 + (float)rnd.NextDouble(),
+                        (float)rnd.NextDouble());
+                    pos -= Vector3.One * 0.5f;
+                    pos *= 50;
+
+                    GameObject obj = new GameObject(pos, "Sphere");
+                    float radius = 0.3f + (float)rnd.NextDouble();
+                    obj.Scale(new Vector3(radius));
+                    if (rnd.Next(0, 2) == 1)
+                    {
+                        obj.AddComponent(new MeshRendererComponent(_ObjShader, sphere, 0));
+                        obj.AddComponent(new ColliderComponent(ColliderType.SPHERE, radius, 1, 1));
+                    }
+                    else
+                    {
+                        obj.AddComponent(new ColliderComponent(ColliderType.BOX, radius, 1, 1));
+                        obj.AddComponent(new MeshRendererComponent(_ObjShader, box, 0));
+
+                    }
+
+                    Owner.World.Add(obj);
+                }
+            }
+
+            return nmbrs + " Objects Created.";
+
+
+
+        }
+    }
+}

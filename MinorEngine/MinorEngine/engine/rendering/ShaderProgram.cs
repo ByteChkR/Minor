@@ -24,7 +24,7 @@ namespace GameEngine.engine.rendering
 
                 program.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
 
-                string code = TextProcessorAPI.PreprocessSource(shader.Value, null);//File.ReadAllText(shader.Value);
+                string code = TextProcessorAPI.PreprocessSource(shader.Value, null);
                 bool r = TryCompileShader(shader.Key, code, out int id);
                 ret &= r;
                 if (r)

@@ -24,7 +24,7 @@ namespace GameEngine.engine.physics
         public static BodyProperty<Layer> CollisionFilters { get; set; }
         public static List<Layer> LayerList { get; } = new List<Layer>();
         public static Vector3 Gravity { get; set; } = new Vector3(0, -10, 0);
-        private static IThreadDispatcher ThreadDispatcher { get; set; } = null;
+        private static IThreadDispatcher ThreadDispatcher { get; set; }
         public static void Init()
         {
             //The buffer pool is a source of raw memory blobs for the engine to use.

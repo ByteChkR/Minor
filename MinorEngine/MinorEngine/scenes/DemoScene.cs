@@ -26,7 +26,6 @@ namespace GameEngine.scenes
 
         protected override void Update(object sender, FrameEventArgs e)
         {
-            Physics.Update((float)e.Time);
             base.Update(sender, e);
         }
 
@@ -41,15 +40,14 @@ namespace GameEngine.scenes
             GameModel sphere = new GameModel("models/sphere_smooth.obj");
             GameModel plane = new GameModel("models/plane.obj");
             GameModel box = new GameModel("models/cube_flat.obj");
-            GameModel bgBox = new GameModel("models/cube_flat.obj");
 
             GameTexture runic = GameTexture.Load("textures/runicfloor.png");
+            GameModel bgBox = new GameModel("models/cube_flat.obj");
             GameTexture bg = GameTexture.Load("textures/ground4k.png");
-            plane.Meshes[0].Textures = new[] { runic };
-            sphere.Meshes[0].Textures = new[] { runic };
-            box.Meshes[0].Textures = new[] { runic };
-            bgBox.Meshes[0].Textures = new[] { bg };
-            //car.Meshes[1].Textures = new[] { GameTexture.Load("textures/car.png") };
+            bgBox.Meshes[0].Textures = new[] {bg};
+            plane.Meshes[0].Textures = new[] {runic};
+            sphere.Meshes[0].Textures = new[] {runic};
+            box.Meshes[0].Textures = new[] {runic};
 
             Matrix4.CreatePerspectiveFieldOfView(ToRadians(60), 4f / 3f, 0.1f, 1000f, out Matrix4 projection);
 
@@ -65,12 +63,12 @@ namespace GameEngine.scenes
                 {ShaderType.VertexShader, "shader/UITextRender.vs"},
             }, out ShaderProgram textShader);
 
-            UITextRendererComponent uitElement = new UITextRendererComponent("Arial",  textShader)
+            UITextRendererComponent uitElement = new UITextRendererComponent("Arial", textShader)
             {
                 Position = new Vector2(-0.5f, 0.43f),
                 Scale = new Vector2(2f, 2f)
             };
-                                                     
+
 
             GameObject uiContainer = new GameObject("UIContainer");
             uiContainer.AddComponent(uitElement);
@@ -83,13 +81,12 @@ namespace GameEngine.scenes
             GameObject planeObj = new GameObject(Vector3.UnitZ * 2, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
             planeObj.AddComponent(new MeshRendererComponent(shader, plane, 0));
-            
+
             planeObj.AddComponent(new RotateAroundComponent());
 
             GameObject bgObj = new GameObject(Vector3.Zero, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 0));
-            bgObj.AddComponent(new TextureChanger());
             bgObj.AddComponent(new AudioSourceComponent());
 
             World.Add(planeObj);
@@ -97,8 +94,10 @@ namespace GameEngine.scenes
             World.Add(bgObj);
             World.SetCamera(c);
             World.Add(uiContainer);
-            Renderer.ClearColor = new Color((int)(0.2f * 255), (int)(0.3f * 255), (int)(255 * 0.3f), 255);
+            Renderer.ClearColor = new Color((int) (0.2f * 255), (int) (0.3f * 255), (int) (255 * 0.3f), 255);
 
         }
+
+
     }
 }

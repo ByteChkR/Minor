@@ -41,6 +41,8 @@ namespace GameEngine.engine.core
 
             AudioManager.Initialize();
 
+            Physics.Init();
+
             initializeWorld();
             initializeScene();
 
@@ -103,7 +105,8 @@ namespace GameEngine.engine.core
         protected virtual void Update(object sender, FrameEventArgs e)
         {
             
-            
+            Physics.Update((float)e.Time);
+
             World.Update((float)e.Time);
 
 
