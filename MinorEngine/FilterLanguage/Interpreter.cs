@@ -713,7 +713,7 @@ namespace FilterLanguage
         public InterpreterStepResult Step()
         {
 
-            _stepResult = new InterpreterStepResult()
+            _stepResult = new InterpreterStepResult
             {
                 SourceLine = _source[_currentIndex],
             };

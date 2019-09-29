@@ -89,14 +89,16 @@ namespace Common
         public class DefaultPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
+            private static StringBuilder _sb=new StringBuilder();
             public override string GetGenericInclude(string filename, string[] genType)
             {
-                string s = "";
+                _sb.Clear();
                 foreach (var gt in genType)
                 {
-                    s += gt + ' ';
+                    _sb.Append(gt);
+                    _sb.Append(' ');
                 }
-                return "#include " + filename + " " + s;
+                return "#include " + filename + " " + _sb;
             }
             protected override List<AbstractPlugin> Plugins
             {
@@ -116,15 +118,19 @@ namespace Common
 
         public class GLCLPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
         {
+            private static StringBuilder _sb = new StringBuilder();
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL8;
             public override string GetGenericInclude(string filename, string[] genType)
             {
-                string s = "";
+                _sb.Clear();
                 foreach (var gt in genType)
                 {
-                    s += gt + ' ';
+                    _sb.Append(gt);
+                    _sb.Append(' ');
                 }
-                return "#include " + filename + " " + s;
+
+                
+                return "#include " + filename + " " + _sb;
             }
             protected override List<AbstractPlugin> Plugins
             {
@@ -155,7 +161,7 @@ namespace Common
                     _sb.Append(gt);
                     _sb.Append(' ');
                 }
-                return "pp_include: " + filename + " " + _sb.ToString();
+                return "pp_include: " + filename + " " + _sb;
             }
 
             protected override List<AbstractPlugin> Plugins

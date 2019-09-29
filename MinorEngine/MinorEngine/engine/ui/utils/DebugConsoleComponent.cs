@@ -105,17 +105,18 @@ namespace GameEngine.engine.ui.utils
             return "Exited.";
         }
 
-
+        
         private string cmd_ListCmds(string[] args)
         {
-
-            string s = "Commands:";
+            _sb.Clear();
+            _sb.Append("Commands:");
             foreach (var consoleCommand in _commands)
             {
-                s = s + "\n " + consoleCommand.Key;
+                _sb.Append("\n ");
+                _sb.Append(consoleCommand.Key);
             }
 
-            return s;
+            return _sb.ToString();
         }
 
         public void AddCommand(string name, ConsoleCommand command)

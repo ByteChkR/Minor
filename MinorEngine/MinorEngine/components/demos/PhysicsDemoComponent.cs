@@ -13,9 +13,9 @@ namespace GameEngine.components.fldemo
 {
     public class PhysicsDemoComponent : AbstractComponent
     {
-        private static ShaderProgram _ObjShader;
-        private static GameModel sphere;
-        private static GameModel box;
+        private static ShaderProgram _objShader;
+        private static readonly GameModel Sphere = new GameModel("models/sphere_smooth.obj");
+        private static readonly GameModel Box = new GameModel("models/cube_flat.obj");
 
         protected override void Awake()
         {
@@ -31,20 +31,11 @@ namespace GameEngine.components.fldemo
             base.Awake();
             DebugConsoleComponent comp = AbstractGame.Instance.World.GetChildWithName("Console")
                 .GetComponent<DebugConsoleComponent>();
-
-            if (sphere == null)
-            {
-                sphere = new GameModel("models/sphere_smooth.obj");
-            }
-
-            if (box == null)
-            {
-                box = new GameModel("models/cube_flat.obj");
-            }
+            
 
 
-            box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
-            sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+            Box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+            Sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
 
 
 
@@ -52,20 +43,20 @@ namespace GameEngine.components.fldemo
             comp?.AddCommand("rain", cmd_SpawnColliders);
         }
 
-        public string cmd_SpawnColliders(string[] args)
+        public static string cmd_SpawnColliders(string[] args)
         {
             if (args.Length != 1 || !int.TryParse(args[0], out int nmbrs))
             {
                 return "Not a number.";
             }
 
-            if (_ObjShader == null)
+            if (_objShader == null)
             {
                 ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
                 {
                     {ShaderType.FragmentShader, "shader/texture.fs"},
                     {ShaderType.VertexShader, "shader/texture.vs"},
-                }, out _ObjShader);
+                }, out _objShader);
 
                 Random rnd = new Random();
                 for (int i = 0; i < nmbrs; i++)
@@ -81,17 +72,17 @@ namespace GameEngine.components.fldemo
                     obj.Scale(new Vector3(radius));
                     if (rnd.Next(0, 2) == 1)
                     {
-                        obj.AddComponent(new MeshRendererComponent(_ObjShader, sphere, 0));
+                        obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 0));
                         obj.AddComponent(new ColliderComponent(ColliderType.SPHERE, radius, 1, 1));
                     }
                     else
                     {
                         obj.AddComponent(new ColliderComponent(ColliderType.BOX, radius, 1, 1));
-                        obj.AddComponent(new MeshRendererComponent(_ObjShader, box, 0));
+                        obj.AddComponent(new MeshRendererComponent(_objShader, Box, 0));
 
                     }
 
-                    Owner.World.Add(obj);
+                    AbstractGame.Instance.World.Add(obj);
                 }
             }
 

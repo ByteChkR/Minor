@@ -27,7 +27,7 @@ namespace GameEngine.scenes
         }
 
 
-        private string cmd_ChangeCameraPos(string[] args)
+        private static string cmd_ChangeCameraPos(string[] args)
         {
             if (args.Length != 3)
             {
@@ -52,12 +52,12 @@ namespace GameEngine.scenes
             }
 
             Vector3 pos = new Vector3(x, y, z);
-            World.Camera.Translate(pos);
-            pos = World.Camera.GetLocalPosition();
+            AbstractGame.Instance.World.Camera.Translate(pos);
+            pos = AbstractGame.Instance.World.Camera.GetLocalPosition();
             return "New Position: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
-        private string cmd_ChangeCameraRot(string[] args)
+        private static string cmd_ChangeCameraRot(string[] args)
         {
             if (args.Length != 4)
             {
@@ -86,7 +86,7 @@ namespace GameEngine.scenes
             }
 
             Vector3 pos = new Vector3(x, y, z);
-            World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
+            AbstractGame.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
 
             return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
