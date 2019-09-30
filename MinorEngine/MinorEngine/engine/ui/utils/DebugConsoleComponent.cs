@@ -131,6 +131,7 @@ namespace GameEngine.engine.ui.utils
             AddCommand("quit", cmd_Exit);
             AddCommand("clr", cmd_Clear);
             AddCommand("clear", cmd_Clear);
+            TextureProvider.AddConsoleCommands(this);
         }
 
         private string cmd_Exit(string[] args)

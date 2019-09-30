@@ -41,9 +41,9 @@ namespace GameEngine.scenes
             GameModel plane = new GameModel("models/plane.obj");
             GameModel box = new GameModel("models/cube_flat.obj");
 
-            GameTexture runic = GameTexture.Load("textures/runicfloor.png");
+            GameTexture runic = TextureProvider.Load("textures/runicfloor.png");
             GameModel bgBox = new GameModel("models/cube_flat.obj");
-            GameTexture bg = GameTexture.Load("textures/ground4k.png");
+            GameTexture bg = TextureProvider.Load("textures/ground4k.png");
             bgBox.Meshes[0].Textures = new[] {bg};
             plane.Meshes[0].Textures = new[] {runic};
             sphere.Meshes[0].Textures = new[] {runic};

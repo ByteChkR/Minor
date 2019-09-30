@@ -8,7 +8,6 @@ using GameEngine.engine.rendering;
 using GameEngine.engine.ui.utils;
 using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
 namespace GameEngine.components.fldemo
 {
@@ -42,7 +41,7 @@ namespace GameEngine.components.fldemo
         {
 
             GL.DeleteTexture(Tex.TextureId);
-            Tex = GameTexture.Load("textures/runicfloor.png");
+            Tex = TextureProvider.Load("textures/runicfloor.png");
             return "Texture Reset.";
         }
 

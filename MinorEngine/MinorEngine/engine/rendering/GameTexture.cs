@@ -15,7 +15,7 @@ using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace GameEngine.engine.rendering
 {
-    public class GameTexture
+    public class GameTexture: IDestroyable
     {
         public int TextureId { get; }
         public TextureType TexType { get; set; }
@@ -47,6 +47,16 @@ namespace GameEngine.engine.rendering
             int id;
             GL.GenTextures(1, out id);
             TextureId = id;
+        }
+
+        ~GameTexture()
+        {
+            //Destroy();
+        }
+
+        public void Destroy()
+        {
+            GL.DeleteTexture(TextureId);
         }
 
 
@@ -115,6 +125,7 @@ namespace GameEngine.engine.rendering
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, tex.Width, tex.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, ptr);
             handle.Free();
             DefaultTexParameter();
+            TextureProvider.AddToDb(ret);
             return ret;
 
         }
@@ -155,7 +166,7 @@ namespace GameEngine.engine.rendering
 
         }
 
-        public static GameTexture Load(string filename)
+        internal static GameTexture Load(string filename)
         {
             filename.Log($"Loading Texture: " + filename, DebugChannel.Log);
             Bitmap bmp = new Bitmap(filename);
@@ -173,6 +184,9 @@ namespace GameEngine.engine.rendering
 
 
             DefaultTexParameter();
+
+            
+
             return ret;
 
         }
@@ -195,6 +209,8 @@ namespace GameEngine.engine.rendering
 
 
             DefaultTexParameter();
+
+            TextureProvider.AddToDb(ret);
             return ret;
         }
     }

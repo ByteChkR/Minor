@@ -23,7 +23,7 @@ namespace GameEngine.engine.ui
 
     public class Character
     {
-        public int GlTexture { get; set; }
+        public GameTexture GlTexture { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
         public float BearingX { get; set; }
@@ -113,9 +113,9 @@ namespace GameEngine.engine.ui
                          xpos + w, ypos + h,    1.0f, 1.0f
                     };
 
-                    if (chr.GlTexture != -1)
+                    if (chr.GlTexture != null)
                     {
-                        GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture);
+                        GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                         GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
                         GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
                             verts);

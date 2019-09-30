@@ -21,7 +21,7 @@ namespace GameEngine.components.fldemo
         protected override void Awake()
         {
             GameModel bgBox = new GameModel("models/cube_flat.obj");
-            GameTexture bg = GameTexture.Load("textures/ground4k.png");
+            GameTexture bg = TextureProvider.Load ("textures/ground4k.png");
             bgBox.Meshes[0].Textures = new[] { bg };
 
             
@@ -36,8 +36,8 @@ namespace GameEngine.components.fldemo
             
 
 
-            Box.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
-            Sphere.Meshes[0].Textures = new[] { GameTexture.Load("textures/TEST.png") };
+            Box.Meshes[0].Textures = new[] { TextureProvider.Load("textures/TEST.png") };
+            Sphere.Meshes[0].Textures = new[] { TextureProvider.Load("textures/TEST.png") };
 
 
 

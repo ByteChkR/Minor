@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Assimp;
 using Common;
+using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
@@ -38,6 +39,9 @@ namespace GameEngine.engine.rendering
         private readonly uint[] _indices;
         public GameTexture[] Textures { get; set; }
         private int _vao;
+
+        private int _ebo;
+        private int _vbo;
 
         public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures)
         {
@@ -113,7 +117,6 @@ namespace GameEngine.engine.rendering
 
         private void setupMesh()
         {
-            int _ebo, _vbo;
             GL.GenVertexArrays(1, out _vao);
             GL.GenBuffers(1, out _vbo);
             GL.GenBuffers(1, out _ebo);
@@ -151,6 +154,14 @@ namespace GameEngine.engine.rendering
             GL.BindVertexArray(0);
 
 
+        }
+
+
+        public void Destroy()
+        {
+            GL.DeleteBuffer(_ebo);
+            GL.DeleteBuffer(_vao);
+            GL.DeleteBuffer(_vbo);
         }
 
         private static IntPtr offsetOf(string name)

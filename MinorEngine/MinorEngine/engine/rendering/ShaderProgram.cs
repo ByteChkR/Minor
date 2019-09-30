@@ -2,11 +2,12 @@
 using System.IO;
 using System.Linq;
 using Common;
+using GameEngine.engine.core;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.rendering
 {
-    public class ShaderProgram
+    public class ShaderProgram: IDestroyable
     {
         private readonly int _prgId;
         private ShaderProgram()
@@ -54,6 +55,12 @@ namespace GameEngine.engine.rendering
             return ret;
 
 
+        }
+
+        public void Destroy()
+        {
+            GL.DeleteProgram(_prgId);
+            
         }
 
         public void Use()

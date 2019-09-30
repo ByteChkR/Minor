@@ -5,13 +5,14 @@ using Assimp;
 using GameEngine.components;
 using GameEngine.engine.components;
 using GameEngine.engine.rendering;
+using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Input;
 using Quaternion = BepuUtilities.Quaternion;
 
 namespace GameEngine.engine.core
 {
-    public class GameObject
+    public class GameObject :IDestroyable
     {
         internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
         {
@@ -39,6 +40,29 @@ namespace GameEngine.engine.core
 
         public GameObject Parent { get; private set; }
 
+        ~GameObject()
+        {
+            Destroy();
+            
+        }
+
+        public void Destroy()
+        {
+            if (Parent != null)
+            {
+                GameObject.Remove(this);
+            }
+
+            foreach (GameObject gameObject in _children)
+            {
+               gameObject.Destroy();
+            }
+
+            foreach (var abstractComponent in _components)
+            {
+                abstractComponent.Value.Destroy();
+            }
+        }
 
         public GameObject(Vector3 position, string name, GameObject parent)
         {

@@ -4,12 +4,23 @@ using OpenTK.Input;
 
 namespace GameEngine.engine.components
 {
-    public abstract class AbstractComponent
+    public abstract class AbstractComponent :IDestroyable
     {
         public GameObject Owner { get; set; }
         private bool _awake;
 
         protected virtual void Awake()
+        {
+
+        }
+
+        public void Destroy()
+        {
+            OnDestroy();
+            _awake = false;
+        }
+
+        protected virtual void OnDestroy()
         {
 
         }

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using GameEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
@@ -65,7 +66,7 @@ namespace GameEngine.engine.ui
                 };
 
                 g.RenderTo(s);
-                int glTex;
+                GameTexture glTex;
                 if (g.RenderWidth != 0 && g.RenderHeight != 0)
                 {
                     Bitmap bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
@@ -90,23 +91,23 @@ namespace GameEngine.engine.ui
                     data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                    int tex = GL.GenTexture();
+                    GameTexture tex = GameTexture.Create(bmp.Width, bmp.Height);
                     glTex = tex;
-                    GL.BindTexture(TextureTarget.Texture2D, tex);
+                    GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
                     GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, g.RenderWidth, g.RenderHeight,
                         0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-                    GL.TextureParameter(tex, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
-                    GL.TextureParameter(tex, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
-                    GL.TextureParameter(tex, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-                    GL.TextureParameter(tex, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
 
                     bmp.UnlockBits(data);
 
                 }
                 else
                 {
-                    glTex = -1;
+                    glTex = null;
                 }
                 Character c = new Character
                 {

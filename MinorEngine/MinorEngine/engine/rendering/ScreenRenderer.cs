@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameEngine.engine.rendering;
+using GameEngine.engine.core;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.rendering
 {
-    public static class ScreenRenderer
+    public static class ScreenRenderer 
     {
         private static float[] _screenQuadVertexData = new[]
         {
@@ -24,6 +25,8 @@ namespace GameEngine.engine.rendering
         private static RenderTarget _screenTarget = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
         private static ShaderProgram _mergeShader;
         private static ShaderProgram _screenShader;
+
+       
         private static void Init()
         {
 

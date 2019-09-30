@@ -1,12 +1,9 @@
 ﻿
-using System;
 using System.Collections.Generic;
 using GameEngine.components;
 using GameEngine.components.fldemo;
-using GameEngine.engine.audio.sources;
 using GameEngine.engine.core;
 using GameEngine.engine.rendering;
-using GameEngine.engine.ui;
 using GameEngine.engine.ui.utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -94,14 +91,16 @@ namespace GameEngine.scenes
 
         protected override void initializeScene()
         {
-            GameTexture runic = GameTexture.Load("textures/runicfloor.png");
+            GameTexture runic = TextureProvider.Load("textures/runicfloor.png");
             GameModel sphere = new GameModel("models/sphere_smooth.obj");
             GameModel plane = new GameModel("models/plane.obj");
 
 
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
-            GameTexture bg = GameTexture.Load("textures/ground4k.png");
+            GameObject tt = new GameObject("Test");
+
+            GameTexture bg = TextureProvider.Load("textures/ground4k.png");
             bgBox.Meshes[0].Textures = new[] { bg };
             sphere.Meshes[0].Textures = new[] { runic };
             plane.Meshes[0].Textures = new[] { runic };
@@ -118,6 +117,7 @@ namespace GameEngine.scenes
                 {ShaderType.FragmentShader, "shader/texture.fs"},
                 {ShaderType.VertexShader, "shader/texture.vs"},
             }, out ShaderProgram shader);
+            tt.AddComponent(new MeshRendererComponent(shader, new GameModel("models/cube_flat.obj"), 0));
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
             objSphere.AddComponent(new MeshRendererComponent(shader, sphere, 0));

@@ -5,12 +5,13 @@ using System.Linq;
 using Assimp;
 using Assimp.Configs;
 using Common;
+using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.rendering
 {
-    public class GameModel
+    public class GameModel: IDestroyable
     {
         public List<GameMesh> Meshes { get; } = new List<GameMesh>();
         private string directory;
@@ -21,6 +22,18 @@ namespace GameEngine.engine.rendering
             LoadModel(file);
         }
 
+        ~GameModel()
+        {
+        }
+
+
+        public void Destroy()
+        {
+            foreach (var gameMesh in Meshes)
+            {
+                gameMesh.Destroy();
+            }
+        }
 
         public void Render(ShaderProgram shader, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
@@ -153,7 +166,7 @@ namespace GameEngine.engine.rendering
             {
                 TextureSlot s;
                 m.GetMaterialTexture(texType, i, out s);
-                GameTexture tx = GameTexture.Load(directory + s.FilePath);
+                GameTexture tx = TextureProvider.Load(directory + s.FilePath);
                 tx.TexType = texType;
                 tx.Path = s.FilePath;
                 ret.Add(tx);
