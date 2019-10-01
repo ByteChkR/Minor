@@ -65,8 +65,8 @@ namespace GameEngine.engine.rendering
             GameTexture ret = new GameTexture();
             
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.CompressedRgb,
-                width, height, 0, TKPixelFormat.Rgb,
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
+                width, height, 0, TKPixelFormat.Bgra,
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
