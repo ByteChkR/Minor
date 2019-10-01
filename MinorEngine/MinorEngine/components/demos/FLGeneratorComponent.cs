@@ -18,11 +18,12 @@ namespace GameEngine.components.fldemo
         private Interpreter _stepInterpreter;
         private KernelDatabase _db;
         private bool _isInStepMode;
+        private int width = 512, height = 512;
 
-        public FLGeneratorComponent(List<MeshRendererComponent> previews, GameTexture tex)
+        public FLGeneratorComponent(List<MeshRendererComponent> previews, int width, int height)
         {
             _previews = previews;
-            Tex = tex;
+            Tex = GameTexture.Create(width, height, true);
         }
 
         private string cmd_RunFL(string[] args)
@@ -40,8 +41,8 @@ namespace GameEngine.components.fldemo
         private string cmd_FLReset(string[] args)
         {
 
-            GL.DeleteTexture(Tex.TextureId);
-            Tex = TextureProvider.Load("textures/runicfloor.png");
+            TextureProvider.GiveBack(Tex);
+            Tex = GameTexture.Create(width, height, true);
             return "Texture Reset.";
         }
 

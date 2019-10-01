@@ -59,10 +59,12 @@ namespace GameEngine.engine.rendering
             GL.DeleteTexture(TextureId);
         }
 
-
-        public static GameTexture Create(int width, int height)
+        private static int texCreateCount = 0;
+        public static GameTexture Create(int width, int height, bool cache = true)
         {
             GameTexture ret = new GameTexture();
+
+            
             
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
@@ -70,6 +72,13 @@ namespace GameEngine.engine.rendering
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
+            if (cache)
+            {
+                string n = "CreatedTexture_" + texCreateCount + "_" + width + "_" + height;
+                texCreateCount++;
+                TextureProvider.Add(ret, n);
+
+            }
             return ret;
         }
 
@@ -108,9 +117,11 @@ namespace GameEngine.engine.rendering
 
         }
 
+        private static int texAssimpCount = 0;
         public static GameTexture ConvertToTexture(EmbeddedTexture tex)
         {
-
+            string n = "AssimpEmbeddedTexture" + texAssimpCount + "_" + tex.Width + "_" + tex.Height;
+            texAssimpCount++;
             tex.Log($"Loading Texture... Width: {tex.Width} Height: {tex.Height}", DebugChannel.Log);
             GameTexture ret = new GameTexture();
 
@@ -125,7 +136,7 @@ namespace GameEngine.engine.rendering
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, tex.Width, tex.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, ptr);
             handle.Free();
             DefaultTexParameter();
-            TextureProvider.AddToDb(ret);
+            TextureProvider.Add(ret,n);
             return ret;
 
         }
@@ -198,8 +209,12 @@ namespace GameEngine.engine.rendering
 
         }
 
+        private static int texRawCount = 0;
+
         public static GameTexture Load(byte[] buffer, int width, int height)
         {
+            string n = "RawTexture" + texRawCount + "_" + width + "_" + height;
+            texRawCount++;
             GameTexture ret = new GameTexture();
             ret.Log($"Loading Texture... Width: {width} Height: {height}", DebugChannel.Log);
 
@@ -209,8 +224,7 @@ namespace GameEngine.engine.rendering
 
 
             DefaultTexParameter();
-
-            TextureProvider.AddToDb(ret);
+            TextureProvider.Add(ret, n);
             return ret;
         }
     }

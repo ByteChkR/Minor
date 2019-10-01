@@ -9,10 +9,13 @@ namespace GameEngine.engine.core
 {
     public static class TextureProvider
     {
+        /// <summary>
+        /// Dictionary of TextureID, Tuple of filename/name, GameTexture, RefCount
+        /// </summary>
         private static Dictionary<int, Tuple<string, GameTexture, int>> _refs =
             new Dictionary<int, Tuple<string, GameTexture, int>>();
 
-        private static StringBuilder _sb=new StringBuilder();
+        private static StringBuilder _sb = new StringBuilder();
 
         private static string cmd_ListTex(string[] args)
         {
@@ -31,7 +34,10 @@ namespace GameEngine.engine.core
             comp.AddCommand("ltex", cmd_ListTex);
         }
 
-
+        public static void Add(GameTexture tex, string name)
+        {
+            AddToDb(tex, name);
+        }
 
 
         public static int IsLoaded(string path)
@@ -56,17 +62,12 @@ namespace GameEngine.engine.core
             return id;
         }
 
-        internal static void AddToDb(GameTexture tex)
+        private static void AddToDb(GameTexture tex, string name)
         {
             if (!_refs.ContainsKey(tex.TextureId))
             {
 
-                _refs.Add(tex.TextureId, new Tuple<string, GameTexture, int>("Memory", tex, 1));
-
-            }
-            else
-            {
-                _refs[tex.TextureId] = new Tuple<string, GameTexture, int>("Memory", tex, 1);
+                _refs.Add(tex.TextureId, new Tuple<string, GameTexture, int>(name, tex, 1));
 
             }
         }
@@ -92,6 +93,12 @@ namespace GameEngine.engine.core
             {
                 r = Create(path);
             }
+            else
+            {
+
+                _refs[r] = new Tuple<string, GameTexture, int>(_refs[r].Item1, _refs[r].Item2, _refs[r].Item3 + 1);
+            }
+
 
             return _refs[r].Item2;
         }

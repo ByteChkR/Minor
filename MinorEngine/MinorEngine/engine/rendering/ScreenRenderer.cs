@@ -157,6 +157,11 @@ namespace GameEngine.engine.rendering
 
             //GL.BindVertexArray(0);
             //GL.ActiveTexture(TextureUnit.Texture0);
+
+
+
+            //Clear the ping pong buffers after rendering them to the screen
+            //For whatever reason GL.Clear is not acting on the active framebuffer
             GL.ClearTexImage(_screenTarget1.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
             GL.ClearTexImage(_screenTarget0.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
 

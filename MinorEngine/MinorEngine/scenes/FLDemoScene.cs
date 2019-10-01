@@ -91,7 +91,6 @@ namespace GameEngine.scenes
 
         protected override void initializeScene()
         {
-            GameTexture runic = TextureProvider.Load("textures/runicfloor.png");
             GameModel sphere = new GameModel("models/sphere_smooth.obj");
             GameModel plane = new GameModel("models/plane.obj");
 
@@ -102,8 +101,8 @@ namespace GameEngine.scenes
 
             GameTexture bg = TextureProvider.Load("textures/ground4k.png");
             bgBox.Meshes[0].Textures = new[] { bg };
-            sphere.Meshes[0].Textures = new[] { runic };
-            plane.Meshes[0].Textures = new[] { runic };
+            sphere.Meshes[0].Textures = new[] { TextureProvider.Load("textures/runicfloor.png") };
+            plane.Meshes[0].Textures = new[] { TextureProvider.Load("textures/runicfloor.png") };
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -129,12 +128,12 @@ namespace GameEngine.scenes
 
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
             uiText.AddComponent(new FLGeneratorComponent(new List<MeshRendererComponent>
-                {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()}, runic));
+                {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()}, 512, 512));
 
             PhysicsDemoComponent phys = new PhysicsDemoComponent();
 
             World.AddComponent(phys); //Adding Physics Component to world.
-            
+
 
             World.Add(uiText);
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
@@ -144,7 +143,7 @@ namespace GameEngine.scenes
             World.Add(objSphere);
             World.Add(objQuad);
 
-            GameObject bgObj = new GameObject(Vector3.UnitY*-3, "BG");
+            GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 0));
             World.Add(bgObj);

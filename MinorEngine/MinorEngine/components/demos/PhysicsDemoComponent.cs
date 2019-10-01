@@ -20,9 +20,7 @@ namespace GameEngine.components.fldemo
 
         protected override void Awake()
         {
-            GameModel bgBox = new GameModel("models/cube_flat.obj");
-            GameTexture bg = TextureProvider.Load ("textures/ground4k.png");
-            bgBox.Meshes[0].Textures = new[] { bg };
+            
 
             
 

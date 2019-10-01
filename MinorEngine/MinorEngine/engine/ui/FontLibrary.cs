@@ -91,7 +91,7 @@ namespace GameEngine.engine.ui
                     data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                    GameTexture tex = GameTexture.Create(bmp.Width, bmp.Height);
+                    GameTexture tex = GameTexture.Create(bmp.Width, bmp.Height, false);
                     glTex = tex;
                     GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
