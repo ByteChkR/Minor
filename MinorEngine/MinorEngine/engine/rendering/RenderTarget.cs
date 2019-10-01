@@ -18,7 +18,7 @@ namespace GameEngine.engine.rendering
         internal ICamera PassCamera { get; }
 
 
-        public RenderTarget(ICamera cam, int PassMask, Color ClearColor)
+        public RenderTarget(ICamera cam, int PassMask, Color ClearColor, bool noDepth = false)
         {
             this.PassMask = PassMask;
             this.ClearColor = ClearColor;
@@ -30,7 +30,7 @@ namespace GameEngine.engine.rendering
 
             RenderedTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, RenderedTexture);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16,
                 AbstractGame.Instance.Settings.Width, AbstractGame.Instance.Settings.Height, 0, PixelFormat.Bgra,
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
@@ -40,12 +40,21 @@ namespace GameEngine.engine.rendering
 
             GL.DrawBuffers(1, new[] { DrawBuffersEnum.ColorAttachment0 });
 
-            DepthBuffer = GL.GenRenderbuffer();
-            GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, DepthBuffer);
-            GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.DepthComponent,
-                AbstractGame.Instance.Settings.Width, AbstractGame.Instance.Settings.Height);
-            GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment,
-                RenderbufferTarget.Renderbuffer, DepthBuffer);
+            if (noDepth)
+            {
+                DepthBuffer = -1;
+            }
+            else
+            {
+
+                DepthBuffer = GL.GenRenderbuffer();
+                GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, DepthBuffer);
+                GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.DepthComponent,
+                    AbstractGame.Instance.Settings.Width, AbstractGame.Instance.Settings.Height);
+                GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment,
+                    RenderbufferTarget.Renderbuffer, DepthBuffer);
+
+            }
 
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
             {

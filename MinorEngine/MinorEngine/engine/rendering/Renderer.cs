@@ -55,7 +55,9 @@ namespace GameEngine.engine.rendering
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
                 GL.Enable(EnableCap.DepthTest);
                 GL.ClearColor(target.ClearColor);
+
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
                 if (target.PassCamera != null)
                 {
                     Render(target.PassMask, world, target.PassCamera);
