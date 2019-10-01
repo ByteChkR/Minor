@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameEngine.engine.rendering;
 using GameEngine.engine.core;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.rendering
@@ -22,7 +23,8 @@ namespace GameEngine.engine.rendering
 
         private static bool _init;
         private static int _screenVAO;
-        //private static RenderTarget _screenTarget = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black, true);
+        private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
+        private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
         private static ShaderProgram _mergeShader;
         private static ShaderProgram _screenShader;
 
@@ -62,6 +64,22 @@ namespace GameEngine.engine.rendering
 
 
         }
+
+        private static bool _isOne;
+        private static void Ping()
+        {
+            _isOne = !_isOne;
+        }
+
+        private static RenderTarget GetTarget()
+        {
+            return _isOne ? _screenTarget1 : _screenTarget0;
+        }
+
+        private static RenderTarget GetSource()
+        {
+            return _isOne ? _screenTarget0 : _screenTarget1;
+        }
         public static void MergeAndDisplayTargets(List<RenderTarget> targets)
         {
             if (!_init)
@@ -73,59 +91,74 @@ namespace GameEngine.engine.rendering
 
             int divideCount = targets.Count;
             _mergeShader.Use();
+            
 
-            //GL.BindFramebuffer(FramebufferTarget.Framebuffer, _screenTarget.FrameBuffer);
-
-            ////GL.Enable(EnableCap.DepthTest);
-            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-            //GL.ActiveTexture(TextureUnit.Texture0);
-            //GL.Uniform1(_mergeShader.GetUniformLocation("destinationTexture"), 0);
-            //GL.BindTexture(TextureTarget.Texture2D, _screenTarget.RenderedTexture);
-
-            //GL.Uniform1(_mergeShader.GetUniformLocation("divWeight"), 1 / (float)divideCount);
-
-            //GL.BindVertexArray(_screenVAO);
-
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            //GL.Disable(EnableCap.DepthTest);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
-
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.Uniform1(_screenShader.GetUniformLocation("destinationTexture"), 0);
-            GL.BindTexture(TextureTarget.Texture2D, targets[0].RenderedTexture);
-
-            GL.ActiveTexture(TextureUnit.Texture1);
-            GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
-            GL.BindTexture(TextureTarget.Texture2D, targets[1].RenderedTexture);
-
-            GL.BindVertexArray(_screenVAO);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+            
             foreach (var renderTarget in targets)
             {
-
-
+                RenderTarget dst = GetTarget();
+                RenderTarget src = GetSource();
                 
+                GL.BindFramebuffer(FramebufferTarget.Framebuffer, dst.FrameBuffer);
+
+                GL.ClearColor(dst.ClearColor);
+                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+                //GL.Uniform1(_mergeShader.GetUniformLocation("divWeight"), 1 / (float)divideCount);
+
+                GL.ActiveTexture(TextureUnit.Texture0);
+                GL.Uniform1(_mergeShader.GetUniformLocation("destinationTexture"), 0);
+                GL.BindTexture(TextureTarget.Texture2D, src.RenderedTexture);
+
+                GL.ActiveTexture(TextureUnit.Texture1);
+                GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
+                GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
+
+                GL.BindVertexArray(_screenVAO);
+                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
 
-                
 
-               
+
+                Ping();
 
 
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
 
             }
+            Ping();
+            _screenShader.Use();
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            //GL.Disable(EnableCap.DepthTest);
+
+            GL.ClearColor(Color.Black);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.Uniform1(_screenShader.GetUniformLocation("sourceTexture"), 0);
+            GL.BindTexture(TextureTarget.Texture2D, GetTarget().RenderedTexture);
+
+
+
+            //GL.ActiveTexture(TextureUnit.Texture1);
+            //GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
+            //GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
+
+            GL.BindVertexArray(_screenVAO);
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
             GL.BindVertexArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
 
 
-            
+
             //GL.BindVertexArray(0);
             //GL.ActiveTexture(TextureUnit.Texture0);
-
+            GL.ClearTexImage(_screenTarget1.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
+            GL.ClearTexImage(_screenTarget0.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
 
 
 
