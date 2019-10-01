@@ -31,7 +31,7 @@ namespace GameEngine.engine.rendering
             RenderedTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, RenderedTexture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16,
-                AbstractGame.Instance.Settings.Width, AbstractGame.Instance.Settings.Height, 0, PixelFormat.Bgra,
+                AbstractGame.Instance.Width, AbstractGame.Instance.Height, 0, PixelFormat.Bgra,
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -50,7 +50,7 @@ namespace GameEngine.engine.rendering
                 DepthBuffer = GL.GenRenderbuffer();
                 GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, DepthBuffer);
                 GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.DepthComponent,
-                    AbstractGame.Instance.Settings.Width, AbstractGame.Instance.Settings.Height);
+                    AbstractGame.Instance.Width, AbstractGame.Instance.Height);
                 GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment,
                     RenderbufferTarget.Renderbuffer, DepthBuffer);
 

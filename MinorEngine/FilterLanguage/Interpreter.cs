@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
-using System.Net.Http.Headers;
-using System.Resources;
 using System.Text;
 using CLHelperLibrary;
 using CLHelperLibrary.CLStructs;

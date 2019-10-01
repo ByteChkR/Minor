@@ -17,8 +17,8 @@ namespace GameEngine
             {
                 WindowFlags = GameWindowFlags.Default,
                 Mode = gm,
-                Width = 1334,
-                Height = 1000,
+                InitWidth = 1000,
+                InitHeight = 500,
                 Title = "Test",
                 PhysicsThreadCount = 4
             };

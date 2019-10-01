@@ -22,7 +22,7 @@ namespace GameEngine.engine.rendering
 
         private static bool _init;
         private static int _screenVAO;
-        private static RenderTarget _screenTarget = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black, true);
+        //private static RenderTarget _screenTarget = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black, true);
         private static ShaderProgram _mergeShader;
         private static ShaderProgram _screenShader;
 
@@ -74,30 +74,47 @@ namespace GameEngine.engine.rendering
             int divideCount = targets.Count;
             _mergeShader.Use();
 
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, _screenTarget.FrameBuffer);
+            //GL.BindFramebuffer(FramebufferTarget.Framebuffer, _screenTarget.FrameBuffer);
 
-            GL.Enable(EnableCap.DepthTest);
-            GL.Clear(ClearBufferMask.ColorBufferBit);
+            ////GL.Enable(EnableCap.DepthTest);
+            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
+            //GL.ActiveTexture(TextureUnit.Texture0);
+            //GL.Uniform1(_mergeShader.GetUniformLocation("destinationTexture"), 0);
+            //GL.BindTexture(TextureTarget.Texture2D, _screenTarget.RenderedTexture);
+
+            //GL.Uniform1(_mergeShader.GetUniformLocation("divWeight"), 1 / (float)divideCount);
+
+            //GL.BindVertexArray(_screenVAO);
+
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            //GL.Disable(EnableCap.DepthTest);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+
 
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.Uniform1(_mergeShader.GetUniformLocation("destinationTexture"), 0);
-            GL.BindTexture(TextureTarget.Texture2D, _screenTarget.RenderedTexture);
+            GL.Uniform1(_screenShader.GetUniformLocation("destinationTexture"), 0);
+            GL.BindTexture(TextureTarget.Texture2D, targets[0].RenderedTexture);
 
-            GL.Uniform1(_mergeShader.GetUniformLocation("divWeight"), 1 / (float)divideCount);
+            GL.ActiveTexture(TextureUnit.Texture1);
+            GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
+            GL.BindTexture(TextureTarget.Texture2D, targets[1].RenderedTexture);
 
             GL.BindVertexArray(_screenVAO);
-
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
             foreach (var renderTarget in targets)
             {
 
 
-
-                GL.ActiveTexture(TextureUnit.Texture1);
-                GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
-                GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
+                
 
 
-                GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                
+
+               
+
+
+                //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
 
             }
@@ -105,21 +122,9 @@ namespace GameEngine.engine.rendering
             GL.ActiveTexture(TextureUnit.Texture0);
 
 
-            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            GL.Disable(EnableCap.DepthTest);
-            GL.Clear(ClearBufferMask.ColorBufferBit|ClearBufferMask.DepthBufferBit);
-
-            GL.ActiveTexture(TextureUnit.Texture0);
-            GL.Uniform1(_screenShader.GetUniformLocation("sourceTexture"), 0);
-            GL.BindTexture(TextureTarget.Texture2D, _screenTarget.RenderedTexture);
-
-
-            GL.BindVertexArray(_screenVAO);
-            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-
-
-            GL.BindVertexArray(0);
-            GL.ActiveTexture(TextureUnit.Texture0);
+            
+            //GL.BindVertexArray(0);
+            //GL.ActiveTexture(TextureUnit.Texture0);
 
 
 

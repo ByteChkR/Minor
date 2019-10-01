@@ -13,8 +13,8 @@ namespace GameEngine.engine.core
     public class EngineSettings
     {
         public GraphicsMode Mode { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public int InitWidth { get; set; }
+        public int InitHeight { get; set; }
         public int PhysicsThreadCount { get; set; } = 1;
         public string Title { get; set; }
         public GameWindowFlags WindowFlags { get; set; }
@@ -27,9 +27,12 @@ namespace GameEngine.engine.core
         protected GameWindow Window;
         public EngineSettings Settings { get; private set; }
         public static AbstractGame Instance { get; private set; }
+        public int Width => Window.Width;
+        public int Height => Window.Height;
         public AbstractGame(EngineSettings settings)
         {
             Instance = this;
+            
             this.Settings = settings;
         }
 
@@ -53,8 +56,8 @@ namespace GameEngine.engine.core
 
             this.Log("Initializing Window..", DebugChannel.Log);
             this.Log(
-                $"Width: {Settings.Width} Height: {Settings.Height}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}" , DebugChannel.Log);
-            Window = new GameWindow(Settings.Width, Settings.Height, Settings.Mode, Settings.Title, Settings.WindowFlags);
+                $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}" , DebugChannel.Log);
+            Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title, Settings.WindowFlags);
 
             #region WindowHandles
 

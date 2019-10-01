@@ -17,7 +17,7 @@ namespace GameEngine.engine.ui.utils
     public class DebugConsoleComponent : AbstractComponent
     {
 
-        private const int MaxConsoleLines = 30;
+        private static int MaxConsoleLines => (AbstractGame.Instance.Height-100)/30;
         private const string HelpText = "Press C to Open the FL Console";
         private const string ConsoleTitle = "Game Console:";
         private UITextRendererComponent _title;

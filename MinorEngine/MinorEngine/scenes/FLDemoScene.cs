@@ -149,7 +149,7 @@ namespace GameEngine.scenes
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 0));
             World.Add(bgObj);
 
-            Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), 4 / 3f, 0.01f, 1000f), Vector3.Zero);
+            Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), Width / (float)Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 2, 2));
             World.Add(c);

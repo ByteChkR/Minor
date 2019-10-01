@@ -30,6 +30,8 @@ namespace GameEngine.engine.rendering
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
             GL.Enable(EnableCap.Blend);
+            GL.Enable(EnableCap.DepthTest);
+            GL.DepthFunc(DepthFunction.Less);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             RenderTarget rt = new RenderTarget(null, 0, _clearColor);
@@ -53,7 +55,7 @@ namespace GameEngine.engine.rendering
                 CurrentTarget = i;
                 RenderTarget target = Targets[i];
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
-                GL.Enable(EnableCap.DepthTest);
+                
                 GL.ClearColor(target.ClearColor);
 
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
