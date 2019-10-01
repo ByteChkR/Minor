@@ -12,28 +12,17 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.scenes
 {
-    public class DemoScene : AbstractGame
+    public class DemoScene : AbstractScene
     {
-        public DemoScene(EngineSettings settings) : base(settings)
-        {
-
-        }
 
         private static float ToRadians(float angle)
         {
             return MathF.PI * angle / 180;
         }
 
-        protected override void Update(object sender, FrameEventArgs e)
+
+        protected override void InitializeScene()
         {
-            base.Update(sender, e);
-        }
-
-        protected override void initializeScene()
-        {
-            base.initializeScene();
-
-
             Physics.Init();
             Physics.AddBoxStatic(System.Numerics.Vector3.Zero, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
@@ -80,13 +69,13 @@ namespace GameEngine.scenes
 
             GameObject planeObj = new GameObject(Vector3.UnitZ * 2, "Plane");
             planeObj.Scale(new Vector3(5, 5, 5));
-            planeObj.AddComponent(new MeshRendererComponent(shader, plane, 0));
+            planeObj.AddComponent(new MeshRendererComponent(shader, plane, 1));
 
             planeObj.AddComponent(new RotateAroundComponent());
 
             GameObject bgObj = new GameObject(Vector3.Zero, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 0));
+            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             bgObj.AddComponent(new AudioSourceComponent());
 
             World.Add(planeObj);
@@ -94,7 +83,6 @@ namespace GameEngine.scenes
             World.Add(bgObj);
             World.SetCamera(c);
             World.Add(uiContainer);
-            Renderer.ClearColor = new Color((int) (0.2f * 255), (int) (0.3f * 255), (int) (255 * 0.3f), 255);
 
         }
 

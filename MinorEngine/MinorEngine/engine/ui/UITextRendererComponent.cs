@@ -65,8 +65,8 @@ namespace GameEngine.engine.ui
 
             if (Shader != null)
             {
-                int scrW = AbstractGame.Instance.Width;
-                int scrH = AbstractGame.Instance.Height;
+                int scrW = SceneRunner.Instance.Width;
+                int scrH = SceneRunner.Instance.Height;
 
                 GL.Enable(EnableCap.Blend);
                 GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);

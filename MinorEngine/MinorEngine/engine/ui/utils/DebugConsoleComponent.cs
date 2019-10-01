@@ -17,9 +17,9 @@ namespace GameEngine.engine.ui.utils
     public class DebugConsoleComponent : AbstractComponent
     {
 
-        private static int MaxConsoleLines => (AbstractGame.Instance.Height-100)/30;
+        private static int MaxConsoleLines => (SceneRunner.Instance.Height-100)/30;
         private const string HelpText = "Press C to Open the FL Console";
-        private const string ConsoleTitle = "Game Console:";
+        private const string ConsoleTitle = "SceneRunner Console:";
         private UITextRendererComponent _title;
         private UITextRendererComponent _consoleInput;
         private UITextRendererComponent _consoleOutput;
@@ -64,7 +64,7 @@ namespace GameEngine.engine.ui.utils
             {
                 Position = new Vector2(-0.46f, 0.46f),
                 Scale = new Vector2(2f, 2f),
-                Text = "Game Console:"
+                Text = "SceneRunner Console:"
             };
 
             UITextRendererComponent _tIn = new UITextRendererComponent("Arial", textShader)

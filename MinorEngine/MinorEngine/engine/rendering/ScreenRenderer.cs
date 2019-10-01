@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameEngine.engine.rendering;
 using GameEngine.engine.core;
+using GameEngine.scenes.GameEngine.scenes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -9,6 +10,14 @@ namespace GameEngine.engine.rendering
 {
     public static class ScreenRenderer
     {
+        public enum MergeType
+        {
+            None,
+            Additive,
+            Multiplikative,
+            Overwrite
+        }
+
         private static float[] _screenQuadVertexData = new[]
         {
             // positions   // texCoords
@@ -25,13 +34,11 @@ namespace GameEngine.engine.rendering
         private static int _screenVAO;
         private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
         private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
-        private static ShaderProgram _mergeShader;
         private static ShaderProgram _screenShader;
-
+        private static Dictionary<MergeType, ShaderProgram> _mergeTypes = new Dictionary<MergeType, ShaderProgram>();
 
         private static void Init()
         {
-
 
             _init = true;
             _screenVAO = GL.GenVertexArray();
@@ -46,17 +53,38 @@ namespace GameEngine.engine.rendering
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/OverlayRenderer.fs"},
-                {ShaderType.VertexShader, "shader/OverlayRenderer.vs"}
-            }, out _mergeShader))
+                {ShaderType.FragmentShader, "shader/MergeRenderer_Add.fs"},
+                {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
+            }, out ShaderProgram _mergeAddShader))
             {
                 Console.ReadLine();
             }
+            _mergeTypes.Add(MergeType.Additive, _mergeAddShader);
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/QuadRender.fs"},
-                {ShaderType.VertexShader, "shader/OverlayRenderer.vs"}
+                {ShaderType.FragmentShader, "shader/MergeRenderer_Mul.fs"},
+                {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
+            }, out ShaderProgram _mergeMulShader))
+            {
+                Console.ReadLine();
+            }
+            _mergeTypes.Add(MergeType.Multiplikative, _mergeMulShader);
+
+            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "shader/MergeRenderer_Over.fs"},
+                {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
+            }, out ShaderProgram _mergeOverShader))
+            {
+                Console.ReadLine();
+            }
+            _mergeTypes.Add(MergeType.Overwrite, _mergeOverShader);
+
+            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
+                {ShaderType.VertexShader, "shader/ScreenRenderer.vs"}
             }, out _screenShader))
             {
                 Console.ReadLine();
@@ -90,32 +118,40 @@ namespace GameEngine.engine.rendering
 
 
             int divideCount = targets.Count;
-            _mergeShader.Use();
-            
 
-            
+            //GL.Enable(EnableCap.ScissorTest);
+
+            GL.Enable(EnableCap.ScissorTest);
             foreach (var renderTarget in targets)
             {
+
+
                 RenderTarget dst = GetTarget();
                 RenderTarget src = GetSource();
+
+                _mergeTypes[renderTarget.MergeType].Use();
                 
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, dst.FrameBuffer);
 
+                //GL.Scissor(renderTarget.ViewPort.X, renderTarget.ViewPort.Y, renderTarget.ViewPort.Width, renderTarget.ViewPort.Height);
+                //GL.Viewport(renderTarget.ViewPort.X, renderTarget.ViewPort.Y, renderTarget.ViewPort.Width, renderTarget.ViewPort.Height);
                 GL.ClearColor(dst.ClearColor);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
                 //GL.Uniform1(_mergeShader.GetUniformLocation("divWeight"), 1 / (float)divideCount);
 
                 GL.ActiveTexture(TextureUnit.Texture0);
-                GL.Uniform1(_mergeShader.GetUniformLocation("destinationTexture"), 0);
+                GL.Uniform1(_mergeTypes[renderTarget.MergeType].GetUniformLocation("destinationTexture"), 0);
                 GL.BindTexture(TextureTarget.Texture2D, src.RenderedTexture);
 
                 GL.ActiveTexture(TextureUnit.Texture1);
-                GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
+                GL.Uniform1(_mergeTypes[renderTarget.MergeType].GetUniformLocation("otherTexture"), 1);
                 GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
 
                 GL.BindVertexArray(_screenVAO);
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+                //GL.Viewport(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
 
 
 
@@ -133,6 +169,8 @@ namespace GameEngine.engine.rendering
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             //GL.Disable(EnableCap.DepthTest);
 
+            //GL.Disable(EnableCap.ScissorTest);
+
             GL.ClearColor(Color.Black);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -141,6 +179,7 @@ namespace GameEngine.engine.rendering
             GL.Uniform1(_screenShader.GetUniformLocation("sourceTexture"), 0);
             GL.BindTexture(TextureTarget.Texture2D, GetTarget().RenderedTexture);
 
+            //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
 
 
             //GL.ActiveTexture(TextureUnit.Texture1);
@@ -148,6 +187,9 @@ namespace GameEngine.engine.rendering
             //GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
 
             GL.BindVertexArray(_screenVAO);
+
+           //GL.Viewport(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+            //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
             GL.BindVertexArray(0);

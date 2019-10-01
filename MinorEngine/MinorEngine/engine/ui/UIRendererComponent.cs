@@ -21,10 +21,15 @@ namespace GameEngine.engine.ui
 
         }
 
+        protected override void OnDestroy()
+        {
+            Texture?.Destroy();
+        }
+
         public UIRendererComponent(GameTexture texture, ShaderProgram shader)
         {
             Texture = texture;
-            RenderMask = 1;
+            RenderMask = 1 << 30;
             if (shader != null)
             {
                 Shader = shader;

@@ -49,7 +49,7 @@ namespace GameEngine.components.fldemo
 
         protected override void Awake()
         {
-            DebugConsoleComponent console = AbstractGame.Instance.World.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
+            DebugConsoleComponent console = Owner.World.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
             console?.AddCommand("runfl", cmd_RunFL);
             console?.AddCommand("dbgfl", cmd_RunFLStepped);
             console?.AddCommand("step", cmd_FLStep);
@@ -58,7 +58,10 @@ namespace GameEngine.components.fldemo
             _db = new KernelDatabase("kernel/", DataTypes.UCHAR1);
         }
 
-
+        protected override void OnDestroy()
+        {
+            TextureProvider.GiveBack(Tex);
+        }
 
         private MemoryBuffer GetRendererTextureBuffer()
         {

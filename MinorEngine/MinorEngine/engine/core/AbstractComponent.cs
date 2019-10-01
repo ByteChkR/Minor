@@ -1,4 +1,5 @@
-﻿using GameEngine.engine.core;
+﻿using Common;
+using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Input;
 
@@ -16,6 +17,8 @@ namespace GameEngine.engine.components
 
         public void Destroy()
         {
+
+            this.Log("Destroying Component of Type: " + this.GetType().Name, DebugChannel.Log);
             OnDestroy();
             _awake = false;
         }

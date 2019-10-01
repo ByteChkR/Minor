@@ -18,6 +18,11 @@ namespace GameEngine.components
             RenderMask = renderMask;
         }
 
+        protected override void OnDestroy()
+        {
+            Model.Destroy();
+        }
+
         public void Render( Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
             if (Model != null && Shader != null)

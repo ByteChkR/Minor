@@ -11,14 +11,18 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.rendering
 {
-    public class GameModel: IDestroyable
+    public class GameModel : IDestroyable
     {
         public List<GameMesh> Meshes { get; } = new List<GameMesh>();
         private string directory;
+        private readonly bool _deallocTextures;
+        private readonly bool _deallocMeshes;
 
-        public GameModel(string file)
+        public GameModel(string file, bool deallocTextures = true, bool deallocMeshes = true)
         {
             this.Log("Loading Model File: " + Path.GetFullPath(file), DebugChannel.Log);
+            this._deallocMeshes = deallocMeshes;
+            this._deallocTextures = deallocTextures;
             LoadModel(file);
         }
 
@@ -29,9 +33,12 @@ namespace GameEngine.engine.rendering
 
         public void Destroy()
         {
-            foreach (var gameMesh in Meshes)
+            if (_deallocMeshes)
             {
-                gameMesh.Destroy();
+                foreach (var gameMesh in Meshes)
+                {
+                    gameMesh.Destroy();
+                }
             }
         }
 
@@ -110,7 +117,7 @@ namespace GameEngine.engine.rendering
             List<GameTexture> textures = new List<GameTexture>();
 
 
-            this.Log("Converting Imported Mesh File Structure to Game Engine Structure", DebugChannel.Log);
+            this.Log("Converting Imported Mesh File Structure to SceneRunner Engine Structure", DebugChannel.Log);
 
 
             this.Log("Copying Vertex Data...", DebugChannel.Log);
@@ -153,7 +160,7 @@ namespace GameEngine.engine.rendering
             textures.AddRange(loadMaterialTextures(m, TextureType.Specular));
             textures.AddRange(loadMaterialTextures(m, TextureType.Normals));
             textures.AddRange(loadMaterialTextures(m, TextureType.Height));
-            return new GameMesh(vertices, indices, textures);
+            return new GameMesh(vertices, indices, textures, _deallocMeshes, _deallocTextures);
         }
 
 

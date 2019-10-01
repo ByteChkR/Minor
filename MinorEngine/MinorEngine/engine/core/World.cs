@@ -12,7 +12,7 @@ namespace GameEngine.engine.core
 
         public World() : base(Vector3.Zero, "World", null)
         {
-            World = this;
+            this.World = this;
         }
 
         

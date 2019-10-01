@@ -1,29 +1,35 @@
-﻿
+﻿using System;
 using System.Collections.Generic;
+using Common;
 using GameEngine.components;
 using GameEngine.components.fldemo;
+using GameEngine.engine.audio;
+using GameEngine.engine.audio.sources;
 using GameEngine.engine.core;
 using GameEngine.engine.rendering;
 using GameEngine.engine.ui.utils;
+using GameEngine.scenes.GameEngine.scenes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.scenes
 {
-    public class FLDemoScene : AbstractScene
+    public class AudioDemoScene:AbstractScene
     {
-        private RenderTarget splitCam;
+
 
         private string cmd_ReLoadScene(string[] args)
         {
-            SceneRunner.Instance.InitializeScene<FLDemoScene>();
+            SceneRunner.Instance.InitializeScene<AudioDemoScene>();
             return "Reloaded";
         }
+
         private string cmd_NextScene(string[] args)
         {
-            SceneRunner.Instance.InitializeScene<AudioDemoScene>();
-            return "Loading Audio Demo Scene";
+            SceneRunner.Instance.InitializeScene<PhysicsDemoScene>();
+            return "Loading Physics Demo Scene";
         }
+
         private string cmd_ChangeCameraPos(string[] args)
         {
             if (args.Length != 3)
@@ -91,16 +97,13 @@ namespace GameEngine.scenes
 
         protected override void InitializeScene()
         {
-            GameModel sphere = new GameModel("models/sphere_smooth.obj");
-            GameModel plane = new GameModel("models/plane.obj");
 
 
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
-            
-            bgBox.Meshes[0].Textures = new[] { TextureProvider.Load("textures/ground4k.png") };
-            sphere.Meshes[0].Textures = new[] { TextureProvider.Load("textures/runicfloor.png") };
-            plane.Meshes[0].Textures = new[] { TextureProvider.Load("textures/runicfloor.png") };
+
+            GameTexture bg = TextureProvider.Load("textures/ground4k.png");
+            bgBox.Meshes[0].Textures = new[] { bg };
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -115,70 +118,45 @@ namespace GameEngine.scenes
                 {ShaderType.VertexShader, "shader/texture.vs"},
             }, out ShaderProgram shader);
 
-            GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
-            objSphere.AddComponent(new MeshRendererComponent(shader, sphere, 1));
-            objSphere.AddComponent(new RotatingComponent());
-
-            GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
-            objQuad.AddComponent(new MeshRendererComponent(shader, plane, 1));
-            objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(90));
-
-            GameObject uiText = new GameObject(new Vector3(0), "UIText");
-            uiText.AddComponent(new FLGeneratorComponent(new List<MeshRendererComponent>
-                {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()}, 512, 512));
-            
-
-
-            World.Add(uiText);
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
             World.Add(dbg.Owner);
-            World.Add(objSphere);
-            World.Add(objQuad);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             World.Add(bgObj);
 
-            
+            Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+            //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
+            c.Translate(new Vector3(10, 2, 2));
 
+            GameObject obj = new GameObject(Vector3.UnitZ*5, "Audio Source");
 
-
-            Camera mainCamera = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            mainCamera.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            mainCamera.Translate(new Vector3(0, 2, 2));
-            World.Add(mainCamera);
-            World.SetCamera(mainCamera);
-
-            GameObject camContainer = new GameObject("CamContainer");
-
-            Camera inPicCam = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            inPicCam.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(0));
-            inPicCam.Translate(new Vector3(0, 2, 4));
-            inPicCam.AddComponent(new RotateAroundComponent()); 
-            World.Add(inPicCam);
-
-
-            splitCam = new RenderTarget(inPicCam, 1, Color.Black)
+            GameModel sourceCube = new GameModel("models/cube_flat.obj");
+            AudioSourceComponent source = new AudioSourceComponent();
+            obj.AddComponent(source);
+            obj.AddComponent(new RotateAroundComponent());
+            obj.AddComponent(new MeshRendererComponent(shader, sourceCube, 1));
+            if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
             {
-                MergeType = ScreenRenderer.MergeType.Overwrite,
-                ViewPort = new Rectangle(0, 0, (int)(SceneRunner.Instance.Width * 0.3f),
-                    (int)(SceneRunner.Instance.Height * 0.3f))
-            };
+                Console.ReadLine();
+            }
             
-            World.Add(camContainer);
-           // SceneRunner.Instance.AddRenderTarget(splitCam);
+            source.SetClip(clip);
+            source.Play();
+            c.Add(obj);
+
+            AudioListener listener = new AudioListener();
+            c.AddComponent(listener);
+            World.Add(c);
+            World.SetCamera(c);
+
 
         }
 
-        public override void Destroy()
-        {
-            SceneRunner.Instance.RemoveRenderTarget(splitCam);
-            //splitCam.Destroy();
-        }
     }
 }

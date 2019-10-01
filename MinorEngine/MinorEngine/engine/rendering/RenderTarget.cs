@@ -7,15 +7,19 @@ using OpenTK.Graphics.OpenGL;
 
 namespace GameEngine.engine.rendering
 {
-    public class RenderTarget : IComparable<RenderTarget>
+    public class RenderTarget : IComparable<RenderTarget>, IDestroyable 
     {
+
+        public ScreenRenderer.MergeType MergeType { get; set; } = ScreenRenderer.MergeType.Additive;
         public int PassMask { get; set; }
         public Color ClearColor { get; set; }
         public int FrameBuffer { get; }
         public int RenderedTexture { get; }
         public int DepthBuffer { get; }
-        public bool MergeInScreenBuffer { get; set; }
         internal ICamera PassCamera { get; }
+
+        public Rectangle ViewPort { get; set; } = new Rectangle(0,0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+        
 
 
         public RenderTarget(ICamera cam, int PassMask, Color ClearColor, bool noDepth = false)
@@ -24,6 +28,7 @@ namespace GameEngine.engine.rendering
             this.ClearColor = ClearColor;
 
             PassCamera = cam;
+            
 
             FrameBuffer = GL.GenFramebuffer();
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBuffer);
@@ -31,7 +36,7 @@ namespace GameEngine.engine.rendering
             RenderedTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, RenderedTexture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16,
-                AbstractGame.Instance.Width, AbstractGame.Instance.Height, 0, PixelFormat.Bgra,
+                SceneRunner.Instance.Width, SceneRunner.Instance.Height, 0, PixelFormat.Bgra,
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -50,7 +55,7 @@ namespace GameEngine.engine.rendering
                 DepthBuffer = GL.GenRenderbuffer();
                 GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, DepthBuffer);
                 GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.DepthComponent,
-                    AbstractGame.Instance.Width, AbstractGame.Instance.Height);
+                    SceneRunner.Instance.Width, SceneRunner.Instance.Height);
                 GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment,
                     RenderbufferTarget.Renderbuffer, DepthBuffer);
 
@@ -61,6 +66,13 @@ namespace GameEngine.engine.rendering
                 Console.ReadLine();
             }
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
+
+        public void Destroy()
+        {
+            GL.DeleteFramebuffer(FrameBuffer);
+            GL.DeleteTexture(RenderedTexture);
+            GL.DeleteRenderbuffer(DepthBuffer);
         }
 
 

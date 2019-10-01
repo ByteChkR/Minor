@@ -15,9 +15,9 @@ namespace GameEngine.components.fldemo
     public class PhysicsDemoComponent : AbstractComponent
     {
         private static ShaderProgram _objShader;
-        private static readonly GameModel Sphere = new GameModel("models/sphere_smooth.obj");
-        private static readonly GameModel Box = new GameModel("models/cube_flat.obj");
-
+        private readonly GameModel Sphere = new GameModel("models/sphere_smooth.obj", false);
+        private readonly GameModel Box = new GameModel("models/cube_flat.obj", false);
+        private GameTexture unmanagedTexture;
         protected override void Awake()
         {
             
@@ -29,13 +29,14 @@ namespace GameEngine.components.fldemo
             Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
             base.Awake();
-            DebugConsoleComponent comp = AbstractGame.Instance.World.GetChildWithName("Console")
+            DebugConsoleComponent comp = Owner.World.GetChildWithName("Console")
                 .GetComponent<DebugConsoleComponent>();
             
 
+            unmanagedTexture = GameTexture.Load("textures/TEST.png");
 
-            Box.Meshes[0].Textures = new[] { TextureProvider.Load("textures/TEST.png") };
-            Sphere.Meshes[0].Textures = new[] { TextureProvider.Load("textures/TEST.png") };
+            Box.Meshes[0].Textures = new[] { unmanagedTexture };
+            Sphere.Meshes[0].Textures = new[] { unmanagedTexture };
 
 
 
@@ -44,6 +45,12 @@ namespace GameEngine.components.fldemo
             comp?.AddCommand("gravity", cmd_SpawnColliders);
         }
 
+        protected override void OnDestroy()
+        {
+            unmanagedTexture.Destroy();
+            Box.Destroy();
+            Sphere.Destroy();
+        }
 
         public static string cmd_SetGravity(string[] args)
         {
@@ -70,7 +77,7 @@ namespace GameEngine.components.fldemo
             return "Gravity Set to: " + Physics.Gravity;
         }
 
-        public static string cmd_SpawnColliders(string[] args)
+        public string cmd_SpawnColliders(string[] args)
         {
             if (args.Length != 1 || !int.TryParse(args[0], out int nmbrs))
             {
@@ -99,17 +106,17 @@ namespace GameEngine.components.fldemo
                     obj.Scale(new Vector3(radius));
                     if (rnd.Next(0, 2) == 1)
                     {
-                        obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 0));
+                        obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
                         obj.AddComponent(new ColliderComponent(ColliderType.SPHERE, radius, 1, 1));
                     }
                     else
                     {
                         obj.AddComponent(new ColliderComponent(ColliderType.BOX, radius, 1, 1));
-                        obj.AddComponent(new MeshRendererComponent(_objShader, Box, 0));
+                        obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));
 
                     }
 
-                    AbstractGame.Instance.World.Add(obj);
+                    Owner.World.Add(obj);
                 }
             }
 

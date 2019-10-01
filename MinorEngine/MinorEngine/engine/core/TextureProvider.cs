@@ -1,7 +1,9 @@
 ﻿using System;
 
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Text;
+using Common;
 using GameEngine.engine.rendering;
 using GameEngine.engine.ui.utils;
 
@@ -58,7 +60,9 @@ namespace GameEngine.engine.core
             GameTexture tex = GameTexture.Load(path);
             int id = tex.TextureId;
 
+
             _refs.Add(id, new Tuple<string, GameTexture, int>(path, tex, 1));
+
             return id;
         }
 
@@ -76,6 +80,8 @@ namespace GameEngine.engine.core
         {
             if (_refs.ContainsKey(tex.TextureId))
             {
+                tex.Log("Giving Back Texture ID: " + tex.TextureId, DebugChannel.Log);
+
                 _refs[tex.TextureId] = new Tuple<string, GameTexture, int>(_refs[tex.TextureId].Item1,
                     _refs[tex.TextureId].Item2, _refs[tex.TextureId].Item3 - 1);
                 if (_refs[tex.TextureId].Item3 == 0)
@@ -84,7 +90,13 @@ namespace GameEngine.engine.core
                     tex.Destroy();
                 }
             }
+            else
+            {
+                tex.Log("Handle of Unmanaged Texture " + tex.TextureId + " was destroyed.", DebugChannel.Log);
+            }
         }
+
+
 
         public static GameTexture Load(string path)
         {

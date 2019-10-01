@@ -8,6 +8,18 @@ namespace GameEngine.engine.audio.sources
 {
     public class AudioSourceComponent : AbstractAudioSource
     {
+
+        
+
+        protected override void OnDestroy()
+        {
+            if (IsPlaying)
+            {
+                Stop();
+            }
+        }
+
+
         protected override void Update(float deltaTime)
         {
             Vector4 v = new Vector4(Owner.GetLocalPosition(), 1);

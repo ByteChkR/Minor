@@ -3,6 +3,7 @@ using System.Linq;
 using GameEngine.engine.rendering;
 using GameEngine.components;
 using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -34,11 +35,11 @@ namespace GameEngine.engine.rendering
             GL.DepthFunc(DepthFunction.Less);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            RenderTarget rt = new RenderTarget(null, 0, _clearColor);
-            rt.MergeInScreenBuffer = true;
+            RenderTarget rt = new RenderTarget(null, 1, _clearColor);
+            rt.MergeType = ScreenRenderer.MergeType.Additive;
             AddRenderTarget(rt);
-            RenderTarget rt1 = new RenderTarget(new UICamera(), 1, _clearColor);
-            rt1.MergeInScreenBuffer = true;
+            RenderTarget rt1 = new RenderTarget(new UICamera(), 1 << 30, _clearColor);
+            rt1.MergeType = ScreenRenderer.MergeType.Additive;
             AddRenderTarget(rt1);
         }
 
@@ -48,14 +49,29 @@ namespace GameEngine.engine.rendering
             Targets.Sort();
         }
 
+        public void RemoveRenderTarget(RenderTarget target)
+        {
+            for (var i = Targets.Count - 1; i >= 0; i--)
+            {
+                var renderTarget = Targets[i];
+                if (renderTarget.FrameBuffer == target.FrameBuffer)
+                {
+                    Targets.RemoveAt(i);
+                }
+            }
+        }
+
         public void RenderAllTargets(World world)
         {
+            //GL.Enable(EnableCap.ScissorTest);
             for (var i = 0; i < Targets.Count; i++)
             {
                 CurrentTarget = i;
                 RenderTarget target = Targets[i];
+                //GL.Scissor(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
+                GL.Viewport(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
-                
+
                 GL.ClearColor(target.ClearColor);
 
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -68,9 +84,13 @@ namespace GameEngine.engine.rendering
                 {
                     Render(target.PassMask, world, world.Camera);
                 }
-            }
 
-            ScreenRenderer.MergeAndDisplayTargets(Targets.Where(x => x.MergeInScreenBuffer).ToList());
+                GL.Viewport(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+                //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+                
+            }
+            //GL.Disable(EnableCap.ScissorTest);
+            ScreenRenderer.MergeAndDisplayTargets(Targets.Where(x => x.MergeType != ScreenRenderer.MergeType.None).ToList());
             //TODO: WRITE RENDERING TO THE SCREEN(COMBINE THE RENDER TARGETS)
             //Maybe its useful to have a flag that defines if the rendertarget should be merged into the screen output
             //To Merge i need a vertex and fragment shader that can iterate over variable amounts of samplers(Can start out with 2)
@@ -101,7 +121,7 @@ namespace GameEngine.engine.rendering
 
         public static void RenderSelf(int PassMask, World world, GameObject obj, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            if (obj.RenderingComponent != null && obj.RenderingComponent.RenderMask == PassMask)
+            if (obj.RenderingComponent != null && MaskHelper.IsContainedInMask(obj.RenderingComponent.RenderMask, PassMask, false))
             {
                 Render(world, obj.RenderingComponent.Shader, obj.RenderingComponent, modelMat, viewMat, projMat);
             }

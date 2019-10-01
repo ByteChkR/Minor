@@ -40,15 +40,20 @@ namespace GameEngine.engine.rendering
         public GameTexture[] Textures { get; set; }
         private int _vao;
 
+        private bool _deallocOnDestroy;
+        private bool _deallocTexOnDestroy;
+
         private int _ebo;
         private int _vbo;
 
-        public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures)
+        public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures, bool deallocBuffersOnDestroy, bool deallocTextures)
         {
             this._vertices = vertices.ToArray();
             this._indices = indices.ToArray();
             this.Textures = textures.ToArray();
             setupMesh();
+            _deallocOnDestroy = deallocBuffersOnDestroy;
+            _deallocTexOnDestroy = deallocTextures;
 
         }
 
@@ -159,9 +164,19 @@ namespace GameEngine.engine.rendering
 
         public void Destroy()
         {
-            GL.DeleteBuffer(_ebo);
-            GL.DeleteBuffer(_vao);
-            GL.DeleteBuffer(_vbo);
+            if(_deallocOnDestroy)
+            {
+                GL.DeleteBuffer(_ebo);
+                GL.DeleteBuffer(_vao);
+                GL.DeleteBuffer(_vbo);
+            }
+            if(_deallocTexOnDestroy)
+            {
+                foreach (var gameTexture in Textures)
+                {
+                    TextureProvider.GiveBack(gameTexture);
+                }
+            }
         }
 
         private static IntPtr offsetOf(string name)

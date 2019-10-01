@@ -23,9 +23,10 @@ namespace GameEngine
                 PhysicsThreadCount = 4
             };
 
-            AbstractGame demo = new FLDemoScene(es);
-            demo.Initialize();
-            demo.Run();
+            engine.core.SceneRunner engine = new engine.core.SceneRunner(es);
+            engine.Initialize();
+            engine.InitializeScene<FLDemoScene>();
+            engine.Run();
         }
     }
 }

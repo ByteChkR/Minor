@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection.Metadata.Ecma335;
 using Assimp;
+using Common;
 using GameEngine.components;
 using GameEngine.engine.components;
 using GameEngine.engine.rendering;
@@ -12,50 +13,58 @@ using Quaternion = BepuUtilities.Quaternion;
 
 namespace GameEngine.engine.core
 {
-    public class GameObject :IDestroyable
+    public class GameObject : IDestroyable
     {
         internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            AbstractGame.Instance.World.OnKeyDown(sender, e);
+            SceneRunner.Instance.World.OnKeyDown(sender, e);
         }
         internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            AbstractGame.Instance.World.OnKeyUp(sender, e);
+            SceneRunner.Instance.World.OnKeyUp(sender, e);
 
         }
         internal static void _KeyPress(object sender, KeyPressEventArgs e)
         {
 
-            AbstractGame.Instance.World.OnKeyPress(sender, e);
+            SceneRunner.Instance.World.OnKeyPress(sender, e);
         }
 
         public IRenderingComponent RenderingComponent { get; private set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
-        public World World { get; protected set; }
+        public World World { get; internal set; }
         private static int _objId;
         private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
         public int ChildCount => _children.Count;
+        private bool _destroyed;
 
         public GameObject Parent { get; private set; }
 
         ~GameObject()
         {
-            Destroy();
-            
+            if(!_destroyed)
+            {
+                this.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
+                    DebugChannel.Warning);
+            }
+
         }
 
         public void Destroy()
         {
+            _destroyed = true;
             if (Parent != null)
             {
                 GameObject.Remove(this);
             }
+            this.Log("Destroying GameObject: " + Name, DebugChannel.Log);
+            GameObject[] objs = new List<GameObject>(_children).ToArray();
 
-            foreach (GameObject gameObject in _children)
+            foreach (GameObject gameObject in objs)
             {
-               gameObject.Destroy();
+                gameObject.Destroy();
             }
 
             foreach (var abstractComponent in _components)
@@ -333,6 +342,15 @@ namespace GameEngine.engine.core
             Transform = f;
         }
 
+        public void LookAt(Vector3 worldPos)
+        {
+            Vector3 eye, up, target;
+            eye = GetLocalPosition();
+            target = new Vector3(new Vector4(worldPos) * Matrix4.Invert(GetWorldTransform()));
+            up = Vector3.UnitY;
+            Transform = Matrix4.LookAt(eye, target, up) * Transform.ClearRotation();
+        }
+
         public void LookAt(GameObject other)
         {
             Matrix4 worldThis = GetWorldTransform();
@@ -341,7 +359,7 @@ namespace GameEngine.engine.core
             eye = GetLocalPosition();
             target = new Vector3(new Vector4(other.GetLocalPosition()) * worldOther * Matrix4.Invert(worldThis));
             up = Vector3.UnitY;
-            Transform = Matrix4.LookAt(eye, target, up);
+            Transform = Matrix4.LookAt(eye, target, up)*Transform.ClearRotation();
         }
     }
 }

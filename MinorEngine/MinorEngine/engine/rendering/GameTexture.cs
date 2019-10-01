@@ -51,7 +51,7 @@ namespace GameEngine.engine.rendering
 
         ~GameTexture()
         {
-            //Destroy();
+            
         }
 
         public void Destroy()
@@ -177,7 +177,7 @@ namespace GameEngine.engine.rendering
 
         }
 
-        internal static GameTexture Load(string filename)
+        public static GameTexture Load(string filename)
         {
             filename.Log($"Loading Texture: " + filename, DebugChannel.Log);
             Bitmap bmp = new Bitmap(filename);
