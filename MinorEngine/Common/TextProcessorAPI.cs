@@ -23,8 +23,8 @@ namespace Common
         {
             private readonly string[] _lines;
             private readonly string _incDir;
-            private string Key => _incDir + "./memoryFile";
-            private string Path => _incDir + "./memoryFile";
+            private string Key => _incDir + "/memoryFile";
+            private string Path => _incDir + "/memoryFile";
 
             public FileContent(string[] lines, string incDir)
             {
