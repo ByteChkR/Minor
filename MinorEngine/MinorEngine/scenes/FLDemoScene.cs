@@ -175,7 +175,7 @@ namespace GameEngine.scenes
 
         }
 
-        public override void Destroy()
+        public override void OnDestroy()
         {
             SceneRunner.Instance.RemoveRenderTarget(splitCam);
             //splitCam.Destroy();

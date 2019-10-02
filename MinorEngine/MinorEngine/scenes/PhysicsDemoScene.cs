@@ -93,10 +93,7 @@ namespace GameEngine.scenes
                 return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
             }
 
-            public override void Destroy()
-            {
-
-            }
+            
 
             protected override void InitializeScene()
             {

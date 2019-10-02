@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Reflection.Metadata.Ecma335;
 using Assimp;
 using Common;
@@ -22,13 +23,14 @@ namespace GameEngine.engine.core
         internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
         {
             SceneRunner.Instance.World.OnKeyUp(sender, e);
-
         }
         internal static void _KeyPress(object sender, KeyPressEventArgs e)
         {
-
             SceneRunner.Instance.World.OnKeyPress(sender, e);
         }
+
+        internal static List<GameObject> ObjsWithAttachedRenderers = new List<GameObject>();
+        internal Matrix4 _worldTransformCache;
 
         public IRenderingComponent RenderingComponent { get; private set; }
         public Matrix4 Transform { get; set; } = Matrix4.Identity;
@@ -39,12 +41,13 @@ namespace GameEngine.engine.core
         public string Name { get; set; }
         public int ChildCount => _children.Count;
         private bool _destroyed;
+        private bool _hasRendererInHierarchy;
 
         public GameObject Parent { get; private set; }
 
         ~GameObject()
         {
-            if(!_destroyed)
+            if (!_destroyed)
             {
                 this.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
                     DebugChannel.Warning);
@@ -55,6 +58,12 @@ namespace GameEngine.engine.core
         public void Destroy()
         {
             _destroyed = true;
+
+            if (RenderingComponent != null)
+            {
+                ObjsWithAttachedRenderers.Remove(this);
+            }
+
             if (Parent != null)
             {
                 GameObject.Remove(this);
@@ -113,6 +122,8 @@ namespace GameEngine.engine.core
             {
                 if (typeof(IRenderingComponent).IsAssignableFrom(t))
                 {
+                    applyRenderHierarchy(true);
+                    ObjsWithAttachedRenderers.Add(this);
                     RenderingComponent = (IRenderingComponent)component;
                 }
                 _components.Add(t, component);
@@ -125,6 +136,9 @@ namespace GameEngine.engine.core
             Type t = typeof(T);
             if (_components.ContainsKey(t))
             {
+                applyRenderHierarchy(false);
+                ObjsWithAttachedRenderers.Remove(this);
+
                 AbstractComponent component = _components[t];
                 _components.Remove(t);
                 component.Owner = null;
@@ -154,6 +168,19 @@ namespace GameEngine.engine.core
             return null;
         }
 
+
+        public void ComputeWorldTransformCache(Matrix4 parentTransform)
+        {
+            _worldTransformCache = Transform * parentTransform;
+            foreach (var gameObject in _children)
+            {
+                if (gameObject._hasRendererInHierarchy) //We only need to update the worldspace cache when we need to
+                {
+                    gameObject.ComputeWorldTransformCache(parentTransform);
+                }
+            }
+        }
+
         private void innerRemove(GameObject child)
         {
             for (int i = _children.Count - 1; i >= 0; i--)
@@ -167,6 +194,53 @@ namespace GameEngine.engine.core
             }
         }
 
+        private void applyRenderHierarchy(bool hasRenderer) //This gets called from the AddComponent/RemoveComponent function and recursively from applyRenderHierarchyFromBelow
+        {
+            _hasRendererInHierarchy = hasRenderer;
+            Parent?.applyRenderHierarchyFromBelow(hasRenderer); //Call the parent 
+        }
+
+        private void applyRenderHierarchyFromBelow(bool hasRenderer) //The child calls this
+        {
+
+            if (hasRenderer && !_hasRendererInHierarchy) //A child attached a render and we dont have the flag set
+            {
+                //_hasRendererInHierarchy = true;
+                applyRenderHierarchy(hasRenderer);
+            }
+            else if (!hasRenderer && _hasRendererInHierarchy)//A child removed a renderer and now we need to check if we can set the flag to false(if all the childs dont have renderers)
+            {
+                bool childhaveRenderers = false;
+                foreach (var gameObject in _children)
+                {
+                    if (gameObject._hasRendererInHierarchy)
+                    {
+                        childhaveRenderers = true;
+                        break;
+                    }
+                }
+
+                if (!childhaveRenderers)
+                {
+                    applyRenderHierarchy(hasRenderer);
+                }
+            }
+
+            //bool ret = true;
+            //foreach (var gameObject in _children)
+            //{
+            //    if (gameObject._hasRendererInHierarchy)
+            //    {
+            //        ret = false;
+            //    }
+            //}
+
+            //if (ret)
+            //{
+            //    //applyRenderHierarchy(hasRenderer); //If no other child has a renderer in hierarchy then remove it.
+            //}
+        }
+
         private void innerAdd(GameObject child)
         {
             _children.Add(child);
@@ -176,6 +250,10 @@ namespace GameEngine.engine.core
 
         public void Add(GameObject child)
         {
+            if (child._hasRendererInHierarchy)
+            {
+                applyRenderHierarchy(true);
+            }
             child.SetParent(this);
         }
 

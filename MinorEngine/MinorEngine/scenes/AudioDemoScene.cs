@@ -17,6 +17,26 @@ namespace GameEngine.scenes
     public class AudioDemoScene:AbstractScene
     {
 
+        private LookAtComponent _camLookCommandComponent;
+        private GameObject _sourceCube;
+
+        private string cmd_LookAtAudioSource(string[] args)
+        {
+            if (_camLookCommandComponent.IsLooking)
+            {
+                _camLookCommandComponent.SetTarget(null);
+            }
+            else
+            {
+                _camLookCommandComponent.SetTarget(_sourceCube);
+            }
+
+            return "Changed Look behaviour to: " + _camLookCommandComponent.IsLooking;
+        }
+
+        
+
+
 
         private string cmd_ReLoadScene(string[] args)
         {
@@ -101,9 +121,8 @@ namespace GameEngine.scenes
 
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
-
-            GameTexture bg = TextureProvider.Load("textures/ground4k.png");
-            bgBox.Meshes[0].Textures = new[] { bg };
+            
+            bgBox.Meshes[0].Textures = new[] { TextureProvider.Load("textures/ground4k.png") };
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -123,6 +142,7 @@ namespace GameEngine.scenes
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
+            //dbg.AddCommand("lookat", cmd_LookAtAudioSource);
             World.Add(dbg.Owner);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
@@ -131,24 +151,26 @@ namespace GameEngine.scenes
             World.Add(bgObj);
 
             Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            c.Translate(new Vector3(10, 2, 2));
+            c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
+            c.Translate(new Vector3(0, 20, 50));
 
-            GameObject obj = new GameObject(Vector3.UnitZ*5, "Audio Source");
+            _sourceCube = new GameObject(Vector3.UnitZ*-5, "Audio Source");
 
             GameModel sourceCube = new GameModel("models/cube_flat.obj");
+            sourceCube.Meshes[0].Textures = new[] {TextureProvider.Load("textures/ground4k.png")};
             AudioSourceComponent source = new AudioSourceComponent();
-            obj.AddComponent(source);
-            obj.AddComponent(new RotateAroundComponent());
-            obj.AddComponent(new MeshRendererComponent(shader, sourceCube, 1));
+            _sourceCube.AddComponent(source);
+            _sourceCube.AddComponent(new RotateAroundComponent());
+            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube, 1));
             if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
             {
                 Console.ReadLine();
             }
             
             source.SetClip(clip);
+            source.Looping = true;
             source.Play();
-            c.Add(obj);
+            World.Add(_sourceCube);
 
             AudioListener listener = new AudioListener();
             c.AddComponent(listener);

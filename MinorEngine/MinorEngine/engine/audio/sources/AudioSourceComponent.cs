@@ -28,7 +28,6 @@ namespace GameEngine.engine.audio.sources
             Vector3 v3 = new Vector3(v);
 
             AL.Source(source, ALSource3f.Position, ref v3);
-            AL.Source(source, ALSourceb.SourceRelative, true);
             
         }
     }

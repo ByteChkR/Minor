@@ -161,9 +161,15 @@ namespace GameEngine.engine.core
         }
         protected abstract void InitializeScene();
 
-        public virtual void Destroy()
+        public virtual void OnDestroy()
+        {
+            //
+        }
+
+        public void Destroy()
         {
             World.Destroy();
+            OnDestroy();
         }
 
 

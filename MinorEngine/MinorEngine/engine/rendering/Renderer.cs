@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using Common;
 using GameEngine.engine.rendering;
 using GameEngine.components;
 using GameEngine.engine.core;
@@ -30,9 +33,8 @@ namespace GameEngine.engine.rendering
             GL.FrontFace(FrontFaceDirection.Ccw);
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
-            GL.Enable(EnableCap.Blend);
+            //GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);
-            GL.DepthFunc(DepthFunction.Less);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
             RenderTarget rt = new RenderTarget(null, 1, _clearColor);
@@ -63,6 +65,11 @@ namespace GameEngine.engine.rendering
 
         public void RenderAllTargets(World world)
         {
+
+
+            world.ComputeWorldTransformCache(Matrix4.Identity); //Compute all the World transforms and cache them
+
+
             //GL.Enable(EnableCap.ScissorTest);
             for (var i = 0; i < Targets.Count; i++)
             {
@@ -99,7 +106,16 @@ namespace GameEngine.engine.rendering
         public static void Render(int PassMask, World world, ICamera cam)
         {
 
-            Render(PassMask, world, world, cam, true);
+            foreach (var renderer in GameObject.ObjsWithAttachedRenderers)
+            {
+                if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderMask, PassMask, false))
+                {
+                    Render(world, renderer.RenderingComponent, renderer._worldTransformCache, cam.ViewMatrix, cam.Projection);
+                }
+
+            }
+
+            //Render(PassMask, world, world, cam, true);
 
         }
 
@@ -111,6 +127,8 @@ namespace GameEngine.engine.rendering
         public static void Render(int PassMask, World world, GameObject obj, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat,
             bool recursive)
         {
+            
+
             RenderSelf(PassMask, world, obj, modelMat, viewMat, projMat);
             if (recursive)
             {
@@ -123,7 +141,7 @@ namespace GameEngine.engine.rendering
         {
             if (obj.RenderingComponent != null && MaskHelper.IsContainedInMask(obj.RenderingComponent.RenderMask, PassMask, false))
             {
-                Render(world, obj.RenderingComponent.Shader, obj.RenderingComponent, modelMat, viewMat, projMat);
+                Render(world, obj.RenderingComponent, modelMat, viewMat, projMat);
             }
         }
 
@@ -143,7 +161,7 @@ namespace GameEngine.engine.rendering
             }
         }
 
-        public static void Render(World world, ShaderProgram prog, IRenderingComponent model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
+        public static void Render(World world,IRenderingComponent model, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
             //TODO: HERE GOES THE PASS MASK EVALUATION SO STUFF IGNORES IT(REQUIRES EVERY GAMEOBJECT TO HAVE A MASK AS WELL)
             model?.Render(modelMat, viewMat, projMat);
