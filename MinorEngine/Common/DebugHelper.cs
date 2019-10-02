@@ -72,11 +72,8 @@ namespace Common
 
         private static bool AskForDebugLogSending()
         {
-#if DEBUG
-            
+#if NO_CL
             return false;
-#elif NO_CL
-            return false; //For Not making travis hang on user input. In case this function gets called from the unit tests.
 #else
             Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
             if (Console.ReadLine().ToLower() == "y")
@@ -114,11 +111,16 @@ namespace Common
             Debug.AddOutputStream(_lts);
 
 
+
+#if DEBUG
+#else
             if (AskForDebugLogSending())
             {
-                _netLogStream = NetUtils.CreateNetworkStream(NetworkConfig.Load(AdlNetworkConfigPath), 1, Assembly.GetEntryAssembly().GetName().Version, -1, MatchType.MatchAll, false);
+                NetworkConfig conf = NetworkConfig.Load(AdlNetworkConfigPath);
+                _netLogStream = NetUtils.CreateNetworkStream(conf, 1, Assembly.GetEntryAssembly().GetName().Version, -1, MatchType.MatchAll, false);
                 Debug.AddOutputStream(_netLogStream);
             }
+#endif
         }
 
         /// <summary>
