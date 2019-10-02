@@ -11,7 +11,7 @@ void main()
 {
 	//vec2(TexCoords.x, 1-TexCoords.y) < When changing how font loading works (flipping y)
 	float f = texture(sourceTexture, TexCoords).r;
-	vec4 sampled = vec4(f,f,f, 1.0f);
+	vec4 sampled = vec4(f,f,f,f);
     FragColor = sampled * vec4(textColor, 1.0f);
 } 
 

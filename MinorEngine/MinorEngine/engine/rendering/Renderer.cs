@@ -16,7 +16,7 @@ namespace GameEngine.engine.rendering
     {
         private readonly List<RenderTarget> Targets = new List<RenderTarget>();
         private int CurrentTarget { get; set; }
-        private Color _clearColor = Color.Black;
+        private Color _clearColor = new Color(0,0,0,0);
         public Color ClearColor
         {
             set

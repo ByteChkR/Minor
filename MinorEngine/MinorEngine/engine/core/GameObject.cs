@@ -384,6 +384,11 @@ namespace GameEngine.engine.core
             Transform *= Matrix4.CreateScale(scaleAmount);
         }
 
+        public Vector3 GetScale()
+        {
+            return Transform.ExtractScale();
+        }
+
         public void Rotate(Vector3 axis, float angle)
         {
             Vector3 translation = GetLocalPosition();
@@ -431,13 +436,58 @@ namespace GameEngine.engine.core
 
         public void LookAt(GameObject other)
         {
+
+
             Matrix4 worldThis = GetWorldTransform();
             Matrix4 worldOther = other.GetWorldTransform();
-            Vector3 eye, up, target;
-            eye = GetLocalPosition();
-            target = new Vector3(new Vector4(other.GetLocalPosition()) * worldOther * Matrix4.Invert(worldThis));
-            up = Vector3.UnitY;
-            Transform = Matrix4.LookAt(eye, target, up)*Transform.ClearRotation();
+            Matrix4 otherThis = worldOther * Matrix4.Invert(worldThis);
+            Vector3 position = GetLocalPosition();
+            Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * otherThis);
+            Vector3 scale = GetScale();
+
+            Vector3 t = target - position;
+
+            Vector3 newForward = Vector3.Normalize(t);
+
+            //New Right Vector
+            Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
+            Vector3 newUp = Vector3.Cross(newForward, newRight);
+
+            Transform = new Matrix4(new Vector4(newRight), new Vector4(newUp), new Vector4(newForward), new Vector4(-position, 1));
+
+            //Translate(position);
+
+            //Scale(scale);
+
+            ////Positions in THIS local space
+            ////If other.LocalPosition.w == 1 then it glitches
+            ////If its 0 the target.Y = this.Y
+            //Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 1) * worldOther * Matrix4.Invert(worldThis));
+            //Vector3 eye = GetLocalPosition();
+
+
+            ////Non Parallel Vector to forward
+            //Vector3 up = Vector3.UnitY;
+
+            ////New Forward Vector
+            //Vector3 newForward = target - eye;
+            //newForward = Vector3.Normalize(newForward);
+
+            ////New Right Vector
+            //Vector3 newRight = Vector3.Cross(up, newForward);
+            //Vector3 newUp = Vector3.Cross(newForward, newRight);
+
+
+            //Transform = new Matrix4(new Vector4(newRight), new Vector4(newUp), new Vector4(newForward), new Vector4(0, 0, 0, 1));
+            //Matrix4 translation = Matrix4.CreateTranslation(eye);
+            ////Transform *= translation;
+
+
+            ////Looking at Target with new Up vector
+            ////Transform = Matrix4.LookAt(eye, target, up);
+
+
+
         }
     }
 }

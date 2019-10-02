@@ -163,15 +163,15 @@ namespace GameEngine.scenes
             World.Add(inPicCam);
 
 
-            splitCam = new RenderTarget(inPicCam, 1, Color.Black)
+            splitCam = new RenderTarget(inPicCam, 1, new Color(0,0,0,0))
             {
-                MergeType = ScreenRenderer.MergeType.Overwrite,
+                MergeType = ScreenRenderer.MergeType.Additive,
                 ViewPort = new Rectangle(0, 0, (int)(SceneRunner.Instance.Width * 0.3f),
                     (int)(SceneRunner.Instance.Height * 0.3f))
             };
             
             World.Add(camContainer);
-           // SceneRunner.Instance.AddRenderTarget(splitCam);
+            SceneRunner.Instance.AddRenderTarget(splitCam);
 
         }
 

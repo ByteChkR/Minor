@@ -14,8 +14,7 @@ namespace GameEngine.engine.rendering
         {
             None,
             Additive,
-            Multiplikative,
-            Overwrite
+            Multiplikative
         }
 
         private static float[] _screenQuadVertexData = new[]
@@ -71,15 +70,7 @@ namespace GameEngine.engine.rendering
             }
             _mergeTypes.Add(MergeType.Multiplikative, _mergeMulShader);
 
-            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "shader/MergeRenderer_Over.fs"},
-                {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
-            }, out ShaderProgram _mergeOverShader))
-            {
-                Console.ReadLine();
-            }
-            _mergeTypes.Add(MergeType.Overwrite, _mergeOverShader);
+            
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
@@ -121,7 +112,7 @@ namespace GameEngine.engine.rendering
 
             //GL.Enable(EnableCap.ScissorTest);
 
-            GL.Enable(EnableCap.ScissorTest);
+            //GL.Enable(EnableCap.ScissorTest);
             foreach (var renderTarget in targets)
             {
 

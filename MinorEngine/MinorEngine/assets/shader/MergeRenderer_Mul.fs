@@ -14,7 +14,7 @@ void main()
     vec4 ocol = texture(otherTexture, TexCoords);
     //col *= divWeight;
 
-    vec4 col = vec4(dcol.rgb * ocol.rgb * vec3(ocol.a), 1);
+    vec4 col = vec4(dcol.rgb * vec3(1-ocol.a) * ocol.rgb, 1);
 
     FragColor = col;
     

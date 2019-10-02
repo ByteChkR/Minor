@@ -142,7 +142,7 @@ namespace GameEngine.scenes
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
-            //dbg.AddCommand("lookat", cmd_LookAtAudioSource);
+            dbg.AddCommand("lookat", cmd_LookAtAudioSource);
             World.Add(dbg.Owner);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
@@ -151,8 +151,11 @@ namespace GameEngine.scenes
             World.Add(bgObj);
 
             Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
+            //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 20, 50));
+            _camLookCommandComponent=new LookAtComponent();
+            
+            c.AddComponent(_camLookCommandComponent);
 
             _sourceCube = new GameObject(Vector3.UnitZ*-5, "Audio Source");
 
@@ -169,7 +172,7 @@ namespace GameEngine.scenes
             
             source.SetClip(clip);
             source.Looping = true;
-            source.Play();
+            //source.Play();
             World.Add(_sourceCube);
 
             AudioListener listener = new AudioListener();
