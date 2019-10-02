@@ -103,7 +103,7 @@ namespace GameEngine.scenes
                 GameModel bgBox = new GameModel("models/cube_flat.obj");
 
                 GameTexture bg = TextureProvider.Load("textures/ground4k.png");
-                bgBox.Meshes[0].Textures = new[] { bg };
+                bgBox.SetTextureBuffer(0, new[] { bg });
 
 
                 ShaderProgram.TryCreate(new Dictionary<ShaderType, string>

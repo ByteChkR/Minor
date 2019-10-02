@@ -122,7 +122,7 @@ namespace GameEngine.scenes
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
             
-            bgBox.Meshes[0].Textures = new[] { TextureProvider.Load("textures/ground4k.png") };
+            bgBox.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -160,7 +160,7 @@ namespace GameEngine.scenes
             _sourceCube = new GameObject(Vector3.UnitZ*-5, "Audio Source");
 
             GameModel sourceCube = new GameModel("models/cube_flat.obj");
-            sourceCube.Meshes[0].Textures = new[] {TextureProvider.Load("textures/ground4k.png")};
+            sourceCube.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
             AudioSourceComponent source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
             _sourceCube.AddComponent(new RotateAroundComponent());

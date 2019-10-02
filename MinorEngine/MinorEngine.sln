@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLHelperLibrary", "CLHelper
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLHelperLibrary.Tests", "CLHelperLibrary.Tests\CLHelperLibrary.Tests.csproj", "{6D5FFC32-1899-4ECD-8683-28B4D783A461}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLHelperLibrary.Tests", "CLHelperLibrary.Tests\CLHelperLibrary.Tests.csproj", "{6D5FFC32-1899-4ECD-8683-28B4D783A461}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilterLanguage.Tests", "FilterLanguage.Tests\FilterLanguage.Tests.csproj", "{31382B7A-8BBE-4FDE-A540-93373E77C496}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilterLanguage.Tests", "FilterLanguage.Tests\FilterLanguage.Tests.csproj", "{31382B7A-8BBE-4FDE-A540-93373E77C496}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

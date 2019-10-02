@@ -11,6 +11,12 @@
     <Reference Include="ADL.Crash">
       <HintPath>..\..\ADL\ADL\ADL.Crash\bin\Release\netstandard2.0\ADL.Crash.dll</HintPath>
     </Reference>
+    <Reference Include="ADL.Network.Client">
+      <HintPath>..\..\ADL\ADL\ADL.Network.Client\bin\Release\netstandard2.0\ADL.Network.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="ADL.Network.Shared">
+      <HintPath>..\..\ADL\ADL\ADL.Network.Shared\bin\Release\netstandard2.0\ADL.Network.Shared.dll</HintPath>
+    </Reference>
     <Reference Include="ext_pp">
       <HintPath>..\..\ext-pp\ext_pp\bin\Release\netcoreapp2.1\ext_pp.dll</HintPath>
     </Reference>

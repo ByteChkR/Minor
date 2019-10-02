@@ -35,14 +35,14 @@ namespace GameEngine.components.fldemo
 
             unmanagedTexture = GameTexture.Load("textures/TEST.png");
 
-            Box.Meshes[0].Textures = new[] { unmanagedTexture };
-            Sphere.Meshes[0].Textures = new[] { unmanagedTexture };
+            Box.SetTextureBuffer(0, new[] { unmanagedTexture });
+            Sphere.SetTextureBuffer(0, new[] { unmanagedTexture });
 
 
 
 
             comp?.AddCommand("rain", cmd_SpawnColliders);
-            comp?.AddCommand("gravity", cmd_SpawnColliders);
+            comp?.AddCommand("gravity", cmd_SetGravity);
         }
 
         protected override void OnDestroy()

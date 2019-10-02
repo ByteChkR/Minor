@@ -23,7 +23,6 @@ namespace GameEngine.components.fldemo
         public FLGeneratorComponent(List<MeshRendererComponent> previews, int width, int height)
         {
             _previews = previews;
-            Tex = GameTexture.Create(width, height, true);
         }
 
         private string cmd_RunFL(string[] args)
@@ -49,12 +48,22 @@ namespace GameEngine.components.fldemo
 
         protected override void Awake()
         {
+
+            Tex = GameTexture.Create(width, height, true);
+
+            for (int i = 0; i < _previews.Count; i++)
+            {
+                _previews[i].Model.SetTextureBuffer(0, new[] { Tex });
+            }
+
+
+
             DebugConsoleComponent console = Owner.World.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
             console?.AddCommand("runfl", cmd_RunFL);
             console?.AddCommand("dbgfl", cmd_RunFLStepped);
             console?.AddCommand("step", cmd_FLStep);
             console?.AddCommand("r", cmd_FLReset);
-            console?.AddCommand("dbgstop", cmd_FLReset);
+            console?.AddCommand("dbgstop", cmd_FLStop);
             _db = new KernelDatabase("kernel/", DataTypes.UCHAR1);
         }
 
@@ -83,10 +92,7 @@ namespace GameEngine.components.fldemo
 
             GameTexture.Update(Tex, interpreter.GetResult<byte>(), (int)Tex.Width, (int)Tex.Height);
 
-            for (int i = 0; i < _previews.Count; i++)
-            {
-                _previews[i].Model.Meshes[0].Textures = new[] { Tex };
-            }
+
         }
 
         private string cmd_FLStop(string[] args)
@@ -117,11 +123,6 @@ namespace GameEngine.components.fldemo
             }
 
             GameTexture.Update(Tex, CL.ReadBuffer<byte>(res, (int)res.Size), (int)Tex.Width, (int)Tex.Height);
-
-            for (int i = 0; i < _previews.Count; i++)
-            {
-                _previews[i].Model.Meshes[0].Textures = new[] { Tex };
-            }
 
             return stepResult.ToString();
         }

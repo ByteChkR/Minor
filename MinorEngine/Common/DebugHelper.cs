@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 using ADL;
 using ADL.Configs;
 using ADL.Streams;
 using ADL.Crash;
+using ADL.Network.Streams;
+using ADL.Network.Client;
 
 namespace Common
 {
@@ -12,7 +15,7 @@ namespace Common
     /// </summary>
     internal class CrashLogDictionary : SerializableDictionary<string, ApplicationException>
     {
-        public CrashLogDictionary():this( new Dictionary<string, ApplicationException>()) { }
+        public CrashLogDictionary() : this(new Dictionary<string, ApplicationException>()) { }
         public CrashLogDictionary(Dictionary<string, ApplicationException> dict) : base(dict) { }
     }
 
@@ -38,6 +41,10 @@ namespace Common
         /// </summary>
         private static LogTextStream _lts;
 
+        private static NetLogStream _netLogStream;
+
+        private const string AdlNetworkConfigPath = "configs/adl_network_config.xml";
+
         /// <summary>
         /// The listening mask that is applied to the text output
         /// </summary>
@@ -49,7 +56,7 @@ namespace Common
                 {
                     return DebugChannel.ALL;
                 }
-                return (DebugChannel) _lts.Mask;
+                return (DebugChannel)_lts.Mask;
             }
             set
             {
@@ -58,8 +65,27 @@ namespace Common
                     Initialize();
                 }
 
-                _lts.Mask = (int) value;
+                _lts.Mask = (int)value;
             }
+        }
+
+
+        private static bool AskForDebugLogSending()
+        {
+#if DEBUG
+            
+            return false;
+#elif NO_CL
+            return false; //For Not making travis hang on user input. In case this function gets called from the unit tests.
+#else
+            Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
+            if (Console.ReadLine().ToLower() == "y")
+            {
+                return true;
+            }
+            return false;
+#endif
+
         }
 
         /// <summary>
@@ -67,6 +93,7 @@ namespace Common
         /// </summary>
         private static void Initialize()
         {
+
             _initialized = true;
             Debug.AdlEnabled = true;
             Debug.CheckForUpdates = false;
@@ -77,7 +104,6 @@ namespace Common
             Debug.UpdateMask = 8;
             Debug.SetAllPrefixes("[Error]", "[Warning]", "[Log]", "[Internal Error]", "[Progress]");
             Debug.AddPrefixForMask(-1, "[ALL]");
-            Debug.AddPrefixForMask(-1, "[NONE]");
 
             CrashConfig c = new CrashConfig();
             c.CrashMask = (int)DebugChannel.Internal_Error;
@@ -86,6 +112,13 @@ namespace Common
 
             _lts = new LogTextStream(Console.OpenStandardOutput(), BitMask.WildCard, MatchType.MatchAll, true);
             Debug.AddOutputStream(_lts);
+
+
+            if (AskForDebugLogSending())
+            {
+                _netLogStream = NetUtils.CreateNetworkStream(NetworkConfig.Load(AdlNetworkConfigPath), 1, Assembly.GetEntryAssembly().GetName().Version, -1, MatchType.MatchAll, false);
+                Debug.AddOutputStream(_netLogStream);
+            }
         }
 
         /// <summary>
@@ -96,11 +129,11 @@ namespace Common
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
         public static void Log(this object obj, string message, DebugChannel channel)
         {
-            if(!_initialized)
+            if (!_initialized)
             {
                 Initialize();
             }
-            
+
             Debug.LogGen(channel, message);
         }
 

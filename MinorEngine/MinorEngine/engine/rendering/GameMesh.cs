@@ -37,7 +37,7 @@ namespace GameEngine.engine.rendering
     {
         private readonly GameVertex[] _vertices;
         private readonly uint[] _indices;
-        public GameTexture[] Textures { get; set; }
+        private GameTexture[] Textures { get; set; }
         private int _vao;
 
         private bool _deallocOnDestroy;
@@ -55,6 +55,19 @@ namespace GameEngine.engine.rendering
             _deallocOnDestroy = deallocBuffersOnDestroy;
             _deallocTexOnDestroy = deallocTextures;
 
+        }
+
+        public void SetTextureBuffer(GameTexture[] tex)
+        {
+            if (_deallocTexOnDestroy)
+            {
+                foreach (var gameTexture in Textures)
+                {
+                    TextureProvider.GiveBack(gameTexture);
+                }
+            }
+
+            Textures = tex;
         }
 
         public Vector3[] ToSequentialVertexList()

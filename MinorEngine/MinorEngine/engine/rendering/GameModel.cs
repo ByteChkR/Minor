@@ -20,7 +20,7 @@ namespace GameEngine.engine.rendering
 
         public GameModel(string file, bool deallocTextures = true, bool deallocMeshes = true)
         {
-            this.Log("Loading Model File: " + Path.GetFullPath(file), DebugChannel.Log);
+            this.Log("Loading Model File: " + file, DebugChannel.Log);
             this._deallocMeshes = deallocMeshes;
             this._deallocTextures = deallocTextures;
             LoadModel(file);
@@ -39,6 +39,14 @@ namespace GameEngine.engine.rendering
                 {
                     gameMesh.Destroy();
                 }
+            }
+        }
+
+        public void SetTextureBuffer(int meshID, GameTexture[] tex)
+        {
+            if(meshID >= 0 && meshID < Meshes.Count)
+            {
+                Meshes[meshID].SetTextureBuffer(tex);
             }
         }
 

@@ -433,6 +433,7 @@ namespace GameEngine.engine.core
             up = Vector3.UnitY;
             Transform = Matrix4.LookAt(eye, target, up) * Transform.ClearRotation();
         }
+        
 
         public void LookAt(GameObject other)
         {
@@ -453,7 +454,7 @@ namespace GameEngine.engine.core
             Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
             Vector3 newUp = Vector3.Cross(newForward, newRight);
 
-            Transform = new Matrix4(new Vector4(newRight), new Vector4(newUp), new Vector4(newForward), new Vector4(-position, 1));
+            Transform = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward), new Vector4(position, 1));
 
             //Translate(position);
 

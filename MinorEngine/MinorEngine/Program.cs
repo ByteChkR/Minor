@@ -25,7 +25,7 @@ namespace GameEngine
 
             engine.core.SceneRunner engine = new engine.core.SceneRunner(es);
             engine.Initialize();
-            engine.InitializeScene<AudioDemoScene>();
+            engine.InitializeScene<FLDemoScene>();
             engine.Run();
         }
     }

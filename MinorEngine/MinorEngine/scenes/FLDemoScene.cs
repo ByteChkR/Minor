@@ -98,9 +98,7 @@ namespace GameEngine.scenes
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
             
-            bgBox.Meshes[0].Textures = new[] { TextureProvider.Load("textures/ground4k.png") };
-            sphere.Meshes[0].Textures = new[] { TextureProvider.Load("textures/runicfloor.png") };
-            plane.Meshes[0].Textures = new[] { TextureProvider.Load("textures/runicfloor.png") };
+            bgBox.SetTextureBuffer(0,  new[] { TextureProvider.Load("textures/ground4k.png") });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>

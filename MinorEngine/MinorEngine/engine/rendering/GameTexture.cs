@@ -65,11 +65,13 @@ namespace GameEngine.engine.rendering
             GameTexture ret = new GameTexture();
 
             
-            
+            byte[] buffer = new byte[width*height*4];
+
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba,
-                width, height, 0, TKPixelFormat.Bgra,
-                PixelType.UnsignedByte, IntPtr.Zero);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            
+            DefaultTexParameter();
+
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
             if (cache)
@@ -189,7 +191,7 @@ namespace GameEngine.engine.rendering
 
             GameTexture ret = new GameTexture();
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, TKPixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
             bmp.UnlockBits(data);
 
 
@@ -204,8 +206,13 @@ namespace GameEngine.engine.rendering
 
         public static void Update(GameTexture tex, byte[] buffer, int width, int height)
         {
+
+
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
             GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, width, height, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            
 
         }
 
