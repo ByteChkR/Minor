@@ -37,7 +37,7 @@ namespace GameEngine.engine.core
         public EngineSettings Settings { get; }
         public static SceneRunner Instance { get; private set; }
         private AbstractScene currentScene;
-        internal World World { get; private set; }
+        public World World { get; private set; }
         public int Width => Window.Width;
         public int Height => Window.Height;
         private bool _changeScene;
@@ -133,11 +133,16 @@ namespace GameEngine.engine.core
         protected virtual void Update(object sender, FrameEventArgs e)
         {
 
+
             currentScene?.Update((float)e.Time);
+            World?.Update((float)e.Time);
+            Physics.Update((float)e.Time);
 
             if (_changeScene)
             {
                 _changeScene = false;
+
+                World?.Destroy();
                 currentScene?.Destroy();
                 currentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
                 World = new World();
@@ -170,35 +175,28 @@ namespace GameEngine.engine.core
 
     public abstract class AbstractScene
     {
-        protected World World { get; private set; }
 
         internal void _initializeScene(World world)
         {
-            World = world;
             InitializeScene();
-        }
-        protected abstract void InitializeScene();
-
-        public virtual void OnDestroy()
-        {
-            //
         }
 
         public void Destroy()
         {
-            World.Destroy();
             OnDestroy();
         }
 
 
+        protected abstract void InitializeScene();
+
+        public virtual void OnDestroy()
+        {
+
+        }
+
         public virtual void Update(float deltaTime)
         {
-            Physics.Update(deltaTime);
-            World.Update(deltaTime);
-
-
-
-            //TODO: Decide on how to Update the components
+            
         }
     }
 

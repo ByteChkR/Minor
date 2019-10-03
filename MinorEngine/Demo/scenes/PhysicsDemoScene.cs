@@ -52,8 +52,8 @@ namespace Demo.scenes
             }
 
             Vector3 pos = new Vector3(x, y, z);
-            World.Camera.Translate(pos);
-            pos = World.Camera.GetLocalPosition();
+            SceneRunner.Instance.World.Camera.Translate(pos);
+            pos = SceneRunner.Instance.World.Camera.GetLocalPosition();
             return "New Position: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
@@ -86,7 +86,7 @@ namespace Demo.scenes
             }
 
             Vector3 pos = new Vector3(x, y, z);
-            World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
+            SceneRunner.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
 
             return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
@@ -118,25 +118,25 @@ namespace Demo.scenes
 
             PhysicsDemoComponent phys = new PhysicsDemoComponent();
 
-            World.AddComponent(phys); //Adding Physics Component to world.
+            SceneRunner.Instance.World.AddComponent(phys); //Adding Physics Component to world.
 
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
-            World.Add(dbg.Owner);
+            SceneRunner.Instance.World.Add(dbg.Owner);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            World.Add(bgObj);
+            SceneRunner.Instance.World.Add(bgObj);
 
             Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 10, 10));
-            World.Add(c);
-            World.SetCamera(c);
+            SceneRunner.Instance.World.Add(c);
+            SceneRunner.Instance.World.SetCamera(c);
 
 
         }
