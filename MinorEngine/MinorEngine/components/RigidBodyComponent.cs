@@ -13,7 +13,7 @@ namespace MinorEngine.components
         public RigidBodyComponent(AbstractDynamicCollider dynamicCollider)
         {
             Collider = dynamicCollider;
-            Constraints = new RigidBodyConstraints {FixRotation = true};
+            Constraints = new RigidBodyConstraints { FixRotation = true };
         }
 
         protected override void Update(float deltaTime)
@@ -25,6 +25,17 @@ namespace MinorEngine.components
             Owner.SetLocalPosition(new Vector3(Collider.BodyReference.Pose.Position.X,
                 Collider.BodyReference.Pose.Position.Y, Collider.BodyReference.Pose.Position.Z));
             Owner.SetRotation(bref.Pose.Orientation);
+        }
+
+        public void SetVelocityLinear(Vector3 newVelocity)
+        {
+            Collider.BodyReference.Velocity.Linear = new System.Numerics.Vector3(newVelocity.X, newVelocity.Y, newVelocity.Z);
+        }
+
+        public void SetVelocityAngular(Vector3 newVelocity)
+        {
+            Collider.BodyReference.Velocity.Angular = new System.Numerics.Vector3(newVelocity.X, newVelocity.Y,
+                newVelocity.Z);
         }
     }
 }
