@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Text;
 using Common;
-using GameEngine.engine.rendering;
-using GameEngine.engine.ui.utils;
+using MinorEngine.engine.rendering;
+using MinorEngine.engine.ui.utils;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public static class TextureProvider
     {

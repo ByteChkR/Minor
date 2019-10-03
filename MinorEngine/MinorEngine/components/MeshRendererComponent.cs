@@ -1,9 +1,9 @@
 ﻿using Assimp;
-using GameEngine.engine.components;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.components;
+using MinorEngine.engine.rendering;
 using OpenTK;
 
-namespace GameEngine.components
+namespace MinorEngine.components
 {
     public class MeshRendererComponent : AbstractComponent, IRenderingComponent
     {

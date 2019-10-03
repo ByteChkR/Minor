@@ -3,12 +3,12 @@ using System.Linq.Expressions;
 using BepuPhysics;
 using BepuPhysics.Collidables;
 using BepuUtilities.Memory;
-using GameEngine.engine.physics;
-using GameEngine.engine.components;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.physics;
+using MinorEngine.engine.components;
+using MinorEngine.engine.rendering;
 using OpenTK;
 
-namespace GameEngine.components
+namespace MinorEngine.components
 {
     public class MeshColliderComponent : AbstractComponent, IColliderComponent
     {

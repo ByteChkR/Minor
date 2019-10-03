@@ -1,11 +1,11 @@
 ﻿using System;
 using Common;
-using GameEngine.engine.core;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class RenderTarget : IComparable<RenderTarget>, IDestroyable 
     {
@@ -18,7 +18,7 @@ namespace GameEngine.engine.rendering
         public int DepthBuffer { get; }
         internal ICamera PassCamera { get; }
 
-        public Rectangle ViewPort { get; set; } = new Rectangle(0,0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+        public Rectangle ViewPort { get; set; } = new Rectangle(0,0, GameEngine.Instance.Width, GameEngine.Instance.Height);
         
 
 
@@ -36,7 +36,7 @@ namespace GameEngine.engine.rendering
             RenderedTexture = GL.GenTexture();
             GL.BindTexture(TextureTarget.Texture2D, RenderedTexture);
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba16,
-                SceneRunner.Instance.Width, SceneRunner.Instance.Height, 0, PixelFormat.Bgra,
+                GameEngine.Instance.Width, GameEngine.Instance.Height, 0, PixelFormat.Bgra,
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
@@ -55,7 +55,7 @@ namespace GameEngine.engine.rendering
                 DepthBuffer = GL.GenRenderbuffer();
                 GL.BindRenderbuffer(RenderbufferTarget.Renderbuffer, DepthBuffer);
                 GL.RenderbufferStorage(RenderbufferTarget.Renderbuffer, RenderbufferStorage.DepthComponent,
-                    SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+                    GameEngine.Instance.Width, GameEngine.Instance.Height);
                 GL.FramebufferRenderbuffer(FramebufferTarget.Framebuffer, FramebufferAttachment.DepthAttachment,
                     RenderbufferTarget.Renderbuffer, DepthBuffer);
 

@@ -6,14 +6,14 @@ using System.Runtime.InteropServices;
 using Assimp;
 using CLHelperLibrary;
 using Common;
-using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
 using TKPixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using SYSPixelFormat = System.Drawing.Imaging.PixelFormat;
 using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class GameTexture: IDestroyable
     {

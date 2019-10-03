@@ -10,15 +10,15 @@ using System.Reflection.Metadata;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography.X509Certificates;
 using Common;
-using GameEngine.engine.core;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
 using Bitmap = System.Drawing.Bitmap;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
-namespace GameEngine.engine.ui
+namespace MinorEngine.engine.ui
 {
 
     public class Character
@@ -65,8 +65,8 @@ namespace GameEngine.engine.ui
 
             if (Shader != null)
             {
-                int scrW = SceneRunner.Instance.Width;
-                int scrH = SceneRunner.Instance.Height;
+                int scrW = GameEngine.Instance.Width;
+                int scrH = GameEngine.Instance.Height;
 
                 GL.Enable(EnableCap.Blend);
                 GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);

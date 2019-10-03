@@ -1,7 +1,7 @@
-﻿using GameEngine.engine.core;
+﻿using MinorEngine.engine.core;
 using OpenTK;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public interface ICamera
     {

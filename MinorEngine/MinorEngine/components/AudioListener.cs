@@ -1,8 +1,8 @@
-﻿using GameEngine.engine.components;
+﻿using MinorEngine.engine.components;
 using OpenTK;
 using OpenTK.Audio.OpenAL;
 
-namespace GameEngine.engine.audio
+namespace MinorEngine.engine.audio
 {
     public class AudioListener : AbstractComponent
     {

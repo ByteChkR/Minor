@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using GameEngine.components;
+using MinorEngine.components;
 using Demo.components;
-using GameEngine.engine.core;
-using GameEngine.engine.rendering;
-using GameEngine.engine.ui.utils;
+using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
+using MinorEngine.engine.ui.utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -15,12 +15,12 @@ namespace Demo.scenes
 
         private string cmd_ReLoadScene(string[] args)
         {
-            SceneRunner.Instance.InitializeScene<FLDemoScene>();
+            GameEngine.Instance.InitializeScene<FLDemoScene>();
             return "Reloaded";
         }
         private string cmd_NextScene(string[] args)
         {
-            SceneRunner.Instance.InitializeScene<AudioDemoScene>();
+            GameEngine.Instance.InitializeScene<AudioDemoScene>();
             return "Loading Audio Demo Scene";
         }
         private string cmd_ChangeCameraPos(string[] args)
@@ -48,8 +48,8 @@ namespace Demo.scenes
             }
 
             Vector3 pos = new Vector3(x, y, z);
-            SceneRunner.Instance.World.Camera.Translate(pos);
-            pos = SceneRunner.Instance.World.Camera.GetLocalPosition();
+            GameEngine.Instance.World.Camera.Translate(pos);
+            pos = GameEngine.Instance.World.Camera.GetLocalPosition();
             return "New Position: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
@@ -82,7 +82,7 @@ namespace Demo.scenes
             }
 
             Vector3 pos = new Vector3(x, y, z);
-            SceneRunner.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
+            GameEngine.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
 
             return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
@@ -126,55 +126,55 @@ namespace Demo.scenes
 
 
 
-            SceneRunner.Instance.World.Add(uiText);
+            GameEngine.Instance.World.Add(uiText);
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
-            SceneRunner.Instance.World.Add(dbg.Owner);
-            SceneRunner.Instance.World.Add(objSphere);
-            SceneRunner.Instance.World.Add(objQuad);
+            GameEngine.Instance.World.Add(dbg.Owner);
+            GameEngine.Instance.World.Add(objSphere);
+            GameEngine.Instance.World.Add(objQuad);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            SceneRunner.Instance.World.Add(bgObj);
+            GameEngine.Instance.World.Add(bgObj);
 
             
 
 
 
-            Camera mainCamera = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+            Camera mainCamera = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             mainCamera.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             mainCamera.Translate(new Vector3(0, 2, 2));
-            SceneRunner.Instance.World.Add(mainCamera);
-            SceneRunner.Instance.World.SetCamera(mainCamera);
+            GameEngine.Instance.World.Add(mainCamera);
+            GameEngine.Instance.World.SetCamera(mainCamera);
 
             GameObject camContainer = new GameObject("CamContainer");
 
-            Camera inPicCam = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+            Camera inPicCam = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             inPicCam.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(0));
             inPicCam.Translate(new Vector3(0, 2, 4));
             inPicCam.AddComponent(new RotateAroundComponent());
-            SceneRunner.Instance.World.Add(inPicCam);
+            GameEngine.Instance.World.Add(inPicCam);
 
 
             splitCam = new RenderTarget(inPicCam, 1, new Color(0,0,0,0))
             {
                 MergeType = ScreenRenderer.MergeType.Additive,
-                ViewPort = new Rectangle(0, 0, (int)(SceneRunner.Instance.Width * 0.3f),
-                    (int)(SceneRunner.Instance.Height * 0.3f))
+                ViewPort = new Rectangle(0, 0, (int)(GameEngine.Instance.Width * 0.3f),
+                    (int)(GameEngine.Instance.Height * 0.3f))
             };
 
-            SceneRunner.Instance.World.Add(camContainer);
-            SceneRunner.Instance.AddRenderTarget(splitCam);
+            GameEngine.Instance.World.Add(camContainer);
+            GameEngine.Instance.AddRenderTarget(splitCam);
 
         }
 
         public override void OnDestroy()
         {
-            SceneRunner.Instance.RemoveRenderTarget(splitCam);
+            GameEngine.Instance.RemoveRenderTarget(splitCam);
             //splitCam.Destroy();
         }
     }

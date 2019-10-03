@@ -2,14 +2,14 @@
 using CLHelperLibrary;
 using CLHelperLibrary.CLStructs;
 using FilterLanguage;
-using GameEngine.engine.components;
-using GameEngine.engine.core;
-using GameEngine.engine.rendering;
-using GameEngine.engine.ui.utils;
+using MinorEngine.engine.components;
+using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
+using MinorEngine.engine.ui.utils;
 using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.components
+namespace MinorEngine.components
 {
     public class FLGeneratorComponent : AbstractComponent
     {

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Assimp;
 using Common;
-using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     [StructLayout(LayoutKind.Explicit)]
     public struct GameVertex:IEquatable<GameVertex>

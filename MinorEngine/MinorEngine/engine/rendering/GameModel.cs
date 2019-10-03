@@ -5,11 +5,11 @@ using System.Linq;
 using Assimp;
 using Assimp.Configs;
 using Common;
-using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class GameModel : IDestroyable
     {
@@ -125,7 +125,7 @@ namespace GameEngine.engine.rendering
             List<GameTexture> textures = new List<GameTexture>();
 
 
-            this.Log("Converting Imported Mesh File Structure to SceneRunner Engine Structure", DebugChannel.Log);
+            this.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log);
 
 
             this.Log("Copying Vertex Data...", DebugChannel.Log);

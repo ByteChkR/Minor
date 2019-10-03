@@ -1,6 +1,6 @@
 ﻿using System;
 using Demo.scenes;
-using GameEngine.engine.core;
+using MinorEngine.engine;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -30,7 +30,7 @@ namespace Demo
 #endif
             };
 
-            GameEngine.engine.core.SceneRunner engine = new GameEngine.engine.core.SceneRunner(es);
+            MinorEngine.engine.core.GameEngine engine = new MinorEngine.engine.core.GameEngine(es);
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();

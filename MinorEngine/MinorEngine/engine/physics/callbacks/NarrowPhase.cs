@@ -4,9 +4,10 @@ using BepuPhysics.Collidables;
 using BepuPhysics.CollisionDetection;
 using BepuPhysics.Constraints;
 using BepuUtilities.Memory;
-using GameEngine.engine.physics;
+using MinorEngine.engine.physics;
+using MinorEngine.components;
 
-namespace GameEngine.engine.physics.callbacks
+namespace MinorEngine.engine.physics.callbacks
 {
     //The simulation has a variety of extension points that must be defined. 
     //The demos tend to reuse a few types like the DemoNarrowPhaseCallbacks, but this demo will provide its own (super simple) versions.
@@ -21,7 +22,8 @@ namespace GameEngine.engine.physics.callbacks
         /// <param name="simulation">Simulation that owns these callbacks.</param>
         public void Initialize(Simulation simulation)
         {
-            Physics.CollisionFilters=new BodyProperty<Layer>(simulation.Bodies, new BufferPool());
+            Physics.CollisionFilters = new BodyProperty<Layer>(simulation.Bodies, new BufferPool());
+            Physics.PhysicsMaterials = new BodyProperty<PhysicsMaterial>(simulation.Bodies, new BufferPool());
             //Often, the callbacks type is created before the simulation instance is fully constructed, so the simulation will call this function when it's ready.
             //Any logic which depends on the simulation existing can be put here.
         }
@@ -63,15 +65,30 @@ namespace GameEngine.engine.physics.callbacks
             return true;
         }
 
+
+
+        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
+        //void ConfigureMaterial(out PairMaterialProperties pairMaterial)
+        //{
+        //    //The engine does not define any per-body material properties. Instead, all material lookup and blending operations are handled by the callbacks.
+        //    //For the purposes of this demo, we'll use the same settings for all pairs.
+        //    //(Note that there's no bounciness property! See here for more details: https://github.com/bepu/bepuphysics2/issues/3)
+        //    pairMaterial.FrictionCoefficient = 1f;
+        //    pairMaterial.MaximumRecoveryVelocity = 2f;
+        //    pairMaterial.SpringSettings = new SpringSettings(30, 1f);
+        //}
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void ConfigureMaterial(out PairMaterialProperties pairMaterial)
+        void CreateMaterial(CollidablePair pair, out PairMaterialProperties pairMaterial)
         {
-            //The engine does not define any per-body material properties. Instead, all material lookup and blending operations are handled by the callbacks.
-            //For the purposes of this demo, we'll use the same settings for all pairs.
-            //(Note that there's no bounciness property! See here for more details: https://github.com/bepu/bepuphysics2/issues/3)
-            pairMaterial.FrictionCoefficient = 1f;
-            pairMaterial.MaximumRecoveryVelocity = 2f;
-            pairMaterial.SpringSettings = new SpringSettings(30, 1f);
+            pairMaterial.FrictionCoefficient = Physics.PhysicsMaterials[pair.A.Handle].FrictionCoeff;
+            if (pair.B.Mobility != CollidableMobility.Static)
+            {
+                //If two bodies collide, just average the friction.
+                pairMaterial.FrictionCoefficient = (pairMaterial.FrictionCoefficient + Physics.PhysicsMaterials[pair.B.Handle].FrictionCoeff) * 0.5f;
+            }
+            pairMaterial.MaximumRecoveryVelocity = Physics.PhysicsMaterials[pair.B.Handle].MaxRecoverVelocity;
+            pairMaterial.SpringSettings = new SpringSettings(Physics.PhysicsMaterials[pair.A.Handle].SpringFreq, 1);
         }
 
         //Note that there is a unique callback for convex versus nonconvex types. There is no fundamental difference here- it's just a matter of convenience
@@ -88,7 +105,7 @@ namespace GameEngine.engine.physics.callbacks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, NonconvexContactManifold* manifold, out PairMaterialProperties pairMaterial)
         {
-            ConfigureMaterial(out pairMaterial);
+            CreateMaterial(pair, out pairMaterial);
             return true;
         }
 
@@ -103,7 +120,7 @@ namespace GameEngine.engine.physics.callbacks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, ConvexContactManifold* manifold, out PairMaterialProperties pairMaterial)
         {
-            ConfigureMaterial(out pairMaterial);
+            CreateMaterial(pair, out pairMaterial);
             return true;
         }
 

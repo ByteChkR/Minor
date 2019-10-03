@@ -4,29 +4,29 @@ using System.Drawing.Drawing2D;
 using System.Reflection.Metadata.Ecma335;
 using Assimp;
 using Common;
-using GameEngine.components;
-using GameEngine.engine.components;
-using GameEngine.engine.rendering;
-using GameEngine.engine.core;
+using MinorEngine.components;
+using MinorEngine.engine.components;
+using MinorEngine.engine.rendering;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Input;
 using Quaternion = BepuUtilities.Quaternion;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public class GameObject : IDestroyable
     {
         internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            SceneRunner.Instance.World.OnKeyDown(sender, e);
+            GameEngine.Instance.World.OnKeyDown(sender, e);
         }
         internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            SceneRunner.Instance.World.OnKeyUp(sender, e);
+            GameEngine.Instance.World.OnKeyUp(sender, e);
         }
         internal static void _KeyPress(object sender, KeyPressEventArgs e)
         {
-            SceneRunner.Instance.World.OnKeyPress(sender, e);
+            GameEngine.Instance.World.OnKeyPress(sender, e);
         }
 
         internal static List<GameObject> ObjsWithAttachedRenderers = new List<GameObject>();

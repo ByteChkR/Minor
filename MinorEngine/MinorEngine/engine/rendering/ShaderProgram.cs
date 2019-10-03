@@ -2,10 +2,10 @@
 using System.IO;
 using System.Linq;
 using Common;
-using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class ShaderProgram: IDestroyable
     {

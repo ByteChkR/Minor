@@ -3,7 +3,7 @@ using BepuPhysics.CollisionDetection.CollisionTasks;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
 
-namespace GameEngine.engine.ui
+namespace MinorEngine.engine.ui
 {
     public class GameFont
     {

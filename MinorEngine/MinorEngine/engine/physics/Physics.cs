@@ -7,13 +7,13 @@ using BepuPhysics.Collidables;
 using BepuPhysics.CollisionDetection;
 using BepuUtilities;
 using BepuUtilities.Memory;
-using GameEngine.components;
-using GameEngine.engine.core;
-using GameEngine.engine.physics.callbacks;
-using NarrowPhase = GameEngine.engine.physics.callbacks.NarrowPhase;
+using MinorEngine.components;
+using MinorEngine.engine.core;
+using MinorEngine.engine.physics.callbacks;
+using NarrowPhase = MinorEngine.engine.physics.callbacks.NarrowPhase;
 using Quaternion = BepuUtilities.Quaternion;
 
-namespace GameEngine.engine.physics
+namespace MinorEngine.engine.physics
 {
     /// <summary>
     /// Shows a completely isolated usage of the engine without using any of the other demo types.
@@ -22,6 +22,7 @@ namespace GameEngine.engine.physics
     {
         private static Simulation _simulation;
         public static BodyProperty<Layer> CollisionFilters { get; set; }
+        public static BodyProperty<PhysicsMaterial> PhysicsMaterials { get; set; }
         public static List<Layer> LayerList { get; } = new List<Layer>();
         public static Vector3 Gravity { get; set; } = new Vector3(0, -10, 0);
         private static IThreadDispatcher ThreadDispatcher { get; set; }
@@ -32,7 +33,7 @@ namespace GameEngine.engine.physics
             //Note that you can also control the order of internal stage execution using a different ITimestepper implementation.
             //For the purposes of this demo, we just use the default by passing in nothing (which happens to be PositionFirstTimestepper at the time of writing).
             _simulation = Simulation.Create(bufferPool, new NarrowPhase(), new PoseIntegrator());
-            ThreadDispatcher = new ThreadDispatcher(SceneRunner.Instance.Settings.PhysicsThreadCount);
+            ThreadDispatcher = new ThreadDispatcher(GameEngine.Instance.Settings.PhysicsThreadCount);
         }
 
         
@@ -54,6 +55,11 @@ namespace GameEngine.engine.physics
 
 
             return _simulation.Bodies.GetBodyReference(handle);
+        }
+
+        public static void RemoveBody(BodyReference bref)
+        {
+            _simulation.Bodies.Remove(bref.Handle);
         }
 
         public static BodyReference AddMeshDynamic(float mass, Vector3 position, Mesh mesh)

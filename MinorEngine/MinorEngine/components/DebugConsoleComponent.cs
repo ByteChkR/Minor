@@ -5,21 +5,21 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using GameEngine.engine.components;
-using GameEngine.engine.core;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.components;
+using MinorEngine.engine.core;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace GameEngine.engine.ui.utils
+namespace MinorEngine.engine.ui.utils
 {
     public class DebugConsoleComponent : AbstractComponent
     {
 
-        private static int MaxConsoleLines => (SceneRunner.Instance.Height-100)/30;
+        private static int MaxConsoleLines => (GameEngine.Instance.Height-100)/30;
         private const string HelpText = "Press C to Open the FL Console";
-        private const string ConsoleTitle = "SceneRunner Console:";
+        private const string ConsoleTitle = "GameEngine Console:";
         private UITextRendererComponent _title;
         private UITextRendererComponent _consoleInput;
         private UITextRendererComponent _consoleOutput;
@@ -64,7 +64,7 @@ namespace GameEngine.engine.ui.utils
             {
                 Position = new Vector2(-0.46f, 0.46f),
                 Scale = new Vector2(2f, 2f),
-                Text = "SceneRunner Console:"
+                Text = "GameEngine Console:"
             };
 
             UITextRendererComponent _tIn = new UITextRendererComponent("Arial", textShader)

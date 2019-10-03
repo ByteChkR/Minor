@@ -1,5 +1,5 @@
-﻿using GameEngine.engine.components;
-using GameEngine.engine.core;
+﻿using MinorEngine.engine.components;
+using MinorEngine.engine.core;
 
 namespace Demo.components
 {

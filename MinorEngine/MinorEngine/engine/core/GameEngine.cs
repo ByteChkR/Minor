@@ -1,41 +1,22 @@
 ﻿using System;
 using System.Reflection;
-using Assimp;
 using Common;
-using GameEngine.engine.audio;
-using GameEngine.engine.physics;
-using GameEngine.engine.ui;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.audio;
+using MinorEngine.engine.physics;
+using MinorEngine.engine.rendering;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
-    public class EngineSettings
-    {
-        public GraphicsMode Mode { get; set; }
-        public int InitWidth { get; set; }
-        public int InitHeight { get; set; }
-        public int PhysicsThreadCount { get; set; } = 1;
-        public string Title { get; set; }
+   
 
-        public bool DebugNetwork { get; set; }
-        public int NetworkMask { get; set; } = -1;
-        public int ProgramID { get; set; }
-        public Version ProgramVersion { get; set; }
-
-        public VSyncMode VSync { get; set; } = VSyncMode.Off;
-        public GameWindowFlags WindowFlags { get; set; }
-    }
-
-    public class SceneRunner
+    public class GameEngine
     {
         private GameWindow Window;
         protected Renderer Renderer;
         public EngineSettings Settings { get; }
-        public static SceneRunner Instance { get; private set; }
+        public static GameEngine Instance { get; private set; }
         private AbstractScene currentScene;
         public World World { get; private set; }
         public int Width => Window.Width;
@@ -43,7 +24,7 @@ namespace GameEngine.engine.core
         private bool _changeScene;
         private Type _nextScene;
 
-        public SceneRunner(EngineSettings settings)
+        public GameEngine(EngineSettings settings)
         {
             Instance = this;
             Settings = settings;
@@ -125,7 +106,7 @@ namespace GameEngine.engine.core
 
         public void Run()
         {
-            this.Log("Running SceneRunner Loop..", DebugChannel.Log);
+            this.Log("Running GameEngine Loop..", DebugChannel.Log);
             Window.VSync = VSyncMode.Off;
             Window.Run(0, 0);
         }
@@ -173,32 +154,6 @@ namespace GameEngine.engine.core
 
     }
 
-    public abstract class AbstractScene
-    {
-
-        internal void _initializeScene(World world)
-        {
-            InitializeScene();
-        }
-
-        public void Destroy()
-        {
-            OnDestroy();
-        }
-
-
-        protected abstract void InitializeScene();
-
-        public virtual void OnDestroy()
-        {
-
-        }
-
-        public virtual void Update(float deltaTime)
-        {
-            
-        }
-    }
 
     //public class AbstractGame
     //{
@@ -287,7 +242,7 @@ namespace GameEngine.engine.core
 
     //    public void Run()
     //    {
-    //        this.Log("Running SceneRunner Loop..", DebugChannel.Log);
+    //        this.Log("Running GameEngine Loop..", DebugChannel.Log);
     //        Window.VSync = VSyncMode.Off;
     //        Window.Run(0, 0);
     //    }

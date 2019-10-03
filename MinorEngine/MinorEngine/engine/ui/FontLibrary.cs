@@ -4,12 +4,12 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
-namespace GameEngine.engine.ui
+namespace MinorEngine.engine.ui
 {
     public class FontLibrary
     {

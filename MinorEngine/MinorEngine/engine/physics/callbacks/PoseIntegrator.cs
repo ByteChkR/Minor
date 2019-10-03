@@ -1,9 +1,9 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using BepuPhysics;
-using GameEngine.engine.physics;
+using MinorEngine.engine.physics;
 
-namespace GameEngine.engine.physics.callbacks
+namespace MinorEngine.engine.physics.callbacks
 {
     //Note that the engine does not require any particular form of gravity- it, like all the contact callbacks, is managed by a callback.
     public struct PoseIntegrator : IPoseIntegratorCallbacks

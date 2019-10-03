@@ -1,5 +1,5 @@
 ﻿using System;
-using GameEngine.engine.components;
+using MinorEngine.engine.components;
 using OpenTK;
 
 namespace Demo.components

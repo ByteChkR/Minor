@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using Common;
 using Common.Exceptions;
-using GameEngine.engine.audio.formats;
+using MinorEngine.engine.audio.formats;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 
-namespace GameEngine.engine.audio
+namespace MinorEngine.engine.audio
 {
     public static class AudioManager
     {

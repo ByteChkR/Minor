@@ -1,9 +1,9 @@
 ﻿using Common;
-using GameEngine.engine.core;
+using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Input;
 
-namespace GameEngine.engine.components
+namespace MinorEngine.engine.components
 {
     public abstract class AbstractComponent :IDestroyable
     {

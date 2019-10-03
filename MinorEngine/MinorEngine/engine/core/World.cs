@@ -1,9 +1,9 @@
 ﻿using System;
 using Common;
-using GameEngine.engine.rendering;
+using MinorEngine.engine.rendering;
 using OpenTK;
 
-namespace GameEngine.engine.core
+namespace MinorEngine.engine.core
 {
     public class World : GameObject
     {

@@ -1,16 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Common;
-using GameEngine.engine.rendering;
-using GameEngine.components;
-using GameEngine.engine.core;
+using MinorEngine.components;
 using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public class Renderer
     {
@@ -92,8 +87,8 @@ namespace GameEngine.engine.rendering
                     Render(target.PassMask, world, world.Camera);
                 }
 
-                GL.Viewport(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
-                //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+                GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+                //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
                 
             }
             //GL.Disable(EnableCap.ScissorTest);

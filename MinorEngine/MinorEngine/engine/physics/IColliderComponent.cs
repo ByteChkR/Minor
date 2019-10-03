@@ -1,6 +1,6 @@
 ﻿using BepuPhysics;
 
-namespace GameEngine.engine.physics
+namespace MinorEngine.engine.physics
 {
     public interface IColliderComponent
     {

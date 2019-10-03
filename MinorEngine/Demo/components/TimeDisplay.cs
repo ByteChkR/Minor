@@ -1,6 +1,6 @@
 ﻿using System;
-using GameEngine.engine.ui;
-using GameEngine.engine.components;
+using MinorEngine.engine.ui;
+using MinorEngine.engine.components;
 
 namespace Demo.components
 {

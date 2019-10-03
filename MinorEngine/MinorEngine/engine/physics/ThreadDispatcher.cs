@@ -3,7 +3,7 @@ using System.Threading;
 using BepuUtilities;
 using BepuUtilities.Memory;
 
-namespace GameEngine.engine.physics
+namespace MinorEngine.engine.physics
 {
     public class ThreadDispatcher : IThreadDispatcher, IDisposable
     {

@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "GameEngine": {
+    "MinorEngine.: {
       "commandName": "Project",
       "workingDirectory": "assets"
     }

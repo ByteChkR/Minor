@@ -1,10 +1,10 @@
-﻿using GameEngine.components;
-using GameEngine.engine.components;
-using GameEngine.engine.rendering;
+﻿using MinorEngine.components;
+using MinorEngine.engine.components;
+using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.ui
+namespace MinorEngine.engine.ui
 {
     public class UIRendererComponent : AbstractComponent, IRenderingComponent
     {

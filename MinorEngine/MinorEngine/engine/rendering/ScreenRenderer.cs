@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.engine.rendering
+namespace MinorEngine.engine.rendering
 {
     public static class ScreenRenderer
     {
@@ -138,8 +138,8 @@ namespace GameEngine.engine.rendering
 
                 GL.BindVertexArray(_screenVAO);
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-                //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
-                //GL.Viewport(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+                //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+                //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
 
 
 
@@ -167,7 +167,7 @@ namespace GameEngine.engine.rendering
             GL.Uniform1(_screenShader.GetUniformLocation("sourceTexture"), 0);
             GL.BindTexture(TextureTarget.Texture2D, GetTarget().RenderedTexture);
 
-            //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+            //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
 
 
             //GL.ActiveTexture(TextureUnit.Texture1);
@@ -176,8 +176,8 @@ namespace GameEngine.engine.rendering
 
             GL.BindVertexArray(_screenVAO);
 
-           //GL.Viewport(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
-            //GL.Scissor(0, 0, SceneRunner.Instance.Width, SceneRunner.Instance.Height);
+           //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+            //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
             GL.BindVertexArray(0);

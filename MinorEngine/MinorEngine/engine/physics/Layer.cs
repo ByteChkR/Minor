@@ -1,6 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace GameEngine.engine.physics
+namespace MinorEngine.engine.physics
 {
     /// <summary>
     /// Bit masks which control whether different members of a group of objects can collide with each other.
