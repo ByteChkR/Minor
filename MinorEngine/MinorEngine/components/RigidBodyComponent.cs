@@ -8,12 +8,13 @@ namespace MinorEngine.components
     public class RigidBodyComponent : AbstractComponent
     {
         private AbstractDynamicCollider Collider { get; }
-        private RigidBodyConstraints Constraints { get; }
-
-        public RigidBodyComponent(AbstractDynamicCollider dynamicCollider)
+        public RigidBodyConstraints Constraints { get; }
+        public RigidBodyComponent(AbstractDynamicCollider dynamicCollider):this(dynamicCollider, new RigidBodyConstraints())
+        { }
+        public RigidBodyComponent(AbstractDynamicCollider dynamicCollider, RigidBodyConstraints constraints)
         {
             Collider = dynamicCollider;
-            Constraints = new RigidBodyConstraints { FixRotation = true };
+            Constraints = constraints;
         }
 
         protected override void Update(float deltaTime)

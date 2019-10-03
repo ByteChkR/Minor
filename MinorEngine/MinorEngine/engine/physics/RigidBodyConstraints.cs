@@ -12,22 +12,6 @@ namespace MinorEngine.engine.physics
         {
             if (constraints.FixRotation) current.InverseInertiaTensor = new Symmetric3x3();
             return current;
-            //System.Numerics.Vector3 angular = bin.Angular;
-            //if ((constraints.RotationConstraints & FreezeConstraints.X) != 0)
-            //{
-            //    angular.X = 0;
-            //}
-            //else if ((constraints.RotationConstraints & FreezeConstraints.Y) != 0)
-            //{
-            //    angular.Y = 0;
-            //}
-            //else if ((constraints.RotationConstraints & FreezeConstraints.Z) != 0)
-            //{
-            //    angular.Z = 0;
-            //}
-
-            //bin.Angular = angular;
-            //return bin;
         }
 
         public static BodyVelocity ComputeTranslationFreeze(RigidBodyConstraints constraints, BodyVelocity bin)
