@@ -290,6 +290,18 @@ namespace MinorEngine.BEPUutilities
             Y *= inverse;
         }
 
+
+        public static implicit operator Vector2(OpenTK.Vector2 vec)
+        {
+            return new Vector2(vec.X, vec.Y);
+        }
+
+        public static implicit operator OpenTK.Vector2(Vector2 vec)
+        {
+            return new OpenTK.Vector2(vec.X, vec.Y);
+        }
+
+
         /// <summary>
         /// Scales a vector.
         /// </summary>

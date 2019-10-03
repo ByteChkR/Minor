@@ -403,6 +403,17 @@ namespace MinorEngine.BEPUutilities
 
         }
 
+        public static implicit operator Quaternion(OpenTK.Quaternion vec)
+        {
+            return new Quaternion(vec.X, vec.Y, vec.Z, vec.W);
+        }
+
+        public static implicit operator OpenTK.Quaternion(Quaternion vec)
+        {
+            return new OpenTK.Quaternion(vec.X, vec.Y, vec.Z, vec.W);
+        }
+
+
         /// <summary>
         /// Tests components for equality.
         /// </summary>

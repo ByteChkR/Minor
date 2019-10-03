@@ -179,6 +179,18 @@ namespace MinorEngine.BEPUutilities
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
         }
+
+
+        public static implicit operator Vector3(OpenTK.Vector3 vec)
+        {
+            return new Vector3(vec.X, vec.Y, vec.Z);
+        }
+
+        public static implicit operator OpenTK.Vector3(Vector3 vec)
+        {
+            return new OpenTK.Vector3(vec.X, vec.Y, vec.Z);
+        }
+
         /// <summary>
         /// Scales a vector.
         /// </summary>

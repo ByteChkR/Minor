@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Demo.components;
+using MinorEngine.BEPUphysics.Entities.Prefabs;
 using MinorEngine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
@@ -11,6 +12,9 @@ namespace Demo.scenes
 {
     public class PhysicsDemoScene : AbstractScene
     {
+        
+
+
         private string cmd_ReLoadScene(string[] args)
         {
             GameEngine.Instance.InitializeScene<PhysicsDemoScene>();
@@ -59,7 +63,7 @@ namespace Demo.scenes
             GameModel bgBox = new GameModel("models/cube_flat.obj");
 
             GameTexture bg = TextureProvider.Load("textures/ground4k.png");
-            bgBox.SetTextureBuffer(0, new[] {bg});
+            bgBox.SetTextureBuffer(0, new[] { bg });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -88,11 +92,13 @@ namespace Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
+            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 50, 1, 50)));
+
             GameEngine.Instance.World.Add(bgObj);
 
             Camera c = new Camera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                    GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                    GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 10, 10));
             GameEngine.Instance.World.Add(c);

@@ -59,7 +59,7 @@ namespace MinorEngine.engine.core
 
             AudioManager.Initialize();
 
-            //Physics.Init();
+            Physics.Initialize();
         }
 
         private void initializeWindow()
@@ -123,7 +123,7 @@ namespace MinorEngine.engine.core
         {
             currentScene?.Update((float) e.Time);
             World?.Update((float) e.Time);
-            //Physics.Update((float) e.Time);
+            Physics.Update((float) e.Time);
 
             if (_changeScene)
             {

@@ -331,6 +331,10 @@ namespace MinorEngine.engine.core
             return Transform.ExtractTranslation();
         }
 
+        public Quaternion GetOrientation()
+        {
+            return Transform.ExtractRotation();
+        }
         public void SetLocalPosition(Vector3 pos)
         {
             Matrix4 f = Transform;

@@ -359,6 +359,18 @@ namespace MinorEngine.BEPUutilities
             v.W = -v.W;
             return v;
         }
+
+
+        public static implicit operator Vector4(OpenTK.Vector4 vec)
+        {
+            return new Vector4(vec.X, vec.Y, vec.Z, vec.W);
+        }
+
+        public static implicit operator OpenTK.Vector4(Vector4 vec)
+        {
+            return new OpenTK.Vector4(vec.X, vec.Y, vec.Z, vec.W);
+        }
+
         /// <summary>
         /// Tests two vectors for componentwise equivalence.
         /// </summary>

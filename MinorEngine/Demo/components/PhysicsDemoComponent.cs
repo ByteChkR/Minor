@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MinorEngine.BEPUphysics.Entities.Prefabs;
 using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;
@@ -14,10 +15,9 @@ namespace Demo.components
     public class PhysicsDemoComponent : AbstractComponent
     {
         private static ShaderProgram _objShader;
-        private readonly GameModel Sphere = new GameModel("models/sphere_smooth.obj", false);
-        private readonly GameModel Box = new GameModel("models/cube_flat.obj", false);
-        private GameTexture unmanagedTexture;
 
+        GameModel Box = new GameModel("models/cube_flat.obj", false);
+        GameModel Sphere = new GameModel("models/sphere_smooth.obj", false);
         protected override void Awake()
         {
             //Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
@@ -26,22 +26,18 @@ namespace Demo.components
             DebugConsoleComponent comp = Owner.World.GetChildWithName("Console")
                 .GetComponent<DebugConsoleComponent>();
 
-
-            unmanagedTexture = GameTexture.Load("textures/TEST.png");
-
-            Box.SetTextureBuffer(0, new[] {unmanagedTexture});
-            Sphere.SetTextureBuffer(0, new[] {unmanagedTexture});
+            GameTexture tex = TextureProvider.Load("textures/TEST.png");
+            Box.SetTextureBuffer(0, new[] { tex });
+            Sphere.SetTextureBuffer(0, new[] { tex });
 
 
             comp?.AddCommand("rain", cmd_SpawnColliders);
             comp?.AddCommand("gravity", cmd_SetGravity);
+            comp?.AddCommand("reset", cmd_ResetCollider);
         }
 
         protected override void OnDestroy()
         {
-            unmanagedTexture.Destroy();
-            Box.Destroy();
-            Sphere.Destroy();
         }
 
         public static string cmd_SetGravity(string[] args)
@@ -56,7 +52,18 @@ namespace Demo.components
 
             return "Gravity Set to: "; // + Physics.Gravity;
         }
-
+        private List<GameObject> Collider = new List<GameObject>();
+        private string cmd_ResetCollider(string[] args)
+        {
+            int count = Collider.Count;
+            foreach (var gameObject in Collider)
+            {
+                gameObject.Destroy();
+            }
+            Collider.Clear();
+            string ret = "";
+            return ret + "\nReloaded " + count + " Colliders";
+        }
         public string cmd_SpawnColliders(string[] args)
         {
             if (args.Length != 1 || !int.TryParse(args[0], out int nmbrs)) return "Not a number.";
@@ -71,30 +78,30 @@ namespace Demo.components
             Random rnd = new Random();
             for (int i = 0; i < nmbrs; i++)
             {
-                Vector3 pos = new Vector3((float) rnd.NextDouble(), 3 + (float) rnd.NextDouble(),
-                    (float) rnd.NextDouble());
+                Vector3 pos = new Vector3((float)rnd.NextDouble(), 3 + (float)rnd.NextDouble(),
+                    (float)rnd.NextDouble());
                 pos -= Vector3.One * 0.5f;
                 pos *= 50;
 
+
                 GameObject obj = new GameObject(pos, "Sphere");
-                float radius = 0.3f + (float) rnd.NextDouble();
-                obj.Scale(new Vector3(radius));
+                float radius = 0.3f + (float)rnd.NextDouble();
+                obj.Scale(new Vector3(radius / 2));
                 if (rnd.Next(0, 2) == 1)
                 {
                     obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));
-                    AbstractDynamicCollider coll = new BoxCollider(new PhysicsMaterial(1) {DampRatio = 10},
-                        new System.Numerics.Vector3(radius), 1, 1);
-                    obj.AddComponent(new RigidBodyComponent(coll));
+
+
+                    Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1));
                     obj.AddComponent(coll);
                 }
                 else
                 {
                     obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
-                    AbstractDynamicCollider coll = new SphereCollider(new PhysicsMaterial(1), 1, 1, radius);
-                    obj.AddComponent(new RigidBodyComponent(coll));
+                    Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1));
                     obj.AddComponent(coll);
                 }
-
+                Collider.Add(obj);
                 Owner.World.Add(obj);
             }
 
