@@ -4,8 +4,8 @@ namespace MinorEngine.engine.physics
 {
     public struct RigidBodyConstraints
     {
-        public bool FixRotation;
         public FreezeConstraints PositionConstraints;
+        public FreezeConstraints RotationConstraints;
 
 
         //public static BodyInertia ComputeRotationFreeze(RigidBodyConstraints constraints, BodyInertia current)

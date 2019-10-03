@@ -8,3 +8,6 @@
 [submodule "ext-pp"]
 	path = ext-pp
 	url = https://github.com/ByteChkR/ext-pp
+[submodule "bepuphysics1"]
+	path = bepuphysics1
+	url = https://github.com/ByteChkR/bepuphysics1.git
