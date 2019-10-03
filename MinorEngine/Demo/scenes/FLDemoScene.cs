@@ -103,7 +103,7 @@ namespace Demo.scenes
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UITextRender.vs"},
+                {ShaderType.VertexShader, "shader/UIRender.vs"},
             }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>

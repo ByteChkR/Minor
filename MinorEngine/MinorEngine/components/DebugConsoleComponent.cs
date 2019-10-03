@@ -48,7 +48,7 @@ namespace GameEngine.engine.ui.utils
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UITextRender.vs"},
+                {ShaderType.VertexShader, "shader/UIRender.vs"},
             }, out ShaderProgram textShader);
 
             GameObject obj = new GameObject("Console");
