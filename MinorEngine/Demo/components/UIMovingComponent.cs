@@ -3,7 +3,7 @@ using GameEngine.engine.ui;
 using GameEngine.engine.components;
 using OpenTK;
 
-namespace GameEngine.components
+namespace Demo.components
 {
     public class UIMovingComponent : AbstractComponent
     {

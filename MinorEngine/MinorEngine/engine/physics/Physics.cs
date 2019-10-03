@@ -43,7 +43,7 @@ namespace GameEngine.engine.physics
             Layer.DisableCollision(ref thisLayer, ref otherLayer);
         }
 
-        internal static BodyReference AddBoxDynamic(float mass, Vector3 position, Vector3 dimensions)
+        public static BodyReference AddBoxDynamic(float mass, Vector3 position, Vector3 dimensions)
         {
             Box b = new Box(dimensions.X, dimensions.Y, dimensions.Z);
             b.ComputeInertia(1, out var boxIntertia);
@@ -56,7 +56,7 @@ namespace GameEngine.engine.physics
             return _simulation.Bodies.GetBodyReference(handle);
         }
 
-        internal static BodyReference AddMeshDynamic(float mass, Vector3 position, Mesh mesh)
+        public static BodyReference AddMeshDynamic(float mass, Vector3 position, Mesh mesh)
         {
             mesh.ComputeClosedInertia(mass, out var intertia);
             int handle = _simulation.Bodies.Add(
@@ -66,7 +66,8 @@ namespace GameEngine.engine.physics
             return _simulation.Bodies.GetBodyReference(handle);
         }
 
-        internal static void AddBoxStatic(Vector3 position, Vector3 dimensions, ushort layer, ushort collidable)
+        //TODO
+        public static void AddBoxStatic(Vector3 position, Vector3 dimensions, ushort layer, ushort collidable)
         {
             _simulation.Statics.Add(new StaticDescription(position,
                new CollidableDescription(_simulation.Shapes.Add(new Box(dimensions.X, dimensions.Y, dimensions.Z)),

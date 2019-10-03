@@ -9,8 +9,7 @@ namespace CLHelperLibrary.Tests
 {
     public class CLTests
     {
-#if NO_CL
-#else
+#if !TRAVIS_TEST
         [Fact]
         public void CL_CreateBuffer()
         {

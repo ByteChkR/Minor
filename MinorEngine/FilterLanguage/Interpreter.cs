@@ -873,8 +873,7 @@ namespace FilterLanguage
                     val = numberDecimal;
                 }
 
-#if NO_CL
-#else
+#if !TRAVIS_TEST
                 if (val == null)
                 {
                     throw new NotImplementedException("No Baked in functions in arguments");

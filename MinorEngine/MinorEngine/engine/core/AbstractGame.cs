@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reflection;
+using Assimp;
 using Common;
 using GameEngine.engine.audio;
 using GameEngine.engine.physics;
@@ -18,6 +20,12 @@ namespace GameEngine.engine.core
         public int InitHeight { get; set; }
         public int PhysicsThreadCount { get; set; } = 1;
         public string Title { get; set; }
+
+        public bool DebugNetwork { get; set; }
+        public int NetworkMask { get; set; } = -1;
+        public int ProgramID { get; set; }
+        public Version ProgramVersion { get; set; }
+
         public VSyncMode VSync { get; set; } = VSyncMode.Off;
         public GameWindowFlags WindowFlags { get; set; }
     }
@@ -29,7 +37,7 @@ namespace GameEngine.engine.core
         public EngineSettings Settings { get; }
         public static SceneRunner Instance { get; private set; }
         private AbstractScene currentScene;
-        internal World World => currentScene.World;
+        internal World World { get; private set; }
         public int Width => Window.Width;
         public int Height => Window.Height;
         private bool _changeScene;
@@ -39,6 +47,15 @@ namespace GameEngine.engine.core
         {
             Instance = this;
             Settings = settings;
+            if (Settings.DebugNetwork && Settings.ProgramID != -1)
+            {
+                if (Settings.ProgramVersion == null)
+                {
+                    Settings.ProgramVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                }
+                DebugHelper.SetDebugLoggingInformation(Settings.ProgramID, Settings.NetworkMask, Settings.ProgramVersion);
+            }
+
         }
 
         public void Initialize()
@@ -123,13 +140,14 @@ namespace GameEngine.engine.core
                 _changeScene = false;
                 currentScene?.Destroy();
                 currentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
-                currentScene._initializeScene();
+                World = new World();
+                currentScene._initializeScene(World);
             }
 
         }
 
 
-        
+
 
 
         private void OnResize(object o, System.EventArgs e)
@@ -142,7 +160,7 @@ namespace GameEngine.engine.core
         private void OnRender(object o, EventArgs e)
         {
 
-            Renderer.RenderAllTargets(currentScene.World);
+            Renderer.RenderAllTargets(World);
 
             Window.SwapBuffers();
 
@@ -152,11 +170,11 @@ namespace GameEngine.engine.core
 
     public abstract class AbstractScene
     {
-        internal World World { get; private set; }
+        protected World World { get; private set; }
 
-        internal void _initializeScene()
+        internal void _initializeScene(World world)
         {
-            World = new World();
+            World = world;
             InitializeScene();
         }
         protected abstract void InitializeScene();
@@ -184,126 +202,126 @@ namespace GameEngine.engine.core
         }
     }
 
-    public class AbstractGame1
-    {
-        public World World { get; set; }
-        protected Renderer Renderer;
-        protected GameWindow Window;
-        public EngineSettings Settings { get; private set; }
-        public static AbstractGame1 Instance { get; private set; }
-        public int Width => Window.Width;
-        public int Height => Window.Height;
-        public AbstractGame1(EngineSettings settings)
-        {
-            Instance = this;
+    //public class AbstractGame
+    //{
+    //    public World World { get; set; }
+    //    protected Renderer Renderer;
+    //    protected GameWindow Window;
+    //    public EngineSettings Settings { get; private set; }
+    //    public static AbstractGame Instance { get; private set; }
+    //    public int Width => Window.Width;
+    //    public int Height => Window.Height;
+    //    public AbstractGame(EngineSettings settings)
+    //    {
+    //        Instance = this;
 
-            this.Settings = settings;
-        }
+    //        this.Settings = settings;
+    //    }
 
-        ~AbstractGame1()
-        {
+    //    ~AbstractGame()
+    //    {
 
-        }
-
-
-
-        public void Initialize()
-        {
-            this.Log("Initialization started..", DebugChannel.Log);
-            initializeWindow();
-            initializeRenderer();
-
-            AudioManager.Initialize();
-
-            Physics.Init();
-
-            initializeWorld();
-            initializeScene();
-
-        }
-
-        private void initializeWindow()
-        {
-
-            this.Log("Initializing Window..", DebugChannel.Log);
-            this.Log(
-                $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}", DebugChannel.Log);
-            Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title, Settings.WindowFlags);
-
-            #region WindowHandles
-
-            Window.UpdateFrame += Update;
-            Window.Resize += OnResize;
-            Window.KeyDown += GameObject._KeyDown;
-            Window.KeyUp += GameObject._KeyUp;
-            Window.KeyPress += GameObject._KeyPress;
-
-            #endregion
-
-        }
+    //    }
 
 
 
-        private void initializeRenderer()
-        {
-            //TODO
+    //    public void Initialize()
+    //    {
+    //        this.Log("Initialization started..", DebugChannel.Log);
+    //        initializeWindow();
+    //        initializeRenderer();
 
-            this.Log("Initializing Renderer..", DebugChannel.Log);
-            Renderer = new Renderer();
-            Window.RenderFrame += OnRender;
-        }
-        private void initializeWorld()
-        {
+    //        AudioManager.Initialize();
 
-            this.Log("Initializing World..", DebugChannel.Log);
-            World = new World();
-            UIHelper.InitializeUI();
-        }
+    //        Physics.Init();
 
-        protected virtual void initializeScene()
-        {
+    //        initializeWorld();
+    //        initializeScene();
 
-            this.Log("Initializing Scene..", DebugChannel.Log);
-        }
+    //    }
 
+    //    private void initializeWindow()
+    //    {
 
+    //        this.Log("Initializing Window..", DebugChannel.Log);
+    //        this.Log(
+    //            $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}", DebugChannel.Log);
+    //        Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title, Settings.WindowFlags);
 
+    //        #region WindowHandles
 
-        public void Run()
-        {
-            this.Log("Running SceneRunner Loop..", DebugChannel.Log);
-            Window.VSync = VSyncMode.Off;
-            Window.Run(0, 0);
-        }
+    //        Window.UpdateFrame += Update;
+    //        Window.Resize += OnResize;
+    //        Window.KeyDown += GameObject._KeyDown;
+    //        Window.KeyUp += GameObject._KeyUp;
+    //        Window.KeyPress += GameObject._KeyPress;
 
-        protected virtual void Update(object sender, FrameEventArgs e)
-        {
+    //        #endregion
 
-            Physics.Update((float)e.Time);
-
-            World.Update((float)e.Time);
+    //    }
 
 
 
-            //TODO: Decide on how to Update the components
-        }
+    //    private void initializeRenderer()
+    //    {
+    //        //TODO
+
+    //        this.Log("Initializing Renderer..", DebugChannel.Log);
+    //        Renderer = new Renderer();
+    //        Window.RenderFrame += OnRender;
+    //    }
+    //    private void initializeWorld()
+    //    {
+
+    //        this.Log("Initializing World..", DebugChannel.Log);
+    //        World = new World();
+    //        UIHelper.InitializeUI();
+    //    }
+
+    //    protected virtual void initializeScene()
+    //    {
+
+    //        this.Log("Initializing Scene..", DebugChannel.Log);
+    //    }
 
 
-        private void OnResize(object o, System.EventArgs e)
-        {
-            GL.Viewport(0, 0, Window.Width, Window.Height);
-        }
+
+
+    //    public void Run()
+    //    {
+    //        this.Log("Running SceneRunner Loop..", DebugChannel.Log);
+    //        Window.VSync = VSyncMode.Off;
+    //        Window.Run(0, 0);
+    //    }
+
+    //    protected virtual void Update(object sender, FrameEventArgs e)
+    //    {
+
+    //        Physics.Update((float)e.Time);
+
+    //        World.Update((float)e.Time);
 
 
 
-        private void OnRender(object o, EventArgs e)
-        {
+    //        //TODO: Decide on how to Update the components
+    //    }
 
-            Renderer.RenderAllTargets(World);
 
-            Window.SwapBuffers();
+    //    private void OnResize(object o, System.EventArgs e)
+    //    {
+    //        GL.Viewport(0, 0, Window.Width, Window.Height);
+    //    }
 
-        }
 
-    }
+
+    //    private void OnRender(object o, EventArgs e)
+    //    {
+
+    //        Renderer.RenderAllTargets(World);
+
+    //        Window.SwapBuffers();
+
+    //    }
+
+    //}
 }

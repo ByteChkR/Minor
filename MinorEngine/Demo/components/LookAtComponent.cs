@@ -1,7 +1,7 @@
 ﻿using GameEngine.engine.components;
 using GameEngine.engine.core;
 
-namespace GameEngine.components
+namespace Demo.components
 {
     public class LookAtComponent :AbstractComponent
     {

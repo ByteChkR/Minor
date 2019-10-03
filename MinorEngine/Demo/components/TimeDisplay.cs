@@ -2,7 +2,7 @@
 using GameEngine.engine.ui;
 using GameEngine.engine.components;
 
-namespace GameEngine.components
+namespace Demo.components
 {
     public class TimeDisplay : AbstractComponent
     {

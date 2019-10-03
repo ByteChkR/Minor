@@ -1,13 +1,12 @@
 ﻿using System;
-using Common;
-using GameEngine.scenes;
+using Demo.scenes;
 using GameEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace GameEngine
+namespace Demo
 {
-    static class Program
+    class Program
     {
         static void Main(string[] args)
         {
@@ -20,10 +19,18 @@ namespace GameEngine
                 InitWidth = 1280,
                 InitHeight = 720,
                 Title = "Test",
-                PhysicsThreadCount = 4
+                PhysicsThreadCount = 4,
+                VSync = VSyncMode.Off,
+
+#if LOG_NETWORK
+                DebugNetwork = true,
+                NetworkMask = -1,
+                ProgramID = 1,
+                ProgramVersion = null, //We Want the debug system to take the engine assembly
+#endif
             };
 
-            engine.core.SceneRunner engine = new engine.core.SceneRunner(es);
+            GameEngine.engine.core.SceneRunner engine = new GameEngine.engine.core.SceneRunner(es);
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();

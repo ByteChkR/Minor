@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using GameEngine.components;
 using GameEngine.engine.audio.sources;
 using GameEngine.engine.components;
 using GameEngine.engine.core;
@@ -10,7 +11,7 @@ using GameEngine.engine.ui.utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.components.fldemo
+namespace Demo.components
 {
     public class PhysicsDemoComponent : AbstractComponent
     {

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameEngine.engine.rendering;
-using GameEngine.engine.core;
-using GameEngine.scenes.GameEngine.scenes;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

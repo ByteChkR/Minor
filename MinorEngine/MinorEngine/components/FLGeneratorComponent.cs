@@ -9,7 +9,7 @@ using GameEngine.engine.ui.utils;
 using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.components.fldemo
+namespace GameEngine.components
 {
     public class FLGeneratorComponent : AbstractComponent
     {

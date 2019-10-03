@@ -69,7 +69,7 @@ namespace CLHelperLibrary
         /// <param name="obj">The buffer to be set</param>
         public void SetBuffer(int index, MemoryObject obj)
         {
-#if NO_CL
+#if TRAVIS_TEST
             index.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
 #else
             Kernel.SetKernelArgument(index, obj);
@@ -97,7 +97,7 @@ namespace CLHelperLibrary
             }
             else
             {
-#if NO_CL
+#if TRAVIS_TEST
                 index.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
 #else
                 Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
@@ -116,9 +116,7 @@ namespace CLHelperLibrary
         /// <param name="channelCount">The number of channels in use</param>
         internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, float genTypeMaxVal, MemoryBuffer enabledChannels, int channelCount)
         {
-#if NO_CL
-
-#else
+#if !TRAVIS_TEST
             int size = dimensions.x * dimensions.y * dimensions.z * channelCount;
 
             SetArg(0, image);

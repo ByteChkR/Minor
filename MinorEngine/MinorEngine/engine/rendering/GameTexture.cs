@@ -160,7 +160,7 @@ namespace GameEngine.engine.rendering
 
             handle.Free();
             
-#if NO_CL
+#if TRAVIS_TEST
             bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
 #else

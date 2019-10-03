@@ -2,7 +2,7 @@
 using GameEngine.engine.components;
 using OpenTK;
 
-namespace GameEngine.components
+namespace Demo.components
 {
     public class RotateAroundComponent : AbstractComponent
     {

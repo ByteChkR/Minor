@@ -1,53 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using Common;
-using GameEngine.components;
-using GameEngine.components.fldemo;
-using GameEngine.engine.audio;
-using GameEngine.engine.audio.sources;
+﻿using GameEngine.components;
 using GameEngine.engine.core;
 using GameEngine.engine.rendering;
 using GameEngine.engine.ui.utils;
-using GameEngine.scenes.GameEngine.scenes;
+
+
+using System.Collections.Generic;
+using Demo.components;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace GameEngine.scenes
+namespace Demo.scenes
 {
-    public class AudioDemoScene:AbstractScene
+    public class PhysicsDemoScene : AbstractScene
     {
-
-        private LookAtComponent _camLookCommandComponent;
-        private GameObject _sourceCube;
-
-        private string cmd_LookAtAudioSource(string[] args)
-        {
-            if (_camLookCommandComponent.IsLooking)
-            {
-                _camLookCommandComponent.SetTarget(null);
-            }
-            else
-            {
-                _camLookCommandComponent.SetTarget(_sourceCube);
-            }
-
-            return "Changed Look behaviour to: " + _camLookCommandComponent.IsLooking;
-        }
-
-        
-
 
 
         private string cmd_ReLoadScene(string[] args)
         {
-            SceneRunner.Instance.InitializeScene<AudioDemoScene>();
+            SceneRunner.Instance.InitializeScene<PhysicsDemoScene>();
             return "Reloaded";
         }
 
         private string cmd_NextScene(string[] args)
         {
-            SceneRunner.Instance.InitializeScene<PhysicsDemoScene>();
-            return "Loading Physics Demo Scene";
+            SceneRunner.Instance.InitializeScene<FLDemoScene>();
+            return "Loading FL Demo Scene";
         }
 
         private string cmd_ChangeCameraPos(string[] args)
@@ -115,14 +92,16 @@ namespace GameEngine.scenes
         }
 
 
+
         protected override void InitializeScene()
         {
 
 
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
-            
-            bgBox.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
+
+            GameTexture bg = TextureProvider.Load("textures/ground4k.png");
+            bgBox.SetTextureBuffer(0, new[] { bg });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -137,12 +116,15 @@ namespace GameEngine.scenes
                 {ShaderType.VertexShader, "shader/texture.vs"},
             }, out ShaderProgram shader);
 
+            PhysicsDemoComponent phys = new PhysicsDemoComponent();
+
+            World.AddComponent(phys); //Adding Physics Component to world.
+
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
-            dbg.AddCommand("lookat", cmd_LookAtAudioSource);
             World.Add(dbg.Owner);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
@@ -151,37 +133,14 @@ namespace GameEngine.scenes
             World.Add(bgObj);
 
             Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), SceneRunner.Instance.Width / (float)SceneRunner.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            c.Translate(new Vector3(0, 20, 50));
-            _camLookCommandComponent=new LookAtComponent();
-            
-            c.AddComponent(_camLookCommandComponent);
-
-            _sourceCube = new GameObject(Vector3.UnitZ*-5, "Audio Source");
-
-            GameModel sourceCube = new GameModel("models/cube_flat.obj");
-            sourceCube.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
-            AudioSourceComponent source = new AudioSourceComponent();
-            _sourceCube.AddComponent(source);
-            _sourceCube.AddComponent(new RotateAroundComponent());
-            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube, 1));
-            if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
-            {
-                Console.ReadLine();
-            }
-            
-            source.SetClip(clip);
-            source.Looping = true;
-            //source.Play();
-            World.Add(_sourceCube);
-
-            AudioListener listener = new AudioListener();
-            c.AddComponent(listener);
+            c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
+            c.Translate(new Vector3(0, 10, 10));
             World.Add(c);
             World.SetCamera(c);
 
 
         }
+
 
     }
 }

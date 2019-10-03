@@ -55,8 +55,8 @@ namespace CLHelperLibrary
         /// </summary>
         private void InitializeOpenCL()
         {
-#if NO_CL
-            this.Log("Starting in NO_CL Mode", DebugChannel.Warning);
+#if TRAVIS_TEST
+            this.Log("Starting in TRAVIS_TEST Mode", DebugChannel.Warning);
 #else
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
@@ -75,7 +75,7 @@ namespace CLHelperLibrary
         /// <returns>The CL Program that was created from the code.</returns>
         internal static Program CreateCLProgramFromSource(string source)
         {
-#if NO_CL
+#if TRAVIS_TEST
             source.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
@@ -90,7 +90,7 @@ namespace CLHelperLibrary
         /// <returns>The CL Program that was created from the code.</returns>
         internal static Program CreateCLProgramFromSource(string[] source)
         {
-#if NO_CL
+#if TRAVIS_TEST
             source.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
@@ -106,7 +106,7 @@ namespace CLHelperLibrary
         /// <returns>The Compiled and Linked Kernel</returns>
         internal static Kernel CreateKernelFromName(Program program, string name)
         {
-#if NO_CL
+#if TRAVIS_TEST
             name.Log("Creating CL Kernel From Name", DebugChannel.Warning);
             return null;
 #else
@@ -149,7 +149,7 @@ namespace CLHelperLibrary
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer(object[] data, Type t, MemoryFlag flags)
         {
-#if NO_CL
+#if TRAVIS_TEST
             data.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
             return null;
 #else
@@ -174,7 +174,7 @@ namespace CLHelperLibrary
             byte[] buffer = new byte[bmp.Width * bmp.Height * 4];
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
-#if NO_CL
+#if TRAVIS_TEST
             bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
 #else
@@ -271,7 +271,7 @@ namespace CLHelperLibrary
         /// <param name="uniform">Should every channel receive the same value on the same pixel?</param>
         public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform) where T : struct
         {
-#if NO_CL
+#if TRAVIS_TEST
             T[] data = new T[1];
 #else
             T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int)buf.Size);
@@ -279,7 +279,7 @@ namespace CLHelperLibrary
 
             WriteRandom(data, enabledChannels, rnd, uniform);
 
-#if NO_CL
+#if TRAVIS_TEST
             enabledChannels.Log("Writing Random Data to Buffer", DebugChannel.Warning);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buf, data);
@@ -309,7 +309,7 @@ namespace CLHelperLibrary
         /// <param name="values">The values to be written to the buffer</param>
         public static void WriteToBuffer<T>(MemoryBuffer buf, T[] values) where T : struct
         {
-#if NO_CL
+#if TRAVIS_TEST
             values.Log("Writing To Buffer..", DebugChannel.Warning);
 #else
             Instance._commandQueue.EnqueueWriteBuffer<T>(buf, values);
@@ -325,7 +325,7 @@ namespace CLHelperLibrary
         /// <returns>The content of the buffer</returns>
         public static T[] ReadBuffer<T>(MemoryBuffer buf, int size) where T : struct
         {
-#if NO_CL
+#if TRAVIS_TEST
             size.Log("Reading From Buffer..", DebugChannel.Warning);
             return new T[size];
 #else
@@ -344,7 +344,7 @@ namespace CLHelperLibrary
         public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal, MemoryBuffer enabledChannels,
             int channelCount)
         {
-#if NO_CL
+#if TRAVIS_TEST
             kernel.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
 #else
             kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);

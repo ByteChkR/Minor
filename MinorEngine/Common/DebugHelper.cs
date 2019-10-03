@@ -8,6 +8,7 @@ using ADL.Crash;
 using ADL.Network.Streams;
 using ADL.Network.Client;
 
+
 namespace Common
 {
     /// <summary>
@@ -21,6 +22,19 @@ namespace Common
 
     public static class DebugHelper
     {
+
+        public static void SetDebugLoggingInformation(int id, int mask, Version version)
+        {
+            _programID = id;
+            _currentProgramVersion = version;
+            _netLogMask = mask;
+        }
+
+        private static int _programID = -1;
+        private static Version _currentProgramVersion=null;
+        private static NetLogStream _netLogStream;
+        private static int _netLogMask = -1;
+
         /// <summary>
         /// a field to test of the DebugHelper has been initialized yet
         /// </summary>
@@ -41,7 +55,6 @@ namespace Common
         /// </summary>
         private static LogTextStream _lts;
 
-        private static NetLogStream _netLogStream;
 
         private const string AdlNetworkConfigPath = "configs/adl_network_config.xml";
 
@@ -72,17 +85,15 @@ namespace Common
 
         private static bool AskForDebugLogSending()
         {
-#if NO_CL
-            return false;
-#else
+#if !TRAVIS_TEST //To stop make unit testing wait for user input
             Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
             if (Console.ReadLine().ToLower() == "y")
             {
                 return true;
             }
-            return false;
 #endif
 
+            return false;
         }
 
         /// <summary>
@@ -110,14 +121,11 @@ namespace Common
             _lts = new LogTextStream(Console.OpenStandardOutput(), BitMask.WildCard, MatchType.MatchAll, true);
             Debug.AddOutputStream(_lts);
 
-
-
-#if DEBUG
-#else
-            if (AskForDebugLogSending())
+#if !TRAVIS_TEST
+            if (_programID != -1 &&  AskForDebugLogSending())
             {
                 NetworkConfig conf = NetworkConfig.Load(AdlNetworkConfigPath);
-                _netLogStream = NetUtils.CreateNetworkStream(conf, 1, Assembly.GetEntryAssembly().GetName().Version, -1, MatchType.MatchAll, false);
+                _netLogStream = NetUtils.CreateNetworkStream(conf, _programID, _currentProgramVersion, -1, MatchType.MatchAll, false);
                 Debug.AddOutputStream(_netLogStream);
             }
 #endif
