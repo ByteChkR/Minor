@@ -4,6 +4,7 @@ using System.Linq;
 using Common;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Programs;
+using CLHelperLibrary.debug;
 
 namespace CLHelperLibrary
 {

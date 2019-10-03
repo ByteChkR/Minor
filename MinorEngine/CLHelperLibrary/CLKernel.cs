@@ -4,6 +4,7 @@ using OpenCl.DotNetCore.CommandQueues;
 using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
+using CLHelperLibrary.debug;
 
 namespace CLHelperLibrary
 {

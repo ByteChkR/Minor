@@ -12,7 +12,7 @@ using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 using OpenCl.DotNetCore.Platforms;
 using OpenCl.DotNetCore.Programs;
-
+using CLHelperLibrary.debug;
 namespace CLHelperLibrary
 {
     /// <summary>
