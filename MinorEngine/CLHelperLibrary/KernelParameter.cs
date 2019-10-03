@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using CLHelperLibrary.CLStructs;
+using CLHelperLibrary.cltypes;
 using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Memory;
 

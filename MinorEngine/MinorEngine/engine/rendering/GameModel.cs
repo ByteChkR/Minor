@@ -5,6 +5,7 @@ using System.Linq;
 using Assimp;
 using Assimp.Configs;
 using Common;
+using MinorEngine.debug;
 using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;

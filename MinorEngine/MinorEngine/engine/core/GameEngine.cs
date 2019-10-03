@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Common;
+using MinorEngine.debug;
 using MinorEngine.engine.audio;
 using MinorEngine.engine.physics;
 using MinorEngine.engine.rendering;
@@ -22,10 +23,25 @@ namespace MinorEngine.engine.core
         private bool _changeScene;
         private Type _nextScene;
 
+        private DebugSettings EngineDefault => new DebugSettings
+        {
+            Enabled = true,
+            InternalErrorMask = (int)DebugChannel.Internal_Error,
+            InternalLogMask = (int)DebugChannel.Log,
+            InternalWarningMask = (int)DebugChannel.Warning,
+            SendInternalWarnings = true,
+            MaskPrefixes = new []{ "[ERROR]" , "[WARNING]" , "[LOG]" , "[INTERNAL_ERROR]" , "[PROGRESS]" },
+            WildcardPrefix = "[ALL]",
+            NonePrefix = "[NONE]"
+        };
+
         public GameEngine(EngineSettings settings)
         {
             Instance = this;
             Settings = settings;
+
+            DebugHelper.Initialize(EngineDefault);
+
             if (Settings.DebugNetwork && Settings.ProgramID != -1)
             {
                 if (Settings.ProgramVersion == null)

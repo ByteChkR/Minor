@@ -1,4 +1,4 @@
-﻿namespace CLHelperLibrary.CLStructs
+﻿namespace CLHelperLibrary.cltypes
 {
     /// <summary>
     /// The Memory scope that kernel arguments can have

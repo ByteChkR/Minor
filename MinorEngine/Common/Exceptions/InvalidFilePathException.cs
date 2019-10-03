@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Exceptions
+namespace Common.exceptions
 {
     /// <summary>
     /// This exception gets thrown when the specified file was not found.

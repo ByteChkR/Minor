@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CLHelperLibrary;
-using CLHelperLibrary.CLStructs;
+using CLHelperLibrary.cltypes;
 using FilterLanguage;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;

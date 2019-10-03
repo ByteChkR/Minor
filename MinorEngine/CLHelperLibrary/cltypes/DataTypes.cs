@@ -1,4 +1,4 @@
-﻿namespace CLHelperLibrary.CLStructs
+﻿namespace CLHelperLibrary.cltypes
 {
     /// <summary>
     /// An Enum containing all possible data types that plain OpenCL can handle

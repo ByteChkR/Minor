@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using CLHelperLibrary.CLStructs;
-using Common;
-using Common.Exceptions;
+using CLHelperLibrary.cltypes;
+using CLHelperLibrary.debug;
+using Common.exceptions;
 
 namespace CLHelperLibrary
 {

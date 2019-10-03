@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Common;
+using FilterLanguage.debug;
 
 namespace FilterLanguage.Generators
 {

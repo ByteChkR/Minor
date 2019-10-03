@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Exceptions
+namespace Common.exceptions
 {
     /// <summary>
     /// This exception gets thrown when a FL instruction or kernel was used incorrectly in the program script.

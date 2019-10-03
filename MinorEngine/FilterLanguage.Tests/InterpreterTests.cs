@@ -1,6 +1,6 @@
 using System.IO;
 using CLHelperLibrary;
-using CLHelperLibrary.CLStructs;
+using CLHelperLibrary.cltypes;
 using Common;
 using OpenCl.DotNetCore.Memory;
 using Xunit;
@@ -12,8 +12,7 @@ namespace FilterLanguage.Tests
         [Fact]
         public void FLInterpreterTest()
         {
-            DebugHelper.ListeningMask = DebugChannel.Log | DebugChannel.Error | DebugChannel.Internal_Error |
-                                        DebugChannel.Warning;
+            DebugHelper.ListeningMask = -1;
             string path = Path.GetFullPath("../../../resources");
             string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
 

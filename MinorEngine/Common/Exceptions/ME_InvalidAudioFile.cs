@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Exceptions
+namespace Common.exceptions
 {
     public class ME_InvalidAudioFile : ApplicationException
     {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using MinorEngine.debug;
 using MinorEngine.components;
 using MinorEngine.engine.components;
 using OpenTK;

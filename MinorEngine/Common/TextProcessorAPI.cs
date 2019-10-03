@@ -5,7 +5,6 @@ using ext_pp;
 using ext_pp_base;
 using ext_pp_base.settings;
 using ext_pp_plugins;
-
 namespace Common
 {
     /// <summary>
@@ -215,11 +214,11 @@ namespace Common
             string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
             if (_configs.ContainsKey(ext))
             {
-                file.Log("Found Matching PreProcessor Config for: " + ext, DebugChannel.Log);
+                file.Log("Found Matching PreProcessor Config for: " + ext);
                 return _configs[ext].Preprocess(file, defs);
             }
-
-            file.Log("Loading File with Default PreProcessing", DebugChannel.Log);
+           
+            file.Log("Loading File with Default PreProcessing");
             return _configs["***"].Preprocess(file, defs);
         }
 

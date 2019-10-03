@@ -23,6 +23,30 @@ namespace Common
         }
     }
 
+    public struct DebugSettings
+    {
+        public bool Enabled;
+        public bool SendInternalWarnings;
+        public int InternalWarningMask;
+        public int InternalErrorMask;
+        public int InternalLogMask;
+        public string[] MaskPrefixes;
+        public string WildcardPrefix;
+        public string NonePrefix;
+
+        public static DebugSettings Default => new DebugSettings
+        {
+            Enabled = true,
+            SendInternalWarnings = true,
+            InternalWarningMask = -1,
+            InternalErrorMask = -1,
+            InternalLogMask = -1,
+            MaskPrefixes = new string[0],
+            WildcardPrefix = "[ALL]",
+            NonePrefix = "[NONE]"
+        };
+    }
+
     public static class DebugHelper
     {
         public static void SetDebugLoggingInformation(int id, int mask, Version version)
@@ -41,6 +65,9 @@ namespace Common
         /// a field to test of the DebugHelper has been initialized yet
         /// </summary>
         private static bool _initialized;
+
+        private static int _internalLogMask;
+        private static int _internalErrorMask;
 
         /// <summary>
         /// The dictionary of crash logs
@@ -63,18 +90,22 @@ namespace Common
         /// <summary>
         /// The listening mask that is applied to the text output
         /// </summary>
-        public static DebugChannel ListeningMask
+        public static int ListeningMask
         {
             get
             {
-                if (_lts == null) return DebugChannel.ALL;
-                return (DebugChannel) _lts.Mask;
+                if (_lts == null) return -1;
+                return _lts.Mask;
             }
             set
             {
-                if (!_initialized) Initialize();
+                if (!_initialized)
+                {
+                    Initialize(DebugSettings.Default);
+                    _initialized.Log("Initialized with Default Debug Settings");
+                }
 
-                _lts.Mask = (int) value;
+                _lts.Mask = value;
             }
         }
 
@@ -92,21 +123,29 @@ namespace Common
         /// <summary>
         /// Initializes ADL and the DebugHelper
         /// </summary>
-        private static void Initialize()
+        public static void Initialize(DebugSettings debugSettings)
         {
+            if (_initialized)
+            {
+                return;
+            }
             _initialized = true;
-            Debug.AdlEnabled = true;
-            Debug.CheckForUpdates = false;
-            Debug.AdlWarningMask = 2;
-            Debug.SendWarnings = true;
+            _internalLogMask = debugSettings.InternalLogMask;
+            _internalErrorMask = debugSettings.InternalErrorMask;
+            Debug.AdlEnabled = debugSettings.Enabled;
+            Debug.SendWarnings = debugSettings.SendInternalWarnings;
+            Debug.AdlWarningMask = debugSettings.InternalWarningMask;
+            Debug.SetAllPrefixes(debugSettings.MaskPrefixes);
+            Debug.AddPrefixForMask(0, debugSettings.NonePrefix);
+            Debug.AddPrefixForMask(-1, debugSettings.WildcardPrefix);
             Debug.PrefixLookupMode = PrefixLookupSettings.Addprefixifavailable | PrefixLookupSettings.Bakeprefixes |
                                      PrefixLookupSettings.Deconstructmasktofind;
-            Debug.UpdateMask = 8;
-            Debug.SetAllPrefixes("[Error]", "[Warning]", "[Log]", "[Internal Error]", "[Progress]");
-            Debug.AddPrefixForMask(-1, "[ALL]");
+
+            Debug.CheckForUpdates = false;
+            Debug.UpdateMask = 0;
 
             CrashConfig c = new CrashConfig();
-            c.CrashMask = (int) DebugChannel.Internal_Error;
+            c.CrashMask = (int)debugSettings.InternalErrorMask;
             c.CheckForUpdates = false;
             CrashHandler.Initialize(c);
 
@@ -117,11 +156,16 @@ namespace Common
             if (_programID != -1 && AskForDebugLogSending())
             {
                 NetworkConfig conf = NetworkConfig.Load(AdlNetworkConfigPath);
-                _netLogStream = NetUtils.CreateNetworkStream(conf, _programID, _currentProgramVersion, -1,
+                _netLogStream = NetUtils.CreateNetworkStream(conf, _programID, _currentProgramVersion, _netLogMask,
                     MatchType.MatchAll, false);
                 Debug.AddOutputStream(_netLogStream);
             }
 #endif
+        }
+
+        internal static void Log(this object obj, string message)
+        {
+            LogMessage(obj, message, _internalLogMask);
         }
 
         /// <summary>
@@ -130,22 +174,34 @@ namespace Common
         /// <param name="obj">The object sending a message</param>
         /// <param name="message">The message</param>
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
-        public static void Log(this object obj, string message, DebugChannel channel)
+        public static void LogMessage(object obj, string message, int channel)
         {
-            if (!_initialized) Initialize();
+            if (!_initialized)
+            {
+                _initialized.Log("Initialized with Default Debug Settings");
+            }
 
-            Debug.LogGen(channel, message);
+            Debug.Log(channel, message);
         }
+
+        internal static void Crash(this object obj, ApplicationException ex)
+        {
+            LogCrash(obj, ex, _internalErrorMask);
+        }
+
 
         /// <summary>
         /// A static extension to throw exceptions at one place to have a better control what to throw and when to throw
         /// </summary>
         /// <param name="obj">The object throwing the exception</param>
         /// <param name="ex">The exception that led to the crash</param>
-        public static void Crash(this object obj, ApplicationException ex)
+        public static void LogCrash(object obj, ApplicationException ex, int noteMask)
         {
-            if (!_initialized) Initialize();
-            CrashHandler.Log(ex, (int) DebugChannel.Internal_Error);
+            if (!_initialized)
+            {
+                _initialized.Log("Initialized with Default Debug Settings");
+            }
+            CrashHandler.Log(ex, noteMask);
 
             if (CrashOnException) throw ex;
             CrashLog.Keys.Add(Utils.TimeStamp);

@@ -1,6 +1,7 @@
 ﻿using BepuPhysics;
 using BepuPhysics.Constraints;
 using Common;
+using MinorEngine.debug;
 using MinorEngine.engine.components;
 using MinorEngine.engine.physics;
 using OpenTK;

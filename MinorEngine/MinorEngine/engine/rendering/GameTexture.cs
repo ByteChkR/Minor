@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Assimp;
 using CLHelperLibrary;
 using Common;
+using MinorEngine.debug;
 using MinorEngine.engine.core;
 using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
