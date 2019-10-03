@@ -1,8 +1,8 @@
 @echo off
 
 echo Checking Build Status:
-IF NOT EXIST "MinorEngine\MinorEngine\bin\Release\netcoreapp2.1\MinorEngine.dll" call build_project.bat
+IF NOT EXIST "MinorEngine\Demo\bin\Release\netcoreapp2.1\MinorEngine.dll" call build_project.bat
 
 echo Running Engine...
-cd MinorEngine\MinorEngine\assets
-dotnet run --launch-profile "GameEngine" -p "..\MinorEngine.csproj" -c Release
+cd MinorEngine\Demo\assets
+dotnet run --launch-profile "GameEngine" -p "..\Demo.csproj" -c Release
