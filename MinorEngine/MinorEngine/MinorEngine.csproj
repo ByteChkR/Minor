@@ -32,12 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="BEPUphysics">
-      <HintPath>..\..\bepuphysics1\BEPUphysics\bin\Release\netstandard2.0\BEPUphysics.dll</HintPath>
-    </Reference>
-    <Reference Include="BEPUutilities">
-      <HintPath>..\..\bepuphysics1\BEPUphysics\bin\Release\netstandard2.0\BEPUutilities.dll</HintPath>
-    </Reference>
     <Reference Include="OpenCl.DotNetCore">
       <HintPath>..\..\opencl-dotnet\OpenCl.DotNetCore\bin\Release\netstandard2.0\OpenCl.DotNetCore.dll</HintPath>
     </Reference>
