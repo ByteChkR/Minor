@@ -10,31 +10,22 @@ using MinorEngine.engine.ui.utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-
 namespace Demo.scenes
 {
     public class AudioDemoScene : AbstractScene
     {
-
         private LookAtComponent _camLookCommandComponent;
         private GameObject _sourceCube;
 
         private string cmd_LookAtAudioSource(string[] args)
         {
             if (_camLookCommandComponent.IsLooking)
-            {
                 _camLookCommandComponent.SetTarget(null);
-            }
             else
-            {
                 _camLookCommandComponent.SetTarget(_sourceCube);
-            }
 
             return "Changed Look behaviour to: " + _camLookCommandComponent.IsLooking;
         }
-
-
-
 
 
         private string cmd_ReLoadScene(string[] args)
@@ -51,27 +42,12 @@ namespace Demo.scenes
 
         private string cmd_ChangeCameraPos(string[] args)
         {
-            if (args.Length != 3)
-            {
-                return "Invalid Arguments";
-            }
+            if (args.Length != 3) return "Invalid Arguments";
 
             float x, y, z;
-            if (!float.TryParse(args[0], out x))
-            {
-                return "Invalid Arguments";
-
-            }
-            if (!float.TryParse(args[1], out y))
-            {
-
-                return "Invalid Arguments";
-            }
-            if (!float.TryParse(args[2], out z))
-            {
-
-                return "Invalid Arguments";
-            }
+            if (!float.TryParse(args[0], out x)) return "Invalid Arguments";
+            if (!float.TryParse(args[1], out y)) return "Invalid Arguments";
+            if (!float.TryParse(args[2], out z)) return "Invalid Arguments";
 
             Vector3 pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Translate(pos);
@@ -81,31 +57,12 @@ namespace Demo.scenes
 
         private string cmd_ChangeCameraRot(string[] args)
         {
-            if (args.Length != 4)
-            {
-                return "Invalid Arguments";
-            }
+            if (args.Length != 4) return "Invalid Arguments";
             float x, y, z, angle;
-            if (!float.TryParse(args[0], out x))
-            {
-                return "Invalid Arguments";
-
-            }
-            if (!float.TryParse(args[1], out y))
-            {
-
-                return "Invalid Arguments";
-            }
-            if (!float.TryParse(args[2], out z))
-            {
-
-                return "Invalid Arguments";
-            }
-            if (!float.TryParse(args[3], out angle))
-            {
-
-                return "Invalid Arguments";
-            }
+            if (!float.TryParse(args[0], out x)) return "Invalid Arguments";
+            if (!float.TryParse(args[1], out y)) return "Invalid Arguments";
+            if (!float.TryParse(args[2], out z)) return "Invalid Arguments";
+            if (!float.TryParse(args[3], out angle)) return "Invalid Arguments";
 
             Vector3 pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
@@ -116,24 +73,21 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-
-
-
             GameModel bgBox = new GameModel("models/cube_flat.obj");
 
-            bgBox.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
+            bgBox.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"},
+                {ShaderType.VertexShader, "shader/UIRender.vs"}
             }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/texture.fs"},
-                {ShaderType.VertexShader, "shader/texture.vs"},
+                {ShaderType.VertexShader, "shader/texture.vs"}
             }, out ShaderProgram shader);
 
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
@@ -149,7 +103,9 @@ namespace Demo.scenes
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             GameEngine.Instance.World.Add(bgObj);
 
-            Camera c = new Camera(Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f), GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+            Camera c = new Camera(
+                Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
+                    GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 20, 50));
             _camLookCommandComponent = new LookAtComponent();
@@ -159,15 +115,12 @@ namespace Demo.scenes
             _sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
 
             GameModel sourceCube = new GameModel("models/cube_flat.obj");
-            sourceCube.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
+            sourceCube.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
             AudioSourceComponent source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
             _sourceCube.AddComponent(new RotateAroundComponent());
             _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube, 1));
-            if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip))
-            {
-                Console.ReadLine();
-            }
+            if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out AudioClip clip)) Console.ReadLine();
 
             source.SetClip(clip);
             source.Looping = true;
@@ -178,9 +131,6 @@ namespace Demo.scenes
             c.AddComponent(listener);
             GameEngine.Instance.World.Add(c);
             GameEngine.Instance.World.SetCamera(c);
-
-
         }
-
     }
 }

@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using CLHelperLibrary;
 using CLHelperLibrary.CLStructs;
@@ -23,12 +22,10 @@ namespace FilterLanguage.Tests
 
             foreach (string file in files)
             {
-
-                Interpreter P = new Interpreter(file, CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1, 4, db);
-                while (!P.Terminated)
-                {
-                    P.Step();
-                }
+                Interpreter P = new Interpreter(file,
+                    CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
+                    4, db);
+                while (!P.Terminated) P.Step();
             }
         }
     }

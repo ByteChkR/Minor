@@ -15,7 +15,6 @@ using Image = System.Drawing.Image;
 
 namespace FilterLanguage
 {
-
     /// <summary>
     /// The FL Interpreter
     /// </summary>
@@ -29,6 +28,7 @@ namespace FilterLanguage
         private const string ScriptDefineKey = "--define script ";
 
         private const int FLHeaderArgCount = 5;
+
         /// <summary>
         /// Everything past this string gets ignored by the interpreter
         /// </summary>
@@ -74,13 +74,9 @@ namespace FilterLanguage
 
         #region Define Handler
 
-
         void DefineScript(string[] arg)
         {
-            if (arg.Length < 2)
-            {
-                this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Invalid Define statement"));
-            }
+            if (arg.Length < 2) this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Invalid Define statement"));
             string varname = arg[0].Trim();
             if (_definedBuffers.ContainsKey(varname))
             {
@@ -94,14 +90,14 @@ namespace FilterLanguage
             string filename = args[0].Trim();
 
 
-
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
                 this.Log("Loading SubScript...", DebugChannel.Log);
 
                 MemoryBuffer buf =
                     CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
-                Interpreter interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height, _depth, _channelCount, _kernelDb, true);
+                Interpreter interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
+                    _depth, _channelCount, _kernelDb, true);
 
                 do
                 {
@@ -116,12 +112,10 @@ namespace FilterLanguage
                 this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Not a valid filepath as argument."));
             }
         }
+
         void DefineTexture(string[] arg)
         {
-            if (arg.Length < 2)
-            {
-                this.Crash(new FL_InvalidFunctionUse(DefineKey, "Invalid Define statement"));
-            }
+            if (arg.Length < 2) this.Crash(new FL_InvalidFunctionUse(DefineKey, "Invalid Define statement"));
             string varname = arg[0].Trim();
 
 
@@ -137,14 +131,9 @@ namespace FilterLanguage
             {
                 varname = flagTest[1];
                 if (flagTest[0] == "r")
-                {
                     flags = MemoryFlag.ReadOnly;
-                }
 
-                else if (flagTest[0] == "w")
-                {
-                    flags = MemoryFlag.WriteOnly;
-                }
+                else if (flagTest[0] == "w") flags = MemoryFlag.WriteOnly;
             }
 
             string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -153,11 +142,9 @@ namespace FilterLanguage
             string filename = args[0].Trim();
 
 
-
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-
-                Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
+                Bitmap bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
                 _definedBuffers.Add(varname,
                     CL.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
@@ -174,48 +161,29 @@ namespace FilterLanguage
             }
             else if (filename == "wfc")
             {
-                if (args.Length < 10)
-                {
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement");
-                }
-                if (!int.TryParse(args[2], out int n))
-                {
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid N argument");
-                }
+                if (args.Length < 10) throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement");
+                if (!int.TryParse(args[2], out int n)) throw new FL_InvalidFunctionUse("wfc", "Invalid N argument");
                 if (!int.TryParse(args[3], out int width))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid width argument");
-                }
                 if (!int.TryParse(args[4], out int height))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid height argument");
-                }
                 if (!bool.TryParse(args[5], out bool periodicInput))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid periodicInput argument");
-                }
                 if (!bool.TryParse(args[6], out bool periodicOutput))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid periodicOutput argument");
-                }
                 if (!int.TryParse(args[7], out int symetry))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid symmetry argument");
-                }
                 if (!int.TryParse(args[8], out int ground))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid ground argument");
-                }
                 if (!int.TryParse(args[9], out int limit))
-                {
                     throw new FL_InvalidFunctionUse("wfc", "Invalid limit argument");
-                }
 
-                WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width, height, periodicInput, periodicOutput, symetry, ground);
+                WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width,
+                    height, periodicInput, periodicOutput, symetry, ground);
 
                 wfc.Run(limit);
 
-                Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(this._width, this._height)); //Apply scaling
+                Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                 _definedBuffers.Add(varname,
                     CL.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
@@ -225,7 +193,6 @@ namespace FilterLanguage
                 throw new InvalidOperationException("Can not resolve symbol: " + varname);
             }
         }
-
 
         #endregion
 
@@ -280,20 +247,16 @@ namespace FilterLanguage
             public override string ToString()
             {
                 _sb.Clear();
-                for (int i = 0; i < ActiveChannels.Length; i++)
-                {
-                    _sb.Append(ActiveChannels[i]);
-                }
+                for (int i = 0; i < ActiveChannels.Length; i++) _sb.Append(ActiveChannels[i]);
 
                 string channels = _sb.ToString();
                 _sb.Clear();
                 foreach (var definedBuffer in DefinedBuffers)
-                {
                     _sb.Append($"\n  {definedBuffer.Key}({definedBuffer.Value.Size})");
-                }
                 string definedBuffers = _sb.ToString();
 
-                return $"Debug Step Info:\n SourceLine:{SourceLine}\n HasJumped:{HasJumped}\n Triggered Breakpoint:{TriggeredDebug}\n Terminated:{Terminated}\n Active Channels:{channels}\n Defined Buffers:{definedBuffers}";
+                return
+                    $"Debug Step Info:\n SourceLine:{SourceLine}\n HasJumped:{HasJumped}\n Triggered Breakpoint:{TriggeredDebug}\n Terminated:{Terminated}\n Active Channels:{channels}\n Defined Buffers:{definedBuffers}";
             }
         }
 
@@ -377,10 +340,12 @@ namespace FilterLanguage
         /// The buffers indexed by name that were defined with the DefineKey
         /// </summary>
         private readonly Dictionary<string, MemoryBuffer> _definedBuffers = new Dictionary<string, MemoryBuffer>();
+
         /// <summary>
         /// A list of possible jump locations
         /// </summary>
         private readonly Dictionary<string, int> _jumpLocations = new Dictionary<string, int>();
+
         /// <summary>
         /// a flag that indicates if the stack should not be deleted(get used when returning from a jump)
         /// </summary>
@@ -395,15 +360,14 @@ namespace FilterLanguage
         /// The current step result
         /// </summary>
         private InterpreterStepResult _stepResult;
+
         private int EntryIndex
         {
             get
             {
                 int idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
                 if (idx == -1 || _source.Count - 1 == idx)
-                {
                     throw new FL_InvalidEntyPoint("There needs to be a main function.");
-                }
                 return idx + 1;
             }
         }
@@ -422,56 +386,42 @@ namespace FilterLanguage
         private void cmd_setactive()
         {
             if (_currentArgStack.Count < 1)
-            {
-
                 this.Crash(new FL_InvalidFunctionUse("setactive", "Specify the buffer you want to activate"));
-
-            }
 
             byte[] temp = new byte[_channelCount];
             while (_currentArgStack.Count != 1)
             {
                 object val = _currentArgStack.Pop();
-                if (!(val is decimal))
-                {
-                    this.Crash(new FL_InvalidFunctionUse("setactive", "Invalid channel Arguments"));
-                }
+                if (!(val is decimal)) this.Crash(new FL_InvalidFunctionUse("setactive", "Invalid channel Arguments"));
 
-                byte channel = (byte)Convert.ChangeType(val, typeof(byte));
+                byte channel = (byte) Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
-                {
                     this.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
-                }
                 else
-                {
                     temp[channel] = 1;
-                }
             }
 
-            if (_currentArgStack.Peek() == null || (!(_currentArgStack.Peek() is MemoryBuffer) && !(_currentArgStack.Peek() is decimal)))
-            {
+            if (_currentArgStack.Peek() == null ||
+                !(_currentArgStack.Peek() is MemoryBuffer) && !(_currentArgStack.Peek() is decimal))
                 this.Crash(new FL_InvalidFunctionUse("setactive", "Specify the buffer you want to activate"));
-            }
 
             if (_currentArgStack.Peek() is decimal)
             {
-                byte channel = (byte)Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
+                byte channel = (byte) Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
                 temp[channel] = 1;
             }
             else
             {
-                _currentBuffer = (MemoryBuffer)_currentArgStack.Pop();
+                _currentBuffer = (MemoryBuffer) _currentArgStack.Pop();
             }
 
             bool needCopy = false;
             for (int i = 0; i < _channelCount; i++)
-            {
                 if (_activeChannels[i] != temp[i])
                 {
                     needCopy = true;
                     break;
                 }
-            }
 
             if (needCopy)
             {
@@ -479,7 +429,6 @@ namespace FilterLanguage
                 _activeChannels = temp;
                 CL.WriteToBuffer(_activeChannelBuffer, _activeChannels);
             }
-
         }
 
         /// <summary>
@@ -488,7 +437,7 @@ namespace FilterLanguage
         /// <returns>a random byte</returns>
         private byte randombytesource()
         {
-            return (byte)rnd.Next();
+            return (byte) rnd.Next();
         }
 
         /// <summary>
@@ -496,17 +445,11 @@ namespace FilterLanguage
         /// </summary>
         private void cmd_writerandom()
         {
-            if (_currentArgStack.Count == 0)
-            {
-                CL.WriteRandom(_currentBuffer, randombytesource, _activeChannels);
-            }
+            if (_currentArgStack.Count == 0) CL.WriteRandom(_currentBuffer, randombytesource, _activeChannels);
             while (_currentArgStack.Count != 0)
             {
                 object obj = _currentArgStack.Pop();
-                if (!(obj is MemoryBuffer))
-                {
-                    throw new InvalidOperationException("Argument has the wrong type: " + obj);
-                }
+                if (!(obj is MemoryBuffer)) throw new InvalidOperationException("Argument has the wrong type: " + obj);
                 CL.WriteRandom(obj as MemoryBuffer, randombytesource, _activeChannels);
             }
         }
@@ -524,10 +467,7 @@ namespace FilterLanguage
         /// </summary>
         private void cmd_break()
         {
-            if (_ignoreDebug)
-            {
-                return;
-            }
+            if (_ignoreDebug) return;
             _stepResult.TriggeredDebug = true;
             if (_currentArgStack.Count == 0)
             {
@@ -537,11 +477,8 @@ namespace FilterLanguage
             {
                 object obj = _currentArgStack.Pop();
                 if (!(obj is MemoryBuffer))
-                {
                     throw new InvalidOperationException("Argument has the wrong type or is null");
-                }
                 _stepResult.DebugBuffer = obj as MemoryBuffer;
-
             }
             else
             {
@@ -563,16 +500,16 @@ namespace FilterLanguage
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, KernelDatabase kernelDB,
+        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
+            KernelDatabase kernelDB,
             bool ignoreDebug)
         {
-
             _flFunctions = new Dictionary<string, FlFunction>
             {
-                {"setactive", cmd_setactive },
-                {"random", cmd_writerandom },
-                {"jmp", cmd_jump },
-                {"brk", cmd_break }
+                {"setactive", cmd_setactive},
+                {"random", cmd_writerandom},
+                {"jmp", cmd_jump},
+                {"brk", cmd_break}
             };
 
 
@@ -592,8 +529,12 @@ namespace FilterLanguage
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(string file, DataTypes genType, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder,
-            bool ignoreDebug) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder, genType), ignoreDebug) { }
+        public Interpreter(string file, DataTypes genType, MemoryBuffer input, int width, int height, int depth,
+            int channelCount, string kernelDBFolder,
+            bool ignoreDebug) : this(file, input, width, height, depth, channelCount,
+            new KernelDatabase(kernelDBFolder, genType), ignoreDebug)
+        {
+        }
 
         /// <summary>
         /// A public constructor
@@ -604,7 +545,11 @@ namespace FilterLanguage
         /// <param name="height">Height of the input buffer</param>
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
-        public Interpreter(string file, DataTypes genType, MemoryBuffer input, int width, int height, int depth, int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount, new KernelDatabase(kernelDBFolder, genType), false) { }
+        public Interpreter(string file, DataTypes genType, MemoryBuffer input, int width, int height, int depth,
+            int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount,
+            new KernelDatabase(kernelDBFolder, genType), false)
+        {
+        }
 
         /// <summary>
         /// A public constructor
@@ -616,7 +561,10 @@ namespace FilterLanguage
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
-        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, KernelDatabase kernelDB) : this(file, input, width, height, depth, channelCount, kernelDB, false) { }
+        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
+            KernelDatabase kernelDB) : this(file, input, width, height, depth, channelCount, kernelDB, false)
+        {
+        }
 
         /// <summary>
         /// Resets the Interpreter to work with a new script
@@ -645,28 +593,23 @@ namespace FilterLanguage
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public void Reset(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, KernelDatabase kernelDB, bool ignoreDebug)
+        public void Reset(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
+            KernelDatabase kernelDB, bool ignoreDebug)
         {
             _currentBuffer = input;
-            this._ignoreDebug = ignoreDebug;
-            this._width = width;
-            this._height = height;
-            this._depth = depth;
-            this._channelCount = channelCount;
-            this._kernelDb = kernelDB;
+            _ignoreDebug = ignoreDebug;
+            _width = width;
+            _height = height;
+            _depth = depth;
+            _channelCount = channelCount;
+            _kernelDb = kernelDB;
             _activeChannels = new byte[_channelCount];
-            for (int i = 0; i < _channelCount; i++)
-            {
-                _activeChannels[i] = 1;
-            }
+            for (int i = 0; i < _channelCount; i++) _activeChannels[i] = 1;
 
             _activeChannelBuffer = CL.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
 
             _currentArgStack = new Stack<object>();
-            foreach (KeyValuePair<string, MemoryBuffer> memoryBuffer in _definedBuffers)
-            {
-                memoryBuffer.Value.Dispose();
-            }
+            foreach (KeyValuePair<string, MemoryBuffer> memoryBuffer in _definedBuffers) memoryBuffer.Value.Dispose();
 
             _jumpStack.Clear();
             _definedBuffers.Clear();
@@ -681,7 +624,6 @@ namespace FilterLanguage
             ParseJumpLocations();
 
             Reset();
-
         }
 
 
@@ -700,7 +642,7 @@ namespace FilterLanguage
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CL.ReadBuffer<T>(_currentBuffer, (int)_currentBuffer.Size);
+            return CL.ReadBuffer<T>(_currentBuffer, (int) _currentBuffer.Size);
         }
 
         /// <summary>
@@ -709,16 +651,14 @@ namespace FilterLanguage
         /// <returns>The Information about the current step(mostly for debugging)</returns>
         public InterpreterStepResult Step()
         {
-
             _stepResult = new InterpreterStepResult
             {
-                SourceLine = _source[_currentIndex],
+                SourceLine = _source[_currentIndex]
             };
 
             if (Terminated)
             {
                 _stepResult.Terminated = true;
-
             }
             else
             {
@@ -726,7 +666,6 @@ namespace FilterLanguage
                 if (code == string.Empty)
                 {
                     _currentIndex++; //Next Line since this one is emtpy
-
                 }
                 else
                 {
@@ -756,13 +695,8 @@ namespace FilterLanguage
         private void ParseJumpLocations()
         {
             for (int i = _source.Count - 1; i >= 0; i--)
-            {
                 if (_source[i].EndsWith(FunctionNamePostfix) && _source.Count - 1 != i)
-                {
                     _jumpLocations.Add(_source[i].Remove(_source[i].Length - 1, 1), i + 1);
-
-                }
-            }
         }
 
 
@@ -773,50 +707,40 @@ namespace FilterLanguage
         /// <returns>True if the program counter should be increased</returns>
         bool Analyze(string code)
         {
-
             string[] words = code.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
 
             string function = words.Length == 0 ? "" : words[0];
             CLKernel kernel = null;
-            if (function == "")
-            {
-                return false;
-            }
+            if (function == "") return false;
 
             bool isBakedFunction = _flFunctions.ContainsKey(function);
             bool isDirectExecute = function == "jmp";
 
 
-
             if (!isBakedFunction && !_kernelDb.TryGetCLKernel(function, out kernel))
-            {
                 throw new NotImplementedException("Argument Not found in line " + code + ".");
-            }
 
             if (_leaveStack) //This keeps the stack when returning from a "function"
-            {
                 _leaveStack = false;
-            }
             else
-            {
                 _currentArgStack = new Stack<object>();
-            }
 
             bool ret = true;
-            for (; _currentWord < words.Length; _currentWord++) //loop through the words. start value can be != 0 when returning from a function specified as an argument to a kernel
-            {
+            for (;
+                _currentWord < words.Length;
+                _currentWord++) //loop through the words. start value can be != 0 when returning from a function specified as an argument to a kernel
                 if (AnalyzeWord(words[_currentWord], out object val))
                 {
                     JumpTo(_jumpLocations[words[_currentWord]], isDirectExecute);
                     ret = false; //We Jumped to another point in the code.
-                    _currentArgStack.Push(null); //Push null to signal the interpreter that he returned before assigning the right value.
+                    _currentArgStack
+                        .Push(null); //Push null to signal the interpreter that he returned before assigning the right value.
                     break;
                 }
                 else
                 {
                     _currentArgStack.Push(val); //push the value to the stack
                 }
-            }
 
             if (_currentWord == words.Length && ret) //We finished parsing the line and we didnt jump.
             {
@@ -838,11 +762,12 @@ namespace FilterLanguage
                     }
 
                     this.Log("Running kernel: " + function, DebugChannel.Log);
-                    CL.Run(kernel, _currentBuffer, new int3(_width, _height, _depth), KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer, _channelCount); //Running the kernel
-
+                    CL.Run(kernel, _currentBuffer, new int3(_width, _height, _depth),
+                        KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer,
+                        _channelCount); //Running the kernel
                 }
-
             }
+
             return ret;
         }
 
@@ -861,27 +786,18 @@ namespace FilterLanguage
                 val = null;
                 return true;
             }
-            else
-            {
-                val = null;
-                if (_definedBuffers.ContainsKey(word))
-                {
-                    val = _definedBuffers[word];
-                }
-                else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out decimal numberDecimal))
-                {
-                    val = numberDecimal;
-                }
+
+            val = null;
+            if (_definedBuffers.ContainsKey(word))
+                val = _definedBuffers[word];
+            else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out decimal numberDecimal))
+                val = numberDecimal;
 
 #if !TRAVIS_TEST
-                if (val == null)
-                {
-                    throw new NotImplementedException("No Baked in functions in arguments");
-                }
+            if (val == null) throw new NotImplementedException("No Baked in functions in arguments");
 #endif
-                val = val ?? "PLACEHOLDER";
-                return false;
-            }
+            val = val ?? "PLACEHOLDER";
+            return false;
         }
 
         /// <summary>
@@ -910,7 +826,6 @@ namespace FilterLanguage
         private void ParseDefines(string key, DefineHandler handler)
         {
             for (int i = _source.Count - 1; i >= 0; i--)
-            {
                 if (_source[i].StartsWith(key))
                 {
                     string[] kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
@@ -918,7 +833,6 @@ namespace FilterLanguage
                     handler?.Invoke(kvp);
                     _source.RemoveAt(i);
                 }
-            }
         }
 
 
@@ -937,7 +851,6 @@ namespace FilterLanguage
                 }
                 else
                 {
-
                     InterpreterState lastState = _jumpStack.Pop();
 
                     this.Log("Returning to location: " + _source[lastState.Line], DebugChannel.Log);
@@ -957,7 +870,6 @@ namespace FilterLanguage
                     _currentWord = lastState.ArgumentStack.Count + 1;
                 }
             }
-
         }
 
         /// <summary>
@@ -969,11 +881,9 @@ namespace FilterLanguage
         {
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
             _stepResult.HasJumped = true;
-            int size = (int)_currentBuffer.Size;
+            int size = (int) _currentBuffer.Size;
             if (!keepBuffer)
-            {
                 _currentBuffer = CL.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
-            }
             _currentIndex = index;
             _currentWord = 1;
         }
@@ -984,15 +894,11 @@ namespace FilterLanguage
         /// <param name="file"></param>
         void LoadSource(string file)
         {
-
             this.Log("Loading Source..", DebugChannel.Log);
 
             Dictionary<string, bool> defs = new Dictionary<string, bool>();
 
-            for (int i = 0; i < _channelCount; i++)
-            {
-                defs.Add("channel" + i, true);
-            }
+            for (int i = 0; i < _channelCount; i++) defs.Add("channel" + i, true);
 
             List<string> lines = TextProcessorAPI.PreprocessLines(file, defs).ToList();
 
@@ -1001,17 +907,12 @@ namespace FilterLanguage
             {
                 var line = lines[i].Trim();
                 if (line.StartsWith(CommentPrefix))
-                {
-                    lines.RemoveAt(i);//Remove otherwise emtpty lines after removing comments
-                }
+                    lines.RemoveAt(i); //Remove otherwise emtpty lines after removing comments
                 else
-                {
                     lines[i] = line.Split(CommentPrefix)[0];
-                }
             }
 
             _source = lines;
         }
-
     }
 }

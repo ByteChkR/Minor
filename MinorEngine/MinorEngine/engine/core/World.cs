@@ -1,7 +1,4 @@
-﻿using System;
-using Common;
-using MinorEngine.engine.rendering;
-using OpenTK;
+﻿using OpenTK;
 
 namespace MinorEngine.engine.core
 {
@@ -12,17 +9,13 @@ namespace MinorEngine.engine.core
 
         public World() : base(Vector3.Zero, "World", null)
         {
-            this.World = this;
+            World = this;
         }
 
-        
 
         public void SetCamera(Camera c)
         {
-            if (c != null)
-            {
-                Camera = c;
-            }
+            if (c != null) Camera = c;
         }
     }
 }

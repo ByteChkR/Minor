@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace LogServer
+﻿namespace LogServer
 {
     static class Program
     {

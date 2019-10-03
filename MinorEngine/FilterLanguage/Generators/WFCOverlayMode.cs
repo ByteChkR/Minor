@@ -7,17 +7,13 @@ The software is provided "as is", without warranty of any kind, express or impli
 */
 
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Collections.Generic;
 using Common;
-using FilterLanguage.Generators;
-using OpenCl.DotNetCore.Interop;
 
 namespace FilterLanguage.Generators
 {
-
-
     class WFCOverlayMode : WaveFunctionCollapse
     {
         private readonly int _n;
@@ -25,10 +21,11 @@ namespace FilterLanguage.Generators
         private readonly List<Color> _colors;
         private readonly int _ground;
 
-        public WFCOverlayMode(string filename, int N, int width, int height, bool periodicInput, bool periodicOutput, int symmetry, int ground)
+        public WFCOverlayMode(string filename, int N, int width, int height, bool periodicInput, bool periodicOutput,
+            int symmetry, int ground)
             : base(width, height)
         {
-            this._n = N;
+            _n = N;
             Periodic = periodicOutput;
 
             var bitmap = new Bitmap(filename);
@@ -37,27 +34,19 @@ namespace FilterLanguage.Generators
             _colors = new List<Color>();
 
             for (int y = 0; y < SMY; y++)
+            for (int x = 0; x < SMX; x++)
             {
-                for (int x = 0; x < SMX; x++)
+                Color color = bitmap.GetPixel(x, y);
+
+                int i = 0;
+                foreach (var c in _colors)
                 {
-                    Color color = bitmap.GetPixel(x, y);
-
-                    int i = 0;
-                    foreach (var c in _colors)
-                    {
-                        if (c == color)
-                        {
-                            break;
-                        }
-                        i++;
-                    }
-
-                    if (i == _colors.Count)
-                    {
-                        _colors.Add(color);
-                    }
-                    sample[x, y] = (byte) i;
+                    if (c == color) break;
+                    i++;
                 }
+
+                if (i == _colors.Count) _colors.Add(color);
+                sample[x, y] = (byte) i;
             }
 
             this.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log);
@@ -68,12 +57,8 @@ namespace FilterLanguage.Generators
             {
                 byte[] result = new byte[N * N];
                 for (int y = 0; y < N; y++)
-                {
-                    for (int x = 0; x < N; x++)
-                    {
-                        result[x + y * N] = f(x, y);
-                    }
-                }
+                for (int x = 0; x < N; x++)
+                    result[x + y * N] = f(x, y);
                 return result;
             }
 
@@ -89,6 +74,7 @@ namespace FilterLanguage.Generators
                     result += p[p.Length - 1 - i] * power;
                     power *= C;
                 }
+
                 return result;
             }
 
@@ -102,10 +88,7 @@ namespace FilterLanguage.Generators
                     power /= C;
                     int count = 0;
 
-                    if (power == 0)
-                    {
-                        continue;
-                    }
+                    if (power == 0) continue;
 
                     while (residue >= power)
                     {
@@ -113,7 +96,7 @@ namespace FilterLanguage.Generators
                         count++;
                     }
 
-                    result[i] = (byte)(count % _colors.Count);
+                    result[i] = (byte) (count % _colors.Count);
                 }
 
                 return result;
@@ -123,62 +106,57 @@ namespace FilterLanguage.Generators
             List<long> ordering = new List<long>();
 
             for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
+            for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
             {
-                for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
+                byte[][] ps = new byte[8][];
+
+                ps[0] = patternFromSample(x, y);
+                ps[1] = reflect(ps[0]);
+                ps[2] = rotate(ps[0]);
+                ps[3] = reflect(ps[2]);
+                ps[4] = rotate(ps[2]);
+                ps[5] = reflect(ps[4]);
+                ps[6] = rotate(ps[4]);
+                ps[7] = reflect(ps[6]);
+
+                for (int k = 0; k < symmetry; k++)
                 {
-                    byte[][] ps = new byte[8][];
-
-                    ps[0] = patternFromSample(x, y);
-                    ps[1] = reflect(ps[0]);
-                    ps[2] = rotate(ps[0]);
-                    ps[3] = reflect(ps[2]);
-                    ps[4] = rotate(ps[2]);
-                    ps[5] = reflect(ps[4]);
-                    ps[6] = rotate(ps[4]);
-                    ps[7] = reflect(ps[6]);
-
-                    for (int k = 0; k < symmetry; k++)
+                    long ind = index(ps[k]);
+                    if (weights.ContainsKey(ind))
                     {
-                        long ind = index(ps[k]);
-                        if (weights.ContainsKey(ind))
-                        {
-                            weights[ind]++;
-                        }
-                        else
-                        {
-                            weights.Add(ind, 1);
-                            ordering.Add(ind);
-                        }
+                        weights[ind]++;
+                    }
+                    else
+                    {
+                        weights.Add(ind, 1);
+                        ordering.Add(ind);
                     }
                 }
             }
 
             T = weights.Count;
-            this._ground = (ground + T) % T;
+            _ground = (ground + T) % T;
             _patterns = new byte[T][];
-            base.Weights = new double[T];
+            Weights = new double[T];
 
             int counter = 0;
             foreach (long w in ordering)
             {
                 _patterns[counter] = patternFromIndex(w);
-                base.Weights[counter] = weights[w];
+                Weights[counter] = weights[w];
                 counter++;
             }
 
             bool agrees(byte[] p1, byte[] p2, int dx, int dy)
             {
-                int xmin = dx < 0 ? 0 : dx, xmax = dx < 0 ? dx + N : N, ymin = dy < 0 ? 0 : dy, ymax = dy < 0 ? dy + N : N;
+                int xmin = dx < 0 ? 0 : dx,
+                    xmax = dx < 0 ? dx + N : N,
+                    ymin = dy < 0 ? 0 : dy,
+                    ymax = dy < 0 ? dy + N : N;
                 for (int y = ymin; y < ymax; y++)
-                {
-                    for (int x = xmin; x < xmax; x++)
-                    {
-                        if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
-                        {
-                            return false;
-                        }
-                    }
-                }
+                for (int x = xmin; x < xmax; x++)
+                    if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
+                        return false;
                 return true;
             }
 
@@ -190,22 +168,16 @@ namespace FilterLanguage.Generators
                 {
                     List<int> list = new List<int>();
                     for (int t2 = 0; t2 < T; t2++)
-                    {
                         if (agrees(_patterns[t], _patterns[t2], Dx[d], Dy[d]))
-                        {
                             list.Add(t2);
-                        }
-                    }
                     Propagator[d][t] = new int[list.Count];
-                    for (int c = 0; c < list.Count; c++)
-                    {
-                        Propagator[d][t][c] = list[c];
-                    }
+                    for (int c = 0; c < list.Count; c++) Propagator[d][t][c] = list[c];
                 }
             }
         }
 
-        protected override bool OnBoundary(int x, int y) => !Periodic && (x + _n > Fmx || y + _n > Fmy || x < 0 || y < 0);
+        protected override bool OnBoundary(int x, int y) =>
+            !Periodic && (x + _n > Fmx || y + _n > Fmy || x < 0 || y < 0);
 
         public override Bitmap Graphics()
         {
@@ -213,7 +185,6 @@ namespace FilterLanguage.Generators
             int[] bitmapData = new int[result.Height * result.Width];
 
             if (Observed != null)
-            {
                 for (int y = 0; y < Fmy; y++)
                 {
                     int dy = y < Fmy - _n + 1 ? 0 : _n - 1;
@@ -221,50 +192,35 @@ namespace FilterLanguage.Generators
                     {
                         int dx = x < Fmx - _n + 1 ? 0 : _n - 1;
                         Color c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
-                        bitmapData[x + y * Fmx] = unchecked((int)0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
+                        bitmapData[x + y * Fmx] = unchecked((int) 0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
                     }
                 }
-            }
             else
-            {
                 for (int i = 0; i < Wave.Length; i++)
                 {
                     int contributors = 0, r = 0, g = 0, b = 0;
                     int x = i % Fmx, y = i / Fmx;
 
                     for (int dy = 0; dy < _n; dy++)
+                    for (int dx = 0; dx < _n; dx++)
                     {
-                        for (int dx = 0; dx < _n; dx++)
-                        {
-                            int sx = x - dx;
-                            if (sx < 0)
-                            {
-                                sx += Fmx;
-                            }
+                        int sx = x - dx;
+                        if (sx < 0) sx += Fmx;
 
-                            int sy = y - dy;
-                            if (sy < 0)
-                            {
-                                sy += Fmy;
-                            }
+                        int sy = y - dy;
+                        if (sy < 0) sy += Fmy;
 
-                            int s = sx + sy * Fmx;
-                            if (OnBoundary(sx, sy))
+                        int s = sx + sy * Fmx;
+                        if (OnBoundary(sx, sy)) continue;
+                        for (int t = 0; t < T; t++)
+                            if (Wave[s][t])
                             {
-                                continue;
+                                contributors++;
+                                Color color = _colors[_patterns[t][dx + dy * _n]];
+                                r += color.R;
+                                g += color.G;
+                                b += color.B;
                             }
-                            for (int t = 0; t < T; t++)
-                            {
-                                if (Wave[s][t])
-                                {
-                                    contributors++;
-                                    Color color = _colors[_patterns[t][dx + dy * _n]];
-                                    r += color.R;
-                                    g += color.G;
-                                    b += color.B;
-                                }
-                            }
-                        }
                     }
 
                     if (contributors == 0)
@@ -273,11 +229,12 @@ namespace FilterLanguage.Generators
                         continue;
                     }
 
-                    bitmapData[i] = unchecked((int)0xff000000 | ((r / contributors) << 16) | ((g / contributors) << 8) | b / contributors);
+                    bitmapData[i] = unchecked((int) 0xff000000 | ((r / contributors) << 16) |
+                                              ((g / contributors) << 8) | b / contributors);
                 }
-            }
 
-            var bits = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly, PixelFormat.Format32bppArgb);
+            var bits = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly,
+                PixelFormat.Format32bppArgb);
             System.Runtime.InteropServices.Marshal.Copy(bitmapData, 0, bits.Scan0, bitmapData.Length);
             result.UnlockBits(bits);
 
@@ -293,16 +250,9 @@ namespace FilterLanguage.Generators
                 for (int x = 0; x < Fmx; x++)
                 {
                     for (int t = 0; t < T; t++)
-                    {
                         if (t != _ground)
-                        {
                             Ban(x + (Fmy - 1) * Fmx, t);
-                        }
-                    }
-                    for (int y = 0; y < Fmy - 1; y++)
-                    {
-                        Ban(x + y * Fmx, _ground);
-                    }
+                    for (int y = 0; y < Fmy - 1; y++) Ban(x + y * Fmx, _ground);
                 }
 
                 Propagate();

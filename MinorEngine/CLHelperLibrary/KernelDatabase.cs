@@ -37,7 +37,7 @@ namespace CLHelperLibrary
                 return;
             }
 
-            this._folderName = folderName;
+            _folderName = folderName;
             _loadedKernels = new Dictionary<string, CLKernel>();
             Initialize();
         }
@@ -50,10 +50,7 @@ namespace CLHelperLibrary
         {
             string[] files = Directory.GetFiles(_folderName, "*.cl");
 
-            foreach (string file in files)
-            {
-                AddProgram(file);
-            }
+            foreach (string file in files) AddProgram(file);
         }
 
 
@@ -63,7 +60,6 @@ namespace CLHelperLibrary
         /// <param name="file">Path fo the file</param>
         public void AddProgram(string file)
         {
-
             if (!File.Exists(file))
             {
                 this.Crash(new InvalidFilePathException(file));
@@ -74,19 +70,14 @@ namespace CLHelperLibrary
             string path = Path.GetFullPath(file);
 
             this.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
-            CLProgram program = new CLProgram(path,GenDataType);
+            CLProgram program = new CLProgram(path, GenDataType);
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
-            {
                 if (!_loadedKernels.ContainsKey(containedKernel.Key))
-                {
                     _loadedKernels.Add(containedKernel.Key, containedKernel.Value);
-                }
                 else
-                {
-                    this.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...", DebugChannel.Warning);
-                }
-            }
+                    this.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
+                        DebugChannel.Warning);
         }
 
         /// <summary>
@@ -102,12 +93,9 @@ namespace CLHelperLibrary
                 kernel = _loadedKernels[name];
                 return true;
             }
+
             kernel = null;
             return false;
-
         }
-
-
-
     }
 }

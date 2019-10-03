@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using MinorEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 
@@ -15,7 +14,7 @@ namespace MinorEngine.engine.ui
         public int quadVAO { get; private set; }
         public ShaderProgram DefaultUIShader { get; private set; }
 
-        private static float[] _screenQuadVertexData = new[]
+        private static float[] _screenQuadVertexData =
         {
             // positions   // texCoords
             -1.0f, 1.0f, 0.0f, 1.0f,
@@ -30,12 +29,12 @@ namespace MinorEngine.engine.ui
         private UIHelper()
         {
             Initialize();
-            FontLibrary=new FontLibrary("fonts/");
+            FontLibrary = new FontLibrary("fonts/");
         }
 
         public static void InitializeUI()
         {
-            _instance=new UIHelper();
+            _instance = new UIHelper();
         }
 
         private void Initialize()
@@ -45,7 +44,7 @@ namespace MinorEngine.engine.ui
             GL.BindVertexArray(quadVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, screenVbo);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -56,9 +55,7 @@ namespace MinorEngine.engine.ui
                 {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
             }, out ShaderProgram shader))
-            {
                 Console.ReadLine();
-            }
 
             DefaultUIShader = shader;
         }

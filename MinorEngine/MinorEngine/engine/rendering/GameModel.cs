@@ -21,8 +21,8 @@ namespace MinorEngine.engine.rendering
         public GameModel(string file, bool deallocTextures = true, bool deallocMeshes = true)
         {
             this.Log("Loading Model File: " + file, DebugChannel.Log);
-            this._deallocMeshes = deallocMeshes;
-            this._deallocTextures = deallocTextures;
+            _deallocMeshes = deallocMeshes;
+            _deallocTextures = deallocTextures;
             LoadModel(file);
         }
 
@@ -34,26 +34,17 @@ namespace MinorEngine.engine.rendering
         public void Destroy()
         {
             if (_deallocMeshes)
-            {
                 foreach (var gameMesh in Meshes)
-                {
                     gameMesh.Destroy();
-                }
-            }
         }
 
         public void SetTextureBuffer(int meshID, GameTexture[] tex)
         {
-            if(meshID >= 0 && meshID < Meshes.Count)
-            {
-                Meshes[meshID].SetTextureBuffer(tex);
-            }
+            if (meshID >= 0 && meshID < Meshes.Count) Meshes[meshID].SetTextureBuffer(tex);
         }
 
         public void Render(ShaderProgram shader, Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-
-
             shader.Use();
 
             GL.UniformMatrix4(shader.GetUniformLocation("modelMatrix"), false, ref modelMat);
@@ -62,17 +53,12 @@ namespace MinorEngine.engine.rendering
             Matrix4 mvp = modelMat * viewMat * projMat;
             GL.UniformMatrix4(shader.GetUniformLocation("mvpMatrix"), false, ref mvp);
 
-            foreach (GameMesh gameMesh in Meshes)
-            {
-                gameMesh.Draw(shader);
-            }
-
+            foreach (GameMesh gameMesh in Meshes) gameMesh.Draw(shader);
         }
 
 
         private void LoadModel(string path)
         {
-
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
             Scene s = context.ImportFile(path);
@@ -84,10 +70,7 @@ namespace MinorEngine.engine.rendering
             }
 
             directory = Path.GetDirectoryName(path);
-            if (directory == string.Empty)
-            {
-                directory = ".";
-            }
+            if (directory == string.Empty) directory = ".";
 
 
             this.Log("Loading Model Finished.", DebugChannel.Log);
@@ -98,24 +81,16 @@ namespace MinorEngine.engine.rendering
 
         public void processNode(Node node, Scene s)
         {
-
             this.Log("Processing Node: " + node.Name, DebugChannel.Log);
             if (node.HasMeshes)
             {
                 this.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
-                for (int i = 0; i < node.MeshCount; i++)
-                {
-                    Meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s));
-                }
+                for (int i = 0; i < node.MeshCount; i++) Meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s));
             }
 
             if (node.HasChildren)
-            {
                 for (int i = 0; i < node.Children.Count; i++)
-                {
                     processNode(node.Children[i], s);
-                }
-            }
         }
 
         private GameMesh processMesh(Mesh mesh, Scene s)
@@ -155,9 +130,8 @@ namespace MinorEngine.engine.rendering
             for (int i = 0; i < mesh.FaceCount; i++)
             {
                 Face f = mesh.Faces[i];
-                indices.AddRange(f.Indices.Select(x => (uint)x));
+                indices.AddRange(f.Indices.Select(x => (uint) x));
             }
-
 
 
             Material m = s.Materials[mesh.MaterialIndex];
@@ -176,7 +150,8 @@ namespace MinorEngine.engine.rendering
         {
             List<GameTexture> ret = new List<GameTexture>();
 
-            this.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType), DebugChannel.Log);
+            this.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
+                DebugChannel.Log);
             for (int i = 0; i < m.GetMaterialTextureCount(texType); i++)
             {
                 TextureSlot s;

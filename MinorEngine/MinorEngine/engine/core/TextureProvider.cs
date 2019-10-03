@@ -1,7 +1,5 @@
 ﻿using System;
-
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Text;
 using Common;
 using MinorEngine.engine.rendering;
@@ -23,10 +21,7 @@ namespace MinorEngine.engine.core
         {
             _sb.Clear();
             _sb.Append("Loaded Textures:");
-            foreach (var tuple in _refs)
-            {
-                _sb.Append("\n" + tuple.Value.Item1 + ": " + tuple.Value.Item3);
-            }
+            foreach (var tuple in _refs) _sb.Append("\n" + tuple.Value.Item1 + ": " + tuple.Value.Item3);
 
             return _sb.ToString();
         }
@@ -45,12 +40,8 @@ namespace MinorEngine.engine.core
         public static int IsLoaded(string path)
         {
             foreach (var tRef in _refs)
-            {
                 if (tRef.Value.Item1 == path)
-                {
                     return tRef.Key;
-                }
-            }
 
             return -1;
         }
@@ -69,11 +60,7 @@ namespace MinorEngine.engine.core
         private static void AddToDb(GameTexture tex, string name)
         {
             if (!_refs.ContainsKey(tex.TextureId))
-            {
-
                 _refs.Add(tex.TextureId, new Tuple<string, GameTexture, int>(name, tex, 1));
-
-            }
         }
 
         public static void GiveBack(GameTexture tex)
@@ -97,19 +84,13 @@ namespace MinorEngine.engine.core
         }
 
 
-
         public static GameTexture Load(string path)
         {
             int r = IsLoaded(path);
             if (r == -1)
-            {
                 r = Create(path);
-            }
             else
-            {
-
                 _refs[r] = new Tuple<string, GameTexture, int>(_refs[r].Item1, _refs[r].Item2, _refs[r].Item3 + 1);
-            }
 
 
             return _refs[r].Item2;
@@ -117,10 +98,7 @@ namespace MinorEngine.engine.core
 
         public static void DestroyAll()
         {
-            foreach (var tuple in _refs)
-            {
-                tuple.Value.Item2.Destroy();
-            }
+            foreach (var tuple in _refs) tuple.Value.Item2.Destroy();
         }
     }
 }

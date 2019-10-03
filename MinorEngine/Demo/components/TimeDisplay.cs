@@ -1,6 +1,6 @@
 ﻿using System;
-using MinorEngine.engine.ui;
 using MinorEngine.engine.components;
+using MinorEngine.engine.ui;
 
 namespace Demo.components
 {
@@ -11,11 +11,11 @@ namespace Demo.components
         private float frameTime;
         private int fpsFrames;
         private int fps;
+
         protected override void Awake()
         {
             base.Awake();
             tr = Owner.GetComponent<UITextRendererComponent>();
-
         }
 
         protected override void Update(float deltaTime)
@@ -31,8 +31,7 @@ namespace Demo.components
             }
 
             tr.Text = "DT: " + MathF.Round(time, 3) +
-                "\nFPS: " + MathF.Round(fps);
-
+                      "\nFPS: " + MathF.Round(fps);
         }
     }
 }

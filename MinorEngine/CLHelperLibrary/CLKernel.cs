@@ -1,10 +1,7 @@
-﻿using System;
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Common;
-using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.CommandQueues;
+using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 
@@ -24,6 +21,7 @@ namespace CLHelperLibrary
         /// The Compiled and Linked OpenCL Kernel
         /// </summary>
         public Kernel Kernel { get; }
+
         /// <summary>
         /// The name of the CLKernel
         /// </summary>
@@ -39,7 +37,8 @@ namespace CLHelperLibrary
         {
             Kernel = k;
             Name = name;
-            this.Parameter = new Dictionary<string, KernelParameter>(parameter.Select(x => new KeyValuePair<string, KernelParameter>(x.Name, x)));
+            Parameter = new Dictionary<string, KernelParameter>(parameter.Select(x =>
+                new KeyValuePair<string, KernelParameter>(x.Name, x)));
         }
 
         /// <summary>
@@ -91,7 +90,6 @@ namespace CLHelperLibrary
 
             if (Parameter.ElementAt(index).Value.IsArray)
             {
-
                 //TODO Buffer handling
                 //Just create a buffer and pass it as MemoryObject
             }
@@ -103,7 +101,6 @@ namespace CLHelperLibrary
                 Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
 #endif
             }
-
         }
 
         /// <summary>
@@ -114,7 +111,8 @@ namespace CLHelperLibrary
         /// <param name="dimensions">The dimensions of the image buffer</param>
         /// <param name="enabledChannels">The enabled channels of the input buffer</param>
         /// <param name="channelCount">The number of channels in use</param>
-        internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, float genTypeMaxVal, MemoryBuffer enabledChannels, int channelCount)
+        internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,
+            MemoryBuffer enabledChannels, int channelCount)
         {
 #if !TRAVIS_TEST
             int size = dimensions.x * dimensions.y * dimensions.z * channelCount;

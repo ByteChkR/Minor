@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using ADL;
 using ADL.Configs;
-using ADL.Streams;
 using ADL.Crash;
-using ADL.Network.Streams;
 using ADL.Network.Client;
-
+using ADL.Network.Streams;
+using ADL.Streams;
 
 namespace Common
 {
@@ -16,13 +14,17 @@ namespace Common
     /// </summary>
     internal class CrashLogDictionary : SerializableDictionary<string, ApplicationException>
     {
-        public CrashLogDictionary() : this(new Dictionary<string, ApplicationException>()) { }
-        public CrashLogDictionary(Dictionary<string, ApplicationException> dict) : base(dict) { }
+        public CrashLogDictionary() : this(new Dictionary<string, ApplicationException>())
+        {
+        }
+
+        public CrashLogDictionary(Dictionary<string, ApplicationException> dict) : base(dict)
+        {
+        }
     }
 
     public static class DebugHelper
     {
-
         public static void SetDebugLoggingInformation(int id, int mask, Version version)
         {
             _programID = id;
@@ -31,7 +33,7 @@ namespace Common
         }
 
         private static int _programID = -1;
-        private static Version _currentProgramVersion=null;
+        private static Version _currentProgramVersion;
         private static NetLogStream _netLogStream;
         private static int _netLogMask = -1;
 
@@ -65,20 +67,14 @@ namespace Common
         {
             get
             {
-                if (_lts == null)
-                {
-                    return DebugChannel.ALL;
-                }
-                return (DebugChannel)_lts.Mask;
+                if (_lts == null) return DebugChannel.ALL;
+                return (DebugChannel) _lts.Mask;
             }
             set
             {
-                if (!_initialized)
-                {
-                    Initialize();
-                }
+                if (!_initialized) Initialize();
 
-                _lts.Mask = (int)value;
+                _lts.Mask = (int) value;
             }
         }
 
@@ -87,10 +83,7 @@ namespace Common
         {
 #if !TRAVIS_TEST //To stop make unit testing wait for user input
             Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
-            if (Console.ReadLine().ToLower() == "y")
-            {
-                return true;
-            }
+            if (Console.ReadLine().ToLower() == "y") return true;
 #endif
 
             return false;
@@ -101,7 +94,6 @@ namespace Common
         /// </summary>
         private static void Initialize()
         {
-
             _initialized = true;
             Debug.AdlEnabled = true;
             Debug.CheckForUpdates = false;
@@ -114,7 +106,7 @@ namespace Common
             Debug.AddPrefixForMask(-1, "[ALL]");
 
             CrashConfig c = new CrashConfig();
-            c.CrashMask = (int)DebugChannel.Internal_Error;
+            c.CrashMask = (int) DebugChannel.Internal_Error;
             c.CheckForUpdates = false;
             CrashHandler.Initialize(c);
 
@@ -122,10 +114,11 @@ namespace Common
             Debug.AddOutputStream(_lts);
 
 #if !TRAVIS_TEST
-            if (_programID != -1 &&  AskForDebugLogSending())
+            if (_programID != -1 && AskForDebugLogSending())
             {
                 NetworkConfig conf = NetworkConfig.Load(AdlNetworkConfigPath);
-                _netLogStream = NetUtils.CreateNetworkStream(conf, _programID, _currentProgramVersion, -1, MatchType.MatchAll, false);
+                _netLogStream = NetUtils.CreateNetworkStream(conf, _programID, _currentProgramVersion, -1,
+                    MatchType.MatchAll, false);
                 Debug.AddOutputStream(_netLogStream);
             }
 #endif
@@ -139,10 +132,7 @@ namespace Common
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
         public static void Log(this object obj, string message, DebugChannel channel)
         {
-            if (!_initialized)
-            {
-                Initialize();
-            }
+            if (!_initialized) Initialize();
 
             Debug.LogGen(channel, message);
         }
@@ -154,20 +144,12 @@ namespace Common
         /// <param name="ex">The exception that led to the crash</param>
         public static void Crash(this object obj, ApplicationException ex)
         {
-            if (!_initialized)
-            {
-                Initialize();
-            }
-            CrashHandler.Log(ex, (int)DebugChannel.Internal_Error);
+            if (!_initialized) Initialize();
+            CrashHandler.Log(ex, (int) DebugChannel.Internal_Error);
 
-            if (CrashOnException)
-            {
-                throw ex;
-            }
-            CrashLog.Keys.Add(ADL.Utils.TimeStamp);
+            if (CrashOnException) throw ex;
+            CrashLog.Keys.Add(Utils.TimeStamp);
             CrashLog.Values.Add(ex);
         }
-
-
     }
 }

@@ -15,7 +15,7 @@ using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace MinorEngine.engine.rendering
 {
-    public class GameTexture: IDestroyable
+    public class GameTexture : IDestroyable
     {
         public int TextureId { get; }
         public TextureType TexType { get; set; }
@@ -30,16 +30,18 @@ namespace MinorEngine.engine.rendering
                 return width;
             }
         }
+
         public float Height
         {
             get
             {
                 GL.BindTexture(TextureTarget.Texture2D, TextureId);
-                GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight, out float height);
+                GL.GetTexLevelParameter(TextureTarget.Texture2D, 0, GetTextureParameter.TextureHeight,
+                    out float height);
                 return height;
             }
         }
-        
+
 
         private GameTexture()
         {
@@ -51,7 +53,6 @@ namespace MinorEngine.engine.rendering
 
         ~GameTexture()
         {
-            
         }
 
         public void Destroy()
@@ -59,17 +60,19 @@ namespace MinorEngine.engine.rendering
             GL.DeleteTexture(TextureId);
         }
 
-        private static int texCreateCount = 0;
+        private static int texCreateCount;
+
         public static GameTexture Create(int width, int height, bool cache = true)
         {
             GameTexture ret = new GameTexture();
 
-            
-            byte[] buffer = new byte[width*height*4];
+
+            byte[] buffer = new byte[width * height * 4];
 
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
-            
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, TKPixelFormat.Bgra,
+                PixelType.UnsignedByte, buffer);
+
             DefaultTexParameter();
 
             GL.BindTexture(TextureTarget.Texture2D, 0);
@@ -79,22 +82,16 @@ namespace MinorEngine.engine.rendering
                 string n = "CreatedTexture_" + texCreateCount + "_" + width + "_" + height;
                 texCreateCount++;
                 TextureProvider.Add(ret, n);
-
             }
+
             return ret;
         }
 
         public static GameTexture[] LoadTextures(Scene scene)
         {
-            if (!scene.HasTextures)
-            {
-                return new GameTexture[0];
-            }
+            if (!scene.HasTextures) return new GameTexture[0];
             List<GameTexture> list = new List<GameTexture>();
-            foreach (var x in scene.Textures)
-            {
-                list.Add(ConvertToTexture(x));
-            }
+            foreach (var x in scene.Textures) list.Add(ConvertToTexture(x));
 
             return list.ToArray();
         }
@@ -102,10 +99,7 @@ namespace MinorEngine.engine.rendering
         private static byte[] flattenImageData(Texel[] imageData)
         {
             byte[] ret = new byte[imageData.Length * 4];
-            for (int i = 0; i < imageData.Length; i++)
-            {
-                TexelToByteSequence(i * 4, ret, imageData[i]);
-            }
+            for (int i = 0; i < imageData.Length; i++) TexelToByteSequence(i * 4, ret, imageData[i]);
 
             return ret;
         }
@@ -116,10 +110,10 @@ namespace MinorEngine.engine.rendering
             arr[startidx + 1] = txl.G;
             arr[startidx + 2] = txl.B;
             arr[startidx + 3] = txl.A;
-
         }
 
-        private static int texAssimpCount = 0;
+        private static int texAssimpCount;
+
         public static GameTexture ConvertToTexture(EmbeddedTexture tex)
         {
             string n = "AssimpEmbeddedTexture" + texAssimpCount + "_" + tex.Width + "_" + tex.Height;
@@ -135,12 +129,12 @@ namespace MinorEngine.engine.rendering
             IntPtr ptr = handle.AddrOfPinnedObject();
 
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, tex.Width, tex.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, ptr);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, tex.Width, tex.Height, 0,
+                OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, ptr);
             handle.Free();
             DefaultTexParameter();
-            TextureProvider.Add(ret,n);
+            TextureProvider.Add(ret, n);
             return ret;
-
         }
 
         /// <summary>
@@ -151,15 +145,15 @@ namespace MinorEngine.engine.rendering
         /// <returns></returns>
         public static MemoryBuffer CreateFromTexture(GameTexture tex, MemoryFlag flags)
         {
-
-            byte[] buffer = new byte[(int)(tex.Width * tex.Height * 4)];
+            byte[] buffer = new byte[(int) (tex.Width * tex.Height * 4)];
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
-            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0,0,  (int)tex.Width, (int)tex.Height,1, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
+            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int) tex.Width, (int) tex.Height, 1, TKPixelFormat.Bgra,
+                PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
 
             handle.Free();
-            
+
 #if TRAVIS_TEST
             bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
@@ -172,16 +166,17 @@ namespace MinorEngine.engine.rendering
 
         private static void DefaultTexParameter()
         {
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
-
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
+                (int) TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
+                (int) TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Repeat);
         }
 
         public static GameTexture Load(string filename)
         {
-            filename.Log($"Loading Texture: " + filename, DebugChannel.Log);
+            filename.Log("Loading Texture: " + filename, DebugChannel.Log);
             Bitmap bmp = new Bitmap(filename);
 
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
@@ -191,32 +186,26 @@ namespace MinorEngine.engine.rendering
 
             GameTexture ret = new GameTexture();
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0, TKPixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, data.Width, data.Height, 0,
+                TKPixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
             bmp.UnlockBits(data);
-
 
 
             DefaultTexParameter();
 
-            
 
             return ret;
-
         }
 
         public static void Update(GameTexture tex, byte[] buffer, int width, int height)
         {
-
-
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
-            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, width, height, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
+            GL.TexSubImage2D(TextureTarget.Texture2D, 0, 0, 0, width, height, TKPixelFormat.Bgra,
+                PixelType.UnsignedByte, buffer);
             GL.BindTexture(TextureTarget.Texture2D, 0);
-
-            
-
         }
 
-        private static int texRawCount = 0;
+        private static int texRawCount;
 
         public static GameTexture Load(byte[] buffer, int width, int height)
         {
@@ -226,8 +215,8 @@ namespace MinorEngine.engine.rendering
             ret.Log($"Loading Texture... Width: {width} Height: {height}", DebugChannel.Log);
 
             GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, TKPixelFormat.Bgra, PixelType.UnsignedByte, buffer);
-
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, TKPixelFormat.Bgra,
+                PixelType.UnsignedByte, buffer);
 
 
             DefaultTexParameter();

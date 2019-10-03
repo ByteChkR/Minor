@@ -13,23 +13,14 @@ namespace MinorEngine.engine.core
         /// <returns></returns>
         public static bool IsContainedInMask(int mask, int flag, bool matchType)
         {
-            if (mask == 0 || flag == 0)
-            {
-                return false; //Anti-Wildcard
-            }
+            if (mask == 0 || flag == 0) return false; //Anti-Wildcard
 
             if (matchType) //If true it compares the whole mask with the whole flag(if constructed from different flags)
-            {
                 return (mask & flag) == flag;
-            }
             var a = GetUniqueMasksSet(flag);
             foreach (var f in a)
-            {
                 if ((mask & f) == f)
-                {
                     return true;
-                }
-            }
 
             return false;
         }
@@ -41,18 +32,12 @@ namespace MinorEngine.engine.core
         /// <returns></returns>
         public static List<int> GetUniqueMasksSet(int mask)
         {
-            if (IsUniqueMask(mask))
-            {
-                return new List<int> { mask };
-            }
+            if (IsUniqueMask(mask)) return new List<int> {mask};
             var ret = new List<int>();
             for (var i = 0; i < sizeof(int) * sizeof(byte); i++)
             {
                 var f = 1 << i;
-                if (IsContainedInMask(mask, f, true))
-                {
-                    ret.Add(f);
-                }
+                if (IsContainedInMask(mask, f, true)) ret.Add(f);
             }
 
             return ret;

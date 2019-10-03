@@ -13,7 +13,7 @@ namespace FilterLanguage
         /// The line where the interpreter was
         /// </summary>
         public int Line { get; }
-        
+
         /// <summary>
         /// The active buffer
         /// </summary>
@@ -32,9 +32,9 @@ namespace FilterLanguage
         /// <param name="argumentStack">The unfinished argument stack</param>
         public InterpreterState(int line, MemoryBuffer activeBuffer, Stack<object> argumentStack)
         {
-            this.Line = line;
-            this.ActiveBuffer = activeBuffer;
-            this.ArgumentStack = argumentStack;
+            Line = line;
+            ActiveBuffer = activeBuffer;
+            ArgumentStack = argumentStack;
         }
     }
 }

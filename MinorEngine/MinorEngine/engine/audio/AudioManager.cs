@@ -15,7 +15,6 @@ namespace MinorEngine.engine.audio
         public static void Initialize()
         {
             _context = new AudioContext();
-
         }
 
 
@@ -24,7 +23,7 @@ namespace MinorEngine.engine.audio
 
         private static Dictionary<string, Type> _formats = new Dictionary<string, Type>
         {
-            {".wav", typeof(WAVAudioFormat) }
+            {".wav", typeof(WAVAudioFormat)}
         };
 
         public static ALFormat GetSoundFormat(int channels, int bits)
@@ -38,17 +37,14 @@ namespace MinorEngine.engine.audio
         }
 
 
-
         private static bool TryGetFormatProvider(string filename, out IAudioFormat formatProvider)
         {
             foreach (KeyValuePair<string, Type> format in _formats)
-            {
                 if (filename.EndsWith(format.Key))
                 {
-                    formatProvider = (IAudioFormat)Activator.CreateInstance(format.Value);
+                    formatProvider = (IAudioFormat) Activator.CreateInstance(format.Value);
                     return true;
                 }
-            }
 
 
             filename.Crash(new ME_InvalidAudioFile("Could not open Format. Unsupported."));
@@ -58,7 +54,6 @@ namespace MinorEngine.engine.audio
 
         public static bool TryLoad(string filename, out AudioClip clip)
         {
-
             bool ret = TryGetFormatProvider(filename, out IAudioFormat formatProvider);
 
             if (ret)
@@ -79,8 +74,6 @@ namespace MinorEngine.engine.audio
 
             clip = null;
             return false;
-
         }
-
     }
 }

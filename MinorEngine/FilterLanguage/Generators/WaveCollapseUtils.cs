@@ -7,10 +7,7 @@ namespace FilterLanguage.Generators
         public static int Random(this double[] a, double r)
         {
             double sum = a.Sum();
-            for (int j = 0; j < a.Length; j++)
-            {
-                a[j] /= sum;
-            }
+            for (int j = 0; j < a.Length; j++) a[j] /= sum;
 
             int i = 0;
             double x = 0;
@@ -18,10 +15,7 @@ namespace FilterLanguage.Generators
             while (i < a.Length)
             {
                 x += a[i];
-                if (r <= x)
-                {
-                    return i;
-                }
+                if (r <= x) return i;
                 i++;
             }
 
@@ -31,10 +25,7 @@ namespace FilterLanguage.Generators
         public static long Power(int a, int n)
         {
             long product = 1;
-            for (int i = 0; i < n; i++)
-            {
-                product *= a;
-            }
+            for (int i = 0; i < n; i++) product *= a;
             return product;
         }
     }

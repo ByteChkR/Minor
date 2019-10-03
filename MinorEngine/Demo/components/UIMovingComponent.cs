@@ -1,6 +1,6 @@
 ﻿using System;
-using MinorEngine.engine.ui;
 using MinorEngine.engine.components;
+using MinorEngine.engine.ui;
 using OpenTK;
 
 namespace Demo.components
@@ -28,9 +28,6 @@ namespace Demo.components
             float x = MathF.Abs(MathF.Sin(time * 2)) * 0.3f + 0.1f;
             float y = MathF.Abs(MathF.Cos(time * 2)) * 0.3f + 0.1f;
             comp.Scale = new Vector2(x, y);
-
-
-
         }
     }
 }

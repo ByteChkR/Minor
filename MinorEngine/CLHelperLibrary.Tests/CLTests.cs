@@ -3,8 +3,9 @@ using System.IO;
 using System.Linq;
 using CLHelperLibrary.CLStructs;
 using Common;
-using Xunit;
 using OpenCl.DotNetCore.Memory;
+using Xunit;
+
 namespace CLHelperLibrary.Tests
 {
     public class CLTests
@@ -14,29 +15,22 @@ namespace CLHelperLibrary.Tests
         public void CL_CreateBuffer()
         {
             byte[] b = new byte[255];
-            for (int i = 0; i < b.Length; i++)
-            {
-                b[i] = (byte)i;
-            }
+            for (int i = 0; i < b.Length; i++) b[i] = (byte) i;
 
             MemoryBuffer buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
-            
+
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
-            
         }
 
         [Fact]
         public void CL_ReadBuffer()
         {
             float[] b = new float[255];
-            for (int i = 0; i < b.Length; i++)
-            {
-                b[i] = (float)i;
-            }
+            for (int i = 0; i < b.Length; i++) b[i] = i;
 
             MemoryBuffer buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
-            
+
             float[] c = CL.ReadBuffer<float>(buffer, b.Length);
 
 
@@ -47,32 +41,25 @@ namespace CLHelperLibrary.Tests
         public void CL_WriteBuffer()
         {
             float[] b = new float[255];
-            for (int i = 0; i < b.Length; i++)
-            {
-                b[i] = (float)i;
-            }
+            for (int i = 0; i < b.Length; i++) b[i] = i;
 
             MemoryBuffer buffer = CL.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
-            
 
-            CL.WriteToBuffer<float>(buffer, b);
+
+            CL.WriteToBuffer(buffer, b);
 
             float[] c = CL.ReadBuffer<float>(buffer, b.Length);
 
-            
-            Assert.True(CheckValues(c,b));
+
+            Assert.True(CheckValues(c, b));
         }
 
         private static bool CheckValues(float[] values, float[] reference)
         {
             bool working = true;
             for (int i = 0; i < values.Length; i++)
-            {
                 if (Math.Abs(values[i] - reference[i]) > 0.01f)
-                {
                     working = false;
-                }
-            }
 
             return working;
         }
@@ -87,7 +74,7 @@ namespace CLHelperLibrary.Tests
             KernelDatabase kdb = new KernelDatabase(path, DataTypes.UCHAR1);
 
             Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel));
-            
+
             Assert.True(kernel.Parameter.Count == 5);
 
             Assert.True(kernel.Parameter.ElementAt(0).Value.IsArray);
@@ -114,9 +101,6 @@ namespace CLHelperLibrary.Tests
             Assert.True(kernel.Parameter.ElementAt(4).Value.DataType == DataTypes.UCHAR1);
             Assert.True(kernel.Parameter.ElementAt(4).Value.Id == 4);
             Assert.True(kernel.Parameter.ElementAt(4).Value.Name == "value");
-
         }
-
-        
     }
 }

@@ -1,9 +1,6 @@
 ﻿using BepuPhysics;
 using BepuPhysics.Constraints;
-using BepuUtilities.Collections;
-using CLHelperLibrary;
 using Common;
-using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.physics;
 using OpenTK;
@@ -36,7 +33,8 @@ namespace MinorEngine.components
         protected ushort Layer { get; } = ushort.MaxValue;
         protected ushort Collidable { get; } = ushort.MaxValue;
 
-        protected AbstractDynamicCollider(ColliderType type, PhysicsMaterial phyMaterial, ushort collisionLayer, ushort collidableLayers)
+        protected AbstractDynamicCollider(ColliderType type, PhysicsMaterial phyMaterial, ushort collisionLayer,
+            ushort collidableLayers)
         {
             Type = type;
             Layer = collisionLayer;
@@ -62,12 +60,10 @@ namespace MinorEngine.components
             phyMat = PhysicsMaterial;
 
 
-
             ref Layer l = ref Physics.CollisionFilters.Allocate(BodyReference.Handle);
             l.CollidableSubgroups = Collidable;
             l.SubgroupMembership = Layer;
             l.GroupId = 0;
-
         }
     }
 }

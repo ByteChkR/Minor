@@ -1,13 +1,7 @@
-﻿using System;
-using BepuPhysics;
-using BepuPhysics.CollisionDetection;
-using BepuPhysics.Constraints;
-using BepuUtilities;
-using Common;
+﻿using BepuPhysics;
 using MinorEngine.engine.components;
 using MinorEngine.engine.physics;
 using OpenTK;
-using Quaternion = BepuUtilities.Quaternion;
 
 namespace MinorEngine.components
 {
@@ -19,7 +13,7 @@ namespace MinorEngine.components
         public RigidBodyComponent(AbstractDynamicCollider dynamicCollider)
         {
             Collider = dynamicCollider;
-            Constraints = new RigidBodyConstraints() { FixRotation = true};
+            Constraints = new RigidBodyConstraints {FixRotation = true};
         }
 
         protected override void Update(float deltaTime)

@@ -1,7 +1,6 @@
 ﻿using System.Numerics;
 using System.Runtime.CompilerServices;
 using BepuPhysics;
-using MinorEngine.engine.physics;
 
 namespace MinorEngine.engine.physics.callbacks
 {
@@ -35,14 +34,11 @@ namespace MinorEngine.engine.physics.callbacks
         /// <param name="workerIndex">Index of the worker thread processing this body.</param>
         /// <param name="velocity">Reference to the body's current velocity to integrate.</param>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void IntegrateVelocity(int bodyIndex, in RigidPose pose, in BodyInertia localInertia, int workerIndex, ref BodyVelocity velocity)
+        public void IntegrateVelocity(int bodyIndex, in RigidPose pose, in BodyInertia localInertia, int workerIndex,
+            ref BodyVelocity velocity)
         {
             //Note that we avoid accelerating kinematics. Kinematics are any body with an inverse mass of zero (so a mass of ~infinity). No force can move them.
-            if (localInertia.InverseMass > 0)
-            {
-                velocity.Linear = velocity.Linear + gravityDt;
-            }
+            if (localInertia.InverseMass > 0) velocity.Linear = velocity.Linear + gravityDt;
         }
-
     }
 }

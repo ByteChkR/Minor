@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
-using System.Runtime.CompilerServices;
 using BepuPhysics;
 using BepuPhysics.Collidables;
-using BepuPhysics.CollisionDetection;
 using BepuUtilities;
 using BepuUtilities.Memory;
 using MinorEngine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.physics.callbacks;
-using NarrowPhase = MinorEngine.engine.physics.callbacks.NarrowPhase;
-using Quaternion = BepuUtilities.Quaternion;
 
 namespace MinorEngine.engine.physics
 {
@@ -26,6 +21,7 @@ namespace MinorEngine.engine.physics
         public static List<Layer> LayerList { get; } = new List<Layer>();
         public static Vector3 Gravity { get; set; } = new Vector3(0, -10, 0);
         private static IThreadDispatcher ThreadDispatcher { get; set; }
+
         public static void Init()
         {
             //The buffer pool is a source of raw memory blobs for the engine to use.
@@ -36,7 +32,7 @@ namespace MinorEngine.engine.physics
             ThreadDispatcher = new ThreadDispatcher(GameEngine.Instance.Settings.PhysicsThreadCount);
         }
 
-        
+
         public static void SetLayerDetection(int bodyhandle, int otherBodyHandle)
         {
             ref var thisLayer = ref CollisionFilters.Allocate(bodyhandle);
@@ -76,8 +72,8 @@ namespace MinorEngine.engine.physics
         public static void AddBoxStatic(Vector3 position, Vector3 dimensions, ushort layer, ushort collidable)
         {
             _simulation.Statics.Add(new StaticDescription(position,
-               new CollidableDescription(_simulation.Shapes.Add(new Box(dimensions.X, dimensions.Y, dimensions.Z)),
-                   0.1f)));
+                new CollidableDescription(_simulation.Shapes.Add(new Box(dimensions.X, dimensions.Y, dimensions.Z)),
+                    0.1f)));
         }
 
         public static void Update(float deltaTime)
@@ -95,13 +91,12 @@ namespace MinorEngine.engine.physics
                     new CollidableDescription(_simulation.Shapes.Add(sphere), 0.1f),
                     new BodyActivityDescription(0.01f)));
             return _simulation.Bodies.GetBodyReference(handle);
-
         }
 
         internal static void AddBoxStatic(Vector3 position, float radius, ushort layer, ushort collidable)
         {
-            _simulation.Statics.Add(new StaticDescription(position, new CollidableDescription(_simulation.Shapes.Add(new Sphere(radius)), 0.1f)));
-
+            _simulation.Statics.Add(new StaticDescription(position,
+                new CollidableDescription(_simulation.Shapes.Add(new Sphere(radius)), 0.1f)));
         }
     }
 }

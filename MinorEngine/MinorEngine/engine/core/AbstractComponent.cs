@@ -5,40 +5,36 @@ using OpenTK.Input;
 
 namespace MinorEngine.engine.components
 {
-    public abstract class AbstractComponent :IDestroyable
+    public abstract class AbstractComponent : IDestroyable
     {
         public GameObject Owner { get; set; }
         private bool _awake;
 
         protected virtual void Awake()
         {
-
         }
 
         public void Destroy()
         {
-
-            this.Log("Destroying Component of Type: " + this.GetType().Name, DebugChannel.Log);
+            this.Log("Destroying Component of Type: " + GetType().Name, DebugChannel.Log);
             OnDestroy();
             _awake = false;
         }
 
         protected virtual void OnDestroy()
         {
-
         }
 
         protected virtual void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-
         }
+
         protected virtual void OnKeyDown(object sender, KeyboardKeyEventArgs e)
         {
-
         }
+
         protected virtual void OnKeyUp(object sender, KeyboardKeyEventArgs e)
         {
-
         }
 
         internal void onPress(object sender, KeyPressEventArgs e)
@@ -48,7 +44,8 @@ namespace MinorEngine.engine.components
                 Awake();
                 _awake = true;
             }
-            OnKeyPress(sender,e);
+
+            OnKeyPress(sender, e);
         }
 
         internal void onKeyDown(object sender, KeyboardKeyEventArgs e)
@@ -58,6 +55,7 @@ namespace MinorEngine.engine.components
                 Awake();
                 _awake = true;
             }
+
             OnKeyDown(sender, e);
         }
 
@@ -68,6 +66,7 @@ namespace MinorEngine.engine.components
                 Awake();
                 _awake = true;
             }
+
             OnKeyUp(sender, e);
         }
 
@@ -78,12 +77,12 @@ namespace MinorEngine.engine.components
                 Awake();
                 _awake = true;
             }
+
             Update(deltaTime);
         }
 
         protected virtual void Update(float deltaTime)
         {
-
         }
     }
 }

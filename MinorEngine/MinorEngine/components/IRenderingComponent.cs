@@ -1,5 +1,4 @@
-﻿using MinorEngine.engine.components;
-using MinorEngine.engine.rendering;
+﻿using MinorEngine.engine.rendering;
 using OpenTK;
 
 namespace MinorEngine.components
@@ -9,8 +8,5 @@ namespace MinorEngine.components
         void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat);
         ShaderProgram Shader { get; set; }
         int RenderMask { get; set; }
-
-
-
     }
 }

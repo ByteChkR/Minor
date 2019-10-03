@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Text;
 using MinorEngine.engine.components;
@@ -16,8 +13,7 @@ namespace MinorEngine.engine.ui.utils
 {
     public class DebugConsoleComponent : AbstractComponent
     {
-
-        private static int MaxConsoleLines => (GameEngine.Instance.Height-100)/30;
+        private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 30;
         private const string HelpText = "Press C to Open the FL Console";
         private const string ConsoleTitle = "GameEngine Console:";
         private UITextRendererComponent _title;
@@ -25,6 +21,7 @@ namespace MinorEngine.engine.ui.utils
         private UITextRendererComponent _consoleOutput;
         private StringBuilder _sb;
         private StringBuilder _outSB;
+
         public delegate string ConsoleCommand(string[] args);
 
         private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
@@ -32,7 +29,7 @@ namespace MinorEngine.engine.ui.utils
         private readonly List<string> _commandHistory = new List<string>();
         private int _currentId;
 
-        private int inputIndex = 0;
+        private int inputIndex;
 
         private bool _blinkActive;
         private readonly float _blinkMaxTime = 0.5f;
@@ -42,13 +39,12 @@ namespace MinorEngine.engine.ui.utils
         private bool _invalidate;
 
 
-
         public static GameObject CreateConsole()
         {
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"},
+                {ShaderType.VertexShader, "shader/UIRender.vs"}
             }, out ShaderProgram textShader);
 
             GameObject obj = new GameObject("Console");
@@ -85,21 +81,14 @@ namespace MinorEngine.engine.ui.utils
             _out.AddComponent(_tOut);
             _titleObj.AddComponent(_tText);
             return obj;
-
         }
 
 
         public void WriteToConsole(string text)
         {
             string[] arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in arr)
-            {
-                _consoleOutBuffer.Enqueue(s);
-            }
-            while (_consoleOutBuffer.Count > MaxConsoleLines)
-            {
-                _consoleOutBuffer.Dequeue();
-            }
+            foreach (var s in arr) _consoleOutBuffer.Enqueue(s);
+            while (_consoleOutBuffer.Count > MaxConsoleLines) _consoleOutBuffer.Dequeue();
         }
 
 
@@ -107,10 +96,7 @@ namespace MinorEngine.engine.ui.utils
         {
             _outSB.Clear();
 
-            foreach (var line in _consoleOutBuffer)
-            {
-                _outSB.Append(line + "\n");
-            }
+            foreach (var line in _consoleOutBuffer) _outSB.Append(line + "\n");
 
             return _outSB.ToString();
         }
@@ -155,7 +141,6 @@ namespace MinorEngine.engine.ui.utils
             {
                 _sb.Append("\n ");
                 _sb.Append(consoleCommand.Key);
-
             }
 
             return _sb.ToString();
@@ -163,10 +148,7 @@ namespace MinorEngine.engine.ui.utils
 
         public void AddCommand(string name, ConsoleCommand command)
         {
-            if (!_commands.ContainsKey(name))
-            {
-                _commands.Add(name, command);
-            }
+            if (!_commands.ContainsKey(name)) _commands.Add(name, command);
         }
 
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
@@ -174,13 +156,9 @@ namespace MinorEngine.engine.ui.utils
             if (_showConsole)
             {
                 if (inputIndex >= _sb.Length)
-                {
                     _sb.Append(e.KeyChar);
-                }
                 else
-                {
                     _sb.Insert(inputIndex, e.KeyChar);
-                }
 
                 inputIndex++;
 
@@ -188,7 +166,6 @@ namespace MinorEngine.engine.ui.utils
 
                 _currentId = _commandHistory.Count;
             }
-
         }
 
         protected override void OnKeyUp(object sender, KeyboardKeyEventArgs e)
@@ -204,16 +181,12 @@ namespace MinorEngine.engine.ui.utils
                     {
                         words.RemoveAt(0);
                         string s = cmd?.Invoke(words.ToArray());
-                        if (s == null)
-                        {
-                            s = "No Return";
-                        }
+                        if (s == null) s = "No Return";
 
                         WriteToConsole(s);
                     }
                     else
                     {
-
                         WriteToConsole("Command Not found");
                     }
 
@@ -239,7 +212,6 @@ namespace MinorEngine.engine.ui.utils
                     _sb.Clear();
                     _sb.Append(_commandHistory[_currentId]);
                     inputIndex = _sb.Length;
-
                 }
                 else if (e.Key == Key.Down && _currentId != _commandHistory.Count)
                 {
@@ -252,18 +224,13 @@ namespace MinorEngine.engine.ui.utils
                         _sb.Append(_commandHistory[_currentId]);
                         inputIndex = _sb.Length;
                     }
-
                 }
                 else if (inputIndex > 0 && e.Key == Key.BackSpace)
                 {
                     if (inputIndex == _sb.Length)
-                    {
                         _sb.Remove(_sb.Length - 1, 1);
-                    }
                     else
-                    {
-                        _sb.Remove(inputIndex-1, 1);
-                    }
+                        _sb.Remove(inputIndex - 1, 1);
 
                     inputIndex--;
 
@@ -308,19 +275,12 @@ namespace MinorEngine.engine.ui.utils
             }
 
 
-            if (_invalidate)
-            {
-                Invalidate();
-            }
-
+            if (_invalidate) Invalidate();
         }
 
         private void ToggleConsole(bool state)
         {
-            if (_showConsole == state)
-            {
-                return;
-            }
+            if (_showConsole == state) return;
 
             if (_showConsole)
             {
@@ -334,7 +294,6 @@ namespace MinorEngine.engine.ui.utils
         }
 
 
-
         private void Invalidate()
         {
             _invalidate = false;
@@ -342,41 +301,26 @@ namespace MinorEngine.engine.ui.utils
             {
                 string input = "Something Went Wrong.";
                 if (_currentId == _commandHistory.Count)
-                {
                     input = _sb.ToString();
-                }
-                else if (_currentId >= 0)
-                {
-                    input = _commandHistory[_currentId];
-                }
+                else if (_currentId >= 0) input = _commandHistory[_currentId];
 
                 string inputCursor;
 
                 if (_blinkActive)
-                {
                     inputCursor = "|";
-                }
                 else
-                {
                     inputCursor = " ";
-                }
                 if (inputIndex >= input.Length)
-                {
                     input = input + inputCursor;
-                }
                 else
-                {
                     input = input.Insert(inputIndex, inputCursor);
-                }
 
                 _consoleInput.Text = ">>> " + input;
-
-
             }
+
             _title.Text = _showConsole ? ConsoleTitle : HelpText;
 
             _consoleOutput.Text = _showConsole ? ToConsoleText() : "";
         }
-
     }
 }

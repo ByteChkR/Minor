@@ -1,5 +1,4 @@
-﻿using System;
-using Demo.scenes;
+﻿using Demo.scenes;
 using MinorEngine.engine;
 using OpenTK;
 using OpenTK.Graphics;

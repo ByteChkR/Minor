@@ -16,7 +16,6 @@ namespace MinorEngine.engine.audio.sources
 
         #region Public Properties
 
-        
         public float Pitch
         {
             get
@@ -113,15 +112,14 @@ namespace MinorEngine.engine.audio.sources
             get
             {
                 AL.GetSource(source, ALGetSourcei.ByteOffset, out int current);
-                float val = (float)current / clip.BufferSize;
+                float val = (float) current / clip.BufferSize;
 
                 return Math.Clamp(val, 0f, 1f);
             }
             set
             {
-
                 float val = Math.Clamp(value, 0f, 1f);
-                AL.Source(source, ALSourcei.ByteOffset, (int)(clip.BufferSize * val));
+                AL.Source(source, ALSourcei.ByteOffset, (int) (clip.BufferSize * val));
             }
         }
 
@@ -135,11 +133,9 @@ namespace MinorEngine.engine.audio.sources
             set => AL.Source(source, ALSourceb.Looping, value);
         }
 
-
-
         #endregion
 
-        
+
         public AbstractAudioSource()
         {
             source = AL.GenSource();
@@ -148,15 +144,13 @@ namespace MinorEngine.engine.audio.sources
             AL.Source(source, ALSourcef.MaxDistance, 50f);
             AL.Source(source, ALSourcef.Pitch, 1f);
             AL.Source(source, ALSourcef.Gain, 1f);
-
         }
 
-        
+
         public void Play()
         {
             IsPlaying = true;
             AL.SourcePlay(source);
-            
         }
 
         public void Pause()
@@ -174,16 +168,11 @@ namespace MinorEngine.engine.audio.sources
 
         public void SetClip(AudioClip clip)
         {
-            if (IsPlaying)
-            {
-                Stop();
-            }
+            if (IsPlaying) Stop();
             this.clip = clip;
 
 
-
             AL.Source(source, ALSourcei.Buffer, clip.Buffer);
-
         }
 
         public AudioClip GetClip()
@@ -191,6 +180,4 @@ namespace MinorEngine.engine.audio.sources
             return clip;
         }
     }
-
-
 }

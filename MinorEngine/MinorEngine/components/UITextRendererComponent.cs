@@ -1,26 +1,13 @@
-﻿
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
+﻿using System;
 using Common;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
-using Bitmap = System.Drawing.Bitmap;
-using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace MinorEngine.engine.ui
 {
-
     public class Character
     {
         public GameTexture GlTexture { get; set; }
@@ -57,12 +44,10 @@ namespace MinorEngine.engine.ui
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
-
         }
 
         public override void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-
             if (Shader != null)
             {
                 int scrW = GameEngine.Instance.Width;
@@ -93,49 +78,44 @@ namespace MinorEngine.engine.ui
                         y -= fm.LineHeight / scrH * Scale.Y;
                         continue;
                     }
-                    if (!font.TryGetCharacter(Text[i], out Character chr))
-                    {
-                        font.TryGetCharacter('?', out chr);
-                    }
+
+                    if (!font.TryGetCharacter(Text[i], out Character chr)) font.TryGetCharacter('?', out chr);
 
                     float xpos = x + chr.BearingX / scrW * Scale.X;
                     float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                    float w = chr.Width / (float)scrW * Scale.X;
-                    float h = chr.Height / (float)scrH * Scale.Y;
-                    float[] verts = {
-                         xpos,     ypos + h,    0.0f, 1.0f ,
-                         xpos,     ypos,        0.0f, 0.0f,
-                         xpos + w, ypos,        1.0f, 0.0f ,
+                    float w = chr.Width / (float) scrW * Scale.X;
+                    float h = chr.Height / (float) scrH * Scale.Y;
+                    float[] verts =
+                    {
+                        xpos, ypos + h, 0.0f, 1.0f,
+                        xpos, ypos, 0.0f, 0.0f,
+                        xpos + w, ypos, 1.0f, 0.0f,
 
-                         xpos,     ypos + h,    0.0f, 1.0f ,
-                         xpos + w, ypos,        1.0f, 0.0f,
-                         xpos + w, ypos + h,    1.0f, 1.0f
+                        xpos, ypos + h, 0.0f, 1.0f,
+                        xpos + w, ypos, 1.0f, 0.0f,
+                        xpos + w, ypos + h, 1.0f, 1.0f
                     };
 
                     if (chr.GlTexture != null)
                     {
                         GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                         GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-                        GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
+                        GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
                             verts);
 
                         GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-
-
                     }
+
                     x += chr.Advance / scrW * Scale.X;
-
-
                 }
+
                 GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
                 GL.BindVertexArray(0);
                 GL.BindTexture(TextureTarget.Texture2D, 0);
 
                 GL.Disable(EnableCap.Blend);
-
             }
-
         }
     }
 }

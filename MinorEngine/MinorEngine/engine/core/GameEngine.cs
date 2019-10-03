@@ -9,8 +9,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace MinorEngine.engine.core
 {
-   
-
     public class GameEngine
     {
         private GameWindow Window;
@@ -31,12 +29,10 @@ namespace MinorEngine.engine.core
             if (Settings.DebugNetwork && Settings.ProgramID != -1)
             {
                 if (Settings.ProgramVersion == null)
-                {
                     Settings.ProgramVersion = Assembly.GetExecutingAssembly().GetName().Version;
-                }
-                DebugHelper.SetDebugLoggingInformation(Settings.ProgramID, Settings.NetworkMask, Settings.ProgramVersion);
+                DebugHelper.SetDebugLoggingInformation(Settings.ProgramID, Settings.NetworkMask,
+                    Settings.ProgramVersion);
             }
-
         }
 
         public void Initialize()
@@ -48,17 +44,16 @@ namespace MinorEngine.engine.core
             AudioManager.Initialize();
 
             Physics.Init();
-
-
         }
 
         private void initializeWindow()
         {
-
             this.Log("Initializing Window..", DebugChannel.Log);
             this.Log(
-                $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}", DebugChannel.Log);
-            Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title, Settings.WindowFlags);
+                $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}",
+                DebugChannel.Log);
+            Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title,
+                Settings.WindowFlags);
 
             #region WindowHandles
 
@@ -69,9 +64,7 @@ namespace MinorEngine.engine.core
             Window.KeyPress += GameObject._KeyPress;
 
             #endregion
-
         }
-
 
 
         private void initializeRenderer()
@@ -103,7 +96,6 @@ namespace MinorEngine.engine.core
         }
 
 
-
         public void Run()
         {
             this.Log("Running GameEngine Loop..", DebugChannel.Log);
@@ -113,11 +105,9 @@ namespace MinorEngine.engine.core
 
         protected virtual void Update(object sender, FrameEventArgs e)
         {
-
-
-            currentScene?.Update((float)e.Time);
-            World?.Update((float)e.Time);
-            Physics.Update((float)e.Time);
+            currentScene?.Update((float) e.Time);
+            World?.Update((float) e.Time);
+            Physics.Update((float) e.Time);
 
             if (_changeScene)
             {
@@ -125,33 +115,25 @@ namespace MinorEngine.engine.core
 
                 World?.Destroy();
                 currentScene?.Destroy();
-                currentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
+                currentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
                 World = new World();
                 currentScene._initializeScene(World);
             }
-
         }
 
 
-
-
-
-        private void OnResize(object o, System.EventArgs e)
+        private void OnResize(object o, EventArgs e)
         {
             GL.Viewport(0, 0, Window.Width, Window.Height);
         }
 
 
-
         private void OnRender(object o, EventArgs e)
         {
-
             Renderer.RenderAllTargets(World);
 
             Window.SwapBuffers();
-
         }
-
     }
 
 
@@ -175,7 +157,6 @@ namespace MinorEngine.engine.core
     //    {
 
     //    }
-
 
 
     //    public void Initialize()
@@ -214,7 +195,6 @@ namespace MinorEngine.engine.core
     //    }
 
 
-
     //    private void initializeRenderer()
     //    {
     //        //TODO
@@ -238,8 +218,6 @@ namespace MinorEngine.engine.core
     //    }
 
 
-
-
     //    public void Run()
     //    {
     //        this.Log("Running GameEngine Loop..", DebugChannel.Log);
@@ -255,7 +233,6 @@ namespace MinorEngine.engine.core
     //        World.Update((float)e.Time);
 
 
-
     //        //TODO: Decide on how to Update the components
     //    }
 
@@ -264,7 +241,6 @@ namespace MinorEngine.engine.core
     //    {
     //        GL.Viewport(0, 0, Window.Width, Window.Height);
     //    }
-
 
 
     //    private void OnRender(object o, EventArgs e)

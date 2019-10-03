@@ -1,5 +1,4 @@
-﻿using Assimp;
-using MinorEngine.engine.components;
+﻿using MinorEngine.engine.components;
 using MinorEngine.engine.rendering;
 using OpenTK;
 
@@ -23,13 +22,9 @@ namespace MinorEngine.components
             Model.Destroy();
         }
 
-        public void Render( Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
+        public void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
         {
-            if (Model != null && Shader != null)
-            {
-                Model.Render(Shader, modelMat, viewMat, projMat);
-            }
+            if (Model != null && Shader != null) Model.Render(Shader, modelMat, viewMat, projMat);
         }
-
     }
 }

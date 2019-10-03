@@ -1,5 +1,4 @@
-﻿using MinorEngine.engine.core;
-using OpenTK;
+﻿using OpenTK;
 
 namespace MinorEngine.engine.rendering
 {

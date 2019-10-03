@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Assimp;
-using Common;
 using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -11,19 +10,13 @@ using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
 namespace MinorEngine.engine.rendering
 {
     [StructLayout(LayoutKind.Explicit)]
-    public struct GameVertex:IEquatable<GameVertex>
+    public struct GameVertex : IEquatable<GameVertex>
     {
-
-        [FieldOffset(0)]
-        public OpenTK.Vector3 Position;
-        [FieldOffset(12)]
-        public OpenTK.Vector3 Normal;
-        [FieldOffset(24)]
-        public OpenTK.Vector2 UV;
-        [FieldOffset(32)]
-        public OpenTK.Vector3 Tangent;
-        [FieldOffset(44)]
-        public OpenTK.Vector3 Bittangent;
+        [FieldOffset(0)] public Vector3 Position;
+        [FieldOffset(12)] public Vector3 Normal;
+        [FieldOffset(24)] public Vector2 UV;
+        [FieldOffset(32)] public Vector3 Tangent;
+        [FieldOffset(44)] public Vector3 Bittangent;
 
         public static readonly int VERTEX_BYTE_SIZE = sizeof(float) * 14;
 
@@ -46,26 +39,22 @@ namespace MinorEngine.engine.rendering
         private int _ebo;
         private int _vbo;
 
-        public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures, bool deallocBuffersOnDestroy, bool deallocTextures)
+        public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures,
+            bool deallocBuffersOnDestroy, bool deallocTextures)
         {
-            this._vertices = vertices.ToArray();
-            this._indices = indices.ToArray();
-            this.Textures = textures.ToArray();
+            _vertices = vertices.ToArray();
+            _indices = indices.ToArray();
+            Textures = textures.ToArray();
             setupMesh();
             _deallocOnDestroy = deallocBuffersOnDestroy;
             _deallocTexOnDestroy = deallocTextures;
-
         }
 
         public void SetTextureBuffer(GameTexture[] tex)
         {
             if (_deallocTexOnDestroy)
-            {
                 foreach (var gameTexture in Textures)
-                {
                     TextureProvider.GiveBack(gameTexture);
-                }
-            }
 
             Textures = tex;
         }
@@ -73,17 +62,13 @@ namespace MinorEngine.engine.rendering
         public Vector3[] ToSequentialVertexList()
         {
             Vector3[] verts = new Vector3[_indices.Length];
-            for (int i = 0; i < _indices.Length; i++)
-            {
-                verts[i] = _vertices[_indices[i]].Position;
-            }
+            for (int i = 0; i < _indices.Length; i++) verts[i] = _vertices[_indices[i]].Position;
 
             return verts;
         }
 
         public void Draw(ShaderProgram prog)
         {
-
             uint diff, spec, norm, hegt, unknown;
             diff = spec = norm = hegt = unknown = 1;
 
@@ -115,13 +100,11 @@ namespace MinorEngine.engine.rendering
                         name = "texture";
                         number = (unknown++).ToString();
                         break;
-
                 }
 
                 GL.Uniform1(prog.GetUniformLocation(name + number), i);
                 GL.BindTexture(TextureTarget.Texture2D, Textures[i].TextureId);
             }
-
 
 
             GL.BindVertexArray(_vao);
@@ -130,7 +113,6 @@ namespace MinorEngine.engine.rendering
 
             GL.BindVertexArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
-
         }
 
         private void setupMesh()
@@ -144,52 +126,53 @@ namespace MinorEngine.engine.rendering
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_vertices.Length * GameVertex.VERTEX_BYTE_SIZE), _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
+                _vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(_indices.Length * sizeof(uint)), _indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (_indices.Length * sizeof(uint)), _indices,
+                BufferUsageHint.StaticDraw);
 
             //Attribute Pointers
             GL.EnableVertexAttribArray(0);
-            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, IntPtr.Zero);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE,
+                IntPtr.Zero);
 
             GL.EnableVertexAttribArray(1);
-            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("Normal"));
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE,
+                offsetOf("Normal"));
 
             GL.EnableVertexAttribArray(2);
-            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("UV"));
+            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE,
+                offsetOf("UV"));
 
             GL.EnableVertexAttribArray(3);
-            GL.VertexAttribPointer(3, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("Tangent"));
+            GL.VertexAttribPointer(3, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE,
+                offsetOf("Tangent"));
 
             GL.EnableVertexAttribArray(4);
-            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE, offsetOf("Bittangent"));
-
+            GL.VertexAttribPointer(4, 3, VertexAttribPointerType.Float, false, GameVertex.VERTEX_BYTE_SIZE,
+                offsetOf("Bittangent"));
 
 
             GL.BindVertexArray(0);
-
-
         }
 
 
         public void Destroy()
         {
-            if(_deallocOnDestroy)
+            if (_deallocOnDestroy)
             {
                 GL.DeleteBuffer(_ebo);
                 GL.DeleteBuffer(_vao);
                 GL.DeleteBuffer(_vbo);
             }
-            if(_deallocTexOnDestroy)
-            {
+
+            if (_deallocTexOnDestroy)
                 foreach (var gameTexture in Textures)
-                {
                     TextureProvider.GiveBack(gameTexture);
-                }
-            }
         }
 
         private static IntPtr offsetOf(string name)

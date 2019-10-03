@@ -4,7 +4,6 @@ using BepuPhysics.Collidables;
 using BepuPhysics.CollisionDetection;
 using BepuPhysics.Constraints;
 using BepuUtilities.Memory;
-using MinorEngine.engine.physics;
 using MinorEngine.components;
 
 namespace MinorEngine.engine.physics.callbacks
@@ -38,10 +37,7 @@ namespace MinorEngine.engine.physics.callbacks
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool AllowContactGeneration(int workerIndex, CollidableReference a, CollidableReference b)
         {
-            if (b.Mobility == CollidableMobility.Static)
-            {
-                return true;
-            }
+            if (b.Mobility == CollidableMobility.Static) return true;
             return Layer.AllowCollision(Physics.CollisionFilters[a.Handle], Physics.CollisionFilters[b.Handle]);
         }
 
@@ -66,7 +62,6 @@ namespace MinorEngine.engine.physics.callbacks
         }
 
 
-
         //[MethodImpl(MethodImplOptions.AggressiveInlining)]
         //void ConfigureMaterial(out PairMaterialProperties pairMaterial)
         //{
@@ -83,10 +78,9 @@ namespace MinorEngine.engine.physics.callbacks
         {
             pairMaterial.FrictionCoefficient = Physics.PhysicsMaterials[pair.A.Handle].FrictionCoeff;
             if (pair.B.Mobility != CollidableMobility.Static)
-            {
                 //If two bodies collide, just average the friction.
-                pairMaterial.FrictionCoefficient = (pairMaterial.FrictionCoefficient + Physics.PhysicsMaterials[pair.B.Handle].FrictionCoeff) * 0.5f;
-            }
+                pairMaterial.FrictionCoefficient =
+                    (pairMaterial.FrictionCoefficient + Physics.PhysicsMaterials[pair.B.Handle].FrictionCoeff) * 0.5f;
             pairMaterial.MaximumRecoveryVelocity = Physics.PhysicsMaterials[pair.B.Handle].MaxRecoverVelocity;
             pairMaterial.SpringSettings = new SpringSettings(Physics.PhysicsMaterials[pair.A.Handle].SpringFreq, 1);
         }
@@ -103,7 +97,8 @@ namespace MinorEngine.engine.physics.callbacks
         /// <param name="pairMaterial">Material properties of the manifold.</param>
         /// <returns>True if a constraint should be created for the manifold, false otherwise.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, NonconvexContactManifold* manifold, out PairMaterialProperties pairMaterial)
+        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, NonconvexContactManifold* manifold,
+            out PairMaterialProperties pairMaterial)
         {
             CreateMaterial(pair, out pairMaterial);
             return true;
@@ -118,7 +113,8 @@ namespace MinorEngine.engine.physics.callbacks
         /// <param name="pairMaterial">Material properties of the manifold.</param>
         /// <returns>True if a constraint should be created for the manifold, false otherwise.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, ConvexContactManifold* manifold, out PairMaterialProperties pairMaterial)
+        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, ConvexContactManifold* manifold,
+            out PairMaterialProperties pairMaterial)
         {
             CreateMaterial(pair, out pairMaterial);
             return true;
@@ -135,7 +131,8 @@ namespace MinorEngine.engine.physics.callbacks
         /// <param name="manifold">Set of contacts detected between the collidables.</param>
         /// <returns>True if this manifold should be considered for constraint generation, false otherwise.</returns>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, int childIndexA, int childIndexB, ConvexContactManifold* manifold)
+        public bool ConfigureContactManifold(int workerIndex, CollidablePair pair, int childIndexA, int childIndexB,
+            ConvexContactManifold* manifold)
         {
             return true;
         }

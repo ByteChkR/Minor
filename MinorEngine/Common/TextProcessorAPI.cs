@@ -1,25 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using ext_pp;
 using ext_pp_base;
 using ext_pp_base.settings;
 using ext_pp_plugins;
-using Microsoft.VisualBasic;
 
 namespace Common
 {
-
-
-
     /// <summary>
     /// A static Wrapper class around the ext_pp project.
     /// </summary>
     public static class TextProcessorAPI
     {
-
-        public class FileContent : ext_pp_base.IFileContent // For the commits on ext_pp repo that are not ready yet.
+        public class FileContent : IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
             private readonly string[] _lines;
             private readonly string _incDir;
@@ -30,7 +24,6 @@ namespace Common
             {
                 _lines = lines;
                 _incDir = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(incDir));
-
             }
 
             public bool TryGetLines(out string[] lines)
@@ -68,28 +61,24 @@ namespace Common
                 Logger.VerbosityLevel = VerbosityLevel;
 
 
-
                 pp.SetFileProcessingChain(Plugins);
 
                 Definitions definitions;
                 if (defs == null)
-                {
                     definitions = new Definitions();
-                }
                 else
-                {
                     definitions = new Definitions(defs);
-                }
 
-                return pp.Run(new[] { filename }, new Settings(), definitions);
+                return pp.Run(new[] {filename}, new Settings(), definitions);
             }
         }
 
 
-        public class DefaultPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
+        public class DefaultPreProcessorConfig : APreProcessorConfig
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
-            private static StringBuilder _sb=new StringBuilder();
+            private static StringBuilder _sb = new StringBuilder();
+
             public override string GetGenericInclude(string filename, string[] genType)
             {
                 _sb.Clear();
@@ -98,8 +87,10 @@ namespace Common
                     _sb.Append(gt);
                     _sb.Append(' ');
                 }
+
                 return "#include " + filename + " " + _sb;
             }
+
             protected override List<AbstractPlugin> Plugins
             {
                 get
@@ -116,10 +107,11 @@ namespace Common
             }
         }
 
-        public class GLCLPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
+        public class GLCLPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL8;
+
             public override string GetGenericInclude(string filename, string[] genType)
             {
                 _sb.Clear();
@@ -129,9 +121,10 @@ namespace Common
                     _sb.Append(' ');
                 }
 
-                
+
                 return "#include " + filename + " " + _sb;
             }
+
             protected override List<AbstractPlugin> Plugins
             {
                 get
@@ -148,11 +141,12 @@ namespace Common
             }
         }
 
-        public class FLPreProcessorConfig : TextProcessorAPI.APreProcessorConfig
+        public class FLPreProcessorConfig : APreProcessorConfig
         {
             protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
 
             private static StringBuilder _sb = new StringBuilder();
+
             public override string GetGenericInclude(string filename, string[] genType)
             {
                 _sb.Clear();
@@ -161,6 +155,7 @@ namespace Common
                     _sb.Append(gt);
                     _sb.Append(' ');
                 }
+
                 return "pp_include: " + filename + " " + _sb;
             }
 
@@ -193,16 +188,16 @@ namespace Common
 
         private static Dictionary<string, APreProcessorConfig> _configs = new Dictionary<string, APreProcessorConfig>
         {
-            {".fl", new FLPreProcessorConfig() },
-            {".vs", new GLCLPreProcessorConfig() },
-            {".fs", new GLCLPreProcessorConfig() },
-            {".cl", new GLCLPreProcessorConfig() },
-            {"***" , new DefaultPreProcessorConfig()}
+            {".fl", new FLPreProcessorConfig()},
+            {".vs", new GLCLPreProcessorConfig()},
+            {".fs", new GLCLPreProcessorConfig()},
+            {".cl", new GLCLPreProcessorConfig()},
+            {"***", new DefaultPreProcessorConfig()}
         };
 
         public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
         {
-            return new[] { _configs[ext].GetGenericInclude(file, genType) };
+            return new[] {_configs[ext].GetGenericInclude(file, genType)};
         }
 
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
@@ -223,10 +218,10 @@ namespace Common
                 file.Log("Found Matching PreProcessor Config for: " + ext, DebugChannel.Log);
                 return _configs[ext].Preprocess(file, defs);
             }
+
             file.Log("Loading File with Default PreProcessing", DebugChannel.Log);
             return _configs["***"].Preprocess(file, defs);
         }
-
 
 
         public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
@@ -250,10 +245,7 @@ namespace Common
         {
             StringBuilder sb = new StringBuilder();
             string[] src = PreprocessLines(filename, defs);
-            for (int i = 0; i < src.Length; i++)
-            {
-                sb.Append(src[i] + "\n");
-            }
+            for (int i = 0; i < src.Length; i++) sb.Append(src[i] + "\n");
 
             return sb.ToString();
         }

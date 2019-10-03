@@ -8,9 +8,7 @@ namespace Demo.components
     {
         protected override void Update(float deltaTime)
         {
-
-            Owner.Rotate(new Vector3(1, 1, 0), (MathF.PI / 4) * deltaTime);
-
+            Owner.Rotate(new Vector3(1, 1, 0), MathF.PI / 4 * deltaTime);
         }
     }
 }

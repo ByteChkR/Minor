@@ -1,12 +1,7 @@
-﻿
-using MinorEngine.engine.core;
-
-namespace MinorEngine.engine.core
+﻿namespace MinorEngine.engine.core
 {
-
     public abstract class AbstractScene
     {
-
         internal void _initializeScene(World world)
         {
             InitializeScene();
@@ -22,12 +17,10 @@ namespace MinorEngine.engine.core
 
         public virtual void OnDestroy()
         {
-
         }
 
         public virtual void Update(float deltaTime)
         {
-
         }
     }
 }

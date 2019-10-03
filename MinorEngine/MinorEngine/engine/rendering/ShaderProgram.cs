@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Common;
 using MinorEngine.engine.core;
@@ -7,9 +6,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace MinorEngine.engine.rendering
 {
-    public class ShaderProgram: IDestroyable
+    public class ShaderProgram : IDestroyable
     {
         private readonly int _prgId;
+
         private ShaderProgram()
         {
             _prgId = GL.CreateProgram();
@@ -22,18 +22,13 @@ namespace MinorEngine.engine.rendering
             List<int> shaders = new List<int>();
             foreach (KeyValuePair<ShaderType, string> shader in subshaders)
             {
-
                 program.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
 
                 string code = TextProcessorAPI.PreprocessSource(shader.Value, null);
                 bool r = TryCompileShader(shader.Key, code, out int id);
                 ret &= r;
-                if (r)
-                {
-                    shaders.Add(id);
-                }
+                if (r) shaders.Add(id);
             }
-
 
 
             for (int i = 0; i < shaders.Count; i++)
@@ -53,14 +48,11 @@ namespace MinorEngine.engine.rendering
             }
 
             return ret;
-
-
         }
 
         public void Destroy()
         {
             GL.DeleteProgram(_prgId);
-            
         }
 
         public void Use()
@@ -81,8 +73,6 @@ namespace MinorEngine.engine.rendering
         }
 
 
-
-
         private static bool TryCompileShader(ShaderType type, string source, out int shaderID)
         {
             shaderID = GL.CreateShader(type);
@@ -91,7 +81,6 @@ namespace MinorEngine.engine.rendering
             GL.GetShader(shaderID, ShaderParameter.CompileStatus, out int success);
             if (success == 0)
             {
-
                 shaderID.Log(GL.GetShaderInfoLog(shaderID), DebugChannel.Error);
 
                 return false;

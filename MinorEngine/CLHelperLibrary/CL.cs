@@ -4,8 +4,6 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography.X509Certificates;
-using Common;
 using OpenCl.DotNetCore.CommandQueues;
 using OpenCl.DotNetCore.Contexts;
 using OpenCl.DotNetCore.DataTypes;
@@ -136,7 +134,7 @@ namespace CLHelperLibrary
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer<T>(T[] data, MemoryFlag flags) where T : struct
         {
-            object[] arr = Array.ConvertAll(data, x => (object)x);
+            object[] arr = Array.ConvertAll(data, x => (object) x);
             return CreateBuffer(arr, typeof(T), flags);
         }
 
@@ -156,7 +154,6 @@ namespace CLHelperLibrary
             MemoryBuffer mb = Instance._context.CreateBuffer(flags, t, data);
             return mb;
 #endif
-
         }
 
         /// <summary>
@@ -183,7 +180,6 @@ namespace CLHelperLibrary
 #endif
         }
 
-        
 
         /// <summary>
         /// A Delegate to create random numbers for every data type
@@ -201,7 +197,8 @@ namespace CLHelperLibrary
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="uniform">Should every channel receive the same value on the same pixel?</param>
         /// <returns>An array filled with random values of type T</returns>
-        public static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform) where T : struct
+        public static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform)
+            where T : struct
         {
             T[] buffer = new T[size];
             WriteRandom(buffer, channelEnableState, rnd, uniform);
@@ -237,16 +234,9 @@ namespace CLHelperLibrary
             for (int i = 0; i < buffer.Length; i++)
             {
                 int channel = i % channelEnableState.Length;
-                if (channel == 0 || !uniform)
-                {
-                    val = rnd.Invoke();
-                }
-                if (channelEnableState[channel] == 1)
-                {
-                    buffer[i] = val;
-                }
+                if (channel == 0 || !uniform) val = rnd.Invoke();
+                if (channelEnableState[channel] == 1) buffer[i] = val;
             }
-
         }
 
         /// <summary>
@@ -269,12 +259,13 @@ namespace CLHelperLibrary
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
         /// <param name="uniform">Should every channel receive the same value on the same pixel?</param>
-        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform) where T : struct
+        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform)
+            where T : struct
         {
 #if TRAVIS_TEST
             T[] data = new T[1];
 #else
-            T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int)buf.Size);
+            T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int) buf.Size);
 #endif
 
             WriteRandom(data, enabledChannels, rnd, uniform);
@@ -300,7 +291,6 @@ namespace CLHelperLibrary
         }
 
 
-
         /// <summary>
         /// Writes values to a MemoryBuffer
         /// </summary>
@@ -312,7 +302,7 @@ namespace CLHelperLibrary
 #if TRAVIS_TEST
             values.Log("Writing To Buffer..", DebugChannel.Warning);
 #else
-            Instance._commandQueue.EnqueueWriteBuffer<T>(buf, values);
+            Instance._commandQueue.EnqueueWriteBuffer(buf, values);
 #endif
         }
 
@@ -341,7 +331,8 @@ namespace CLHelperLibrary
         /// <param name="dimensions">The dimensions of the input buffer</param>
         /// <param name="enabledChannels">The enabled channels for the kernel</param>
         /// <param name="channelCount">The amount of active channels.</param>
-        public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal, MemoryBuffer enabledChannels,
+        public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,
+            MemoryBuffer enabledChannels,
             int channelCount)
         {
 #if TRAVIS_TEST
@@ -350,6 +341,5 @@ namespace CLHelperLibrary
             kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
 #endif
         }
-
     }
 }

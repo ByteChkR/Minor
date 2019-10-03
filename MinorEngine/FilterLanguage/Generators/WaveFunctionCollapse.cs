@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Common;
 
 /*
@@ -12,8 +11,6 @@ The software is provided "as is", without warranty of any kind, express or impli
 
 namespace FilterLanguage.Generators
 {
-
-
     public abstract class WaveFunctionCollapse
     {
         protected bool[][] Wave;
@@ -52,10 +49,7 @@ namespace FilterLanguage.Generators
             {
                 Wave[i] = new bool[T];
                 _compatible[i] = new int[T][];
-                for (int t = 0; t < T; t++)
-                {
-                    _compatible[i][t] = new int[4];
-                }
+                for (int t = 0; t < T; t++) _compatible[i][t] = new int[4];
             }
 
             _weightLogWeights = new double[T];
@@ -87,16 +81,10 @@ namespace FilterLanguage.Generators
 
             for (int i = 0; i < Wave.Length; i++)
             {
-                if (OnBoundary(i % Fmx, i / Fmx))
-                {
-                    continue;
-                }
+                if (OnBoundary(i % Fmx, i / Fmx)) continue;
 
                 int amount = _sumsOfOnes[i];
-                if (amount == 0)
-                {
-                    return false;
-                }
+                if (amount == 0) return false;
 
                 double entropy = _entropies[i];
                 if (amount > 1 && entropy <= min)
@@ -114,34 +102,24 @@ namespace FilterLanguage.Generators
             {
                 Observed = new int[Fmx * Fmy];
                 for (int i = 0; i < Wave.Length; i++)
-                {
-                    for (int t = 0; t < T; t++)
+                for (int t = 0; t < T; t++)
+                    if (Wave[i][t])
                     {
-                        if (Wave[i][t])
-                        {
-                            Observed[i] = t;
-                            break;
-                        }
+                        Observed[i] = t;
+                        break;
                     }
-                }
+
                 return true;
             }
 
             double[] distribution = new double[T];
-            for (int t = 0; t < T; t++)
-            {
-                distribution[t] = Wave[argmin][t] ? Weights[t] : 0;
-            }
+            for (int t = 0; t < T; t++) distribution[t] = Wave[argmin][t] ? Weights[t] : 0;
             int r = distribution.Random(Random.NextDouble());
 
             bool[] w = Wave[argmin];
             for (int t = 0; t < T; t++)
-            {
                 if (w[t] != (t == r))
-                {
                     Ban(argmin, t);
-                }
-            }
 
             return null;
         }
@@ -160,27 +138,14 @@ namespace FilterLanguage.Generators
                 {
                     int dx = Dx[d], dy = Dy[d];
                     int x2 = x1 + dx, y2 = y1 + dy;
-                    if (OnBoundary(x2, y2))
-                    {
-                        continue;
-                    }
+                    if (OnBoundary(x2, y2)) continue;
 
                     if (x2 < 0)
-                    {
                         x2 += Fmx;
-                    }
-                    else if (x2 >= Fmx)
-                    {
-                        x2 -= Fmx;
-                    }
+                    else if (x2 >= Fmx) x2 -= Fmx;
                     if (y2 < 0)
-                    {
                         y2 += Fmy;
-                    }
-                    else if (y2 >= Fmy)
-                    {
-                        y2 -= Fmy;
-                    }
+                    else if (y2 >= Fmy) y2 -= Fmy;
 
                     int i2 = x2 + y2 * Fmx;
                     int[] p = Propagator[d][e1.Item2];
@@ -192,16 +157,13 @@ namespace FilterLanguage.Generators
                         int[] comp = compat[t2];
 
                         comp[d]--;
-                        if (comp[d] == 0)
-                        {
-                            Ban(i2, t2);
-                        }
+                        if (comp[d] == 0) Ban(i2, t2);
                     }
                 }
             }
         }
 
-        
+
         public bool Run(int limit)
         {
             Random = new Random();
@@ -210,24 +172,15 @@ namespace FilterLanguage.Generators
 
         private bool RunModel(int limit)
         {
-            if (Wave == null)
-            {
-                Init();
-            }
+            if (Wave == null) Init();
 
             Clear();
 
             for (int l = 0; l < limit || limit == 0; l++)
             {
-                if (l % 250 == 0)
-                {
-                    this.Log("Starting Iteration: " + l, DebugChannel.Log);
-                }
+                if (l % 250 == 0) this.Log("Starting Iteration: " + l, DebugChannel.Log);
                 bool? result = Observe();
-                if (result != null)
-                {
-                    return (bool)result;
-                }
+                if (result != null) return (bool) result;
                 Propagate();
             }
 
@@ -237,7 +190,7 @@ namespace FilterLanguage.Generators
         public bool Run(int seed, int limit)
         {
             Random = new Random(seed);
-            
+
             return RunModel(limit);
         }
 
@@ -246,10 +199,7 @@ namespace FilterLanguage.Generators
             Wave[i][t] = false;
 
             int[] comp = _compatible[i][t];
-            for (int d = 0; d < 4; d++)
-            {
-                comp[d] = 0;
-            }
+            for (int d = 0; d < 4; d++) comp[d] = 0;
             _stack[_stacksize] = (i, t);
             _stacksize++;
 
@@ -268,10 +218,7 @@ namespace FilterLanguage.Generators
                 for (int t = 0; t < T; t++)
                 {
                     Wave[i][t] = true;
-                    for (int d = 0; d < 4; d++)
-                    {
-                        _compatible[i][t][d] = Propagator[Opposite[d]][t].Length;
-                    }
+                    for (int d = 0; d < 4; d++) _compatible[i][t][d] = Propagator[Opposite[d]][t].Length;
                 }
 
                 _sumsOfOnes[i] = Weights.Length;
@@ -284,8 +231,8 @@ namespace FilterLanguage.Generators
         protected abstract bool OnBoundary(int x, int y);
         public abstract System.Drawing.Bitmap Graphics();
 
-        protected static readonly int[] Dx = { -1, 0, 1, 0 };
-        protected static readonly int[] Dy = { 0, 1, 0, -1 };
-        private static readonly int[] Opposite = { 2, 3, 0, 1 };
+        protected static readonly int[] Dx = {-1, 0, 1, 0};
+        protected static readonly int[] Dy = {0, 1, 0, -1};
+        private static readonly int[] Opposite = {2, 3, 0, 1};
     }
 }

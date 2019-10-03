@@ -7,6 +7,6 @@
     {
         NONE = 0,
         GLOBAL = 1,
-        CONSTANT = 2,
+        CONSTANT = 2
     }
 }

@@ -1,8 +1,7 @@
 {
   "profiles": {
     "MinorEngine.: {
-      "commandName": "Project",
-      "workingDirectory": "assets"
-    }
+    "commandName": "Project",
+    "workingDirectory": "assets"
   }
-}
+}}

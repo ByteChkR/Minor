@@ -14,35 +14,35 @@ namespace MinorEngine.engine.rendering
             Multiplikative
         }
 
-        private static float[] _screenQuadVertexData = new[]
+        private static float[] _screenQuadVertexData =
         {
             // positions   // texCoords
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            -1.0f, -1.0f,  0.0f, 0.0f,
-            1.0f, -1.0f,  1.0f, 0.0f,
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
 
-            -1.0f,  1.0f,  0.0f, 1.0f,
-            1.0f, -1.0f,  1.0f, 0.0f,
-            1.0f,  1.0f,  1.0f, 1.0f
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f
         };
 
         private static bool _init;
         private static int _screenVAO;
-        private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
-        private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, OpenTK.Color.Black);
+        private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, Color.Black);
+        private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, Color.Black);
         private static ShaderProgram _screenShader;
         private static Dictionary<MergeType, ShaderProgram> _mergeTypes = new Dictionary<MergeType, ShaderProgram>();
 
         private static void Init()
         {
-
             _init = true;
             _screenVAO = GL.GenVertexArray();
             int _screenVBO = GL.GenBuffer();
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)), _screenQuadVertexData, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
+                _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
             GL.EnableVertexAttribArray(1);
@@ -52,9 +52,7 @@ namespace MinorEngine.engine.rendering
                 {ShaderType.FragmentShader, "shader/MergeRenderer_Add.fs"},
                 {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
             }, out ShaderProgram _mergeAddShader))
-            {
                 Console.ReadLine();
-            }
             _mergeTypes.Add(MergeType.Additive, _mergeAddShader);
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -62,26 +60,20 @@ namespace MinorEngine.engine.rendering
                 {ShaderType.FragmentShader, "shader/MergeRenderer_Mul.fs"},
                 {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
             }, out ShaderProgram _mergeMulShader))
-            {
                 Console.ReadLine();
-            }
             _mergeTypes.Add(MergeType.Multiplikative, _mergeMulShader);
 
-            
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
                 {ShaderType.VertexShader, "shader/ScreenRenderer.vs"}
             }, out _screenShader))
-            {
                 Console.ReadLine();
-            }
-
-
         }
 
         private static bool _isOne;
+
         private static void Ping()
         {
             _isOne = !_isOne;
@@ -96,13 +88,10 @@ namespace MinorEngine.engine.rendering
         {
             return _isOne ? _screenTarget0 : _screenTarget1;
         }
+
         public static void MergeAndDisplayTargets(List<RenderTarget> targets)
         {
-            if (!_init)
-            {
-                Init();
-            }
-
+            if (!_init) Init();
 
 
             int divideCount = targets.Count;
@@ -112,13 +101,11 @@ namespace MinorEngine.engine.rendering
             //GL.Enable(EnableCap.ScissorTest);
             foreach (var renderTarget in targets)
             {
-
-
                 RenderTarget dst = GetTarget();
                 RenderTarget src = GetSource();
 
                 _mergeTypes[renderTarget.MergeType].Use();
-                
+
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, dst.FrameBuffer);
 
                 //GL.Scissor(renderTarget.ViewPort.X, renderTarget.ViewPort.Y, renderTarget.ViewPort.Width, renderTarget.ViewPort.Height);
@@ -142,15 +129,12 @@ namespace MinorEngine.engine.rendering
                 //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
 
 
-
-
                 Ping();
 
 
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-
-
             }
+
             Ping();
             _screenShader.Use();
 
@@ -176,7 +160,7 @@ namespace MinorEngine.engine.rendering
 
             GL.BindVertexArray(_screenVAO);
 
-           //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+            //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
             //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
@@ -184,21 +168,14 @@ namespace MinorEngine.engine.rendering
             GL.ActiveTexture(TextureUnit.Texture0);
 
 
-
             //GL.BindVertexArray(0);
             //GL.ActiveTexture(TextureUnit.Texture0);
-
 
 
             //Clear the ping pong buffers after rendering them to the screen
             //For whatever reason GL.Clear is not acting on the active framebuffer
             GL.ClearTexImage(_screenTarget1.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
             GL.ClearTexImage(_screenTarget0.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
-
-
-
-
-
         }
     }
 }
