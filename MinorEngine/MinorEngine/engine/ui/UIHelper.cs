@@ -53,7 +53,7 @@ namespace GameEngine.engine.ui
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/QuadRender.fs"},
+                {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
             }, out ShaderProgram shader))
             {
