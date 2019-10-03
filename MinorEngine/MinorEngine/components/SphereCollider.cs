@@ -17,7 +17,7 @@ namespace MinorEngine.components
         {
             Vector3 pos = new Vector3(Owner.GetLocalPosition().X, Owner.GetLocalPosition().Y,
                 Owner.GetLocalPosition().Z);
-            BodyReference = Physics.AddSphereDynamic(1f, pos, Radius);
+            //BodyReference = Physics.AddSphereDynamic(1f, pos, Radius);
 
 
             base.Awake();

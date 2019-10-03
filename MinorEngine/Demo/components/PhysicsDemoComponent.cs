@@ -20,7 +20,7 @@ namespace Demo.components
 
         protected override void Awake()
         {
-            Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
+            //Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
             base.Awake();
             DebugConsoleComponent comp = Owner.World.GetChildWithName("Console")
@@ -52,9 +52,9 @@ namespace Demo.components
             if (float.TryParse(args[1], out float y)) return "Wrong Y Component";
             if (float.TryParse(args[2], out float z)) return "Wrong Z Component";
 
-            Physics.Gravity = new System.Numerics.Vector3(x, y, z);
+            //Physics.Gravity = new System.Numerics.Vector3(x, y, z);
 
-            return "Gravity Set to: " + Physics.Gravity;
+            return "Gravity Set to: "; // + Physics.Gravity;
         }
 
         public string cmd_SpawnColliders(string[] args)

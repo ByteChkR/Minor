@@ -6,7 +6,6 @@ using MinorEngine.components;
 using MinorEngine.engine.components;
 using OpenTK;
 using OpenTK.Input;
-using Quaternion = BepuUtilities.Quaternion;
 
 namespace MinorEngine.engine.core
 {

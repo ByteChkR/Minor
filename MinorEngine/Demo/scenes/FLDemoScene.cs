@@ -128,6 +128,11 @@ namespace Demo.scenes
             inPicCam.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(0));
             inPicCam.Translate(new Vector3(0, 2, 4));
             inPicCam.AddComponent(new RotateAroundComponent());
+            GameObject zeroPoint = new GameObject("Zero");
+            GameEngine.Instance.World.Add(zeroPoint);
+            LookAtComponent comp = new LookAtComponent();
+            comp.SetTarget(zeroPoint);
+            inPicCam.AddComponent(comp);
             GameEngine.Instance.World.Add(inPicCam);
 
 

@@ -30,7 +30,7 @@ namespace MinorEngine.components
                 Owner.GetLocalPosition().Z);
 
 
-            BodyReference = Physics.AddBoxDynamic(1f, pos, Bounds);
+            //BodyReference = Physics.AddBoxDynamic(1f, pos, Bounds);
 
 
             base.Awake();
