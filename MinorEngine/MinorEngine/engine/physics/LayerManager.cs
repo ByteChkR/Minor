@@ -15,7 +15,7 @@ namespace MinorEngine.engine.physics
         {
             if (_registeredLayers.ContainsKey(name))
             {
-                throw new Exception("Handle this");
+                return _registeredLayers[name];
             }
             _internalLayerStore.Add(new Tuple<Layer, string>(layer, name));
             _registeredLayers.Add(name, _internalLayerStore.Count - 1);
