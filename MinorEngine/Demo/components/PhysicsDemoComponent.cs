@@ -17,10 +17,10 @@ namespace Demo.components
     public class PhysicsDemoComponent : AbstractComponent
     {
         private static ShaderProgram _objShader;
-        private Layer game;
-        public PhysicsDemoComponent(Layer game)
+        private int game;
+        public PhysicsDemoComponent()
         {
-            this.game = game;
+            this.game = LayerManager.NameToLayer("physics");
 
         }
 

@@ -10,15 +10,17 @@ using Vector3 = OpenTK.Vector3;
 
 namespace Demo.components
 {
-    public class CameraRaycaster:AbstractComponent
+    public class CameraRaycaster : AbstractComponent
     {
-        Layer cast;
+        int cast;
         private GameObject sphereTargetMarker;
         private GameObject looker;
         private float yoff;
-        public CameraRaycaster(GameObject targetmarker, float yOffset, GameObject looker, Layer raycast)
+   
+
+        public CameraRaycaster(GameObject targetmarker, float yOffset, GameObject looker)
         {
-            cast = raycast;
+            cast = LayerManager.NameToLayer("raycast");
             sphereTargetMarker = targetmarker;
             this.looker = looker;
             yoff = yOffset;
@@ -58,7 +60,7 @@ namespace Demo.components
         private Ray ConstructRayFromMousePosition()
         {
             Vector2 mpos = GameEngine.Instance.MousePosition;
-            this.Log("Mouse Pos: "+mpos, DebugChannel.Log);
+            this.Log("Mouse Pos: " + mpos, DebugChannel.Log);
             Vector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int)mpos.X, (int)mpos.Y);
             return new Ray(Owner.GetLocalPosition(), (mousepos - Owner.GetLocalPosition()).Normalized());
         }

@@ -45,7 +45,13 @@ namespace MinorEngine.engine.physics
             return new Ray(origin, (mousepos - origin).Normalized());
         }
 
-        public static bool RayCastAll(Ray ray, float maxLength, Layer layerInfo, out KeyValuePair<Collider, RayHit>[] collisions)
+        public static bool RayCastAll(Ray ray, float maxLength, string layerInfo,
+            out KeyValuePair<Collider, RayHit>[] collisions)
+        {
+            return RayCastAll(ray, maxLength, LayerManager.NameToLayer(layerInfo), out collisions);
+        }
+
+        public static bool RayCastAll(Ray ray, float maxLength, int layerInfo, out KeyValuePair<Collider, RayHit>[] collisions)
         {
             IList<RayCastResult> results = new List<RayCastResult>();
             bool ret = _space.RayCast(ray, maxLength, (entry) => FilterFunc(entry, layerInfo), results);
@@ -57,7 +63,13 @@ namespace MinorEngine.engine.physics
             return ret;
         }
 
-        public static bool RayCastFirst(Ray ray, float maxLength, Layer layerInfo,
+        public static bool RayCastFirst(Ray ray, float maxLength, string layerInfo,
+            out KeyValuePair<Collider, RayHit> collision)
+        {
+            return RayCastFirst(ray, maxLength, LayerManager.NameToLayer(layerInfo), out collision);
+        }
+
+        public static bool RayCastFirst(Ray ray, float maxLength, int layerInfo,
             out KeyValuePair<Collider, RayHit> collision)
         {
             bool ret = _space.RayCast(ray, maxLength, (entry) => FilterFunc(entry, layerInfo), out RayCastResult res);
@@ -66,11 +78,11 @@ namespace MinorEngine.engine.physics
             return ret;
         }
 
-        private static bool FilterFunc(BroadPhaseEntry entry, Layer layerInfo)
+        private static bool FilterFunc(BroadPhaseEntry entry, int layerInfo)
         {
             if (entry.Tag == null) return false;
             Collider obj = (Collider)entry.Tag;
-            return Layer.AllowCollision(obj.CollisionLayer, layerInfo);
+            return LayerManager.AllowCollision(obj.CollisionLayer, layerInfo);
 
         }
 

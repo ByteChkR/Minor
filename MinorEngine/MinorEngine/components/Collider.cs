@@ -15,15 +15,20 @@ namespace MinorEngine.components
     {
         public Entity PhysicsCollider { get; }
         public RigidBodyConstraints ColliderConstraints { get; set; }
-        public Layer CollisionLayer { get; set; }
+        public int CollisionLayer { get; set; }
         private bool _colliderRemoved = false;
 
-        public Collider(Entity shape, Layer collisionConstraints)
+        public Collider(Entity shape, string layerName):this(shape, LayerManager.NameToLayer(layerName))
+        {
+            
+        }
+
+        public Collider(Entity shape, int layerID)
         {
             PhysicsCollider = shape;
 
             PhysicsCollider.CollisionInformation.Tag = this;
-            CollisionLayer = collisionConstraints;
+            CollisionLayer = layerID;
         }
 
         ~Collider()
@@ -31,7 +36,7 @@ namespace MinorEngine.components
 
             if (!_colliderRemoved)
             {
-                this.Log("GUCK", DebugChannel.Log);
+                this.Log("FUCK", DebugChannel.Log);
             }
         }
 

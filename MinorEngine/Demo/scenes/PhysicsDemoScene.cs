@@ -61,10 +61,13 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-            Layer raycastLayer = new Layer(1, 2);
-            Layer hybridLayer = new Layer(1, 1 | 2);
-            Layer gamePhysicsLayer = new Layer(1, 1);
-            Layer.DisableCollision(ref raycastLayer, ref gamePhysicsLayer);
+
+
+
+            int rayLayer = LayerManager.RegisterLayer("raycast", new Layer(1, 2));
+            int hybLayer = LayerManager.RegisterLayer("hybrid", new Layer(1, 1 | 2));
+            int physicsLayer = LayerManager.RegisterLayer("physics", new Layer(1, 1));
+            LayerManager.DisableCollisions(rayLayer, physicsLayer);
 
             GameModel bgBox = new GameModel("models/cube_flat.obj", true);
             GameModel box = new GameModel("models/cube_flat.obj", true);
@@ -87,7 +90,7 @@ namespace Demo.scenes
                 {ShaderType.VertexShader, "shader/texture.vs"}
             }, out ShaderProgram shader);
 
-            PhysicsDemoComponent phys = new PhysicsDemoComponent(gamePhysicsLayer);
+            PhysicsDemoComponent phys = new PhysicsDemoComponent();
 
             GameEngine.Instance.World.AddComponent(phys); //Adding Physics Component to world.
 
@@ -105,12 +108,12 @@ namespace Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(250, 1, 250);
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 500, 1, 500), hybridLayer));
+            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 500, 1, 500), hybLayer));
             GameEngine.Instance.World.Add(bgObj);
 
             GameObject boxO = new GameObject(Vector3.UnitY * 3, "Box");
             boxO.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            boxO.AddComponent(new Collider(new Box(Vector3.Zero, 1, 1, 1), gamePhysicsLayer));
+            boxO.AddComponent(new Collider(new Box(Vector3.Zero, 1, 1, 1), physicsLayer));
             boxO.Translate(new Vector3(55, 0, 35));
             GameEngine.Instance.World.Add(boxO);
 
@@ -128,7 +131,7 @@ namespace Demo.scenes
                     GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(55, 10, 45));
-            c.AddComponent(new CameraRaycaster(mouseTarget, 3, boxO, raycastLayer));
+            c.AddComponent(new CameraRaycaster(mouseTarget, 3, boxO));
             GameEngine.Instance.World.Add(c);
             GameEngine.Instance.World.SetCamera(c);
         }
