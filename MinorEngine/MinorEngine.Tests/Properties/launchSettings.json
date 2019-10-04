@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "FilterLanguage.Tests": {
+      "commandName": "Project",
+      "workingDirectory": "resources"
+    }
+  }
+}

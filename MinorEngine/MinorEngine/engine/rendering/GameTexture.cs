@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Assimp;
-using CLHelperLibrary;
+using MinorEngine.CLHelperLibrary;
 using Common;
 using MinorEngine.debug;
 using MinorEngine.engine.core;

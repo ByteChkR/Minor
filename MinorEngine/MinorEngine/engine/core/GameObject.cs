@@ -84,7 +84,10 @@ namespace MinorEngine.engine.core
 
             foreach (GameObject gameObject in objs) gameObject.Destroy();
 
-            foreach (var abstractComponent in _components)
+
+            KeyValuePair<Type, AbstractComponent>[] comps = new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
+
+            foreach (var abstractComponent in comps)
             {
                 if (abstractComponent.Value is Collider collider)
                 {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.exceptions;
 using MinorEngine.engine.audio.formats;
 using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 using MinorEngine.debug;
+using MinorEngine.exceptions;
 
 namespace MinorEngine.engine.audio
 {

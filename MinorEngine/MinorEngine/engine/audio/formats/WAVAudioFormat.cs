@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using MinorEngine.debug;
-using Common.exceptions;
+using MinorEngine.exceptions;
 
 namespace MinorEngine.engine.audio.formats
 {
