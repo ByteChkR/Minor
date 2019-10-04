@@ -93,12 +93,18 @@ namespace Demo.components
 
 
                     Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1));
+                    RigidBodyConstraints c = coll.ColliderConstraints;
+                    c.PositionConstraints = FreezeConstraints.Y;
+                    coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
                 else
                 {
                     obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
                     Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1));
+                    RigidBodyConstraints c = coll.ColliderConstraints;
+                    c.RotationConstraints = FreezeConstraints.X | FreezeConstraints.Y | FreezeConstraints.Z;
+                    coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
                 Collider.Add(obj);

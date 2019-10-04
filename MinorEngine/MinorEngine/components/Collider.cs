@@ -3,10 +3,11 @@ using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
+using MinorEngine.BEPUutilities;
 using MinorEngine.debug;
 using MinorEngine.engine.components;
 using MinorEngine.engine.physics;
-using OpenTK;
+using Vector3 = OpenTK.Vector3;
 
 namespace MinorEngine.components
 {
@@ -48,11 +49,11 @@ namespace MinorEngine.components
             {
                 veel.X = 0;
             }
-            else if ((ColliderConstraints.PositionConstraints & FreezeConstraints.Y) != 0)
+            if ((ColliderConstraints.PositionConstraints & FreezeConstraints.Y) != 0)
             {
                 veel.Y = 0;
             }
-            else if ((ColliderConstraints.PositionConstraints & FreezeConstraints.Z) != 0)
+            if ((ColliderConstraints.PositionConstraints & FreezeConstraints.Z) != 0)
             {
                 veel.Y = 0;
             }
@@ -62,21 +63,23 @@ namespace MinorEngine.components
 
         private void enforceRotationConstraints()
         {
-            Vector3 veel = PhysicsCollider.AngularVelocity;
+            Matrix3x3 veel = PhysicsCollider.LocalInertiaTensorInverse;
+
             if ((ColliderConstraints.RotationConstraints & FreezeConstraints.X) != 0)
             {
-                veel.X = 0;
+                veel.Left = new BEPUutilities.Vector3(0, 0, 0);
+
             }
-            else if ((ColliderConstraints.RotationConstraints & FreezeConstraints.Y) != 0)
+            if ((ColliderConstraints.RotationConstraints & FreezeConstraints.Y) != 0)
             {
-                veel.Y = 0;
+                veel.Up = new BEPUutilities.Vector3(0, 0, 0);
             }
-            else if ((ColliderConstraints.RotationConstraints & FreezeConstraints.Z) != 0)
+            if ((ColliderConstraints.RotationConstraints & FreezeConstraints.Z) != 0)
             {
-                veel.Y = 0;
+                veel.Backward = new BEPUutilities.Vector3(0, 0, 0);
             }
 
-            PhysicsCollider.AngularVelocity = veel;
+            PhysicsCollider.LocalInertiaTensorInverse = veel;
         }
 
         protected override void Update(float deltaTime)

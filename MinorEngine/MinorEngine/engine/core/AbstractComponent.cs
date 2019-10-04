@@ -113,7 +113,6 @@ namespace MinorEngine.engine.components
             }
 
             OnInitialCollisionDetected(other, handler);
-            this.Log("Initial Collision", DebugChannel.Log);
         }
 
         internal void onCollisionEnded(Collider other, CollidablePairHandler handler)
