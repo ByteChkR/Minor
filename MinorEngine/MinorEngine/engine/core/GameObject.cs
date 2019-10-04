@@ -453,7 +453,7 @@ namespace MinorEngine.engine.core
         {
             Matrix4 worldThis = GetWorldTransform();
             Matrix4 worldOther = other.GetWorldTransform();
-            Vector3 position = new Vector3(new Vector4(GetLocalPosition(), 0) * worldThis);
+            Vector3 position = GetLocalPosition();
             Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * worldOther);
 
 
