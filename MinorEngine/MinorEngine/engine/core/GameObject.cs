@@ -301,22 +301,26 @@ namespace MinorEngine.engine.core
 
         private void Events_InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
         {
-            foreach (var abstractComponent in _components) abstractComponent.Value.onInitialCollisionDetected(ObjsWithAttachedColliders[other], pair);
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+                foreach (var abstractComponent in _components) abstractComponent.Value.onInitialCollisionDetected(otherCol, pair);
         }
 
         private void Events_CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
         {
-            foreach (var abstractComponent in _components) abstractComponent.Value.onCollisionEnded(ObjsWithAttachedColliders[other], pair);
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+                foreach (var abstractComponent in _components) abstractComponent.Value.onCollisionEnded(otherCol, pair);
         }
 
         private void Events_ContactRemoved(EntityCollidable sender, Collidable other, CollidablePairHandler pair, ContactData contact)
         {
-            foreach (var abstractComponent in _components) abstractComponent.Value.onContactRemoved(ObjsWithAttachedColliders[other], pair, contact);
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+                foreach (var abstractComponent in _components) abstractComponent.Value.onContactRemoved(otherCol, pair, contact);
         }
 
         private void Events_ContactCreated(EntityCollidable sender, Collidable other, CollidablePairHandler pair, ContactData contact)
         {
-            foreach (var abstractComponent in _components) abstractComponent.Value.onContactCreated(ObjsWithAttachedColliders[other], pair, contact);
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+                foreach (var abstractComponent in _components) abstractComponent.Value.onContactCreated(otherCol, pair, contact);
         }
 
 
