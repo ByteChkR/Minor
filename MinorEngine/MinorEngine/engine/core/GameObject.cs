@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using Common;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
@@ -35,7 +36,23 @@ namespace MinorEngine.engine.core
         internal Matrix4 _worldTransformCache;
 
         public IRenderingComponent RenderingComponent { get; private set; }
-        public Matrix4 Transform { get; set; } = Matrix4.Identity;
+
+        public Matrix4 Transform
+        {
+            get
+            {
+                Matrix4 mat = Matrix4.Identity;
+                mat *= Matrix4.CreateFromQuaternion(Rotation);
+                mat *= Matrix4.CreateScale(Scale);
+                mat *= Matrix4.CreateTranslation(LocalPosition);
+                return mat;
+            }
+        }
+
+        public Vector3 LocalPosition { get; set; } = new Vector3();
+        public Vector3 Scale { get; set; } = new Vector3(1);
+        public Quaternion Rotation { get; set; } = Quaternion.Identity;
+
         public World World { get; internal set; }
         private static int _objId;
         private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
@@ -69,9 +86,9 @@ namespace MinorEngine.engine.core
             foreach (var abstractComponent in _components) abstractComponent.Value.Destroy();
         }
 
-        public GameObject(Vector3 position, string name, GameObject parent)
+        public GameObject(Vector3 localPosition, string name, GameObject parent)
         {
-            Transform *= Matrix4.CreateTranslation(position);
+            LocalPosition = localPosition;
             World = World;
             Parent = parent;
 
@@ -91,7 +108,7 @@ namespace MinorEngine.engine.core
             _objId++;
         }
 
-        public GameObject(Vector3 position, string name) : this(position, name, null)
+        public GameObject(Vector3 localPosition, string name) : this(localPosition, name, null)
         {
         }
 
@@ -355,12 +372,12 @@ namespace MinorEngine.engine.core
 
         public void Translate(Vector3 translation)
         {
-            Transform *= Matrix4.CreateTranslation(translation);
+            LocalPosition += translation;
         }
 
-        public void Scale(Vector3 scaleAmount)
+        public void ScaleBy(Vector3 scaleAmount)
         {
-            Transform *= Matrix4.CreateScale(scaleAmount);
+            Scale *= scaleAmount;
         }
 
         public Vector3 GetScale()
@@ -370,15 +387,12 @@ namespace MinorEngine.engine.core
 
         public void Rotate(Vector3 axis, float angle)
         {
-            Vector3 translation = GetLocalPosition();
-            Transform = Transform.ClearTranslation() * Matrix4.CreateFromAxisAngle(axis, angle);
-            Translate(translation);
+            Rotation *= Quaternion.FromAxisAngle(axis, angle);
         }
 
         public void SetRotation(Quaternion rot)
         {
-            Transform = Matrix4.CreateFromQuaternion(new OpenTK.Quaternion(rot.X, rot.Y, rot.Z, rot.W)) *
-                        Transform.ClearRotation();
+            Rotation = rot;
         }
 
 
@@ -410,9 +424,7 @@ namespace MinorEngine.engine.core
         }
         public void SetLocalPosition(Vector3 pos)
         {
-            Matrix4 f = Transform;
-            f.Row3 = new Vector4(pos, 1);
-            Transform = f;
+            LocalPosition = pos;
         }
 
         public void LookAt(Vector3 worldPos)
@@ -432,11 +444,33 @@ namespace MinorEngine.engine.core
             Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
             Vector3 newUp = Vector3.Cross(newForward, newRight);
 
-            Transform = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
-                new Vector4(position, 1));
+            //Transform = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
+            //    new Vector4(position, 1));
 
         }
 
+        public void LookAtGlobal(GameObject other)
+        {
+            Matrix4 worldThis = GetWorldTransform();
+            Matrix4 worldOther = other.GetWorldTransform();
+            Vector3 position = new Vector3(new Vector4(GetLocalPosition(), 0) * worldThis);
+            Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * worldOther);
+
+
+
+            Vector3 t = target - position;
+
+            Vector3 newForward = Vector3.Normalize(t);
+
+            this.Log("New Forward: " + newForward, DebugChannel.Log);
+
+            //New Right Vector
+            Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
+            Vector3 newUp = Vector3.Cross(newForward, newRight);
+            Matrix3 newMat = new Matrix3(new Vector3(-newRight), new Vector3(newUp), new Vector3(-newForward));
+            Rotation = newMat.ExtractRotation();
+
+        }
 
         public void LookAt(GameObject other)
         {
@@ -446,6 +480,9 @@ namespace MinorEngine.engine.core
             Vector3 position = GetLocalPosition();
             Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * otherThis);
 
+
+            this.Log("New Target: " + target, DebugChannel.Log);
+
             Vector3 t = target - position;
 
             Vector3 newForward = Vector3.Normalize(t);
@@ -453,10 +490,10 @@ namespace MinorEngine.engine.core
             //New Right Vector
             Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
             Vector3 newUp = Vector3.Cross(newForward, newRight);
-
-            Transform = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
+            Matrix4 newMat = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
                 new Vector4(position, 1));
-            
+            //Transform = newMat;
+
         }
     }
 }

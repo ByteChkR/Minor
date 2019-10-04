@@ -96,7 +96,7 @@ namespace Demo.components
 
                 GameObject obj = new GameObject(pos, "Sphere");
                 float radius = 0.3f + (float)rnd.NextDouble();
-                obj.Scale(new Vector3(radius / 2));
+                obj.Scale=new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
                     obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));

@@ -40,7 +40,7 @@ namespace Demo.scenes
             Vector3 pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Translate(pos);
             pos = GameEngine.Instance.World.Camera.GetLocalPosition();
-            return "New Position: " + pos.X + ":" + pos.Z + ":" + pos.Y;
+            return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
         private string cmd_ChangeCameraRot(string[] args)
@@ -63,14 +63,16 @@ namespace Demo.scenes
         {
             Layer raycastLayer = new Layer(1, 2);
             Layer hybridLayer = new Layer(1, 1 | 2);
-            Layer gamePhysicsLayer = new Layer(1 ,1);
+            Layer gamePhysicsLayer = new Layer(1, 1);
             Layer.DisableCollision(ref raycastLayer, ref gamePhysicsLayer);
 
             GameModel bgBox = new GameModel("models/cube_flat.obj");
+            GameModel box = new GameModel("models/cube_flat.obj");
             GameModel sphere = new GameModel("models/sphere_smooth.obj");
 
             GameTexture bg = TextureProvider.Load("textures/ground4k.png");
             bgBox.SetTextureBuffer(0, new[] { bg });
+            box.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -101,17 +103,23 @@ namespace Demo.scenes
             GameEngine.Instance.World.Add(dbg.Owner);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
-            bgObj.Scale(new Vector3(25, 1, 25));
+            bgObj.Scale = new Vector3(250, 1, 250);
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 50, 1, 50), hybridLayer));
-
+            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 500, 1, 500), hybridLayer));
             GameEngine.Instance.World.Add(bgObj);
 
+            GameObject boxO = new GameObject(Vector3.UnitY * 3, "Box");
+            boxO.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
+            boxO.AddComponent(new Collider(new Box(Vector3.Zero, 1, 1, 1), gamePhysicsLayer));
+            GameEngine.Instance.World.Add(boxO);
+
+
             GameObject mouseTarget = new GameObject(Vector3.UnitY * -3, "BG");
-            mouseTarget.Scale(new Vector3(1, 1, 1));
+            mouseTarget.Scale = new Vector3(1, 1, 1);
             mouseTarget.AddComponent(new MeshRendererComponent(shader, sphere, 1));
-            
+
             GameEngine.Instance.World.Add(mouseTarget);
+
 
 
             Camera c = new Camera(
@@ -119,7 +127,7 @@ namespace Demo.scenes
                     GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 10, 10));
-            c.AddComponent(new CameraRaycaster(mouseTarget, raycastLayer));
+            c.AddComponent(new CameraRaycaster(mouseTarget, 3, boxO, raycastLayer));
             GameEngine.Instance.World.Add(c);
             GameEngine.Instance.World.SetCamera(c);
         }

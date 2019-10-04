@@ -52,7 +52,7 @@ namespace Demo.scenes
             Vector3 pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Translate(pos);
             pos = GameEngine.Instance.World.Camera.GetLocalPosition();
-            return "New Position: " + pos.X + ":" + pos.Z + ":" + pos.Y;
+            return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
         private string cmd_ChangeCameraRot(string[] args)
@@ -75,7 +75,7 @@ namespace Demo.scenes
         {
             GameModel bgBox = new GameModel("models/cube_flat.obj");
 
-            bgBox.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
+            bgBox.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -99,13 +99,13 @@ namespace Demo.scenes
             GameEngine.Instance.World.Add(dbg.Owner);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
-            bgObj.Scale(new Vector3(25, 1, 25));
+            bgObj.Scale = new Vector3(25, 1, 25);
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             GameEngine.Instance.World.Add(bgObj);
 
             Camera c = new Camera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                    GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                    GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 20, 50));
             _camLookCommandComponent = new LookAtComponent();
@@ -115,7 +115,7 @@ namespace Demo.scenes
             _sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
 
             GameModel sourceCube = new GameModel("models/cube_flat.obj");
-            sourceCube.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
+            sourceCube.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
             AudioSourceComponent source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
             _sourceCube.AddComponent(new RotateAroundComponent());

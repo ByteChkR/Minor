@@ -8,7 +8,7 @@ namespace MinorEngine.engine.core
         public Matrix4 Projection { get; set; }
         public Matrix4 ViewMatrix => Matrix4.Invert(GetWorldTransform());
 
-        public Camera(Matrix4 projection, Vector3 position) : base(position, "Camera")
+        public Camera(Matrix4 projection, Vector3 localPosition) : base(localPosition, "Camera")
         {
             Projection = projection;
         }

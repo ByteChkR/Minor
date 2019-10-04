@@ -14,10 +14,14 @@ namespace Demo.components
     {
         Layer cast;
         private GameObject sphereTargetMarker;
-        public CameraRaycaster(GameObject targetmarker, Layer raycast)
+        private GameObject looker;
+        private float yoff;
+        public CameraRaycaster(GameObject targetmarker, float yOffset, GameObject looker, Layer raycast)
         {
             cast = raycast;
             sphereTargetMarker = targetmarker;
+            this.looker = looker;
+            yoff = yOffset;
         }
 
         protected override void Update(float deltaTime)
@@ -27,8 +31,27 @@ namespace Demo.components
                 out KeyValuePair<Collider, RayHit> arr);
             if (ret)
             {
-                this.Log("Ray Dir: " + r.Direction, DebugChannel.Log);
-                sphereTargetMarker.SetLocalPosition(arr.Value.Location);
+                Vector3 pos = arr.Value.Location;
+                pos.Y = looker.LocalPosition.Y;
+                sphereTargetMarker.SetLocalPosition(pos);
+                looker.LookAtGlobal(sphereTargetMarker);
+            }
+        }
+
+        protected override void OnKeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+            if (e.Key == Key.B)
+            {
+                Ray r = ConstructRayFromMousePosition();
+                bool ret = Physics.RayCastFirst(r, 1000, cast,
+                    out KeyValuePair<Collider, RayHit> arr);
+                if (ret)
+                {
+                    Vector3 pos = arr.Value.Location;
+                    pos.Y += looker.LocalPosition.Y;
+                    sphereTargetMarker.SetLocalPosition(pos);
+                    looker.LookAtGlobal(sphereTargetMarker);
+                }
             }
         }
 

@@ -37,7 +37,7 @@ namespace Demo.scenes
             Vector3 pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Translate(pos);
             pos = GameEngine.Instance.World.Camera.GetLocalPosition();
-            return "New Position: " + pos.X + ":" + pos.Z + ":" + pos.Y;
+            return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
         private string cmd_ChangeCameraRot(string[] args)
@@ -105,7 +105,7 @@ namespace Demo.scenes
             GameEngine.Instance.World.Add(objQuad);
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
-            bgObj.Scale(new Vector3(25, 1, 25));
+            bgObj.Scale=new Vector3(25, 1, 25);
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             GameEngine.Instance.World.Add(bgObj);
 
