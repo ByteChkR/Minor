@@ -21,7 +21,7 @@ namespace MinorEngine.components
         {
             PhysicsCollider = shape;
 
-            PhysicsCollider.Tag = this;
+            PhysicsCollider.CollisionInformation.Tag = this;
             CollisionLayer = collisionConstraints;
         }
 
@@ -34,6 +34,7 @@ namespace MinorEngine.components
 
         protected override void OnDestroy()
         {
+            PhysicsCollider.CollisionInformation.Tag = null;
             Physics.RemoveEntity(PhysicsCollider);
         }
 

@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
+using MinorEngine.BEPUutilities;
 using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.physics;
 using MinorEngine.engine.rendering;
 using MinorEngine.engine.ui.utils;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Input;
+using Vector3 = OpenTK.Vector3;
 
 namespace Demo.components
 {
     public class PhysicsDemoComponent : AbstractComponent
     {
         private static ShaderProgram _objShader;
+        private Layer game;
+        public PhysicsDemoComponent(Layer game)
+        {
+            this.game = game;
+
+        }
 
         GameModel Box = new GameModel("models/cube_flat.obj", false);
         GameModel Sphere = new GameModel("models/sphere_smooth.obj", false);
@@ -39,6 +47,8 @@ namespace Demo.components
         protected override void OnDestroy()
         {
         }
+
+        
 
         public static string cmd_SetGravity(string[] args)
         {
@@ -92,7 +102,7 @@ namespace Demo.components
                     obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));
 
 
-                    Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), new Layer(1));
+                    Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
                     RigidBodyConstraints c = coll.ColliderConstraints;
                     c.RotationConstraints = FreezeConstraints.Z|FreezeConstraints.X;
                     coll.ColliderConstraints = c;
@@ -101,7 +111,7 @@ namespace Demo.components
                 else
                 {
                     obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
-                    Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), new Layer(1));
+                    Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
                     RigidBodyConstraints c = coll.ColliderConstraints;
                     //c.RotationConstraints = FreezeConstraints.X;
                     coll.ColliderConstraints = c;

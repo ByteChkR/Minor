@@ -147,7 +147,7 @@ namespace MinorEngine.engine.core
             }
         }
 
-        
+
 
         public T GetComponentIterative<T>() where T : AbstractComponent
         {
@@ -293,9 +293,9 @@ namespace MinorEngine.engine.core
             foreach (var abstractComponent in _components) abstractComponent.Value.onContactCreated(ObjsWithAttachedColliders[other], pair, contact);
         }
 
-        
 
-        
+
+
 
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
@@ -381,6 +381,17 @@ namespace MinorEngine.engine.core
                         Transform.ClearRotation();
         }
 
+
+        public Vector3 TransformToWorld(Vector3 vec, bool translate = true)
+        {
+            Vector4 v = translate ? new Vector4(vec, 1) : new Vector4(vec, 0);
+            return new Vector3(v * GetWorldTransform());
+        }
+
+        public Vector3 GetWorldPosition()
+        {
+            return TransformToWorld(GetLocalPosition(), true);
+        }
         public Matrix4 GetWorldTransform()
         {
             if (Parent == null)

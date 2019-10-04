@@ -30,7 +30,7 @@ namespace MinorEngine.engine.core
             InternalLogMask = (int)DebugChannel.Log,
             InternalWarningMask = (int)DebugChannel.Warning,
             SendInternalWarnings = true,
-            MaskPrefixes = new []{ "[ERROR]" , "[WARNING]" , "[LOG]" , "[INTERNAL_ERROR]" , "[PROGRESS]" },
+            MaskPrefixes = new[] { "[ERROR]", "[WARNING]", "[LOG]", "[INTERNAL_ERROR]", "[PROGRESS]" },
             WildcardPrefix = "[ALL]",
             NonePrefix = "[NONE]"
         };
@@ -90,8 +90,13 @@ namespace MinorEngine.engine.core
             this.Log("Initializing Renderer..", DebugChannel.Log);
             Renderer = new Renderer();
             Window.RenderFrame += OnRender;
+            Window.MouseMove += Window_MouseMove;
         }
 
+        private void Window_MouseMove(object sender, OpenTK.Input.MouseMoveEventArgs e)
+        {
+            MousePosition = new Vector2(e.X, e.Y);
+        }
 
         public void InitializeScene<T>() where T : AbstractScene
         {
@@ -119,19 +124,56 @@ namespace MinorEngine.engine.core
             Window.Run(0, 0);
         }
 
+        public Vector2 MousePosition { get; private set; }
+
+        public Vector3 ConvertScreenToWorldCoords(int x, int y)
+        {
+
+            Vector2 mouse;
+            mouse.X = x;
+            mouse.Y = y;
+            Matrix4 proj = World.Camera.Projection;
+            Vector4 vector = UnProject(ref proj, World.Camera.ViewMatrix, new Size(Width, Height), mouse);
+            Vector3 coords = new Vector3(vector);
+            return coords;
+        }
+        private static Vector4 UnProject(ref Matrix4 projection, Matrix4 view, Size viewport, Vector2 mouse)
+        {
+            Vector4 vec;
+
+            vec.X = 2.0f * mouse.X / (float)viewport.Width - 1;
+            vec.Y = -2.0f * mouse.Y / (float)viewport.Height + 1;
+            vec.Z = 0;
+            vec.W = 1.0f;
+
+            Matrix4 viewInv = Matrix4.Invert(view);
+            Matrix4 projInv = Matrix4.Invert(projection);
+
+            Vector4.Transform(ref vec, ref projInv, out vec);
+            Vector4.Transform(ref vec, ref viewInv, out vec);
+
+            if (vec.W > float.Epsilon || vec.W < float.Epsilon)
+            {
+                vec.X /= vec.W;
+                vec.Y /= vec.W;
+                vec.Z /= vec.W;
+            }
+
+            return vec;
+        }
+
         protected virtual void Update(object sender, FrameEventArgs e)
         {
-            currentScene?.Update((float) e.Time);
-            World?.Update((float) e.Time);
-            Physics.Update((float) e.Time);
-
+            currentScene?.Update((float)e.Time);
+            World?.Update((float)e.Time);
+            Physics.Update((float)e.Time);
             if (_changeScene)
             {
                 _changeScene = false;
 
                 World?.Destroy();
                 currentScene?.Destroy();
-                currentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
+                currentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
                 World = new World();
                 currentScene._initializeScene(World);
             }

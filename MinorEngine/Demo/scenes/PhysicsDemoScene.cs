@@ -13,7 +13,7 @@ namespace Demo.scenes
 {
     public class PhysicsDemoScene : AbstractScene
     {
-        
+
 
 
         private string cmd_ReLoadScene(string[] args)
@@ -61,7 +61,13 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
+            Layer raycastLayer = new Layer(1, 2);
+            Layer hybridLayer = new Layer(1, 1 | 2);
+            Layer gamePhysicsLayer = new Layer(1 ,1);
+            Layer.DisableCollision(ref raycastLayer, ref gamePhysicsLayer);
+
             GameModel bgBox = new GameModel("models/cube_flat.obj");
+            GameModel sphere = new GameModel("models/sphere_smooth.obj");
 
             GameTexture bg = TextureProvider.Load("textures/ground4k.png");
             bgBox.SetTextureBuffer(0, new[] { bg });
@@ -79,12 +85,12 @@ namespace Demo.scenes
                 {ShaderType.VertexShader, "shader/texture.vs"}
             }, out ShaderProgram shader);
 
-            PhysicsDemoComponent phys = new PhysicsDemoComponent();
+            PhysicsDemoComponent phys = new PhysicsDemoComponent(gamePhysicsLayer);
 
             GameEngine.Instance.World.AddComponent(phys); //Adding Physics Component to world.
 
 
-            
+
 
 
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
@@ -97,15 +103,23 @@ namespace Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 50, 1, 50), new Layer(1)));
+            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 50, 1, 50), hybridLayer));
 
             GameEngine.Instance.World.Add(bgObj);
+
+            GameObject mouseTarget = new GameObject(Vector3.UnitY * -3, "BG");
+            mouseTarget.Scale(new Vector3(1, 1, 1));
+            mouseTarget.AddComponent(new MeshRendererComponent(shader, sphere, 1));
+            
+            GameEngine.Instance.World.Add(mouseTarget);
+
 
             Camera c = new Camera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 10, 10));
+            c.AddComponent(new CameraRaycaster(mouseTarget, raycastLayer));
             GameEngine.Instance.World.Add(c);
             GameEngine.Instance.World.SetCamera(c);
         }

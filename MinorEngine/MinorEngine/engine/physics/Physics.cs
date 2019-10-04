@@ -10,6 +10,8 @@ using MinorEngine.components;
 using MinorEngine.debug;
 using MinorEngine.engine.core;
 using OpenTK;
+using TKVector3 = OpenTK.Vector3;
+using TKVector2 = OpenTK.Vector2;
 using Vector3 = MinorEngine.BEPUutilities.Vector3;
 
 namespace MinorEngine.engine.physics
@@ -34,6 +36,13 @@ namespace MinorEngine.engine.physics
             _fu = new ForceUpdater(new TimeStepSettings());
             _fu.Gravity = Vector3.Down * 10;
             _space.ForceUpdater = _fu;
+        }
+
+        public static Ray ConstructRayFromMousePosition(TKVector3 origin)
+        {
+            TKVector2 mpos = GameEngine.Instance.MousePosition;
+            TKVector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int)mpos.X, (int)mpos.Y);
+            return new Ray(origin, (mousepos - origin).Normalized());
         }
 
         public static bool RayCastAll(Ray ray, float maxLength, Layer layerInfo, out KeyValuePair<Collider, RayHit>[] collisions)
