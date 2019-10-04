@@ -15,7 +15,7 @@ using MinorEngine.debug;
 
 namespace MinorEngine.FilterLanguage.Generators
 {
-    class WFCOverlayMode : WaveFunctionCollapse
+    public class WFCOverlayMode : WaveFunctionCollapse
     {
         private readonly int _n;
         private readonly byte[][] _patterns;
