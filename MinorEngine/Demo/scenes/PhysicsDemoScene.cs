@@ -3,6 +3,7 @@ using Demo.components;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
 using MinorEngine.components;
 using MinorEngine.engine.core;
+using MinorEngine.engine.physics;
 using MinorEngine.engine.rendering;
 using MinorEngine.engine.ui.utils;
 using OpenTK;
@@ -82,6 +83,10 @@ namespace Demo.scenes
 
             GameEngine.Instance.World.AddComponent(phys); //Adding Physics Component to world.
 
+
+            
+
+
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
@@ -92,7 +97,7 @@ namespace Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale(new Vector3(25, 1, 25));
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 50, 1, 50)));
+            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 50, 1, 50), new Layer(1)));
 
             GameEngine.Instance.World.Add(bgObj);
 

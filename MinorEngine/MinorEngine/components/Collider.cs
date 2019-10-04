@@ -15,10 +15,14 @@ namespace MinorEngine.components
     {
         public Entity PhysicsCollider { get; }
         public RigidBodyConstraints ColliderConstraints { get; set; }
+        public Layer CollisionLayer { get; set; }
 
-        public Collider(Entity shape)
+        public Collider(Entity shape, Layer collisionConstraints)
         {
             PhysicsCollider = shape;
+
+            PhysicsCollider.Tag = this;
+            CollisionLayer = collisionConstraints;
         }
 
         protected override void Awake()
