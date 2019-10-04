@@ -177,6 +177,9 @@ namespace MinorEngine.engine.core
                 World = new World();
                 currentScene._initializeScene(World);
             }
+
+            //Cleanup
+            World?.RemoveDestroyedObjects();
         }
 
 

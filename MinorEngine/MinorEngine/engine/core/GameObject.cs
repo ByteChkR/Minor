@@ -65,6 +65,8 @@ namespace MinorEngine.engine.core
 
         public GameObject Parent { get; private set; }
 
+        private bool _destructionPending;
+
         ~GameObject()
         {
             if (!_destroyed)
@@ -73,6 +75,11 @@ namespace MinorEngine.engine.core
         }
 
         public void Destroy()
+        {
+            _destructionPending = true;
+        }
+
+        private void _Destroy()
         {
             _destroyed = true;
 
@@ -148,6 +155,22 @@ namespace MinorEngine.engine.core
 
                 _components.Add(t, component);
                 component.Owner = this;
+            }
+        }
+
+        internal void RemoveDestroyedObjects()
+        {
+            List<GameObject> go = new List<GameObject>(_children);
+            foreach (var gameObject in go)
+            {
+                if (gameObject._destructionPending)
+                {
+                    gameObject._Destroy();
+                }
+                else
+                {
+                    gameObject.RemoveDestroyedObjects();
+                }
             }
         }
 

@@ -80,9 +80,7 @@ namespace MinorEngine.engine.core
             }
             else
             {
-                tex.Destroy();
-
-                tex.Log("Handle of Unmanaged Texture " + tex.TextureId + " was destroyed.", DebugChannel.Log);
+                tex.Log("Handle of Unmanaged Texture " + tex.TextureId + " was ignored.", DebugChannel.Log);
             }
         }
 
