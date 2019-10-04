@@ -59,6 +59,11 @@ namespace MinorEngine.engine.rendering
             Textures = tex;
         }
 
+        public GameTexture[] GetTextureBuffer()
+        {
+            return Textures;
+        }
+
         public Vector3[] ToSequentialVertexList()
         {
             Vector3[] verts = new Vector3[_indices.Length];
