@@ -4,9 +4,8 @@ using OpenCl.DotNetCore.CommandQueues;
 using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
-using CLHelperLibrary.debug;
 
-namespace CLHelperLibrary
+namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
     /// A wrapper class that holds a OpenCL kernel and the parsed informations for the kernel.

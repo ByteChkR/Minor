@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using OpenCl.DotNetCore.Memory;
 
-namespace FilterLanguage
+namespace MinorEngine.FilterLanguage
 {
     /// <summary>
     /// The current interpreter state

@@ -4,9 +4,8 @@ using System.Linq;
 using Common;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Programs;
-using CLHelperLibrary.debug;
 
-namespace CLHelperLibrary
+namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
     /// A wrapper class for a OpenCL Program.

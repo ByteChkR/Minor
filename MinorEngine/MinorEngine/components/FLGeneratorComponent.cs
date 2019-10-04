@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CLHelperLibrary;
-using CLHelperLibrary.cltypes;
-using FilterLanguage;
+using MinorEngine.CLHelperLibrary;
+using MinorEngine.CLHelperLibrary.cltypes;
+using MinorEngine.FilterLanguage;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;

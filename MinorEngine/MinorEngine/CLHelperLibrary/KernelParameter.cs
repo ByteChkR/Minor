@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using CLHelperLibrary.cltypes;
+using MinorEngine.CLHelperLibrary.cltypes;
 using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Memory;
 
-namespace CLHelperLibrary
+namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
     /// A class containing the logic to parse a kernel argument

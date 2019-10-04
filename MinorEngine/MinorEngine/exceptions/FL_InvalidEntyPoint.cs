@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.exceptions
+namespace MinorEngine.exceptions
 {
     /// <summary>
     /// This Exception occurs when the FLInterpreter is not able to find the Main: method

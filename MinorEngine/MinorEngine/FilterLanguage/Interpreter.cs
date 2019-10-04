@@ -4,17 +4,17 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using CLHelperLibrary;
-using CLHelperLibrary.cltypes;
+using MinorEngine.CLHelperLibrary;
 using Common;
-using Common.exceptions;
-using FilterLanguage.debug;
-using FilterLanguage.Generators;
+using MinorEngine.CLHelperLibrary.cltypes;
+using MinorEngine.debug;
+using MinorEngine.exceptions;
+using MinorEngine.FilterLanguage.Generators;
 using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Memory;
 using Image = System.Drawing.Image;
 
-namespace FilterLanguage
+namespace MinorEngine.FilterLanguage
 {
     /// <summary>
     /// The FL Interpreter

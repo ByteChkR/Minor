@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.exceptions
+namespace MinorEngine.exceptions
 {
     /// <summary>
     /// This exception gets thrown when the specified file was not found.

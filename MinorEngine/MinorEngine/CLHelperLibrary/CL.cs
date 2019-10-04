@@ -12,8 +12,7 @@ using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 using OpenCl.DotNetCore.Platforms;
 using OpenCl.DotNetCore.Programs;
-using CLHelperLibrary.debug;
-namespace CLHelperLibrary
+namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
     /// A wrapper class that is handling all the CL operations.

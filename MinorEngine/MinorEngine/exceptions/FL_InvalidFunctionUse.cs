@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.exceptions
+namespace MinorEngine.exceptions
 {
     /// <summary>
     /// This exception gets thrown when a FL instruction or kernel was used incorrectly in the program script.

@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CLHelperLibrary\CLHelperLibrary.csproj" />
+    <ProjectReference Include="..\MinorEngine\MinorEngine.csproj" />
   </ItemGroup>
 
   <ItemGroup>

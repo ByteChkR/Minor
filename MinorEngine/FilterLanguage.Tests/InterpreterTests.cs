@@ -1,7 +1,8 @@
 using System.IO;
-using CLHelperLibrary;
-using CLHelperLibrary.cltypes;
 using Common;
+using MinorEngine.CLHelperLibrary;
+using MinorEngine.CLHelperLibrary.cltypes;
+using MinorEngine.FilterLanguage;
 using OpenCl.DotNetCore.Memory;
 using Xunit;
 

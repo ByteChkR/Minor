@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using CLHelperLibrary.cltypes;
-using CLHelperLibrary.debug;
-using Common.exceptions;
+using MinorEngine.CLHelperLibrary.cltypes;
+using MinorEngine.debug;
+using MinorEngine.exceptions;
 
-namespace CLHelperLibrary
+namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
     /// A class used to store and manage Kernels

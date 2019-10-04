@@ -11,9 +11,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Common;
-using FilterLanguage.debug;
+using MinorEngine.debug;
 
-namespace FilterLanguage.Generators
+namespace MinorEngine.FilterLanguage.Generators
 {
     class WFCOverlayMode : WaveFunctionCollapse
     {

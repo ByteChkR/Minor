@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace FilterLanguage.Generators
+namespace MinorEngine.FilterLanguage.Generators
 {
     public static class WaveCollapseUtils
     {

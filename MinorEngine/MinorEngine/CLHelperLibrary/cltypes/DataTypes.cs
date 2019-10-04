@@ -1,4 +1,4 @@
-﻿namespace CLHelperLibrary.cltypes
+﻿namespace MinorEngine.CLHelperLibrary.cltypes
 {
     /// <summary>
     /// An Enum containing all possible data types that plain OpenCL can handle

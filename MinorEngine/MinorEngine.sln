@@ -1,13 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28917.181
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinorEngine", "MinorEngine\MinorEngine.csproj", "{66E68257-2121-431F-B67C-75C82C1DB1D3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilterLanguage", "FilterLanguage\FilterLanguage.csproj", "{17C4D8A9-3B82-47F2-8176-AE11FEB632C2}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLHelperLibrary", "CLHelperLibrary\CLHelperLibrary.csproj", "{CE7CF02A-D0C2-4CA6-A72C-2D74F3EED40A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}"
 EndProject
@@ -17,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FilterLanguage.Tests", "Fil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogServer", "LogServer\LogServer.csproj", "{87A41BD0-EC0F-40F7-960E-DA52204109EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo", "Demo\Demo.csproj", "{1E537B4A-E4DE-4C14-B19F-3F89EF37B597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "Demo\Demo.csproj", "{1E537B4A-E4DE-4C14-B19F-3F89EF37B597}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,14 +25,6 @@ Global
 		{66E68257-2121-431F-B67C-75C82C1DB1D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{66E68257-2121-431F-B67C-75C82C1DB1D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{66E68257-2121-431F-B67C-75C82C1DB1D3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17C4D8A9-3B82-47F2-8176-AE11FEB632C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17C4D8A9-3B82-47F2-8176-AE11FEB632C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17C4D8A9-3B82-47F2-8176-AE11FEB632C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17C4D8A9-3B82-47F2-8176-AE11FEB632C2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CE7CF02A-D0C2-4CA6-A72C-2D74F3EED40A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CE7CF02A-D0C2-4CA6-A72C-2D74F3EED40A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CE7CF02A-D0C2-4CA6-A72C-2D74F3EED40A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CE7CF02A-D0C2-4CA6-A72C-2D74F3EED40A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}.Release|Any CPU.ActiveCfg = Release|Any CPU

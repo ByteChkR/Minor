@@ -1,4 +1,4 @@
-﻿namespace CLHelperLibrary.cltypes
+﻿namespace MinorEngine.CLHelperLibrary.cltypes
 {
     /// <summary>
     /// The Memory scope that kernel arguments can have

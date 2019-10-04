@@ -1,8 +1,9 @@
 using System;
 using System.IO;
 using System.Linq;
-using CLHelperLibrary.cltypes;
 using Common;
+using MinorEngine.CLHelperLibrary;
+using MinorEngine.CLHelperLibrary.cltypes;
 using OpenCl.DotNetCore.Memory;
 using Xunit;
 
