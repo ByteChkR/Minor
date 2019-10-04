@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing.Drawing2D;
+using System.Runtime.CompilerServices;
 using Common;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
@@ -83,7 +84,15 @@ namespace MinorEngine.engine.core
 
             foreach (GameObject gameObject in objs) gameObject.Destroy();
 
-            foreach (var abstractComponent in _components) abstractComponent.Value.Destroy();
+            foreach (var abstractComponent in _components)
+            {
+                if (abstractComponent.Value is Collider collider)
+                {
+                    ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                    unregisterCollider(collider);
+                }
+                abstractComponent.Value.Destroy();
+            }
         }
 
         public GameObject(Vector3 localPosition, string name, GameObject parent)
@@ -147,7 +156,7 @@ namespace MinorEngine.engine.core
                 if (typeof(IRenderingComponent).IsAssignableFrom(t))
                 {
                     applyRenderHierarchy(false);
-                    ObjsWithAttachedRenderers.Add(this);
+                    ObjsWithAttachedRenderers.Remove(this);
                     RenderingComponent = null;
                 }
 
