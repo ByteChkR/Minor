@@ -32,6 +32,15 @@ namespace MinorEngine.components
             Physics.RemoveEntity(PhysicsCollider);
         }
 
+        public void SetVelocityLinear(Vector3 vel)
+        {
+            PhysicsCollider.LinearVelocity = vel;
+        }
+        public void SetVelocityAngular(Vector3 vel)
+        {
+            PhysicsCollider.AngularVelocity = vel;
+        }
+
         private void enforceTranslationConstraints()
         {
             Vector3 veel = PhysicsCollider.LinearVelocity;
