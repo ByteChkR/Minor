@@ -1,4 +1,8 @@
-﻿using Common;
+﻿using System.Security.Cryptography.X509Certificates;
+using Common;
+using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
+using MinorEngine.components;
 using MinorEngine.engine.core;
 using MinorEngine.debug;
 using OpenTK;
@@ -24,6 +28,7 @@ namespace MinorEngine.engine.components
 
         protected virtual void OnDestroy()
         {
+
         }
 
         protected virtual void OnKeyPress(object sender, KeyPressEventArgs e)
@@ -70,6 +75,9 @@ namespace MinorEngine.engine.components
 
             OnKeyUp(sender, e);
         }
+        protected virtual void Update(float deltaTime)
+        {
+        }
 
         internal void updateObject(float deltaTime)
         {
@@ -82,8 +90,64 @@ namespace MinorEngine.engine.components
             Update(deltaTime);
         }
 
-        protected virtual void Update(float deltaTime)
+        protected virtual void OnInitialCollisionDetected(Collider other, CollidablePairHandler handler)
         {
         }
+
+        protected virtual void OnCollisionEnded(Collider other, CollidablePairHandler handler)
+        {
+        }
+        protected virtual void OnContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
+        {
+        }
+
+        protected virtual void OnContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
+        {
+        }
+        internal void onInitialCollisionDetected(Collider other, CollidablePairHandler handler)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+
+            OnInitialCollisionDetected(other, handler);
+            this.Log("Initial Collision", DebugChannel.Log);
+        }
+
+        internal void onCollisionEnded(Collider other, CollidablePairHandler handler)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+
+            OnCollisionEnded(other, handler);
+        }
+
+        internal void onContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+
+            OnContactRemoved(other, handler, contact);
+        }
+
+        internal void onContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
+        {
+            if (!_awake)
+            {
+                Awake();
+                _awake = true;
+            }
+            OnContactCreated(other, handler, contact);
+        }
+
+
     }
 }

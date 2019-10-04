@@ -1,4 +1,5 @@
 ﻿using MinorEngine.BEPUphysics;
+using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
 using MinorEngine.BEPUphysics.OtherSpaceStages;

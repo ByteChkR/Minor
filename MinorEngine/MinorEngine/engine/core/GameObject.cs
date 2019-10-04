@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common;
+using MinorEngine.BEPUphysics.BroadPhaseEntries;
+using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.debug;
 using MinorEngine.components;
 using MinorEngine.engine.components;
@@ -27,6 +31,7 @@ namespace MinorEngine.engine.core
         }
 
         internal static List<GameObject> ObjsWithAttachedRenderers = new List<GameObject>();
+        private static Dictionary<Collidable, Collider> ObjsWithAttachedColliders = new Dictionary<Collidable, Collider>();
         internal Matrix4 _worldTransformCache;
 
         public IRenderingComponent RenderingComponent { get; private set; }
@@ -104,7 +109,12 @@ namespace MinorEngine.engine.core
                 {
                     applyRenderHierarchy(true);
                     ObjsWithAttachedRenderers.Add(this);
-                    RenderingComponent = (IRenderingComponent) component;
+                    RenderingComponent = (IRenderingComponent)component;
+                }
+                else if (component is Collider collider)
+                {
+                    ObjsWithAttachedColliders.Add(collider.PhysicsCollider.CollisionInformation, collider);
+                    registerCollider(collider);
                 }
 
                 _components.Add(t, component);
@@ -117,27 +127,40 @@ namespace MinorEngine.engine.core
             Type t = typeof(T);
             if (_components.ContainsKey(t))
             {
-                applyRenderHierarchy(false);
-                ObjsWithAttachedRenderers.Remove(this);
+                if (typeof(IRenderingComponent).IsAssignableFrom(t))
+                {
+                    applyRenderHierarchy(false);
+                    ObjsWithAttachedRenderers.Add(this);
+                    RenderingComponent = null;
+                }
 
                 AbstractComponent component = _components[t];
+
+                if (component is Collider collider)
+                {
+                    ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                    unregisterCollider(collider);
+                }
+
                 _components.Remove(t);
                 component.Owner = null;
             }
         }
 
+        
+
         public T GetComponentIterative<T>() where T : AbstractComponent
         {
             foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
                 if (typeof(T).IsAssignableFrom(abstractComponent.Key))
-                    return (T) abstractComponent.Value;
+                    return (T)abstractComponent.Value;
 
             return null;
         }
 
         public T GetComponent<T>() where T : AbstractComponent
         {
-            if (_components.ContainsKey(typeof(T))) return (T) _components[typeof(T)];
+            if (_components.ContainsKey(typeof(T))) return (T)_components[typeof(T)];
 
             return null;
         }
@@ -234,6 +257,45 @@ namespace MinorEngine.engine.core
             else
                 setWorldRecursively(null);
         }
+
+        internal void registerCollider(Collider coll)
+        {
+            coll.PhysicsCollider.CollisionInformation.Events.ContactCreated += Events_ContactCreated;
+            coll.PhysicsCollider.CollisionInformation.Events.ContactRemoved += Events_ContactRemoved;
+            coll.PhysicsCollider.CollisionInformation.Events.CollisionEnded += Events_CollisionEnded;
+            coll.PhysicsCollider.CollisionInformation.Events.InitialCollisionDetected += Events_InitialCollisionDetected;
+        }
+        internal void unregisterCollider(Collider coll)
+        {
+            coll.PhysicsCollider.CollisionInformation.Events.ContactCreated -= Events_ContactCreated;
+            coll.PhysicsCollider.CollisionInformation.Events.ContactRemoved -= Events_ContactRemoved;
+            coll.PhysicsCollider.CollisionInformation.Events.CollisionEnded -= Events_CollisionEnded;
+            coll.PhysicsCollider.CollisionInformation.Events.InitialCollisionDetected -= Events_InitialCollisionDetected;
+        }
+
+        private void Events_InitialCollisionDetected(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
+        {
+            foreach (var abstractComponent in _components) abstractComponent.Value.onInitialCollisionDetected(ObjsWithAttachedColliders[other], pair);
+        }
+
+        private void Events_CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
+        {
+            foreach (var abstractComponent in _components) abstractComponent.Value.onCollisionEnded(ObjsWithAttachedColliders[other], pair);
+        }
+
+        private void Events_ContactRemoved(EntityCollidable sender, Collidable other, CollidablePairHandler pair, ContactData contact)
+        {
+            foreach (var abstractComponent in _components) abstractComponent.Value.onContactRemoved(ObjsWithAttachedColliders[other], pair, contact);
+        }
+
+        private void Events_ContactCreated(EntityCollidable sender, Collidable other, CollidablePairHandler pair, ContactData contact)
+        {
+            foreach (var abstractComponent in _components) abstractComponent.Value.onContactCreated(ObjsWithAttachedColliders[other], pair, contact);
+        }
+
+        
+
+        
 
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
