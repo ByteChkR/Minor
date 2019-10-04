@@ -1,5 +1,6 @@
 ﻿using MinorEngine.BEPUphysics;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
@@ -18,9 +19,15 @@ namespace MinorEngine.components
         public int CollisionLayer { get; set; }
         private bool _colliderRemoved = false;
 
-        public Collider(Entity shape, string layerName):this(shape, LayerManager.NameToLayer(layerName))
+        public bool isTrigger
         {
-            
+            get => PhysicsCollider.CollisionInformation.CollisionRules.Personal == CollisionRule.NoSolver;
+            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal = value ? CollisionRule.Normal : CollisionRule.NoSolver;
+        }
+
+        public Collider(Entity shape, string layerName) : this(shape, LayerManager.NameToLayer(layerName))
+        {
+
         }
 
         public Collider(Entity shape, int layerID)
