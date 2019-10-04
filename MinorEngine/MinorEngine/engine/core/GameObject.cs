@@ -423,6 +423,9 @@ namespace MinorEngine.engine.core
 
             Vector3 t = target - position;
 
+
+            if (t == Vector3.Zero) return;
+
             Vector3 newForward = Vector3.Normalize(t);
 
             //New Right Vector
