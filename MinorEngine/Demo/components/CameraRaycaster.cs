@@ -36,7 +36,7 @@ namespace Demo.components
         {
             Vector2 mpos = GameEngine.Instance.MousePosition;
             this.Log("Mouse Pos: "+mpos, DebugChannel.Log);
-            Vector3 mousepos = GameEngine.Instance.convertScreenToWorldCoords((int)mpos.X, (int)mpos.Y);
+            Vector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int)mpos.X, (int)mpos.Y);
             return new Ray(Owner.GetLocalPosition(), (mousepos - Owner.GetLocalPosition()).Normalized());
         }
     }
