@@ -440,13 +440,19 @@ namespace MinorEngine.engine.core
             LocalPosition = pos;
         }
 
+        public void LookAt(GameObject other)
+        {
+
+            Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * other.GetWorldTransform());
+            LookAt(target);
+        }
+
         public void LookAt(Vector3 worldPos)
         {
-            Matrix4 worldThis = GetWorldTransform();
-            Vector3 position = GetLocalPosition();
-            Vector3 target = new Vector3(new Vector4(worldPos, 0) * Matrix4.Invert(worldThis));
 
-            Vector3 t = target - position;
+            Vector3 position = GetLocalPosition();
+
+            Vector3 t = worldPos - position;
 
 
             if (t == Vector3.Zero) return;
@@ -457,56 +463,58 @@ namespace MinorEngine.engine.core
             Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
             Vector3 newUp = Vector3.Cross(newForward, newRight);
 
-            //Transform = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
-            //    new Vector4(position, 1));
-
-        }
-
-        public void LookAtGlobal(GameObject other)
-        {
-            Matrix4 worldThis = GetWorldTransform();
-            Matrix4 worldOther = other.GetWorldTransform();
-            Vector3 position = GetLocalPosition();
-            Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * worldOther);
-
-
-
-            Vector3 t = target - position;
-
-            Vector3 newForward = Vector3.Normalize(t);
-
-            this.Log("New Forward: " + newForward, DebugChannel.Log);
-
-            //New Right Vector
-            Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
-            Vector3 newUp = Vector3.Cross(newForward, newRight);
+            
             Matrix3 newMat = new Matrix3(new Vector3(-newRight), new Vector3(newUp), new Vector3(-newForward));
             Rotation = newMat.ExtractRotation();
 
         }
 
-        public void LookAt(GameObject other)
-        {
-            Matrix4 worldThis = GetWorldTransform();
-            Matrix4 worldOther = other.GetWorldTransform();
-            Matrix4 otherThis = worldOther * Matrix4.Invert(worldThis);
-            Vector3 position = GetLocalPosition();
-            Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * otherThis);
+        //public void LookAtGlobal(GameObject other)
+        //{
+        //    Matrix4 worldOther = other.GetWorldTransform();
+        //    Vector3 position = GetLocalPosition();
+        //    Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * worldOther);
 
 
-            this.Log("New Target: " + target, DebugChannel.Log);
 
-            Vector3 t = target - position;
+        //    Vector3 t = target - position;
 
-            Vector3 newForward = Vector3.Normalize(t);
 
-            //New Right Vector
-            Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
-            Vector3 newUp = Vector3.Cross(newForward, newRight);
-            Matrix4 newMat = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
-                new Vector4(position, 1));
-            //Transform = newMat;
+        //    if (t == Vector3.Zero) return;
 
-        }
+
+        //    Vector3 newForward = Vector3.Normalize(t);
+            
+
+        //    //New Right Vector
+        //    Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
+        //    Vector3 newUp = Vector3.Cross(newForward, newRight);
+            
+
+        //}
+
+        //public void LookAt(GameObject other)
+        //{
+        //    Matrix4 worldThis = GetWorldTransform();
+        //    Matrix4 worldOther = other.GetWorldTransform();
+        //    Matrix4 otherThis = worldOther * Matrix4.Invert(worldThis);
+        //    Vector3 position = GetLocalPosition();
+        //    Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * otherThis);
+
+
+        //    this.Log("New Target: " + target, DebugChannel.Log);
+
+        //    Vector3 t = target - position;
+
+        //    Vector3 newForward = Vector3.Normalize(t);
+
+        //    //New Right Vector
+        //    Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
+        //    Vector3 newUp = Vector3.Cross(newForward, newRight);
+        //    Matrix4 newMat = new Matrix4(new Vector4(-newRight), new Vector4(newUp), new Vector4(-newForward),
+        //        new Vector4(position, 1));
+        //    //Transform = newMat;
+
+        //}
     }
 }

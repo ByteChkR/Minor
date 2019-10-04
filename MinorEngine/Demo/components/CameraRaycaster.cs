@@ -36,7 +36,7 @@ namespace Demo.components
                 Vector3 pos = arr.Value.Location;
                 pos.Y = looker.LocalPosition.Y;
                 sphereTargetMarker.SetLocalPosition(pos);
-                looker.LookAtGlobal(sphereTargetMarker);
+                looker.LookAt(sphereTargetMarker);
             }
         }
 
@@ -52,7 +52,7 @@ namespace Demo.components
                     Vector3 pos = arr.Value.Location;
                     pos.Y += looker.LocalPosition.Y;
                     sphereTargetMarker.SetLocalPosition(pos);
-                    looker.LookAtGlobal(sphereTargetMarker);
+                    looker.LookAt(sphereTargetMarker);
                 }
             }
         }
