@@ -4,10 +4,11 @@ using System.Linq;
 using Common;
 using MinorEngine.CLHelperLibrary;
 using MinorEngine.CLHelperLibrary.cltypes;
+using MinorEngine.FilterLanguage;
 using OpenCl.DotNetCore.Memory;
 using Xunit;
 
-namespace CLHelperLibrary.Tests
+namespace MinorEngine.Tests
 {
     public class CLTests
     {
@@ -66,6 +67,29 @@ namespace CLHelperLibrary.Tests
         }
 
 #endif
+        [Fact]
+        public void FLInterpreterTest()
+        {
+            DebugHelper.ListeningMask = -1;
+            string oldPath = Directory.GetCurrentDirectory();
+            string path = Path.GetFullPath("../../../resources");
+            string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
+
+            Directory.SetCurrentDirectory(path);
+            KernelDatabase db = new KernelDatabase(path + "/kernel", DataTypes.UCHAR1);
+
+            foreach (string file in files)
+            {
+                Interpreter P = new Interpreter(file,
+                    CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
+                    4, db);
+                while (!P.Terminated) P.Step();
+            }
+            Directory.SetCurrentDirectory(oldPath);
+
+        }
+
+
         [Fact]
         public void CL_KernelSignatureAnalysis()
         {

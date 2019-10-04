@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "CLHelperLibrary.Tests": {
+    "FilterLanguage.Tests": {
       "commandName": "Project",
       "workingDirectory": "resources"
     }
