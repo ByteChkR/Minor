@@ -16,6 +16,7 @@ namespace MinorEngine.components
         public Entity PhysicsCollider { get; }
         public RigidBodyConstraints ColliderConstraints { get; set; }
         public Layer CollisionLayer { get; set; }
+        private bool _colliderRemoved = false;
 
         public Collider(Entity shape, Layer collisionConstraints)
         {
@@ -24,6 +25,16 @@ namespace MinorEngine.components
             PhysicsCollider.CollisionInformation.Tag = this;
             CollisionLayer = collisionConstraints;
         }
+
+        ~Collider()
+        {
+
+            if (!_colliderRemoved)
+            {
+                this.Log("GUCK", DebugChannel.Log);
+            }
+        }
+
 
         protected override void Awake()
         {
@@ -36,6 +47,7 @@ namespace MinorEngine.components
         {
             PhysicsCollider.CollisionInformation.Tag = null;
             Physics.RemoveEntity(PhysicsCollider);
+            _colliderRemoved = true;
         }
 
         public void SetVelocityLinear(Vector3 vel)
