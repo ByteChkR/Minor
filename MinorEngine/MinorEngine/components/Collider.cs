@@ -22,7 +22,7 @@ namespace MinorEngine.components
         public bool isTrigger
         {
             get => PhysicsCollider.CollisionInformation.CollisionRules.Personal == CollisionRule.NoSolver;
-            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal = value ? CollisionRule.Normal : CollisionRule.NoSolver;
+            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal = value ? CollisionRule.NoSolver : CollisionRule.Normal;
         }
 
         public Collider(Entity shape, string layerName) : this(shape, LayerManager.NameToLayer(layerName))

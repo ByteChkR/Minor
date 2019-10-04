@@ -43,8 +43,8 @@ namespace MinorEngine.engine.core
             get
             {
                 Matrix4 mat = Matrix4.Identity;
-                mat *= Matrix4.CreateFromQuaternion(Rotation);
                 mat *= Matrix4.CreateScale(Scale);
+                mat *= Matrix4.CreateFromQuaternion(Rotation);
                 mat *= Matrix4.CreateTranslation(LocalPosition);
                 return mat;
             }

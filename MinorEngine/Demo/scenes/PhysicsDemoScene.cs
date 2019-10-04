@@ -108,7 +108,8 @@ namespace Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(250, 1, 250);
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            bgObj.AddComponent(new Collider(new Box(Vector3.Zero, 500, 1, 500), hybLayer));
+            Collider groundCol = new Collider(new Box(Vector3.Zero, 500, 1, 500), hybLayer);
+            bgObj.AddComponent(groundCol);
             GameEngine.Instance.World.Add(bgObj);
 
             GameObject boxO = new GameObject(Vector3.UnitY * 3, "Box");
