@@ -148,9 +148,9 @@ namespace MinorEngine.engine.core
             }
         }
 
-        public void RemoveComponent<T>() where T : AbstractComponent
+        public void RemoveComponent(Type componentType)
         {
-            Type t = typeof(T);
+            Type t = componentType;
             if (_components.ContainsKey(t))
             {
                 if (typeof(IRenderingComponent).IsAssignableFrom(t))
@@ -171,6 +171,11 @@ namespace MinorEngine.engine.core
                 _components.Remove(t);
                 component.Owner = null;
             }
+        }
+
+        public void RemoveComponent<T>() where T : AbstractComponent
+        {
+            RemoveComponent(typeof(T));
         }
 
 

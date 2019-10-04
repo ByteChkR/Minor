@@ -22,7 +22,14 @@ namespace MinorEngine.engine.components
         public void Destroy()
         {
             this.Log("Destroying Component of Type: " + GetType().Name, DebugChannel.Log);
+            
             OnDestroy();
+
+            if (Owner != null)
+            {
+                Owner.RemoveComponent(GetType());
+            }
+
             _awake = false;
         }
 
