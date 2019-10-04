@@ -68,6 +68,7 @@ namespace MinorEngine.engine.physics
 
         private static bool FilterFunc(BroadPhaseEntry entry, Layer layerInfo)
         {
+            if (entry.Tag == null) return false;
             Collider obj = (Collider)entry.Tag;
             return Layer.AllowCollision(obj.CollisionLayer, layerInfo);
 

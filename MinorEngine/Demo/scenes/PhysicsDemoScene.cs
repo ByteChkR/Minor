@@ -66,9 +66,9 @@ namespace Demo.scenes
             Layer gamePhysicsLayer = new Layer(1, 1);
             Layer.DisableCollision(ref raycastLayer, ref gamePhysicsLayer);
 
-            GameModel bgBox = new GameModel("models/cube_flat.obj");
-            GameModel box = new GameModel("models/cube_flat.obj");
-            GameModel sphere = new GameModel("models/sphere_smooth.obj");
+            GameModel bgBox = new GameModel("models/cube_flat.obj", true);
+            GameModel box = new GameModel("models/cube_flat.obj", true);
+            GameModel sphere = new GameModel("models/sphere_smooth.obj", true);
 
             GameTexture bg = TextureProvider.Load("textures/ground4k.png");
             bgBox.SetTextureBuffer(0, new[] { bg });
@@ -111,6 +111,7 @@ namespace Demo.scenes
             GameObject boxO = new GameObject(Vector3.UnitY * 3, "Box");
             boxO.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             boxO.AddComponent(new Collider(new Box(Vector3.Zero, 1, 1, 1), gamePhysicsLayer));
+            boxO.Translate(new Vector3(55, 0, 35));
             GameEngine.Instance.World.Add(boxO);
 
 
@@ -126,7 +127,7 @@ namespace Demo.scenes
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            c.Translate(new Vector3(0, 10, 10));
+            c.Translate(new Vector3(55, 10, 45));
             c.AddComponent(new CameraRaycaster(mouseTarget, 3, boxO, raycastLayer));
             GameEngine.Instance.World.Add(c);
             GameEngine.Instance.World.SetCamera(c);

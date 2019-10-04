@@ -16,14 +16,12 @@ namespace MinorEngine.engine.rendering
     {
         public List<GameMesh> Meshes { get; } = new List<GameMesh>();
         private string directory;
-        private readonly bool _deallocTextures;
-        private readonly bool _deallocMeshes;
+        private readonly bool _dealloc;
 
-        public GameModel(string file, bool deallocTextures = true, bool deallocMeshes = true)
+        public GameModel(string file, bool deallocOnDestroy)
         {
+            _dealloc = deallocOnDestroy;
             this.Log("Loading Model File: " + file, DebugChannel.Log);
-            _deallocMeshes = deallocMeshes;
-            _deallocTextures = deallocTextures;
             LoadModel(file);
         }
 
@@ -34,7 +32,7 @@ namespace MinorEngine.engine.rendering
 
         public void Destroy()
         {
-            if (_deallocMeshes)
+            if (_dealloc)
                 foreach (var gameMesh in Meshes)
                     gameMesh.Destroy();
         }
@@ -143,7 +141,7 @@ namespace MinorEngine.engine.rendering
             textures.AddRange(loadMaterialTextures(m, TextureType.Specular));
             textures.AddRange(loadMaterialTextures(m, TextureType.Normals));
             textures.AddRange(loadMaterialTextures(m, TextureType.Height));
-            return new GameMesh(vertices, indices, textures, _deallocMeshes, _deallocTextures);
+            return new GameMesh(vertices, indices, textures, true, _dealloc);
         }
 
 

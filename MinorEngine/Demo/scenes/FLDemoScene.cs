@@ -58,11 +58,11 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-            GameModel sphere = new GameModel("models/sphere_smooth.obj");
-            GameModel plane = new GameModel("models/plane.obj");
+            GameModel sphere = new GameModel("models/sphere_smooth.obj", true);
+            GameModel plane = new GameModel("models/plane.obj", true);
 
 
-            GameModel bgBox = new GameModel("models/cube_flat.obj");
+            GameModel bgBox = new GameModel("models/cube_flat.obj",true);
 
             bgBox.SetTextureBuffer(0, new[] {TextureProvider.Load("textures/ground4k.png")});
 

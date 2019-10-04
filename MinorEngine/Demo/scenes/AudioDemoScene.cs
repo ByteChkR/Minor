@@ -73,7 +73,7 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-            GameModel bgBox = new GameModel("models/cube_flat.obj");
+            GameModel bgBox = new GameModel("models/cube_flat.obj", true);
 
             bgBox.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
 
@@ -114,7 +114,7 @@ namespace Demo.scenes
 
             _sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
 
-            GameModel sourceCube = new GameModel("models/cube_flat.obj");
+            GameModel sourceCube = new GameModel("models/cube_flat.obj", true);
             sourceCube.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
             AudioSourceComponent source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
