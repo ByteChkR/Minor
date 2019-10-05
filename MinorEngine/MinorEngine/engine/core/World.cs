@@ -17,5 +17,10 @@ namespace MinorEngine.engine.core
         {
             if (c != null) Camera = c;
         }
+
+        internal void Unload()
+        {
+            Destroy();
+        }
     }
 }

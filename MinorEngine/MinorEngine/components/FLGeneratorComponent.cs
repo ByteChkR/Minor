@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Resources;
 using MinorEngine.CLHelperLibrary;
 using MinorEngine.CLHelperLibrary.cltypes;
 using MinorEngine.FilterLanguage;
@@ -7,6 +8,7 @@ using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
 using MinorEngine.engine.ui.utils;
 using OpenCl.DotNetCore.Memory;
+using ResourceManager = MinorEngine.engine.core.ResourceManager;
 
 namespace MinorEngine.components
 {
@@ -35,17 +37,16 @@ namespace MinorEngine.components
 
         private string cmd_FLReset(string[] args)
         {
-            TextureProvider.GiveBack(Tex);
-            Tex = GameTexture.Create(width, height);
+            Tex = ResourceManager.TextureIO.ParameterToTexture(width, height, "FLTexture");
             return "Texture Reset.";
         }
 
 
         protected override void Awake()
         {
-            Tex = GameTexture.Create(width, height);
+            Tex = ResourceManager.TextureIO.ParameterToTexture(width, height, "FLTexture");
 
-            for (int i = 0; i < _previews.Count; i++) _previews[i].Model.SetTextureBuffer(0, new[] {Tex});
+            for (int i = 0; i < _previews.Count; i++) _previews[i].Model.SetTextureBuffer( new[] {Tex});
 
 
             DebugConsoleComponent console =
@@ -60,12 +61,13 @@ namespace MinorEngine.components
 
         protected override void OnDestroy()
         {
-            TextureProvider.GiveBack(Tex);
+            Tex = null;
+            _previews.Clear();
         }
 
         private MemoryBuffer GetRendererTextureBuffer()
         {
-            return GameTexture.CreateFromTexture(Tex, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            return ResourceManager.TextureIO.TextureToMemoryBuffer(Tex);
         }
 
         public void RunOnObjImage(string filename)
@@ -81,7 +83,7 @@ namespace MinorEngine.components
                 interpreter.Step();
             } while (!interpreter.Terminated);
 
-            GameTexture.Update(Tex, interpreter.GetResult<byte>(), (int) Tex.Width, (int) Tex.Height);
+            ResourceManager.TextureIO.Update(Tex, interpreter.GetResult<byte>(), (int) Tex.Width, (int) Tex.Height);
         }
 
         private string cmd_FLStop(string[] args)
@@ -106,7 +108,7 @@ namespace MinorEngine.components
                 res = _stepInterpreter.GetResultBuffer();
             }
 
-            GameTexture.Update(Tex, CL.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width, (int) Tex.Height);
+            ResourceManager.TextureIO.Update(Tex, CL.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width, (int) Tex.Height);
 
             return stepResult.ToString();
         }

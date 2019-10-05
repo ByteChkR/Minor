@@ -77,19 +77,21 @@ namespace MinorEngine.engine.core
         public void Destroy()
         {
             _destructionPending = true;
+            foreach (var gameObject in _children)
+            {
+                gameObject.Destroy();
+            }
         }
 
-        private void _Destroy()
+        protected void _Destroy()
         {
             Destroyed = true;
 
-            if (RenderingComponent != null) ObjsWithAttachedRenderers.Remove(this);
-
             if (Parent != null) Remove(this);
-            this.Log("Destroying GameObject: " + Name, DebugChannel.Log);
+            //this.Log("Destroying GameObject: " + Name, DebugChannel.Log);
             GameObject[] objs = new List<GameObject>(_children).ToArray();
 
-            foreach (GameObject gameObject in objs) gameObject.Destroy();
+            foreach (GameObject gameObject in objs) gameObject._Destroy();
 
 
             KeyValuePair<Type, AbstractComponent>[] comps = new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
@@ -160,33 +162,68 @@ namespace MinorEngine.engine.core
 
         internal void RemoveDestroyedObjects()
         {
-            List<GameObject> go = new List<GameObject>(_children);
-            foreach (var gameObject in go)
+            if (_destructionPending)//Either Remove the object as a whole
             {
-                if (gameObject._destructionPending)
-                {
-                    gameObject._Destroy();
-                }
-                else
-                {
+                _Destroy();
+            }
+            else //Or check every component if it needs removal
+            {
+                KeyValuePair<Type, AbstractComponent>[] comps = new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
 
-                    KeyValuePair<Type, AbstractComponent>[] comps = new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
-
-                    foreach (var abstractComponent in comps)
+                foreach (var abstractComponent in comps)
+                {
+                    if (abstractComponent.Value._destructionPending)
                     {
-                        if (abstractComponent.Value._destructionPending)
+                        if (abstractComponent.Value is Collider collider)
                         {
-                            if (abstractComponent.Value is Collider collider)
-                            {
-                                ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
-                                unregisterCollider(collider);
-                            }
-                            abstractComponent.Value._Destroy();
+                            ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                            unregisterCollider(collider);
                         }
+                        abstractComponent.Value._Destroy();
                     }
+                }
+                List<GameObject> go = new List<GameObject>(_children);
+
+                foreach (var gameObject in go)
+                {
                     gameObject.RemoveDestroyedObjects();
                 }
+
             }
+            //List<GameObject> go = new List<GameObject>(_children);
+            //foreach (var gameObject in go)
+            //{
+            //    if (gameObject._destructionPending)
+            //    {
+            //        gameObject._Destroy();
+            //    }
+            //    else
+            //    {
+
+            //        KeyValuePair<Type, AbstractComponent>[] comps = new List<KeyValuePair<Type, AbstractComponent>>(gameObject._components).ToArray();
+
+            //        foreach (var abstractComponent in comps)
+            //        {
+            //            if (abstractComponent.Value._destructionPending)
+            //            {
+            //                if (abstractComponent.Value is Collider collider)
+            //                {
+            //                    ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+            //                    unregisterCollider(collider);
+            //                }
+            //                abstractComponent.Value._Destroy();
+            //            }
+            //        }
+            //        gameObject.RemoveDestroyedObjects();
+            //    }
+            //}
+        }
+
+        private void RemoveFromRenderLoop()
+        {
+            this.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log);
+            RemoveComponent(typeof(IRenderingComponent));
+            ObjsWithAttachedRenderers.Remove(this);
         }
 
         public void RemoveComponent(Type componentType)
@@ -197,7 +234,7 @@ namespace MinorEngine.engine.core
                 if (typeof(IRenderingComponent).IsAssignableFrom(t))
                 {
                     applyRenderHierarchy(false);
-                    ObjsWithAttachedRenderers.Remove(this);
+                    RemoveFromRenderLoop();
                     RenderingComponent = null;
                 }
 
@@ -509,7 +546,7 @@ namespace MinorEngine.engine.core
             Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
             Vector3 newUp = Vector3.Cross(newForward, newRight);
 
-            
+
             Matrix3 newMat = new Matrix3(new Vector3(-newRight), new Vector3(newUp), new Vector3(-newForward));
             Rotation = newMat.ExtractRotation();
 
@@ -530,12 +567,12 @@ namespace MinorEngine.engine.core
 
 
         //    Vector3 newForward = Vector3.Normalize(t);
-            
+
 
         //    //New Right Vector
         //    Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
         //    Vector3 newUp = Vector3.Cross(newForward, newRight);
-            
+
 
         //}
 

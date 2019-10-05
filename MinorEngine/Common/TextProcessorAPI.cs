@@ -75,7 +75,7 @@ namespace Common
 
         public class DefaultPreProcessorConfig : APreProcessorConfig
         {
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
             private static StringBuilder _sb = new StringBuilder();
 
             public override string GetGenericInclude(string filename, string[] genType)
@@ -109,7 +109,7 @@ namespace Common
         public class GLCLPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL8;
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
 
             public override string GetGenericInclude(string filename, string[] genType)
             {
@@ -142,7 +142,7 @@ namespace Common
 
         public class FLPreProcessorConfig : APreProcessorConfig
         {
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.LEVEL2;
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
 
             private static StringBuilder _sb = new StringBuilder();
 

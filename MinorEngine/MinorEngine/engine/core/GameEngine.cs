@@ -171,7 +171,12 @@ namespace MinorEngine.engine.core
             {
                 _changeScene = false;
 
-                World?.Destroy();
+
+
+                World?.Unload();
+
+                World?.RemoveDestroyedObjects();
+                
                 currentScene?.Destroy();
                 currentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
                 World = new World();
@@ -180,6 +185,7 @@ namespace MinorEngine.engine.core
 
             //Cleanup
             World?.RemoveDestroyedObjects();
+            //ResourceManager.ProcessDeleteQueue();
         }
 
 

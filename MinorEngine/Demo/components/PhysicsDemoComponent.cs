@@ -24,8 +24,8 @@ namespace Demo.components
 
         }
 
-        GameModel Box = new GameModel("models/cube_flat.obj", false);
-        GameModel Sphere = new GameModel("models/sphere_smooth.obj", false);
+        private GameMesh Box = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
+        private GameMesh Sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
         protected override void Awake()
         {
             //Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
@@ -34,9 +34,6 @@ namespace Demo.components
             DebugConsoleComponent comp = Owner.World.GetChildWithName("Console")
                 .GetComponent<DebugConsoleComponent>();
 
-            GameTexture tex = TextureProvider.Load("textures/TEST.png");
-            Box.SetTextureBuffer(0, new[] { tex });
-            Sphere.SetTextureBuffer(0, new[] { tex });
 
 
             comp?.AddCommand("rain", cmd_SpawnColliders);
@@ -48,7 +45,7 @@ namespace Demo.components
         {
         }
 
-        
+
 
         public static string cmd_SetGravity(string[] args)
         {
@@ -97,20 +94,25 @@ namespace Demo.components
                 GameObject obj = new GameObject(pos, "Sphere");
                 float radius = 0.3f + (float)rnd.NextDouble();
                 obj.AddComponent(new DestroyTimer(5));
-                obj.Scale=new Vector3(radius / 2);
+                obj.Scale = new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
+
+                    Box.SetTextureBuffer(new[] { ResourceManager.TextureIO.FileToTexture("textures/TEST.png") });
+
+
                     obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));
 
 
                     Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
                     RigidBodyConstraints c = coll.ColliderConstraints;
-                    c.RotationConstraints = FreezeConstraints.Z|FreezeConstraints.X;
+                    c.RotationConstraints = FreezeConstraints.Z | FreezeConstraints.X;
                     coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
                 else
                 {
+                    Sphere.SetTextureBuffer( new[] { ResourceManager.TextureIO.FileToTexture("textures/TEST.png") });
                     obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
                     Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
                     RigidBodyConstraints c = coll.ColliderConstraints;

@@ -62,6 +62,7 @@ namespace Demo.scenes
         protected override void InitializeScene()
         {
 
+            GameTexture test = ResourceManager.TextureIO.FileToTexture("textures/ground4k.png");
 
 
             int rayLayer = LayerManager.RegisterLayer("raycast", new Layer(1, 2));
@@ -69,13 +70,12 @@ namespace Demo.scenes
             int physicsLayer = LayerManager.RegisterLayer("physics", new Layer(1, 1));
             LayerManager.DisableCollisions(rayLayer, physicsLayer);
 
-            GameModel bgBox = new GameModel("models/cube_flat.obj", true);
-            GameModel box = new GameModel("models/cube_flat.obj", true);
-            GameModel sphere = new GameModel("models/sphere_smooth.obj", true);
+            GameMesh bgBox = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
+            GameMesh box = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
+            GameMesh sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
 
-            GameTexture bg = TextureProvider.Load("textures/ground4k.png");
-            bgBox.SetTextureBuffer(0, new[] { bg });
-            box.SetTextureBuffer(0, new[] { TextureProvider.Load("textures/ground4k.png") });
+            bgBox.SetTextureBuffer(new[] { ResourceManager.TextureIO.FileToTexture("textures/ground4k.png") });
+            box.SetTextureBuffer(new[] { ResourceManager.TextureIO.FileToTexture("textures/ground4k.png") });
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>

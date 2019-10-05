@@ -93,7 +93,6 @@ namespace MinorEngine.engine.physics
 
         public static void RemoveEntity(Entity physicsCollider)
         {
-            physicsCollider.Log("Removing Physics Collider.", DebugChannel.Log);
             _space.Remove(physicsCollider);
         }
 

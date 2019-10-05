@@ -118,6 +118,7 @@ namespace MinorEngine.components
                 enforceRotationConstraints();
                 enforceTranslationConstraints();
                 //this.Log("Velocity: " + PhysicsCollider.LinearVelocity.Length(), DebugChannel.Log);
+
                 Owner.SetLocalPosition(PhysicsCollider.Position);
                 Owner.SetRotation(PhysicsCollider.Orientation);
             }

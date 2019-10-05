@@ -60,7 +60,6 @@ namespace Demo.components
         private Ray ConstructRayFromMousePosition()
         {
             Vector2 mpos = GameEngine.Instance.MousePosition;
-            this.Log("Mouse Pos: " + mpos, DebugChannel.Log);
             Vector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int)mpos.X, (int)mpos.Y);
             return new Ray(Owner.GetLocalPosition(), (mousepos - Owner.GetLocalPosition()).Normalized());
         }

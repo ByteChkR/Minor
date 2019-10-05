@@ -1,5 +1,6 @@
 ﻿using MinorEngine.components;
 using MinorEngine.engine.components;
+using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -8,6 +9,14 @@ namespace MinorEngine.engine.ui
 {
     public class UIRendererComponent : AbstractComponent, IRenderingComponent
     {
+        public virtual Renderer.RenderContext Context
+        {
+            get
+            {
+                return new Renderer.UIRenderContext(Position, Scale, Shader);
+            }
+        }
+
         public ShaderProgram Shader { get; set; }
         public int RenderMask { get; set; }
         public GameTexture Texture { get; set; }
@@ -17,13 +26,13 @@ namespace MinorEngine.engine.ui
         private float Alpha { get; }
 
         public UIRendererComponent(int width, int height, ShaderProgram shader) : this(
-            GameTexture.Create(width, height), shader)
+            ResourceManager.TextureIO.ParameterToTexture(width, height, "UIRendererDefaultTexture"), shader)
         {
         }
 
         protected override void OnDestroy()
         {
-            Texture?.Destroy();
+            Texture?.Dispose();
         }
 
         public UIRendererComponent(GameTexture texture, ShaderProgram shader)

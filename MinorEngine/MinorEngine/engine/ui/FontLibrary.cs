@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
+using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
@@ -75,20 +76,20 @@ namespace MinorEngine.engine.ui
                     data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                    GameTexture tex = GameTexture.Create(bmp.Width, bmp.Height, false);
+                    GameTexture tex = ResourceManager.TextureIO.ParameterToTexture(bmp.Width, bmp.Height, false, "FONT_" + ff.FullName + "_" + (char)i);
                     glTex = tex;
                     GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
                     GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, g.RenderWidth, g.RenderHeight,
                         0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapS,
-                        (int) TextureWrapMode.ClampToEdge);
+                        (int)TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapT,
-                        (int) TextureWrapMode.ClampToEdge);
+                        (int)TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMinFilter,
-                        (int) TextureMinFilter.Linear);
+                        (int)TextureMinFilter.Linear);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMagFilter,
-                        (int) TextureMagFilter.Linear);
+                        (int)TextureMagFilter.Linear);
 
                     bmp.UnlockBits(data);
                 }
@@ -106,7 +107,7 @@ namespace MinorEngine.engine.ui
                     BearingX = g.HorizontalMetrics.Bearing.X,
                     BearingY = g.HorizontalMetrics.Bearing.Y
                 };
-                fontAtlas.Add((char) i, c);
+                fontAtlas.Add((char)i, c);
             }
 
             GameFont font = new GameFont(ff, pixelSize, fontAtlas);

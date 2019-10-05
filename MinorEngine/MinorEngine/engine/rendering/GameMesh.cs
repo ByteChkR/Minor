@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Assimp;
+using MinorEngine.debug;
 using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -26,36 +27,38 @@ namespace MinorEngine.engine.rendering
         }
     }
 
-    public class GameMesh
+    public class GameMesh : IDisposable
     {
         private readonly GameVertex[] _vertices;
         private readonly uint[] _indices;
-        private GameTexture[] Textures { get; set; }
-        private int _vao;
-
-        private bool _deallocOnDestroy;
-        private bool _deallocTexOnDestroy;
-
         private int _ebo;
         private int _vbo;
+        private int _vao;
+        private bool _disposed;
+        private string _debugName;
+        private GameTexture[] Textures { get; set; }
 
-        public GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures,
-            bool deallocBuffersOnDestroy, bool deallocTextures)
+        public bool DisposeTexturesOnDestroy { get; set; } = true;
+        public int DrawCount => _indices.Length;
+
+        public int Vao => _vao;
+
+
+        public int Ebo => _ebo;
+
+        public int Vbo => _vbo;
+
+        internal GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures, string DebugName)
         {
             _vertices = vertices.ToArray();
             _indices = indices.ToArray();
+            _debugName = DebugName;
             Textures = textures.ToArray();
             setupMesh();
-            _deallocOnDestroy = deallocBuffersOnDestroy;
-            _deallocTexOnDestroy = deallocTextures;
         }
 
         public void SetTextureBuffer(GameTexture[] tex)
         {
-            if (_deallocTexOnDestroy)
-                foreach (var gameTexture in Textures)
-                    TextureProvider.GiveBack(gameTexture);
-
             Textures = tex;
         }
 
@@ -112,7 +115,7 @@ namespace MinorEngine.engine.rendering
             }
 
 
-            GL.BindVertexArray(_vao);
+            GL.BindVertexArray(Vao);
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
 
 
@@ -127,17 +130,17 @@ namespace MinorEngine.engine.rendering
             GL.GenBuffers(1, out _ebo);
 
             //VAO
-            GL.BindVertexArray(_vao);
+            GL.BindVertexArray(Vao);
 
             //VBO
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
+            GL.BindBuffer(BufferTarget.ArrayBuffer, Vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
                 _vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (_indices.Length * sizeof(uint)), _indices,
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, Ebo);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(_indices.Length * sizeof(uint)), _indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers
@@ -166,18 +169,29 @@ namespace MinorEngine.engine.rendering
         }
 
 
-        public void Destroy()
+        public void Dispose()
         {
-            if (_deallocOnDestroy)
+            if (_disposed)
             {
-                GL.DeleteBuffer(_ebo);
-                GL.DeleteBuffer(_vao);
-                GL.DeleteBuffer(_vbo);
+                return;
             }
 
-            if (_deallocTexOnDestroy)
+            this.Log($"Deleting Mesh:{_debugName} (IDs: VAO: {_vao}, VBO: {_vbo}, EBO: {_ebo})..", DebugChannel.Log);
+
+            _disposed = true;
+
+
+            GL.DeleteBuffer(Ebo);
+            GL.DeleteBuffer(Vbo);
+            GL.DeleteVertexArray(Vao);
+
+            if (DisposeTexturesOnDestroy)
                 foreach (var gameTexture in Textures)
-                    TextureProvider.GiveBack(gameTexture);
+                {
+                    gameTexture.Dispose();
+                }
+
+
         }
 
         private static IntPtr offsetOf(string name)

@@ -24,7 +24,6 @@ namespace MinorEngine.engine.components
 
         internal void _Destroy()
         {
-            this.Log("Destroying Component of Type: " + GetType().Name, DebugChannel.Log);
 
             OnDestroy();
 

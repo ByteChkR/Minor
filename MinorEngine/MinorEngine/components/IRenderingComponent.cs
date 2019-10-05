@@ -5,8 +5,7 @@ namespace MinorEngine.components
 {
     public interface IRenderingComponent
     {
-        void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat);
-        ShaderProgram Shader { get; set; }
+        Renderer.RenderContext Context { get; }
         int RenderMask { get; set; }
     }
 }

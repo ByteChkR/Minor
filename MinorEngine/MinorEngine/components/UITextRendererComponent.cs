@@ -21,6 +21,14 @@ namespace MinorEngine.engine.ui
 
     public class UITextRendererComponent : UIRendererComponent
     {
+        public override Renderer.RenderContext Context
+        {
+            get
+            {
+                return new Renderer.TextRenderContext(Shader, Position, Scale, font, Text);
+            }
+        }
+
         private readonly GameFont font;
         private readonly int _vbo;
         private readonly int _vao;
