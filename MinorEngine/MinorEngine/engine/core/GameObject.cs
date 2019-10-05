@@ -101,7 +101,7 @@ namespace MinorEngine.engine.core
                     ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
                     unregisterCollider(collider);
                 }
-                abstractComponent.Value.Destroy();
+                abstractComponent.Value._Destroy();
             }
         }
 
@@ -169,11 +169,19 @@ namespace MinorEngine.engine.core
                 }
                 else
                 {
-                    foreach (var component in _components)
+
+                    KeyValuePair<Type, AbstractComponent>[] comps = new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
+
+                    foreach (var abstractComponent in comps)
                     {
-                        if (component.Value._destructionPending)
+                        if (abstractComponent.Value._destructionPending)
                         {
-                            component.Value._Destroy();
+                            if (abstractComponent.Value is Collider collider)
+                            {
+                                ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                                unregisterCollider(collider);
+                            }
+                            abstractComponent.Value._Destroy();
                         }
                     }
                     gameObject.RemoveDestroyedObjects();
