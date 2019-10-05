@@ -35,11 +35,3 @@ dotnet build ext-pp/ext_pp.sln -c Release
 echo Building opencl-dotnet Project:
 
 dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c Release
-
-echo Running Tests on ext-pp:
-
-dotnet test ext-pp/ext_pp.sln -p:Configuration=Release
-
-echo Running Tests on ADL:
-
-dotnet test ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -p:Configuration=Release

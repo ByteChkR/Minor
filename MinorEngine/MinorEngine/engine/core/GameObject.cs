@@ -60,7 +60,7 @@ namespace MinorEngine.engine.core
         private readonly List<GameObject> _children = new List<GameObject>();
         public string Name { get; set; }
         public int ChildCount => _children.Count;
-        private bool _destroyed;
+        public bool Destroyed { get; private set; }
         private bool _hasRendererInHierarchy;
 
         public GameObject Parent { get; private set; }
@@ -69,7 +69,7 @@ namespace MinorEngine.engine.core
 
         ~GameObject()
         {
-            if (!_destroyed)
+            if (!Destroyed)
                 this.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
                     DebugChannel.Warning);
         }
@@ -81,7 +81,7 @@ namespace MinorEngine.engine.core
 
         private void _Destroy()
         {
-            _destroyed = true;
+            Destroyed = true;
 
             if (RenderingComponent != null) ObjsWithAttachedRenderers.Remove(this);
 

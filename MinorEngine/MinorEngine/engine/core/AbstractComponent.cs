@@ -7,6 +7,7 @@ using MinorEngine.engine.core;
 using MinorEngine.debug;
 using OpenTK;
 using OpenTK.Input;
+using OpenTK.Platform.Windows;
 
 namespace MinorEngine.engine.components
 {
@@ -15,6 +16,8 @@ namespace MinorEngine.engine.components
         public GameObject Owner { get; set; }
         private bool _awake;
         internal bool _destructionPending;
+        public bool Destroyed { get; private set; }
+
         protected virtual void Awake()
         {
         }
@@ -30,6 +33,7 @@ namespace MinorEngine.engine.components
                 Owner.RemoveComponent(GetType());
             }
 
+            Destroyed = true;
             _awake = false;
         }
 
