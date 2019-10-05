@@ -169,6 +169,13 @@ namespace MinorEngine.engine.core
                 }
                 else
                 {
+                    foreach (var component in _components)
+                    {
+                        if (component.Value._destructionPending)
+                        {
+                            component.Value._Destroy();
+                        }
+                    }
                     gameObject.RemoveDestroyedObjects();
                 }
             }

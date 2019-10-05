@@ -14,15 +14,15 @@ namespace MinorEngine.engine.components
     {
         public GameObject Owner { get; set; }
         private bool _awake;
-
+        internal bool _destructionPending;
         protected virtual void Awake()
         {
         }
 
-        public void Destroy()
+        internal void _Destroy()
         {
             this.Log("Destroying Component of Type: " + GetType().Name, DebugChannel.Log);
-            
+
             OnDestroy();
 
             if (Owner != null)
@@ -31,6 +31,11 @@ namespace MinorEngine.engine.components
             }
 
             _awake = false;
+        }
+
+        public void Destroy()
+        {
+            _destructionPending = true;
         }
 
         protected virtual void OnDestroy()
