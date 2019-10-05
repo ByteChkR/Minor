@@ -214,11 +214,11 @@ namespace Common
             string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
             if (_configs.ContainsKey(ext))
             {
-                file.Log("Found Matching PreProcessor Config for: " + ext);
+                DebugHelper.Log("Found Matching PreProcessor Config for: " + ext, 1);
                 return _configs[ext].Preprocess(file, defs);
             }
-           
-            file.Log("Loading File with Default PreProcessing");
+
+            DebugHelper.Log("Loading File with Default PreProcessing", 1);
             return _configs["***"].Preprocess(file, defs);
         }
 

@@ -5,12 +5,10 @@
     /// </summary>
     public enum DebugChannel
     {
-        ALL = -1,
+        All = -1,
         None = 0,
-        Error = 1,
+        Log = 1,
         Warning = 2,
-        Log = 4,
-        Internal_Error = 8,
-        Progress = 16
+        Error = 4
     }
 }

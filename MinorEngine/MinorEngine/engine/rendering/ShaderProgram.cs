@@ -23,7 +23,7 @@ namespace MinorEngine.engine.rendering
             List<int> shaders = new List<int>();
             foreach (KeyValuePair<ShaderType, string> shader in subshaders)
             {
-                program.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
+                Logger.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
 
                 string code = TextProcessorAPI.PreprocessSource(shader.Value, null);
                 bool r = TryCompileShader(shader.Key, code, out int id);
@@ -34,17 +34,17 @@ namespace MinorEngine.engine.rendering
 
             for (int i = 0; i < shaders.Count; i++)
             {
-                program.Log("Attaching Shader to Program: " + subshaders.ElementAt(i), DebugChannel.Log);
+                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i), DebugChannel.Log);
                 GL.AttachShader(program._prgId, shaders[i]);
             }
 
-            program.Log("Linking Program...", DebugChannel.Log);
+            Logger.Log("Linking Program...", DebugChannel.Log);
             GL.LinkProgram(program._prgId);
 
             GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out int success);
             if (success == 0)
             {
-                program.Log(GL.GetProgramInfoLog(program._prgId), DebugChannel.Error);
+                Logger.Log(GL.GetProgramInfoLog(program._prgId), DebugChannel.Error);
                 return false;
             }
 
@@ -82,7 +82,7 @@ namespace MinorEngine.engine.rendering
             GL.GetShader(shaderID, ShaderParameter.CompileStatus, out int success);
             if (success == 0)
             {
-                shaderID.Log(GL.GetShaderInfoLog(shaderID), DebugChannel.Error);
+                Logger.Log(GL.GetShaderInfoLog(shaderID), DebugChannel.Error);
 
                 return false;
             }

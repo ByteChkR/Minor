@@ -46,7 +46,7 @@ namespace MinorEngine.engine.core
                 //AddReference(ret, cacheName); //Adding it to the cache
 
                 if (writeLog)
-                    ret.Log($"Loading Texture with Name: {cacheName}... Width: {width} Height: {height}", DebugChannel.Log);
+                    Logger.Log($"Loading Texture with Name: {cacheName}... Width: {width} Height: {height}", DebugChannel.Log);
 
                 GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Bgra,
@@ -217,7 +217,7 @@ namespace MinorEngine.engine.core
 
                 if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
                 {
-                    s.Log("Loading Model File failed.", DebugChannel.Error);
+                    Logger.Log("Loading Model File failed.", DebugChannel.Error);
                     return new List<GameMesh>();
                 }
 
@@ -225,9 +225,9 @@ namespace MinorEngine.engine.core
                 if (directory == string.Empty) directory = ".";
 
 
-                s.Log("Loading Model Finished.", DebugChannel.Log);
+                Logger.Log("Loading Model Finished.", DebugChannel.Log);
 
-                s.Log("Processing Nodes...", DebugChannel.Log);
+                Logger.Log("Processing Nodes...", DebugChannel.Log);
 
                 List<GameMesh> ret = new List<GameMesh>();
 
@@ -237,10 +237,10 @@ namespace MinorEngine.engine.core
 
             private static void processNode(Node node, Scene s, List<GameMesh> meshes, string dir, string DebugName)
             {
-                node.Log("Processing Node: " + node.Name, DebugChannel.Log);
+                Logger.Log("Processing Node: " + node.Name, DebugChannel.Log);
                 if (node.HasMeshes)
                 {
-                    node.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
+                    Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
                     for (int i = 0; i < node.MeshCount; i++) meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir, DebugName));
                 }
 
@@ -256,10 +256,10 @@ namespace MinorEngine.engine.core
                 List<GameTexture> textures = new List<GameTexture>();
 
 
-                mesh.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log);
+                Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log);
 
 
-                mesh.Log("Copying Vertex Data...", DebugChannel.Log);
+                Logger.Log("Copying Vertex Data...", DebugChannel.Log);
                 for (int i = 0; i < mesh.VertexCount; i++)
                 {
                     Vector3D vert = mesh.Vertices[i];
@@ -281,7 +281,7 @@ namespace MinorEngine.engine.core
                 }
 
 
-                mesh.Log("Calculating Indices...", DebugChannel.Log);
+                Logger.Log("Calculating Indices...", DebugChannel.Log);
 
                 for (int i = 0; i < mesh.FaceCount; i++)
                 {
@@ -292,7 +292,7 @@ namespace MinorEngine.engine.core
 
                 Material m = s.Materials[mesh.MaterialIndex];
 
-                mesh.Log("Loading Baked Material: " + m.Name, DebugChannel.Log);
+                Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log);
 
                 textures.AddRange(loadMaterialTextures(m, TextureType.Diffuse, dir));
                 textures.AddRange(loadMaterialTextures(m, TextureType.Specular, dir));
@@ -306,7 +306,7 @@ namespace MinorEngine.engine.core
             {
                 List<GameTexture> ret = new List<GameTexture>();
 
-                m.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
+                Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
                     DebugChannel.Log);
                 for (int i = 0; i < m.GetMaterialTextureCount(texType); i++)
                 {
@@ -336,7 +336,7 @@ namespace MinorEngine.engine.core
 
         private static string cmd_LtexToConsole(string[] args)
         {
-            args.Log(cmd_ListTextures(args), DebugChannel.Log);
+            Logger.Log(cmd_ListTextures(args), DebugChannel.Log);
 
             return "Sucess";
         }

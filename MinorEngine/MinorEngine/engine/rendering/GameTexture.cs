@@ -70,7 +70,7 @@ namespace MinorEngine.engine.rendering
                 return;
             }
             _disposed = true;
-            this.Log("Deleting Texture: " + TextureDescriptor + "(ID: " + TextureId + ")..", DebugChannel.Log);
+            Logger.Log("Deleting Texture: " + TextureDescriptor + "(ID: " + TextureId + ")..", DebugChannel.Log);
             GL.DeleteTexture(TextureId);
 
         }

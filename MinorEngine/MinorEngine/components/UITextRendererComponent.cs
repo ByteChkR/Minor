@@ -38,7 +38,7 @@ namespace MinorEngine.engine.ui
         {
             font = UIHelper.Instance.FontLibrary.GetFont("Arial");
 
-            this.Log("Reading Character Glyphs from " + fontName, DebugChannel.Log);
+            Logger.Log("Reading Character Glyphs from " + fontName, DebugChannel.Log);
 
             _vao = GL.GenVertexArray();
             _vbo = GL.GenBuffer();

@@ -32,8 +32,8 @@ namespace MinorEngine.components
         protected override void Awake()
         {
 
-            this.Log($"Mesh Info:{Owner.Name} (IDs: VAO: {Model.Vao}, VBO: {Model.Vbo}, EBO: {Model.Ebo})..", DebugChannel.Log);
-            this.Log("Attached Textures: "+Owner.Name+" : "+ Model.GetTextureBuffer()[0].TextureId, DebugChannel.Log);
+            Logger.Log($"Mesh Info:{Owner.Name} (IDs: VAO: {Model.Vao}, VBO: {Model.Vbo}, EBO: {Model.Ebo})..", DebugChannel.Log);
+            Logger.Log("Attached Textures: "+Owner.Name+" : "+ Model.GetTextureBuffer()[0].TextureId, DebugChannel.Log);
 
         }
     }

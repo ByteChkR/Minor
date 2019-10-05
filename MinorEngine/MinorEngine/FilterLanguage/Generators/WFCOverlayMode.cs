@@ -50,7 +50,7 @@ namespace MinorEngine.FilterLanguage.Generators
                 sample[x, y] = (byte) i;
             }
 
-            this.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log);
+            Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log);
             int C = _colors.Count;
             long W = WaveCollapseUtils.Power(C, N * N);
 
@@ -226,7 +226,7 @@ namespace MinorEngine.FilterLanguage.Generators
 
                     if (contributors == 0)
                     {
-                        this.Log("Pixel: " + i + " has no match", DebugChannel.Warning);
+                        Logger.Log("Pixel: " + i + " has no match", DebugChannel.Warning);
                         continue;
                     }
 

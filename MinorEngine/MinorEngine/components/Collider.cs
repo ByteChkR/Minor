@@ -8,6 +8,7 @@ using MinorEngine.BEPUutilities;
 using MinorEngine.debug;
 using MinorEngine.engine.components;
 using MinorEngine.engine.physics;
+using MinorEngine.exceptions;
 using Vector3 = OpenTK.Vector3;
 
 namespace MinorEngine.components
@@ -43,7 +44,7 @@ namespace MinorEngine.components
 
             if (!_colliderRemoved)
             {
-                this.Log("FUCK", DebugChannel.Log);
+                Logger.Crash(new PossibleMemoryLeakException("Collider Component"), true);
             }
         }
 

@@ -70,7 +70,7 @@ namespace MinorEngine.engine.core
         ~GameObject()
         {
             if (!Destroyed)
-                this.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
+                Logger.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
                     DebugChannel.Warning);
         }
 
@@ -221,7 +221,7 @@ namespace MinorEngine.engine.core
 
         private void RemoveFromRenderLoop()
         {
-            this.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log);
+            Logger.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log);
             RemoveComponent(typeof(IRenderingComponent));
             ObjsWithAttachedRenderers.Remove(this);
         }

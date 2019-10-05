@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.debug;
+using MinorEngine.exceptions;
 
 namespace MinorEngine.engine.core
 {
@@ -40,16 +41,20 @@ namespace MinorEngine.engine.core
     {
         public delegate T CreateNew();
 
-        private List< PooledObject<T>> _InternalList = new List<PooledObject<T>>();
+        private List<PooledObject<T>> _InternalList = new List<PooledObject<T>>();
         private int _nextID = 0;
         private int _maxItems;
         private CreateNew _Factory;
         public ObjectPool(int size, int maxSize, CreateNew factory)
         {
-            if (size > maxSize) throw new Exception("Object Pool size is bigger than its defined max size.");
-            _Factory = factory ?? throw new Exception("No Factory passted to ObjectPool Constructor");
+            if (size > maxSize) Logger.Crash(new ObjectPoolException("Object Pool size is bigger than its defined max size."), true);
+            if (factory == null) Logger.Crash(new ObjectPoolException("No Factory passted to ObjectPool Constructor"), false);
 
-            _maxItems = maxSize;
+
+
+            _Factory = factory;
+
+            _maxItems = Math.Min(maxSize, size);
             InitializeSize(size);
         }
 
@@ -118,7 +123,7 @@ namespace MinorEngine.engine.core
             int id = GetFreeID();
             if (id == -1)
             {
-                this.Log("Object Pool is full, returning Unmanaged Instance.", DebugChannel.Warning);
+                Logger.Log("Object Pool is full, returning Unmanaged Instance.", DebugChannel.Warning);
                 PooledObject<T> item = new PooledObject<T>(_Factory(), null, -1);
 
                 return item;

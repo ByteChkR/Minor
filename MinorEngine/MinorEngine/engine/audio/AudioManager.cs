@@ -32,7 +32,9 @@ namespace MinorEngine.engine.audio
             {
                 case 1: return bits == 8 ? ALFormat.Mono8 : ALFormat.Mono16;
                 case 2: return bits == 8 ? ALFormat.Stereo8 : ALFormat.Stereo16;
-                default: throw new NotSupportedException("The specified sound format is not supported.");
+                default:
+                    Logger.Crash(new  InvalidAudioFileException("The specified sound format is not supported."), false);
+                    return ALFormat.Mono8;
             }
         }
 
@@ -47,7 +49,7 @@ namespace MinorEngine.engine.audio
                 }
 
 
-            filename.Crash(new ME_InvalidAudioFile("Could not open Format. Unsupported."));
+            Logger.Crash(new InvalidAudioFileException("Could not open Format. Unsupported."), false);
             formatProvider = null;
             return false;
         }
@@ -67,7 +69,7 @@ namespace MinorEngine.engine.audio
                     return true;
                 }
 
-                filename.Crash(new ME_InvalidAudioFile("Could not open File. Invalid File"));
+                Logger.Crash(new InvalidAudioFileException("Could not open File. Invalid File"), false);
                 clip = null;
                 return true;
             }

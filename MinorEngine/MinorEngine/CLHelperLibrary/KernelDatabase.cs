@@ -33,8 +33,9 @@ namespace MinorEngine.CLHelperLibrary
             GenDataType = KernelParameter.GetDataString(genDataType);
             if (!Directory.Exists(folderName))
             {
-                this.Crash(new InvalidFolderPathException(folderName));
-                return;
+                Logger.Crash(new InvalidFolderPathException(folderName), true);
+
+                Logger.Log("Creating Folder: "+folderName, DebugChannel.Log);
             }
 
             _folderName = folderName;
@@ -62,21 +63,21 @@ namespace MinorEngine.CLHelperLibrary
         {
             if (!File.Exists(file))
             {
-                this.Crash(new InvalidFilePathException(file));
+                Logger.Crash(new InvalidFilePathException(file), true);
                 return;
             }
 
 
             string path = Path.GetFullPath(file);
 
-            this.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
+            Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
             CLProgram program = new CLProgram(path, GenDataType);
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
                 if (!_loadedKernels.ContainsKey(containedKernel.Key))
                     _loadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 else
-                    this.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
+                    Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
                         DebugChannel.Warning);
         }
 

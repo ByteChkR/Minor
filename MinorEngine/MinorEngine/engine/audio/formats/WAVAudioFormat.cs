@@ -19,24 +19,30 @@ namespace MinorEngine.engine.audio.formats
 
         public bool TryLoadFile(Stream fileStream, out byte[] data, out int channel, out int bits, out int bitRate)
         {
-            if (fileStream == null) throw new ArgumentNullException("stream");
+            if (fileStream == null)
+            {
+                Logger.Crash(new InvalidAudioFileException("Filestream is null"), true);
+                data = null;
+                channel = bits = bitRate = 0;
+                return false;
+            }
 
             using (BinaryReader reader = new BinaryReader(fileStream))
             {
                 // RIFF header
                 string signature = new string(reader.ReadChars(4));
-                if (signature != "RIFF") this.Crash(new ME_InvalidAudioFile("Specified stream is not a wave file."));
+                if (signature != "RIFF") Logger.Crash(new InvalidAudioFileException("Specified stream is not a wave file."), false);
 
                 /*int riff_chunck_size = */
                 reader.ReadInt32();
 
                 string format = new string(reader.ReadChars(4));
-                if (format != "WAVE") this.Crash(new ME_InvalidAudioFile("Specified stream is not a wave file."));
+                if (format != "WAVE") Logger.Crash(new InvalidAudioFileException("Specified stream is not a wave file."), false);
 
                 // WAVE header
                 string format_signature = new string(reader.ReadChars(4));
                 if (format_signature != "fmt ")
-                    this.Crash(new ME_InvalidAudioFile("Specified wave file is not supported."));
+                    Logger.Crash(new InvalidAudioFileException("Specified wave file is not supported."), false);
 
                 /*int format_chunk_size = */
                 reader.ReadInt32();
@@ -52,7 +58,7 @@ namespace MinorEngine.engine.audio.formats
 
                 string data_signature = new string(reader.ReadChars(4));
                 if (data_signature != "data")
-                    this.Crash(new ME_InvalidAudioFile("Specified wave file is not supported."));
+                    Logger.Crash(new InvalidAudioFileException("Specified wave file is not supported."), false);
 
                 /*int data_chunk_size = */
                 reader.ReadInt32();

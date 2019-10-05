@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using MinorEngine.debug;
+using MinorEngine.exceptions;
 
 namespace MinorEngine.engine.physics
 {
@@ -25,7 +28,9 @@ namespace MinorEngine.engine.physics
         private static Layer IDToInternalLayer(int layer)
         {
             if (layer >= 0 && layer < _internalLayerStore.Count) return _internalLayerStore[layer].Item1;
-            throw new Exception("Handle this");
+            bool rec = _registeredLayers.Count > 0;
+            Logger.Crash(new LayerNotFoundException(layer), rec);
+            return _internalLayerStore[_registeredLayers.ElementAt(0).Value].Item1;
         }
 
         public static int NameToLayer(string name)

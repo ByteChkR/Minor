@@ -77,11 +77,11 @@ namespace MinorEngine.FilterLanguage
 
         void DefineScript(string[] arg)
         {
-            if (arg.Length < 2) this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Invalid Define statement"));
+            if (arg.Length < 2) Logger.Crash(new InvalidFLFunctionUseException(ScriptDefineKey, "Invalid Define statement"), false);
             string varname = arg[0].Trim();
             if (_definedBuffers.ContainsKey(varname))
             {
-                this.Log("Overwriting " + varname, DebugChannel.Warning);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning);
                 _definedBuffers.Remove(varname);
             }
 
@@ -93,7 +93,7 @@ namespace MinorEngine.FilterLanguage
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                this.Log("Loading SubScript...", DebugChannel.Log);
+                Logger.Log("Loading SubScript...", DebugChannel.Log);
 
                 MemoryBuffer buf =
                     CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
@@ -110,19 +110,19 @@ namespace MinorEngine.FilterLanguage
             }
             else
             {
-                this.Crash(new FL_InvalidFunctionUse(ScriptDefineKey, "Not a valid filepath as argument."));
+                Logger.Crash(new InvalidFLFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."), false);
             }
         }
 
         void DefineTexture(string[] arg)
         {
-            if (arg.Length < 2) this.Crash(new FL_InvalidFunctionUse(DefineKey, "Invalid Define statement"));
+            if (arg.Length < 2) Logger.Crash(new InvalidFLFunctionUseException(DefineKey, "Invalid Define statement"), false);
             string varname = arg[0].Trim();
 
 
             if (_definedBuffers.ContainsKey(varname))
             {
-                this.Log("Overwriting " + varname, DebugChannel.Warning);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning);
                 _definedBuffers.Remove(varname);
             }
 
@@ -145,7 +145,7 @@ namespace MinorEngine.FilterLanguage
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Bitmap bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
+                Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
                 _definedBuffers.Add(varname,
                     CL.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
@@ -162,22 +162,23 @@ namespace MinorEngine.FilterLanguage
             }
             else if (filename == "wfc")
             {
-                if (args.Length < 10) throw new FL_InvalidFunctionUse("wfc", "Invalid Define statement");
-                if (!int.TryParse(args[2], out int n)) throw new FL_InvalidFunctionUse("wfc", "Invalid N argument");
+                if (args.Length < 10) Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid Define statement"), false);
+                if (!int.TryParse(args[2], out int n))
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid N argument"), false);
                 if (!int.TryParse(args[3], out int width))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid width argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid width argument"), false);
                 if (!int.TryParse(args[4], out int height))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid height argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid height argument"), false);
                 if (!bool.TryParse(args[5], out bool periodicInput))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid periodicInput argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid periodicInput argument"), false);
                 if (!bool.TryParse(args[6], out bool periodicOutput))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid periodicOutput argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid periodicOutput argument"), false);
                 if (!int.TryParse(args[7], out int symetry))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid symmetry argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid symmetry argument"), false);
                 if (!int.TryParse(args[8], out int ground))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid ground argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid ground argument"), false);
                 if (!int.TryParse(args[9], out int limit))
-                    throw new FL_InvalidFunctionUse("wfc", "Invalid limit argument");
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid limit argument"), false);
 
                 WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width,
                     height, periodicInput, periodicOutput, symetry, ground);
@@ -191,7 +192,7 @@ namespace MinorEngine.FilterLanguage
             }
             else
             {
-                throw new InvalidOperationException("Can not resolve symbol: " + varname);
+                Logger.Crash(new FLParseError(varname), false);
             }
         }
 
@@ -240,7 +241,7 @@ namespace MinorEngine.FilterLanguage
             /// <returns>a Not implemented exception</returns>
             public bool Equals(InterpreterStepResult other)
             {
-                throw new NotImplementedException();
+                return false;
             }
 
             private static StringBuilder _sb = new StringBuilder();
@@ -368,7 +369,7 @@ namespace MinorEngine.FilterLanguage
             {
                 int idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
                 if (idx == -1 || _source.Count - 1 == idx)
-                    throw new FL_InvalidEntyPoint("There needs to be a main function.");
+                    Logger.Crash(new InvalidFLEntryPointException("There needs to be a main function."), false);
                 return idx + 1;
             }
         }
@@ -387,33 +388,33 @@ namespace MinorEngine.FilterLanguage
         private void cmd_setactive()
         {
             if (_currentArgStack.Count < 1)
-                this.Crash(new FL_InvalidFunctionUse("setactive", "Specify the buffer you want to activate"));
+                Logger.Crash(new InvalidFLFunctionUseException("setactive", "Specify the buffer you want to activate"), false);
 
             byte[] temp = new byte[_channelCount];
             while (_currentArgStack.Count != 1)
             {
                 object val = _currentArgStack.Pop();
-                if (!(val is decimal)) this.Crash(new FL_InvalidFunctionUse("setactive", "Invalid channel Arguments"));
+                if (!(val is decimal)) Logger.Crash(new InvalidFLFunctionUseException("setactive", "Invalid channel Arguments"), false);
 
-                byte channel = (byte) Convert.ChangeType(val, typeof(byte));
+                byte channel = (byte)Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
-                    this.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
+                    Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
                 else
                     temp[channel] = 1;
             }
 
             if (_currentArgStack.Peek() == null ||
                 !(_currentArgStack.Peek() is MemoryBuffer) && !(_currentArgStack.Peek() is decimal))
-                this.Crash(new FL_InvalidFunctionUse("setactive", "Specify the buffer you want to activate"));
+                Logger.Crash(new InvalidFLFunctionUseException("setactive", "Specify the buffer you want to activate"), false);
 
             if (_currentArgStack.Peek() is decimal)
             {
-                byte channel = (byte) Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
+                byte channel = (byte)Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
                 temp[channel] = 1;
             }
             else
             {
-                _currentBuffer = (MemoryBuffer) _currentArgStack.Pop();
+                _currentBuffer = (MemoryBuffer)_currentArgStack.Pop();
             }
 
             bool needCopy = false;
@@ -426,7 +427,7 @@ namespace MinorEngine.FilterLanguage
 
             if (needCopy)
             {
-                this.Log("Updating Channel Buffer", DebugChannel.Log);
+                Logger.Log("Updating Channel Buffer", DebugChannel.Log);
                 _activeChannels = temp;
                 CL.WriteToBuffer(_activeChannelBuffer, _activeChannels);
             }
@@ -438,7 +439,7 @@ namespace MinorEngine.FilterLanguage
         /// <returns>a random byte</returns>
         private byte randombytesource()
         {
-            return (byte) rnd.Next();
+            return (byte)rnd.Next();
         }
 
         /// <summary>
@@ -450,7 +451,7 @@ namespace MinorEngine.FilterLanguage
             while (_currentArgStack.Count != 0)
             {
                 object obj = _currentArgStack.Pop();
-                if (!(obj is MemoryBuffer)) throw new InvalidOperationException("Argument has the wrong type: " + obj);
+                if (!(obj is MemoryBuffer)) Logger.Crash(new InvalidFLArgumentType("Argument: "+ _currentArgStack.Count+1, "MemoyBuffer/Image"), false);
                 CL.WriteRandom(obj as MemoryBuffer, randombytesource, _activeChannels);
             }
         }
@@ -460,7 +461,7 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         private void cmd_jump() //Dummy function. Implementation in Analyze(code) function(look for isDirectExecute)
         {
-            this.Log("Jumping.", DebugChannel.Log);
+            Logger.Log("Jumping.", DebugChannel.Log);
         }
 
         /// <summary>
@@ -478,12 +479,12 @@ namespace MinorEngine.FilterLanguage
             {
                 object obj = _currentArgStack.Pop();
                 if (!(obj is MemoryBuffer))
-                    throw new InvalidOperationException("Argument has the wrong type or is null");
+                    Logger.Crash(new InvalidFLArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"), false);
                 _stepResult.DebugBuffer = obj as MemoryBuffer;
             }
             else
             {
-                throw new InvalidOperationException("Only One or Zero argument");
+                Logger.Crash(new InvalidFLFunctionUseException("Break", "only one or zero arguments"), false);
             }
         }
 
@@ -643,7 +644,7 @@ namespace MinorEngine.FilterLanguage
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CL.ReadBuffer<T>(_currentBuffer, (int) _currentBuffer.Size);
+            return CL.ReadBuffer<T>(_currentBuffer, (int)_currentBuffer.Size);
         }
 
         /// <summary>
@@ -719,7 +720,7 @@ namespace MinorEngine.FilterLanguage
 
 
             if (!isBakedFunction && !_kernelDb.TryGetCLKernel(function, out kernel))
-                throw new NotImplementedException("Argument Not found in line " + code + ".");
+                Logger.Crash(new FLParseError(code), false);
 
             if (_leaveStack) //This keeps the stack when returning from a "function"
                 _leaveStack = false;
@@ -751,7 +752,7 @@ namespace MinorEngine.FilterLanguage
                 }
                 else if (kernel == null || words.Length - 1 != kernel.Parameter.Count - FLHeaderArgCount)
                 {
-                    throw new FL_InvalidFunctionUse(function, "Not the right amount of arguments.");
+                    Logger.Crash(new InvalidFLFunctionUseException(function, "Not the right amount of arguments."), false);
                 }
                 else
                 {
@@ -762,7 +763,7 @@ namespace MinorEngine.FilterLanguage
                         kernel.SetArg(i, obj);
                     }
 
-                    this.Log("Running kernel: " + function, DebugChannel.Log);
+                    Logger.Log("Running kernel: " + function, DebugChannel.Log);
                     CL.Run(kernel, _currentBuffer, new int3(_width, _height, _depth),
                         KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer,
                         _channelCount); //Running the kernel
@@ -782,7 +783,7 @@ namespace MinorEngine.FilterLanguage
         {
             if (_jumpLocations.ContainsKey(word))
             {
-                this.Log("Jumping to location: " + word, DebugChannel.Log);
+                Logger.Log("Jumping to location: " + word, DebugChannel.Log);
 
                 val = null;
                 return true;
@@ -795,7 +796,7 @@ namespace MinorEngine.FilterLanguage
                 val = numberDecimal;
 
 #if !TRAVIS_TEST
-            if (val == null) throw new NotImplementedException("No Baked in functions in arguments");
+            if (val == null) Logger.Crash(new InvalidFLArgumentType(word, "Number or Defined buffer."), false);
 #endif
             val = val ?? "PLACEHOLDER";
             return false;
@@ -846,7 +847,7 @@ namespace MinorEngine.FilterLanguage
             {
                 if (_jumpStack.Count == 0)
                 {
-                    this.Log("Reached End of Code", DebugChannel.Log);
+                    Logger.Log("Reached End of Code", DebugChannel.Log);
 
                     Terminated = true;
                 }
@@ -854,7 +855,7 @@ namespace MinorEngine.FilterLanguage
                 {
                     InterpreterState lastState = _jumpStack.Pop();
 
-                    this.Log("Returning to location: " + _source[lastState.Line], DebugChannel.Log);
+                    Logger.Log("Returning to location: " + _source[lastState.Line], DebugChannel.Log);
                     _currentIndex = lastState.Line;
 
 
@@ -882,7 +883,7 @@ namespace MinorEngine.FilterLanguage
         {
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
             _stepResult.HasJumped = true;
-            int size = (int) _currentBuffer.Size;
+            int size = (int)_currentBuffer.Size;
             if (!keepBuffer)
                 _currentBuffer = CL.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
             _currentIndex = index;
@@ -895,7 +896,7 @@ namespace MinorEngine.FilterLanguage
         /// <param name="file"></param>
         void LoadSource(string file)
         {
-            this.Log("Loading Source..", DebugChannel.Log);
+            Logger.Log("Loading Source..", DebugChannel.Log);
 
             Dictionary<string, bool> defs = new Dictionary<string, bool>();
 

@@ -176,7 +176,7 @@ namespace MinorEngine.engine.rendering
                 return;
             }
 
-            this.Log($"Deleting Mesh:{_debugName} (IDs: VAO: {_vao}, VBO: {_vbo}, EBO: {_ebo})..", DebugChannel.Log);
+            Logger.Log($"Deleting Mesh:{_debugName} (IDs: VAO: {_vao}, VBO: {_vbo}, EBO: {_ebo})..", DebugChannel.Log);
 
             _disposed = true;
 
