@@ -146,11 +146,11 @@ namespace MinorEngine.engine.rendering
         /// <returns></returns>
         public static MemoryBuffer CreateFromTexture(GameTexture tex, MemoryFlag flags)
         {
-            byte[] buffer = new byte[(int) (tex.Width * tex.Height * 4)];
+            byte[] buffer = new byte[(int)(tex.Width * tex.Height * 4)];
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
-            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int) tex.Width, (int) tex.Height, 1, TKPixelFormat.Bgra,
+            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int)tex.Width, (int)tex.Height, 1, TKPixelFormat.Bgra,
                 PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
 
             handle.Free();
@@ -168,18 +168,15 @@ namespace MinorEngine.engine.rendering
         private static void DefaultTexParameter()
         {
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int) TextureMinFilter.Linear);
+                (int)TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int) TextureMagFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int) TextureWrapMode.Repeat);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int) TextureWrapMode.Repeat);
+                (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
         }
 
-        public static GameTexture Load(string filename)
+        public static GameTexture FromBitmap(Bitmap bmp)
         {
-            filename.Log("Loading Texture: " + filename, DebugChannel.Log);
-            Bitmap bmp = new Bitmap(filename);
-
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
@@ -196,6 +193,14 @@ namespace MinorEngine.engine.rendering
 
 
             return ret;
+        }
+
+        public static GameTexture Load(string filename)
+        {
+            filename.Log("Loading Texture: " + filename, DebugChannel.Log);
+            return FromBitmap(new Bitmap(filename));
+
+
         }
 
         public static void Update(GameTexture tex, byte[] buffer, int width, int height)
