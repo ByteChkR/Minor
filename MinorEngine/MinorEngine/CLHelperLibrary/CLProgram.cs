@@ -74,7 +74,7 @@ namespace MinorEngine.CLHelperLibrary
                 string s = (_filePath + "." + dt[i] + ".cl").Replace("kernel", "kernel_cache");
                 int vnum = GetVectorNum(dtStr);
                 string[] lines =
- TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, dtStr, vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
+                TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, dtStr, vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
                 Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
                 source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
                 kernelNames = FindKernelNames(source);

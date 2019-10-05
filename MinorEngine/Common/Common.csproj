@@ -2,7 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Configurations>Debug;Release;Release_CollectLogs</Configurations>
+    <Configurations>Debug;Release;Release_CollectLogs;Release_TravisTest</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_TravisTest|AnyCPU'">
+    <DefineConstants>TRACE;TRAVIS_TEST</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

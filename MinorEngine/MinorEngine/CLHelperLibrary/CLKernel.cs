@@ -5,6 +5,7 @@ using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 
+using MinorEngine.debug;
 namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
@@ -69,7 +70,7 @@ namespace MinorEngine.CLHelperLibrary
         public void SetBuffer(int index, MemoryObject obj)
         {
 #if TRAVIS_TEST
-            index.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
+            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
 #else
             Kernel.SetKernelArgument(index, obj);
 #endif
@@ -96,7 +97,7 @@ namespace MinorEngine.CLHelperLibrary
             else
             {
 #if TRAVIS_TEST
-                index.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
+                Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
 #else
                 Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
 #endif

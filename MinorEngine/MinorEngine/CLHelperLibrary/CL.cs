@@ -12,6 +12,7 @@ using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 using OpenCl.DotNetCore.Platforms;
 using OpenCl.DotNetCore.Programs;
+using MinorEngine.debug;
 namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
@@ -53,7 +54,7 @@ namespace MinorEngine.CLHelperLibrary
         private void InitializeOpenCL()
         {
 #if TRAVIS_TEST
-            this.Log("Starting in TRAVIS_TEST Mode", DebugChannel.Warning);
+            Logger.Log("Starting in TRAVIS_TEST Mode", DebugChannel.Warning);
 #else
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
@@ -73,7 +74,7 @@ namespace MinorEngine.CLHelperLibrary
         internal static Program CreateCLProgramFromSource(string source)
         {
 #if TRAVIS_TEST
-            source.Log("Creating CL Program", DebugChannel.Warning);
+            Logger.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
             return Instance._context.CreateAndBuildProgramFromString(source);
@@ -88,7 +89,7 @@ namespace MinorEngine.CLHelperLibrary
         internal static Program CreateCLProgramFromSource(string[] source)
         {
 #if TRAVIS_TEST
-            source.Log("Creating CL Program", DebugChannel.Warning);
+            Logger.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
             return Instance._context.CreateAndBuildProgramFromString(source);
@@ -104,7 +105,7 @@ namespace MinorEngine.CLHelperLibrary
         internal static Kernel CreateKernelFromName(Program program, string name)
         {
 #if TRAVIS_TEST
-            name.Log("Creating CL Kernel From Name", DebugChannel.Warning);
+            Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning);
             return null;
 #else
             return program.CreateKernel(name);
@@ -133,7 +134,7 @@ namespace MinorEngine.CLHelperLibrary
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer<T>(T[] data, MemoryFlag flags) where T : struct
         {
-            object[] arr = Array.ConvertAll(data, x => (object) x);
+            object[] arr = Array.ConvertAll(data, x => (object)x);
             return CreateBuffer(arr, typeof(T), flags);
         }
 
@@ -147,10 +148,10 @@ namespace MinorEngine.CLHelperLibrary
         public static MemoryBuffer CreateBuffer(object[] data, Type t, MemoryFlag flags)
         {
 #if TRAVIS_TEST
-            data.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
+            Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
             return null;
 #else
-            MemoryBuffer mb = Instance._context.CreateBuffer(flags, t, data);
+            MemoryBuffer mb = Instance._context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
             return mb;
 #endif
         }
@@ -171,7 +172,7 @@ namespace MinorEngine.CLHelperLibrary
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
 #if TRAVIS_TEST
-            bmp.Log("Creating CL Buffer from Image", DebugChannel.Warning);
+            Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
 #else
             MemoryBuffer mb = CreateBuffer(buffer, flags);
@@ -264,13 +265,13 @@ namespace MinorEngine.CLHelperLibrary
 #if TRAVIS_TEST
             T[] data = new T[1];
 #else
-            T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int) buf.Size);
+            T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int)buf.Size);
 #endif
 
             WriteRandom(data, enabledChannels, rnd, uniform);
 
 #if TRAVIS_TEST
-            enabledChannels.Log("Writing Random Data to Buffer", DebugChannel.Warning);
+            Logger.Log("Writing Random Data to Buffer", DebugChannel.Warning);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buf, data);
 #endif
@@ -299,7 +300,7 @@ namespace MinorEngine.CLHelperLibrary
         public static void WriteToBuffer<T>(MemoryBuffer buf, T[] values) where T : struct
         {
 #if TRAVIS_TEST
-            values.Log("Writing To Buffer..", DebugChannel.Warning);
+            Logger.Log("Writing To Buffer..", DebugChannel.Warning);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buf, values);
 #endif
@@ -315,7 +316,7 @@ namespace MinorEngine.CLHelperLibrary
         public static T[] ReadBuffer<T>(MemoryBuffer buf, int size) where T : struct
         {
 #if TRAVIS_TEST
-            size.Log("Reading From Buffer..", DebugChannel.Warning);
+            Logger.Log("Reading From Buffer..", DebugChannel.Warning);
             return new T[size];
 #else
             return Instance._commandQueue.EnqueueReadBuffer<T>(buf, size);
@@ -335,7 +336,7 @@ namespace MinorEngine.CLHelperLibrary
             int channelCount)
         {
 #if TRAVIS_TEST
-            kernel.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
+            Logger.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
 #else
             kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
 #endif

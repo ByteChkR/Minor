@@ -108,17 +108,17 @@ namespace Common
             switch (channel)
             {
                 case 1:
-                    message = "[Log]" + message;
+                    message = "[Log " +severity+"]" + message;
                     break;
                 case 2:
-                    message = "[Warning]" + message;
+                    message = "[Warning " + severity + "]" + message;
                     break;
                 case 4:
-                    message = "[Error]" + message;
+                    message = "[Error " + severity + "]" + message;
                     break;
             }
 
-            Debug.Log(Stage, $"[{severity}]{message}");
+            Debug.Log(Stage, message);
         }
 
 

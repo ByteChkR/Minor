@@ -40,9 +40,9 @@ namespace MinorEngine.engine.core
         public void Initialize()
         {
 
-            Logger.SetDebugStage(DebugStage.Initialization);
+            Logger.SetDebugStage(DebugStage.Init);
 
-            Logger.Log("Initialization started..", DebugChannel.Log);
+            Logger.Log("Init started..", DebugChannel.Log);
             initializeWindow();
             initializeRenderer();
 
@@ -109,7 +109,7 @@ namespace MinorEngine.engine.core
 
         public void Run()
         {
-            Logger.SetDebugStage(DebugStage.GeneralStage);
+            Logger.SetDebugStage(DebugStage.General);
             Logger.Log("Running GameEngine Loop..", DebugChannel.Log);
             Window.VSync = VSyncMode.Off;
             Window.Run(0, 0);
@@ -157,14 +157,14 @@ namespace MinorEngine.engine.core
         protected virtual void Update(object sender, FrameEventArgs e)
         {
 
-            Logger.SetDebugStage(DebugStage.WorldUpdate);
+            Logger.SetDebugStage(DebugStage.Update);
             currentScene?.Update((float) e.Time);
             World?.Update((float) e.Time);
-            Logger.SetDebugStage(DebugStage.PhysicsUpdate);
+            Logger.SetDebugStage(DebugStage.Physics);
             Physics.Update((float) e.Time);
             if (_changeScene)
             {
-                Logger.SetDebugStage(DebugStage.SceneInitialization);
+                Logger.SetDebugStage(DebugStage.SceneInit);
                 _changeScene = false;
 
 
@@ -179,7 +179,7 @@ namespace MinorEngine.engine.core
                 currentScene._initializeScene(World);
             }
 
-            Logger.SetDebugStage(DebugStage.CleanUpPhase);
+            Logger.SetDebugStage(DebugStage.CleanUp);
             //Cleanup
             World?.RemoveDestroyedObjects();
             //ResourceManager.ProcessDeleteQueue();
@@ -195,7 +195,7 @@ namespace MinorEngine.engine.core
         private void OnRender(object o, EventArgs e)
         {
 
-            Logger.SetDebugStage(DebugStage.OnRenderStage);
+            Logger.SetDebugStage(DebugStage.Render);
 
             Renderer.RenderAllTargets(World);
 

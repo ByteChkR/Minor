@@ -35,7 +35,9 @@ namespace MinorEngine.CLHelperLibrary
             {
                 Logger.Crash(new InvalidFolderPathException(folderName), true);
 
-                Logger.Log("Creating Folder: "+folderName, DebugChannel.Log);
+                Logger.Log("Creating Folder: "+folderName, DebugChannel.Warning);
+
+                Directory.CreateDirectory(folderName);
             }
 
             _folderName = folderName;
