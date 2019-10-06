@@ -419,7 +419,7 @@ namespace MinorEngine.engine.components
             _bgImage.Alpha = _showConsole ? 0.65f : 0;
             _consoleOutputImage.Alpha = _showConsole ? 0.75f : 0;
 
-            _hintText.Text = _showConsole ? "" : HelpText;
+            _hintText.Text = _showConsole ? "" : "Test1232\t123\nTest123\t123";
 
             _title.Text = _showConsole ? ConsoleTitle : "";
 

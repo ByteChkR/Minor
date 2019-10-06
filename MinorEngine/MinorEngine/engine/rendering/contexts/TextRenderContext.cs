@@ -18,6 +18,8 @@ namespace MinorEngine.engine.rendering.contexts
         protected static int _vao;
         protected static bool _init;
 
+        private static float TabToSpaceCount = 0.1f;
+
 
         public TextRenderContext(ShaderProgram program, Vector2 position, Vector2 scale, Matrix4 modelMatrix, bool worldSpace, float alpha, GameFont fontFace, string displayText, int renderQueue) : base(position, scale, modelMatrix, worldSpace, alpha, program, renderQueue)
         {
@@ -49,6 +51,7 @@ namespace MinorEngine.engine.rendering.contexts
             int scrW = GameEngine.Instance.Width;
             int scrH = GameEngine.Instance.Height;
 
+            //GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             Program.Use();
@@ -76,6 +79,21 @@ namespace MinorEngine.engine.rendering.contexts
                     y -= fm.LineHeight / scrH * Scale.Y;
                     continue;
                 }
+
+
+                if (DisplayText[i] == '\t')
+                {
+                    float len = x - Position.X;
+                    float count = TabToSpaceCount - (len % TabToSpaceCount);
+                    float val = count;
+                    x += val;
+                    continue;
+                }
+                //x-pos.x
+
+                
+
+
 
                 if (!FontFace.TryGetCharacter(DisplayText[i], out TextCharacter chr)) FontFace.TryGetCharacter('?', out chr);
 

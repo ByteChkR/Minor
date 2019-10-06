@@ -1,4 +1,5 @@
-﻿using MinorEngine.components.ui;
+﻿using System.Text;
+using MinorEngine.components.ui;
 using MinorEngine.debug;
 using MinorEngine.engine.rendering;
 using MinorEngine.engine.rendering.contexts;
@@ -28,7 +29,7 @@ namespace MinorEngine.engine.components.ui
                     _context.Scale = Scale;
                     _context.DisplayText = _cachedText;
                     _context.WorldSpace = WorldSpace;
-                    
+
                 }
 
                 return _context;
@@ -37,7 +38,7 @@ namespace MinorEngine.engine.components.ui
         private readonly GameFont font;
         private string _text = "HELLO";
         private string _cachedText;
-
+        private static StringBuilder sb = new StringBuilder();
         public string Text
         {
             get => _text;
@@ -45,8 +46,23 @@ namespace MinorEngine.engine.components.ui
             {
                 if (!string.Equals(_text, value))
                 {
-                    _text = value;
-                    _cachedText = _text.Replace("\t", "   "); //Replace Tab character with spaces
+                    _cachedText = value;
+                    ////_cachedText = _text.Replace("\t", "   "); //Replace Tab character with spaces
+                    //int charcount = 0;
+                    //for (int i = 0; i < value.Length; i++)
+                    //{
+                    //    char c = value[i];
+                    //    if (c == '\n')
+                    //    {
+                    //        sb.Append('\n');
+                    //        charcount = 0;
+                    //        continue;
+                    //    }
+
+                    //}
+
+                    //_cachedText = sb.ToString();
+                    //sb.Clear();
                 }
 
             }
