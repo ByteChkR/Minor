@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MinorEngine.debug;
 using MinorEngine.engine.components.ui;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
@@ -13,7 +14,7 @@ namespace MinorEngine.engine.components
 {
     public class DebugConsoleComponent : AbstractComponent
     {
-        private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 30;
+        private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 20;
         private const string HelpText = "Press C to Open the FL Console";
         private const string ConsoleTitle = "GameEngine Console:";
         private UITextRendererComponent _title;
@@ -92,7 +93,7 @@ namespace MinorEngine.engine.components
             UIImageRendererComponent _bgOutImage = new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false, 0.4f, uiShader);
             _bgOutImage.RenderMask = 1 << 28;
 
-            
+
 
             UITextRendererComponent _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
@@ -180,6 +181,10 @@ namespace MinorEngine.engine.components
             AddCommand("quit", cmd_Exit);
             AddCommand("cls", cmd_Clear);
             AddCommand("clear", cmd_Clear);
+            AddCommand("lmem", MemoryTracer.cmdListMemoryInfo);
+            AddCommand("llmem", MemoryTracer.cmdListLastMemoryInfo);
+            AddCommand("cmd", cmdExOnConsole);
+
             ResourceManager.AddConsoleCommands(this);
         }
 
@@ -235,6 +240,30 @@ namespace MinorEngine.engine.components
 
                 _currentId = _commandHistory.Count;
             }
+        }
+
+        private string cmdExOnConsole(string[] args)
+        {
+            if (args.Length == 0) return "Please enter a function to redirect";
+            string ret = args[0] + "\n";
+
+            List<string> words = args.ToList();
+            if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
+            {
+                words.RemoveAt(0);
+                string s = cmd?.Invoke(words.ToArray());
+                if (s == null) ret += "No Return";
+                else ret += s + "";
+            }
+            else
+            {
+                ret += "Command Not found";
+            }
+
+            Logger.Log(ret, DebugChannel.Log);
+
+            return "Success";
+
         }
 
         protected override void OnKeyUp(object sender, KeyboardKeyEventArgs e)

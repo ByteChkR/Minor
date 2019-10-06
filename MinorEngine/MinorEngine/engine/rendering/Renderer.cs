@@ -91,29 +91,33 @@ namespace MinorEngine.engine.rendering
                 CurrentTarget = i;
                 RenderTarget target = Targets[i];
 
-
-                //GL.Scissor(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
-                GL.Viewport(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
-                GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
-
-                GL.ClearColor(target.ClearColor);
-
-                GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-
                 ICamera c = target.PassCamera ?? world.Camera;
 
-                List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
-                Render(_opaque, c);
-                List<RenderContext> _transparent =
-                    CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Transparent);
-                Render(_transparent, c);
+                if (c != null)
+                {
+
+                    //GL.Scissor(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
+                    GL.Viewport(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
+                    GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
+
+                    GL.ClearColor(target.ClearColor);
+
+                    GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 
-                //Render(target.PassMask, c);
+                    List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
+                    Render(_opaque, c);
+                    List<RenderContext> _transparent =
+                        CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Transparent);
+                    Render(_transparent, c);
 
 
-                GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
-                //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+                    //Render(target.PassMask, c);
+
+
+                    GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+                    //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+                }
             }
 
             //GL.Disable(EnableCap.ScissorTest);

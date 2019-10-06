@@ -7,8 +7,28 @@ namespace MinorEngine.engine.components.ui
 {
     public class UIImageRendererComponent : UIElement
     {
-        public override RenderContext Context => new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture, WorldSpace, Alpha, Shader, RenderQueue);
+        private UIImageRenderContext _context;
+        public override RenderContext Context
+        {
+            get
+            {
+                if (_context == null)
+                {
+                    _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture, WorldSpace, Alpha, Shader, RenderQueue);
+                }
+                else
+                {
+                    _context.ModelMat = Owner._worldTransformCache;
+                    _context.Position = Position;
+                    _context.Scale = Scale;
+                    _context.Texture = Texture;
+                    _context.WorldSpace = WorldSpace;
+                    _context.Alpha = Alpha;
+                }
 
+                return _context;
+            }
+        }
 
         public GameTexture Texture { get; set; }
 

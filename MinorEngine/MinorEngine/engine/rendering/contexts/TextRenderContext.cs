@@ -9,8 +9,8 @@ namespace MinorEngine.engine.rendering.contexts
 {
     public class TextRenderContext : UIRenderContext
     {
-        public string DisplayText { get; }
-        public GameFont FontFace { get; }
+        public string DisplayText { get; set; }
+        public GameFont FontFace { get; set; }
 
 
 

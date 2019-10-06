@@ -10,7 +10,27 @@ namespace MinorEngine.components
 {
     public class MeshRendererComponent : AbstractComponent, IRenderingComponent
     {
-        public RenderContext Context => new MeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, RenderType);
+        private RenderContext _context = null;
+
+        public RenderContext Context
+        {
+            get
+            {
+                if (_context == null)
+                {
+                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, RenderType);
+                }
+                else
+                {
+                    if (_context.ModelMat != Owner._worldTransformCache)
+                    {
+                        _context.ModelMat = Owner._worldTransformCache;
+                    }
+                }
+
+                return _context;
+            }
+        }
 
         public ShaderProgram Shader { get; set; }
         public int RenderMask { get; set; }

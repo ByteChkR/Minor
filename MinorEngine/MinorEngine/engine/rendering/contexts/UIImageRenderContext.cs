@@ -18,7 +18,7 @@ namespace MinorEngine.engine.rendering.contexts
                 1.0f, 1.0f, 1.0f, 1.0f
             };
 
-        private GameTexture Texture { get; }
+        public GameTexture Texture { get; set; }
 
 
         private bool _init;

@@ -29,8 +29,8 @@ namespace MinorEngine.engine.rendering
 
     public class GameMesh : IDisposable
     {
-        private readonly GameVertex[] _vertices;
-        private readonly uint[] _indices;
+        //private readonly GameVertex[] _vertices;
+        //private readonly uint[] _indices;
         private int _ebo;
         private int _vbo;
         private int _vao;
@@ -39,7 +39,7 @@ namespace MinorEngine.engine.rendering
         private GameTexture[] Textures { get; set; }
 
         public bool DisposeTexturesOnDestroy { get; set; } = true;
-        public int DrawCount => _indices.Length;
+        public int DrawCount;
 
         public int Vao => _vao;
 
@@ -50,11 +50,10 @@ namespace MinorEngine.engine.rendering
 
         internal GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures, string DebugName)
         {
-            _vertices = vertices.ToArray();
-            _indices = indices.ToArray();
             _debugName = DebugName;
             Textures = textures.ToArray();
-            setupMesh();
+            DrawCount = indices.Count;
+            setupMesh(indices.ToArray(), vertices.ToArray());
         }
 
         public void SetTextureBuffer(GameTexture[] tex)
@@ -67,10 +66,10 @@ namespace MinorEngine.engine.rendering
             return Textures;
         }
 
-        public Vector3[] ToSequentialVertexList()
+        public Vector3[] ToSequentialVertexList(List<uint> indices, List<GameVertex> vertices)
         {
-            Vector3[] verts = new Vector3[_indices.Length];
-            for (int i = 0; i < _indices.Length; i++) verts[i] = _vertices[_indices[i]].Position;
+            Vector3[] verts = new Vector3[indices.Count];
+            for (int i = 0; i < indices.Count; i++) verts[i] = verts[indices[i]];
 
             return verts;
         }
@@ -116,14 +115,14 @@ namespace MinorEngine.engine.rendering
 
 
             GL.BindVertexArray(Vao);
-            GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+            GL.DrawElements(PrimitiveType.Triangles, DrawCount, DrawElementsType.UnsignedInt, 0);
 
 
             GL.BindVertexArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
         }
 
-        private void setupMesh()
+        private void setupMesh(uint[] indices, GameVertex[] vertices)
         {
             GL.GenVertexArrays(1, out _vao);
             GL.GenBuffers(1, out _vbo);
@@ -134,13 +133,13 @@ namespace MinorEngine.engine.rendering
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, Vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
-                _vertices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
+                vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, Ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(_indices.Length * sizeof(uint)), _indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers

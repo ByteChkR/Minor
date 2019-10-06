@@ -6,9 +6,9 @@ namespace MinorEngine.engine.rendering.contexts
 
     public abstract class UIRenderContext : RenderContext
     {
-        public Vector2 Position { get; }
-        public Vector2 Scale { get; }
-        public float Alpha { get; }
+        public Vector2 Position { get; set; }
+        public Vector2 Scale { get; set; }
+        public float Alpha { get; set; }
 
 
 

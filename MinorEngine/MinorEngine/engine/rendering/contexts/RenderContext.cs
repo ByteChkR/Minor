@@ -54,7 +54,7 @@ namespace MinorEngine.engine.rendering.contexts
         public Vector3 MVPosition { get; private set; }
         public Renderer.RenderType RenderType { get; set; }
 
-        public bool WorldSpace { get; }
+        public bool WorldSpace { get; set; }
 
         public void PrecalculateMV(Matrix4 view)
         {
