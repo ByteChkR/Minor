@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.UpdateableSystems;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Paths.PathFollowing
 {
@@ -52,7 +51,7 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
         /// </summary>
         public Entity Entity
         {
-            get { return entity; }
+            get => entity;
             set
             {
                 entity = value;
@@ -66,15 +65,15 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
         /// This ensures that its interactions and collisions with
         /// other entities remain stable.
         /// </summary>
-        public SingleEntityLinearMotor LinearMotor { get; private set; }
+        public SingleEntityLinearMotor LinearMotor { get; }
 
         /// <summary>
         /// Gets or sets the point in the entity's local space that will be moved towards the target position.
         /// </summary>
         public Vector3 LocalOffset
         {
-            get { return LinearMotor.LocalPoint; }
-            set { LinearMotor.LocalPoint = value; }
+            get => LinearMotor.LocalPoint;
+            set => LinearMotor.LocalPoint = value;
         }
 
         /// <summary>
@@ -82,8 +81,8 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
         /// </summary>
         public Vector3 Offset
         {
-            get { return LinearMotor.Point; }
-            set { LinearMotor.Point = value; }
+            get => LinearMotor.Point;
+            set => LinearMotor.Point = value;
         }
 
         /// <summary>
@@ -130,8 +129,10 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
         void IDuringForcesUpdateable.Update(float dt)
         {
             if (Entity != LinearMotor.Entity)
+            {
                 throw new InvalidOperationException(
                     "EntityMover's entity differs from EntityMover's motors' entities.  Ensure that the moved entity is only changed by setting the EntityMover's entity property.");
+            }
 
             if (Entity.IsDynamic)
             {
@@ -141,7 +142,7 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
             else
             {
                 LinearMotor.IsActive = false;
-                Vector3 worldMovedPoint = Matrix3x3.Transform(LocalOffset, entity.orientationMatrix);
+                var worldMovedPoint = Matrix3x3.Transform(LocalOffset, entity.orientationMatrix);
                 Vector3.Add(ref worldMovedPoint, ref entity.position, out worldMovedPoint);
                 Entity.LinearVelocity = GetLinearVelocity(worldMovedPoint, TargetPosition, dt);
             }

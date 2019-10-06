@@ -17,11 +17,10 @@ namespace MinorEngine.BEPUik
     /// </summary>
     public class IKSolver : IDisposable
     {
-
         /// <summary>
         /// Gets the active joint set associated with the solver.
         /// </summary>
-        public ActiveSet ActiveSet { get; private set; }
+        public ActiveSet ActiveSet { get; }
 
         /// <summary>
         /// Gets or sets the number of solver iterations to perform in an attempt to reach specified goals.
@@ -50,20 +49,23 @@ namespace MinorEngine.BEPUik
         public float AutoscaleControlMaximumForce { get; set; }
 
         private float timeStepDuration = 1f;
+
         /// <summary>
         /// Gets or sets the time step duration elapsed by each position iteration.
         /// </summary>
         public float TimeStepDuration
         {
-            get { return timeStepDuration; }
+            get => timeStepDuration;
             set
             {
                 if (value <= 0)
+                {
                     throw new ArgumentException("Time step duration must be positive.");
+                }
+
                 timeStepDuration = value;
             }
         }
-
 
 
         private PermutationMapper permutationMapper = new PermutationMapper();
@@ -91,49 +93,50 @@ namespace MinorEngine.BEPUik
             //Reset the permutation index; every solve should proceed in exactly the same order.
             permutationMapper.PermutationIndex = 0;
 
-            float updateRate = 1 / TimeStepDuration;
+            var updateRate = 1 / TimeStepDuration;
             foreach (var joint in ActiveSet.joints)
             {
                 joint.Preupdate(TimeStepDuration, updateRate);
             }
 
-            for (int i = 0; i < FixerIterationCount; i++)
+            for (var i = 0; i < FixerIterationCount; i++)
             {
                 //Update the world inertia tensors of objects for the latest position.
-                foreach (Bone bone in ActiveSet.bones)
+                foreach (var bone in ActiveSet.bones)
                 {
                     bone.UpdateInertiaTensor();
                 }
 
                 //Update the per-constraint jacobians and effective mass for the current bone orientations and positions.
-                foreach (IKJoint joint in ActiveSet.joints)
+                foreach (var joint in ActiveSet.joints)
                 {
                     joint.UpdateJacobiansAndVelocityBias();
                     joint.ComputeEffectiveMass();
                     joint.WarmStart();
                 }
 
-                for (int j = 0; j < VelocitySubiterationCount; j++)
+                for (var j = 0; j < VelocitySubiterationCount; j++)
                 {
                     //A permuted version of the indices is used. The randomization tends to avoid issues with solving order in corner cases.
-                    for (int jointIndex = 0; jointIndex < ActiveSet.joints.Count; ++jointIndex)
+                    for (var jointIndex = 0; jointIndex < ActiveSet.joints.Count; ++jointIndex)
                     {
-                        int remappedIndex = permutationMapper.GetMappedIndex(jointIndex, ActiveSet.joints.Count);
+                        var remappedIndex = permutationMapper.GetMappedIndex(jointIndex, ActiveSet.joints.Count);
                         ActiveSet.joints[remappedIndex].SolveVelocityIteration();
                     }
+
                     //Increment to use the next permutation.
                     ++permutationMapper.PermutationIndex;
                 }
 
                 //Integrate the positions of the bones forward.
-                foreach (Bone bone in ActiveSet.bones)
+                foreach (var bone in ActiveSet.bones)
                 {
                     bone.UpdatePosition();
                 }
             }
 
             //Clear out accumulated impulses; they should not persist through to another solving round because the state could be arbitrarily different.
-            for (int j = 0; j < ActiveSet.joints.Count; j++)
+            for (var j = 0; j < ActiveSet.joints.Count; j++)
             {
                 ActiveSet.joints[j].ClearAccumulatedImpulses();
             }
@@ -150,8 +153,8 @@ namespace MinorEngine.BEPUik
             ActiveSet.UpdateActiveSet(controls);
 
             if (AutoscaleControlImpulses)
-            {
                 //Update the control strengths to match the mass of the target bones and the desired maximum force.
+            {
                 foreach (var control in controls)
                 {
                     control.MaximumForce = control.TargetBone.Mass * AutoscaleControlMaximumForce;
@@ -161,27 +164,28 @@ namespace MinorEngine.BEPUik
             //Reset the permutation index; every solve should proceed in exactly the same order.
             permutationMapper.PermutationIndex = 0;
 
-            float updateRate = 1 / TimeStepDuration;
+            var updateRate = 1 / TimeStepDuration;
             foreach (var joint in ActiveSet.joints)
             {
                 joint.Preupdate(TimeStepDuration, updateRate);
             }
+
             foreach (var control in controls)
             {
                 control.Preupdate(TimeStepDuration, updateRate);
             }
 
             //Go through the set of controls and active joints, updating the state of bones.
-            for (int i = 0; i < ControlIterationCount; i++)
+            for (var i = 0; i < ControlIterationCount; i++)
             {
                 //Update the world inertia tensors of objects for the latest position.
-                foreach (Bone bone in ActiveSet.bones)
+                foreach (var bone in ActiveSet.bones)
                 {
                     bone.UpdateInertiaTensor();
                 }
 
                 //Update the per-constraint jacobians and effective mass for the current bone orientations and positions.
-                foreach (IKJoint joint in ActiveSet.joints)
+                foreach (var joint in ActiveSet.joints)
                 {
                     joint.UpdateJacobiansAndVelocityBias();
                     joint.ComputeEffectiveMass();
@@ -191,34 +195,36 @@ namespace MinorEngine.BEPUik
                 foreach (var control in controls)
                 {
                     if (control.TargetBone.Pinned)
+                    {
                         throw new InvalidOperationException("Pinned objects cannot be moved by controls.");
+                    }
+
                     control.UpdateJacobiansAndVelocityBias();
                     control.ComputeEffectiveMass();
                     control.WarmStart();
                 }
 
-                for (int j = 0; j < VelocitySubiterationCount; j++)
+                for (var j = 0; j < VelocitySubiterationCount; j++)
                 {
                     //Controls are updated first.
-                    foreach (Control control in controls)
+                    foreach (var control in controls)
                     {
                         control.SolveVelocityIteration();
                     }
 
                     //A permuted version of the indices is used. The randomization tends to avoid issues with solving order in corner cases.
-                    for (int jointIndex = 0; jointIndex < ActiveSet.joints.Count; ++jointIndex)
+                    for (var jointIndex = 0; jointIndex < ActiveSet.joints.Count; ++jointIndex)
                     {
-                        int remappedIndex = permutationMapper.GetMappedIndex(jointIndex, ActiveSet.joints.Count);
+                        var remappedIndex = permutationMapper.GetMappedIndex(jointIndex, ActiveSet.joints.Count);
                         ActiveSet.joints[remappedIndex].SolveVelocityIteration();
                     }
+
                     //Increment to use the next permutation.
                     ++permutationMapper.PermutationIndex;
-
-
                 }
 
                 //Integrate the positions of the bones forward.
-                foreach (Bone bone in ActiveSet.bones)
+                foreach (var bone in ActiveSet.bones)
                 {
                     bone.UpdatePosition();
                 }
@@ -227,7 +233,7 @@ namespace MinorEngine.BEPUik
             //Clear out the control iteration accumulated impulses; they should not persist through to the fixer iterations since the stresses are (potentially) totally different.
             //This just helps stability in some corner cases. Without clearing this, previous high stress would prime the fixer iterations with bad guesses,
             //making the system harder to solve (i.e. introducing instability and requiring more iterations).
-            for (int j = 0; j < ActiveSet.joints.Count; j++)
+            for (var j = 0; j < ActiveSet.joints.Count; j++)
             {
                 ActiveSet.joints[j].ClearAccumulatedImpulses();
             }
@@ -238,49 +244,49 @@ namespace MinorEngine.BEPUik
             //fix the errors without interference from impossible goals
             //This can potentially cause the bones to move away from the control targets, but with a sufficient
             //number of control iterations, the result is generally a good approximation.
-            for (int i = 0; i < FixerIterationCount; i++)
+            for (var i = 0; i < FixerIterationCount; i++)
             {
                 //Update the world inertia tensors of objects for the latest position.
-                foreach (Bone bone in ActiveSet.bones)
+                foreach (var bone in ActiveSet.bones)
                 {
                     bone.UpdateInertiaTensor();
                 }
 
                 //Update the per-constraint jacobians and effective mass for the current bone orientations and positions.
-                foreach (IKJoint joint in ActiveSet.joints)
+                foreach (var joint in ActiveSet.joints)
                 {
                     joint.UpdateJacobiansAndVelocityBias();
                     joint.ComputeEffectiveMass();
                     joint.WarmStart();
                 }
 
-                for (int j = 0; j < VelocitySubiterationCount; j++)
+                for (var j = 0; j < VelocitySubiterationCount; j++)
                 {
                     //A permuted version of the indices is used. The randomization tends to avoid issues with solving order in corner cases.
-                    for (int jointIndex = 0; jointIndex < ActiveSet.joints.Count; ++jointIndex)
+                    for (var jointIndex = 0; jointIndex < ActiveSet.joints.Count; ++jointIndex)
                     {
-                        int remappedIndex = permutationMapper.GetMappedIndex(jointIndex, ActiveSet.joints.Count);
+                        var remappedIndex = permutationMapper.GetMappedIndex(jointIndex, ActiveSet.joints.Count);
                         ActiveSet.joints[remappedIndex].SolveVelocityIteration();
                     }
+
                     //Increment to use the next permutation.
                     ++permutationMapper.PermutationIndex;
-
                 }
 
                 //Integrate the positions of the bones forward.
-                foreach (Bone bone in ActiveSet.bones)
+                foreach (var bone in ActiveSet.bones)
                 {
                     bone.UpdatePosition();
                 }
             }
 
             //Clear out accumulated impulses; they should not persist through to another solving round because the state could be arbitrarily different.
-            for (int j = 0; j < ActiveSet.joints.Count; j++)
+            for (var j = 0; j < ActiveSet.joints.Count; j++)
             {
                 ActiveSet.joints[j].ClearAccumulatedImpulses();
             }
 
-            foreach (Control control in controls)
+            foreach (var control in controls)
             {
                 control.ClearAccumulatedImpulses();
             }

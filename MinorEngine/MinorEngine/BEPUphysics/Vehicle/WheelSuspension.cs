@@ -1,6 +1,5 @@
 ﻿using MinorEngine.BEPUphysics.Constraints;
 using MinorEngine.BEPUphysics.Entities;
-
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Vehicle
@@ -10,9 +9,6 @@ namespace MinorEngine.BEPUphysics.Vehicle
     /// </summary>
     public class WheelSuspension : ISpringSettings, ISolverSettings
     {
-        private readonly SpringSettings springSettings = new SpringSettings();
-
-
         internal float accumulatedImpulse;
 
         //float linearBX, linearBY, linearBZ;
@@ -30,7 +26,6 @@ namespace MinorEngine.BEPUphysics.Vehicle
         private float maximumSpringForce = float.MaxValue;
         internal float restLength;
         internal SolverSettings solverSettings = new SolverSettings();
-        private Wheel wheel;
         internal Vector3 worldAttachmentPoint;
         internal Vector3 worldDirection;
         internal int numIterationsAtZeroImpulse;
@@ -49,7 +44,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="localDirection">Direction of the suspension in the vehicle's local space.  For a normal, straight down suspension, this would be (0, -1, 0).</param>
         /// <param name="restLength">Length of the suspension when uncompressed.</param>
         /// <param name="localAttachmentPoint">Place where the suspension hooks up to the body of the vehicle.</param>
-        public WheelSuspension(float stiffnessConstant, float dampingConstant, Vector3 localDirection, float restLength, Vector3 localAttachmentPoint)
+        public WheelSuspension(float stiffnessConstant, float dampingConstant, Vector3 localDirection, float restLength,
+            Vector3 localAttachmentPoint)
         {
             SpringSettings.Stiffness = stiffnessConstant;
             SpringSettings.Damping = dampingConstant;
@@ -69,38 +65,36 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float AllowedCompression
         {
-            get { return allowedCompression; }
-            set { allowedCompression = MathHelper.Max(0, value); }
+            get => allowedCompression;
+            set => allowedCompression = MathHelper.Max(0, value);
         }
 
         /// <summary>
         /// Gets the the current length of the suspension.
         /// This will be less than the RestLength if the suspension is compressed.
         /// </summary>
-        public float CurrentLength
-        {
-            get { return currentLength; }
-        }
+        public float CurrentLength => currentLength;
 
         /// <summary>
         /// Gets or sets the attachment point of the suspension to the vehicle body in the body's local space.
         /// </summary>
         public Vector3 LocalAttachmentPoint
         {
-            get { return localAttachmentPoint; }
+            get => localAttachmentPoint;
             set
             {
                 localAttachmentPoint = value;
-                if (wheel != null && wheel.vehicle != null)
+                if (Wheel != null && Wheel.vehicle != null)
                 {
-                    RigidTransform.Transform(ref localAttachmentPoint, ref wheel.vehicle.Body.CollisionInformation.worldTransform, out worldAttachmentPoint);
-
+                    RigidTransform.Transform(ref localAttachmentPoint,
+                        ref Wheel.vehicle.Body.CollisionInformation.worldTransform, out worldAttachmentPoint);
                 }
                 else
+                {
                     worldAttachmentPoint = localAttachmentPoint;
+                }
             }
         }
-
 
 
         /// <summary>
@@ -108,8 +102,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float MaximumSpringCorrectionSpeed
         {
-            get { return maximumSpringCorrectionSpeed; }
-            set { maximumSpringCorrectionSpeed = MathHelper.Max(0, value); }
+            get => maximumSpringCorrectionSpeed;
+            set => maximumSpringCorrectionSpeed = MathHelper.Max(0, value);
         }
 
         /// <summary>
@@ -117,8 +111,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float MaximumSpringForce
         {
-            get { return maximumSpringForce; }
-            set { maximumSpringForce = MathHelper.Max(0, value); }
+            get => maximumSpringForce;
+            set => maximumSpringForce = MathHelper.Max(0, value);
         }
 
         /// <summary>
@@ -126,47 +120,45 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float RestLength
         {
-            get { return restLength; }
+            get => restLength;
             set
             {
                 restLength = value;
-                if (wheel != null)
-                    wheel.shape.Initialize();
+                if (Wheel != null)
+                {
+                    Wheel.shape.Initialize();
+                }
             }
         }
 
         /// <summary>
         /// Gets the force that the suspension is applying to support the vehicle.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return -accumulatedImpulse; }
-        }
+        public float TotalImpulse => -accumulatedImpulse;
 
         /// <summary>
         /// Gets the wheel that this suspension applies to.
         /// </summary>
-        public Wheel Wheel
-        {
-            get { return wheel; }
-            internal set { wheel = value; }
-        }
+        public Wheel Wheel { get; internal set; }
 
         /// <summary>
         /// Gets or sets the attachment point of the suspension to the vehicle body in world space.
         /// </summary>
         public Vector3 WorldAttachmentPoint
         {
-            get { return worldAttachmentPoint; }
+            get => worldAttachmentPoint;
             set
             {
                 worldAttachmentPoint = value;
-                if (wheel != null && wheel.vehicle != null)
+                if (Wheel != null && Wheel.vehicle != null)
                 {
-                    RigidTransform.TransformByInverse(ref worldAttachmentPoint, ref wheel.vehicle.Body.CollisionInformation.worldTransform, out localAttachmentPoint);
+                    RigidTransform.TransformByInverse(ref worldAttachmentPoint,
+                        ref Wheel.vehicle.Body.CollisionInformation.worldTransform, out localAttachmentPoint);
                 }
                 else
+                {
                     localAttachmentPoint = worldAttachmentPoint;
+                }
             }
         }
 
@@ -176,16 +168,24 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public Vector3 LocalDirection
         {
-            get { return localDirection; }
+            get => localDirection;
             set
             {
                 localDirection = Vector3.Normalize(value);
-                if (wheel != null)
-                    wheel.shape.Initialize();
-                if (wheel != null && wheel.vehicle != null)
-                    Matrix3x3.Transform(ref localDirection, ref wheel.vehicle.Body.orientationMatrix, out worldDirection);
+                if (Wheel != null)
+                {
+                    Wheel.shape.Initialize();
+                }
+
+                if (Wheel != null && Wheel.vehicle != null)
+                {
+                    Matrix3x3.Transform(ref localDirection, ref Wheel.vehicle.Body.orientationMatrix,
+                        out worldDirection);
+                }
                 else
+                {
                     worldDirection = localDirection;
+                }
             }
         }
 
@@ -194,16 +194,24 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public Vector3 WorldDirection
         {
-            get { return worldDirection; }
+            get => worldDirection;
             set
             {
                 worldDirection = Vector3.Normalize(value);
-                if (wheel != null)
-                    wheel.shape.Initialize();
-                if (wheel != null && wheel.vehicle != null)
-                    Matrix3x3.TransformTranspose(ref worldDirection, ref wheel.Vehicle.Body.orientationMatrix, out localDirection);
+                if (Wheel != null)
+                {
+                    Wheel.shape.Initialize();
+                }
+
+                if (Wheel != null && Wheel.vehicle != null)
+                {
+                    Matrix3x3.TransformTranspose(ref worldDirection, ref Wheel.Vehicle.Body.orientationMatrix,
+                        out localDirection);
+                }
                 else
+                {
                     localDirection = worldDirection;
+                }
             }
         }
 
@@ -212,10 +220,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <summary>
         /// Gets the solver settings used by this wheel constraint.
         /// </summary>
-        public SolverSettings SolverSettings
-        {
-            get { return solverSettings; }
-        }
+        public SolverSettings SolverSettings => solverSettings;
 
         #endregion
 
@@ -224,10 +229,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <summary>
         /// Gets the spring settings that define the behavior of the suspension.
         /// </summary>
-        public SpringSettings SpringSettings
-        {
-            get { return springSettings; }
-        }
+        public SpringSettings SpringSettings { get; } = new SpringSettings();
 
         #endregion
 
@@ -239,11 +241,20 @@ namespace MinorEngine.BEPUphysics.Vehicle
         {
             get
             {
-                float velocity = vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY + vehicleEntity.linearVelocity.Z * linearAZ +
-                                 vehicleEntity.angularVelocity.X * angularAX + vehicleEntity.angularVelocity.Y * angularAY + vehicleEntity.angularVelocity.Z * angularAZ;
+                var velocity = vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY +
+                               vehicleEntity.linearVelocity.Z * linearAZ +
+                               vehicleEntity.angularVelocity.X * angularAX +
+                               vehicleEntity.angularVelocity.Y * angularAY +
+                               vehicleEntity.angularVelocity.Z * angularAZ;
                 if (supportEntity != null)
-                    velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY - supportEntity.linearVelocity.Z * linearAZ +
-                                supportEntity.angularVelocity.X * angularBX + supportEntity.angularVelocity.Y * angularBY + supportEntity.angularVelocity.Z * angularBZ;
+                {
+                    velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY -
+                                supportEntity.linearVelocity.Z * linearAZ +
+                                supportEntity.angularVelocity.X * angularBX +
+                                supportEntity.angularVelocity.Y * angularBY +
+                                supportEntity.angularVelocity.Z * angularBZ;
+                }
+
                 return velocity;
             }
         }
@@ -251,21 +262,21 @@ namespace MinorEngine.BEPUphysics.Vehicle
         internal float ApplyImpulse()
         {
             //Compute relative velocity
-            float lambda = (RelativeVelocity
-                            + bias //Add in position correction
-                            + softness * accumulatedImpulse) //Add in squishiness
-                           * velocityToImpulse; //convert to impulse
+            var lambda = (RelativeVelocity
+                          + bias //Add in position correction
+                          + softness * accumulatedImpulse) //Add in squishiness
+                         * velocityToImpulse; //convert to impulse
 
 
             //Clamp accumulated impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maximumSpringForce, 0);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -280,6 +291,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 vehicleEntity.ApplyLinearImpulse(ref linear);
                 vehicleEntity.ApplyAngularImpulse(ref angular);
             }
+
             if (supportIsDynamic)
             {
                 linear.X = -linear.X;
@@ -298,8 +310,9 @@ namespace MinorEngine.BEPUphysics.Vehicle
         internal void ComputeWorldSpaceData()
         {
             //Transform local space vectors to world space.
-            RigidTransform.Transform(ref localAttachmentPoint, ref wheel.vehicle.Body.CollisionInformation.worldTransform, out worldAttachmentPoint);
-            Matrix3x3.Transform(ref localDirection, ref wheel.vehicle.Body.orientationMatrix, out worldDirection);
+            RigidTransform.Transform(ref localAttachmentPoint,
+                ref Wheel.vehicle.Body.CollisionInformation.worldTransform, out worldAttachmentPoint);
+            Matrix3x3.Transform(ref localDirection, ref Wheel.vehicle.Body.orientationMatrix, out worldDirection);
         }
 
         internal void OnAdditionToVehicle()
@@ -313,30 +326,30 @@ namespace MinorEngine.BEPUphysics.Vehicle
 
         internal void PreStep(float dt)
         {
-            vehicleEntity = wheel.vehicle.Body;
-            supportEntity = wheel.supportingEntity;
+            vehicleEntity = Wheel.vehicle.Body;
+            supportEntity = Wheel.supportingEntity;
             supportIsDynamic = supportEntity != null && supportEntity.isDynamic;
 
             //The next line is commented out because the world direction is computed by the wheelshape.  Weird, but necessary.
             //Vector3.TransformNormal(ref myLocalDirection, ref parentA.myInternalOrientationMatrix, out myWorldDirection);
 
             //Set up the jacobians.
-            linearAX = -wheel.normal.X; //myWorldDirection.X;
-            linearAY = -wheel.normal.Y; //myWorldDirection.Y;
-            linearAZ = -wheel.normal.Z; // myWorldDirection.Z;
+            linearAX = -Wheel.normal.X; //myWorldDirection.X;
+            linearAY = -Wheel.normal.Y; //myWorldDirection.Y;
+            linearAZ = -Wheel.normal.Z; // myWorldDirection.Z;
             //linearBX = -linearAX;
             //linearBY = -linearAY;
             //linearBZ = -linearAZ;
 
             //angular A = Ra x N
-            angularAX = (wheel.ra.Y * linearAZ) - (wheel.ra.Z * linearAY);
-            angularAY = (wheel.ra.Z * linearAX) - (wheel.ra.X * linearAZ);
-            angularAZ = (wheel.ra.X * linearAY) - (wheel.ra.Y * linearAX);
+            angularAX = Wheel.ra.Y * linearAZ - Wheel.ra.Z * linearAY;
+            angularAY = Wheel.ra.Z * linearAX - Wheel.ra.X * linearAZ;
+            angularAZ = Wheel.ra.X * linearAY - Wheel.ra.Y * linearAX;
 
             //Angular B = N x Rb
-            angularBX = (linearAY * wheel.rb.Z) - (linearAZ * wheel.rb.Y);
-            angularBY = (linearAZ * wheel.rb.X) - (linearAX * wheel.rb.Z);
-            angularBZ = (linearAX * wheel.rb.Y) - (linearAY * wheel.rb.X);
+            angularBX = linearAY * Wheel.rb.Z - linearAZ * Wheel.rb.Y;
+            angularBY = linearAZ * Wheel.rb.X - linearAX * Wheel.rb.Z;
+            angularBZ = linearAX * Wheel.rb.Y - linearAY * Wheel.rb.X;
 
             //Compute inverse effective mass matrix
             float entryA, entryB;
@@ -345,42 +358,57 @@ namespace MinorEngine.BEPUphysics.Vehicle
             float tX, tY, tZ;
             if (vehicleEntity.isDynamic)
             {
-                tX = angularAX * vehicleEntity.inertiaTensorInverse.M11 + angularAY * vehicleEntity.inertiaTensorInverse.M21 + angularAZ * vehicleEntity.inertiaTensorInverse.M31;
-                tY = angularAX * vehicleEntity.inertiaTensorInverse.M12 + angularAY * vehicleEntity.inertiaTensorInverse.M22 + angularAZ * vehicleEntity.inertiaTensorInverse.M32;
-                tZ = angularAX * vehicleEntity.inertiaTensorInverse.M13 + angularAY * vehicleEntity.inertiaTensorInverse.M23 + angularAZ * vehicleEntity.inertiaTensorInverse.M33;
+                tX = angularAX * vehicleEntity.inertiaTensorInverse.M11 +
+                     angularAY * vehicleEntity.inertiaTensorInverse.M21 +
+                     angularAZ * vehicleEntity.inertiaTensorInverse.M31;
+                tY = angularAX * vehicleEntity.inertiaTensorInverse.M12 +
+                     angularAY * vehicleEntity.inertiaTensorInverse.M22 +
+                     angularAZ * vehicleEntity.inertiaTensorInverse.M32;
+                tZ = angularAX * vehicleEntity.inertiaTensorInverse.M13 +
+                     angularAY * vehicleEntity.inertiaTensorInverse.M23 +
+                     angularAZ * vehicleEntity.inertiaTensorInverse.M33;
                 entryA = tX * angularAX + tY * angularAY + tZ * angularAZ + vehicleEntity.inverseMass;
             }
             else
+            {
                 entryA = 0;
+            }
 
             if (supportIsDynamic)
             {
-                tX = angularBX * supportEntity.inertiaTensorInverse.M11 + angularBY * supportEntity.inertiaTensorInverse.M21 + angularBZ * supportEntity.inertiaTensorInverse.M31;
-                tY = angularBX * supportEntity.inertiaTensorInverse.M12 + angularBY * supportEntity.inertiaTensorInverse.M22 + angularBZ * supportEntity.inertiaTensorInverse.M32;
-                tZ = angularBX * supportEntity.inertiaTensorInverse.M13 + angularBY * supportEntity.inertiaTensorInverse.M23 + angularBZ * supportEntity.inertiaTensorInverse.M33;
+                tX = angularBX * supportEntity.inertiaTensorInverse.M11 +
+                     angularBY * supportEntity.inertiaTensorInverse.M21 +
+                     angularBZ * supportEntity.inertiaTensorInverse.M31;
+                tY = angularBX * supportEntity.inertiaTensorInverse.M12 +
+                     angularBY * supportEntity.inertiaTensorInverse.M22 +
+                     angularBZ * supportEntity.inertiaTensorInverse.M32;
+                tZ = angularBX * supportEntity.inertiaTensorInverse.M13 +
+                     angularBY * supportEntity.inertiaTensorInverse.M23 +
+                     angularBZ * supportEntity.inertiaTensorInverse.M33;
                 entryB = tX * angularBX + tY * angularBY + tZ * angularBZ + supportEntity.inverseMass;
             }
             else
+            {
                 entryB = 0;
+            }
 
             //Convert spring constant and damping constant into ERP and CFM.
             float biasFactor;
-            springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out biasFactor, out softness);
+            SpringSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out biasFactor, out softness);
 
             velocityToImpulse = -1 / (entryA + entryB + softness);
 
             //Correction velocity
-            bias = MathHelper.Min(MathHelper.Max(0, (restLength - currentLength) - allowedCompression) * biasFactor, maximumSpringCorrectionSpeed);
-
-
+            bias = MathHelper.Min(MathHelper.Max(0, restLength - currentLength - allowedCompression) * biasFactor,
+                maximumSpringCorrectionSpeed);
         }
 
         internal void ExclusiveUpdate()
         {
             //Warm starting
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -395,6 +423,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 vehicleEntity.ApplyLinearImpulse(ref linear);
                 vehicleEntity.ApplyAngularImpulse(ref angular);
             }
+
             if (supportIsDynamic)
             {
                 linear.X = -linear.X;

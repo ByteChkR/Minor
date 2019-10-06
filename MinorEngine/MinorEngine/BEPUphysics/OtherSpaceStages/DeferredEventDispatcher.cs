@@ -32,10 +32,15 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
                 //Otherwise, don't bother adding it until it has some.
                 //It is up to the creator to notify the dispatcher of the change.
                 if (creator.IsActive)
+                {
                     activeEventCreators.Add(creator);
+                }
             }
             else
-                throw new ArgumentException("The event creator is already managed by a dispatcher; it cannot be added.", "creator");
+            {
+                throw new ArgumentException("The event creator is already managed by a dispatcher; it cannot be added.",
+                    "creator");
+            }
         }
 
         /// <summary>
@@ -48,10 +53,15 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             {
                 creator.DeferredEventDispatcher = null;
                 if (creator.IsActive)
+                {
                     activeEventCreators.Remove(creator);
+                }
             }
             else
-                throw new ArgumentException("The event creator is managed by a different dispatcher; it cannot be removed.", "creator");
+            {
+                throw new ArgumentException(
+                    "The event creator is managed by a different dispatcher; it cannot be removed.", "creator");
+            }
         }
 
         ///<summary>
@@ -63,20 +73,30 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
         {
             //This is a pretty rarely called method.  It's okay to do a little extra verification at the cost of performance.
             if (creator.IsActive)
+            {
                 if (!activeEventCreators.Contains(creator))
+                {
                     activeEventCreators.Add(creator);
+                }
                 else
-                    throw new ArgumentException("The event creator was already active in the dispatcher; make sure the CreatorActivityChanged function is only called when the state actually changes.", "creator");
-            else
-                if (!activeEventCreators.Remove(creator))
-                    throw new ArgumentException("The event creator not active in the dispatcher; make sure the CreatorActivityChanged function is only called when the state actually changes.", "creator");
+                {
+                    throw new ArgumentException(
+                        "The event creator was already active in the dispatcher; make sure the CreatorActivityChanged function is only called when the state actually changes.",
+                        "creator");
+                }
+            }
+            else if (!activeEventCreators.Remove(creator))
+            {
+                throw new ArgumentException(
+                    "The event creator not active in the dispatcher; make sure the CreatorActivityChanged function is only called when the state actually changes.",
+                    "creator");
+            }
         }
-
 
 
         protected override void UpdateStage()
         {
-            for (int i = activeEventCreators.Count - 1; i >= 0; i--)
+            for (var i = activeEventCreators.Count - 1; i >= 0; i--)
             {
                 activeEventCreators[i].DispatchEvents();
                 // Since it can attempt to remove or add any number of creators during the handler, all we can do is make sure 
@@ -85,10 +105,10 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
                 // deferred events that have been queued up.  The second execution will try, but the queues will be empty.
                 // This is a fairly acceptable result for a rare case.
                 if (i > activeEventCreators.Count)
+                {
                     i = activeEventCreators.Count;
-
+                }
             }
         }
-
     }
 }

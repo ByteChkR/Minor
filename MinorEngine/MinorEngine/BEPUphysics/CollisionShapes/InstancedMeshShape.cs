@@ -1,5 +1,4 @@
-﻿
-using MinorEngine.BEPUphysics.DataStructures;
+﻿using MinorEngine.BEPUphysics.DataStructures;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes
@@ -11,23 +10,20 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
     ///</summary>
     public class InstancedMeshShape : CollisionShape
     {
-        TriangleMesh triangleMesh;
+        private TriangleMesh triangleMesh;
+
         ///<summary>
         /// Gets or sets the TriangleMesh data structure used by this shape.
         ///</summary>
         public TriangleMesh TriangleMesh
         {
-            get
-            {
-                return triangleMesh;
-            }
+            get => triangleMesh;
             set
             {
                 triangleMesh = value;
                 OnShapeChanged();
             }
         }
-
 
 
         ///<summary>
@@ -41,7 +37,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         }
 
 
-
         ///<summary>
         /// Computes the bounding box of the transformed mesh shape.
         ///</summary>
@@ -52,37 +47,53 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 #if !WINDOWS
             boundingBox = new BoundingBox();
 #endif
-            float minX = float.MaxValue;
-            float minY = float.MaxValue;
-            float minZ = float.MaxValue;
+            var minX = float.MaxValue;
+            var minY = float.MaxValue;
+            var minZ = float.MaxValue;
 
-            float maxX = -float.MaxValue;
-            float maxY = -float.MaxValue;
-            float maxZ = -float.MaxValue;
-            for (int i = 0; i < triangleMesh.Data.vertices.Length; i++)
+            var maxX = -float.MaxValue;
+            var maxY = -float.MaxValue;
+            var maxZ = -float.MaxValue;
+            for (var i = 0; i < triangleMesh.Data.vertices.Length; i++)
             {
                 Vector3 vertex;
                 triangleMesh.Data.GetVertexPosition(i, out vertex);
                 Matrix3x3.Transform(ref vertex, ref transform.LinearTransform, out vertex);
                 if (vertex.X < minX)
+                {
                     minX = vertex.X;
+                }
+
                 if (vertex.X > maxX)
+                {
                     maxX = vertex.X;
+                }
 
                 if (vertex.Y < minY)
+                {
                     minY = vertex.Y;
+                }
+
                 if (vertex.Y > maxY)
+                {
                     maxY = vertex.Y;
+                }
 
                 if (vertex.Z < minZ)
+                {
                     minZ = vertex.Z;
+                }
+
                 if (vertex.Z > maxZ)
+                {
                     maxZ = vertex.Z;
+                }
             }
+
             boundingBox.Min.X = transform.Translation.X + minX;
             boundingBox.Min.Y = transform.Translation.Y + minY;
             boundingBox.Min.Z = transform.Translation.Z + minZ;
-            
+
             boundingBox.Max.X = transform.Translation.X + maxX;
             boundingBox.Max.Y = transform.Translation.Y + maxY;
             boundingBox.Max.Z = transform.Translation.Z + maxZ;

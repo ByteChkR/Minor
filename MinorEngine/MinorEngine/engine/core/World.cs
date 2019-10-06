@@ -15,7 +15,10 @@ namespace MinorEngine.engine.core
 
         public void SetCamera(Camera c)
         {
-            if (c != null) Camera = c;
+            if (c != null)
+            {
+                Camera = c;
+            }
         }
 
         internal void Unload()

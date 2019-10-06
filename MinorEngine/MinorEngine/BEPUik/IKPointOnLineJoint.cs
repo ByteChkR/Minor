@@ -14,13 +14,14 @@ namespace MinorEngine.BEPUik
         public Vector3 LocalLineAnchor;
 
         private Vector3 localLineDirection;
+
         /// <summary>
         /// Gets or sets the direction of the line in connection A's local space.
         /// Must be unit length.
         /// </summary>
         public Vector3 LocalLineDirection
         {
-            get { return localLineDirection; }
+            get => localLineDirection;
             set
             {
                 localLineDirection = value;
@@ -39,8 +40,10 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 LineAnchor
         {
-            get { return ConnectionA.Position + Quaternion.Transform(LocalLineAnchor, ConnectionA.Orientation); }
-            set { LocalLineAnchor = Quaternion.Transform(value - ConnectionA.Position, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => ConnectionA.Position + Quaternion.Transform(LocalLineAnchor, ConnectionA.Orientation);
+            set =>
+                LocalLineAnchor = Quaternion.Transform(value - ConnectionA.Position,
+                    Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -49,8 +52,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 LineDirection
         {
-            get { return Quaternion.Transform(localLineDirection, ConnectionA.Orientation); }
-            set { LocalLineDirection = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(localLineDirection, ConnectionA.Orientation);
+            set => LocalLineDirection = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -58,19 +61,22 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AnchorB
         {
-            get { return ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation); }
-            set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation);
+            set =>
+                LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position,
+                    Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         private Vector3 localRestrictedAxis1, localRestrictedAxis2;
-        void ComputeRestrictedAxes()
+
+        private void ComputeRestrictedAxes()
         {
             Vector3 cross;
             Vector3.Cross(ref localLineDirection, ref Toolbox.UpVector, out cross);
-            float lengthSquared = cross.LengthSquared();
+            var lengthSquared = cross.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
-                Vector3.Divide(ref cross, (float)Math.Sqrt(lengthSquared), out localRestrictedAxis1);
+                Vector3.Divide(ref cross, (float) Math.Sqrt(lengthSquared), out localRestrictedAxis1);
             }
             else
             {
@@ -78,6 +84,7 @@ namespace MinorEngine.BEPUik
                 Vector3.Cross(ref localLineDirection, ref Toolbox.RightVector, out cross);
                 Vector3.Normalize(ref cross, out localRestrictedAxis1);
             }
+
             //Don't need to normalize this; cross product of two unit length perpendicular vectors.
             Vector3.Cross(ref localRestrictedAxis1, ref localLineDirection, out localRestrictedAxis2);
         }
@@ -90,18 +97,17 @@ namespace MinorEngine.BEPUik
         /// <param name="lineAnchor">Anchor point of the line attached to the first bone in world space.</param>
         /// <param name="lineDirection">Direction of the line attached to the first bone in world space. Must be unit length.</param>
         /// <param name="anchorB">Anchor point on the second bone in world space which tries to stay on connection A's line.</param>
-        public IKPointOnLineJoint(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection, Vector3 anchorB)
+        public IKPointOnLineJoint(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection,
+            Vector3 anchorB)
             : base(connectionA, connectionB)
         {
             LineAnchor = lineAnchor;
             LineDirection = lineDirection;
             AnchorB = anchorB;
-
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {
-
             //Transform local stuff into world space
             Vector3 worldRestrictedAxis1, worldRestrictedAxis2;
             Quaternion.Transform(ref localRestrictedAxis1, ref ConnectionA.Orientation, out worldRestrictedAxis1);

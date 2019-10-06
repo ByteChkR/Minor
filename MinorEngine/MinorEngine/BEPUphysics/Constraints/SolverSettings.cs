@@ -27,8 +27,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public int MaximumIterationCount
         {
-            get { return maximumIterationCount; }
-            set { maximumIterationCount = Math.Max(value, 0); }
+            get => maximumIterationCount;
+            set => maximumIterationCount = Math.Max(value, 0);
         }
 
         /// <summary>
@@ -38,8 +38,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public int MinimumIterationCount
         {
-            get { return minimumIterationCount; }
-            set { minimumIterationCount = Math.Max(value, 0); }
+            get => minimumIterationCount;
+            set => minimumIterationCount = Math.Max(value, 0);
         }
 
         /// <summary>
@@ -49,8 +49,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public float MinimumImpulse
         {
-            get { return minimumImpulse; }
-            set { minimumImpulse = Math.Max(value, 0); }
+            get => minimumImpulse;
+            set => minimumImpulse = Math.Max(value, 0);
         }
 
         /// <summary>

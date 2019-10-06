@@ -10,10 +10,17 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
     internal abstract class Node
     {
         internal BoundingBox BoundingBox;
-        internal abstract void GetOverlaps(ref BoundingBox boundingBox, IList<BroadPhaseEntry> outputOverlappedElements);
-        internal abstract void GetOverlaps(ref BoundingSphere boundingSphere, IList<BroadPhaseEntry> outputOverlappedElements);
+
+        internal abstract void GetOverlaps(ref BoundingBox boundingBox,
+            IList<BroadPhaseEntry> outputOverlappedElements);
+
+        internal abstract void GetOverlaps(ref BoundingSphere boundingSphere,
+            IList<BroadPhaseEntry> outputOverlappedElements);
+
         //internal abstract void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<BroadPhaseEntry> outputOverlappedElements);
-        internal abstract void GetOverlaps(ref Ray ray, float maximumLength, IList<BroadPhaseEntry> outputOverlappedElements);
+        internal abstract void GetOverlaps(ref Ray ray, float maximumLength,
+            IList<BroadPhaseEntry> outputOverlappedElements);
+
         internal abstract void GetOverlaps(Node node, DynamicHierarchy owner);
 
         internal abstract bool IsLeaf { get; }
@@ -31,12 +38,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         internal abstract void RetrieveNodes(RawList<LeafNode> leafNodes);
 
 
-
-        internal abstract void CollectMultithreadingNodes(int splitDepth, int currentDepth, RawList<Node> multithreadingSourceNodes);
+        internal abstract void CollectMultithreadingNodes(int splitDepth, int currentDepth,
+            RawList<Node> multithreadingSourceNodes);
 
         internal abstract void PostRefit(int splitDepth, int currentDepth);
 
-        internal abstract void GetMultithreadedOverlaps(Node opposingNode, int splitDepth, int currentDepth, DynamicHierarchy owner, RawList<DynamicHierarchy.NodePair> multithreadingSourceOverlaps);
+        internal abstract void GetMultithreadedOverlaps(Node opposingNode, int splitDepth, int currentDepth,
+            DynamicHierarchy owner, RawList<DynamicHierarchy.NodePair> multithreadingSourceOverlaps);
 
         internal abstract bool Remove(BroadPhaseEntry entry, out LeafNode leafNode, out Node replacementNode);
         internal abstract bool RemoveFast(BroadPhaseEntry entry, out LeafNode leafNode, out Node replacementNode);
@@ -54,32 +62,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 
         internal static float MaximumVolumeScale = 1.4f;
 
-        internal override Node ChildA
-        {
-            get
-            {
-                return childA;
-            }
-        }
-        internal override Node ChildB
-        {
-            get
-            {
-                return childB;
-            }
-        }
-        internal override BroadPhaseEntry Element
-        {
-            get
-            {
-                return default(BroadPhaseEntry);
-            }
-        }
+        internal override Node ChildA => childA;
 
-        internal override bool IsLeaf
-        {
-            get { return false; }
-        }
+        internal override Node ChildB => childB;
+
+        internal override BroadPhaseEntry Element => default;
+
+        internal override bool IsLeaf => false;
 
 
         internal override void GetOverlaps(ref BoundingBox boundingBox, IList<BroadPhaseEntry> outputOverlappedElements)
@@ -90,21 +79,32 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             bool intersects;
             childA.BoundingBox.Intersects(ref boundingBox, out intersects);
             if (intersects)
+            {
                 childA.GetOverlaps(ref boundingBox, outputOverlappedElements);
+            }
+
             childB.BoundingBox.Intersects(ref boundingBox, out intersects);
             if (intersects)
+            {
                 childB.GetOverlaps(ref boundingBox, outputOverlappedElements);
+            }
         }
 
-        internal override void GetOverlaps(ref BoundingSphere boundingSphere, IList<BroadPhaseEntry> outputOverlappedElements)
+        internal override void GetOverlaps(ref BoundingSphere boundingSphere,
+            IList<BroadPhaseEntry> outputOverlappedElements)
         {
             bool intersects;
             childA.BoundingBox.Intersects(ref boundingSphere, out intersects);
             if (intersects)
+            {
                 childA.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+            }
+
             childB.BoundingBox.Intersects(ref boundingSphere, out intersects);
             if (intersects)
+            {
                 childB.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+            }
         }
 
         //internal override void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<BroadPhaseEntry> outputOverlappedElements)
@@ -118,13 +118,19 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         //        childB.GetOverlaps(ref boundingFrustum, outputOverlappedElements);
         //}
 
-        internal override void GetOverlaps(ref Ray ray, float maximumLength, IList<BroadPhaseEntry> outputOverlappedElements)
+        internal override void GetOverlaps(ref Ray ray, float maximumLength,
+            IList<BroadPhaseEntry> outputOverlappedElements)
         {
             float result;
             if (ray.Intersects(ref childA.BoundingBox, out result) && result < maximumLength)
+            {
                 childA.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+            }
+
             if (ray.Intersects(ref childB.BoundingBox, out result) && result < maximumLength)
+            {
                 childB.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+            }
         }
 
         internal override void GetOverlaps(Node opposingNode, DynamicHierarchy owner)
@@ -136,16 +142,25 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 //We are being compared against ourselves!
                 //Obviously we're an internal node, so spawn three children:
                 //A versus A:
-                if (!childA.IsLeaf) //This is performed in the child method usually by convention, but this saves some time.
+                if (!childA.IsLeaf
+                ) //This is performed in the child method usually by convention, but this saves some time.
+                {
                     childA.GetOverlaps(childA, owner);
+                }
+
                 //B versus B:
-                if (!childB.IsLeaf) //This is performed in the child method usually by convention, but this saves some time.
+                if (!childB.IsLeaf
+                ) //This is performed in the child method usually by convention, but this saves some time.
+                {
                     childB.GetOverlaps(childB, owner);
+                }
+
                 //A versus B (if they intersect):
                 childA.BoundingBox.Intersects(ref childB.BoundingBox, out intersects);
                 if (intersects)
+                {
                     childA.GetOverlaps(childB, owner);
-
+                }
             }
             else
             {
@@ -155,10 +170,15 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     //If it's a leaf, go deeper in our hierarchy, but not the opposition.
                     childA.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childA.GetOverlaps(opposingNode, owner);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childB.GetOverlaps(opposingNode, owner);
+                    }
                 }
                 else
                 {
@@ -167,28 +187,33 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     //If it's not a leaf, try to go deeper in both hierarchies.
                     childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childA.GetOverlaps(opposingChildA, owner);
+                    }
+
                     childA.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childA.GetOverlaps(opposingChildB, owner);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childB.GetOverlaps(opposingChildA, owner);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childB.GetOverlaps(opposingChildB, owner);
-
-
+                    }
                 }
             }
-
-
-
-
-
         }
 
         internal static LockingResourcePool<InternalNode> nodePool = new LockingResourcePool<InternalNode>();
+
         internal override bool TryToInsert(LeafNode node, out Node treeNode)
         {
             //Since we are an internal node, we know we have two children.
@@ -220,7 +245,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 {
                     var newChildA = nodePool.Take();
                     newChildA.BoundingBox = mergedA;
-                    newChildA.childA = this.childA;
+                    newChildA.childA = childA;
                     newChildA.childB = node;
                     newChildA.currentVolume = mergedAVolume;
                     //newChildA.maximumVolume = newChildA.currentVolume * MaximumVolumeScale;
@@ -228,51 +253,43 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     treeNode = null;
                     return true;
                 }
-                else
-                {
-                    childA.BoundingBox = mergedA;
-                    var internalNode = (InternalNode)childA;
-                    internalNode.currentVolume = mergedAVolume;
-                    //internalNode.maximumVolume = internalNode.currentVolume * MaximumVolumeScale;
-                    treeNode = childA;
-                    return false;
-                }
+
+                childA.BoundingBox = mergedA;
+                var internalNode = (InternalNode) childA;
+                internalNode.currentVolume = mergedAVolume;
+                //internalNode.maximumVolume = internalNode.currentVolume * MaximumVolumeScale;
+                treeNode = childA;
+                return false;
             }
-            else
+
+            //merging B produces a better result.
+            if (childB.IsLeaf)
             {
-                //merging B produces a better result.
-                if (childB.IsLeaf)
-                {
-                    //Target is a leaf! Return.
-                    var newChildB = nodePool.Take();
-                    newChildB.BoundingBox = mergedB;
-                    newChildB.childA = node;
-                    newChildB.childB = this.childB;
-                    newChildB.currentVolume = mergedBVolume;
-                    //newChildB.maximumVolume = newChildB.currentVolume * MaximumVolumeScale;
-                    childB = newChildB;
-                    treeNode = null;
-                    return true;
-                }
-                else
-                {
-                    childB.BoundingBox = mergedB;
-                    treeNode = childB;
-                    var internalNode = (InternalNode)childB;
-                    internalNode.currentVolume = mergedBVolume;
-                    //internalNode.maximumVolume = internalNode.currentVolume * MaximumVolumeScale;
-                    return false;
-                }
+                //Target is a leaf! Return.
+                var newChildB = nodePool.Take();
+                newChildB.BoundingBox = mergedB;
+                newChildB.childA = node;
+                newChildB.childB = childB;
+                newChildB.currentVolume = mergedBVolume;
+                //newChildB.maximumVolume = newChildB.currentVolume * MaximumVolumeScale;
+                childB = newChildB;
+                treeNode = null;
+                return true;
             }
 
-
-
+            {
+                childB.BoundingBox = mergedB;
+                treeNode = childB;
+                var internalNode = (InternalNode) childB;
+                internalNode.currentVolume = mergedBVolume;
+                //internalNode.maximumVolume = internalNode.currentVolume * MaximumVolumeScale;
+                return false;
+            }
         }
 
         public override string ToString()
         {
             return "{" + childA + ", " + childB + "}";
-
         }
 
         internal override void Analyze(List<int> depths, int depth, ref int nodeCount)
@@ -289,16 +306,20 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 Revalidate();
                 return;
             }
+
             childA.Refit();
             childB.Refit();
             BoundingBox.CreateMerged(ref childA.BoundingBox, ref childB.BoundingBox, out BoundingBox);
             //float DEBUGlastVolume = currentVolume;
-            currentVolume = (BoundingBox.Max.X - BoundingBox.Min.X) * (BoundingBox.Max.Y - BoundingBox.Min.Y) * (BoundingBox.Max.Z - BoundingBox.Min.Z);
+            currentVolume = (BoundingBox.Max.X - BoundingBox.Min.X) * (BoundingBox.Max.Y - BoundingBox.Min.Y) *
+                            (BoundingBox.Max.Z - BoundingBox.Min.Z);
             //if (Math.Abs(currentVolume - DEBUGlastVolume) > .000001 * (DEBUGlastVolume + currentVolume))
             //    Debug.WriteLine(":Break>:)");
         }
 
-        internal static LockingResourcePool<RawList<LeafNode>> nodeListPool = new LockingResourcePool<RawList<LeafNode>>();
+        internal static LockingResourcePool<RawList<LeafNode>> nodeListPool =
+            new LockingResourcePool<RawList<LeafNode>>();
+
         internal void Revalidate()
         {
             //The revalidation procedure 'reconstructs' a portion of the tree that has expanded beyond its old limits.
@@ -314,25 +335,28 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             var leafNodes = nodeListPool.Take();
             oldChildA.RetrieveNodes(leafNodes);
             oldChildB.RetrieveNodes(leafNodes);
-            for (int i = 0; i < leafNodes.Count; i++)
+            for (var i = 0; i < leafNodes.Count; i++)
+            {
                 leafNodes.Elements[i].Refit();
+            }
+
             Reconstruct(leafNodes, 0, leafNodes.Count);
             leafNodes.Clear();
             nodeListPool.GiveBack(leafNodes);
-
-
         }
 
-        void Reconstruct(RawList<LeafNode> leafNodes, int begin, int end)
+        private void Reconstruct(RawList<LeafNode> leafNodes, int begin, int end)
         {
             //It is known that we have 2 children; this is safe.
             //This is because this is only an internal node if the parent figured out it involved more than 2 leaf nodes, OR
             //this node was the initiator of the revalidation (in which case, it was an internal node with 2+ children).
-            BoundingBox.CreateMerged(ref leafNodes.Elements[begin].BoundingBox, ref leafNodes.Elements[begin + 1].BoundingBox, out BoundingBox);
-            for (int i = begin + 2; i < end; i++)
+            BoundingBox.CreateMerged(ref leafNodes.Elements[begin].BoundingBox,
+                ref leafNodes.Elements[begin + 1].BoundingBox, out BoundingBox);
+            for (var i = begin + 2; i < end; i++)
             {
                 BoundingBox.CreateMerged(ref BoundingBox, ref leafNodes.Elements[i].BoundingBox, out BoundingBox);
             }
+
             Vector3 offset;
             Vector3.Subtract(ref BoundingBox.Max, ref BoundingBox.Min, out offset);
             currentVolume = offset.X * offset.Y * offset.Z;
@@ -340,23 +364,23 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 
             //Pick an axis and sort along it.
             if (offset.X > offset.Y && offset.X > offset.Z)
-            {
                 //Maximum variance axis is X.
+            {
                 Array.Sort(leafNodes.Elements, begin, end - begin, xComparer);
             }
             else if (offset.Y > offset.Z)
-            {
                 //Maximum variance axis is Y.  
+            {
                 Array.Sort(leafNodes.Elements, begin, end - begin, yComparer);
             }
             else
-            {
                 //Maximum variance axis is Z.
+            {
                 Array.Sort(leafNodes.Elements, begin, end - begin, zComparer);
             }
 
             //Find the median index.
-            int median = (begin + end) / 2;
+            var median = (begin + end) / 2;
 
             if (median - begin >= 2)
             {
@@ -383,7 +407,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 //There is only 1 leaf node remaining in this half.  It's a leaf node.
                 childB = leafNodes.Elements[median];
             }
-
         }
 
         internal override void RetrieveNodes(RawList<LeafNode> leafNodes)
@@ -392,14 +415,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             var oldChildB = childB;
             childA = null;
             childB = null;
-            nodePool.GiveBack(this); //Give internal nodes back to the pool before going deeper to minimize the creation of additional internal instances.
+            nodePool.GiveBack(
+                this); //Give internal nodes back to the pool before going deeper to minimize the creation of additional internal instances.
             oldChildA.RetrieveNodes(leafNodes);
             oldChildB.RetrieveNodes(leafNodes);
-
-
         }
 
-        internal override void CollectMultithreadingNodes(int splitDepth, int currentDepth, RawList<Node> multithreadingSourceNodes)
+        internal override void CollectMultithreadingNodes(int splitDepth, int currentDepth,
+            RawList<Node> multithreadingSourceNodes)
         {
             if (currentVolume > maximumVolume)
             {
@@ -408,6 +431,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 Revalidate();
                 return;
             }
+
             if (currentDepth == splitDepth)
             {
                 //We are deep enough in the tree where our children will act as the starting point for multithreaded refits.
@@ -431,11 +455,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 childA.PostRefit(splitDepth, currentDepth + 1);
                 childB.PostRefit(splitDepth, currentDepth + 1);
             }
+
             BoundingBox.CreateMerged(ref childA.BoundingBox, ref childB.BoundingBox, out BoundingBox);
-            currentVolume = (BoundingBox.Max.X - BoundingBox.Min.X) * (BoundingBox.Max.Y - BoundingBox.Min.Y) * (BoundingBox.Max.Z - BoundingBox.Min.Z);
+            currentVolume = (BoundingBox.Max.X - BoundingBox.Min.X) * (BoundingBox.Max.Y - BoundingBox.Min.Y) *
+                            (BoundingBox.Max.Z - BoundingBox.Min.Z);
         }
 
-        internal override void GetMultithreadedOverlaps(Node opposingNode, int splitDepth, int currentDepth, DynamicHierarchy owner, RawList<DynamicHierarchy.NodePair> multithreadingSourceOverlaps)
+        internal override void GetMultithreadedOverlaps(Node opposingNode, int splitDepth, int currentDepth,
+            DynamicHierarchy owner, RawList<DynamicHierarchy.NodePair> multithreadingSourceOverlaps)
         {
             bool intersects;
             if (currentDepth == splitDepth)
@@ -446,16 +473,25 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     //We are being compared against ourselves!
                     //Obviously we're an internal node, so spawn three children:
                     //A versus A:
-                    if (!childA.IsLeaf) //This is performed in the child method usually by convention, but this saves some time.
-                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childA, b = childA });
+                    if (!childA.IsLeaf
+                    ) //This is performed in the child method usually by convention, but this saves some time.
+                    {
+                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair {a = childA, b = childA});
+                    }
+
                     //B versus B:
-                    if (!childB.IsLeaf) //This is performed in the child method usually by convention, but this saves some time.
-                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childB, b = childB });
+                    if (!childB.IsLeaf
+                    ) //This is performed in the child method usually by convention, but this saves some time.
+                    {
+                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair {a = childB, b = childB});
+                    }
+
                     //A versus B (if they intersect):
                     childA.BoundingBox.Intersects(ref childB.BoundingBox, out intersects);
                     if (intersects)
-                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childA, b = childB });
-
+                    {
+                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair {a = childA, b = childB});
+                    }
                 }
                 else
                 {
@@ -465,10 +501,17 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                         //If it's a leaf, go deeper in our hierarchy, but not the opposition.
                         childA.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                         if (intersects)
-                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childA, b = opposingNode });
+                        {
+                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair
+                                {a = childA, b = opposingNode});
+                        }
+
                         childB.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                         if (intersects)
-                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childB, b = opposingNode });
+                        {
+                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair
+                                {a = childB, b = opposingNode});
+                        }
                     }
                     else
                     {
@@ -477,35 +520,64 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                         //If it's not a leaf, try to go deeper in both hierarchies.
                         childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                         if (intersects)
-                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childA, b = opposingChildA });
+                        {
+                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair
+                                {a = childA, b = opposingChildA});
+                        }
+
                         childA.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                         if (intersects)
-                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childA, b = opposingChildB });
+                        {
+                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair
+                                {a = childA, b = opposingChildB});
+                        }
+
                         childB.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                         if (intersects)
-                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childB, b = opposingChildA });
+                        {
+                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair
+                                {a = childB, b = opposingChildA});
+                        }
+
                         childB.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                         if (intersects)
-                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = childB, b = opposingChildB });
+                        {
+                            multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair
+                                {a = childB, b = opposingChildB});
+                        }
                     }
                 }
+
                 return;
             }
+
             if (this == opposingNode)
             {
                 //We are being compared against ourselves!
                 //Obviously we're an internal node, so spawn three children:
                 //A versus A:
-                if (!childA.IsLeaf) //This is performed in the child method usually by convention, but this saves some time.
-                    childA.GetMultithreadedOverlaps(childA, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                if (!childA.IsLeaf
+                ) //This is performed in the child method usually by convention, but this saves some time.
+                {
+                    childA.GetMultithreadedOverlaps(childA, splitDepth, currentDepth + 1, owner,
+                        multithreadingSourceOverlaps);
+                }
+
                 //B versus B:
-                if (!childB.IsLeaf) //This is performed in the child method usually by convention, but this saves some time.
-                    childB.GetMultithreadedOverlaps(childB, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                if (!childB.IsLeaf
+                ) //This is performed in the child method usually by convention, but this saves some time.
+                {
+                    childB.GetMultithreadedOverlaps(childB, splitDepth, currentDepth + 1, owner,
+                        multithreadingSourceOverlaps);
+                }
+
                 //A versus B (if they intersect):
                 childA.BoundingBox.Intersects(ref childB.BoundingBox, out intersects);
                 if (intersects)
-                    childA.GetMultithreadedOverlaps(childB, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
-
+                {
+                    childA.GetMultithreadedOverlaps(childB, splitDepth, currentDepth + 1, owner,
+                        multithreadingSourceOverlaps);
+                }
             }
             else
             {
@@ -515,10 +587,17 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     //If it's a leaf, go deeper in our hierarchy, but not the opposition.
                     childA.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                     if (intersects)
-                        childA.GetMultithreadedOverlaps(opposingNode, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                    {
+                        childA.GetMultithreadedOverlaps(opposingNode, splitDepth, currentDepth + 1, owner,
+                            multithreadingSourceOverlaps);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                     if (intersects)
-                        childB.GetMultithreadedOverlaps(opposingNode, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                    {
+                        childB.GetMultithreadedOverlaps(opposingNode, splitDepth, currentDepth + 1, owner,
+                            multithreadingSourceOverlaps);
+                    }
                 }
                 else
                 {
@@ -527,16 +606,31 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     //If it's not a leaf, try to go deeper in both hierarchies.
                     childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
-                        childA.GetMultithreadedOverlaps(opposingChildA, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                    {
+                        childA.GetMultithreadedOverlaps(opposingChildA, splitDepth, currentDepth + 1, owner,
+                            multithreadingSourceOverlaps);
+                    }
+
                     childA.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
-                        childA.GetMultithreadedOverlaps(opposingChildB, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                    {
+                        childA.GetMultithreadedOverlaps(opposingChildB, splitDepth, currentDepth + 1, owner,
+                            multithreadingSourceOverlaps);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
-                        childB.GetMultithreadedOverlaps(opposingChildA, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                    {
+                        childB.GetMultithreadedOverlaps(opposingChildA, splitDepth, currentDepth + 1, owner,
+                            multithreadingSourceOverlaps);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
-                        childB.GetMultithreadedOverlaps(opposingChildB, splitDepth, currentDepth + 1, owner, multithreadingSourceOverlaps);
+                    {
+                        childB.GetMultithreadedOverlaps(opposingChildB, splitDepth, currentDepth + 1, owner,
+                            multithreadingSourceOverlaps);
+                    }
                 }
             }
         }
@@ -547,7 +641,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             if (childA.Remove(entry, out leafNode, out replacementNode))
             {
                 if (childA.IsLeaf)
+                {
                     replacementNode = childB;
+                }
                 else
                 {
                     //It was not a leaf node, but a child found the leaf.
@@ -555,13 +651,16 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     childA = replacementNode;
                     replacementNode = this; //We don't need to be replaced!
                 }
-                return true;
 
+                return true;
             }
+
             if (childB.Remove(entry, out leafNode, out replacementNode))
             {
                 if (childB.IsLeaf)
+                {
                     replacementNode = childA;
+                }
                 else
                 {
                     //It was not a leaf node, but a child found the leaf.
@@ -569,8 +668,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     childB = replacementNode;
                     replacementNode = this; //We don't need to be replaced!
                 }
+
                 return true;
             }
+
             replacementNode = this;
             return false;
         }
@@ -583,7 +684,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             if (intersects && childA.RemoveFast(entry, out leafNode, out replacementNode))
             {
                 if (childA.IsLeaf)
+                {
                     replacementNode = childB;
+                }
                 else
                 {
                     //It was not a leaf node, but a child found the leaf.
@@ -591,14 +694,17 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     childA = replacementNode;
                     replacementNode = this; //We don't need to be replaced!
                 }
-                return true;
 
+                return true;
             }
+
             childB.BoundingBox.Intersects(ref entry.boundingBox, out intersects);
             if (intersects && childB.RemoveFast(entry, out leafNode, out replacementNode))
             {
                 if (childB.IsLeaf)
+                {
                     replacementNode = childA;
+                }
                 else
                 {
                     //It was not a leaf node, but a child found the leaf.
@@ -606,8 +712,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     childB = replacementNode;
                     replacementNode = this; //We don't need to be replaced!
                 }
+
                 return true;
             }
+
             replacementNode = this;
             leafNode = null;
             return false;
@@ -621,25 +729,29 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         }
 
 
-        static XComparer xComparer = new XComparer();
-        static YComparer yComparer = new YComparer();
-        static ZComparer zComparer = new ZComparer();
+        private static XComparer xComparer = new XComparer();
+        private static YComparer yComparer = new YComparer();
+
+        private static ZComparer zComparer = new ZComparer();
+
         //Try using Comparer instead of IComparer- is there some tricky hardcoded optimization?
-        class XComparer : IComparer<LeafNode>
+        private class XComparer : IComparer<LeafNode>
         {
             public int Compare(LeafNode x, LeafNode y)
             {
                 return x.BoundingBox.Min.X < y.BoundingBox.Min.X ? -1 : 1;
             }
         }
-        class YComparer : IComparer<LeafNode>
+
+        private class YComparer : IComparer<LeafNode>
         {
             public int Compare(LeafNode x, LeafNode y)
             {
                 return x.BoundingBox.Min.Y < y.BoundingBox.Min.Y ? -1 : 1;
             }
         }
-        class ZComparer : IComparer<LeafNode>
+
+        private class ZComparer : IComparer<LeafNode>
         {
             public int Compare(LeafNode x, LeafNode y)
             {
@@ -649,38 +761,17 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
     }
 
 
-
-
     internal sealed class LeafNode : Node
     {
-        BroadPhaseEntry element;
-        internal override Node ChildA
-        {
-            get
-            {
-                return null;
-            }
-        }
-        internal override Node ChildB
-        {
-            get
-            {
-                return null;
-            }
-        }
+        private BroadPhaseEntry element;
 
-        internal override BroadPhaseEntry Element
-        {
-            get
-            {
-                return element;
-            }
-        }
+        internal override Node ChildA => null;
 
-        internal override bool IsLeaf
-        {
-            get { return true; }
-        }
+        internal override Node ChildB => null;
+
+        internal override BroadPhaseEntry Element => element;
+
+        internal override bool IsLeaf => true;
 
 
         internal void Initialize(BroadPhaseEntry element)
@@ -688,6 +779,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             this.element = element;
             BoundingBox = element.BoundingBox;
         }
+
         internal void CleanUp()
         {
             element = null;
@@ -699,7 +791,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             outputOverlappedElements.Add(element);
         }
 
-        internal override void GetOverlaps(ref BoundingSphere boundingSphere, IList<BroadPhaseEntry> outputOverlappedElements)
+        internal override void GetOverlaps(ref BoundingSphere boundingSphere,
+            IList<BroadPhaseEntry> outputOverlappedElements)
         {
             outputOverlappedElements.Add(element);
         }
@@ -709,7 +802,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         //    outputOverlappedElements.Add(element);
         //}
 
-        internal override void GetOverlaps(ref Ray ray, float maximumLength, IList<BroadPhaseEntry> outputOverlappedElements)
+        internal override void GetOverlaps(ref Ray ray, float maximumLength,
+            IList<BroadPhaseEntry> outputOverlappedElements)
         {
             outputOverlappedElements.Add(element);
         }
@@ -730,11 +824,15 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 //If it's not a leaf, try to go deeper in the opposing hierarchy.
                 BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                 if (intersects)
+                {
                     GetOverlaps(opposingChildA, owner);
+                }
+
                 BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                 if (intersects)
+                {
                     GetOverlaps(opposingChildB, owner);
-
+                }
             }
         }
 
@@ -774,7 +872,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             leafNodes.Add(this);
         }
 
-        internal override void CollectMultithreadingNodes(int splitDepth, int currentDepth, RawList<Node> multithreadingSourceNodes)
+        internal override void CollectMultithreadingNodes(int splitDepth, int currentDepth,
+            RawList<Node> multithreadingSourceNodes)
         {
             //This could happen if there are almost no elements in the tree.  No biggie- do nothing!
         }
@@ -785,7 +884,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             BoundingBox = element.boundingBox;
         }
 
-        internal override void GetMultithreadedOverlaps(Node opposingNode, int splitDepth, int currentDepth, DynamicHierarchy owner, RawList<DynamicHierarchy.NodePair> multithreadingSourceOverlaps)
+        internal override void GetMultithreadedOverlaps(Node opposingNode, int splitDepth, int currentDepth,
+            DynamicHierarchy owner, RawList<DynamicHierarchy.NodePair> multithreadingSourceOverlaps)
         {
             bool intersects;
             //note: This is never executed when the opposing node is the current node.
@@ -803,21 +903,31 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                     //Time to add the child overlaps to the multithreading set!
                     BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
-                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = this, b = opposingChildA });
+                    {
+                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair {a = this, b = opposingChildA});
+                    }
+
                     BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
-                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair() { a = this, b = opposingChildB });
+                    {
+                        multithreadingSourceOverlaps.Add(new DynamicHierarchy.NodePair {a = this, b = opposingChildB});
+                    }
 
                     return;
                 }
+
                 //If it's not a leaf, try to go deeper in the opposing hierarchy.
                 BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                 if (intersects)
+                {
                     GetOverlaps(opposingChildA, owner);
+                }
+
                 BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                 if (intersects)
+                {
                     GetOverlaps(opposingChildB, owner);
-
+                }
             }
         }
 
@@ -829,9 +939,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 leafNode = this;
                 return true;
             }
+
             leafNode = null;
             return false;
         }
+
         internal override bool RemoveFast(BroadPhaseEntry entry, out LeafNode leafNode, out Node replacementNode)
         {
             //The fastremove leaf node procedure is identical to the brute force approach.
@@ -842,6 +954,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 leafNode = this;
                 return true;
             }
+
             leafNode = null;
             return false;
         }

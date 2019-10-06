@@ -9,7 +9,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
     /// <typeparam name="T">Type contained by the list.</typeparam>
     public struct ReadOnlyList<T> : IList<T>
     {
-        IList<T> wrappedList;
+        private IList<T> wrappedList;
 
         /// <summary>
         /// Constructs a new read-only list.
@@ -52,11 +52,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <param name="index">The zero-based index of the element to get.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
         public T this[int index]
         {
-            get { return wrappedList[index]; }
-            set
-            {
-                throw new NotSupportedException("The list is read-only.");
-            }
+            get => wrappedList[index];
+            set => throw new NotSupportedException("The list is read-only.");
         }
 
         void ICollection<T>.Add(T item)
@@ -96,15 +93,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <returns>
         /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
-        public int Count
-        {
-            get { return wrappedList.Count; }
-        }
+        public int Count => wrappedList.Count;
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool ICollection<T>.IsReadOnly => true;
 
         bool ICollection<T>.Remove(T item)
         {
@@ -132,7 +123,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public struct Enumerator : IEnumerator<T>
         {
             private IList<T> wrappedList;
-            int index;
+            private int index;
+
             ///<summary>
             /// Constructs an enumerator.
             ///</summary>
@@ -149,10 +141,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
             /// <returns>
             /// The element in the collection at the current position of the enumerator.
             /// </returns>
-            public T Current
-            {
-                get { return wrappedList[index]; }
-            }
+            public T Current => wrappedList[index];
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -162,10 +151,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Advances the enumerator to the next element of the collection.

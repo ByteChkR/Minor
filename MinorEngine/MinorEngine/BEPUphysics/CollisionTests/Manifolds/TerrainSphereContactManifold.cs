@@ -5,7 +5,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 {
     public class TerrainSphereContactManifold : TerrainContactManifold
     {
-        static LockingResourcePool<TriangleSpherePairTester> testerPool = new LockingResourcePool<TriangleSpherePairTester>();
+        private static LockingResourcePool<TriangleSpherePairTester> testerPool =
+            new LockingResourcePool<TriangleSpherePairTester>();
+
         protected override TrianglePairTester GetTester()
         {
             return testerPool.Take();
@@ -13,8 +15,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 
         protected override void GiveBackTester(TrianglePairTester tester)
         {
-            testerPool.GiveBack((TriangleSpherePairTester)tester);
+            testerPool.GiveBack((TriangleSpherePairTester) tester);
         }
-
     }
 }

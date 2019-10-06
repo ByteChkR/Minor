@@ -9,18 +9,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class StaticGroupMobileMeshPairHandler : StaticGroupPairHandler
     {
+        private MobileMeshCollidable mesh;
 
-        MobileMeshCollidable mesh;
+        public override Collidable CollidableB => mesh;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
-
-        public override Entities.Entity EntityB
-        {
-            get { return mesh.entity; }
-        }
+        public override Entities.Entity EntityB => mesh.entity;
 
 
         ///<summary>
@@ -56,23 +49,18 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
-    
-
-
         protected override void UpdateContainedPairs()
         {
             var overlappedElements = PhysicsResources.GetCollidableList();
             staticGroup.Shape.CollidableTree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
                 var staticCollidable = overlappedElements.Elements[i] as StaticCollidable;
-                TryToAdd(overlappedElements.Elements[i], mesh, staticCollidable != null ? staticCollidable.Material : staticGroup.Material);
+                TryToAdd(overlappedElements.Elements[i], mesh,
+                    staticCollidable != null ? staticCollidable.Material : staticGroup.Material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
-
         }
-
     }
 }

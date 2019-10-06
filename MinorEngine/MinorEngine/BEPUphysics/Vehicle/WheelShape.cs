@@ -1,9 +1,8 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
-
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUutilities;
 
@@ -39,15 +38,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
 
         protected internal Matrix worldTransform;
 
-        CollisionRules collisionRules = new CollisionRules() { Group = CollisionRules.DefaultDynamicCollisionGroup };
         /// <summary>
         /// Gets or sets the collision rules used by the wheel.
         /// </summary>
-        public CollisionRules CollisionRules
-        {
-            get { return collisionRules; }
-            set { collisionRules = value; }
-        }
+        public CollisionRules CollisionRules { get; set; } = new CollisionRules
+            {Group = CollisionRules.DefaultDynamicCollisionGroup};
 
         /// <summary>
         /// Gets or sets the graphical radius of the wheel.
@@ -60,8 +55,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float AirborneWheelAcceleration
         {
-            get { return airborneWheelAcceleration; }
-            set { airborneWheelAcceleration = Math.Abs(value); }
+            get => airborneWheelAcceleration;
+            set => airborneWheelAcceleration = Math.Abs(value);
         }
 
         /// <summary>
@@ -70,8 +65,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float AirborneWheelDeceleration
         {
-            get { return airborneWheelDeceleration; }
-            set { airborneWheelDeceleration = Math.Abs(value); }
+            get => airborneWheelDeceleration;
+            set => airborneWheelDeceleration = Math.Abs(value);
         }
 
         /// <summary>
@@ -80,17 +75,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float BrakeFreezeWheelDeceleration
         {
-            get { return brakeFreezeWheelDeceleration; }
-            set { brakeFreezeWheelDeceleration = Math.Abs(value); }
+            get => brakeFreezeWheelDeceleration;
+            set => brakeFreezeWheelDeceleration = Math.Abs(value);
         }
 
         /// <summary>
         /// Gets the detector entity used by the wheelshape to collect collision pairs.
         /// </summary>
-        public Box Detector
-        {
-            get { return detector; }
-        }
+        public Box Detector => detector;
 
         /// <summary>
         /// Gets or sets whether or not to halt the wheel spin while the WheelBrake is active.
@@ -103,8 +95,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public Matrix LocalGraphicTransform
         {
-            get { return localGraphicTransform; }
-            set { localGraphicTransform = value; }
+            get => localGraphicTransform;
+            set => localGraphicTransform = value;
         }
 
         /// <summary>
@@ -114,8 +106,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float SpinAngle
         {
-            get { return spinAngle; }
-            set { spinAngle = value; }
+            get => spinAngle;
+            set => spinAngle = value;
         }
 
         /// <summary>
@@ -125,8 +117,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float SpinVelocity
         {
-            get { return spinVelocity; }
-            set { spinVelocity = value; }
+            get => spinVelocity;
+            set => spinVelocity = value;
         }
 
         /// <summary>
@@ -134,8 +126,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float SteeringAngle
         {
-            get { return steeringAngle; }
-            set { steeringAngle = value; }
+            get => steeringAngle;
+            set => steeringAngle = value;
         }
 
         /// <summary>
@@ -143,17 +135,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public Wheel Wheel
         {
-            get { return wheel; }
-            internal set { wheel = value; }
+            get => wheel;
+            internal set => wheel = value;
         }
 
         /// <summary>
         /// Gets the world matrix of the wheel for positioning a graphic.
         /// </summary>
-        public Matrix WorldTransform
-        {
-            get { return worldTransform; }
-        }
+        public Matrix WorldTransform => worldTransform;
 
 
         /// <summary>
@@ -167,19 +156,20 @@ namespace MinorEngine.BEPUphysics.Vehicle
 
         internal void OnAdditionToSpace(Space space)
         {
-            detector.CollisionInformation.collisionRules.Specific.Add(wheel.vehicle.Body.CollisionInformation.collisionRules, CollisionRule.NoBroadPhase);
+            detector.CollisionInformation.collisionRules.Specific.Add(
+                wheel.vehicle.Body.CollisionInformation.collisionRules, CollisionRule.NoBroadPhase);
             detector.CollisionInformation.collisionRules.Personal = CollisionRule.NoNarrowPhaseUpdate;
             detector.CollisionInformation.collisionRules.group = CollisionRules.DefaultDynamicCollisionGroup;
             //Need to put the detectors in appropriate locations before adding, or else the broad phase would see objects at (0,0,0) and make things gross.
             UpdateDetectorPosition();
             space.Add(detector);
-
         }
 
         internal void OnRemovalFromSpace(Space space)
         {
             space.Remove(detector);
-            detector.CollisionInformation.CollisionRules.Specific.Remove(wheel.vehicle.Body.CollisionInformation.collisionRules);
+            detector.CollisionInformation.CollisionRules.Specific.Remove(wheel.vehicle.Body.CollisionInformation
+                .collisionRules);
         }
 
         /// <summary>
@@ -198,37 +188,55 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 //On the ground, braking
                 float deceleratedValue = 0;
                 if (spinVelocity > 0)
+                {
                     deceleratedValue = Math.Max(spinVelocity - brakeFreezeWheelDeceleration * dt, 0);
+                }
                 else if (spinVelocity < 0)
+                {
                     deceleratedValue = Math.Min(spinVelocity + brakeFreezeWheelDeceleration * dt, 0);
+                }
 
                 spinVelocity = wheel.drivingMotor.RelativeVelocity / Radius;
 
                 if (Math.Abs(deceleratedValue) < Math.Abs(spinVelocity))
+                {
                     spinVelocity = deceleratedValue;
+                }
             }
             else if (!wheel.HasSupport && wheel.drivingMotor.TargetSpeed != 0)
             {
                 //Airborne and accelerating, increase spin velocity.
-                float maxSpeed = Math.Abs(wheel.drivingMotor.TargetSpeed) / Radius;
-                spinVelocity = MathHelper.Clamp(spinVelocity + Math.Sign(wheel.drivingMotor.TargetSpeed) * airborneWheelAcceleration * dt, -maxSpeed, maxSpeed);
+                var maxSpeed = Math.Abs(wheel.drivingMotor.TargetSpeed) / Radius;
+                spinVelocity =
+                    MathHelper.Clamp(
+                        spinVelocity + Math.Sign(wheel.drivingMotor.TargetSpeed) * airborneWheelAcceleration * dt,
+                        -maxSpeed, maxSpeed);
             }
             else if (!wheel.HasSupport && wheel.Brake.IsBraking)
             {
                 //Airborne and braking
                 if (spinVelocity > 0)
+                {
                     spinVelocity = Math.Max(spinVelocity - brakeFreezeWheelDeceleration * dt, 0);
+                }
                 else if (spinVelocity < 0)
+                {
                     spinVelocity = Math.Min(spinVelocity + brakeFreezeWheelDeceleration * dt, 0);
+                }
             }
             else if (!wheel.HasSupport)
             {
                 //Just idly slowing down.
                 if (spinVelocity > 0)
+                {
                     spinVelocity = Math.Max(spinVelocity - airborneWheelDeceleration * dt, 0);
+                }
                 else if (spinVelocity < 0)
+                {
                     spinVelocity = Math.Min(spinVelocity + airborneWheelDeceleration * dt, 0);
+                }
             }
+
             spinAngle += spinVelocity * dt;
         }
 
@@ -242,7 +250,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="entity">Entity supporting the wheel, if any.</param>
         /// <param name="material">Material of the support.</param>
         /// <returns>Whether or not any support was found.</returns>
-        protected internal abstract bool FindSupport(out Vector3 location, out Vector3 normal, out float suspensionLength, out Collidable supportCollidable, out Entity entity, out Material material);
+        protected internal abstract bool FindSupport(out Vector3 location, out Vector3 normal,
+            out float suspensionLength, out Collidable supportCollidable, out Entity entity, out Material material);
 
         /// <summary>
         /// Initializes the detector entity and any other necessary logic.
@@ -253,6 +262,5 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// Updates the position of the detector before each step.
         /// </summary>
         protected internal abstract void UpdateDetectorPosition();
-
     }
 }

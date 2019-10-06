@@ -13,7 +13,5 @@
         ///</summary>
         ///<param name="dt">Timestep with which to update the bounding box.</param>
         public abstract void UpdateBoundingBox(float dt);
-
-
     }
 }

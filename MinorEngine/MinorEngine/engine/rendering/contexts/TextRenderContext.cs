@@ -13,7 +13,6 @@ namespace MinorEngine.engine.rendering.contexts
         public GameFont FontFace { get; set; }
 
 
-
         protected static int _vbo;
         protected static int _vao;
         protected static bool _init;
@@ -21,7 +20,9 @@ namespace MinorEngine.engine.rendering.contexts
         private static float TabToSpaceCount = 0.1f;
 
 
-        public TextRenderContext(ShaderProgram program, Vector2 position, Vector2 scale, Matrix4 modelMatrix, bool worldSpace, float alpha, GameFont fontFace, string displayText, int renderQueue) : base(position, scale, modelMatrix, worldSpace, alpha, program, renderQueue)
+        public TextRenderContext(ShaderProgram program, Vector2 position, Vector2 scale, Matrix4 modelMatrix,
+            bool worldSpace, float alpha, GameFont fontFace, string displayText, int renderQueue) : base(position,
+            scale, modelMatrix, worldSpace, alpha, program, renderQueue)
         {
             FontFace = fontFace;
             DisplayText = displayText;
@@ -47,9 +48,13 @@ namespace MinorEngine.engine.rendering.contexts
 
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
-            if (!_init) SetUpTextResources();
-            int scrW = GameEngine.Instance.Width;
-            int scrH = GameEngine.Instance.Height;
+            if (!_init)
+            {
+                SetUpTextResources();
+            }
+
+            var scrW = GameEngine.Instance.Width;
+            var scrH = GameEngine.Instance.Height;
 
             //GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.Blend);
@@ -57,9 +62,8 @@ namespace MinorEngine.engine.rendering.contexts
             Program.Use();
 
 
-
-            Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
-            Matrix4 m = trmat;
+            var trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
+            var m = trmat;
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref m);
 
@@ -68,13 +72,13 @@ namespace MinorEngine.engine.rendering.contexts
             GL.Uniform1(Program.GetUniformLocation("sourceTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindVertexArray(_vao);
-            float x = Position.X;
-            float y = Position.Y;
-            for (int i = 0; i < DisplayText.Length; i++)
+            var x = Position.X;
+            var y = Position.Y;
+            for (var i = 0; i < DisplayText.Length; i++)
             {
                 if (DisplayText[i] == '\n')
                 {
-                    FaceMetrics fm = FontFace.Metrics;
+                    var fm = FontFace.Metrics;
                     x = Position.X;
                     y -= fm.LineHeight / scrH * Scale.Y;
                     continue;
@@ -83,25 +87,25 @@ namespace MinorEngine.engine.rendering.contexts
 
                 if (DisplayText[i] == '\t')
                 {
-                    float len = x - Position.X;
-                    float count = TabToSpaceCount - (len % TabToSpaceCount);
-                    float val = count;
+                    var len = x - Position.X;
+                    var count = TabToSpaceCount - len % TabToSpaceCount;
+                    var val = count;
                     x += val;
                     continue;
                 }
                 //x-pos.x
 
-                
 
+                if (!FontFace.TryGetCharacter(DisplayText[i], out var chr))
+                {
+                    FontFace.TryGetCharacter('?', out chr);
+                }
 
+                var xpos = x + chr.BearingX / scrW * Scale.X;
+                var ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                if (!FontFace.TryGetCharacter(DisplayText[i], out TextCharacter chr)) FontFace.TryGetCharacter('?', out chr);
-
-                float xpos = x + chr.BearingX / scrW * Scale.X;
-                float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
-
-                float w = chr.Width / (float)scrW * Scale.X;
-                float h = chr.Height / (float)scrH * Scale.Y;
+                var w = chr.Width / (float) scrW * Scale.X;
+                var h = chr.Height / (float) scrH * Scale.Y;
 
                 //Remove Scale And initial position(start at (x,y) = 0)
                 //Add Translation to Make text be centered at origin(-TotalTextWidth/2,-TotalTextHeight/2)
@@ -109,20 +113,20 @@ namespace MinorEngine.engine.rendering.contexts
 
                 float[] verts =
                 {
-                        xpos, ypos + h, 0.0f, 1.0f,
-                        xpos, ypos, 0.0f, 0.0f,
-                        xpos + w, ypos, 1.0f, 0.0f,
+                    xpos, ypos + h, 0.0f, 1.0f,
+                    xpos, ypos, 0.0f, 0.0f,
+                    xpos + w, ypos, 1.0f, 0.0f,
 
-                        xpos, ypos + h, 0.0f, 1.0f,
-                        xpos + w, ypos, 1.0f, 0.0f,
-                        xpos + w, ypos + h, 1.0f, 1.0f
-                    };
+                    xpos, ypos + h, 0.0f, 1.0f,
+                    xpos + w, ypos, 1.0f, 0.0f,
+                    xpos + w, ypos + h, 1.0f, 1.0f
+                };
 
                 if (chr.GlTexture != null)
                 {
                     GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
+                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
                         verts);
 
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

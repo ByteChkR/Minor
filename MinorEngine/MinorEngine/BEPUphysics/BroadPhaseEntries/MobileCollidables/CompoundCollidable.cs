@@ -1,12 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
 using MinorEngine.BEPUphysics.BroadPhaseSystems;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionShapes;
+using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUphysics.Materials;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using System;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
 {
@@ -24,10 +24,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// </summary>
         public new CompoundEventManager Events
         {
-            get
-            {
-                return events as CompoundEventManager;
-            }
+            get => events as CompoundEventManager;
             set
             {
                 //Tell every child to update their parent references to the new object.
@@ -35,6 +32,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                 {
                     child.CollisionInformation.events.Parent = value;
                 }
+
                 base.Events = value;
             }
         }
@@ -44,40 +42,27 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         ///</summary>
         public new CompoundShape Shape
         {
-            get
-            {
-                return (CompoundShape)shape;
-            }
-            protected internal set
-            {
-                base.Shape = value;
-            }
+            get => (CompoundShape) shape;
+            protected internal set => base.Shape = value;
         }
 
         internal RawList<CompoundChild> children = new RawList<CompoundChild>();
+
         ///<summary>
         /// Gets a list of the children in the collidable.
         ///</summary>
-        public ReadOnlyList<CompoundChild> Children
-        {
-            get
-            {
-                return new ReadOnlyList<CompoundChild>(children);
-            }
-        }
-
+        public ReadOnlyList<CompoundChild> Children => new ReadOnlyList<CompoundChild>(children);
 
 
         protected override void OnEntityChanged()
         {
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 children.Elements[i].CollisionInformation.Entity = entity;
             }
+
             base.OnEntityChanged();
         }
-
-
 
 
         private CompoundChild GetChild(CompoundChildData data, int index)
@@ -85,17 +70,24 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
             var instance = data.Entry.Shape.GetCollidableInstance();
 
             if (data.Events != null)
+            {
                 instance.Events = data.Events;
+            }
+
             //Establish the link between the child event manager and our event manager.
             instance.events.Parent = Events;
 
             if (data.CollisionRules != null)
+            {
                 instance.CollisionRules = data.CollisionRules;
+            }
 
             instance.Tag = data.Tag;
 
             if (data.Material == null)
+            {
                 data.Material = new Material();
+            }
 
             return new CompoundChild(Shape, instance, data.Material, index);
         }
@@ -114,7 +106,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
             Events = new CompoundEventManager();
 
             hierarchy = new CompoundHierarchy(this);
-
         }
 
         ///<summary>
@@ -127,18 +118,19 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
 
             var shapeList = new RawList<CompoundShapeEntry>();
             //Create the shape first.
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 shapeList.Add(children[i].Entry);
             }
+
             base.Shape = new CompoundShape(shapeList);
             //Now create the actual child objects.
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 this.children.Add(GetChild(children[i], i));
             }
-            hierarchy = new CompoundHierarchy(this);
 
+            hierarchy = new CompoundHierarchy(this);
         }
 
         ///<summary>
@@ -152,18 +144,19 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
 
             var shapeList = new RawList<CompoundShapeEntry>();
             //Create the shape first.
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 shapeList.Add(children[i].Entry);
             }
+
             base.Shape = new CompoundShape(shapeList, out center);
             //Now create the actual child objects.
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 this.children.Add(GetChild(children[i], i));
             }
-            hierarchy = new CompoundHierarchy(this);
 
+            hierarchy = new CompoundHierarchy(this);
         }
 
 
@@ -176,32 +169,22 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         {
             Events = new CompoundEventManager();
 
-            for (int i = 0; i < compoundShape.shapes.Count; i++)
+            for (var i = 0; i < compoundShape.shapes.Count; i++)
             {
-                CompoundChild child = GetChild(compoundShape.shapes.Elements[i], i);
-                this.children.Add(child);
+                var child = GetChild(compoundShape.shapes.Elements[i], i);
+                children.Add(child);
             }
+
             hierarchy = new CompoundHierarchy(this);
-
-
         }
-
-
-
-
 
 
         internal CompoundHierarchy hierarchy;
+
         ///<summary>
         /// Gets the hierarchy of children used by the collidable.
         ///</summary>
-        public CompoundHierarchy Hierarchy
-        {
-            get
-            {
-                return hierarchy;
-            }
-        }
+        public CompoundHierarchy Hierarchy => hierarchy;
 
 
         ///<summary>
@@ -213,23 +196,25 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         {
             base.UpdateWorldTransform(ref position, ref orientation);
             var shapeList = Shape.shapes;
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 RigidTransform transform;
-                RigidTransform.Multiply(ref shapeList.Elements[children.Elements[i].shapeIndex].LocalTransform, ref worldTransform, out transform);
-                children.Elements[i].CollisionInformation.UpdateWorldTransform(ref transform.Position, ref transform.Orientation);
+                RigidTransform.Multiply(ref shapeList.Elements[children.Elements[i].shapeIndex].LocalTransform,
+                    ref worldTransform, out transform);
+                children.Elements[i].CollisionInformation
+                    .UpdateWorldTransform(ref transform.Position, ref transform.Orientation);
             }
         }
 
         protected internal override void UpdateBoundingBoxInternal(float dt)
         {
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
                 children.Elements[i].CollisionInformation.UpdateBoundingBoxInternal(dt);
             }
+
             hierarchy.Tree.Refit();
             boundingBox = hierarchy.Tree.BoundingBox;
-
         }
 
 
@@ -243,7 +228,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         public override bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
         {
             CompoundChild hitChild;
-            bool hit = RayCast(ray, maximumLength, out rayHit, out hitChild);
+            var hit = RayCast(ray, maximumLength, out rayHit, out hitChild);
             return hit;
         }
 
@@ -258,8 +243,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         {
             RayHit hitData;
             CompoundChild hitChild;
-            bool hit = RayCast(ray, maximumLength, out hitData, out hitChild);
-            rayHit = new RayCastResult { HitData = hitData, HitObject = hitChild.CollisionInformation };
+            var hit = RayCast(ray, maximumLength, out hitData, out hitChild);
+            rayHit = new RayCastResult {HitData = hitData, HitObject = hitChild.CollisionInformation};
             return hit;
         }
 
@@ -279,9 +264,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
             if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
             {
                 rayHit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (var i = 0; i < hitElements.Count; i++)
                 {
-                    EntityCollidable candidate = hitElements.Elements[i].CollisionInformation;
+                    var candidate = hitElements.Elements[i].CollisionInformation;
                     RayHit tempHit;
                     if (candidate.RayCast(ray, maximumLength, out tempHit) && tempHit.T < rayHit.T)
                     {
@@ -289,9 +274,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                         hitChild = hitElements.Elements[i];
                     }
                 }
+
                 PhysicsResources.GiveBack(hitElements);
                 return rayHit.T != float.MaxValue;
             }
+
             PhysicsResources.GiveBack(hitElements);
             return false;
         }
@@ -305,10 +292,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// in the entry, this filter will be passed into inner ray casts.</param>
         /// <param name="rayHit">Hit location of the ray on the collidable, if any.</param>
         /// <returns>Whether or not the ray hit the collidable.</returns>
-        public override bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit)
+        public override bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter,
+            out RayHit rayHit)
         {
             CompoundChild hitChild;
-            bool hit = RayCast(ray, maximumLength, filter, out rayHit, out hitChild);
+            var hit = RayCast(ray, maximumLength, filter, out rayHit, out hitChild);
             return hit;
         }
 
@@ -325,8 +313,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         {
             RayHit hitData;
             CompoundChild hitChild;
-            bool hit = RayCast(ray, maximumLength, filter, out hitData, out hitChild);
-            rayHit = new RayCastResult { HitData = hitData, HitObject = hitChild.CollisionInformation };
+            var hit = RayCast(ray, maximumLength, filter, out hitData, out hitChild);
+            rayHit = new RayCastResult {HitData = hitData, HitObject = hitChild.CollisionInformation};
             return hit;
         }
 
@@ -340,7 +328,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="rayHit">Hit location of the ray on the collidable, if any.</param>
         /// <param name="hitChild">Child hit by the ray.</param>
         /// <returns>Whether or not the ray hit the collidable.</returns>
-        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit, out CompoundChild hitChild)
+        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit,
+            out CompoundChild hitChild)
         {
             rayHit = new RayHit();
             hitChild = null;
@@ -350,20 +339,24 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                 if (hierarchy.Tree.GetOverlaps(ray, maximumLength, hitElements))
                 {
                     rayHit.T = float.MaxValue;
-                    for (int i = 0; i < hitElements.Count; i++)
+                    for (var i = 0; i < hitElements.Count; i++)
                     {
                         RayHit tempHit;
-                        if (hitElements.Elements[i].CollisionInformation.RayCast(ray, maximumLength, filter, out tempHit) && tempHit.T < rayHit.T)
+                        if (hitElements.Elements[i].CollisionInformation
+                                .RayCast(ray, maximumLength, filter, out tempHit) && tempHit.T < rayHit.T)
                         {
                             rayHit = tempHit;
                             hitChild = hitElements.Elements[i];
                         }
                     }
+
                     PhysicsResources.GiveBack(hitElements);
                     return rayHit.T != float.MaxValue;
                 }
+
                 PhysicsResources.GiveBack(hitElements);
             }
+
             return false;
         }
 
@@ -376,10 +369,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="sweep">Sweep to apply to the shape.</param>
         /// <param name="rayHit">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public override bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, out RayHit rayHit)
+        public override bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape,
+            ref RigidTransform startingTransform, ref Vector3 sweep, out RayHit rayHit)
         {
             CompoundChild hitChild;
-            bool hit = ConvexCast(castShape, ref startingTransform, ref sweep, out rayHit, out hitChild);
+            var hit = ConvexCast(castShape, ref startingTransform, ref sweep, out rayHit, out hitChild);
             return hit;
         }
 
@@ -392,12 +386,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="sweep">Sweep to apply to the shape.</param>
         /// <param name="result">Data and hit object from the first impact, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, out RayCastResult result)
+        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform,
+            ref Vector3 sweep, out RayCastResult result)
         {
             CompoundChild hitChild;
             RayHit rayHit;
-            bool hit = ConvexCast(castShape, ref startingTransform, ref sweep, out rayHit, out hitChild);
-            result = new RayCastResult { HitData = rayHit, HitObject = hitChild.CollisionInformation };
+            var hit = ConvexCast(castShape, ref startingTransform, ref sweep, out rayHit, out hitChild);
+            result = new RayCastResult {HitData = rayHit, HitObject = hitChild.CollisionInformation};
             return hit;
         }
 
@@ -411,7 +406,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="hit">Hit data, if any.</param>
         /// <param name="hitChild">Child hit by the cast.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, out RayHit hit, out CompoundChild hitChild)
+        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform,
+            ref Vector3 sweep, out RayHit hit, out CompoundChild hitChild)
         {
             hit = new RayHit();
             hitChild = null;
@@ -421,19 +417,22 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
             if (hierarchy.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (var i = 0; i < hitElements.Count; i++)
                 {
                     var candidate = hitElements.Elements[i].CollisionInformation;
                     RayHit tempHit;
-                    if (candidate.ConvexCast(castShape, ref startingTransform, ref sweep, out tempHit) && tempHit.T < hit.T)
+                    if (candidate.ConvexCast(castShape, ref startingTransform, ref sweep, out tempHit) &&
+                        tempHit.T < hit.T)
                     {
                         hit = tempHit;
                         hitChild = hitElements.Elements[i];
                     }
                 }
+
                 PhysicsResources.GiveBack(hitElements);
                 return hit.T != float.MaxValue;
             }
+
             PhysicsResources.GiveBack(hitElements);
             return false;
         }
@@ -448,10 +447,12 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// in the entry, this filter will be passed into inner ray casts.</param>
         /// <param name="rayHit">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public override bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, out RayHit rayHit)
+        public override bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape,
+            ref RigidTransform startingTransform, ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter,
+            out RayHit rayHit)
         {
             CompoundChild hitChild;
-            bool hit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, out rayHit, out hitChild);
+            var hit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, out rayHit, out hitChild);
             return hit;
         }
 
@@ -466,12 +467,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// in the entry, this filter will be passed into inner ray casts.</param>
         /// <param name="result">Data and hit object from the first impact, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, out RayCastResult result)
+        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform,
+            ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, out RayCastResult result)
         {
             CompoundChild hitChild;
             RayHit rayHit;
-            bool hit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, out rayHit, out hitChild);
-            result = new RayCastResult { HitData = rayHit, HitObject = hitChild.CollisionInformation };
+            var hit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, out rayHit, out hitChild);
+            result = new RayCastResult {HitData = rayHit, HitObject = hitChild.CollisionInformation};
             return hit;
         }
 
@@ -486,35 +488,41 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <param name="hit">Hit data, if any.</param>
         /// <param name="hitChild">Child hit by the cast.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, out RayHit hit, out CompoundChild hitChild)
+        public bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform,
+            ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, out RayHit hit, out CompoundChild hitChild)
         {
             hit = new RayHit();
             hitChild = null;
             if (!filter(this))
+            {
                 return false;
+            }
+
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
             var hitElements = PhysicsResources.GetCompoundChildList();
             if (hierarchy.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (var i = 0; i < hitElements.Count; i++)
                 {
                     var candidate = hitElements.Elements[i].CollisionInformation;
                     RayHit tempHit;
-                    if (candidate.ConvexCast(castShape, ref startingTransform, ref sweep, filter, out tempHit) && tempHit.T < hit.T)
+                    if (candidate.ConvexCast(castShape, ref startingTransform, ref sweep, filter, out tempHit) &&
+                        tempHit.T < hit.T)
                     {
                         hit = tempHit;
                         hitChild = hitElements.Elements[i];
                     }
                 }
+
                 PhysicsResources.GiveBack(hitElements);
                 return hit.T != float.MaxValue;
             }
+
             PhysicsResources.GiveBack(hitElements);
             return false;
         }
-
     }
 
     ///<summary>
@@ -528,23 +536,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// Shape entry of the compound child.
         ///</summary>
         public CompoundShapeEntry Entry;
+
         ///<summary>
         /// Event manager for the new child.
         ///</summary>
         public ContactEventManager<EntityCollidable> Events;
+
         ///<summary>
         /// Collision rules for the new child.
         ///</summary>
         public CollisionRules CollisionRules;
+
         ///<summary>
         /// Material for the new child.
         ///</summary>
         public Material Material;
+
         /// <summary>
         /// Tag to assign to the collidable created for this child.
         /// </summary>
         public object Tag;
-
     }
 
 
@@ -553,31 +564,18 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
     ///</summary>
     public class CompoundChild : IBoundingBoxOwner
     {
-        CompoundShape shape;
+        private CompoundShape shape;
         internal int shapeIndex;
 
         /// <summary>
         /// Gets the index of the shape used by this child in the CompoundShape's shapes list.
         /// </summary>
-        public int ShapeIndex
-        {
-            get
-            {
-                return shapeIndex;
-            }
-        }
+        public int ShapeIndex => shapeIndex;
 
-        private EntityCollidable collisionInformation;
         ///<summary>
         /// Gets the Collidable associated with the child.
         ///</summary>
-        public EntityCollidable CollisionInformation
-        {
-            get
-            {
-                return collisionInformation;
-            }
-        }
+        public EntityCollidable CollisionInformation { get; }
 
         ///<summary>
         /// Gets or sets the material associated with the child.
@@ -587,38 +585,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <summary>
         /// Gets the index of the shape associated with this child in the CompoundShape's shapes list.
         /// </summary>
-        public CompoundShapeEntry Entry
-        {
-            get
-            {
-                return shape.shapes.Elements[shapeIndex];
-            }
-
-        }
+        public CompoundShapeEntry Entry => shape.shapes.Elements[shapeIndex];
 
         internal CompoundChild(CompoundShape shape, EntityCollidable collisionInformation, Material material, int index)
         {
             this.shape = shape;
-            this.collisionInformation = collisionInformation;
+            CollisionInformation = collisionInformation;
             Material = material;
-            this.shapeIndex = index;
+            shapeIndex = index;
         }
 
         internal CompoundChild(CompoundShape shape, EntityCollidable collisionInformation, int index)
         {
             this.shape = shape;
-            this.collisionInformation = collisionInformation;
-            this.shapeIndex = index;
+            CollisionInformation = collisionInformation;
+            shapeIndex = index;
         }
 
         /// <summary>
         /// Gets the bounding box of the child.
         /// </summary>
-        public BoundingBox BoundingBox
-        {
-            get { return collisionInformation.boundingBox; }
-        }
-
-
+        public BoundingBox BoundingBox => CollisionInformation.boundingBox;
     }
 }

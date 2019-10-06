@@ -17,8 +17,8 @@ namespace MinorEngine.BEPUik
 
         public Vector3 Offset
         {
-            get { return Quaternion.Transform(LocalOffset, TargetBone.Orientation); }
-            set { LocalOffset = Quaternion.Transform(value, Quaternion.Conjugate(TargetBone.Orientation)); }
+            get => Quaternion.Transform(LocalOffset, TargetBone.Orientation);
+            set => LocalOffset = Quaternion.Transform(value, Quaternion.Conjugate(TargetBone.Orientation));
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()
@@ -39,7 +39,5 @@ namespace MinorEngine.BEPUik
             //This is equivalent to projecting the error onto the linear jacobian. The linear jacobian just happens to be the identity matrix!
             Vector3.Multiply(ref linearError, errorCorrectionFactor, out velocityBias);
         }
-
-
     }
 }

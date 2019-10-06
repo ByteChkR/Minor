@@ -1,5 +1,4 @@
-﻿ 
-using System;
+﻿using System;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionTests
@@ -7,7 +6,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests
     ///<summary>
     /// Contact data created by collision detection.
     ///</summary>
-    public struct ContactData :IEquatable<ContactData>
+    public struct ContactData : IEquatable<ContactData>
     {
         /// <summary>
         /// Amount of penetration between the two objects.
@@ -54,13 +53,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests
         }
 
 
-
         public bool Equals(ContactData other)
         {
             return other.PenetrationDepth == PenetrationDepth &&
-                other.Id == Id &&
-                other.Normal == Normal &&
-                other.Position == Position;
+                   other.Id == Id &&
+                   other.Normal == Normal &&
+                   other.Position == Position;
         }
     }
 }

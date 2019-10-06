@@ -1,6 +1,6 @@
 ﻿using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUphysics.CollisionShapes;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities
 {
@@ -14,14 +14,8 @@ namespace MinorEngine.BEPUphysics.Entities
         ///</summary>
         public new EntityCollidable CollisionInformation
         {
-            get
-            {
-                return base.CollisionInformation;
-            }
-            set
-            {
-                SetCollisionInformation(value);
-            }
+            get => base.CollisionInformation;
+            set => SetCollisionInformation(value);
         }
 
         ///<summary>
@@ -95,19 +89,27 @@ namespace MinorEngine.BEPUphysics.Entities
             //Temporarily remove the object from the space.  
             //The reset process will update any systems that need to be updated.
             //This is not thread safe, but this operation should not be performed mid-frame anyway.
-            Space space = Space;
+            var space = Space;
             if (space != null)
+            {
                 Space.Remove(this);
+            }
 
             CollisionInformation.Entity = null;
 
             if (isDynamic)
+            {
                 Initialize(newCollisionInformation, mass);
+            }
             else
+            {
                 Initialize(newCollisionInformation);
+            }
 
             if (space != null)
+            {
                 space.Add(this);
+            }
         }
 
         /// <summary>
@@ -120,16 +122,20 @@ namespace MinorEngine.BEPUphysics.Entities
             //Temporarily remove the object from the space.  
             //The reset process will update any systems that need to be updated.
             //This is not thread safe, but this operation should not be performed mid-frame anyway.
-            Space space = Space;
+            var space = Space;
             if (space != null)
+            {
                 Space.Remove(this);
+            }
 
             CollisionInformation.Entity = null;
 
             Initialize(newCollisionInformation, newMass);
 
             if (space != null)
+            {
                 space.Add(this);
+            }
         }
 
         /// <summary>
@@ -138,23 +144,26 @@ namespace MinorEngine.BEPUphysics.Entities
         /// <param name="newCollisionInformation">New collidable to use.</param>
         /// <param name="newMass">New mass to use for the entity.</param>
         /// <param name="newInertia">New inertia tensor to use for the entity.</param>
-        public void SetCollisionInformation(EntityCollidable newCollisionInformation, float newMass, Matrix3x3 newInertia)
+        public void SetCollisionInformation(EntityCollidable newCollisionInformation, float newMass,
+            Matrix3x3 newInertia)
         {
             //Temporarily remove the object from the space.  
             //The reset process will update any systems that need to be updated.
             //This is not thread safe, but this operation should not be performed mid-frame anyway.
-            Space space = Space;
+            var space = Space;
             if (space != null)
+            {
                 Space.Remove(this);
+            }
 
             CollisionInformation.Entity = null;
 
             Initialize(newCollisionInformation, newMass, newInertia);
 
             if (space != null)
+            {
                 space.Add(this);
+            }
         }
-
-
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
 {
@@ -16,6 +15,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// When this type is selected, the motor settings' velocityMotor data will be used.
         /// </summary>
         VelocityMotor,
+
         /// <summary>
         /// Servomechanisms change their velocity in order to reach some position goal.
         /// 
@@ -51,6 +51,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                 {
                     return maximumForce;
                 }
+
                 return 0;
             }
             set
@@ -71,7 +72,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public MotorMode Mode
         {
-            get { return mode; }
+            get => mode;
             set
             {
                 if (mode != value)
@@ -81,8 +82,6 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                 }
             }
         }
-
-        
     }
 
     /// <summary>
@@ -103,18 +102,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the settings that govern the behavior of this motor if it is a servomechanism.
         /// </summary>
-        public ServoSettings1D Servo
-        {
-            get { return servo; }
-        }
+        public ServoSettings1D Servo => servo;
 
         /// <summary>
         /// Gets the settings that govern the behavior of this motor if it is a velocity motor.
         /// </summary>
-        public VelocityMotorSettings1D VelocityMotor
-        {
-            get { return velocityMotor; }
-        }
+        public VelocityMotorSettings1D VelocityMotor => velocityMotor;
     }
 
     /// <summary>
@@ -135,18 +128,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the settings that govern the behavior of this motor if it is a servomechanism.
         /// </summary>
-        public ServoSettings3D Servo
-        {
-            get { return servo; }
-        }
+        public ServoSettings3D Servo => servo;
 
         /// <summary>
         /// Gets the settings that govern the behavior of this motor if it is a velocity motor.
         /// </summary>
-        public VelocityMotorSettings3D VelocityMotor
-        {
-            get { return velocityMotor; }
-        }
+        public VelocityMotorSettings3D VelocityMotor => velocityMotor;
     }
 
     /// <summary>
@@ -167,18 +154,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the settings that govern the behavior of this motor if it is a servomechanism.
         /// </summary>
-        public ServoSettingsOrientation Servo
-        {
-            get { return servo; }
-        }
+        public ServoSettingsOrientation Servo => servo;
 
         /// <summary>
         /// Gets the settings that govern the behavior of this motor if it is a velocity motor.
         /// </summary>
-        public VelocityMotorSettings3D VelocityMotor
-        {
-            get { return velocityMotor; }
-        }
+        public VelocityMotorSettings3D VelocityMotor => velocityMotor;
     }
 
     /// <summary>
@@ -220,7 +201,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public float BaseCorrectiveSpeed
         {
-            get { return baseCorrectiveSpeed; }
+            get => baseCorrectiveSpeed;
             set
             {
                 value = value < 0 ? 0 : value;
@@ -237,7 +218,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public float MaxCorrectiveVelocity
         {
-            get { return maxCorrectiveVelocity; }
+            get => maxCorrectiveVelocity;
             set
             {
                 value = Math.Max(0, value);
@@ -252,10 +233,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                     {
                         maxCorrectiveVelocitySquared = maxCorrectiveVelocity * maxCorrectiveVelocity;
                     }
+
                     motorSettings.motor.ActivateInvolvedEntities();
                 }
-
-
             }
         }
 
@@ -265,10 +245,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// Gets the spring settings used by the constraint.
         /// Spring settings define how a constraint responds to velocity and position error.
         /// </summary>
-        public SpringSettings SpringSettings
-        {
-            get { return springSettings; }
-        }
+        public SpringSettings SpringSettings => springSettings;
 
         #endregion
     }
@@ -291,7 +268,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public float Goal
         {
-            get { return goal; }
+            get => goal;
             set
             {
                 if (goal != value)
@@ -301,8 +278,6 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                 }
             }
         }
-
-
     }
 
     /// <summary>
@@ -323,7 +298,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public Vector3 Goal
         {
-            get { return goal; }
+            get => goal;
             set
             {
                 if (goal != value)
@@ -353,7 +328,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public Quaternion Goal
         {
-            get { return goal; }
+            get => goal;
             set
             {
                 if (goal != value)
@@ -395,7 +370,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public float Softness
         {
-            get { return softness; }
+            get => softness;
             set
             {
                 value = value < 0 ? 0 : value;
@@ -426,7 +401,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public float GoalVelocity
         {
-            get { return goalVelocity; }
+            get => goalVelocity;
             set
             {
                 if (value != goalVelocity)
@@ -456,7 +431,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public Vector3 GoalVelocity
         {
-            get { return goalVelocity; }
+            get => goalVelocity;
             set
             {
                 if (value != goalVelocity)

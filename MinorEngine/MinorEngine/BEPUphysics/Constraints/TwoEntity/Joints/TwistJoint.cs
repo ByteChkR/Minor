@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Entities;
- 
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
@@ -12,11 +11,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
     public class TwistJoint : Joint, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
         private Vector3 aLocalAxisY, aLocalAxisZ;
-        private float accumulatedImpulse;
         private Vector3 bLocalAxisY;
         private float biasVelocity;
         private Vector3 jacobianA, jacobianB;
-        private float error;
         private Vector3 localAxisA;
         private Vector3 localAxisB;
         private Vector3 worldAxisA;
@@ -54,7 +51,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalAxisA
         {
-            get { return localAxisA; }
+            get => localAxisA;
             set
             {
                 localAxisA = Vector3.Normalize(value);
@@ -68,7 +65,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalAxisB
         {
-            get { return localAxisB; }
+            get => localAxisB;
             set
             {
                 localAxisB = Vector3.Normalize(value);
@@ -82,7 +79,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 WorldAxisA
         {
-            get { return worldAxisA; }
+            get => worldAxisA;
             set
             {
                 worldAxisA = Vector3.Normalize(value);
@@ -98,7 +95,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 WorldAxisB
         {
-            get { return worldAxisB; }
+            get => worldAxisB;
             set
             {
                 worldAxisB = Vector3.Normalize(value);
@@ -128,18 +125,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse { get; private set; }
 
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public float Error
-        {
-            get { return error; }
-        }
+        public float Error { get; private set; }
 
         #endregion
 
@@ -202,13 +193,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            float lambda = -(velocityA + velocityB) + biasVelocity - softness * accumulatedImpulse;
+            var lambda = -(velocityA + velocityB) + biasVelocity - softness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Accumulate the impulse
-            accumulatedImpulse += lambda;
+            TotalImpulse += lambda;
 
             //Apply the impulse
             Vector3 impulse;
@@ -217,13 +208,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
                 Vector3.Multiply(ref jacobianA, lambda, out impulse);
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Multiply(ref jacobianB, lambda, out impulse);
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
 
-            return (Math.Abs(lambda));
+            return Math.Abs(lambda);
         }
 
         /// <summary>
@@ -251,7 +243,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             float y, x;
             Vector3.Dot(ref twistMeasureAxis, ref aAxisZ, out y);
             Vector3.Dot(ref twistMeasureAxis, ref aAxisY, out x);
-            error = (float) Math.Atan2(y, x);
+            Error = (float) Math.Atan2(y, x);
 
             //Debug.WriteLine("Angle: " + angle);
 
@@ -278,7 +270,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             //Compute the correction velocity.
             float errorReduction;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
-            biasVelocity = MathHelper.Clamp(-error * errorReduction, -maxCorrectiveVelocity, maxCorrectiveVelocity);
+            biasVelocity = MathHelper.Clamp(-Error * errorReduction, -maxCorrectiveVelocity, maxCorrectiveVelocity);
 
             //****** EFFECTIVE MASS MATRIX ******//
             //Connection A's contribution to the mass matrix
@@ -290,7 +282,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
                 Vector3.Dot(ref transformedAxis, ref jacobianA, out entryA);
             }
             else
+            {
                 entryA = 0;
+            }
 
             //Connection B's contribution to the mass matrix
             float entryB;
@@ -300,12 +294,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
                 Vector3.Dot(ref transformedAxis, ref jacobianB, out entryB);
             }
             else
+            {
                 entryB = 0;
+            }
 
             //Compute the inverse mass matrix
             velocityToImpulse = 1 / (softness + entryA + entryB);
-
-            
         }
 
         /// <summary>
@@ -320,12 +314,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             Vector3 impulse;
             if (connectionA.isDynamic)
             {
-                Vector3.Multiply(ref jacobianA, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jacobianA, TotalImpulse, out impulse);
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
-                Vector3.Multiply(ref jacobianB, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jacobianB, TotalImpulse, out impulse);
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
         }
@@ -339,11 +334,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             //Compute a vector which is perpendicular to the axis.  It'll be added in local space to both connections.
             Vector3 yAxis;
             Vector3.Cross(ref worldAxisA, ref Toolbox.UpVector, out yAxis);
-            float length = yAxis.LengthSquared();
+            var length = yAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref worldAxisA, ref Toolbox.RightVector, out yAxis);
             }
+
             yAxis.Normalize();
 
             //Put the axis into the local space of A.

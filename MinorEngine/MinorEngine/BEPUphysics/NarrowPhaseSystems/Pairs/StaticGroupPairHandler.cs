@@ -10,15 +10,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     {
         protected StaticGroup staticGroup;
 
-        public override Collidable CollidableA
-        {
-            get { return staticGroup; }
-        }
-        public override Entities.Entity EntityA
-        {
-            get { return null; }
-        }
+        public override Collidable CollidableA => staticGroup;
 
+        public override Entities.Entity EntityA => null;
 
 
         ///<summary>
@@ -52,8 +46,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             staticGroup = null;
             //Child type needs to null out other reference.
         }
-
-
-
     }
 }

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Threading;
-using MinorEngine.BEPUutilities.DataStructures;
-using System.Collections.ObjectModel;
 
 namespace MinorEngine.BEPUphysics.DeactivationManagement
 {
@@ -13,48 +11,33 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
     {
         internal SimulationIsland immediateParent;
 
-        internal SimulationIsland Parent
-        {
-            get
-            {
-                return immediateParent == this ? this : immediateParent.Parent;
-            }
-        }
+        internal SimulationIsland Parent => immediateParent == this ? this : immediateParent.Parent;
 
         internal bool allowDeactivation = true;
         internal bool isActive = true;
+
         ///<summary>
         /// Gets or sets whether or not the island is currently active.
         ///</summary>
         public bool IsActive
         {
-            get
-            {
-                return isActive;
-            }
-            set
-            {
-                isActive = value;
-            }
+            get => isActive;
+            set => isActive = value;
         }
+
         internal int memberCount;
 
         /// <summary>
         /// Gets the number of simulation island members within this simulation island.
         /// </summary>
-        public int MemberCount
-        {
-            get { return memberCount; }
-        }
+        public int MemberCount => memberCount;
 
         internal int deactivationCandidateCount;
+
         /// <summary>
         /// Gets the number of simulation island members in the simulation island which are prepared to go to sleep.
         /// </summary>
-        public int DeactivationCandidateCount
-        {
-            get { return deactivationCandidateCount; }
-        }
+        public int DeactivationCandidateCount => deactivationCandidateCount;
 
         ///<summary>
         /// Constructs a simulation island.
@@ -67,21 +50,25 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             CleanUp();
         }
 
-        Action<SimulationIslandMember> memberActivatedDelegate;
-        void MemberActivated(SimulationIslandMember member)
+        private Action<SimulationIslandMember> memberActivatedDelegate;
+
+        private void MemberActivated(SimulationIslandMember member)
         {
             IsActive = true;
         }
 
-        Action<SimulationIslandMember> becameDeactivationCandidateDelegate;
-        void BecameDeactivationCandidate(SimulationIslandMember member)
+        private Action<SimulationIslandMember> becameDeactivationCandidateDelegate;
+
+        private void BecameDeactivationCandidate(SimulationIslandMember member)
         {
             Interlocked.Increment(ref deactivationCandidateCount);
             //The reason why this does not deactivate when count == members.count is that deactivation candidate count will go up and down in parallel.
             //The actual deactivation process is not designed to be thread safe.  Perhaps doable, but perhaps not worth the effort.
         }
-        Action<SimulationIslandMember> becameNonDeactivationCandidateDelegate;
-        void BecameNonDeactivationCandidate(SimulationIslandMember member)
+
+        private Action<SimulationIslandMember> becameNonDeactivationCandidateDelegate;
+
+        private void BecameNonDeactivationCandidate(SimulationIslandMember member)
         {
             Interlocked.Decrement(ref deactivationCandidateCount);
         }
@@ -104,15 +91,13 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                     isActive = false;
                     return true;
                 }
-                return false;
-            }
-            else
-            {
-                //Reset the allow deactivation flag so we don't stay inactive forever.
-                allowDeactivation = true;
+
                 return false;
             }
 
+            //Reset the allow deactivation flag so we don't stay inactive forever.
+            allowDeactivation = true;
+            return false;
         }
 
         ///<summary>
@@ -137,7 +122,10 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                 }
             }
             else
-                throw new ArgumentException("Member either is not dynamic or already has a simulation island; cannot add.");
+            {
+                throw new ArgumentException(
+                    "Member either is not dynamic or already has a simulation island; cannot add.");
+            }
         }
 
         ///<summary>
@@ -168,9 +156,10 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                 }
             }
             else
+            {
                 throw new ArgumentException("Member does not belong to island; cannot remove.");
+            }
         }
-
 
 
         internal void CleanUp()
@@ -180,6 +169,5 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             memberCount = 0;
             immediateParent = this;
         }
-
     }
 }

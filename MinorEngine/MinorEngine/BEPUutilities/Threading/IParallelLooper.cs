@@ -2,13 +2,11 @@ using System;
 
 namespace MinorEngine.BEPUutilities.Threading
 {
-
     /// <summary>
     /// Provides a multithreaded for loop interface.
     /// </summary>
     public interface IParallelLooper
     {
-
         /// <summary>
         /// Loops from the starting index (inclusive) to the ending index (exclusive), calling the loopBody at each iteration.
         /// The forLoop function will not return until all iterations are complete.

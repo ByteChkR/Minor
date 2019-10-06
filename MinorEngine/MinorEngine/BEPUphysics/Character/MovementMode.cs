@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUphysics.Character
+﻿namespace MinorEngine.BEPUphysics.Character
 {
     /// <summary>
     /// Defines different movement states associated with the character.
@@ -14,11 +9,13 @@ namespace MinorEngine.BEPUphysics.Character
         /// The character has controlled contact with a support object. The character can move normally.
         /// </summary>
         Traction,
+
         /// <summary>
         /// The character has uncontrolled contact with a support object. The character should have limited control over its movement.
         /// Imagine sliding down a steep slope.
         /// </summary>
         Sliding,
+
         /// <summary>
         /// The character has no support.
         /// </summary>

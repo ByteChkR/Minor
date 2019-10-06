@@ -9,6 +9,7 @@ namespace MinorEngine.BEPUik
         /// Gets or sets the free hinge axis attached to connection A in its local space.
         /// </summary>
         public Vector3 LocalHingeAxis;
+
         /// <summary>
         /// Gets or sets the free twist axis attached to connection B in its local space.
         /// </summary>
@@ -20,11 +21,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 WorldHingeAxis
         {
-            get { return Quaternion.Transform(LocalHingeAxis, ConnectionA.Orientation); }
-            set
-            {
-                LocalHingeAxis = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
-            }
+            get => Quaternion.Transform(LocalHingeAxis, ConnectionA.Orientation);
+            set => LocalHingeAxis = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -32,11 +30,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 WorldTwistAxis
         {
-            get { return Quaternion.Transform(LocalTwistAxis, ConnectionB.Orientation); }
-            set
-            {
-                LocalTwistAxis = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
-            }
+            get => Quaternion.Transform(LocalTwistAxis, ConnectionB.Orientation);
+            set => LocalTwistAxis = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         /// <summary>
@@ -71,10 +66,10 @@ namespace MinorEngine.BEPUik
             Vector3 restrictedAxis;
             Vector3.Cross(ref worldHingeAxis, ref worldTwistAxis, out restrictedAxis);
             //Attempt to normalize the restricted axis.
-            float lengthSquared = restrictedAxis.LengthSquared();
+            var lengthSquared = restrictedAxis.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
-                Vector3.Divide(ref restrictedAxis, (float)Math.Sqrt(lengthSquared), out restrictedAxis);
+                Vector3.Divide(ref restrictedAxis, (float) Math.Sqrt(lengthSquared), out restrictedAxis);
             }
             else
             {
@@ -83,20 +78,18 @@ namespace MinorEngine.BEPUik
 
 
             angularJacobianA = new Matrix3x3
-              {
-                  M11 = restrictedAxis.X,
-                  M12 = restrictedAxis.Y,
-                  M13 = restrictedAxis.Z,
-              };
+            {
+                M11 = restrictedAxis.X,
+                M12 = restrictedAxis.Y,
+                M13 = restrictedAxis.Z
+            };
             Matrix3x3.Negate(ref angularJacobianA, out angularJacobianB);
 
             float error;
             Vector3.Dot(ref worldHingeAxis, ref worldTwistAxis, out error);
-            error = (float)Math.Acos(MathHelper.Clamp(error, -1, 1)) - MathHelper.PiOver2;
+            error = (float) Math.Acos(MathHelper.Clamp(error, -1, 1)) - MathHelper.PiOver2;
 
             velocityBias = new Vector3(errorCorrectionFactor * error, 0, 0);
-
-
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using MinorEngine.BEPUphysics.Constraints.SolverGroups;
+﻿using System;
+using MinorEngine.BEPUphysics.Constraints.SolverGroups;
 using MinorEngine.BEPUphysics.Entities;
-using System;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.Constraints.Collision
@@ -11,17 +11,19 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
     ///</summary>
     public class ContactManifoldConstraintGroup : SolverGroup
     {
-
         protected Entity entityA;
+
         ///<summary>
         /// Gets the first entity in the pair.
         ///</summary>
-        public Entity EntityA { get { return entityA; } }
+        public Entity EntityA => entityA;
+
         protected Entity entityB;
+
         ///<summary>
         /// Gets the second entity in the pair.
         ///</summary>
-        public Entity EntityB { get { return entityB; } }
+        public Entity EntityB => entityB;
 
         ///<summary>
         /// Adds a constraint to the group.
@@ -45,12 +47,14 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 }
                 else
                 {
-                    throw new InvalidOperationException("Cannot add SolverUpdateable to SolverGroup; it already belongs to a SolverGroup.");
+                    throw new InvalidOperationException(
+                        "Cannot add SolverUpdateable to SolverGroup; it already belongs to a SolverGroup.");
                 }
             }
             else
             {
-                throw new InvalidOperationException("Cannot add SolverUpdateable to SolverGroup; it already belongs to a solver.");
+                throw new InvalidOperationException(
+                    "Cannot add SolverUpdateable to SolverGroup; it already belongs to a solver.");
             }
         }
 
@@ -74,7 +78,8 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             }
             else
             {
-                throw new InvalidOperationException("Cannot remove SolverUpdateable from SolverGroup; it doesn't belong to this SolverGroup.");
+                throw new InvalidOperationException(
+                    "Cannot remove SolverUpdateable from SolverGroup; it doesn't belong to this SolverGroup.");
             }
         }
 
@@ -83,11 +88,15 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             //The default implementation for solver groups looks at every single subconstraint.
             //That's not necessary for these special constraints.
             if (entityA != null)
+            {
                 outputInvolvedEntities.Add(entityA);
-            if (entityB != null)
-                outputInvolvedEntities.Add(entityB);
-        }
+            }
 
+            if (entityB != null)
+            {
+                outputInvolvedEntities.Add(entityB);
+            }
+        }
 
 
         protected internal override void OnInvolvedEntitiesChanged()
@@ -123,6 +132,5 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             entityB = null;
             OnInvolvedEntitiesChanged();
         }
-
     }
 }

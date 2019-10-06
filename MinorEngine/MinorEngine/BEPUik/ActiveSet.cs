@@ -12,22 +12,18 @@ namespace MinorEngine.BEPUik
     public class ActiveSet : IDisposable
     {
         internal List<IKJoint> joints = new List<IKJoint>();
+
         /// <summary>
         /// Gets the most recently computed set of active joints sorted by their traversal distance from control constraints.
         /// </summary>
-        public ReadOnlyList<IKJoint> Joints
-        {
-            get { return new ReadOnlyList<IKJoint>(joints); }
-        }
+        public ReadOnlyList<IKJoint> Joints => new ReadOnlyList<IKJoint>(joints);
 
         internal List<Bone> bones = new List<Bone>();
+
         /// <summary>
         /// Gets the most recently computed set of active bones sorted by their traversal distance from control constraints.
         /// </summary>
-        public ReadOnlyList<Bone> Bones
-        {
-            get { return new ReadOnlyList<Bone>(bones); }
-        }
+        public ReadOnlyList<Bone> Bones => new ReadOnlyList<Bone>(bones);
 
         /// <summary>
         /// Gets or sets whether or not to automatically configure the masses of bones in the active set based upon their dependencies.
@@ -37,42 +33,42 @@ namespace MinorEngine.BEPUik
         public bool UseAutomass { get; set; }
 
         private float automassUnstressedFalloff = 0.9f;
+
         /// <summary>
         /// Gets or sets the multiplier applied to the mass of a bone before distributing it to the child bones.
         /// Used only when UseAutomass is set to true.
         /// </summary>
         public float AutomassUnstressedFalloff
         {
-            get { return automassUnstressedFalloff; }
-            set
-            {
-                automassUnstressedFalloff = Math.Max(value, 0);
-            }
+            get => automassUnstressedFalloff;
+            set => automassUnstressedFalloff = Math.Max(value, 0);
         }
 
         private float automassTarget = 1;
+
         /// <summary>
         /// Gets or sets the mass that the heaviest bones will have when automass is enabled.
         /// </summary>
         public float AutomassTarget
         {
-            get { return automassTarget; }
+            get => automassTarget;
             set
             {
                 if (value <= 0)
+                {
                     throw new ArgumentException("Mass must be positive.");
+                }
+
                 automassTarget = value;
             }
         }
 
         //Stores data about an in-process BFS.
-        Queue<Bone> bonesToVisit = new Queue<Bone>();
+        private Queue<Bone> bonesToVisit = new Queue<Bone>();
 
 
-        void FindStressedPaths(List<Control> controls)
+        private void FindStressedPaths(List<Control> controls)
         {
-
-
             //Start a depth first search from each controlled bone to find any pinned bones.
             //All paths from the controlled bone to the pinned bones are 'stressed.'
             //Stressed bones are given greater mass later on.
@@ -82,8 +78,11 @@ namespace MinorEngine.BEPUik
                 //Mark bones affected by controls so we can find them in the traversal.
                 foreach (var otherControl in controls)
                 {
-                    if (otherControl != control) //Don't include the current control; that could cause false positives for stress cycles.
+                    if (otherControl != control
+                    ) //Don't include the current control; that could cause false positives for stress cycles.
+                    {
                         otherControl.TargetBone.targetedByOtherControl = true;
+                    }
                 }
 
                 //The control.TargetBone.Parent is null; that's one of the terminating condition for the 'upwards' post-traversal
@@ -97,6 +96,7 @@ namespace MinorEngine.BEPUik
                     bone.IsActive = false;
                     bone.predecessors.Clear();
                 }
+
                 bones.Clear();
 
                 //Get rid of the targetedByOtherControl markings.
@@ -107,12 +107,9 @@ namespace MinorEngine.BEPUik
             }
 
             //All bones in the active set now have their appropriate StressCount values.
-
-
-
         }
 
-        void NotifyPredecessorsOfStress(Bone bone)
+        private void NotifyPredecessorsOfStress(Bone bone)
         {
             //We don't need to tell already-stressed bones about the fact that they are stressed.
             //Their predecessors are already stressed either by previous notifications like this or
@@ -123,26 +120,32 @@ namespace MinorEngine.BEPUik
                 bone.stressCount++;
                 foreach (var predecessor in bone.predecessors)
                 {
-
                     NotifyPredecessorsOfStress(predecessor);
                 }
             }
         }
-        void FindStressedPaths(Bone bone)
+
+        private void FindStressedPaths(Bone bone)
         {
             bone.IsActive = true; //We must keep track of which bones have been visited
             bones.Add(bone);
             foreach (var joint in bone.joints)
             {
-                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
-                if (bone.predecessors.Contains(boneToAnalyze) ||  //boneToAnalyze is a parent of bone. Don't revisit them, that's where we came from!
-                    boneToAnalyze.predecessors.Contains(bone)) //This bone already explored the next bone; don't do it again.
+                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                if (
+                    bone.predecessors
+                        .Contains(
+                            boneToAnalyze) || //boneToAnalyze is a parent of bone. Don't revisit them, that's where we came from!
+                    boneToAnalyze.predecessors.Contains(bone)
+                ) //This bone already explored the next bone; don't do it again.
+                {
                     continue;
+                }
 
                 if (!boneToAnalyze.Pinned)
-                {
                     //The boneToAnalyze is reached by following a path from bone. We record this regardless of whether or not we traverse further.
                     //There is one exception: DO NOT create paths to pinned bones!
+                {
                     boneToAnalyze.predecessors.Add(bone);
                 }
 
@@ -158,18 +161,19 @@ namespace MinorEngine.BEPUik
                 }
 
                 if (boneToAnalyze.targetedByOtherControl)
-                {
                     //We will consider other controls to be sources of stress. This prevents mass ratio issues from allowing multiple controls to tear a structure apart.
                     //We do not, however, stop the traversal here. Allow it to continue.         
+                {
                     NotifyPredecessorsOfStress(bone);
                 }
+
                 if (boneToAnalyze.IsActive)
-                {
                     //The bone has already been visited. We should not proceed.
                     //Any bone which is visited but not stressed is either A: not fully explored yet or B: fully explored.
                     //Given that we followed an unexplored path to the bone, it must be not fully explored.
                     //However, we do not attempt to perform exploration on the bone: any not-yet-fully-explored bones
                     //must belong to one of our parents in the DFS! They will take care of it.
+                {
                     continue;
                 }
 
@@ -178,11 +182,9 @@ namespace MinorEngine.BEPUik
                 FindStressedPaths(boneToAnalyze);
                 //If a child finds a pin, we will be notified of that fact by the above while loop which traverses the parent pointers.
             }
-
-
         }
 
-        void NotifyPredecessorsOfCycle(Bone bone)
+        private void NotifyPredecessorsOfCycle(Bone bone)
         {
             //Rather than attempting to only mark cycles, this will simply mark all of the cycle elements and any cycle predecessors up to the unstressed root.
             if (!bone.unstressedCycle && bone.stressCount == 0)
@@ -195,16 +197,21 @@ namespace MinorEngine.BEPUik
             }
         }
 
-        void FindCycles(Bone bone)
+        private void FindCycles(Bone bone)
         {
             //The current bone is known to not be stressed.
             foreach (var joint in bone.joints)
             {
-                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
 
-                if (bone.predecessors.Contains(boneToAnalyze) || //Do not attempt to traverse a path which leads to this bone.
-                    boneToAnalyze.predecessors.Contains(bone)) //Do not attempt to traverse a path which was already traversed *from this bone.*
+                if (bone.predecessors
+                        .Contains(boneToAnalyze) || //Do not attempt to traverse a path which leads to this bone.
+                    boneToAnalyze.predecessors.Contains(bone)
+                ) //Do not attempt to traverse a path which was already traversed *from this bone.*
+                {
                     continue;
+                }
+
                 //We found this bone. Regardless of what happens after, make sure that the bone knows about this path.
                 boneToAnalyze.predecessors.Add(bone);
 
@@ -232,25 +239,31 @@ namespace MinorEngine.BEPUik
         }
 
         private List<Bone> uniqueChildren = new List<Bone>();
-        void DistributeMass(Bone bone)
+
+        private void DistributeMass(Bone bone)
         {
             //Accumulate the number of child joints which we are going to distribute mass to.
             foreach (var joint in bone.joints)
             {
-                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
 
                 if (boneToAnalyze.traversed || boneToAnalyze.unstressedCycle ||
-                    uniqueChildren.Contains(boneToAnalyze)) //There could exist multiple joints involved with the same pair of bones; don't continually double count.
-                {
+                    uniqueChildren.Contains(boneToAnalyze)
+                    ) //There could exist multiple joints involved with the same pair of bones; don't continually double count.
                     //The bone was already visited or was a member of the stressed path we branched from. Do not proceed.
+                {
                     continue;
                 }
+
                 uniqueChildren.Add(boneToAnalyze);
             }
+
             //We distribute a portion of the current bone's total mass to the child bones.
             //By applying a multiplier automassUnstressedFalloff, we guarantee that a chain has a certain maximum weight (excluding cycles).
             //This is thanks to the convergent geometric series sum(automassUnstressedFalloff^n, 1, infinity).
-            float massPerChild = uniqueChildren.Count > 0 ? automassUnstressedFalloff * bone.Mass / uniqueChildren.Count : 0;
+            var massPerChild = uniqueChildren.Count > 0
+                ? automassUnstressedFalloff * bone.Mass / uniqueChildren.Count
+                : 0;
 
             uniqueChildren.Clear();
             //(If the number of children is 0, then the only bones which can exist are either bones which were already traversed and will be skipped
@@ -259,36 +272,35 @@ namespace MinorEngine.BEPUik
             //The current bone is known to not be stressed.
             foreach (var joint in bone.joints)
             {
-                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                 //Note that no testing for pinned bones is necessary; based on the previous stressed path searches,
                 //any unstressed bone is known to not be a path to any pinned bones.
-                if (boneToAnalyze.traversed)// || bone.unstressedCycle)//bone.predecessors.Contains(boneToAnalyze))
-                {
+                if (boneToAnalyze.traversed) // || bone.unstressedCycle)//bone.predecessors.Contains(boneToAnalyze))
                     //The bone was already visited or was a member of the stressed path we branched from. Do not proceed.
+                {
                     continue;
                 }
 
                 if (boneToAnalyze.unstressedCycle)
-                {
                     //This bone is part of a cycle! We cannot give it less mass; that would add in a potential instability.
                     //Just give it the current node's full mass.
+                {
                     boneToAnalyze.Mass = bone.Mass;
                 }
                 else
-                {
                     //This bone is not a part of a cycle; give it the allotted mass.
+                {
                     boneToAnalyze.Mass = massPerChild;
                 }
+
                 //The root bone is already added to the traversal set; add the children.
                 boneToAnalyze.traversed = true;
                 //Note that we do not need to add anything to the bones list here; the previous FindCycles DFS on this unstressed part of the graph did it for us.
                 DistributeMass(boneToAnalyze);
-
             }
-
         }
 
-        void DistributeMass(List<Control> controls)
+        private void DistributeMass(List<Control> controls)
         {
             //We assume that all stressed paths have already been marked with nonzero StressCounts.
             //Perform a multi-origin breadth-first search starting at every control. Look for any bones
@@ -336,15 +348,13 @@ namespace MinorEngine.BEPUik
                     //Do not continue the breadth-first search into the unstressed part of the graph.
                     continue;
                 }
-                else
-                {
-                    //The mass of stressed bones is a multiplier on the number of stressed paths overlapping the bone.
-                    bone.Mass = bone.stressCount;
-                }
+
+                //The mass of stressed bones is a multiplier on the number of stressed paths overlapping the bone.
+                bone.Mass = bone.stressCount;
                 //This bone is not an unstressed branch root. Continue the breadth first search!
                 foreach (var joint in bone.joints)
                 {
-                    Bone boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                    var boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                     if (!boneToAdd.Pinned && //Pinned bones act as dead ends! Don't try to traverse them.
                         !boneToAdd.IsActive) //Don't try to add a bone if it's already active.
                     {
@@ -362,14 +372,16 @@ namespace MinorEngine.BEPUik
             }
 
             //Normalize the masses of objects so that the heaviest bones have AutomassTarget mass.
-            float lowestInverseMass = float.MaxValue;
+            var lowestInverseMass = float.MaxValue;
             foreach (var bone in bones)
             {
                 if (bone.inverseMass < lowestInverseMass)
+                {
                     lowestInverseMass = bone.inverseMass;
+                }
             }
 
-            float inverseMassScale = 1 / (AutomassTarget * lowestInverseMass);
+            var inverseMassScale = 1 / (AutomassTarget * lowestInverseMass);
 
             foreach (var bone in bones)
             {
@@ -392,17 +404,19 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public void Clear()
         {
-            for (int i = 0; i < bones.Count; i++)
+            for (var i = 0; i < bones.Count; i++)
             {
                 bones[i].IsActive = false;
                 bones[i].stressCount = 0;
                 bones[i].predecessors.Clear();
                 bones[i].Mass = .01f;
             }
-            for (int i = 0; i < joints.Count; i++)
+
+            for (var i = 0; i < joints.Count; i++)
             {
                 joints[i].IsActive = false;
             }
+
             bones.Clear();
             joints.Clear();
         }
@@ -414,7 +428,7 @@ namespace MinorEngine.BEPUik
             //Two IKSolvers cannot operate on the same graph; the active set flags could be corrupted.
             Clear();
 
-            for (int i = 0; i < joints.Count; ++i)
+            for (var i = 0; i < joints.Count; ++i)
             {
                 if (joints[i].Enabled)
                 {
@@ -438,15 +452,11 @@ namespace MinorEngine.BEPUik
             //This could conceivably encounter issues with pathological cases, but we don't have controls to easily guide a better choice.
             if (UseAutomass)
             {
-                for (int i = 0; i < bones.Count; ++i)
+                for (var i = 0; i < bones.Count; ++i)
                 {
                     bones[i].Mass = automassTarget;
                 }
             }
-
-
-
-
         }
 
         /// <summary>
@@ -498,7 +508,8 @@ namespace MinorEngine.BEPUik
                         //This is the first time the joint has been visited, so plop it into the list.
                         joints.Add(joint);
                     }
-                    Bone boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+
+                    var boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                     if (!boneToAdd.Pinned && //Pinned bones act as dead ends! Don't try to traverse them.
                         !boneToAdd.IsActive) //Don't try to add a bone if it's already active.
                     {
@@ -511,7 +522,6 @@ namespace MinorEngine.BEPUik
                     }
                 }
             }
-
         }
 
         ~ActiveSet()

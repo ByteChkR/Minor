@@ -1,11 +1,10 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
 using MinorEngine.BEPUphysics.CollisionShapes;
-using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUutilities.ResourceManagement;
 using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUphysics.OtherSpaceStages;
-using RigidTransform = MinorEngine.BEPUutilities.RigidTransform;
+using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries
 {
@@ -17,17 +16,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public class InstancedMesh : StaticCollidable
     {
-
         internal AffineTransform worldTransform;
+
         ///<summary>
         /// Gets or sets the world transform of the mesh.
         ///</summary>
         public AffineTransform WorldTransform
         {
-            get
-            {
-                return worldTransform;
-            }
+            get => worldTransform;
             set
             {
                 worldTransform = value;
@@ -63,38 +59,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
             this.worldTransform = worldTransform;
             base.Shape = meshShape;
             Events = new ContactEventManager<InstancedMesh>();
-
-
         }
 
         ///<summary>
         /// Gets the shape used by the instanced mesh.
         ///</summary>
-        public new InstancedMeshShape Shape
-        {
-            get
-            {
-                return (InstancedMeshShape)shape;
-            }
-        }
+        public new InstancedMeshShape Shape => (InstancedMeshShape) shape;
 
         internal TriangleSidedness sidedness = TriangleSidedness.DoubleSided;
+
         ///<summary>
         /// Gets or sets the sidedness of the mesh.  This can be used to ignore collisions and rays coming from a direction relative to the winding of the triangle.
         ///</summary>
         public TriangleSidedness Sidedness
         {
-            get
-            {
-                return sidedness;
-            }
-            set
-            {
-                sidedness = value;
-            }
+            get => sidedness;
+            set => sidedness = value;
         }
 
         internal bool improveBoundaryBehavior = true;
+
         /// <summary>
         /// Gets or sets whether or not the collision system should attempt to improve contact behavior at the boundaries between triangles.
         /// This has a slight performance cost, but prevents objects sliding across a triangle boundary from 'bumping,' and otherwise improves
@@ -102,51 +86,44 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         /// </summary>
         public bool ImproveBoundaryBehavior
         {
-            get
-            {
-                return improveBoundaryBehavior;
-            }
-            set
-            {
-                improveBoundaryBehavior = value;
-            }
+            get => improveBoundaryBehavior;
+            set => improveBoundaryBehavior = value;
         }
 
 
         protected internal ContactEventManager<InstancedMesh> events;
+
         ///<summary>
         /// Gets the event manager of the mesh.
         ///</summary>
         public ContactEventManager<InstancedMesh> Events
         {
-            get
-            {
-                return events;
-            }
+            get => events;
             set
             {
                 if (value.Owner != null && //Can't use a manager which is owned by a different entity.
                     value != events) //Stay quiet if for some reason the same event manager is being set.
-                    throw new ArgumentException("Event manager is already owned by a mesh; event managers cannot be shared.");
+                {
+                    throw new ArgumentException(
+                        "Event manager is already owned by a mesh; event managers cannot be shared.");
+                }
+
                 if (events != null)
+                {
                     events.Owner = null;
+                }
+
                 events = value;
                 if (events != null)
+                {
                     events.Owner = this;
+                }
             }
-        }
-        protected internal override IContactEventTriggerer EventTriggerer
-        {
-            get { return events; }
         }
 
-        protected override IDeferredEventCreator EventCreator
-        {
-            get
-            {
-                return events;
-            }
-        }
+        protected internal override IContactEventTriggerer EventTriggerer => events;
+
+        protected override IDeferredEventCreator EventCreator => events;
 
 
         /// <summary>
@@ -186,6 +163,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
                 Matrix3x3.TransformTranspose(ref rayHit.Normal, ref inverse.LinearTransform, out rayHit.Normal);
                 return true;
             }
+
             rayHit = new RayHit();
             return false;
         }
@@ -198,17 +176,18 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         /// <param name="sweep">Sweep to apply to the shape.</param>
         /// <param name="hit">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public override bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, out RayHit hit)
+        public override bool ConvexCast(CollisionShapes.ConvexShapes.ConvexShape castShape,
+            ref RigidTransform startingTransform, ref Vector3 sweep, out RayHit hit)
         {
             hit = new RayHit();
             BoundingBox boundingBox;
             castShape.GetSweptLocalBoundingBox(ref startingTransform, ref worldTransform, ref sweep, out boundingBox);
             var tri = PhysicsThreadResources.GetTriangle();
             var hitElements = CommonResources.GetIntList();
-            if (this.Shape.TriangleMesh.Tree.GetOverlaps(boundingBox, hitElements))
+            if (Shape.TriangleMesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (int i = 0; i < hitElements.Count; i++)
+                for (var i = 0; i < hitElements.Count; i++)
                 {
                     Shape.TriangleMesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     AffineTransform.Transform(ref tri.vA, ref worldTransform, out tri.vA);
@@ -222,31 +201,38 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
                     Vector3.Subtract(ref tri.vB, ref center, out tri.vB);
                     Vector3.Subtract(ref tri.vC, ref center, out tri.vC);
                     tri.MaximumRadius = tri.vA.LengthSquared();
-                    float radius = tri.vB.LengthSquared();
+                    var radius = tri.vB.LengthSquared();
                     if (tri.MaximumRadius < radius)
+                    {
                         tri.MaximumRadius = radius;
+                    }
+
                     radius = tri.vC.LengthSquared();
                     if (tri.MaximumRadius < radius)
+                    {
                         tri.MaximumRadius = radius;
-                    tri.MaximumRadius = (float)Math.Sqrt(tri.MaximumRadius);
+                    }
+
+                    tri.MaximumRadius = (float) Math.Sqrt(tri.MaximumRadius);
                     tri.collisionMargin = 0;
-                    var triangleTransform = new RigidTransform { Orientation = Quaternion.Identity, Position = center };
+                    var triangleTransform = new RigidTransform {Orientation = Quaternion.Identity, Position = center};
                     RayHit tempHit;
-                    if (MPRToolbox.Sweep(castShape, tri, ref sweep, ref Toolbox.ZeroVector, ref startingTransform, ref triangleTransform, out tempHit) && tempHit.T < hit.T)
+                    if (MPRToolbox.Sweep(castShape, tri, ref sweep, ref Toolbox.ZeroVector, ref startingTransform,
+                            ref triangleTransform, out tempHit) && tempHit.T < hit.T)
                     {
                         hit = tempHit;
                     }
                 }
+
                 tri.MaximumRadius = 0;
                 PhysicsThreadResources.GiveBack(tri);
                 CommonResources.GiveBack(hitElements);
                 return hit.T != float.MaxValue;
             }
+
             PhysicsThreadResources.GiveBack(tri);
             CommonResources.GiveBack(hitElements);
             return false;
         }
-
-
     }
 }

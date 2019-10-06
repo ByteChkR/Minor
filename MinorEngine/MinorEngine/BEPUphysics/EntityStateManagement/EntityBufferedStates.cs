@@ -16,19 +16,25 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         /// Gets the buffered states accessor for this entity.
         /// Contains the current snapshot of the entity's states.
         ///</summary>
-        public BufferedStatesAccessor States { get; private set; }
+        public BufferedStatesAccessor States { get; }
+
         ///<summary>
         /// Gets the interpolated states accessor for this entity.
         /// Contains a blended snapshot between the previous and current states based on the
         /// internal timestepping remainder.
         ///</summary>
-        public InterpolatedStatesAccessor InterpolatedStates { get; private set; }
+        public InterpolatedStatesAccessor InterpolatedStates { get; }
 
         internal int motionStateIndex;
+
         ///<summary>
         /// Gets the motion state index of this entity.
         ///</summary>
-        public int MotionStateIndex { get { return motionStateIndex; } internal set { motionStateIndex = value; } }
+        public int MotionStateIndex
+        {
+            get => motionStateIndex;
+            internal set => motionStateIndex = value;
+        }
 
         ///<summary>
         /// Constructs a new buffered states entry.
@@ -44,6 +50,6 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///<summary>
         /// Gets the entity owning this entry.
         ///</summary>
-        public Entity Entity { get; private set; }
+        public Entity Entity { get; }
     }
 }

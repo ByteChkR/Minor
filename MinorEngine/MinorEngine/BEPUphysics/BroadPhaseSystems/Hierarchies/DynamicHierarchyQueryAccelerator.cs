@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 {
@@ -11,6 +10,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
     public class DynamicHierarchyQueryAccelerator : IQueryAccelerator
     {
         private readonly DynamicHierarchy hierarchy;
+
         internal DynamicHierarchyQueryAccelerator(DynamicHierarchy hierarchy)
         {
             this.hierarchy = hierarchy;
@@ -19,13 +19,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         /// <summary>
         /// Gets the broad phase associated with this query accelerator.
         /// </summary>
-        public BroadPhase BroadPhase
-        {
-            get
-            {
-                return hierarchy;
-            }
-        }
+        public BroadPhase BroadPhase => hierarchy;
 
         /// <summary>
         /// Collects all entries with bounding boxes which intersect the given bounding box.
@@ -35,8 +29,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         public void GetEntries(BoundingBox box, IList<BroadPhaseEntry> entries)
         {
             if (hierarchy.root != null)
+            {
                 hierarchy.root.GetOverlaps(ref box, entries);
-
+            }
         }
 
         ///// <summary>
@@ -59,8 +54,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         public void GetEntries(BoundingSphere sphere, IList<BroadPhaseEntry> entries)
         {
             if (hierarchy.root != null)
+            {
                 hierarchy.root.GetOverlaps(ref sphere, entries);
-
+            }
         }
 
 
@@ -78,6 +74,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 
                 return entries.Count > 0;
             }
+
             return false;
         }
 
@@ -95,9 +92,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 
                 return entries.Count > 0;
             }
+
             return false;
         }
-
-
     }
 }

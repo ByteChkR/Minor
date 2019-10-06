@@ -1,6 +1,4 @@
-﻿
-
-namespace MinorEngine.BEPUutilities
+﻿namespace MinorEngine.BEPUutilities
 {
     ///<summary>
     /// A transformation composed of a linear transformation and a translation.
@@ -11,6 +9,7 @@ namespace MinorEngine.BEPUutilities
         /// Translation in the affine transform.
         ///</summary>
         public Vector3 Translation;
+
         /// <summary>
         /// Linear transform in the affine transform.
         /// </summary>
@@ -92,7 +91,6 @@ namespace MinorEngine.BEPUutilities
         {
             LinearTransform = linearTransform;
             Translation = translation;
-
         }
 
         ///<summary>
@@ -134,7 +132,7 @@ namespace MinorEngine.BEPUutilities
         {
             get
             {
-                var t = new AffineTransform { LinearTransform = Matrix3x3.Identity, Translation = new Vector3() };
+                var t = new AffineTransform {LinearTransform = Matrix3x3.Identity, Translation = new Vector3()};
                 return t;
             }
         }
@@ -157,7 +155,8 @@ namespace MinorEngine.BEPUutilities
         ///<param name="position">Position to transform.</param>
         ///<param name="transform">Transform to invert and apply.</param>
         ///<param name="transformed">Transformed position.</param>
-        public static void TransformInverse(ref Vector3 position, ref AffineTransform transform, out Vector3 transformed)
+        public static void TransformInverse(ref Vector3 position, ref AffineTransform transform,
+            out Vector3 transformed)
         {
             Vector3.Subtract(ref position, ref transform.Translation, out transformed);
             Matrix3x3 inverse;
@@ -185,7 +184,7 @@ namespace MinorEngine.BEPUutilities
         /// <param name="transform">Combined transform.</param>
         public static void Multiply(ref AffineTransform a, ref AffineTransform b, out AffineTransform transform)
         {
-            Matrix3x3 linearTransform;//Have to use temporary variable just in case a or b reference is transform.
+            Matrix3x3 linearTransform; //Have to use temporary variable just in case a or b reference is transform.
             Matrix3x3.Multiply(ref a.LinearTransform, ref b.LinearTransform, out linearTransform);
             Vector3 translation;
             Matrix3x3.Transform(ref a.Translation, ref b.LinearTransform, out translation);
@@ -201,7 +200,7 @@ namespace MinorEngine.BEPUutilities
         ///<param name="transform">Combined transform.</param>
         public static void Multiply(ref RigidTransform a, ref AffineTransform b, out AffineTransform transform)
         {
-            Matrix3x3 linearTransform;//Have to use temporary variable just in case b reference is transform.
+            Matrix3x3 linearTransform; //Have to use temporary variable just in case b reference is transform.
             Matrix3x3.CreateFromQuaternion(ref a.Orientation, out linearTransform);
             Matrix3x3.Multiply(ref linearTransform, ref b.LinearTransform, out linearTransform);
             Vector3 translation;
@@ -247,6 +246,5 @@ namespace MinorEngine.BEPUutilities
             Matrix3x3.CreateFromQuaternion(ref rigid.Orientation, out toReturn.LinearTransform);
             return toReturn;
         }
-
     }
 }

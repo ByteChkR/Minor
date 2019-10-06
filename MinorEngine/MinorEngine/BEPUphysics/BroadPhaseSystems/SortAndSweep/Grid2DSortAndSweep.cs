@@ -23,45 +23,38 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         /// </summary>
         public static float CellSize
         {
-            get
-            {
-                return 1 / cellSizeInverse;
-            }
-            set
-            {
-                cellSizeInverse = 1 / value;
-            }
+            get => 1 / cellSizeInverse;
+            set => cellSizeInverse = 1 / value;
         }
+
         //TODO: Try different values for this.
-        internal static float cellSizeInverse = 1 / 8f; 
+        internal static float cellSizeInverse = 1 / 8f;
 
         internal static void ComputeCell(ref Vector3 v, out Int2 cell)
         {
-            cell.Y = (int)Math.Floor(v.Y * cellSizeInverse);
-            cell.Z = (int)Math.Floor(v.Z * cellSizeInverse);
+            cell.Y = (int) Math.Floor(v.Y * cellSizeInverse);
+            cell.Z = (int) Math.Floor(v.Z * cellSizeInverse);
         }
-
-        
-
 
 
         internal SortedGrid2DSet cellSet = new SortedGrid2DSet();
 
 
-        RawList<Grid2DEntry> entries = new RawList<Grid2DEntry>();
-        Action<int> updateEntry, updateCell;
+        private RawList<Grid2DEntry> entries = new RawList<Grid2DEntry>();
+        private Action<int> updateEntry, updateCell;
 
         /// <summary>
         /// Constructs a grid-based sort and sweep broad phase.
         /// </summary>
         /// <param name="parallelLooper">Parallel loop provider to use for the broad phase.</param>
         public Grid2DSortAndSweep(IParallelLooper parallelLooper)
-            :base(parallelLooper)
+            : base(parallelLooper)
         {
             updateEntry = UpdateEntry;
             updateCell = UpdateCell;
             QueryAccelerator = new Grid2DSortAndSweepQueryAccelerator(this);
         }
+
         /// <summary>
         /// Constructs a grid-based sort and sweep broad phase.
         /// </summary>
@@ -72,7 +65,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
             QueryAccelerator = new Grid2DSortAndSweepQueryAccelerator(this);
         }
 
-        UnsafeResourcePool<Grid2DEntry> entryPool = new UnsafeResourcePool<Grid2DEntry>();
+        private UnsafeResourcePool<Grid2DEntry> entryPool = new UnsafeResourcePool<Grid2DEntry>();
+
         /// <summary>
         /// Adds an entry to the broad phase.
         /// </summary>
@@ -84,18 +78,19 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
             Vector3 offset;
             Vector3.Subtract(ref entry.boundingBox.Max, ref entry.boundingBox.Min, out offset);
             if (offset.X * offset.Y * offset.Z == 0)
+            {
                 entry.UpdateBoundingBox();
+            }
+
             var newEntry = entryPool.Take();
             newEntry.Initialize(entry);
             entries.Add(newEntry);
             //Add the object to the grid.
-            for (int i = newEntry.previousMin.Y; i <= newEntry.previousMax.Y; i++)
+            for (var i = newEntry.previousMin.Y; i <= newEntry.previousMax.Y; i++)
+            for (var j = newEntry.previousMin.Z; j <= newEntry.previousMax.Z; j++)
             {
-                for (int j = newEntry.previousMin.Z; j <= newEntry.previousMax.Z; j++)
-                {
-                    var index = new Int2 {Y = i, Z = j};
-                    cellSet.Add(ref index, newEntry);
-                }
+                var index = new Int2 {Y = i, Z = j};
+                cellSet.Add(ref index, newEntry);
             }
         }
 
@@ -106,21 +101,20 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         public override void Remove(BroadPhaseEntry entry)
         {
             base.Remove(entry);
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 if (entries.Elements[i].item == entry)
                 {
                     var gridEntry = entries.Elements[i];
                     entries.RemoveAt(i);
                     //Remove the object from any cells that it is held by.
-                    for (int j = gridEntry.previousMin.Y; j <= gridEntry.previousMax.Y; j++)
+                    for (var j = gridEntry.previousMin.Y; j <= gridEntry.previousMax.Y; j++)
+                    for (var k = gridEntry.previousMin.Z; k <= gridEntry.previousMax.Z; k++)
                     {
-                        for (int k = gridEntry.previousMin.Z; k <= gridEntry.previousMax.Z; k++)
-                        {
-                            var index = new Int2 {Y = j, Z = k};
-                            cellSet.Remove(ref index, gridEntry);
-                        }
+                        var index = new Int2 {Y = j, Z = k};
+                        cellSet.Remove(ref index, gridEntry);
                     }
+
                     gridEntry.item = null;
                     entryPool.GiveBack(gridEntry);
                     return;
@@ -146,7 +140,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
             {
                 Overlaps.Clear();
                 //Update the placement of objects.
-                for (int i = 0; i < entries.Count; i++)
+                for (var i = 0; i < entries.Count; i++)
                 {
                     //Compute the current cells occupied by the entry.
                     var entry = entries.Elements[i];
@@ -155,34 +149,39 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
                     ComputeCell(ref entry.item.boundingBox.Max, out max);
                     //For any cell that used to be occupied (defined by the previous min/max),
                     //remove the entry.
-                    for (int j = entry.previousMin.Y; j <= entry.previousMax.Y; j++)
+                    for (var j = entry.previousMin.Y; j <= entry.previousMax.Y; j++)
+                    for (var k = entry.previousMin.Z; k <= entry.previousMax.Z; k++)
                     {
-                        for (int k = entry.previousMin.Z; k <= entry.previousMax.Z; k++)
+                        if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
                         {
-                            if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
-                                continue; //This cell is currently occupied, do not remove.
-                            var index = new Int2 {Y = j, Z = k};
-                            cellSet.Remove(ref index, entry);
+                            continue; //This cell is currently occupied, do not remove.
                         }
+
+                        var index = new Int2 {Y = j, Z = k};
+                        cellSet.Remove(ref index, entry);
                     }
+
                     //For any cell that is newly occupied (was not previously contained),
                     //add the entry.
-                    for (int j = min.Y; j <= max.Y; j++)
+                    for (var j = min.Y; j <= max.Y; j++)
+                    for (var k = min.Z; k <= max.Z; k++)
                     {
-                        for (int k = min.Z; k <= max.Z; k++)
+                        if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z &&
+                            k <= entry.previousMax.Z)
                         {
-                            if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z && k <= entry.previousMax.Z)
-                                continue; //This cell is already occupied, do not add.
-                            var index = new Int2 {Y = j, Z = k};
-                            cellSet.Add(ref index, entry);
+                            continue; //This cell is already occupied, do not add.
                         }
+
+                        var index = new Int2 {Y = j, Z = k};
+                        cellSet.Add(ref index, entry);
                     }
+
                     entry.previousMin = min;
                     entry.previousMax = max;
                 }
 
                 //Update each cell to find the overlaps.
-                for (int i = 0; i < cellSet.count; i++)
+                for (var i = 0; i < cellSet.count; i++)
                 {
                     cellSet.cells.Elements[i].UpdateOverlaps(this);
                 }
@@ -194,10 +193,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         //Improving the cell set operations directly should improve that problem and the query times noticeably.
 
 
-        SpinLock cellSetLocker = new SpinLock();
-        void UpdateEntry(int i)
-        {
+        private SpinLock cellSetLocker = new SpinLock();
 
+        private void UpdateEntry(int i)
+        {
             //Compute the current cells occupied by the entry.
             var entry = entries.Elements[i];
             Int2 min, max;
@@ -205,37 +204,42 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
             ComputeCell(ref entry.item.boundingBox.Max, out max);
             //For any cell that used to be occupied (defined by the previous min/max),
             //remove the entry.
-            for (int j = entry.previousMin.Y; j <= entry.previousMax.Y; j++)
+            for (var j = entry.previousMin.Y; j <= entry.previousMax.Y; j++)
+            for (var k = entry.previousMin.Z; k <= entry.previousMax.Z; k++)
             {
-                for (int k = entry.previousMin.Z; k <= entry.previousMax.Z; k++)
+                if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
                 {
-                    if (j >= min.Y && j <= max.Y && k >= min.Z && k <= max.Z)
-                        continue; //This cell is currently occupied, do not remove.
-                    var index = new Int2 {Y = j, Z = k};
-                    cellSetLocker.Enter();
-                    cellSet.Remove(ref index, entry);
-                    cellSetLocker.Exit();
+                    continue; //This cell is currently occupied, do not remove.
                 }
+
+                var index = new Int2 {Y = j, Z = k};
+                cellSetLocker.Enter();
+                cellSet.Remove(ref index, entry);
+                cellSetLocker.Exit();
             }
+
             //For any cell that is newly occupied (was not previously contained),
             //add the entry.
-            for (int j = min.Y; j <= max.Y; j++)
+            for (var j = min.Y; j <= max.Y; j++)
+            for (var k = min.Z; k <= max.Z; k++)
             {
-                for (int k = min.Z; k <= max.Z; k++)
+                if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z &&
+                    k <= entry.previousMax.Z)
                 {
-                    if (j >= entry.previousMin.Y && j <= entry.previousMax.Y && k >= entry.previousMin.Z && k <= entry.previousMax.Z)
-                        continue; //This cell is already occupied, do not add.
-                    var index = new Int2 {Y = j, Z = k};
-                    cellSetLocker.Enter();
-                    cellSet.Add(ref index, entry);
-                    cellSetLocker.Exit();
+                    continue; //This cell is already occupied, do not add.
                 }
+
+                var index = new Int2 {Y = j, Z = k};
+                cellSetLocker.Enter();
+                cellSet.Add(ref index, entry);
+                cellSetLocker.Exit();
             }
+
             entry.previousMin = min;
             entry.previousMax = max;
         }
 
-        void UpdateCell(int i)
+        private void UpdateCell(int i)
         {
             //TODO: Consider permuting.
             //In some simulations, there may be a ton of unoccupied cells.
@@ -246,7 +250,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         }
     }
 
-    struct Int2
+    internal struct Int2
     {
         internal int Y;
         internal int Z;
@@ -257,10 +261,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         }
 
 
-
         internal int GetSortingHash()
         {
-            return (int)(Y * 15485863L + Z * 32452843L);
+            return (int) (Y * 15485863L + Z * 32452843L);
         }
 
         public override string ToString()
@@ -268,6 +271,4 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
             return "{" + Y + ", " + Z + "}";
         }
     }
-
-
 }

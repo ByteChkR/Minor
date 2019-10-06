@@ -10,22 +10,16 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
     ///</summary>
     public class ForceUpdater : MultithreadedProcessingStage
     {
-
-        RawList<IForceUpdateable> dynamicObjects = new RawList<IForceUpdateable>();
+        private RawList<IForceUpdateable> dynamicObjects = new RawList<IForceUpdateable>();
         protected internal Vector3 gravity;
+
         ///<summary>
         /// Gets or sets the gravity applied by the force updater.
         ///</summary>
         public Vector3 Gravity
         {
-            get
-            {
-                return gravity;
-            }
-            set
-            {
-                gravity = value;
-            }
+            get => gravity;
+            set => gravity = value;
         }
 
         internal Vector3 gravityDt;
@@ -37,14 +31,8 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
         ///</summary>
         public TimeStepSettings TimeStepSettings
         {
-            get
-            {
-                return timeStepSettings;
-            }
-            set
-            {
-                timeStepSettings = value;
-            }
+            get => timeStepSettings;
+            set => timeStepSettings = value;
         }
 
         ///<summary>
@@ -69,11 +57,15 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             ParallelLooper = parallelLooper;
             AllowMultithreading = true;
         }
+
         private Action<int> multithreadedLoopBodyDelegate;
-        void UpdateObject(int i)
+
+        private void UpdateObject(int i)
         {
             if (dynamicObjects.Elements[i].IsActive)
+            {
                 dynamicObjects.Elements[i].UpdateForForces(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void UpdateMultithreaded()
@@ -85,7 +77,7 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
         protected override void UpdateSingleThreaded()
         {
             Vector3.Multiply(ref gravity, timeStepSettings.TimeStepDuration, out gravityDt);
-            for (int i = 0; i < dynamicObjects.Count; i++)
+            for (var i = 0; i < dynamicObjects.Count; i++)
             {
                 UpdateObject(i);
             }
@@ -103,11 +95,16 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             {
                 forceUpdateable.ForceUpdater = this;
                 if (forceUpdateable.IsDynamic)
+                {
                     dynamicObjects.Add(forceUpdateable);
+                }
             }
             else
+            {
                 throw new ArgumentException("Cannot add updateable; it already belongs to another manager.");
+            }
         }
+
         ///<summary>
         /// Removes a force updateable from the force updater.
         ///</summary>
@@ -118,11 +115,17 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             if (forceUpdateable.ForceUpdater == this)
             {
                 if (forceUpdateable.IsDynamic && !dynamicObjects.Remove(forceUpdateable))
-                    throw new InvalidOperationException("Dynamic object not present in dynamic objects list; ensure that the IForceUpdateable was never removed from the list improperly by using ForceUpdateableBecomingKinematic.");
+                {
+                    throw new InvalidOperationException(
+                        "Dynamic object not present in dynamic objects list; ensure that the IForceUpdateable was never removed from the list improperly by using ForceUpdateableBecomingKinematic.");
+                }
+
                 forceUpdateable.ForceUpdater = null;
             }
             else
+            {
                 throw new ArgumentException("Cannot remove updateable; it does not belong to this manager.");
+            }
         }
 
         /// <summary>
@@ -137,8 +140,11 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
                 dynamicObjects.Add(updateable);
             }
             else
+            {
                 throw new ArgumentException("Updateable does not belong to this manager.");
+            }
         }
+
         /// <summary>
         /// Notifies the system that a force updateable is becoming kinematic.
         /// </summary>
@@ -149,10 +155,15 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             if (updateable.ForceUpdater == this)
             {
                 if (!dynamicObjects.Remove(updateable))
-                    throw new InvalidOperationException("Dynamic object not present in dynamic objects list; ensure that the IVelocityUpdateable was never removed from the list improperly by using VelocityUpdateableBecomingKinematic.");
+                {
+                    throw new InvalidOperationException(
+                        "Dynamic object not present in dynamic objects list; ensure that the IVelocityUpdateable was never removed from the list improperly by using VelocityUpdateableBecomingKinematic.");
+                }
             }
             else
+            {
                 throw new ArgumentException("Updateable does not belong to this manager.");
+            }
         }
     }
 }

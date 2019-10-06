@@ -15,15 +15,8 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the solver updateables managed by this solver group.
         /// </summary>
-        public ReadOnlyList<SolverUpdateable> SolverUpdateables
-        {
-            get
-            {
-                return new ReadOnlyList<SolverUpdateable>(solverUpdateables);
-            }
-        }
-
-
+        public ReadOnlyList<SolverUpdateable> SolverUpdateables =>
+            new ReadOnlyList<SolverUpdateable>(solverUpdateables);
 
 
         /// <summary>
@@ -31,9 +24,9 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// </summary>
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
-            foreach (SolverUpdateable item in solverUpdateables)
+            foreach (var item in solverUpdateables)
             {
-                for (int i = 0; i < item.involvedEntities.Count; i++)
+                for (var i = 0; i < item.involvedEntities.Count; i++)
                 {
                     if (!outputInvolvedEntities.Contains(item.involvedEntities.Elements[i]))
                     {
@@ -54,7 +47,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
             if (isActive)
             {
                 isActiveInSolver = false;
-                for (int i = 0; i < solverUpdateables.Count; i++)
+                for (var i = 0; i < solverUpdateables.Count; i++)
                 {
                     var item = solverUpdateables.Elements[i];
                     item.UpdateSolverActivity();
@@ -72,13 +65,17 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
             item.SolverSettings.currentIterations = 0;
             item.SolverSettings.iterationsAtZeroImpulse = 0;
             if (item.isActiveInSolver)
+            {
                 item.Update(dt);
+            }
         }
 
         protected void ExclusiveUpdateUpdateable(SolverUpdateable item)
         {
             if (item.isActiveInSolver)
+            {
                 item.ExclusiveUpdate();
+            }
         }
 
         ///<summary>
@@ -87,12 +84,11 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         ///<param name="dt">Timestep duration.</param>
         public override void Update(float dt)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 UpdateUpdateable(solverUpdateables.Elements[i], dt);
             }
         }
-
 
 
         /// <summary>
@@ -102,7 +98,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// </summary>
         public override void ExclusiveUpdate()
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 ExclusiveUpdateUpdateable(solverUpdateables.Elements[i]);
             }
@@ -118,7 +114,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         {
             if (item.isActiveInSolver)
             {
-                SolverSettings subSolverSettings = item.solverSettings;
+                var subSolverSettings = item.solverSettings;
 
                 subSolverSettings.currentIterations++;
                 if (subSolverSettings.currentIterations <= solver.iterationLimit &&
@@ -128,12 +124,13 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                     {
                         subSolverSettings.iterationsAtZeroImpulse++;
                         if (subSolverSettings.iterationsAtZeroImpulse > subSolverSettings.minimumIterationCount)
+                        {
                             item.isActiveInSolver = false;
+                        }
                         else
                         {
                             activeConstraints++;
                         }
-
                     }
                     else
                     {
@@ -145,7 +142,6 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                 {
                     item.isActiveInSolver = false;
                 }
-
             }
         }
 
@@ -155,13 +151,16 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <returns>The rough applied impulse magnitude.</returns>
         public override float SolveIteration()
         {
-            int activeConstraints = 0;
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            var activeConstraints = 0;
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 SolveUpdateable(solverUpdateables.Elements[i], ref activeConstraints);
             }
+
             isActiveInSolver = activeConstraints > 0;
-            return solverSettings.minimumImpulse + 1; //Never let the system deactivate due to low impulses; solver group takes care of itself.
+            return
+                solverSettings.minimumImpulse +
+                1; //Never let the system deactivate due to low impulses; solver group takes care of itself.
         }
 
 
@@ -183,12 +182,14 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                 }
                 else
                 {
-                    throw new InvalidOperationException("Cannot add SolverUpdateable to SolverGroup; it already belongs to a SolverGroup.");
+                    throw new InvalidOperationException(
+                        "Cannot add SolverUpdateable to SolverGroup; it already belongs to a SolverGroup.");
                 }
             }
             else
             {
-                throw new InvalidOperationException("Cannot add SolverUpdateable to SolverGroup; it already belongs to a solver.");
+                throw new InvalidOperationException(
+                    "Cannot add SolverUpdateable to SolverGroup; it already belongs to a solver.");
             }
         }
 
@@ -208,7 +209,8 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
             }
             else
             {
-                throw new InvalidOperationException("Cannot remove SolverUpdateable from SolverGroup; it doesn't belong to this SolverGroup.");
+                throw new InvalidOperationException(
+                    "Cannot remove SolverUpdateable from SolverGroup; it doesn't belong to this SolverGroup.");
             }
         }
 
@@ -218,7 +220,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <param name="newSpace"></param>
         public override void OnAdditionToSpace(Space newSpace)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnAdditionToSpace(newSpace);
             }
@@ -229,7 +231,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// </summary>
         public override void OnRemovalFromSpace(Space oldSpace)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnRemovalFromSpace(oldSpace);
             }
@@ -241,7 +243,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         ///<param name="newSolver">Solver to which the updateable was added.</param>
         public override void OnAdditionToSolver(Solver newSolver)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnAdditionToSolver(newSolver);
             }
@@ -253,7 +255,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <param name="oldSolver">Solver from which the updateable was removed.</param>
         public override void OnRemovalFromSolver(Solver oldSolver)
         {
-            for (int i = 0; i < solverUpdateables.Count; i++)
+            for (var i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnRemovalFromSolver(oldSolver);
             }
@@ -264,19 +266,15 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         ///</summary>
         public override Solver Solver
         {
-            get
-            {
-                return solver;
-            }
+            get => solver;
             protected internal set
             {
                 base.Solver = value;
-                for (int i = 0; i < solverUpdateables.Count; i++)
+                for (var i = 0; i < solverUpdateables.Count; i++)
                 {
                     solverUpdateables.Elements[i].Solver = value;
                 }
             }
         }
-
     }
 }

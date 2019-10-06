@@ -15,7 +15,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// While the inner dictionary can be changed, making modifications to it will
         /// not trigger any changed events.
         ///</summary>
-        public Dictionary<TKey, TValue> WrappedDictionary { get; private set; }
+        public Dictionary<TKey, TValue> WrappedDictionary { get; }
 
         /// <summary>
         /// Constructs a new observable dictionary.
@@ -48,6 +48,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 OnChanged();
                 return true;
             }
+
             return false;
         }
 
@@ -72,7 +73,5 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 Changed();
             }
         }
-
-        
     }
 }

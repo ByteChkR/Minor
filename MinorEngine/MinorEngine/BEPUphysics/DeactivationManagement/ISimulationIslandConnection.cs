@@ -49,10 +49,10 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         //Known, in-engine scenarios:
         //Constraints
         //Collision Pairs.
-        
+
         //When constraints are added or removed to the space (or maybe more directly the solver, to unify with cp's), the merge happens.
         //When they are removed from the space, the split happens.
-        
+
         //All SolverItems are also simulation connections, which is why it makes sense to do it at the solver time.... HOWEVER...
         //It is possible to have a simulation island connection that isn't a solver item at all.  Think particle collision.
         //In the particle case, the engine doesn't 'know' anything about the type- it's 100% custom.
@@ -60,6 +60,5 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         //So instead, whatever the thing is that handles the 'force application' part of the particle system would perform the necessary simulation island management.
 
         //Sidenote:  The particle collision system would, in practice, probably just be a Solver item with 1 iteration.
-
     }
 }

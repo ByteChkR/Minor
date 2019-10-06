@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using MinorEngine.BEPUutilities.ResourceManagement;
+
 #if FORCEINLINE
 using System.Runtime.CompilerServices;
 #endif
@@ -21,14 +22,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
     /// <typeparam name="T">Type of element held by the container.</typeparam>
     public struct QuickSet<T> : IDisposable, IEnumerable<T> where T : IEquatable<T>
     {
-        private int count;
         /// <summary>
         /// Gets the number of elements in the set.
         /// </summary>
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count { get; private set; }
 
         private int[] table;
 
@@ -37,7 +34,6 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// Indices from 0 to Count-1 hold actual data. All other data is undefined.
         /// </summary>
         public readonly T[] Elements;
-
 
 
         private readonly BufferPool<int> tablePool;
@@ -57,7 +53,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
 #endif
             get
             {
-                Debug.Assert(index >= 0 && index < count, "Index should be within the list's size.");
+                Debug.Assert(index >= 0 && index < Count, "Index should be within the list's size.");
                 return Elements[index];
             }
 #if FORCEINLINE
@@ -65,7 +61,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
 #endif
             set
             {
-                Debug.Assert(index >= 0 && index < count, "Index should be within the list's size.");
+                Debug.Assert(index >= 0 && index < Count, "Index should be within the list's size.");
                 Elements[index] = value;
             }
         }
@@ -75,7 +71,6 @@ namespace MinorEngine.BEPUutilities.DataStructures
         private int tableMask;
 
 
-
         /// <summary>
         /// Creates a new set.
         /// </summary>
@@ -83,12 +78,19 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <param name="elementPool">Pool from which to retrieve typed arrays.</param>
         /// <param name="initialElementPoolIndex">Initial pool index to pull the object buffer from. The size of the initial buffer will be 2^initialElementPoolIndex.</param>
         /// <param name="tableSizePower">Initial pool index to pull the object buffer from. The size of the initial table buffer will be 2^(initialElementPoolIndex + tableSizePower).</param>
-        public QuickSet(BufferPool<T> elementPool, BufferPool<int> tablePool, int initialElementPoolIndex = 2, int tableSizePower = 3)
+        public QuickSet(BufferPool<T> elementPool, BufferPool<int> tablePool, int initialElementPoolIndex = 2,
+            int tableSizePower = 3)
         {
             if (tableSizePower <= 0)
+            {
                 throw new ArgumentException("The hash table must be larger than the element array.", "tableSizePower");
+            }
+
             if (initialElementPoolIndex < 0)
+            {
                 throw new ArgumentException("Initial pool index must be nonnegative.", "initialElementPoolIndex");
+            }
+
             this.tablePool = tablePool;
             this.elementPool = elementPool;
 
@@ -98,9 +100,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
             table = tablePool.TakeFromPoolIndex(tablePoolIndex);
             //Correctness requires a clean table. '0' means 'not taken'.
             Array.Clear(table, 0, table.Length);
-            count = 0;
+            Count = 0;
             tableMask = table.Length - 1;
-
         }
 
         private void Resize(int newObjectPoolIndex, int newTablePoolIndex)
@@ -108,10 +109,11 @@ namespace MinorEngine.BEPUutilities.DataStructures
             //Just double the size of the set.
             var oldSet = this;
             this = new QuickSet<T>(elementPool, tablePool, newObjectPoolIndex, newTablePoolIndex - newObjectPoolIndex);
-            for (int i = oldSet.count - 1; i >= 0; --i)
+            for (var i = oldSet.Count - 1; i >= 0; --i)
             {
                 Add(oldSet.Elements[i]);
             }
+
             oldSet.Dispose();
         }
 
@@ -140,8 +142,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 {
                     return true;
                 }
+
                 tableIndex = (tableIndex + 1) & tableMask;
             }
+
             elementIndex = -1;
             return false;
         }
@@ -180,15 +184,15 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool AddAndReplace(T element)
         {
             Validate();
-            if (count == Elements.Length)
-            {
+            if (Count == Elements.Length)
                 //There's no room left; resize.
+            {
                 Resize(elementPoolIndex + 1, tablePoolIndex + 1);
-
-                //Note that this is tested before any indices are found.
-                //If we resized only after determining that it was going to be added,
-                //the potential resize would invalidate the computed indices.
             }
+
+            //Note that this is tested before any indices are found.
+            //If we resized only after determining that it was going to be added,
+            //the potential resize would invalidate the computed indices.
 
             int tableIndex, elementIndex;
             if (GetIndices(element, out tableIndex, out elementIndex))
@@ -200,9 +204,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
 
 
             //It wasn't in the set. Add it!
-            Elements[count] = element;
+            Elements[Count] = element;
             //Use the encoding- all indices are offset by 1 since 0 represents 'empty'.
-            table[tableIndex] = ++count;
+            table[tableIndex] = ++Count;
             return true;
         }
 
@@ -216,28 +220,28 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Validate();
 
-            if (count == Elements.Length)
-            {
+            if (Count == Elements.Length)
                 //There's no room left; resize.
+            {
                 Resize(elementPoolIndex + 1, tablePoolIndex + 1);
-
-                //Note that this is tested before any indices are found.
-                //If we resized only after determining that it was going to be added,
-                //the potential resize would invalidate the computed indices.
             }
+
+            //Note that this is tested before any indices are found.
+            //If we resized only after determining that it was going to be added,
+            //the potential resize would invalidate the computed indices.
 
             int tableIndex, elementIndex;
             if (GetIndices(element, out tableIndex, out elementIndex))
-            {
                 //Already present!
+            {
                 return false;
             }
 
 
             //It wasn't in the set. Add it!
-            Elements[count] = element;
+            Elements[Count] = element;
             //Use the encoding- all indices are offset by 1 since 0 represents 'empty'.
-            table[tableIndex] = ++count;
+            table[tableIndex] = ++Count;
             return true;
         }
 
@@ -263,13 +267,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 //Removals seek to fill the gap they create by searching clockwise to find items which can be moved backward.
                 //Search clockwise for an item to fill this slot. The search must continue until a gap is found.
                 int moveCandidateIndex;
-                int gapIndex = tableIndex;
+                var gapIndex = tableIndex;
                 //Search clockwise.
                 while ((moveCandidateIndex = table[tableIndex = (tableIndex + 1) & tableMask]) > 0)
                 {
                     //This slot contains something. What is its actual index?
                     --moveCandidateIndex;
-                    int desiredIndex = Elements[moveCandidateIndex].GetHashCode() & tableMask;
+                    var desiredIndex = Elements[moveCandidateIndex].GetHashCode() & tableMask;
 
                     //Would this element be closer to its actual index if it was moved to the gap?
                     //To find out, compute the clockwise distance from the gap and the clockwise distance from the ideal location.
@@ -282,25 +286,27 @@ namespace MinorEngine.BEPUutilities.DataStructures
                         table[gapIndex] = table[tableIndex];
                         gapIndex = tableIndex;
                     }
-
                 }
+
                 //Clear the table gap left by the removal.
                 table[gapIndex] = 0;
                 //Swap the final element into the removed object's element array index, if the removed object wasn't the last object.
-                --count;
-                if (objectIndex < count)
+                --Count;
+                if (objectIndex < Count)
                 {
-                    Elements[objectIndex] = Elements[count];
+                    Elements[objectIndex] = Elements[Count];
                     //Locate the swapped object in the table and update its index.
                     int oldObjectIndex;
                     GetIndices(Elements[objectIndex], out tableIndex, out oldObjectIndex);
                     table[tableIndex] = objectIndex + 1; //Remember the encoding! all indices offset by 1.
                 }
+
                 //Clear the final slot in the elements set.
-                Elements[count] = default(T);
+                Elements[Count] = default;
 
                 return true;
             }
+
             return false;
         }
 
@@ -311,9 +317,11 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void Compact()
         {
             Validate();
-            var minimumRequiredPoolIndex = BufferPool<T>.GetPoolIndex(count);
+            var minimumRequiredPoolIndex = BufferPool<T>.GetPoolIndex(Count);
             if (minimumRequiredPoolIndex != elementPoolIndex)
+            {
                 Resize(minimumRequiredPoolIndex, minimumRequiredPoolIndex + (tablePoolIndex - elementPoolIndex));
+            }
         }
 
         /// <summary>
@@ -324,8 +332,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
             //While it may be appealing to remove individual elements from the set when the set is sparse,
             //using a brute force clear over the entire table is almost always faster. And it's a lot simpler!
             Array.Clear(table, 0, table.Length);
-            Array.Clear(Elements, 0, count);
-            count = 0;
+            Array.Clear(Elements, 0, Count);
+            Count = 0;
         }
 
         /// <summary>
@@ -334,7 +342,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void FastClear()
         {
             Array.Clear(table, 0, table.Length);
-            count = 0;
+            Count = 0;
         }
 
         public Enumerator GetEnumerator()
@@ -367,19 +375,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 index = -1;
             }
 
-            public T Current
-            {
-                get { return backingArray[index]; }
-            }
+            public T Current => backingArray[index];
 
             public void Dispose()
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             public bool MoveNext()
             {
@@ -395,7 +397,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
         [Conditional("DEBUG")]
         private void Validate()
         {
-            Debug.Assert(table != null, "The QuickSet must have its internal buffers and pools available; default-constructed or disposed QuickSets should not be used.");
+            Debug.Assert(table != null,
+                "The QuickSet must have its internal buffers and pools available; default-constructed or disposed QuickSets should not be used.");
         }
 
         /// <summary>
@@ -406,7 +409,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
             //We must clean out the table before returning it to the pool in case the array contains reference types which would otherwise leak.
             //The user may have already manually cleared it. To avoid doing redundant work, check the count first.
             //The user may have chosen to leave reference types in the list if they did a fast clear, but that's not for us to worry about.
-            if (count > 0)
+            if (Count > 0)
             {
                 Clear();
             }
@@ -417,8 +420,5 @@ namespace MinorEngine.BEPUutilities.DataStructures
             table = null;
 #endif
         }
-
-
-
     }
 }

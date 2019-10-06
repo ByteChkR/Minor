@@ -1,5 +1,4 @@
-﻿ 
-using MinorEngine.BEPUutilities;
+﻿using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.EntityStateManagement
 {
@@ -11,6 +10,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
     public class InterpolatedStatesAccessor
     {
         internal EntityBufferedStates bufferedStates;
+
         ///<summary>
         /// Constructs a new accessor.
         ///</summary>
@@ -20,11 +20,11 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             this.bufferedStates = bufferedStates;
         }
 
-        bool IsBufferAccessible()
+        private bool IsBufferAccessible()
         {
-            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled && bufferedStates.BufferedStatesManager.InterpolatedStates.Enabled;
+            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled &&
+                   bufferedStates.BufferedStatesManager.InterpolatedStates.Enabled;
         }
-
 
 
         ///<summary>
@@ -35,7 +35,11 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.InterpolatedStates.GetState(bufferedStates.motionStateIndex).Position;
+                {
+                    return bufferedStates.BufferedStatesManager.InterpolatedStates
+                        .GetState(bufferedStates.motionStateIndex).Position;
+                }
+
                 return bufferedStates.Entity.Position;
             }
         }
@@ -48,7 +52,11 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.InterpolatedStates.GetState(bufferedStates.motionStateIndex).Orientation;
+                {
+                    return bufferedStates.BufferedStatesManager.InterpolatedStates
+                        .GetState(bufferedStates.motionStateIndex).Orientation;
+                }
+
                 return bufferedStates.Entity.Orientation;
             }
         }
@@ -63,11 +71,15 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 Matrix3x3 toReturn;
                 if (IsBufferAccessible())
                 {
-                    Quaternion o = bufferedStates.BufferedStatesManager.InterpolatedStates.GetState(bufferedStates.motionStateIndex).Orientation;
+                    var o = bufferedStates.BufferedStatesManager.InterpolatedStates
+                        .GetState(bufferedStates.motionStateIndex).Orientation;
                     Matrix3x3.CreateFromQuaternion(ref o, out toReturn);
                 }
                 else
+                {
                     Matrix3x3.CreateFromQuaternion(ref bufferedStates.Entity.orientation, out toReturn);
+                }
+
                 return toReturn;
             }
         }
@@ -80,7 +92,11 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.InterpolatedStates.GetState(bufferedStates.motionStateIndex).Matrix;
+                {
+                    return bufferedStates.BufferedStatesManager.InterpolatedStates
+                        .GetState(bufferedStates.motionStateIndex).Matrix;
+                }
+
                 return bufferedStates.Entity.WorldTransform;
             }
         }
@@ -93,18 +109,18 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.InterpolatedStates.GetState(bufferedStates.motionStateIndex);
+                {
+                    return bufferedStates.BufferedStatesManager.InterpolatedStates.GetState(bufferedStates
+                        .motionStateIndex);
+                }
+
                 var toReturn = new RigidTransform
-                                   {
-                                       Position = bufferedStates.Entity.position,
-                                       Orientation = bufferedStates.Entity.orientation
-                                   };
+                {
+                    Position = bufferedStates.Entity.position,
+                    Orientation = bufferedStates.Entity.orientation
+                };
                 return toReturn;
             }
-
         }
-
-
-
     }
 }

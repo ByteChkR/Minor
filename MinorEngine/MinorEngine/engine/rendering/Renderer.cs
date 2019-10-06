@@ -1,17 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Linq;
-using Assimp;
 using MinorEngine.components;
-using MinorEngine.debug;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering.contexts;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using SharpFont;
-using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
 
 namespace MinorEngine.engine.rendering
 {
@@ -40,10 +33,10 @@ namespace MinorEngine.engine.rendering
             GL.Enable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            RenderTarget rt = new RenderTarget(null, 1, _clearColor);
+            var rt = new RenderTarget(null, 1, _clearColor);
             rt.MergeType = ScreenRenderer.MergeType.Additive;
             AddRenderTarget(rt);
-            RenderTarget rt1 = new RenderTarget(new UICamera(), 1 << 30, _clearColor);
+            var rt1 = new RenderTarget(new UICamera(), 1 << 30, _clearColor);
             rt1.MergeType = ScreenRenderer.MergeType.Additive;
             AddRenderTarget(rt1);
         }
@@ -59,16 +52,19 @@ namespace MinorEngine.engine.rendering
             for (var i = Targets.Count - 1; i >= 0; i--)
             {
                 var renderTarget = Targets[i];
-                if (renderTarget.FrameBuffer == target.FrameBuffer) Targets.RemoveAt(i);
+                if (renderTarget.FrameBuffer == target.FrameBuffer)
+                {
+                    Targets.RemoveAt(i);
+                }
             }
         }
 
         private static List<RenderContext> CreateRenderQueue(int renderTarget, Matrix4 view, RenderType type)
         {
-            List<RenderContext> Contexts = new List<RenderContext>();
+            var Contexts = new List<RenderContext>();
             foreach (var renderer in GameObject.ObjsWithAttachedRenderers)
             {
-                RenderContext context = renderer.RenderingComponent.Context;
+                var context = renderer.RenderingComponent.Context;
                 if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderMask, renderTarget, false) &&
                     context.RenderType == type)
                 {
@@ -76,6 +72,7 @@ namespace MinorEngine.engine.rendering
                     Contexts.Add(context);
                 }
             }
+
             Contexts.Sort();
             return Contexts;
         }
@@ -89,13 +86,12 @@ namespace MinorEngine.engine.rendering
             for (var i = 0; i < Targets.Count; i++)
             {
                 CurrentTarget = i;
-                RenderTarget target = Targets[i];
+                var target = Targets[i];
 
-                ICamera c = target.PassCamera ?? world.Camera;
+                var c = target.PassCamera ?? world.Camera;
 
                 if (c != null)
                 {
-
                     //GL.Scissor(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
                     GL.Viewport(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
                     GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
@@ -105,9 +101,9 @@ namespace MinorEngine.engine.rendering
                     GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 
-                    List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
+                    var _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
                     Render(_opaque, c);
-                    List<RenderContext> _transparent =
+                    var _transparent =
                         CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Transparent);
                     Render(_transparent, c);
 
@@ -138,21 +134,20 @@ namespace MinorEngine.engine.rendering
 
         public static void Render(int PassMask, ICamera cam)
         {
-
-
             foreach (var renderer in GameObject.ObjsWithAttachedRenderers)
+            {
                 if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderMask, PassMask, false))
+                {
                     RenderObject(renderer.RenderingComponent, renderer._worldTransformCache, cam.ViewMatrix,
                         cam.Projection);
-
-
+                }
+            }
         }
 
 
         public static void RenderObject(IRenderingComponent model, Matrix4 modelMat, Matrix4 viewMat,
             Matrix4 projMat)
         {
-
             model.Context.Render(viewMat, projMat);
 
             //RenderContext context = model.Context;
@@ -166,6 +161,5 @@ namespace MinorEngine.engine.rendering
             Opaque,
             Transparent
         }
-        
     }
 }

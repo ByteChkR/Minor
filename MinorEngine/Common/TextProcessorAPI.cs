@@ -5,6 +5,7 @@ using ext_pp;
 using ext_pp_base;
 using ext_pp_base.settings;
 using ext_pp_plugins;
+
 namespace Common
 {
     /// <summary>
@@ -55,7 +56,7 @@ namespace Common
 
             public string[] Preprocess(IFileContent filename, Dictionary<string, bool> defs)
             {
-                PreProcessor pp = new PreProcessor();
+                var pp = new PreProcessor();
 
                 Logger.VerbosityLevel = VerbosityLevel;
 
@@ -64,9 +65,13 @@ namespace Common
 
                 Definitions definitions;
                 if (defs == null)
+                {
                     definitions = new Definitions();
+                }
                 else
+                {
                     definitions = new Definitions(defs);
+                }
 
                 return pp.Run(new[] {filename}, new Settings(), definitions);
             }
@@ -90,20 +95,15 @@ namespace Common
                 return "#include " + filename + " " + _sb;
             }
 
-            protected override List<AbstractPlugin> Plugins
-            {
-                get
+            protected override List<AbstractPlugin> Plugins =>
+                new List<AbstractPlugin>
                 {
-                    return new List<AbstractPlugin>
-                    {
-                        new FakeGenericsPlugin(),
-                        new IncludePlugin(),
-                        new ConditionalPlugin(),
-                        new ExceptionPlugin(),
-                        new MultiLinePlugin()
-                    };
-                }
-            }
+                    new FakeGenericsPlugin(),
+                    new IncludePlugin(),
+                    new ConditionalPlugin(),
+                    new ExceptionPlugin(),
+                    new MultiLinePlugin()
+                };
         }
 
         public class GLCLPreProcessorConfig : APreProcessorConfig
@@ -124,20 +124,15 @@ namespace Common
                 return "#include " + filename + " " + _sb;
             }
 
-            protected override List<AbstractPlugin> Plugins
-            {
-                get
+            protected override List<AbstractPlugin> Plugins =>
+                new List<AbstractPlugin>
                 {
-                    return new List<AbstractPlugin>
-                    {
-                        new FakeGenericsPlugin(),
-                        new IncludePlugin(),
-                        new ConditionalPlugin(),
-                        new ExceptionPlugin(),
-                        new MultiLinePlugin()
-                    };
-                }
-            }
+                    new FakeGenericsPlugin(),
+                    new IncludePlugin(),
+                    new ConditionalPlugin(),
+                    new ExceptionPlugin(),
+                    new MultiLinePlugin()
+                };
         }
 
         public class FLPreProcessorConfig : APreProcessorConfig
@@ -162,10 +157,10 @@ namespace Common
             {
                 get
                 {
-                    IncludePlugin inc = new IncludePlugin();
+                    var inc = new IncludePlugin();
                     inc.IncludeInlineKeyword = "pp_includeinl:";
                     inc.IncludeKeyword = "pp_include:";
-                    ConditionalPlugin cond = new ConditionalPlugin();
+                    var cond = new ConditionalPlugin();
                     cond.StartCondition = "pp_if:";
                     cond.ElseIfCondition = "pp_elseif:";
                     cond.ElseCondition = "pp_else:";
@@ -211,7 +206,7 @@ namespace Common
 
         internal static string[] PreprocessLines(IFileContent file, Dictionary<string, bool> defs)
         {
-            string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
+            var ext = new string(file.GetFilePath().TakeLast(3).ToArray());
             if (_configs.ContainsKey(ext))
             {
                 DebugHelper.Log("Found Matching PreProcessor Config for: " + ext, 1);
@@ -242,9 +237,12 @@ namespace Common
         /// <returns>the source as string</returns>
         internal static string PreprocessSource(IFileContent filename, Dictionary<string, bool> defs)
         {
-            StringBuilder sb = new StringBuilder();
-            string[] src = PreprocessLines(filename, defs);
-            for (int i = 0; i < src.Length; i++) sb.Append(src[i] + "\n");
+            var sb = new StringBuilder();
+            var src = PreprocessLines(filename, defs);
+            for (var i = 0; i < src.Length; i++)
+            {
+                sb.Append(src[i] + "\n");
+            }
 
             return sb.ToString();
         }

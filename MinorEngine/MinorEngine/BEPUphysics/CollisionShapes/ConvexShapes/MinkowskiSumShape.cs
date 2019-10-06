@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUutilities;
-
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
@@ -17,6 +16,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// The entry's shape.
         ///</summary>
         public ConvexShape CollisionShape;
+
         ///<summary>
         /// The entry's orientation.
         ///</summary>
@@ -43,6 +43,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             CollisionShape = shape;
         }
     }
+
     ///<summary>
     /// A shape composed of the pointwise summation of all points in child shapes.
     /// For example, the minkowski sum of two spheres would be a sphere with the radius of both spheres combined.
@@ -50,31 +51,20 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class MinkowskiSumShape : ConvexShape
     {
-        ObservableList<OrientedConvexShapeEntry> shapes = new ObservableList<OrientedConvexShapeEntry>();
         ///<summary>
         /// Gets the list of shapes in the minkowski sum.
         ///</summary>
-        public ObservableList<OrientedConvexShapeEntry> Shapes
-        {
-            get
-            {
-                return shapes;
-            }
-        }
+        public ObservableList<OrientedConvexShapeEntry> Shapes { get; } =
+            new ObservableList<OrientedConvexShapeEntry>();
 
         //Local offset is needed to ensure that the minkowski sum is centered on the local origin.
-        Vector3 localOffset;
+        private Vector3 localOffset;
+
         ///<summary>
         /// Gets the local offset of the elements in the minkowski sum.
         /// This is required because convex shapes need to be centered on their local origin.
         ///</summary>
-        public Vector3 LocalOffset
-        {
-            get
-            {
-                return localOffset;
-            }
-        }
+        public Vector3 LocalOffset => localOffset;
 
         /// <summary>
         /// Constructs a minkowski sum shape.
@@ -85,10 +75,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="secondShape">Second entry in the sum.</param>
         public MinkowskiSumShape(OrientedConvexShapeEntry firstShape, OrientedConvexShapeEntry secondShape)
         {
-            shapes.Add(firstShape);
-            shapes.Add(secondShape);
+            Shapes.Add(firstShape);
+            Shapes.Add(secondShape);
             UpdateConvexShapeInfo();
-            shapes.Changed += ShapesChanged;
+            Shapes.Changed += ShapesChanged;
         }
 
 
@@ -100,7 +90,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="firstShape">First entry in the sum.</param>
         /// <param name="secondShape">Second entry in the sum.</param>
         /// <param name="center">Center of the minkowski sum computed pre-recentering.</param>
-        public MinkowskiSumShape(OrientedConvexShapeEntry firstShape, OrientedConvexShapeEntry secondShape, out Vector3 center)
+        public MinkowskiSumShape(OrientedConvexShapeEntry firstShape, OrientedConvexShapeEntry secondShape,
+            out Vector3 center)
             : this(firstShape, secondShape)
         {
             center = -localOffset;
@@ -114,13 +105,17 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public MinkowskiSumShape(IList<OrientedConvexShapeEntry> shapeEntries)
         {
             if (shapeEntries.Count == 0)
-                throw new ArgumentException("Cannot create a wrapped shape with no contained shapes.");
-            for (int i = 0; i < shapeEntries.Count; i++)
             {
-                shapes.Add(shapeEntries[i]);
+                throw new ArgumentException("Cannot create a wrapped shape with no contained shapes.");
             }
+
+            for (var i = 0; i < shapeEntries.Count; i++)
+            {
+                Shapes.Add(shapeEntries[i]);
+            }
+
             UpdateConvexShapeInfo();
-            shapes.Changed += ShapesChanged;
+            Shapes.Changed += ShapesChanged;
         }
 
         /// <summary>
@@ -134,26 +129,28 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             center = -localOffset;
         }
+
         /// <summary>
         /// Constructs a minkowski sum shape from cached data.
         /// </summary>
         /// <param name="shapeEntries">Entries composing the minkowski sum.</param>
         /// <param name="localOffset">Local offset of the elements in the minkowski sum.</param>
         /// <param name="description">Cached information about the shape. Assumed to be correct; no extra processing or validation is performed.</param>
-        public MinkowskiSumShape(IList<OrientedConvexShapeEntry> shapeEntries, Vector3 localOffset, ConvexShapeDescription description)
+        public MinkowskiSumShape(IList<OrientedConvexShapeEntry> shapeEntries, Vector3 localOffset,
+            ConvexShapeDescription description)
         {
-            for (int i = 0; i < shapeEntries.Count; i++)
+            for (var i = 0; i < shapeEntries.Count; i++)
             {
-                shapes.Add(shapeEntries[i]);
+                Shapes.Add(shapeEntries[i]);
             }
+
             this.localOffset = localOffset;
             UpdateConvexShapeInfo(description);
-            shapes.Changed += ShapesChanged;
+            Shapes.Changed += ShapesChanged;
         }
 
 
-
-        void ShapesChanged(ObservableList<OrientedConvexShapeEntry> list)
+        private void ShapesChanged(ObservableList<OrientedConvexShapeEntry> list)
         {
             OnShapeChanged();
         }
@@ -174,9 +171,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             //Compute the volume distribution.
             var samples = CommonResources.GetVectorList();
             if (samples.Capacity < InertiaHelper.SampleDirections.Length)
+            {
                 samples.Capacity = InertiaHelper.SampleDirections.Length;
+            }
+
             samples.Count = InertiaHelper.SampleDirections.Length;
-            for (int i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
+            for (var i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
             {
                 GetLocalExtremePoint(InertiaHelper.SampleDirections[i], out samples.Elements[i]);
             }
@@ -196,19 +196,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 
             //Compute the radii.
             float minRadius = 0, maxRadius = 0;
-            for (int i = 0; i < shapes.Count; i++)
+            for (var i = 0; i < Shapes.Count; i++)
             {
-                minRadius += shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
-                maxRadius += shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius;
+                minRadius += Shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
+                maxRadius += Shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius;
             }
 
             MinimumRadius = minRadius + collisionMargin;
             MaximumRadius = maxRadius + collisionMargin;
-
-
-
         }
-
 
 
         ///<summary>
@@ -218,15 +214,16 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="extremePoint">Extreme point on the shape.</param>
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
-            var transform = new RigidTransform { Orientation = shapes.WrappedList.Elements[0].Orientation };
-            shapes.WrappedList.Elements[0].CollisionShape.GetExtremePoint(direction, ref transform, out extremePoint);
-            for (int i = 1; i < shapes.WrappedList.Count; i++)
+            var transform = new RigidTransform {Orientation = Shapes.WrappedList.Elements[0].Orientation};
+            Shapes.WrappedList.Elements[0].CollisionShape.GetExtremePoint(direction, ref transform, out extremePoint);
+            for (var i = 1; i < Shapes.WrappedList.Count; i++)
             {
                 Vector3 temp;
-                transform.Orientation = shapes.WrappedList.Elements[i].Orientation;
-                shapes.WrappedList.Elements[i].CollisionShape.GetExtremePoint(direction, ref transform, out temp);
+                transform.Orientation = Shapes.WrappedList.Elements[i].Orientation;
+                Shapes.WrappedList.Elements[i].CollisionShape.GetExtremePoint(direction, ref transform, out temp);
                 Vector3.Add(ref extremePoint, ref temp, out extremePoint);
             }
+
             Vector3.Add(ref extremePoint, ref localOffset, out extremePoint);
         }
 
@@ -239,7 +236,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             return new ConvexCollidable<MinkowskiSumShape>(this);
         }
-
-
     }
 }

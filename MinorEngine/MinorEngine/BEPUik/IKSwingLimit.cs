@@ -12,6 +12,7 @@ namespace MinorEngine.BEPUik
         /// Gets or sets the axis attached to ConnectionA in its local space.
         /// </summary>
         public Vector3 LocalAxisA;
+
         /// <summary>
         /// Gets or sets the axis attached to ConnectionB in its local space.
         /// </summary>
@@ -22,8 +23,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AxisA
         {
-            get { return Quaternion.Transform(LocalAxisA, ConnectionA.Orientation); }
-            set { LocalAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(LocalAxisA, ConnectionA.Orientation);
+            set => LocalAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -31,18 +32,19 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AxisB
         {
-            get { return Quaternion.Transform(LocalAxisB, ConnectionB.Orientation); }
-            set { LocalAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => Quaternion.Transform(LocalAxisB, ConnectionB.Orientation);
+            set => LocalAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         private float maximumAngle;
+
         /// <summary>
         /// Gets or sets the maximum angle between the two axes allowed by the constraint.
         /// </summary>
         public float MaximumAngle
         {
-            get { return maximumAngle; }
-            set { maximumAngle = Math.Max(0, value); }
+            get => maximumAngle;
+            set => maximumAngle = Math.Max(0, value);
         }
 
 
@@ -64,7 +66,6 @@ namespace MinorEngine.BEPUik
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {
-
             //This constraint doesn't consider linear motion.
             linearJacobianA = linearJacobianB = new Matrix3x3();
 
@@ -77,14 +78,14 @@ namespace MinorEngine.BEPUik
             Vector3.Dot(ref axisA, ref axisB, out dot);
 
             //Yes, we could avoid this acos here. Performance is not the highest goal of this system; the less tricks used, the easier it is to understand.
-            float angle = (float)Math.Acos(MathHelper.Clamp(dot, -1, 1));
+            var angle = (float) Math.Acos(MathHelper.Clamp(dot, -1, 1));
 
             //One angular DOF is constrained by this limit.
             Vector3 hingeAxis;
             Vector3.Cross(ref axisA, ref axisB, out hingeAxis);
 
-            angularJacobianA = new Matrix3x3 { M11 = hingeAxis.X, M12 = hingeAxis.Y, M13 = hingeAxis.Z };
-            angularJacobianB = new Matrix3x3 { M11 = -hingeAxis.X, M12 = -hingeAxis.Y, M13 = -hingeAxis.Z };
+            angularJacobianA = new Matrix3x3 {M11 = hingeAxis.X, M12 = hingeAxis.Y, M13 = hingeAxis.Z};
+            angularJacobianB = new Matrix3x3 {M11 = -hingeAxis.X, M12 = -hingeAxis.Y, M13 = -hingeAxis.Z};
 
             //Note how we've computed the jacobians despite the limit being potentially inactive.
             //This is to enable 'speculative' limits.
@@ -93,13 +94,11 @@ namespace MinorEngine.BEPUik
                 velocityBias = new Vector3(errorCorrectionFactor * (angle - maximumAngle), 0, 0);
             }
             else
-            {
                 //The constraint is not yet violated. But, it may be- allow only as much motion as could occur without violating the constraint.
                 //Limits can't 'pull,' so this will not result in erroneous sticking.
+            {
                 velocityBias = new Vector3(angle - maximumAngle, 0, 0);
             }
-
-
         }
     }
 }

@@ -1,7 +1,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -11,48 +10,31 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class Triangle : Entity<ConvexCollidable<TriangleShape>>
     {
-
         ///<summary>
         /// Gets or sets the first vertex of the triangle in local space.
         ///</summary>
         public Vector3 LocalVertexA
         {
-            get
-            {
-                return CollisionInformation.Shape.VertexA;
-            }
-            set
-            {
-                CollisionInformation.Shape.VertexA = value;
-            }
+            get => CollisionInformation.Shape.VertexA;
+            set => CollisionInformation.Shape.VertexA = value;
         }
+
         ///<summary>
         /// Gets or sets the second vertex of the triangle in local space.
         ///</summary>
         public Vector3 LocalVertexB
         {
-            get
-            {
-                return CollisionInformation.Shape.VertexB;
-            }
-            set
-            {
-                CollisionInformation.Shape.VertexB = value;
-            }
+            get => CollisionInformation.Shape.VertexB;
+            set => CollisionInformation.Shape.VertexB = value;
         }
+
         ///<summary>
         /// Gets or sets the third vertex of the triangle in local space.
         ///</summary>
         public Vector3 LocalVertexC
         {
-            get
-            {
-                return CollisionInformation.Shape.VertexC;
-            }
-            set
-            {
-                CollisionInformation.Shape.VertexC = value;
-            }
+            get => CollisionInformation.Shape.VertexC;
+            set => CollisionInformation.Shape.VertexC = value;
         }
 
 
@@ -61,42 +43,29 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///</summary>
         public Vector3 VertexA
         {
-            get
-            {
-                return Matrix3x3.Transform(CollisionInformation.Shape.VertexA, orientationMatrix) + position;
-            }
-            set
-            {
-                CollisionInformation.Shape.VertexA = Matrix3x3.TransformTranspose(value - position, orientationMatrix);
-            }
+            get => Matrix3x3.Transform(CollisionInformation.Shape.VertexA, orientationMatrix) + position;
+            set => CollisionInformation.Shape.VertexA =
+                Matrix3x3.TransformTranspose(value - position, orientationMatrix);
         }
+
         ///<summary>
         /// Gets or sets the second vertex of the triangle in world space.
         ///</summary>
         public Vector3 VertexB
         {
-            get
-            {
-                return Matrix3x3.Transform(CollisionInformation.Shape.VertexB, orientationMatrix) + position;
-            }
-            set
-            {
-                CollisionInformation.Shape.VertexB = Matrix3x3.TransformTranspose(value - position, orientationMatrix);
-            }
+            get => Matrix3x3.Transform(CollisionInformation.Shape.VertexB, orientationMatrix) + position;
+            set => CollisionInformation.Shape.VertexB =
+                Matrix3x3.TransformTranspose(value - position, orientationMatrix);
         }
+
         ///<summary>
         /// Gets or sets the third vertex of the triangle in world space.
         ///</summary>
         public Vector3 VertexC
         {
-            get
-            {
-                return Matrix3x3.Transform(CollisionInformation.Shape.VertexC, orientationMatrix) + position;
-            }
-            set
-            {
-                CollisionInformation.Shape.VertexC = Matrix3x3.TransformTranspose(value - position, orientationMatrix);
-            }
+            get => Matrix3x3.Transform(CollisionInformation.Shape.VertexC, orientationMatrix) + position;
+            set => CollisionInformation.Shape.VertexC =
+                Matrix3x3.TransformTranspose(value - position, orientationMatrix);
         }
 
         ///<summary>
@@ -104,13 +73,9 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///</summary>
         public TriangleSidedness Sidedness
         {
-            get { return CollisionInformation.Shape.Sidedness; }
-            set
-            {
-                CollisionInformation.Shape.Sidedness = value;
-            }
+            get => CollisionInformation.Shape.Sidedness;
+            set => CollisionInformation.Shape.Sidedness = value;
         }
-
 
 
         /// <summary>
@@ -195,9 +160,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
-
-
-
     }
 }

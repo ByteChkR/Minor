@@ -1,10 +1,9 @@
 ﻿using System;
-using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUphysics.UpdateableSystems;
-
-using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
+using MinorEngine.BEPUphysics.Entities;
+using MinorEngine.BEPUphysics.Materials;
+using MinorEngine.BEPUphysics.UpdateableSystems;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Vehicle
 {
@@ -19,6 +18,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// Used for solver early outing.
         /// </summary>
         internal bool isActiveInSolver = true;
+
         internal bool isSupported;
 
         internal WheelBrake brake;
@@ -61,12 +61,13 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="motor">Driving force for the wheel.</param>
         /// <param name="rollingFriction">Friction force resisting the forward and backward motion of the wheel.</param>
         /// <param name="slidingFriction">Friction force resisting the side to side motion of the wheel.</param>
-        public Wheel(WheelShape shape, WheelSuspension suspension, WheelDrivingMotor motor, WheelBrake rollingFriction, WheelSlidingFriction slidingFriction)
+        public Wheel(WheelShape shape, WheelSuspension suspension, WheelDrivingMotor motor, WheelBrake rollingFriction,
+            WheelSlidingFriction slidingFriction)
         {
             Suspension = suspension;
             DrivingMotor = motor;
             Brake = rollingFriction;
-            this.SlidingFriction = slidingFriction;
+            SlidingFriction = slidingFriction;
             Shape = shape;
         }
 
@@ -80,11 +81,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public WheelBrake Brake
         {
-            get { return brake; }
+            get => brake;
             set
             {
                 if (brake != null)
+                {
                     brake.Wheel = null;
+                }
+
                 if (value != null)
                 {
                     if (value.Wheel == null)
@@ -92,8 +96,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         value.Wheel = this;
                     }
                     else
-                        throw new InvalidOperationException("Can't use a rolling friction object that already belongs to another wheel.");
+                    {
+                        throw new InvalidOperationException(
+                            "Can't use a rolling friction object that already belongs to another wheel.");
+                    }
                 }
+
                 brake = value;
             }
         }
@@ -103,11 +111,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public WheelDrivingMotor DrivingMotor
         {
-            get { return drivingMotor; }
+            get => drivingMotor;
             set
             {
                 if (drivingMotor != null)
+                {
                     drivingMotor.Wheel = null;
+                }
+
                 if (value != null)
                 {
                     if (value.Wheel == null)
@@ -115,8 +126,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         value.Wheel = this;
                     }
                     else
-                        throw new InvalidOperationException("Can't use a motor object that already belongs to another wheel.");
+                    {
+                        throw new InvalidOperationException(
+                            "Can't use a motor object that already belongs to another wheel.");
+                    }
                 }
+
                 drivingMotor = value;
             }
         }
@@ -124,24 +139,26 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <summary>
         /// Gets whether or not this wheel is sitting on anything.
         /// </summary>
-        public bool HasSupport
-        {
-            get { return isSupported; }
-        }
+        public bool HasSupport => isSupported;
 
         /// <summary>
         /// Gets or sets the local space forward direction of the wheel.
         /// </summary>
         public Vector3 LocalForwardDirection
         {
-            get { return localForwardDirection; }
+            get => localForwardDirection;
             set
             {
                 localForwardDirection = Vector3.Normalize(value);
                 if (vehicle != null)
-                    Matrix3x3.Transform(ref localForwardDirection, ref Vehicle.Body.orientationMatrix, out worldForwardDirection);
+                {
+                    Matrix3x3.Transform(ref localForwardDirection, ref Vehicle.Body.orientationMatrix,
+                        out worldForwardDirection);
+                }
                 else
+                {
                     worldForwardDirection = localForwardDirection;
+                }
             }
         }
 
@@ -150,16 +167,20 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public WheelShape Shape
         {
-            get { return shape; }
+            get => shape;
             set
             {
                 if (shape != null)
                 {
                     //if the vehicle is already in the space, replacing the shape removes the existing shape from the space.
                     if (vehicle != null && vehicle.space != null)
+                    {
                         shape.OnRemovalFromSpace(vehicle.space);
+                    }
+
                     shape.Wheel = null;
                 }
+
                 if (value != null)
                 {
                     if (value.Wheel == null)
@@ -168,11 +189,17 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         value.Initialize();
                         //If the vehicle is already in the space, replacing the shape adds the new shape to the space.
                         if (vehicle != null && vehicle.space != null)
+                        {
                             value.OnAdditionToSpace(vehicle.space);
+                        }
                     }
                     else
-                        throw new InvalidOperationException("Can't use a wheel shape object that already belongs to another wheel.");
+                    {
+                        throw new InvalidOperationException(
+                            "Can't use a wheel shape object that already belongs to another wheel.");
+                    }
                 }
+
                 shape = value;
             }
         }
@@ -182,11 +209,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public WheelSlidingFriction SlidingFriction
         {
-            get { return slidingFriction; }
+            get => slidingFriction;
             set
             {
                 if (slidingFriction != null)
+                {
                     slidingFriction.Wheel = null;
+                }
+
                 if (value != null)
                 {
                     if (value.Wheel == null)
@@ -194,8 +224,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         value.Wheel = this;
                     }
                     else
-                        throw new InvalidOperationException("Can't use a sliding friction object that already belongs to another wheel.");
+                    {
+                        throw new InvalidOperationException(
+                            "Can't use a sliding friction object that already belongs to another wheel.");
+                    }
                 }
+
                 slidingFriction = value;
             }
         }
@@ -203,59 +237,41 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <summary>
         /// Gets the current support location of this wheel.
         /// </summary>
-        public Vector3 SupportLocation
-        {
-            get { return supportLocation; }
-        }
+        public Vector3 SupportLocation => supportLocation;
 
         /// <summary>
         /// Gets the normal 
         /// </summary>
-        public Vector3 SupportNormal
-        {
-            get { return normal; }
-        }
+        public Vector3 SupportNormal => normal;
 
         /// <summary>
         /// Gets the entity supporting the wheel, if any.
         /// </summary>
-        public Entity SupportingEntity
-        {
-            get { return supportingEntity; }
-        }
+        public Entity SupportingEntity => supportingEntity;
 
         /// <summary>
         /// Gets the collidable supporting the wheel, if any.
         /// </summary>
-        public Collidable SupportingCollidable
-        {
-            get
-            {
-                return supportingCollidable;
-            }
-        }
+        public Collidable SupportingCollidable => supportingCollidable;
 
         /// <summary>
         /// Gets the material associated with the support, if any.
         /// </summary>
-        public Material SupportMaterial
-        {
-            get
-            {
-                return supportMaterial;
-            }
-        }
+        public Material SupportMaterial => supportMaterial;
 
         /// <summary>
         /// Gets the suspension supporting this wheel.
         /// </summary>
         public WheelSuspension Suspension
         {
-            get { return suspension; }
+            get => suspension;
             set
             {
                 if (suspension != null)
+                {
                     suspension.Wheel = null;
+                }
+
                 if (value != null)
                 {
                     if (value.Wheel == null)
@@ -263,8 +279,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         value.Wheel = this;
                     }
                     else
-                        throw new InvalidOperationException("Can't use a suspension object that already belongs to another wheel.");
+                    {
+                        throw new InvalidOperationException(
+                            "Can't use a suspension object that already belongs to another wheel.");
+                    }
                 }
+
                 suspension = value;
             }
         }
@@ -272,17 +292,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <summary>
         /// Gets the vehicle this wheel is attached to.
         /// </summary>
-        public Vehicle Vehicle
-        {
-            get { return vehicle; }
-        }
+        public Vehicle Vehicle => vehicle;
 
         /// <summary>
         /// Gets or sets the world space forward direction of the wheel.
         /// </summary>
         public Vector3 WorldForwardDirection
         {
-            get { return worldForwardDirection; }
+            get => worldForwardDirection;
             set
             {
                 worldForwardDirection = Vector3.Normalize(value);
@@ -293,7 +310,9 @@ namespace MinorEngine.BEPUphysics.Vehicle
                     Quaternion.Transform(ref worldForwardDirection, ref conjugate, out localForwardDirection);
                 }
                 else
+                {
                     localForwardDirection = worldForwardDirection;
+                }
             }
         }
 
@@ -302,12 +321,15 @@ namespace MinorEngine.BEPUphysics.Vehicle
         {
             Matrix.CreateFromAxisAngle(ref suspension.localDirection, shape.steeringAngle, out shape.steeringTransform);
             Matrix.TransformNormal(ref localForwardDirection, ref shape.steeringTransform, out worldForwardDirection);
-            Matrix3x3.Transform(ref worldForwardDirection, ref Vehicle.Body.orientationMatrix, out worldForwardDirection);
+            Matrix3x3.Transform(ref worldForwardDirection, ref Vehicle.Body.orientationMatrix,
+                out worldForwardDirection);
             if (HasSupport)
             {
                 Vector3.Subtract(ref supportLocation, ref Vehicle.Body.position, out ra);
                 if (supportingEntity != null)
+                {
                     Vector3.Subtract(ref supportLocation, ref SupportingEntity.position, out rb);
+                }
 
 
                 //Mind the order of updating!  sliding friction must come before driving force or rolling friction
@@ -364,15 +386,18 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <returns>Whether not the wheel is done updating for the frame.</returns>
         internal bool ApplyImpulse()
         {
-            int numActiveConstraints = 0;
+            var numActiveConstraints = 0;
             if (suspension.isActive)
             {
                 if (++suspension.solverSettings.currentIterations <= suspension.solverSettings.maximumIterationCount)
+                {
                     if (Math.Abs(suspension.ApplyImpulse()) < suspension.solverSettings.minimumImpulse)
                     {
                         suspension.numIterationsAtZeroImpulse++;
                         if (suspension.numIterationsAtZeroImpulse > suspension.solverSettings.minimumIterationCount)
+                        {
                             suspension.isActive = false;
+                        }
                         else
                         {
                             numActiveConstraints++;
@@ -384,17 +409,26 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         numActiveConstraints++;
                         suspension.numIterationsAtZeroImpulse = 0;
                     }
+                }
                 else
+                {
                     suspension.isActive = false;
+                }
             }
+
             if (slidingFriction.isActive)
             {
-                if (++slidingFriction.solverSettings.currentIterations <= suspension.solverSettings.maximumIterationCount)
+                if (++slidingFriction.solverSettings.currentIterations <=
+                    suspension.solverSettings.maximumIterationCount)
+                {
                     if (Math.Abs(slidingFriction.ApplyImpulse()) < slidingFriction.solverSettings.minimumImpulse)
                     {
                         slidingFriction.numIterationsAtZeroImpulse++;
-                        if (slidingFriction.numIterationsAtZeroImpulse > slidingFriction.solverSettings.minimumIterationCount)
+                        if (slidingFriction.numIterationsAtZeroImpulse >
+                            slidingFriction.solverSettings.minimumIterationCount)
+                        {
                             slidingFriction.isActive = false;
+                        }
                         else
                         {
                             numActiveConstraints++;
@@ -406,17 +440,24 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         numActiveConstraints++;
                         slidingFriction.numIterationsAtZeroImpulse = 0;
                     }
+                }
                 else
+                {
                     slidingFriction.isActive = false;
+                }
             }
+
             if (drivingMotor.isActive)
             {
                 if (++drivingMotor.solverSettings.currentIterations <= suspension.solverSettings.maximumIterationCount)
+                {
                     if (Math.Abs(drivingMotor.ApplyImpulse()) < drivingMotor.solverSettings.minimumImpulse)
                     {
                         drivingMotor.numIterationsAtZeroImpulse++;
                         if (drivingMotor.numIterationsAtZeroImpulse > drivingMotor.solverSettings.minimumIterationCount)
+                        {
                             drivingMotor.isActive = false;
+                        }
                         else
                         {
                             numActiveConstraints++;
@@ -428,17 +469,24 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         numActiveConstraints++;
                         drivingMotor.numIterationsAtZeroImpulse = 0;
                     }
+                }
                 else
+                {
                     drivingMotor.isActive = false;
+                }
             }
+
             if (brake.isActive)
             {
                 if (++brake.solverSettings.currentIterations <= suspension.solverSettings.maximumIterationCount)
+                {
                     if (Math.Abs(brake.ApplyImpulse()) < brake.solverSettings.minimumImpulse)
                     {
                         brake.numIterationsAtZeroImpulse++;
                         if (brake.numIterationsAtZeroImpulse > brake.solverSettings.minimumIterationCount)
+                        {
                             brake.isActive = false;
+                        }
                         else
                         {
                             numActiveConstraints++;
@@ -450,8 +498,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
                         numActiveConstraints++;
                         brake.numIterationsAtZeroImpulse = 0;
                     }
+                }
                 else
+                {
                     brake.isActive = false;
+                }
             }
 
             return numActiveConstraints > 0;
@@ -459,8 +510,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
 
         internal void FindSupport()
         {
-            if (!(isSupported = shape.FindSupport(out supportLocation, out normal, out suspension.currentLength, out supportingCollidable, out supportingEntity, out supportMaterial)))
+            if (!(isSupported = shape.FindSupport(out supportLocation, out normal, out suspension.currentLength,
+                out supportingCollidable, out supportingEntity, out supportMaterial)))
+            {
                 suspension.currentLength = suspension.restLength;
+            }
         }
 
         internal void OnAdditionToSpace(Space space)
@@ -468,9 +522,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
             //Make sure it doesn't collide with anything.
 
             shape.OnAdditionToSpace(space);
-
         }
-
 
 
         internal void OnRemovalFromSpace(Space space)
@@ -481,22 +533,24 @@ namespace MinorEngine.BEPUphysics.Vehicle
         internal void OnAddedToVehicle(Vehicle vehicle)
         {
             this.vehicle = vehicle;
-            Space space = (vehicle as ISpaceUpdateable).Space;
+            var space = (vehicle as ISpaceUpdateable).Space;
             if (space != null)
             {
                 OnAdditionToSpace(space);
             }
+
             LocalForwardDirection = LocalForwardDirection;
             suspension.OnAdditionToVehicle();
         }
 
         internal void OnRemovedFromVehicle()
         {
-            Space space = (vehicle as ISpaceUpdateable).Space;
+            var space = (vehicle as ISpaceUpdateable).Space;
             if (space != null)
             {
                 OnRemovalFromSpace(space);
             }
+
             vehicle = null;
         }
 
@@ -516,6 +570,5 @@ namespace MinorEngine.BEPUphysics.Vehicle
             suspension.ComputeWorldSpaceData();
             shape.UpdateDetectorPosition();
         }
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUutilities.ResourceManagement;
 using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -10,22 +10,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class MobileMeshMobileMeshPairHandler : MobileMeshMeshPairHandler
     {
+        private MobileMeshCollidable mesh;
 
+        public override Collidable CollidableB => mesh;
 
-        MobileMeshCollidable mesh;
+        public override Entities.Entity EntityB => mesh.entity;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return mesh.entity; }
-        }
-        protected override Materials.Material MaterialB
-        {
-            get { return mesh.entity.material; }
-        }
+        protected override Materials.Material MaterialB => mesh.entity.material;
 
         protected override TriangleCollidable GetOpposingCollidable(int index)
         {
@@ -74,14 +65,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-            mesh = (MobileMeshCollidable)entryB;
+            mesh = (MobileMeshCollidable) entryB;
 
             base.Initialize(entryA, entryB);
         }
-
-
-
-
 
 
         ///<summary>
@@ -89,14 +76,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             mesh = null;
-
-
         }
-
-
 
 
         protected override void UpdateContainedPairs(float dt)
@@ -109,17 +91,15 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             Vector3 sweep;
             Vector3.Subtract(ref mobileMesh.entity.linearVelocity, ref mesh.entity.linearVelocity, out sweep);
             Vector3.Multiply(ref sweep, dt, out sweep);
-            mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref meshTransform, ref sweep, out localBoundingBox);
+            mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref meshTransform, ref sweep,
+                out localBoundingBox);
             mesh.Shape.TriangleMesh.Tree.GetOverlaps(localBoundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }
 
             CommonResources.GiveBack(overlappedElements);
-
         }
-
-
     }
 }

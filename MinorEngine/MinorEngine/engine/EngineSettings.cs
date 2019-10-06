@@ -12,7 +12,7 @@ namespace MinorEngine.engine
         public int InitHeight { get; set; }
         public int PhysicsThreadCount { get; set; } = 1;
         public string Title { get; set; }
-        
+
         public int NetworkMask { get; set; } = -1;
         public int ProgramID { get; set; }
         public Version ProgramVersion { get; set; }

@@ -5,12 +5,10 @@
     ///</summary>
     public interface IDuringForcesUpdateable : ISpaceUpdateable
     {
-
         ///<summary>
         /// Updates the object during force application.
         ///</summary>
         ///<param name="dt">Time step duration.</param>
         void Update(float dt);
-
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
 {
-    class GridCell2D
+    internal class GridCell2D
     {
         internal RawList<Grid2DEntry> entries = new RawList<Grid2DEntry>();
         internal Int2 cellIndex;
@@ -16,20 +16,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
         internal int GetIndex(float x)
         {
-            int minIndex = 0; //inclusive
-            int maxIndex = entries.Count; //exclusive
-            int index = 0;
+            var minIndex = 0; //inclusive
+            var maxIndex = entries.Count; //exclusive
+            var index = 0;
             while (maxIndex - minIndex > 0)
             {
                 index = (maxIndex + minIndex) / 2;
                 if (entries.Elements[index].item.boundingBox.Min.X > x)
+                {
                     maxIndex = index;
+                }
                 else if (entries.Elements[index].item.boundingBox.Min.X < x)
+                {
                     minIndex = ++index;
+                }
                 else
+                {
                     break; //Found an equal value!
-
+                }
             }
+
             return index;
         }
 
@@ -47,10 +53,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         internal void UpdateOverlaps(Grid2DSortAndSweep owner)
         {
             //Sort along x axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (int i = 1; i < entries.Count; i++)
+            for (var i = 1; i < entries.Count; i++)
             {
                 var entry = entries.Elements[i];
-                for (int j = i - 1; j >= 0; j--)
+                for (var j = i - 1; j >= 0; j--)
                 {
                     if (entry.item.boundingBox.Min.X < entries.Elements[j].item.boundingBox.Min.X)
                     {
@@ -58,19 +64,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
                         entries.Elements[j] = entry;
                     }
                     else
+                    {
                         break;
+                    }
                 }
             }
+
             //Sweep the list looking for overlaps.
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
-                Grid2DEntry a = entries.Elements[i];
+                var a = entries.Elements[i];
                 Grid2DEntry b;
                 //TODO: Microoptimize
-                for (int j = i + 1; j < entries.Count && a.item.boundingBox.Max.X >= (b = entries.Elements[j]).item.boundingBox.Min.X; j++)
+                for (var j = i + 1;
+                    j < entries.Count && a.item.boundingBox.Max.X >= (b = entries.Elements[j]).item.boundingBox.Min.X;
+                    j++)
                 {
-                    if (!(a.item.boundingBox.Min.Y > b.item.boundingBox.Max.Y || a.item.boundingBox.Max.Y < b.item.boundingBox.Min.Y ||
-                          a.item.boundingBox.Min.Z > b.item.boundingBox.Max.Z || a.item.boundingBox.Max.Z < b.item.boundingBox.Min.Z))
+                    if (!(a.item.boundingBox.Min.Y > b.item.boundingBox.Max.Y ||
+                          a.item.boundingBox.Max.Y < b.item.boundingBox.Min.Y ||
+                          a.item.boundingBox.Min.Z > b.item.boundingBox.Max.Z ||
+                          a.item.boundingBox.Max.Z < b.item.boundingBox.Min.Z))
                     {
                         //Now we know this pair is overlapping, but we do not know if this overlap is already added.
                         //Rather than use a hashset or other heavy structure to check, rely on the rules of the grid.
@@ -80,26 +93,33 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
                         //A simple rule for determining the cell which is responsible is to choose the cell which is the 
                         //smallest index in the shared cells.  So first, compute that cell's index.
 
-                        Int2 minimumSharedIndex = a.previousMin;
+                        var minimumSharedIndex = a.previousMin;
 
                         if (minimumSharedIndex.Y < b.previousMin.Y)
+                        {
                             minimumSharedIndex.Y = b.previousMin.Y;
+                        }
+
                         if (minimumSharedIndex.Y > b.previousMax.Y)
+                        {
                             minimumSharedIndex.Y = b.previousMax.Y;
+                        }
 
                         if (minimumSharedIndex.Z < b.previousMin.Z)
+                        {
                             minimumSharedIndex.Z = b.previousMin.Z;
+                        }
+
                         if (minimumSharedIndex.Z > b.previousMax.Z)
+                        {
                             minimumSharedIndex.Z = b.previousMax.Z;
+                        }
 
                         //Is our cell the minimum cell?
                         if (minimumSharedIndex.Y == cellIndex.Y && minimumSharedIndex.Z == cellIndex.Z)
+                        {
                             owner.TryToAddOverlap(a.item, b.item);
-
-
-
-
-
+                        }
                     }
                 }
             }
@@ -110,6 +130,5 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         {
             return "{" + cellIndex.Y + ", " + cellIndex.Z + "}: " + entries.Count;
         }
-
     }
 }

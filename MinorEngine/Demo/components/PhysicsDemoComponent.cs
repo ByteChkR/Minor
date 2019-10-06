@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
-using MinorEngine.BEPUutilities;
 using MinorEngine.components;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.physics;
 using MinorEngine.engine.rendering;
+using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
-using Vector3 = OpenTK.Vector3;
 
 namespace Demo.components
 {
@@ -17,22 +15,22 @@ namespace Demo.components
     {
         private static ShaderProgram _objShader;
         private int game;
+
         public PhysicsDemoComponent()
         {
-            this.game = LayerManager.NameToLayer("physics");
-
+            game = LayerManager.NameToLayer("physics");
         }
 
         private GameMesh Box = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
         private GameMesh Sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
+
         protected override void Awake()
         {
             //Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
             base.Awake();
-            DebugConsoleComponent comp = Owner.World.GetChildWithName("Console")
+            var comp = Owner.World.GetChildWithName("Console")
                 .GetComponent<DebugConsoleComponent>();
-
 
 
             comp?.AddCommand("rain", cmd_SpawnColliders);
@@ -45,80 +43,102 @@ namespace Demo.components
         }
 
 
-
         public static string cmd_SetGravity(string[] args)
         {
-            if (args.Length != 3) return "Expected 3 component vector";
+            if (args.Length != 3)
+            {
+                return "Expected 3 component vector";
+            }
 
-            if (float.TryParse(args[0], out float x)) return "Wrong X Component";
-            if (float.TryParse(args[1], out float y)) return "Wrong Y Component";
-            if (float.TryParse(args[2], out float z)) return "Wrong Z Component";
+            if (float.TryParse(args[0], out var x))
+            {
+                return "Wrong X Component";
+            }
+
+            if (float.TryParse(args[1], out var y))
+            {
+                return "Wrong Y Component";
+            }
+
+            if (float.TryParse(args[2], out var z))
+            {
+                return "Wrong Z Component";
+            }
 
             //Physics.Gravity = new System.Numerics.Vector3(x, y, z);
 
             return "Gravity Set to: "; // + Physics.Gravity;
         }
+
         private List<GameObject> Collider = new List<GameObject>();
+
         private string cmd_ResetCollider(string[] args)
         {
-            int count = Collider.Count;
+            var count = Collider.Count;
             foreach (var gameObject in Collider)
             {
                 gameObject.Destroy();
             }
+
             Collider.Clear();
-            string ret = "";
+            var ret = "";
             return ret + "\nReloaded " + count + " Colliders";
         }
+
         public string cmd_SpawnColliders(string[] args)
         {
-            if (args.Length != 1 || !int.TryParse(args[0], out int nmbrs)) return "Not a number.";
+            if (args.Length != 1 || !int.TryParse(args[0], out var nmbrs))
+            {
+                return "Not a number.";
+            }
 
             if (_objShader == null)
+            {
                 ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
                 {
                     {ShaderType.FragmentShader, "shader/texture.fs"},
                     {ShaderType.VertexShader, "shader/texture.vs"}
                 }, out _objShader);
+            }
 
-            Random rnd = new Random();
-            for (int i = 0; i < nmbrs; i++)
+            var rnd = new Random();
+            for (var i = 0; i < nmbrs; i++)
             {
-                Vector3 pos = new Vector3((float)rnd.NextDouble(), 3 + (float)rnd.NextDouble(),
-                    (float)rnd.NextDouble());
+                var pos = new Vector3((float) rnd.NextDouble(), 3 + (float) rnd.NextDouble(),
+                    (float) rnd.NextDouble());
                 pos -= Vector3.One * 0.5f;
                 pos *= 50;
 
 
-                GameObject obj = new GameObject(pos, "Sphere");
-                float radius = 0.3f + (float)rnd.NextDouble();
+                var obj = new GameObject(pos, "Sphere");
+                var radius = 0.3f + (float) rnd.NextDouble();
                 obj.AddComponent(new DestroyTimer(5));
                 obj.Scale = new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
-
-                    Box.SetTextureBuffer(new[] { ResourceManager.TextureIO.FileToTexture("textures/TEST.png") });
+                    Box.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/TEST.png")});
 
 
                     obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));
 
 
-                    Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
-                    RigidBodyConstraints c = coll.ColliderConstraints;
+                    var coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
+                    var c = coll.ColliderConstraints;
                     c.RotationConstraints = FreezeConstraints.Z | FreezeConstraints.X;
                     coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
                 else
                 {
-                    Sphere.SetTextureBuffer( new[] { ResourceManager.TextureIO.FileToTexture("textures/TEST.png") });
+                    Sphere.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/TEST.png")});
                     obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
-                    Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
-                    RigidBodyConstraints c = coll.ColliderConstraints;
+                    var coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
+                    var c = coll.ColliderConstraints;
                     //c.RotationConstraints = FreezeConstraints.X;
                     coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
+
                 Collider.Add(obj);
                 Owner.World.Add(obj);
             }

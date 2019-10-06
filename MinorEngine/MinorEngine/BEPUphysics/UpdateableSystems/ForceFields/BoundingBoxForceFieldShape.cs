@@ -37,12 +37,15 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
         {
             affectedEntities.Clear();
             ForceField.QueryAccelerator.GetEntries(BoundingBox, affectedEntries);
-            for (int i = 0; i < affectedEntries.Count; i++)
+            for (var i = 0; i < affectedEntries.Count; i++)
             {
                 var EntityCollidable = affectedEntries[i] as EntityCollidable;
                 if (EntityCollidable != null)
+                {
                     affectedEntities.Add(EntityCollidable.Entity);
+                }
             }
+
             affectedEntries.Clear();
             return affectedEntities;
         }

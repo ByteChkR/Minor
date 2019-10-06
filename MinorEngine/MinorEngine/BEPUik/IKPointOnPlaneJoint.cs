@@ -28,8 +28,10 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 PlaneAnchor
         {
-            get { return ConnectionA.Position + Quaternion.Transform(LocalPlaneAnchor, ConnectionA.Orientation); }
-            set { LocalPlaneAnchor = Quaternion.Transform(value - ConnectionA.Position, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => ConnectionA.Position + Quaternion.Transform(LocalPlaneAnchor, ConnectionA.Orientation);
+            set =>
+                LocalPlaneAnchor = Quaternion.Transform(value - ConnectionA.Position,
+                    Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -38,8 +40,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 PlaneNormal
         {
-            get { return Quaternion.Transform(LocalPlaneNormal, ConnectionA.Orientation); }
-            set { LocalPlaneNormal = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(LocalPlaneNormal, ConnectionA.Orientation);
+            set => LocalPlaneNormal = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -47,8 +49,10 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AnchorB
         {
-            get { return ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation); }
-            set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation);
+            set =>
+                LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position,
+                    Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
 
@@ -60,7 +64,8 @@ namespace MinorEngine.BEPUik
         /// <param name="planeAnchor">Anchor point of the plane attached to the first bone in world space.</param>
         /// <param name="planeNormal">Normal of the plane attached to the first bone in world space. Must be unit length.</param>
         /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
-        public IKPointOnPlaneJoint(Bone connectionA, Bone connectionB, Vector3 planeAnchor, Vector3 planeNormal, Vector3 anchorB)
+        public IKPointOnPlaneJoint(Bone connectionA, Bone connectionB, Vector3 planeAnchor, Vector3 planeNormal,
+            Vector3 anchorB)
             : base(connectionA, connectionB)
         {
             PlaneAnchor = planeAnchor;
@@ -97,11 +102,10 @@ namespace MinorEngine.BEPUik
             Vector3.Cross(ref lineDirection, ref offsetB, out angularB);
 
             //Put all the 1x3 jacobians into a 3x3 matrix representation.
-            linearJacobianA = new Matrix3x3 { M11 = lineDirection.X, M12 = lineDirection.Y, M13 = lineDirection.Z };
-            linearJacobianB = new Matrix3x3 { M11 = -lineDirection.X, M12 = -lineDirection.Y, M13 = -lineDirection.Z };
-            angularJacobianA = new Matrix3x3 { M11 = angularA.X, M12 = angularA.Y, M13 = angularA.Z };
-            angularJacobianB = new Matrix3x3 { M11 = angularB.X, M12 = angularB.Y, M13 = angularB.Z };
-
+            linearJacobianA = new Matrix3x3 {M11 = lineDirection.X, M12 = lineDirection.Y, M13 = lineDirection.Z};
+            linearJacobianB = new Matrix3x3 {M11 = -lineDirection.X, M12 = -lineDirection.Y, M13 = -lineDirection.Z};
+            angularJacobianA = new Matrix3x3 {M11 = angularA.X, M12 = angularA.Y, M13 = angularA.Z};
+            angularJacobianB = new Matrix3x3 {M11 = angularB.X, M12 = angularB.Y, M13 = angularB.Z};
         }
     }
 }

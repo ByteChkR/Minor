@@ -1,7 +1,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -16,14 +15,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Length
         {
-            get
-            {
-                return CollisionInformation.Shape.Length;
-            }
-            set
-            {
-                CollisionInformation.Shape.Length = value;
-            }
+            get => CollisionInformation.Shape.Length;
+            set => CollisionInformation.Shape.Length = value;
         }
 
         /// <summary>
@@ -31,14 +24,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Radius
         {
-            get
-            {
-                return CollisionInformation.Shape.Radius;
-            }
-            set
-            {
-                CollisionInformation.Shape.Radius = value;
-            }
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
         }
 
         private Capsule(float len, float rad)
@@ -52,7 +39,6 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         }
 
 
-
         ///<summary>
         /// Computes an orientation and length from a line segment.
         ///</summary>
@@ -60,7 +46,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///<param name="end">Endpoint of the line segment.</param>
         ///<param name="orientation">Orientation of a line that fits the line segment.</param>
         ///<param name="length">Length of the line segment.</param>
-        public static void GetCapsuleInformation(ref Vector3 start, ref Vector3 end, out Quaternion orientation, out float length)
+        public static void GetCapsuleInformation(ref Vector3 start, ref Vector3 end, out Quaternion orientation,
+            out float length)
         {
             Vector3 segmentDirection;
             Vector3.Subtract(ref end, ref start, out segmentDirection);
@@ -68,10 +55,13 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
             if (length > 0)
             {
                 Vector3.Divide(ref segmentDirection, length, out segmentDirection);
-                Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.UpVector, ref segmentDirection, out orientation);
+                Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.UpVector, ref segmentDirection,
+                    out orientation);
             }
             else
+            {
                 orientation = Quaternion.Identity;
+            }
         }
 
         ///<summary>
@@ -86,11 +76,11 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
             float length;
             Quaternion orientation;
             GetCapsuleInformation(ref start, ref end, out orientation, out length);
-            this.Orientation = orientation;
+            Orientation = orientation;
             Vector3 position;
             Vector3.Add(ref start, ref end, out position);
             Vector3.Multiply(ref position, .5f, out position);
-            this.Position = position;
+            Position = position;
         }
 
 
@@ -107,11 +97,11 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
             float length;
             Quaternion orientation;
             GetCapsuleInformation(ref start, ref end, out orientation, out length);
-            this.Orientation = orientation;
+            Orientation = orientation;
             Vector3 position;
             Vector3.Add(ref start, ref end, out position);
             Vector3.Multiply(ref position, .5f, out position);
-            this.Position = position;
+            Position = position;
         }
 
         /// <summary>
@@ -163,6 +153,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
     }
 }

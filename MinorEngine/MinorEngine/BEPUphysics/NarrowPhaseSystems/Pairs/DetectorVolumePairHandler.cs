@@ -1,8 +1,7 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
-using System;
-using MinorEngine.BEPUphysics.UpdateableSystems;
+﻿using System;
+using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUphysics.BroadPhaseSystems;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -15,6 +14,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// Gets the detector volume associated with the pair.
         /// </summary>
         public DetectorVolume DetectorVolume { get; private set; }
+
         /// <summary>
         /// Gets the entity collidable associated with the pair.
         /// </summary>
@@ -23,47 +23,27 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <summary>
         /// Gets whether or not the collidable was touching the detector volume during the previous frame.
         /// </summary>
-        public bool WasTouching
-        {
-            get;
-            protected set;
-        }
+        public bool WasTouching { get; protected set; }
 
         /// <summary>
         /// Gets whether or not the collidable was fully contained within the detector volume during the previous frame.
         /// </summary>
-        public bool WasContaining
-        {
-            get;
-            protected set;
-        }
+        public bool WasContaining { get; protected set; }
 
         /// <summary>
         /// Gets whether or not the collidable is touching the detector volume.
         /// </summary>
-        public bool Touching
-        {
-            get;
-            protected set;
-        }
+        public bool Touching { get; protected set; }
 
         /// <summary>
         /// Gets whether or not the collidable is fully contained within the detector volume.
         /// </summary>
-        public bool Containing
-        {
-            get;
-            protected set;
-        }
+        public bool Containing { get; protected set; }
 
         /// <summary>
         /// Gets the parent of this pair handler, if any.
         /// </summary>
-        public IDetectorVolumePairHandlerParent Parent
-        {
-            get;
-            internal set;
-        }
+        public IDetectorVolumePairHandlerParent Parent { get; internal set; }
 
         ///<summary>
         /// Initializes the pair handler.
@@ -79,9 +59,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             {
                 DetectorVolume = entryB as DetectorVolume;
                 if (DetectorVolume == null)
+                {
                     throw new ArgumentException("Incorrect types used to initialize detector volume pair.");
+                }
             }
-
         }
 
         ///<summary>
@@ -105,11 +86,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 {
                     DetectorVolume.StoppedContaining(this);
                 }
+
                 if (Touching)
                 {
                     DetectorVolume.StoppedTouching(this);
                 }
             }
+
             Containing = false;
             Touching = false;
             WasContaining = false;
@@ -125,8 +108,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             Parent = null;
             //Child cleanup is responsible for cleaning up direct references to the involved collidables.
-
-
         }
 
         protected void NotifyDetectorVolumeOfChanges()
@@ -140,22 +121,23 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 {
                     DetectorVolume.BeganTouching(this);
                 }
+
                 if (!WasContaining && Containing)
                 {
                     DetectorVolume.BeganContaining(this);
                 }
+
                 //Stops containing -> stops touching
                 if (WasContaining && !Containing)
                 {
                     DetectorVolume.StoppedContaining(this);
                 }
+
                 if (WasTouching && !Touching)
                 {
                     DetectorVolume.StoppedTouching(this);
                 }
             }
-
         }
-
     }
 }

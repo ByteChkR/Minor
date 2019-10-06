@@ -23,28 +23,18 @@ namespace MinorEngine.BEPUutilities.Threading
         /// Gets or sets the minimum number of tasks to be allocated to each thread
         /// per loop.
         /// </summary>
-        public int MinimumTasksPerThread
-        {
-            get { return minimumTasksPerThread; }
-            set { minimumTasksPerThread = value; }
-        }
+        public int MinimumTasksPerThread { get; set; } = 3;
 
         /// <summary>
         /// Gets or sets the maximum number of loop iterations
         /// per individual task.
         /// </summary>
-        public int MaximumIterationsPerTask
-        {
-            get { return maximumIterationsPerTask; }
-            set { maximumIterationsPerTask = value; }
-        }
+        public int MaximumIterationsPerTask { get; set; } = 80;
 
 #if WINDOWS
         private int minimumTasksPerThread = 3;
         private int maximumIterationsPerTask = 80;
 #else
-        int minimumTasksPerThread = 3;
-        int maximumIterationsPerTask = 80;
 #endif
         internal int jobIndex;
         internal int maxJobIndex;
@@ -60,10 +50,7 @@ namespace MinorEngine.BEPUutilities.Threading
         /// <summary>
         /// Gets the number of threads used by the looper.
         /// </summary>
-        public int ThreadCount
-        {
-            get { return workers.Count; }
-        }
+        public int ThreadCount => workers.Count;
 
         /// <summary>
         /// Adds a thread to the manager.
@@ -100,6 +87,7 @@ namespace MinorEngine.BEPUutilities.Threading
                         workers[0].Dispose();
                     }
                 }
+
                 workers.RemoveAt(0);
             }
         }
@@ -118,22 +106,26 @@ namespace MinorEngine.BEPUutilities.Threading
             workerCount = workers.Count;
 
             //TODO: The job splitting could be tuned possibly.
-            int iterationCount = endIndex - beginIndex;
-            int tasksPerThread = Math.Max(minimumTasksPerThread, iterationCount / maximumIterationsPerTask);
-            int taskSubdivisions = workerCount * tasksPerThread;
+            var iterationCount = endIndex - beginIndex;
+            var tasksPerThread = Math.Max(MinimumTasksPerThread, iterationCount / MaximumIterationsPerTask);
+            var taskSubdivisions = workerCount * tasksPerThread;
 
             currentBeginIndex = beginIndex;
             currentEndIndex = endIndex;
             currentLoopBody = loopBody;
             iterationsPerSteal = Math.Max(1, iterationCount / taskSubdivisions);
             jobIndex = 0;
-            float maxJobs = iterationCount / (float) iterationsPerSteal;
+            var maxJobs = iterationCount / (float) iterationsPerSteal;
             if (maxJobs % 1 == 0)
+            {
                 maxJobIndex = (int) maxJobs;
+            }
             else
+            {
                 maxJobIndex = 1 + (int) maxJobs;
+            }
 
-            for (int i = 0; i < workers.Count; i++)
+            for (var i = 0; i < workers.Count; i++)
             {
                 workers[i].finalIndex = endIndex;
                 workers[i].iterationsPerSteal = iterationsPerSteal;
@@ -146,7 +138,9 @@ namespace MinorEngine.BEPUutilities.Threading
         internal void OnWorkerFinish()
         {
             if (Interlocked.Decrement(ref workerCount) == 0)
+            {
                 loopFinished.Set();
+            }
         }
 
 
@@ -167,6 +161,7 @@ namespace MinorEngine.BEPUutilities.Threading
                     {
                         RemoveThread();
                     }
+
                     loopFinished.Close();
                     GC.SuppressFinalize(this);
                 }
@@ -180,8 +175,5 @@ namespace MinorEngine.BEPUutilities.Threading
         {
             Dispose();
         }
-
-
-
     }
 }

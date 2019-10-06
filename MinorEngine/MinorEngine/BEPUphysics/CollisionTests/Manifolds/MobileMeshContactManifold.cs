@@ -1,12 +1,12 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUphysics.CollisionShapes;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUphysics.DataStructures;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUphysics.CollisionShapes;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
@@ -24,55 +24,67 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the mesh of the pair.
         ///</summary>
-        public MobileMeshCollidable Mesh
-        {
-            get
-            {
-                return mesh;
-            }
-        }
+        public MobileMeshCollidable Mesh => mesh;
 
-        protected override RigidTransform MeshTransform
-        {
-            get { return mesh.worldTransform; }
-        }
+        protected override RigidTransform MeshTransform => mesh.worldTransform;
 
         //Expand the convex's bounding box to include the mobile mesh's movement.
 
         protected internal override int FindOverlappingTriangles(float dt)
         {
             BoundingBox boundingBox;
-            AffineTransform transform = new AffineTransform(mesh.worldTransform.Orientation, mesh.worldTransform.Position);
+            var transform =
+                new AffineTransform(mesh.worldTransform.Orientation, mesh.worldTransform.Position);
             convex.Shape.GetLocalBoundingBox(ref convex.worldTransform, ref transform, out boundingBox);
             Vector3 transformedVelocity;
             //Compute the relative velocity with respect to the mesh.  The mesh's bounding tree is NOT expanded with velocity,
             //so whatever motion there is between the two objects needs to be included in the convex's bounding box.
 
             if (convex.entity != null)
+            {
                 transformedVelocity = convex.entity.linearVelocity;
+            }
             else
+            {
                 transformedVelocity = new Vector3();
+            }
+
             if (mesh.entity != null)
+            {
                 Vector3.Subtract(ref transformedVelocity, ref mesh.entity.linearVelocity, out transformedVelocity);
+            }
 
             //The linear transform is known to be orientation only, so using the transpose is allowed.
-            Matrix3x3.TransformTranspose(ref transformedVelocity, ref transform.LinearTransform, out transformedVelocity);
+            Matrix3x3.TransformTranspose(ref transformedVelocity, ref transform.LinearTransform,
+                out transformedVelocity);
             Vector3.Multiply(ref transformedVelocity, dt, out transformedVelocity);
 
             if (transformedVelocity.X > 0)
+            {
                 boundingBox.Max.X += transformedVelocity.X;
+            }
             else
+            {
                 boundingBox.Min.X += transformedVelocity.X;
+            }
 
             if (transformedVelocity.Y > 0)
+            {
                 boundingBox.Max.Y += transformedVelocity.Y;
+            }
             else
+            {
                 boundingBox.Min.Y += transformedVelocity.Y;
+            }
 
             if (transformedVelocity.Z > 0)
+            {
                 boundingBox.Max.Z += transformedVelocity.Z;
+            }
             else
+            {
                 boundingBox.Min.Z += transformedVelocity.Z;
+            }
 
             mesh.Shape.TriangleMesh.Tree.GetOverlaps(boundingBox, overlappedTriangles);
             return overlappedTriangles.Count;
@@ -84,27 +96,33 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         /// </summary>
         /// <param name="convexInverseWorldTransform">Inverse of the world transform of the convex shape.</param>
         /// <param name="fromMeshLocalToConvexLocal">Transform to apply to native local triangles to bring them into the local space of the convex.</param>
-        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform, out AffineTransform fromMeshLocalToConvexLocal)
+        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform,
+            out AffineTransform fromMeshLocalToConvexLocal)
         {
             //MobileMeshes only have TransformableMeshData sources.
-            var data = ((TransformableMeshData)mesh.Shape.TriangleMesh.Data);
+            var data = (TransformableMeshData) mesh.Shape.TriangleMesh.Data;
             //The mobile mesh has a shape-based transform followed by the rigid body transform.
             AffineTransform mobileMeshWorldTransform;
             AffineTransform.CreateFromRigidTransform(ref mesh.worldTransform, out mobileMeshWorldTransform);
             AffineTransform combinedMobileMeshWorldTransform;
-            AffineTransform.Multiply(ref data.worldTransform, ref mobileMeshWorldTransform, out combinedMobileMeshWorldTransform);
-            AffineTransform.Multiply(ref combinedMobileMeshWorldTransform, ref convexInverseWorldTransform, out fromMeshLocalToConvexLocal);
+            AffineTransform.Multiply(ref data.worldTransform, ref mobileMeshWorldTransform,
+                out combinedMobileMeshWorldTransform);
+            AffineTransform.Multiply(ref combinedMobileMeshWorldTransform, ref convexInverseWorldTransform,
+                out fromMeshLocalToConvexLocal);
         }
 
-        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape, out TriangleIndices indices)
+        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
+            out TriangleIndices indices)
         {
             var data = mesh.Shape.TriangleMesh.Data;
-            int triangleIndex = overlappedTriangles.Elements[i];
+            var triangleIndex = overlappedTriangles.Elements[i];
 
             TriangleSidedness sidedness;
             //TODO: Note superhack; don't do this in v2.
             if (IsQuery)
+            {
                 sidedness = TriangleSidedness.DoubleSided;
+            }
             else
             {
                 switch (mesh.Shape.solidity)
@@ -123,6 +141,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                         break;
                 }
             }
+
             localTriangleShape.sidedness = sidedness;
             localTriangleShape.collisionMargin = 0;
             indices = new TriangleIndices
@@ -137,7 +156,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             localTriangleShape.vC = data.vertices[indices.C];
 
             return true;
-
         }
 
         protected internal override void CleanUpOverlappingTriangles()
@@ -145,18 +163,15 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             overlappedTriangles.Clear();
         }
 
-        protected override bool UseImprovedBoundaryHandling
-        {
-            get { return mesh.improveBoundaryBehavior; }
-        }
+        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
 
-        float previousDepth;
-        Vector3 lastValidConvexPosition;
+        private float previousDepth;
+        private Vector3 lastValidConvexPosition;
+
         protected override void ProcessCandidates(ref QuickList<ContactData> candidates)
         {
             if (candidates.Count == 0 && parentContactCount == 0 && Mesh.Shape.solidity == MobileMeshSolidity.Solid)
             {
-
                 //If there's no new contacts on the mesh and it's supposed to be a solid,
                 //then we must check the convex for containment within the shell.
                 //We already know that it's not on the shell, meaning that the shape is either
@@ -169,12 +184,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 Matrix3x3.CreateFromQuaternion(ref mesh.worldTransform.Orientation, out orientation);
 
                 Ray ray;
-                Vector3.Subtract(ref convex.worldTransform.Position, ref mesh.worldTransform.Position, out ray.Position);
+                Vector3.Subtract(ref convex.worldTransform.Position, ref mesh.worldTransform.Position,
+                    out ray.Position);
                 Matrix3x3.TransformTranspose(ref ray.Position, ref orientation, out ray.Position);
 
                 //Cast from the current position back to the previous position.
                 Vector3.Subtract(ref lastValidConvexPosition, ref ray.Position, out ray.Direction);
-                float rayDirectionLength = ray.Direction.LengthSquared();
+                var rayDirectionLength = ray.Direction.LengthSquared();
                 if (rayDirectionLength < Toolbox.Epsilon)
                 {
                     //The object may not have moved enough to normalize properly.  If so, choose something arbitrary.
@@ -188,13 +204,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                         rayDirectionLength = 1;
                     }
                 }
-                Vector3.Divide(ref ray.Direction, (float)Math.Sqrt(rayDirectionLength), out ray.Direction);
+
+                Vector3.Divide(ref ray.Direction, (float) Math.Sqrt(rayDirectionLength), out ray.Direction);
 
 
                 RayHit hit;
                 if (mesh.Shape.IsLocalRayOriginInMesh(ref ray, out hit))
                 {
-                    ContactData newContact = new ContactData { Id = 2 };
+                    var newContact = new ContactData {Id = 2};
                     //Give it a special id so that we know that it came from the inside.
                     Matrix3x3.Transform(ref ray.Position, ref orientation, out newContact.Position);
                     Vector3.Add(ref newContact.Position, ref mesh.worldTransform.Position, out newContact.Position);
@@ -211,8 +228,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                     newContact.Validate();
 
                     //Do not yet create a new contact.  Check to see if an 'inner contact' with id == 2 already exists.
-                    bool addContact = true;
-                    for (int i = 0; i < contacts.Count; i++)
+                    var addContact = true;
+                    for (var i = 0; i < contacts.Count; i++)
                     {
                         if (contacts.Elements[i].Id == 2)
                         {
@@ -226,8 +243,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                             break;
                         }
                     }
+
                     if (addContact && contacts.Count == 0)
+                    {
                         Add(ref newContact);
+                    }
+
                     previousDepth = newContact.PenetrationDepth;
                 }
                 else
@@ -235,12 +256,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                     //It's possible that we had a false negative.  The previous frame may have been in deep intersection, and this frame just failed to come to the same conclusion.
                     //If we set the target location to the current location, the object will never escape the mesh.  Instead, only do that if two frames agree that we are no longer colliding.
                     if (previousDepth > 0)
-                    {
                         //We're not touching the mesh.
+                    {
                         lastValidConvexPosition = ray.Position;
                     }
-                    previousDepth = 0;
 
+                    previousDepth = 0;
                 }
             }
         }
@@ -272,23 +293,23 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 convex = newCollidableB as ConvexCollidable;
                 mesh = newCollidableA as MobileMeshCollidable;
                 if (convex == null || mesh == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize contact manifold.");
+                }
             }
-
         }
 
-        static LockingResourcePool<TriangleConvexPairTester> testerPool = new LockingResourcePool<TriangleConvexPairTester>();
+        private static LockingResourcePool<TriangleConvexPairTester> testerPool =
+            new LockingResourcePool<TriangleConvexPairTester>();
+
         protected override void GiveBackTester(TrianglePairTester tester)
         {
-            testerPool.GiveBack((TriangleConvexPairTester)tester);
+            testerPool.GiveBack((TriangleConvexPairTester) tester);
         }
 
         protected override TrianglePairTester GetTester()
         {
             return testerPool.Take();
         }
-
-
-
     }
 }

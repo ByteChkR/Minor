@@ -1,12 +1,9 @@
 ﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
-using MinorEngine.BEPUphysics.Entities;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.DeactivationManagement;
+using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics
@@ -23,7 +20,6 @@ namespace MinorEngine.BEPUphysics
 
         public static void ResetPools()
         {
-
             SubPoolRayCastResultList = new LockingResourcePool<RawList<RayCastResult>>();
             SubPoolBroadPhaseEntryList = new LockingResourcePool<RawList<BroadPhaseEntry>>();
             SubPoolCollidableList = new LockingResourcePool<RawList<Collidable>>();
@@ -35,14 +31,16 @@ namespace MinorEngine.BEPUphysics
             SimulationIslandConnections = new LockingResourcePool<SimulationIslandConnection>();
         }
 
-        static LockingResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
-        static LockingResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
-        static LockingResourcePool<RawList<Collidable>> SubPoolCollidableList;
-        static LockingResourcePool<RawList<Entity>> SubPoolEntityRawList;
-        static LockingResourcePool<TriangleShape> SubPoolTriangleShape;
-        static LockingResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
-        static LockingResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
-        static LockingResourcePool<SimulationIslandConnection> SimulationIslandConnections;
+        private static LockingResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
+        private static LockingResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
+        private static LockingResourcePool<RawList<Collidable>> SubPoolCollidableList;
+        private static LockingResourcePool<RawList<Entity>> SubPoolEntityRawList;
+        private static LockingResourcePool<TriangleShape> SubPoolTriangleShape;
+        private static LockingResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
+        private static LockingResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
+
+        private static LockingResourcePool<SimulationIslandConnection> SimulationIslandConnections;
+
         //#endif
         /// <summary>
         /// Retrieves a ray cast result list from the resource pool.
@@ -120,7 +118,6 @@ namespace MinorEngine.BEPUphysics
             SubPoolCompoundChildList.GiveBack(list);
         }
 
-      
 
         /// <summary>
         /// Retrieves an Entity RawList from the resource pool.
@@ -140,8 +137,7 @@ namespace MinorEngine.BEPUphysics
             list.Clear();
             SubPoolEntityRawList.GiveBack(list);
         }
-        
-      
+
 
         /// <summary>
         /// Retrieves a TriangleCollidable from the resource pool.
@@ -169,7 +165,6 @@ namespace MinorEngine.BEPUphysics
         public static SimulationIslandConnection GetSimulationIslandConnection()
         {
             return SimulationIslandConnections.Take();
-
         }
 
         /// <summary>
@@ -180,7 +175,6 @@ namespace MinorEngine.BEPUphysics
         {
             connection.CleanUp();
             SimulationIslandConnections.GiveBack(connection);
-
         }
     }
 }

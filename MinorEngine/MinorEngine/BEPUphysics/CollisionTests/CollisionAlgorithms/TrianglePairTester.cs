@@ -21,7 +21,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="triangle">Triangle to test</param>
         ///<param name="contactList">Contact between the shapes, if any.</param>
         ///<returns>Whether or not the shapes are colliding.</returns>
-        public abstract bool GenerateContactCandidates(TriangleShape triangle, out TinyStructList<ContactData> contactList);
+        public abstract bool GenerateContactCandidates(TriangleShape triangle,
+            out TinyStructList<ContactData> contactList);
 
         /// <summary>
         /// Gets the triangle region in which the contact resides.
@@ -47,5 +48,4 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// </summary>
         public abstract void CleanUp();
     }
-
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints
 {
@@ -22,8 +21,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public float ErrorReductionFactor
         {
-            get { return errorReductionFactor; }
-            set { errorReductionFactor = MathHelper.Clamp(value, 0, 1); }
+            get => errorReductionFactor;
+            set => errorReductionFactor = MathHelper.Clamp(value, 0, 1);
         }
 
         /// <summary>
@@ -31,8 +30,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public float Softness
         {
-            get { return softness; }
-            set { softness = MathHelper.Max(0, value); }
+            get => softness;
+            set => softness = MathHelper.Max(0, value);
         }
 
         /// <summary>
@@ -42,8 +41,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public bool UseAdvancedSettings
         {
-            get { return useAdvancedSettings; }
-            set { useAdvancedSettings = value; }
+            get => useAdvancedSettings;
+            set => useAdvancedSettings = value;
         }
     }
 
@@ -53,26 +52,21 @@ namespace MinorEngine.BEPUphysics.Constraints
     /// </summary>
     public class SpringSettings
     {
-        private readonly SpringAdvancedSettings advanced = new SpringAdvancedSettings();
-
         internal float damping = 90000;
         internal float stiffness = 600000;
 
         /// <summary>
         /// Gets an object containing the solver's direct view of the spring behavior.
         /// </summary>
-        public SpringAdvancedSettings Advanced
-        {
-            get { return advanced; }
-        }
+        public SpringAdvancedSettings Advanced { get; } = new SpringAdvancedSettings();
 
         /// <summary>
         /// Gets or sets the damping coefficient of this spring.  Higher values reduce oscillation more.
         /// </summary>
         public float Damping
         {
-            get { return damping; }
-            set { damping = MathHelper.Max(0, value); }
+            get => damping;
+            set => damping = MathHelper.Max(0, value);
         }
 
         /// <summary>
@@ -80,8 +74,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public float Stiffness
         {
-            get { return stiffness; }
-            set { stiffness = Math.Max(0, value); }
+            get => stiffness;
+            set => stiffness = Math.Max(0, value);
         }
 
         /// <summary>
@@ -92,18 +86,22 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <param name="updateRate">Inverse simulation timestep.</param>
         /// <param name="errorReduction">Error reduction factor to use this frame.</param>
         /// <param name="softness">Adjusted softness of the constraint for this frame.</param>
-        public void ComputeErrorReductionAndSoftness(float dt, float updateRate, out float errorReduction, out float softness)
+        public void ComputeErrorReductionAndSoftness(float dt, float updateRate, out float errorReduction,
+            out float softness)
         {
-            if (advanced.useAdvancedSettings)
+            if (Advanced.useAdvancedSettings)
             {
-                errorReduction = advanced.errorReductionFactor * updateRate;
-                softness = advanced.softness * updateRate;
+                errorReduction = Advanced.errorReductionFactor * updateRate;
+                softness = Advanced.softness * updateRate;
             }
             else
             {
                 if (stiffness == 0 && damping == 0)
+                {
                     throw new InvalidOperationException("Constraints cannot have both 0 stiffness and 0 damping.");
-                float multiplier = 1 / (dt * stiffness + damping);
+                }
+
+                var multiplier = 1 / (dt * stiffness + damping);
                 errorReduction = stiffness * multiplier;
                 softness = updateRate * multiplier;
             }

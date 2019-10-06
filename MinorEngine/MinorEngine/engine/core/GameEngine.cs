@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection;
-using System.Runtime.CompilerServices;
 using Common;
 using MinorEngine.debug;
 using MinorEngine.engine.audio;
@@ -36,13 +34,10 @@ namespace MinorEngine.engine.core
             Settings = settings;
 
             DebugHelper.ApplySettings(settings.DebugSettings ?? EngineDefault);
-
-
         }
 
         public void Initialize()
         {
-
             Logger.SetDebugStage(DebugStage.Init);
 
             Logger.Log("Init started..", DebugChannel.Log);
@@ -92,7 +87,6 @@ namespace MinorEngine.engine.core
 
         public void InitializeScene<T>() where T : AbstractScene
         {
-
             _changeScene = true;
             _nextScene = typeof(T);
             Logger.Log("Initializing Scene..", DebugChannel.Log);
@@ -122,13 +116,12 @@ namespace MinorEngine.engine.core
 
         public Vector3 ConvertScreenToWorldCoords(int x, int y)
         {
-
             Vector2 mouse;
             mouse.X = x;
             mouse.Y = y;
-            Matrix4 proj = World.Camera.Projection;
-            Vector4 vector = UnProject(ref proj, World.Camera.ViewMatrix, new Size(Width, Height), mouse);
-            Vector3 coords = new Vector3(vector);
+            var proj = World.Camera.Projection;
+            var vector = UnProject(ref proj, World.Camera.ViewMatrix, new Size(Width, Height), mouse);
+            var coords = new Vector3(vector);
             return coords;
         }
 
@@ -136,13 +129,13 @@ namespace MinorEngine.engine.core
         {
             Vector4 vec;
 
-            vec.X = 2.0f * mouse.X / (float) viewport.Width - 1;
-            vec.Y = -2.0f * mouse.Y / (float) viewport.Height + 1;
+            vec.X = 2.0f * mouse.X / viewport.Width - 1;
+            vec.Y = -2.0f * mouse.Y / viewport.Height + 1;
             vec.Z = 0;
             vec.W = 1.0f;
 
-            Matrix4 viewInv = Matrix4.Invert(view);
-            Matrix4 projInv = Matrix4.Invert(projection);
+            var viewInv = Matrix4.Invert(view);
+            var projInv = Matrix4.Invert(projection);
 
             Vector4.Transform(ref vec, ref projInv, out vec);
             Vector4.Transform(ref vec, ref viewInv, out vec);
@@ -162,7 +155,7 @@ namespace MinorEngine.engine.core
             FrameCounter++;
             Logger.SetDebugStage(DebugStage.Update);
 
-            MemoryTracer.NextStep("Update Frame: "+ FrameCounter);
+            MemoryTracer.NextStep("Update Frame: " + FrameCounter);
 
             MemoryTracer.AddSubStep("Scene Update");
             currentScene?.Update((float) e.Time);
@@ -183,7 +176,7 @@ namespace MinorEngine.engine.core
                 MemoryTracer.AddSubStep("Unload World");
 
                 World?.Unload();
-                
+
                 MemoryTracer.NextStep("Removing World");
 
                 World?.RemoveDestroyedObjects();
@@ -192,7 +185,7 @@ namespace MinorEngine.engine.core
                 MemoryTracer.NextStep("Removing Old Scene");
 
                 currentScene?.Destroy();
-                
+
                 MemoryTracer.NextStep("Create New Scene");
 
                 currentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
@@ -237,7 +230,7 @@ namespace MinorEngine.engine.core
 
             Window.SwapBuffers();
 
-            MemoryTracer.ReturnFromSubStep();   
+            MemoryTracer.ReturnFromSubStep();
         }
     }
 }

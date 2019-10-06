@@ -9,7 +9,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
     ///</summary>
     public class MeshBoundingBoxTree
     {
-        MeshBoundingBoxTreeData data;
+        private MeshBoundingBoxTreeData data;
 
 
         /// <summary>
@@ -20,13 +20,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
             get
             {
                 if (root != null)
+                {
                     return root.BoundingBox;
-                else
-                    return new BoundingBox();
+                }
+
+                return new BoundingBox();
             }
         }
 
-        Node root;
+        private Node root;
 
         /// <summary>
         /// Gets or sets the data used to construct the tree.
@@ -34,13 +36,10 @@ namespace MinorEngine.BEPUphysics.DataStructures
         /// </summary>
         public MeshBoundingBoxTreeData Data
         {
-            get
-            {
-                return data;
-            }
+            get => data;
             set
             {
-                this.data = value;
+                data = value;
                 Reconstruct();
             }
         }
@@ -61,11 +60,11 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public void Reconstruct()
         {
             root = null;
-            for (int i = 0; i < data.indices.Length; i += 3)
-            {
+            for (var i = 0; i < data.indices.Length; i += 3)
                 //Use a permuted version of the triangles instead of the actual triangle list.
                 //Permuting makes the input basically random, improving the quality of the tree.
-                Insert((int)(((982451653L * (i / 3)) % (data.indices.Length / 3)) * 3));
+            {
+                Insert((int) (982451653L * (i / 3) % (data.indices.Length / 3) * 3));
             }
         }
 
@@ -77,10 +76,12 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public void Refit()
         {
             if (root != null)
+            {
                 root.Refit(data);
+            }
         }
 
-        void Analyze(out List<int> depths, out int minDepth, out int maxDepth, out int nodeCount)
+        private void Analyze(out List<int> depths, out int minDepth, out int maxDepth, out int nodeCount)
         {
             depths = new List<int>();
             nodeCount = 0;
@@ -88,17 +89,22 @@ namespace MinorEngine.BEPUphysics.DataStructures
 
             maxDepth = 0;
             minDepth = int.MaxValue;
-            for (int i = 0; i < depths.Count; i++)
+            for (var i = 0; i < depths.Count; i++)
             {
                 if (depths[i] > maxDepth)
+                {
                     maxDepth = depths[i];
+                }
+
                 if (depths[i] < minDepth)
+                {
                     minDepth = depths[i];
+                }
             }
         }
 
 
-        void Insert(int triangleIndex)
+        private void Insert(int triangleIndex)
         {
             //Insertions can easily be performed stacklessly.
             //Only one path is chosen at each step and nothing is returned, so the history of the 'recursion' is completely forgotten.
@@ -112,13 +118,18 @@ namespace MinorEngine.BEPUphysics.DataStructures
             else
             {
                 if (root.IsLeaf) //Root is alone.
+                {
                     root.TryToInsert(node, out root);
+                }
                 else
                 {
                     //The caller is responsible for the merge.
                     BoundingBox.CreateMerged(ref node.BoundingBox, ref root.BoundingBox, out root.BoundingBox);
-                    Node treeNode = root;
-                    while (!treeNode.TryToInsert(node, out treeNode)) ;//TryToInsert returns the next node, if any, and updates node bounding box.
+                    var treeNode = root;
+                    while (!treeNode.TryToInsert(node, out treeNode))
+                    {
+                        ; //TryToInsert returns the next node, if any, and updates node bounding box.
+                    }
                 }
             }
         }
@@ -136,8 +147,11 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 root.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects)
+                {
                     root.GetOverlaps(ref boundingBox, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
 
@@ -154,10 +168,14 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 root.BoundingBox.Intersects(ref boundingSphere, out intersects);
                 if (intersects)
+                {
                     root.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
+
         ///// <summary>
         ///// Gets the triangles whose bounding boxes are overlapped by the query.
         ///// </summary>
@@ -187,10 +205,14 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 float result;
                 if (ray.Intersects(ref root.BoundingBox, out result))
+                {
                     root.GetOverlaps(ref ray, float.MaxValue, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
+
         /// <summary>
         /// Gets the triangles whose bounding boxes are overlapped by the query.
         /// </summary>
@@ -204,8 +226,11 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 float result;
                 if (ray.Intersects(ref root.BoundingBox, out result))
+                {
                     root.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
 
@@ -213,7 +238,9 @@ namespace MinorEngine.BEPUphysics.DataStructures
         {
             internal BoundingBox BoundingBox;
             internal abstract void GetOverlaps(ref BoundingBox boundingBox, IList<int> outputOverlappedElements);
+
             internal abstract void GetOverlaps(ref BoundingSphere boundingSphere, IList<int> outputOverlappedElements);
+
             //internal abstract void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<int> outputOverlappedElements);
             internal abstract void GetOverlaps(ref Ray ray, float maximumLength, IList<int> outputOverlappedElements);
 
@@ -223,21 +250,17 @@ namespace MinorEngine.BEPUphysics.DataStructures
             internal abstract bool TryToInsert(LeafNode node, out Node treeNode);
 
 
-
             internal abstract void Analyze(List<int> depths, int depth, ref int nodeCount);
 
             internal abstract void Refit(MeshBoundingBoxTreeData data);
         }
 
-        sealed class InternalNode : Node
+        private sealed class InternalNode : Node
         {
             internal Node ChildA;
             internal Node ChildB;
 
-            internal override bool IsLeaf
-            {
-                get { return false; }
-            }
+            internal override bool IsLeaf => false;
 
 
             internal override void GetOverlaps(ref BoundingBox boundingBox, IList<int> outputOverlappedElements)
@@ -248,10 +271,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 ChildA.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects)
+                {
                     ChildA.GetOverlaps(ref boundingBox, outputOverlappedElements);
+                }
+
                 ChildB.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects)
+                {
                     ChildB.GetOverlaps(ref boundingBox, outputOverlappedElements);
+                }
             }
 
             internal override void GetOverlaps(ref BoundingSphere boundingSphere, IList<int> outputOverlappedElements)
@@ -259,10 +287,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 ChildA.BoundingBox.Intersects(ref boundingSphere, out intersects);
                 if (intersects)
+                {
                     ChildA.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+                }
+
                 ChildB.BoundingBox.Intersects(ref boundingSphere, out intersects);
                 if (intersects)
+                {
                     ChildB.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+                }
             }
 
             //internal override void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<int> outputOverlappedElements)
@@ -280,9 +313,14 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 float result;
                 if (ray.Intersects(ref ChildA.BoundingBox, out result) && result < maximumLength)
+                {
                     ChildA.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+                }
+
                 if (ray.Intersects(ref ChildB.BoundingBox, out result) && result < maximumLength)
+                {
                     ChildB.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+                }
             }
 
 
@@ -338,43 +376,33 @@ namespace MinorEngine.BEPUphysics.DataStructures
                     //merging A produces a better result.
                     if (ChildA.IsLeaf)
                     {
-                        ChildA = new InternalNode() { BoundingBox = mergedA, ChildA = this.ChildA, ChildB = node };
+                        ChildA = new InternalNode {BoundingBox = mergedA, ChildA = ChildA, ChildB = node};
                         treeNode = null;
                         return true;
                     }
-                    else
-                    {
-                        ChildA.BoundingBox = mergedA;
-                        treeNode = ChildA;
-                        return false;
-                    }
+
+                    ChildA.BoundingBox = mergedA;
+                    treeNode = ChildA;
+                    return false;
                 }
-                else
+
+                //merging B produces a better result.
+                if (ChildB.IsLeaf)
                 {
-                    //merging B produces a better result.
-                    if (ChildB.IsLeaf)
-                    {
-                        //Target is a leaf! Return.
-                        ChildB = new InternalNode() { BoundingBox = mergedB, ChildA = node, ChildB = this.ChildB };
-                        treeNode = null;
-                        return true;
-                    }
-                    else
-                    {
-                        ChildB.BoundingBox = mergedB;
-                        treeNode = ChildB;
-                        return false;
-                    }
+                    //Target is a leaf! Return.
+                    ChildB = new InternalNode {BoundingBox = mergedB, ChildA = node, ChildB = ChildB};
+                    treeNode = null;
+                    return true;
                 }
 
-
-
+                ChildB.BoundingBox = mergedB;
+                treeNode = ChildB;
+                return false;
             }
 
             public override string ToString()
             {
-                return "{" + ChildA.ToString() + ", " + ChildB.ToString() + "}";
-
+                return "{" + ChildA + ", " + ChildB + "}";
             }
 
             internal override void Analyze(List<int> depths, int depth, ref int nodeCount)
@@ -396,14 +424,12 @@ namespace MinorEngine.BEPUphysics.DataStructures
         /// The tiny extra margin added to leaf bounding boxes that allow the volume cost metric to function properly even in degenerate cases.
         /// </summary>
         public static float LeafMargin = .001f;
-        sealed class LeafNode : Node
-        {
-            int LeafIndex;
 
-            internal override bool IsLeaf
-            {
-                get { return true; }
-            }
+        private sealed class LeafNode : Node
+        {
+            private int LeafIndex;
+
+            internal override bool IsLeaf => true;
 
             internal LeafNode(int leafIndex, MeshBoundingBoxTreeData data)
             {
@@ -472,8 +498,5 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 BoundingBox.Min.Z -= LeafMargin;
             }
         }
-
     }
-
-
 }

@@ -32,6 +32,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Elements = new T[4];
         }
+
         ///<summary>
         /// Constructs an empty list.
         ///</summary>
@@ -40,7 +41,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public RawList(int initialCapacity)
         {
             if (initialCapacity <= 0)
+            {
                 throw new ArgumentException("Initial capacity must be positive.");
+            }
+
             Elements = new T[initialCapacity];
         }
 
@@ -65,11 +69,14 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
                 throw new ArgumentOutOfRangeException("index");
             }
+
             Count--;
             if (index < Count)
+            {
                 Array.Copy(Elements, index + 1, Elements, index, Count - index);
+            }
 
-            Elements[Count] = default(T);
+            Elements[Count] = default;
         }
 
         /// <summary>
@@ -82,13 +89,14 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
                 throw new ArgumentOutOfRangeException("index");
             }
+
             Count--;
             if (index < Count)
             {
                 Elements[index] = Elements[Count];
             }
-            Elements[Count] = default(T);
 
+            Elements[Count] = default;
         }
 
         ///<summary>
@@ -97,13 +105,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///</summary>
         public int Capacity
         {
-            get
-            {
-                return Elements.Length;
-            }
+            get => Elements.Length;
             set
             {
-                T[] newArray = new T[value];
+                var newArray = new T[value];
                 Array.Copy(Elements, newArray, Math.Min(value, Count));
                 Elements = newArray;
             }
@@ -119,8 +124,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
                 Capacity = Elements.Length * 2;
             }
-            Elements[Count++] = item;
 
+            Elements[Count++] = item;
         }
 
         ///<summary>
@@ -129,17 +134,20 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///<param name="items">Elements to add.</param>
         public void AddRange(RawList<T> items)
         {
-            int neededLength = Count + items.Count;
+            var neededLength = Count + items.Count;
             if (neededLength > Elements.Length)
             {
-                int newLength = Elements.Length * 2;
+                var newLength = Elements.Length * 2;
                 if (newLength < neededLength)
+                {
                     newLength = neededLength;
+                }
+
                 Capacity = newLength;
             }
+
             Array.Copy(items.Elements, 0, Elements, Count, items.Count);
             Count = neededLength;
-
         }
 
         ///<summary>
@@ -148,17 +156,20 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///<param name="items">Elements to add.</param>
         public void AddRange(List<T> items)
         {
-            int neededLength = Count + items.Count;
+            var neededLength = Count + items.Count;
             if (neededLength > Elements.Length)
             {
-                int newLength = Elements.Length * 2;
+                var newLength = Elements.Length * 2;
                 if (newLength < neededLength)
+                {
                     newLength = neededLength;
+                }
+
                 Capacity = newLength;
             }
+
             items.CopyTo(0, Elements, Count, items.Count);
             Count = neededLength;
-
         }
 
         ///<summary>
@@ -167,17 +178,20 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///<param name="items">Elements to add.</param>
         public void AddRange(IList<T> items)
         {
-            int neededLength = Count + items.Count;
+            var neededLength = Count + items.Count;
             if (neededLength > Elements.Length)
             {
-                int newLength = Elements.Length * 2;
+                var newLength = Elements.Length * 2;
                 if (newLength < neededLength)
+                {
                     newLength = neededLength;
+                }
+
                 Capacity = newLength;
             }
+
             items.CopyTo(Elements, 0);
             Count = neededLength;
-
         }
 
         /// <summary>
@@ -199,9 +213,12 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
         public bool Remove(T item)
         {
-            int index = IndexOf(item);
+            var index = IndexOf(item);
             if (index == -1)
+            {
                 return false;
+            }
+
             RemoveAt(index);
             return true;
         }
@@ -215,9 +232,12 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
         public bool FastRemove(T item)
         {
-            int index = IndexOf(item);
+            var index = IndexOf(item);
             if (index == -1)
+            {
                 return false;
+            }
+
             FastRemoveAt(index);
             return true;
         }
@@ -248,7 +268,6 @@ namespace MinorEngine.BEPUutilities.DataStructures
 
         #region IList<T> Members
 
-
         /// <summary>
         /// Inserts the element at the specified index.
         /// </summary>
@@ -268,8 +287,11 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 Count++;
             }
             else
+            {
                 Add(item);
+            }
         }
+
         /// <summary>
         /// Inserts the element at the specified index without maintaining list order.
         /// </summary>
@@ -290,7 +312,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 Count++;
             }
             else
+            {
                 Add(item);
+            }
         }
 
         /// <summary>
@@ -303,16 +327,22 @@ namespace MinorEngine.BEPUutilities.DataStructures
             get
             {
                 if (index < Count && index >= 0)
+                {
                     return Elements[index];
-                else
-                    throw new IndexOutOfRangeException("Index is outside of the list's bounds.");
+                }
+
+                throw new IndexOutOfRangeException("Index is outside of the list's bounds.");
             }
             set
             {
                 if (index < Count && index >= 0)
+                {
                     Elements[index] = value;
+                }
                 else
+                {
                     throw new IndexOutOfRangeException("Index is outside of the list's bounds.");
+                }
             }
         }
 
@@ -341,10 +371,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         }
 
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<T>.IsReadOnly => false;
 
         #endregion
 
@@ -376,7 +403,6 @@ namespace MinorEngine.BEPUutilities.DataStructures
         #endregion
 
 
-
         ///<summary>
         /// Sorts the list.
         ///</summary>
@@ -392,8 +418,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///</summary>
         public struct Enumerator : IEnumerator<T>
         {
-            RawList<T> list;
-            int index;
+            private RawList<T> list;
+            private int index;
+
             ///<summary>
             /// Constructs a new enumerator.
             ///</summary>
@@ -403,19 +430,14 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 index = -1;
                 this.list = list;
             }
-            public T Current
-            {
-                get { return list.Elements[index]; }
-            }
+
+            public T Current => list.Elements[index];
 
             public void Dispose()
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return list.Elements[index]; }
-            }
+            object System.Collections.IEnumerator.Current => list.Elements[index];
 
             public bool MoveNext()
             {
@@ -427,7 +449,5 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 index = -1;
             }
         }
-
-
     }
 }

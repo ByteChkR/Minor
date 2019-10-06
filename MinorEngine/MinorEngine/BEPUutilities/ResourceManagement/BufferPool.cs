@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace MinorEngine.BEPUutilities.ResourceManagement
@@ -16,6 +15,7 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// Defines the maximum buffer size. Maximum length is 2^MaximumPoolIndex.
         /// </summary>
         private const int MaximumPoolIndex = 30;
+
         private Stack<T[]>[] pools = new Stack<T[]>[MaximumPoolIndex + 1];
 #if DEBUG
         private HashSet<T[]> outstandingResources = new HashSet<T[]>();
@@ -26,7 +26,7 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// </summary>
         public BufferPool()
         {
-            for (int i = 0; i < pools.Length; ++i)
+            for (var i = 0; i < pools.Length; ++i)
             {
                 pools[i] = new Stack<T[]>();
             }
@@ -39,35 +39,41 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// <returns>Exponent associated with the buffer pool which would hold the given count of elements.</returns>
         public static int GetPoolIndex(int count)
         {
-            Debug.Assert(count >= 0 && count < (1 << MaximumPoolIndex), "Count must be from 0 to " + ((1 << MaximumPoolIndex) - 1) + ", inclusive.");
+            Debug.Assert(count >= 0 && count < 1 << MaximumPoolIndex,
+                "Count must be from 0 to " + ((1 << MaximumPoolIndex) - 1) + ", inclusive.");
             //We want the buffer which would fully contain the count, so it should be effectively Ceiling(Log(count)).
             //Doubling the value (and subtracting one, to avoid the already-a-power-of-two case) takes care of this.
             count = ((count > 0 ? count : 1) << 1) - 1;
-            int log = 0;
+            var log = 0;
             if ((count & 0xFFFF0000) > 0)
             {
                 count >>= 16;
                 log |= 16;
             }
+
             if ((count & 0xFF00) > 0)
             {
                 count >>= 8;
                 log |= 8;
             }
+
             if ((count & 0xF0) > 0)
             {
                 count >>= 4;
                 log |= 4;
             }
+
             if ((count & 0xC) > 0)
             {
                 count >>= 2;
                 log |= 2;
             }
+
             if ((count & 0x2) > 0)
             {
                 log |= 1;
             }
+
             return log;
         }
 
@@ -78,14 +84,17 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// <returns>Pool of the requested size.</returns>
         public virtual T[] TakeFromPoolIndex(int poolIndex)
         {
-            Debug.Assert(poolIndex >= 0 && poolIndex <= MaximumPoolIndex, "Pool index should be from 0 to " + MaximumPoolIndex + " inclusive.");
+            Debug.Assert(poolIndex >= 0 && poolIndex <= MaximumPoolIndex,
+                "Pool index should be from 0 to " + MaximumPoolIndex + " inclusive.");
             T[] toReturn;
             if (pools[poolIndex].Count > 0)
             {
                 toReturn = pools[poolIndex].Pop();
             }
             else
+            {
                 toReturn = new T[1 << poolIndex];
+            }
 #if DEBUG
             outstandingResources.Add(toReturn);
 #endif
@@ -140,7 +149,9 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         public void EnsureBufferCount(int poolIndex, int count)
         {
             while (pools[poolIndex].Count < count)
+            {
                 pools[poolIndex].Push(new T[1 << poolIndex]);
+            }
         }
 
         /// <summary>
@@ -148,7 +159,7 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// </summary>
         public void Clear()
         {
-            for (int i = 0; i <= MaximumPoolIndex; ++i)
+            for (var i = 0; i <= MaximumPoolIndex; ++i)
             {
                 pools[i].Clear();
             }

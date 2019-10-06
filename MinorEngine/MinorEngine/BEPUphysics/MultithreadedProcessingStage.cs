@@ -33,13 +33,8 @@ namespace MinorEngine.BEPUphysics
         /// </summary>
         public event Action Finishing;
 
-        protected bool ShouldUseMultithreading
-        {
-            get
-            {
-                return AllowMultithreading && ParallelLooper != null && ParallelLooper.ThreadCount > 1;
-            }
-        }
+        protected bool ShouldUseMultithreading =>
+            AllowMultithreading && ParallelLooper != null && ParallelLooper.ThreadCount > 1;
 
 #if PROFILE
         /// <summary>
@@ -71,9 +66,14 @@ namespace MinorEngine.BEPUphysics
         public void Update()
         {
             if (!Enabled)
+            {
                 return;
+            }
+
             if (Starting != null)
+            {
                 Starting();
+            }
 #if PROFILE
             StartClock();
 #endif
@@ -89,8 +89,11 @@ namespace MinorEngine.BEPUphysics
             StopClock();
 #endif
             if (Finishing != null)
+            {
                 Finishing();
+            }
         }
+
         protected abstract void UpdateMultithreaded();
         protected abstract void UpdateSingleThreaded();
     }

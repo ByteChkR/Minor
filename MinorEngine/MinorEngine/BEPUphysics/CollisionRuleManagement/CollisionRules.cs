@@ -9,7 +9,6 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
     /// </summary>
     public class CollisionRules
     {
-
         ///<summary>
         /// Fires when the contained collision rules are altered.
         ///</summary>
@@ -21,11 +20,11 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         ///</summary>
         public CollisionRules()
         {
-            hashCode = (int)(base.GetHashCode() * 0x8da6b343);
+            hashCode = (int) (base.GetHashCode() * 0x8da6b343);
             OnChangedDelegate = OnChanged;
         }
 
-        int hashCode;
+        private int hashCode;
 
         /// <summary>
         /// Serves as a hash function for a particular type. 
@@ -40,14 +39,18 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         }
 
         private Action OnChangedDelegate;
+
         protected void OnChanged()
         {
             if (CollisionRulesChanged != null)
+            {
                 CollisionRulesChanged();
+            }
         }
 
 
         internal CollisionGroup group;
+
         /// <summary>
         /// The collision group to which the object owning this instance belongs to.
         /// This is overridden by any relationships defined in the Specific collection with CollisionRules other than CollisionRule.Defer.
@@ -56,7 +59,7 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         /// </summary>
         public CollisionGroup Group
         {
-            get { return group; }
+            get => group;
             set
             {
                 group = value;
@@ -66,6 +69,7 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
 
 
         internal CollisionRule personal = CollisionRule.Defer;
+
         /// <summary>
         /// Determines in general how the object owning this instance should react to other objects.
         /// This is overridden by any relationships defined in the Specific collection with CollisionRules other than CollisionRule.Defer.
@@ -73,7 +77,7 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         /// </summary>
         public CollisionRule Personal
         {
-            get { return personal; }
+            get => personal;
             set
             {
                 personal = value;
@@ -82,8 +86,9 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         }
 
 
+        internal ObservableDictionary<CollisionRules, CollisionRule> specific =
+            new ObservableDictionary<CollisionRules, CollisionRule>();
 
-        internal ObservableDictionary<CollisionRules, CollisionRule> specific = new ObservableDictionary<CollisionRules, CollisionRule>();
         /// <summary>
         /// Specifies how the object owning this instance should react to other individual objects.
         /// Any rules defined in this collection will take priority over the Personal collision rule and the collision group's collision rules.
@@ -91,15 +96,20 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         /// </summary>
         public ObservableDictionary<CollisionRules, CollisionRule> Specific
         {
-            get { return specific; }
+            get => specific;
             set
             {
                 if (value != specific)
                 {
                     if (specific != null)
+                    {
                         specific.Changed -= OnChangedDelegate;
+                    }
+
                     if (value != null)
+                    {
                         value.Changed += OnChangedDelegate;
+                    }
 
                     specific = value;
                     OnChanged();
@@ -118,6 +128,7 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         {
             ownerA.CollisionRules.specific.Add(ownerB.CollisionRules, rule);
         }
+
         ///<summary>
         /// Adds an entry in rulesA's Specific relationships list about ownerB.
         ///</summary>
@@ -148,8 +159,11 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         public static void RemoveRule(ICollisionRulesOwner ownerA, ICollisionRulesOwner ownerB)
         {
             if (!ownerA.CollisionRules.specific.Remove(ownerB.CollisionRules))
+            {
                 ownerB.CollisionRules.specific.Remove(ownerA.CollisionRules);
+            }
         }
+
         ///<summary>
         /// Tries to remove a relationship about ownerB from rulesA's Specific list.
         ///</summary>
@@ -158,7 +172,9 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         public static void RemoveRule(CollisionRules rulesA, ICollisionRulesOwner ownerB)
         {
             if (!rulesA.specific.Remove(ownerB.CollisionRules))
+            {
                 ownerB.CollisionRules.specific.Remove(rulesA);
+            }
         }
 
         ///<summary>
@@ -169,29 +185,29 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         public static void RemoveRule(ICollisionRulesOwner ownerA, CollisionRules rulesB)
         {
             if (!ownerA.CollisionRules.specific.Remove(rulesB))
+            {
                 rulesB.specific.Remove(ownerA.CollisionRules);
+            }
         }
 
         static CollisionRules()
         {
-            CollisionGroupRules.Add(new CollisionGroupPair(DefaultKinematicCollisionGroup, DefaultKinematicCollisionGroup), CollisionRule.NoBroadPhase);
+            CollisionGroupRules.Add(
+                new CollisionGroupPair(DefaultKinematicCollisionGroup, DefaultKinematicCollisionGroup),
+                CollisionRule.NoBroadPhase);
         }
 
-        internal static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> collisionRuleCalculator = GetCollisionRuleDefault;
+        internal static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> collisionRuleCalculator =
+            GetCollisionRuleDefault;
+
         ///<summary>
         /// Gets or sets the delegate used to calculate collision rules.
         /// Defaults to CollisionRules.GetCollisionRuleDefault.
         ///</summary>
         public static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> CollisionRuleCalculator
         {
-            get
-            {
-                return collisionRuleCalculator;
-            }
-            set
-            {
-                collisionRuleCalculator = value;
-            }
+            get => collisionRuleCalculator;
+            set => collisionRuleCalculator = value;
         }
 
         /// <summary>
@@ -209,7 +225,8 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         /// <summary>
         /// Defines any special collision rules between collision groups.
         /// </summary>
-        public static Dictionary<CollisionGroupPair, CollisionRule> CollisionGroupRules = new Dictionary<CollisionGroupPair, CollisionRule>();
+        public static Dictionary<CollisionGroupPair, CollisionRule> CollisionGroupRules =
+            new Dictionary<CollisionGroupPair, CollisionRule>();
 
         /// <summary>
         /// If a CollisionRule calculation between two colliding objects results in no defined CollisionRule, this value will be used.
@@ -242,16 +259,21 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         {
             var a = aOwner.CollisionRules;
             var b = bOwner.CollisionRules;
-            CollisionRule pairRule = GetSpecificCollisionRuleDefault(a, b);
+            var pairRule = GetSpecificCollisionRuleDefault(a, b);
             if (pairRule == CollisionRule.Defer)
             {
                 pairRule = GetPersonalCollisionRuleDefault(a, b);
                 if (pairRule == CollisionRule.Defer)
+                {
                     pairRule = GetGroupCollisionRuleDefault(a, b);
+                }
             }
 
             if (pairRule == CollisionRule.Defer)
+            {
                 pairRule = DefaultCollisionRule;
+            }
+
             return pairRule;
         }
 
@@ -269,7 +291,6 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
             CollisionRule bToA;
             b.specific.WrappedDictionary.TryGetValue(a, out bToA);
             return aToB > bToA ? aToB : bToA;
-
         }
 
         ///<summary>
@@ -281,11 +302,17 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         public static CollisionRule GetGroupCollisionRuleDefault(CollisionRules a, CollisionRules b)
         {
             if (a.group == null || b.group == null)
-                return CollisionRule.Defer; //This can happen occasionally when objects aren't in a space or are being handled uniquely (like in compound bodies).
+            {
+                return
+                    CollisionRule
+                        .Defer; //This can happen occasionally when objects aren't in a space or are being handled uniquely (like in compound bodies).
+            }
+
             CollisionRule pairRule;
             CollisionGroupRules.TryGetValue(new CollisionGroupPair(a.group, b.group), out pairRule);
             return pairRule;
         }
+
         ///<summary>
         /// Default implementation used to calculate collision rules due to the rulesets' personal rules.
         ///</summary>
@@ -296,7 +323,5 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         {
             return a.personal > b.personal ? a.personal : b.personal;
         }
-
-
     }
 }

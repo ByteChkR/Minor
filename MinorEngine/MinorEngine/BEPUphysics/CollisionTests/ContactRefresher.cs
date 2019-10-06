@@ -1,6 +1,5 @@
-﻿using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUphysics.Settings;
- 
+﻿using MinorEngine.BEPUphysics.Settings;
+using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.CollisionTests
@@ -10,20 +9,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests
     ///</summary>
     public class ContactRefresher
     {
-
         /// <summary>
         /// Refreshes the contact manifold, removing any out of date contacts
         /// and updating others.
         /// </summary>
-        public static void ContactRefresh(RawList<Contact> contacts, RawValueList<ContactSupplementData> supplementData, ref RigidTransform transformA, ref RigidTransform transformB, RawList<int> toRemove)
+        public static void ContactRefresh(RawList<Contact> contacts, RawValueList<ContactSupplementData> supplementData,
+            ref RigidTransform transformA, ref RigidTransform transformB, RawList<int> toRemove)
         {
             //TODO: Could also refresh normals with some trickery.
             //Would also need to refresh depth using new normals, and would require some extra information.
 
-            for (int k = 0; k < contacts.Count; k++)
+            for (var k = 0; k < contacts.Count; k++)
             {
                 contacts.Elements[k].Validate();
-                ContactSupplementData data = supplementData.Elements[k];
+                var data = supplementData.Elements[k];
                 Vector3 newPosA, newPosB;
                 RigidTransform.Transform(ref data.LocalOffsetA, ref transformA, out newPosA);
                 RigidTransform.Transform(ref data.LocalOffsetB, ref transformB, out newPosB);
@@ -49,7 +48,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests
                     Vector3.Dot(ref ab, ref contacts.Elements[k].Normal, out dot);
                     contacts.Elements[k].PenetrationDepth = data.BasePenetrationDepth - dot;
                     if (contacts.Elements[k].PenetrationDepth < -CollisionDetectionSettings.maximumContactDistance)
+                    {
                         toRemove.Add(k);
+                    }
                     else
                     {
                         //Refresh position and ra/rb.
@@ -62,9 +63,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests
                         //RigidTransform.TransformByInverse(ref newPos, ref transformA, out data.LocalOffsetA);
                         //RigidTransform.TransformByInverse(ref newPos, ref transformB, out data.LocalOffsetB);
                     }
+
                     contacts.Elements[k].Validate();
                 }
-               
             }
         }
     }

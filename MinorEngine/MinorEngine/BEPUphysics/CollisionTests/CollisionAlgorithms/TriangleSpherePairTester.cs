@@ -22,7 +22,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         ///</summary>
         ///<param name="contactList">Contact between the shapes, if any.</param>
         ///<returns>Whether or not the shapes are colliding.</returns>
-        public override bool GenerateContactCandidates(TriangleShape triangle, out TinyStructList<ContactData> contactList)
+        public override bool GenerateContactCandidates(TriangleShape triangle,
+            out TinyStructList<ContactData> contactList)
         {
             contactList = new TinyStructList<ContactData>();
 
@@ -39,37 +40,47 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 Vector3.Add(ref triangleNormal, ref triangle.vC, out triangleNormal);
                 Vector3.Multiply(ref triangleNormal, 1 / 3f, out triangleNormal);
                 if (triangleNormal.LengthSquared() < Toolbox.Epsilon * .01f)
+                {
                     triangleNormal = Toolbox.UpVector; //Alrighty then! Pick a random direction.
-                    
+                }
             }
 
-            
+
             float dot;
             Vector3.Dot(ref triangleNormal, ref triangle.vA, out dot);
             switch (triangle.sidedness)
             {
                 case TriangleSidedness.DoubleSided:
                     if (dot < 0)
+                    {
                         Vector3.Negate(ref triangleNormal, out triangleNormal); //Normal must face outward.
+                    }
+
                     break;
                 case TriangleSidedness.Clockwise:
                     if (dot > 0)
+                    {
                         return false; //Wrong side, can't have a contact pointing in a reasonable direction.
+                    }
+
                     break;
                 case TriangleSidedness.Counterclockwise:
                     if (dot < 0)
+                    {
                         return false; //Wrong side, can't have a contact pointing in a reasonable direction.
-                    break;
+                    }
 
+                    break;
             }
 
 
             Vector3 closestPoint;
             //Could optimize this process a bit.  The 'point' being compared is always zero.  Additionally, since the triangle normal is available,
             //there is a little extra possible optimization.
-            lastRegion = Toolbox.GetClosestPointOnTriangleToPoint(ref triangle.vA, ref triangle.vB, ref triangle.vC, ref Toolbox.ZeroVector, out closestPoint);
-            float lengthSquared = closestPoint.LengthSquared();
-            float marginSum = triangle.collisionMargin + sphere.collisionMargin;
+            lastRegion = Toolbox.GetClosestPointOnTriangleToPoint(ref triangle.vA, ref triangle.vB, ref triangle.vC,
+                ref Toolbox.ZeroVector, out closestPoint);
+            var lengthSquared = closestPoint.LengthSquared();
+            var marginSum = triangle.collisionMargin + sphere.collisionMargin;
 
             if (lengthSquared <= marginSum * marginSum)
             {
@@ -85,19 +96,15 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     return true;
                 }
 
-                lengthSquared = (float)Math.Sqrt(lengthSquared);
+                lengthSquared = (float) Math.Sqrt(lengthSquared);
                 Vector3.Divide(ref closestPoint, lengthSquared, out contact.Normal);
                 contact.PenetrationDepth = marginSum - lengthSquared;
                 contact.Position = closestPoint;
                 contactList.Add(ref contact);
                 return true;
-
             }
+
             return false;
-
-
-
-
         }
 
         public override VoronoiRegion GetRegion(TriangleShape triangle, ref ContactData contact)
@@ -106,13 +113,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         }
 
 
-        public override bool ShouldCorrectContactNormal
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool ShouldCorrectContactNormal => false;
 
         ///<summary>
         /// Initializes the pair tester.
@@ -120,7 +121,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         ///<param name="convex">Convex shape to use.</param>
         public override void Initialize(ConvexShape convex)
         {
-            this.sphere = (SphereShape)convex;
+            sphere = (SphereShape) convex;
         }
 
         /// <summary>
@@ -132,5 +133,4 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Updated = false;
         }
     }
-
 }

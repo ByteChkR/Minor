@@ -12,7 +12,6 @@ namespace MinorEngine.BEPUphysics.Constraints
     /// </summary>
     public abstract class SolverUpdateable : ISimulationIslandConnectionOwner, ISpaceObject
     {
-
         internal int solverIndex;
 
         protected internal Solver solver;
@@ -20,10 +19,11 @@ namespace MinorEngine.BEPUphysics.Constraints
         ///<summary>
         /// Gets the solver to which the solver updateable belongs.
         ///</summary>
-        public virtual Solver Solver //Note: this is virtual because some child classes (SolverGroups) need to perform their own logic when a solver gets set.
+        public virtual Solver
+            Solver //Note: this is virtual because some child classes (SolverGroups) need to perform their own logic when a solver gets set.
         {
-            get { return solver; }
-            protected internal set { solver = value; }
+            get => solver;
+            protected internal set => solver = value;
         }
 
         protected internal SimulationIslandConnection simulationIslandConnection;
@@ -31,10 +31,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <summary>
         /// Gets the simulation island connection associated with this updateable.
         /// </summary>
-        public SimulationIslandConnection SimulationIslandConnection
-        {
-            get { return simulationIslandConnection; }
-        }
+        public SimulationIslandConnection SimulationIslandConnection => simulationIslandConnection;
 
 
         /// <summary>
@@ -45,13 +42,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         ///<summary>
         /// Gets the entities that this solver updateable is involved with.
         ///</summary>
-        public ReadOnlyList<Entity> InvolvedEntities
-        {
-            get
-            {
-                return new ReadOnlyList<Entity>(involvedEntities);
-            }
-        }
+        public ReadOnlyList<Entity> InvolvedEntities => new ReadOnlyList<Entity>(involvedEntities);
 
         /// <summary>
         /// Number of entities used in the solver updateable.
@@ -61,15 +52,14 @@ namespace MinorEngine.BEPUphysics.Constraints
         protected internal int numberOfInvolvedEntities;
 
         protected internal SolverSettings solverSettings = new SolverSettings();
+
         ///<summary>
         /// Gets the solver settings that manage how the solver updates.
         ///</summary>
-        public SolverSettings SolverSettings
-        {
-            get { return solverSettings; }
-        }
+        public SolverSettings SolverSettings => solverSettings;
 
         protected internal bool isActive = true;
+
         /// <summary>
         /// Gets or sets whether or not this solver updateable is active.
         /// 
@@ -81,7 +71,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public bool IsActive
         {
-            get { return isActive; }
+            get => isActive;
             set
             {
                 if (value != isActive)
@@ -96,25 +86,20 @@ namespace MinorEngine.BEPUphysics.Constraints
         }
 
         protected internal bool isActiveInSolver = true;
+
         /// <summary>
         /// Gets whether or not the space's solver should try to solve this object.
         /// Depends on conditions specific to each solver updateable type and whether or not
         /// it has completed its computations early.  Recomputed each frame.
         /// </summary>
-        public bool IsActiveInSolver
-        {
-            get
-            {
-                return isActiveInSolver;
-            }
-        }
+        public bool IsActiveInSolver => isActiveInSolver;
 
         /// <summary>
         /// Activates all entities involved with this solver updateable.
         /// </summary>
         public void ActivateInvolvedEntities()
         {
-            for (int i = 0; i < involvedEntities.Count; i++)
+            for (var i = 0; i < involvedEntities.Count; i++)
             {
                 if (involvedEntities[i].isDynamic)
                 {
@@ -143,14 +128,12 @@ namespace MinorEngine.BEPUphysics.Constraints
         }
 
 
-
-
         /// <summary>
         /// Acquires exclusive access to all entities involved in the solver updateable.
         /// </summary>
         public void EnterLock()
         {
-            for (int i = 0; i < numberOfInvolvedEntities; i++)
+            for (var i = 0; i < numberOfInvolvedEntities; i++)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                 {
@@ -165,10 +148,12 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// </summary>
         public void ExitLock()
         {
-            for (int i = numberOfInvolvedEntities - 1; i >= 0; i--)
+            for (var i = numberOfInvolvedEntities - 1; i >= 0; i--)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
+                {
                     involvedEntities.Elements[i].locker.Exit();
+                }
             }
         }
 
@@ -179,20 +164,26 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <returns>True if the lock was entered successfully, false otherwise.</returns>
         public bool TryEnterLock()
         {
-            for (int i = 0; i < numberOfInvolvedEntities; i++)
+            for (var i = 0; i < numberOfInvolvedEntities; i++)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
+                {
                     if (!involvedEntities.Elements[i].locker.TryEnter())
                     {
                         //Turns out we can't take all the resources! Immediately drop everything.
                         for (i = i - 1 /*failed on the ith element, so start at the previous*/; i >= 0; i--)
                         {
                             if (involvedEntities[i].isDynamic)
+                            {
                                 involvedEntities.Elements[i].locker.Exit();
+                            }
                         }
+
                         return false;
                     }
+                }
             }
+
             return true;
         }
 
@@ -202,10 +193,10 @@ namespace MinorEngine.BEPUphysics.Constraints
         public virtual void UpdateSolverActivity()
         {
             if (isActive)
-            {
                 //This is a simulation island connection.  We already know that all connected objects share the
                 //same simulation island (or don't have one, in the case of kinematics).  All we have to do is test to see if that island is active!
-                for (int i = 0; i < simulationIslandConnection.entries.Count; i++)
+            {
+                for (var i = 0; i < simulationIslandConnection.entries.Count; i++)
                 {
                     var island = simulationIslandConnection.entries.Elements[i].Member.SimulationIsland;
                     if (island != null && island.isActive)
@@ -215,6 +206,7 @@ namespace MinorEngine.BEPUphysics.Constraints
                     }
                 }
             }
+
             isActiveInSolver = false;
         }
 
@@ -246,36 +238,36 @@ namespace MinorEngine.BEPUphysics.Constraints
         protected internal virtual void OnInvolvedEntitiesChanged()
         {
             //First verify that something really changed.
-            bool entitiesChanged = false;
-            RawList<Entity> newInvolvedEntities = PhysicsResources.GetEntityRawList();
+            var entitiesChanged = false;
+            var newInvolvedEntities = PhysicsResources.GetEntityRawList();
             CollectInvolvedEntities(newInvolvedEntities);
             if (newInvolvedEntities.Count == involvedEntities.Count)
             {
-                for (int i = 0; i < newInvolvedEntities.Count; i++)
+                for (var i = 0; i < newInvolvedEntities.Count; i++)
                 {
                     if (newInvolvedEntities.Elements[i] != involvedEntities.Elements[i])
                     {
                         entitiesChanged = true;
                         break;
                     }
+                    else
+                    {
+                        entitiesChanged = true;
+                    }
                 }
-            }
-            else
-            {
-                entitiesChanged = true;
             }
 
             if (entitiesChanged)
             {
                 //Probably need to wake things up given that such a significant change was made.
 
-                for (int i = 0; i < involvedEntities.Count; i++)
+                for (var i = 0; i < involvedEntities.Count; i++)
                 {
-                    Entity e = involvedEntities.Elements[i];
+                    var e = involvedEntities.Elements[i];
                     if (e.isDynamic)
                     {
                         e.activityInformation.Activate();
-                        break;//Don't bother activating other entities; they are all a part of the same simulation island.
+                        break; //Don't bother activating other entities; they are all a part of the same simulation island.
                     }
                 }
 
@@ -283,14 +275,15 @@ namespace MinorEngine.BEPUphysics.Constraints
                 CollectInvolvedEntities();
 
 
-
                 if (SolverGroup != null)
+                {
                     SolverGroup.OnInvolvedEntitiesChanged();
+                }
 
                 //We woke up the FORMER involved entities, now wake up the current involved entities.
-                for (int i = 0; i < involvedEntities.Count; i++)
+                for (var i = 0; i < involvedEntities.Count; i++)
                 {
-                    Entity e = involvedEntities.Elements[i];
+                    var e = involvedEntities.Elements[i];
                     if (e.isDynamic)
                     {
                         e.activityInformation.Activate();
@@ -298,6 +291,7 @@ namespace MinorEngine.BEPUphysics.Constraints
                     }
                 }
             }
+
             PhysicsResources.GiveBack(newInvolvedEntities);
         }
 
@@ -329,10 +323,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         }
 
 
-
-        void UpdateConnectedMembers()
+        private void UpdateConnectedMembers()
         {
-
             //Since we're about to change this updateable's connections, make sure the 
             //simulation islands hear about it.  This is NOT thread safe.
             var deactivationManager = simulationIslandConnection.DeactivationManager;
@@ -353,29 +345,36 @@ namespace MinorEngine.BEPUphysics.Constraints
             {
                 deactivationManager.Remove(simulationIslandConnection);
             }
-            else if (!simulationIslandConnection.SlatedForRemoval) //If it's already been removed, cleaning it ourselves would prevent proper simulation island splits in the deactivation manager split flush.
-                PhysicsResources.GiveBack(simulationIslandConnection); //Well, since we're going to orphan the connection, we'll need to take care of its trash.
+            else if (!simulationIslandConnection.SlatedForRemoval
+            ) //If it's already been removed, cleaning it ourselves would prevent proper simulation island splits in the deactivation manager split flush.
+            {
+                PhysicsResources.GiveBack(
+                    simulationIslandConnection); //Well, since we're going to orphan the connection, we'll need to take care of its trash.
+            }
 
 
             //The SimulationIslandConnection is immutable.
             //So create a new one!
             //Assume we've already dealt with the old connection.
             simulationIslandConnection = PhysicsResources.GetSimulationIslandConnection();
-            for (int i = 0; i < involvedEntities.Count; i++)
+            for (var i = 0; i < involvedEntities.Count; i++)
             {
                 simulationIslandConnection.Add(involvedEntities.Elements[i].activityInformation);
             }
+
             simulationIslandConnection.Owner = this;
 
 
             //Add the new reference back.
             if (deactivationManager != null)
+            {
                 deactivationManager.Add(simulationIslandConnection);
-
+            }
         }
 
 
         private static EntityComparer comparer = new EntityComparer();
+
         private class EntityComparer : IComparer<Entity>
         {
             #region IComparer<Entity> Members
@@ -383,9 +382,15 @@ namespace MinorEngine.BEPUphysics.Constraints
             int IComparer<Entity>.Compare(Entity x, Entity y)
             {
                 if (x.InstanceId > y.InstanceId)
+                {
                     return 1;
+                }
+
                 if (x.InstanceId < y.InstanceId)
+                {
                     return -1;
+                }
+
                 return 0;
             }
 
@@ -393,18 +398,12 @@ namespace MinorEngine.BEPUphysics.Constraints
         }
 
 
-
         protected internal Space space;
+
         Space ISpaceObject.Space
         {
-            get
-            {
-                return space;
-            }
-            set
-            {
-                space = value;
-            }
+            get => space;
+            set => space = value;
         }
 
 
@@ -443,6 +442,5 @@ namespace MinorEngine.BEPUphysics.Constraints
         public virtual void OnRemovalFromSolver(Solver oldSolver)
         {
         }
-
     }
 }

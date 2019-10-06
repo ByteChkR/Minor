@@ -1,12 +1,10 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
+﻿using System;
+using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-
 using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Materials;
-using System;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Vehicle
 {
@@ -38,9 +36,9 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// determining aesthetic properties of a vehicle wheel,
         /// like position and orientation.
         /// </summary>
-        public override sealed float Radius
+        public sealed override float Radius
         {
-            get { return graphicalRadius; }
+            get => graphicalRadius;
             set
             {
                 graphicalRadius = Math.Max(value, 0);
@@ -57,14 +55,16 @@ namespace MinorEngine.BEPUphysics.Vehicle
         public override void UpdateWorldTransform()
         {
 #if !WINDOWS
-            Vector3 newPosition = new Vector3();
+            var newPosition = new Vector3();
 #else
             Vector3 newPosition;
 #endif
             Vector3 worldAttachmentPoint;
             Vector3 localAttach;
-            Vector3.Add(ref wheel.suspension.localAttachmentPoint, ref wheel.vehicle.Body.CollisionInformation.localPosition, out localAttach);
-            worldTransform = Matrix3x3.ToMatrix4X4(wheel.vehicle.Body.BufferedStates.InterpolatedStates.OrientationMatrix);
+            Vector3.Add(ref wheel.suspension.localAttachmentPoint,
+                ref wheel.vehicle.Body.CollisionInformation.localPosition, out localAttach);
+            worldTransform =
+                Matrix3x3.ToMatrix4X4(wheel.vehicle.Body.BufferedStates.InterpolatedStates.OrientationMatrix);
 
             Matrix.TransformNormal(ref localAttach, ref worldTransform, out worldAttachmentPoint);
             worldAttachmentPoint += wheel.vehicle.Body.BufferedStates.InterpolatedStates.Position;
@@ -72,7 +72,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
             Vector3 worldDirection;
             Matrix.Transform(ref wheel.suspension.localDirection, ref worldTransform, out worldDirection);
 
-            float length = wheel.suspension.currentLength - graphicalRadius;
+            var length = wheel.suspension.currentLength - graphicalRadius;
             newPosition.X = worldAttachmentPoint.X + worldDirection.X * length;
             newPosition.Y = worldAttachmentPoint.Y + worldDirection.Y * length;
             newPosition.Z = worldAttachmentPoint.Z + worldDirection.Z * length;
@@ -102,7 +102,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="entity">Supporting object.</param>
         /// <param name="material">Material of the wheel.</param>
         /// <returns>Whether or not any support was found.</returns>
-        protected internal override bool FindSupport(out Vector3 location, out Vector3 normal, out float suspensionLength, out Collidable supportingCollidable, out Entity entity, out Material material)
+        protected internal override bool FindSupport(out Vector3 location, out Vector3 normal,
+            out float suspensionLength, out Collidable supportingCollidable, out Entity entity, out Material material)
         {
             suspensionLength = float.MaxValue;
             location = Toolbox.NoVector;
@@ -114,16 +115,21 @@ namespace MinorEngine.BEPUphysics.Vehicle
             Collidable testCollidable;
             RayHit rayHit;
 
-            bool hit = false;
+            var hit = false;
 
-            for (int i = 0; i < detector.CollisionInformation.pairs.Count; i++)
+            for (var i = 0; i < detector.CollisionInformation.pairs.Count; i++)
             {
                 var pair = detector.CollisionInformation.pairs[i];
-                testCollidable = (pair.BroadPhaseOverlap.entryA == detector.CollisionInformation ? pair.BroadPhaseOverlap.entryB : pair.BroadPhaseOverlap.entryA) as Collidable;
+                testCollidable =
+                    (pair.BroadPhaseOverlap.entryA == detector.CollisionInformation
+                        ? pair.BroadPhaseOverlap.entryB
+                        : pair.BroadPhaseOverlap.entryA) as Collidable;
                 if (testCollidable != null)
                 {
                     if (CollisionRules.CollisionRuleCalculator(this, testCollidable) == CollisionRule.Normal &&
-                        testCollidable.RayCast(new Ray(wheel.suspension.worldAttachmentPoint, wheel.suspension.worldDirection), wheel.suspension.restLength, out rayHit) &&
+                        testCollidable.RayCast(
+                            new Ray(wheel.suspension.worldAttachmentPoint, wheel.suspension.worldDirection),
+                            wheel.suspension.restLength, out rayHit) &&
                         rayHit.T < suspensionLength)
                     {
                         suspensionLength = rayHit.T;
@@ -139,22 +145,32 @@ namespace MinorEngine.BEPUphysics.Vehicle
                             supportingCollidable = testCollidable;
                             var materialOwner = testCollidable as IMaterialOwner;
                             if (materialOwner != null)
+                            {
                                 material = materialOwner.Material;
+                            }
                         }
+
                         location = rayHit.Location;
                         normal = rayHit.Normal;
                         hit = true;
                     }
                 }
             }
+
             if (hit)
             {
                 if (suspensionLength > 0)
+                {
                     normal.Normalize();
+                }
                 else
+                {
                     Vector3.Negate(ref wheel.suspension.worldDirection, out normal);
+                }
+
                 return true;
             }
+
             return false;
         }
 
@@ -165,8 +181,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         protected internal override void Initialize()
         {
             //Setup the dimensions of the detector.
-            Vector3 startpoint = wheel.suspension.localAttachmentPoint;
-            Vector3 endpoint = startpoint + wheel.suspension.localDirection * wheel.suspension.restLength;
+            var startpoint = wheel.suspension.localAttachmentPoint;
+            var endpoint = startpoint + wheel.suspension.localDirection * wheel.suspension.restLength;
             Vector3 min, max;
             Vector3.Min(ref startpoint, ref endpoint, out min);
             Vector3.Max(ref startpoint, ref endpoint, out max);
@@ -182,14 +198,17 @@ namespace MinorEngine.BEPUphysics.Vehicle
         protected internal override void UpdateDetectorPosition()
         {
 #if !WINDOWS
-            Vector3 newPosition = new Vector3();
+            var newPosition = new Vector3();
 #else
             Vector3 newPosition;
 #endif
 
-            newPosition.X = wheel.suspension.worldAttachmentPoint.X + wheel.suspension.worldDirection.X * wheel.suspension.restLength * .5f;
-            newPosition.Y = wheel.suspension.worldAttachmentPoint.Y + wheel.suspension.worldDirection.Y * wheel.suspension.restLength * .5f;
-            newPosition.Z = wheel.suspension.worldAttachmentPoint.Z + wheel.suspension.worldDirection.Z * wheel.suspension.restLength * .5f;
+            newPosition.X = wheel.suspension.worldAttachmentPoint.X +
+                            wheel.suspension.worldDirection.X * wheel.suspension.restLength * .5f;
+            newPosition.Y = wheel.suspension.worldAttachmentPoint.Y +
+                            wheel.suspension.worldDirection.Y * wheel.suspension.restLength * .5f;
+            newPosition.Z = wheel.suspension.worldAttachmentPoint.Z +
+                            wheel.suspension.worldDirection.Z * wheel.suspension.restLength * .5f;
 
             detector.Position = newPosition;
             detector.OrientationMatrix = wheel.Vehicle.Body.orientationMatrix;

@@ -5,11 +5,11 @@
     ///</summary>
     public struct SolverUpdateableChange
     {
-
         ///<summary>
         /// Whether the item is going to be added or removed.
         ///</summary>
         public bool ShouldAdd;
+
         ///<summary>
         /// Item being added or removed.
         ///</summary>

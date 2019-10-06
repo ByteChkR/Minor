@@ -8,18 +8,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class StaticMeshConvexContactManifold : StaticMeshContactManifold
     {
+        private static LockingResourcePool<TriangleConvexPairTester> testerPool =
+            new LockingResourcePool<TriangleConvexPairTester>();
 
-
-        static LockingResourcePool<TriangleConvexPairTester> testerPool = new LockingResourcePool<TriangleConvexPairTester>();
         protected override void GiveBackTester(TrianglePairTester tester)
         {
-            testerPool.GiveBack((TriangleConvexPairTester)tester);
+            testerPool.GiveBack((TriangleConvexPairTester) tester);
         }
 
         protected override TrianglePairTester GetTester()
         {
             return testerPool.Take();
         }
-
     }
 }

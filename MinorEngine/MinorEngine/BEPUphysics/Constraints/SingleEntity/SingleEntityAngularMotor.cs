@@ -2,7 +2,6 @@
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
 {
@@ -12,9 +11,6 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
     /// </summary>
     public class SingleEntityAngularMotor : SingleEntityConstraint, I3DImpulseConstraintWithError
     {
-        private readonly JointBasis3D basis = new JointBasis3D();
-
-        private readonly MotorSettingsOrientation settings;
         private Vector3 accumulatedImpulse;
 
 
@@ -36,7 +32,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         {
             Entity = entity;
 
-            settings = new MotorSettingsOrientation(this) {servo = {goal = base.entity.orientation}};
+            Settings = new MotorSettingsOrientation(this) {servo = {goal = this.entity.orientation}};
             //Since no target relative orientation was specified, just use the current relative orientation.  Prevents any nasty start-of-sim 'snapping.'
 
             //mySettings.myServo.springSettings.stiffnessConstant *= .5f;
@@ -48,7 +44,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public SingleEntityAngularMotor()
         {
-            settings = new MotorSettingsOrientation(this);
+            Settings = new MotorSettingsOrientation(this);
             IsActive = false;
         }
 
@@ -56,18 +52,12 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// Gets the basis attached to the entity.
         /// The target velocity/orientation of this motor is transformed by the basis.
         /// </summary>
-        public JointBasis3D Basis
-        {
-            get { return basis; }
-        }
+        public JointBasis3D Basis { get; } = new JointBasis3D();
 
         /// <summary>
         /// Gets the motor's velocity and servo settings.
         /// </summary>
-        public MotorSettingsOrientation Settings
-        {
-            get { return settings; }
-        }
+        public MotorSettingsOrientation Settings { get; }
 
         #region I3DImpulseConstraintWithError Members
 
@@ -76,27 +66,18 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// For single entity constraints, this is pretty straightforward.  It is taken directly from the 
         /// entity.
         /// </summary>
-        public Vector3 RelativeVelocity
-        {
-            get { return -Entity.AngularVelocity; }
-        }
+        public Vector3 RelativeVelocity => -Entity.AngularVelocity;
 
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public Vector3 TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public Vector3 TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the current constraint error.
         /// If the motor is in velocity only mode, error is zero.
         /// </summary>
-        public Vector3 Error
-        {
-            get { return axis * angle; }
-        }
+        public Vector3 Error => axis * angle;
 
         #endregion
 
@@ -106,27 +87,27 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         public override float SolveIteration()
         {
 #if !WINDOWS
-            Vector3 lambda = new Vector3();
+            var lambda = new Vector3();
 #else
             Vector3 lambda;
 #endif
-            Vector3 aVel = entity.angularVelocity;
+            var aVel = entity.angularVelocity;
             lambda.X = -aVel.X + biasVelocity.X - usedSoftness * accumulatedImpulse.X;
             lambda.Y = -aVel.Y + biasVelocity.Y - usedSoftness * accumulatedImpulse.Y;
             lambda.Z = -aVel.Z + biasVelocity.Z - usedSoftness * accumulatedImpulse.Z;
 
             Matrix3x3.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
 
-            Vector3 previousAccumulatedImpulse = accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse.X += lambda.X;
             accumulatedImpulse.Y += lambda.Y;
             accumulatedImpulse.Z += lambda.Z;
-            float sumLengthSquared = accumulatedImpulse.LengthSquared();
+            var sumLengthSquared = accumulatedImpulse.LengthSquared();
 
             if (sumLengthSquared > maxForceDtSquared)
             {
                 //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                float multiplier = maxForceDt / (float) Math.Sqrt(sumLengthSquared);
+                var multiplier = maxForceDt / (float) Math.Sqrt(sumLengthSquared);
                 accumulatedImpulse.X *= multiplier;
                 accumulatedImpulse.Y *= multiplier;
                 accumulatedImpulse.Z *= multiplier;
@@ -150,25 +131,26 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// <param name="dt">Time between frames.</param>
         public override void Update(float dt)
         {
-            basis.rotationMatrix = entity.orientationMatrix;
-            basis.ComputeWorldSpaceAxes();
+            Basis.rotationMatrix = entity.orientationMatrix;
+            Basis.ComputeWorldSpaceAxes();
 
-            float updateRate = 1 / dt;
-            if (settings.mode == MotorMode.Servomechanism) //Only need to do the bulk of this work if it's a servo.
+            var updateRate = 1 / dt;
+            if (Settings.mode == MotorMode.Servomechanism) //Only need to do the bulk of this work if it's a servo.
             {
                 Quaternion currentRelativeOrientation;
-                var worldTransform = basis.WorldTransform;
+                var worldTransform = Basis.WorldTransform;
                 Quaternion.CreateFromRotationMatrix(ref worldTransform, out currentRelativeOrientation);
 
 
                 //Compute the relative orientation R' between R and the target relative orientation.
                 Quaternion errorOrientation;
                 Quaternion.Conjugate(ref currentRelativeOrientation, out errorOrientation);
-                Quaternion.Multiply(ref settings.servo.goal, ref errorOrientation, out errorOrientation);
+                Quaternion.Multiply(ref Settings.servo.goal, ref errorOrientation, out errorOrientation);
 
 
                 float errorReduction;
-                settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction, out usedSoftness);
+                Settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction,
+                    out usedSoftness);
 
                 //Turn this into an axis-angle representation.
                 Quaternion.GetAxisAngleFromQuaternion(ref errorOrientation, out axis, out angle);
@@ -176,7 +158,8 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
                 //Scale the axis by the desired velocity if the angle is sufficiently large (epsilon).
                 if (angle > Toolbox.BigEpsilon)
                 {
-                    float velocity = MathHelper.Min(settings.servo.baseCorrectiveSpeed, angle * updateRate) + angle * errorReduction;
+                    var velocity = MathHelper.Min(Settings.servo.baseCorrectiveSpeed, angle * updateRate) +
+                                   angle * errorReduction;
 
                     biasVelocity.X = axis.X * velocity;
                     biasVelocity.Y = axis.Y * velocity;
@@ -184,10 +167,10 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
 
 
                     //Ensure that the corrective velocity doesn't exceed the max.
-                    float length = biasVelocity.LengthSquared();
-                    if (length > settings.servo.maxCorrectiveVelocitySquared)
+                    var length = biasVelocity.LengthSquared();
+                    if (length > Settings.servo.maxCorrectiveVelocitySquared)
                     {
-                        float multiplier = settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                        var multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
                         biasVelocity.X *= multiplier;
                         biasVelocity.Y *= multiplier;
                         biasVelocity.Z *= multiplier;
@@ -201,10 +184,10 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             }
             else
             {
-                usedSoftness = settings.velocityMotor.softness * updateRate;
+                usedSoftness = Settings.velocityMotor.softness * updateRate;
                 angle = 0; //Zero out the error;
-                Matrix3x3 transform = basis.WorldTransform;
-                Matrix3x3.Transform(ref settings.velocityMotor.goalVelocity, ref transform, out biasVelocity);
+                var transform = Basis.WorldTransform;
+                Matrix3x3.Transform(ref Settings.velocityMotor.goalVelocity, ref transform, out biasVelocity);
             }
 
             //Compute effective mass
@@ -215,10 +198,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             Matrix3x3.Invert(ref effectiveMassMatrix, out effectiveMassMatrix);
 
             //Update the maximum force
-            ComputeMaxForces(settings.maximumForce, dt);
-
-
-            
+            ComputeMaxForces(Settings.maximumForce, dt);
         }
 
         /// <summary>

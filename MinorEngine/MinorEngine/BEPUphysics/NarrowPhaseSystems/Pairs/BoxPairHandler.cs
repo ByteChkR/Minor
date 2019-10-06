@@ -1,15 +1,8 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
-using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
-using MinorEngine.BEPUphysics.Constraints.Collision;
-using MinorEngine.BEPUphysics.PositionUpdating;
-using MinorEngine.BEPUphysics.Settings;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -18,38 +11,23 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class BoxPairHandler : ConvexConstraintPairHandler
     {
-        ConvexCollidable<BoxShape> boxA;
-        ConvexCollidable<BoxShape> boxB;
+        private ConvexCollidable<BoxShape> boxA;
+        private ConvexCollidable<BoxShape> boxB;
 
-        BoxContactManifold contactManifold = new BoxContactManifold();
+        private BoxContactManifold contactManifold = new BoxContactManifold();
 
-        public override Collidable CollidableA
-        {
-            get { return boxA; }
-        }
+        public override Collidable CollidableA => boxA;
 
-        public override Collidable CollidableB
-        {
-            get { return boxB; }
-        }
+        public override Collidable CollidableB => boxB;
 
-        public override Entities.Entity EntityA
-        {
-            get { return boxA.entity; }
-        }
+        public override Entities.Entity EntityA => boxA.entity;
 
-        public override Entities.Entity EntityB
-        {
-            get { return boxB.entity; }
-        }
+        public override Entities.Entity EntityB => boxB.entity;
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
-        public override ContactManifold ContactManifold
-        {
-            get { return contactManifold; }
-        }
-
+        public override ContactManifold ContactManifold => contactManifold;
 
 
         ///<summary>
@@ -68,9 +46,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             }
 
             base.Initialize(entryA, entryB);
-
         }
-
 
 
         ///<summary>
@@ -82,12 +58,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             boxA = null;
             boxB = null;
-            
         }
-
-
-
-
     }
-
 }

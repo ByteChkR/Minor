@@ -92,7 +92,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="hitClockwise">True if the the triangle was hit on the clockwise face, false otherwise.</param>
         /// <param name="hit">Hit data of the ray, if any</param>
         /// <returns>Whether or not the ray and triangle intersect.</returns>
-        public static bool FindRayTriangleIntersection(ref Ray ray, float maximumLength, ref Vector3 a, ref Vector3 b, ref Vector3 c, out bool hitClockwise, out RayHit hit)
+        public static bool FindRayTriangleIntersection(ref Ray ray, float maximumLength, ref Vector3 a, ref Vector3 b,
+            ref Vector3 c, out bool hitClockwise, out RayHit hit)
         {
             hitClockwise = false;
             hit = new RayHit();
@@ -102,7 +103,9 @@ namespace MinorEngine.BEPUutilities
 
             Vector3.Cross(ref ab, ref ac, out hit.Normal);
             if (hit.Normal.LengthSquared() < Epsilon)
+            {
                 return false; //Degenerate triangle!
+            }
 
             float d;
             Vector3.Dot(ref ray.Direction, ref hit.Normal, out d);
@@ -116,7 +119,9 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref ap, ref hit.Normal, out hit.T);
             hit.T /= d;
             if (hit.T < 0 || hit.T > maximumLength)
-                return false;//Hit is behind origin, or too far away.
+            {
+                return false; //Hit is behind origin, or too far away.
+            }
 
             Vector3.Multiply(ref ray.Direction, hit.T, out hit.Location);
             Vector3.Add(ref ray.Position, ref hit.Location, out hit.Location);
@@ -131,12 +136,11 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref ac, ref ac, out ACdotAC);
             Vector3.Dot(ref ac, ref ap, out ACdotAP);
 
-            float denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
-            float u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
-            float v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
+            var denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
+            var u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
+            var v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
 
-            return (u >= -Toolbox.BigEpsilon) && (v >= -Toolbox.BigEpsilon) && (u + v <= 1 + Toolbox.BigEpsilon);
-
+            return u >= -BigEpsilon && v >= -BigEpsilon && u + v <= 1 + BigEpsilon;
         }
 
         /// <summary>
@@ -150,7 +154,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="c">Third vertex of the triangle.</param>
         /// <param name="hit">Hit data of the ray, if any</param>
         /// <returns>Whether or not the ray and triangle intersect.</returns>
-        public static bool FindRayTriangleIntersection(ref Ray ray, float maximumLength, TriangleSidedness sidedness, ref Vector3 a, ref Vector3 b, ref Vector3 c, out RayHit hit)
+        public static bool FindRayTriangleIntersection(ref Ray ray, float maximumLength, TriangleSidedness sidedness,
+            ref Vector3 a, ref Vector3 b, ref Vector3 c, out RayHit hit)
         {
             hit = new RayHit();
             Vector3 ab, ac;
@@ -159,7 +164,9 @@ namespace MinorEngine.BEPUutilities
 
             Vector3.Cross(ref ab, ref ac, out hit.Normal);
             if (hit.Normal.LengthSquared() < Epsilon)
+            {
                 return false; //Degenerate triangle!
+            }
 
             float d;
             Vector3.Dot(ref ray.Direction, ref hit.Normal, out d);
@@ -172,15 +179,20 @@ namespace MinorEngine.BEPUutilities
                         Vector3.Negate(ref hit.Normal, out hit.Normal);
                         d = -d;
                     }
+
                     break;
                 case TriangleSidedness.Clockwise:
                     if (d <= 0) //Pointing the wrong way.  Can't hit.
+                    {
                         return false;
+                    }
 
                     break;
                 case TriangleSidedness.Counterclockwise:
                     if (d >= 0) //Pointing the wrong way.  Can't hit.
+                    {
                         return false;
+                    }
 
                     Vector3.Negate(ref hit.Normal, out hit.Normal);
                     d = -d;
@@ -193,7 +205,9 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref ap, ref hit.Normal, out hit.T);
             hit.T /= d;
             if (hit.T < 0 || hit.T > maximumLength)
-                return false;//Hit is behind origin, or too far away.
+            {
+                return false; //Hit is behind origin, or too far away.
+            }
 
             Vector3.Multiply(ref ray.Direction, hit.T, out hit.Location);
             Vector3.Add(ref ray.Position, ref hit.Location, out hit.Location);
@@ -208,12 +222,11 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref ac, ref ac, out ACdotAC);
             Vector3.Dot(ref ac, ref ap, out ACdotAP);
 
-            float denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
-            float u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
-            float v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
+            var denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
+            var u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
+            var v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
 
-            return (u >= -Toolbox.BigEpsilon) && (v >= -Toolbox.BigEpsilon) && (u + v <= 1 + Toolbox.BigEpsilon);
-
+            return u >= -BigEpsilon && v >= -BigEpsilon && u + v <= 1 + BigEpsilon;
         }
 
         /// <summary>
@@ -226,7 +239,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="f">Third vertex of a triangle which lies on the plane.</param>
         /// <param name="q">Intersection point.</param>
         /// <returns>Whether or not the segment intersects the plane.</returns>
-        public static bool GetSegmentPlaneIntersection(Vector3 a, Vector3 b, Vector3 d, Vector3 e, Vector3 f, out Vector3 q)
+        public static bool GetSegmentPlaneIntersection(Vector3 a, Vector3 b, Vector3 d, Vector3 e, Vector3 f,
+            out Vector3 q)
         {
             Plane p;
             p.Normal = Vector3.Cross(e - d, f - d);
@@ -272,7 +286,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="t">Interval along line to intersection (A + t * AB).</param>
         /// <param name="q">Intersection point.</param>
         /// <returns>Whether or not the line intersects the plane.  If false, the line is parallel to the plane's surface.</returns>
-        public static bool GetLinePlaneIntersection(ref Vector3 a, ref Vector3 b, ref Plane p, out float t, out Vector3 q)
+        public static bool GetLinePlaneIntersection(ref Vector3 a, ref Vector3 b, ref Plane p, out float t,
+            out Vector3 q)
         {
             Vector3 ab;
             Vector3.Subtract(ref b, ref a, out ab);
@@ -285,6 +300,7 @@ namespace MinorEngine.BEPUutilities
                 t = float.MaxValue;
                 return false;
             }
+
             float numerator;
             Vector3.Dot(ref p.Normal, ref a, out numerator);
             t = (p.D - numerator) / denominator;
@@ -313,6 +329,7 @@ namespace MinorEngine.BEPUutilities
                 t = float.MaxValue;
                 return false;
             }
+
             float numerator;
             Vector3.Dot(ref p.Normal, ref ray.Position, out numerator);
             t = (p.D - numerator) / denominator;
@@ -335,7 +352,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="p">Point for comparison.</param>
         /// <param name="closestPoint">Closest point on tetrahedron to point.</param>
         /// <returns>Voronoi region containing the closest point.</returns>
-        public static VoronoiRegion GetClosestPointOnTriangleToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c, ref Vector3 p, out Vector3 closestPoint)
+        public static VoronoiRegion GetClosestPointOnTriangleToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c,
+            ref Vector3 p, out Vector3 closestPoint)
         {
             float v, w;
             Vector3 ab;
@@ -354,6 +372,7 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = a;
                 return VoronoiRegion.A;
             }
+
             //Vertex region B?
             Vector3 bp;
             Vector3.Subtract(ref p, ref b, out bp);
@@ -366,8 +385,9 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = b;
                 return VoronoiRegion.B;
             }
+
             //Edge region AB?
-            float vc = d1 * d4 - d3 * d2;
+            var vc = d1 * d4 - d3 * d2;
             if (vc <= 0 && d1 >= 0 && d3 <= 0)
             {
                 v = d1 / (d1 - d3);
@@ -375,6 +395,7 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref a, out closestPoint);
                 return VoronoiRegion.AB;
             }
+
             //Vertex region C?
             Vector3 cp;
             Vector3.Subtract(ref p, ref c, out cp);
@@ -387,8 +408,9 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = c;
                 return VoronoiRegion.C;
             }
+
             //Edge region AC?
-            float vb = d5 * d2 - d1 * d6;
+            var vb = d5 * d2 - d1 * d6;
             if (vb <= 0 && d2 >= 0 && d6 <= 0)
             {
                 w = d2 / (d2 - d6);
@@ -396,18 +418,20 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref a, out closestPoint);
                 return VoronoiRegion.AC;
             }
+
             //Edge region BC?
-            float va = d3 * d6 - d5 * d4;
-            if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0)
+            var va = d3 * d6 - d5 * d4;
+            if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0)
             {
-                w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
+                w = (d4 - d3) / (d4 - d3 + (d5 - d6));
                 Vector3.Subtract(ref c, ref b, out closestPoint);
                 Vector3.Multiply(ref closestPoint, w, out closestPoint);
                 Vector3.Add(ref closestPoint, ref b, out closestPoint);
                 return VoronoiRegion.BC;
             }
+
             //Inside triangle?
-            float denom = 1 / (va + vb + vc);
+            var denom = 1 / (va + vb + vc);
             v = vb * denom;
             w = vc * denom;
             Vector3 abv;
@@ -428,8 +452,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="p">Point for comparison.</param>
         /// <param name="subsimplex">The source of the voronoi region which contains the point.</param>
         /// <param name="closestPoint">Closest point on tetrahedron to point.</param>
-        [Obsolete("Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
-        public static void GetClosestPointOnTriangleToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c, ref Vector3 p, RawList<Vector3> subsimplex, out Vector3 closestPoint)
+        [Obsolete(
+            "Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
+        public static void GetClosestPointOnTriangleToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c, ref Vector3 p,
+            RawList<Vector3> subsimplex, out Vector3 closestPoint)
         {
             subsimplex.Clear();
             float v, w;
@@ -450,6 +476,7 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = a;
                 return;
             }
+
             //Vertex region B?
             Vector3 bp;
             Vector3.Subtract(ref p, ref b, out bp);
@@ -463,8 +490,9 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = b;
                 return;
             }
+
             //Edge region AB?
-            float vc = d1 * d4 - d3 * d2;
+            var vc = d1 * d4 - d3 * d2;
             if (vc <= 0 && d1 >= 0 && d3 <= 0)
             {
                 subsimplex.Add(a);
@@ -474,6 +502,7 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref a, out closestPoint);
                 return;
             }
+
             //Vertex region C?
             Vector3 cp;
             Vector3.Subtract(ref p, ref c, out cp);
@@ -487,8 +516,9 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = c;
                 return;
             }
+
             //Edge region AC?
-            float vb = d5 * d2 - d1 * d6;
+            var vb = d5 * d2 - d1 * d6;
             if (vb <= 0 && d2 >= 0 && d6 <= 0)
             {
                 subsimplex.Add(a);
@@ -498,23 +528,25 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref a, out closestPoint);
                 return;
             }
+
             //Edge region BC?
-            float va = d3 * d6 - d5 * d4;
-            if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0)
+            var va = d3 * d6 - d5 * d4;
+            if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0)
             {
                 subsimplex.Add(b);
                 subsimplex.Add(c);
-                w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
+                w = (d4 - d3) / (d4 - d3 + (d5 - d6));
                 Vector3.Subtract(ref c, ref b, out closestPoint);
                 Vector3.Multiply(ref closestPoint, w, out closestPoint);
                 Vector3.Add(ref closestPoint, ref b, out closestPoint);
                 return;
             }
+
             //Inside triangle?
             subsimplex.Add(a);
             subsimplex.Add(b);
             subsimplex.Add(c);
-            float denom = 1 / (va + vb + vc);
+            var denom = 1 / (va + vb + vc);
             v = vb * denom;
             w = vc * denom;
             Vector3 abv;
@@ -536,15 +568,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="subsimplex">The source of the voronoi region which contains the point, enumerated as a = 0, b = 1, c = 2.</param>
         /// <param name="baryCoords">Barycentric coordinates of the point on the triangle.</param>
         /// <param name="closestPoint">Closest point on tetrahedron to point.</param>
-        [Obsolete("Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
-        public static void GetClosestPointOnTriangleToPoint(RawList<Vector3> q, int i, int j, int k, ref Vector3 p, RawList<int> subsimplex, RawList<float> baryCoords, out Vector3 closestPoint)
+        [Obsolete(
+            "Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
+        public static void GetClosestPointOnTriangleToPoint(RawList<Vector3> q, int i, int j, int k, ref Vector3 p,
+            RawList<int> subsimplex, RawList<float> baryCoords, out Vector3 closestPoint)
         {
             subsimplex.Clear();
             baryCoords.Clear();
             float v, w;
-            Vector3 a = q[i];
-            Vector3 b = q[j];
-            Vector3 c = q[k];
+            var a = q[i];
+            var b = q[j];
+            var c = q[k];
             Vector3 ab;
             Vector3.Subtract(ref b, ref a, out ab);
             Vector3 ac;
@@ -563,6 +597,7 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = a;
                 return; //barycentric coordinates (1,0,0)
             }
+
             //Vertex region B?
             Vector3 bp;
             Vector3.Subtract(ref p, ref b, out bp);
@@ -577,8 +612,9 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = b;
                 return; //barycentric coordinates (0,1,0)
             }
+
             //Edge region AB?
-            float vc = d1 * d4 - d3 * d2;
+            var vc = d1 * d4 - d3 * d2;
             if (vc <= 0 && d1 >= 0 && d3 <= 0)
             {
                 subsimplex.Add(i);
@@ -590,6 +626,7 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref a, out closestPoint);
                 return; //barycentric coordinates (1-v, v, 0)
             }
+
             //Vertex region C?
             Vector3 cp;
             Vector3.Subtract(ref p, ref c, out cp);
@@ -604,8 +641,9 @@ namespace MinorEngine.BEPUutilities
                 closestPoint = c;
                 return; //barycentric coordinates (0,0,1)
             }
+
             //Edge region AC?
-            float vb = d5 * d2 - d1 * d6;
+            var vb = d5 * d2 - d1 * d6;
             if (vb <= 0 && d2 >= 0 && d6 <= 0)
             {
                 subsimplex.Add(i);
@@ -617,13 +655,14 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref a, out closestPoint);
                 return; //barycentric coordinates (1-w, 0, w)
             }
+
             //Edge region BC?
-            float va = d3 * d6 - d5 * d4;
-            if (va <= 0 && (d4 - d3) >= 0 && (d5 - d6) >= 0)
+            var va = d3 * d6 - d5 * d4;
+            if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0)
             {
                 subsimplex.Add(j);
                 subsimplex.Add(k);
-                w = (d4 - d3) / ((d4 - d3) + (d5 - d6));
+                w = (d4 - d3) / (d4 - d3 + (d5 - d6));
                 baryCoords.Add(1 - w);
                 baryCoords.Add(w);
                 Vector3.Subtract(ref c, ref b, out closestPoint);
@@ -631,11 +670,12 @@ namespace MinorEngine.BEPUutilities
                 Vector3.Add(ref closestPoint, ref b, out closestPoint);
                 return; //barycentric coordinates (0, 1 - w ,w)
             }
+
             //Inside triangle?
             subsimplex.Add(i);
             subsimplex.Add(j);
             subsimplex.Add(k);
-            float denom = 1 / (va + vb + vc);
+            var denom = 1 / (va + vb + vc);
             v = vb * denom;
             w = vc * denom;
             baryCoords.Add(1 - v - w);
@@ -663,7 +703,7 @@ namespace MinorEngine.BEPUutilities
             float u, v, w;
             GetBarycentricCoordinates(ref p, ref vA, ref vB, ref vC, out u, out v, out w);
             //Are the barycoords valid?
-            return (u > -Epsilon) && (v > -Epsilon) && (w > -Epsilon);
+            return u > -Epsilon && v > -Epsilon && w > -Epsilon;
         }
 
         /// <summary>
@@ -675,12 +715,13 @@ namespace MinorEngine.BEPUutilities
         /// <param name="p">The point for comparison against the triangle.</param>
         /// <param name="margin">Extra area on the edges of the triangle to include.  Can be negative.</param>
         /// <returns>Whether or not the point is within the triangle.</returns>
-        public static bool IsPointInsideTriangle(ref Vector3 vA, ref Vector3 vB, ref Vector3 vC, ref Vector3 p, float margin)
+        public static bool IsPointInsideTriangle(ref Vector3 vA, ref Vector3 vB, ref Vector3 vC, ref Vector3 p,
+            float margin)
         {
             float u, v, w;
             GetBarycentricCoordinates(ref p, ref vA, ref vB, ref vC, out u, out v, out w);
             //Are the barycoords valid?
-            return (u > -margin) && (v > -margin) && (w > -margin);
+            return u > -margin && v > -margin && w > -margin;
         }
 
         #endregion
@@ -694,7 +735,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="b">Second endpoint of segment.</param>
         /// <param name="p">Point for comparison.</param>
         /// <param name="closestPoint">Closest point on the edge to p.</param>
-        public static void GetClosestPointOnSegmentToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 p, out Vector3 closestPoint)
+        public static void GetClosestPointOnSegmentToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 p,
+            out Vector3 closestPoint)
         {
             Vector3 ab;
             Vector3.Subtract(ref b, ref a, out ab);
@@ -708,7 +750,7 @@ namespace MinorEngine.BEPUutilities
             }
             else
             {
-                float denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
+                var denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
                 if (t >= denom)
                 {
                     closestPoint = b;
@@ -731,8 +773,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="p">Point for comparison.</param>
         /// <param name="subsimplex">The source of the voronoi region which contains the point.</param>
         /// <param name="closestPoint">Closest point on the edge to p.</param>
-        [Obsolete("Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
-        public static void GetClosestPointOnSegmentToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 p, List<Vector3> subsimplex, out Vector3 closestPoint)
+        [Obsolete(
+            "Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
+        public static void GetClosestPointOnSegmentToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 p,
+            List<Vector3> subsimplex, out Vector3 closestPoint)
         {
             subsimplex.Clear();
             Vector3 ab;
@@ -749,7 +793,7 @@ namespace MinorEngine.BEPUutilities
             }
             else
             {
-                float denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
+                var denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
                 if (t >= denom)
                 {
                     //t = 1;//Don't need this for returning purposes.
@@ -778,11 +822,13 @@ namespace MinorEngine.BEPUutilities
         /// <param name="subsimplex">The source of the voronoi region which contains the point, enumerated as a = 0, b = 1.</param>
         /// <param name="baryCoords">Barycentric coordinates of the point.</param>
         /// <param name="closestPoint">Closest point on the edge to p.</param>
-        [Obsolete("Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
-        public static void GetClosestPointOnSegmentToPoint(List<Vector3> q, int i, int j, ref Vector3 p, List<int> subsimplex, List<float> baryCoords, out Vector3 closestPoint)
+        [Obsolete(
+            "Used for simplex tests; consider using the PairSimplex and its variants instead for simplex-related testing.")]
+        public static void GetClosestPointOnSegmentToPoint(List<Vector3> q, int i, int j, ref Vector3 p,
+            List<int> subsimplex, List<float> baryCoords, out Vector3 closestPoint)
         {
-            Vector3 a = q[i];
-            Vector3 b = q[j];
+            var a = q[i];
+            var b = q[j];
             subsimplex.Clear();
             baryCoords.Clear();
             Vector3 ab;
@@ -799,7 +845,7 @@ namespace MinorEngine.BEPUutilities
             }
             else
             {
-                float denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
+                var denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
                 if (t >= denom)
                 {
                     subsimplex.Add(j);
@@ -851,7 +897,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="q2">Second point of second segment.</param>
         /// <param name="c1">Closest point on first segment.</param>
         /// <param name="c2">Closest point on second segment.</param>
-        public static void GetClosestPointsBetweenSegments(Vector3 p1, Vector3 q1, Vector3 p2, Vector3 q2, out Vector3 c1, out Vector3 c2)
+        public static void GetClosestPointsBetweenSegments(Vector3 p1, Vector3 q1, Vector3 p2, Vector3 q2,
+            out Vector3 c1, out Vector3 c2)
         {
             float s, t;
             GetClosestPointsBetweenSegments(ref p1, ref q1, ref p2, ref q2, out s, out t, out c1, out c2);
@@ -868,8 +915,9 @@ namespace MinorEngine.BEPUutilities
         /// <param name="t">Distance along the line to the point for second segment.</param>
         /// <param name="c1">Closest point on first segment.</param>
         /// <param name="c2">Closest point on second segment.</param>
-        public static void GetClosestPointsBetweenSegments(ref Vector3 p1, ref Vector3 q1, ref Vector3 p2, ref Vector3 q2,
-                                                           out float s, out float t, out Vector3 c1, out Vector3 c2)
+        public static void GetClosestPointsBetweenSegments(ref Vector3 p1, ref Vector3 q1, ref Vector3 p2,
+            ref Vector3 q2,
+            out float s, out float t, out Vector3 c1, out Vector3 c2)
         {
             //Segment direction vectors
             Vector3 d1;
@@ -879,8 +927,8 @@ namespace MinorEngine.BEPUutilities
             Vector3 r;
             Vector3.Subtract(ref p1, ref p2, out r);
             //distance
-            float a = d1.LengthSquared();
-            float e = d2.LengthSquared();
+            var a = d1.LengthSquared();
+            var e = d2.LengthSquared();
             float f;
             Vector3.Dot(ref d2, ref r, out f);
 
@@ -892,6 +940,7 @@ namespace MinorEngine.BEPUutilities
                 c2 = p2;
                 return;
             }
+
             if (a <= Epsilon)
             {
                 // First segment is basically a point.
@@ -900,7 +949,7 @@ namespace MinorEngine.BEPUutilities
             }
             else
             {
-                float c = Vector3.Dot(d1, r);
+                var c = Vector3.Dot(d1, r);
                 if (e <= Epsilon)
                 {
                     // Second segment is basically a point.
@@ -909,15 +958,19 @@ namespace MinorEngine.BEPUutilities
                 }
                 else
                 {
-                    float b = Vector3.Dot(d1, d2);
-                    float denom = a * e - b * b;
+                    var b = Vector3.Dot(d1, d2);
+                    var denom = a * e - b * b;
 
                     // If segments not parallel, compute closest point on L1 to L2, and
                     // clamp to segment S1. Else pick some s (here .5f)
                     if (denom != 0.0f)
+                    {
                         s = MathHelper.Clamp((b * f - c * e) / denom, 0.0f, 1.0f);
+                    }
                     else //Parallel, just use .5f
+                    {
                         s = .5f;
+                    }
 
 
                     t = (b * s + f) / e;
@@ -956,7 +1009,7 @@ namespace MinorEngine.BEPUutilities
         /// <param name="c1">Closest point on first segment.</param>
         /// <param name="c2">Closest point on second segment.</param>
         public static void GetClosestPointsBetweenLines(ref Vector3 p1, ref Vector3 q1, ref Vector3 p2, ref Vector3 q2,
-                                                           out float s, out float t, out Vector3 c1, out Vector3 c2)
+            out float s, out float t, out Vector3 c1, out Vector3 c2)
         {
             //Segment direction vectors
             Vector3 d1;
@@ -966,8 +1019,8 @@ namespace MinorEngine.BEPUutilities
             Vector3 r;
             Vector3.Subtract(ref p1, ref p2, out r);
             //distance
-            float a = d1.LengthSquared();
-            float e = d2.LengthSquared();
+            var a = d1.LengthSquared();
+            var e = d2.LengthSquared();
             float f;
             Vector3.Dot(ref d2, ref r, out f);
 
@@ -979,6 +1032,7 @@ namespace MinorEngine.BEPUutilities
                 c2 = p2;
                 return;
             }
+
             if (a <= Epsilon)
             {
                 // First segment is basically a point.
@@ -987,7 +1041,7 @@ namespace MinorEngine.BEPUutilities
             }
             else
             {
-                float c = Vector3.Dot(d1, r);
+                var c = Vector3.Dot(d1, r);
                 if (e <= Epsilon)
                 {
                     // Second segment is basically a point.
@@ -996,15 +1050,19 @@ namespace MinorEngine.BEPUutilities
                 }
                 else
                 {
-                    float b = Vector3.Dot(d1, d2);
-                    float denom = a * e - b * b;
+                    var b = Vector3.Dot(d1, d2);
+                    var denom = a * e - b * b;
 
                     // If segments not parallel, compute closest point on L1 to L2, and
                     // clamp to segment S1. Else pick some s (here .5f)
                     if (denom != 0f)
+                    {
                         s = (b * f - c * e) / denom;
+                    }
                     else //Parallel, just use .5f
+                    {
                         s = .5f;
+                    }
 
 
                     t = (b * s + f) / e;
@@ -1016,8 +1074,6 @@ namespace MinorEngine.BEPUutilities
             Vector3.Multiply(ref d2, t, out c2);
             Vector3.Add(ref c2, ref p2, out c2);
         }
-
-
 
         #endregion
 
@@ -1033,7 +1089,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="b">Second vertex of plane.</param>
         /// <param name="c">Third vertex of plane.</param>
         /// <returns>Whether or not vectors o and p reside on opposite sides of the plane.</returns>
-        public static bool ArePointsOnOppositeSidesOfPlane(ref Vector3 o, ref Vector3 p, ref Vector3 a, ref Vector3 b, ref Vector3 c)
+        public static bool ArePointsOnOppositeSidesOfPlane(ref Vector3 o, ref Vector3 p, ref Vector3 a, ref Vector3 b,
+            ref Vector3 c)
         {
             Vector3 ab, ac, ap, ao;
             Vector3.Subtract(ref b, ref a, out ab);
@@ -1047,7 +1104,10 @@ namespace MinorEngine.BEPUutilities
             float signo;
             Vector3.Dot(ref ao, ref q, out signo);
             if (signp * signo <= 0)
+            {
                 return true;
+            }
+
             return false;
         }
 
@@ -1074,13 +1134,14 @@ namespace MinorEngine.BEPUutilities
         /// <param name="normal">Normal of the plane.</param>
         /// <param name="pointOnPlane">Point located on the plane.</param>
         /// <param name="projectedPoint">Projected location of point onto plane.</param>
-        public static void GetPointProjectedOnPlane(ref Vector3 point, ref Vector3 normal, ref Vector3 pointOnPlane, out Vector3 projectedPoint)
+        public static void GetPointProjectedOnPlane(ref Vector3 point, ref Vector3 normal, ref Vector3 pointOnPlane,
+            out Vector3 projectedPoint)
         {
             float dot;
             Vector3.Dot(ref normal, ref point, out dot);
             float dot2;
             Vector3.Dot(ref pointOnPlane, ref normal, out dot2);
-            float t = (dot - dot2) / normal.LengthSquared();
+            var t = (dot - dot2) / normal.LengthSquared();
             Vector3 multiply;
             Vector3.Multiply(ref normal, t, out multiply);
             Vector3.Subtract(ref point, ref multiply, out projectedPoint);
@@ -1095,25 +1156,27 @@ namespace MinorEngine.BEPUutilities
         /// <returns>Whether or not the point is within the edge planes.</returns>
         public static bool IsPointWithinFaceExtrusion(Vector3 point, List<Plane> planes, Vector3 centroid)
         {
-            foreach (Plane plane in planes)
+            foreach (var plane in planes)
             {
                 float centroidPlaneDot;
                 plane.DotCoordinate(ref centroid, out centroidPlaneDot);
                 float pointPlaneDot;
                 plane.DotCoordinate(ref point, out pointPlaneDot);
-                if (!((centroidPlaneDot <= Epsilon && pointPlaneDot <= Epsilon) || (centroidPlaneDot >= -Epsilon && pointPlaneDot >= -Epsilon)))
-                {
+                if (!(centroidPlaneDot <= Epsilon && pointPlaneDot <= Epsilon ||
+                      centroidPlaneDot >= -Epsilon && pointPlaneDot >= -Epsilon))
                     //Point's NOT the same side of the centroid, so it's 'outside.'
+                {
                     return false;
                 }
             }
+
             return true;
         }
-
 
         #endregion
 
         #region Tetrahedron Tests
+
         //Note: These methods are unused in modern systems, but are kept around for verification.
 
         /// <summary>
@@ -1125,19 +1188,20 @@ namespace MinorEngine.BEPUutilities
         /// <param name="d">Fourth vertex of the tetrahedron.</param>
         /// <param name="p">Point for comparison.</param>
         /// <param name="closestPoint">Closest point on the tetrahedron to the point.</param>
-        public static void GetClosestPointOnTetrahedronToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c, ref Vector3 d, ref Vector3 p, out Vector3 closestPoint)
+        public static void GetClosestPointOnTetrahedronToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c,
+            ref Vector3 d, ref Vector3 p, out Vector3 closestPoint)
         {
             // Start out assuming point inside all halfspaces, so closest to itself
             closestPoint = p;
             Vector3 pq;
             Vector3 q;
-            float bestSqDist = float.MaxValue;
+            var bestSqDist = float.MaxValue;
             // If point outside face abc then compute closest point on abc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref d, ref a, ref b, ref c))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref b, ref c, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 // Update best closest point if (squared) distance is less than current best
                 if (sqDist < bestSqDist)
                 {
@@ -1145,36 +1209,39 @@ namespace MinorEngine.BEPUutilities
                     closestPoint = q;
                 }
             }
+
             // Repeat test for face acd
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref b, ref a, ref c, ref d))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref c, ref d, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                 }
             }
+
             // Repeat test for face adb
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref c, ref a, ref d, ref b))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref d, ref b, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                 }
             }
+
             // Repeat test for face bdc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref a, ref b, ref d, ref c))
             {
                 GetClosestPointOnTriangleToPoint(ref b, ref d, ref c, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     closestPoint = q;
@@ -1192,8 +1259,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="p">Point for comparison.</param>
         /// <param name="subsimplex">The source of the voronoi region which contains the point.</param>
         /// <param name="closestPoint">Closest point on the tetrahedron to the point.</param>
-        [Obsolete("This method was used for older GJK simplex tests.  If you need simplex tests, consider the PairSimplex class and its variants.")]
-        public static void GetClosestPointOnTetrahedronToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c, ref Vector3 d, ref Vector3 p, RawList<Vector3> subsimplex, out Vector3 closestPoint)
+        [Obsolete(
+            "This method was used for older GJK simplex tests.  If you need simplex tests, consider the PairSimplex class and its variants.")]
+        public static void GetClosestPointOnTetrahedronToPoint(ref Vector3 a, ref Vector3 b, ref Vector3 c,
+            ref Vector3 d, ref Vector3 p, RawList<Vector3> subsimplex, out Vector3 closestPoint)
         {
             // Start out assuming point inside all halfspaces, so closest to itself
             subsimplex.Clear();
@@ -1204,13 +1273,13 @@ namespace MinorEngine.BEPUutilities
             closestPoint = p;
             Vector3 pq;
             Vector3 q;
-            float bestSqDist = float.MaxValue;
+            var bestSqDist = float.MaxValue;
             // If point outside face abc then compute closest point on abc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref d, ref a, ref b, ref c))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref b, ref c, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 // Update best closest point if (squared) distance is less than current best
                 if (sqDist < bestSqDist)
                 {
@@ -1218,36 +1287,39 @@ namespace MinorEngine.BEPUutilities
                     closestPoint = q;
                 }
             }
+
             // Repeat test for face acd
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref b, ref a, ref c, ref d))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref c, ref d, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                 }
             }
+
             // Repeat test for face adb
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref c, ref a, ref d, ref b))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref d, ref b, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                 }
             }
+
             // Repeat test for face bdc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref a, ref b, ref d, ref c))
             {
                 GetClosestPointOnTriangleToPoint(ref b, ref d, ref c, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     closestPoint = q;
@@ -1263,18 +1335,20 @@ namespace MinorEngine.BEPUutilities
         /// <param name="subsimplex">The source of the voronoi region which contains the point, enumerated as a = 0, b = 1, c = 2, d = 3.</param>
         /// <param name="baryCoords">Barycentric coordinates of p on the tetrahedron.</param>
         /// <param name="closestPoint">Closest point on the tetrahedron to the point.</param>
-        [Obsolete("This method was used for older GJK simplex tests.  If you need simplex tests, consider the PairSimplex class and its variants.")]
-        public static void GetClosestPointOnTetrahedronToPoint(RawList<Vector3> tetrahedron, ref Vector3 p, RawList<int> subsimplex, RawList<float> baryCoords, out Vector3 closestPoint)
+        [Obsolete(
+            "This method was used for older GJK simplex tests.  If you need simplex tests, consider the PairSimplex class and its variants.")]
+        public static void GetClosestPointOnTetrahedronToPoint(RawList<Vector3> tetrahedron, ref Vector3 p,
+            RawList<int> subsimplex, RawList<float> baryCoords, out Vector3 closestPoint)
         {
             var subsimplexCandidate = CommonResources.GetIntList();
             var baryCoordsCandidate = CommonResources.GetFloatList();
-            Vector3 a = tetrahedron[0];
-            Vector3 b = tetrahedron[1];
-            Vector3 c = tetrahedron[2];
-            Vector3 d = tetrahedron[3];
+            var a = tetrahedron[0];
+            var b = tetrahedron[1];
+            var c = tetrahedron[2];
+            var d = tetrahedron[3];
             closestPoint = p;
             Vector3 pq;
-            float bestSqDist = float.MaxValue;
+            var bestSqDist = float.MaxValue;
             subsimplex.Clear();
             subsimplex.Add(0); //Provides a baseline; if the object is not outside of any planes, then it's inside and the subsimplex is the tetrahedron itself.
             subsimplex.Add(1);
@@ -1282,14 +1356,15 @@ namespace MinorEngine.BEPUutilities
             subsimplex.Add(3);
             baryCoords.Clear();
             Vector3 q;
-            bool baryCoordsFound = false;
+            var baryCoordsFound = false;
 
             // If point outside face abc then compute closest point on abc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref d, ref a, ref b, ref c))
             {
-                GetClosestPointOnTriangleToPoint(tetrahedron, 0, 1, 2, ref p, subsimplexCandidate, baryCoordsCandidate, out q);
+                GetClosestPointOnTriangleToPoint(tetrahedron, 0, 1, 2, ref p, subsimplexCandidate, baryCoordsCandidate,
+                    out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.LengthSquared();
+                var sqDist = pq.LengthSquared();
                 // Update best closest point if (squared) distance is less than current best
                 if (sqDist < bestSqDist)
                 {
@@ -1297,116 +1372,125 @@ namespace MinorEngine.BEPUutilities
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (int k = 0; k < subsimplexCandidate.Count; k++)
+                    for (var k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
                     }
+
                     //subsimplex.AddRange(subsimplexCandidate);
                     //baryCoords.AddRange(baryCoordsCandidate);
                     baryCoordsFound = true;
                 }
             }
+
             // Repeat test for face acd
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref b, ref a, ref c, ref d))
             {
-                GetClosestPointOnTriangleToPoint(tetrahedron, 0, 2, 3, ref p, subsimplexCandidate, baryCoordsCandidate, out q);
+                GetClosestPointOnTriangleToPoint(tetrahedron, 0, 2, 3, ref p, subsimplexCandidate, baryCoordsCandidate,
+                    out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.LengthSquared();
+                var sqDist = pq.LengthSquared();
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (int k = 0; k < subsimplexCandidate.Count; k++)
+                    for (var k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
                     }
+
                     //subsimplex.AddRange(subsimplexCandidate);
                     //baryCoords.AddRange(baryCoordsCandidate);
                     baryCoordsFound = true;
                 }
             }
+
             // Repeat test for face adb
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref c, ref a, ref d, ref b))
             {
-                GetClosestPointOnTriangleToPoint(tetrahedron, 0, 3, 1, ref p, subsimplexCandidate, baryCoordsCandidate, out q);
+                GetClosestPointOnTriangleToPoint(tetrahedron, 0, 3, 1, ref p, subsimplexCandidate, baryCoordsCandidate,
+                    out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.LengthSquared();
+                var sqDist = pq.LengthSquared();
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (int k = 0; k < subsimplexCandidate.Count; k++)
+                    for (var k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
                     }
+
                     //subsimplex.AddRange(subsimplexCandidate);
                     //baryCoords.AddRange(baryCoordsCandidate);
                     baryCoordsFound = true;
                 }
             }
+
             // Repeat test for face bdc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref a, ref b, ref d, ref c))
             {
-                GetClosestPointOnTriangleToPoint(tetrahedron, 1, 3, 2, ref p, subsimplexCandidate, baryCoordsCandidate, out q);
+                GetClosestPointOnTriangleToPoint(tetrahedron, 1, 3, 2, ref p, subsimplexCandidate, baryCoordsCandidate,
+                    out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                float sqDist = pq.LengthSquared();
+                var sqDist = pq.LengthSquared();
                 if (sqDist < bestSqDist)
                 {
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (int k = 0; k < subsimplexCandidate.Count; k++)
+                    for (var k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
                     }
+
                     //subsimplex.AddRange(subsimplexCandidate);
                     //baryCoords.AddRange(baryCoordsCandidate);
                     baryCoordsFound = true;
                 }
             }
+
             if (!baryCoordsFound)
             {
                 //subsimplex is the entire tetrahedron, can only occur when objects intersect!  Determinants of each of the tetrahedrons based on triangles composing the sides and the point itself.
                 //This is basically computing the volume of parallelepipeds (triple scalar product).
                 //Could be quicker just to do it directly.
-                float abcd = (new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
-                                         tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
-                                         tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
-                                         tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1)).Determinant();
-                float pbcd = (new Matrix(p.X, p.Y, p.Z, 1,
-                                         tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
-                                         tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
-                                         tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1)).Determinant();
-                float apcd = (new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
-                                         p.X, p.Y, p.Z, 1,
-                                         tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
-                                         tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1)).Determinant();
-                float abpd = (new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
-                                         tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
-                                         p.X, p.Y, p.Z, 1,
-                                         tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1)).Determinant();
+                var abcd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
+                    tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
+                    tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
+                    tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
+                var pbcd = new Matrix(p.X, p.Y, p.Z, 1,
+                    tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
+                    tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
+                    tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
+                var apcd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
+                    p.X, p.Y, p.Z, 1,
+                    tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
+                    tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
+                var abpd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
+                    tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
+                    p.X, p.Y, p.Z, 1,
+                    tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
                 abcd = 1 / abcd;
                 baryCoords.Add(pbcd * abcd); //u
                 baryCoords.Add(apcd * abcd); //v
                 baryCoords.Add(abpd * abcd); //w
                 baryCoords.Add(1 - baryCoords[0] - baryCoords[1] - baryCoords[2]); //x = 1-u-v-w
             }
+
             CommonResources.GiveBack(subsimplexCandidate);
             CommonResources.GiveBack(baryCoordsCandidate);
         }
 
         #endregion
-
-
-
 
 
         #region Miscellaneous
@@ -1420,29 +1504,41 @@ namespace MinorEngine.BEPUutilities
         ///<param name="maximumLength">Maximum length of the ray in units of the ray direction's length.</param>
         ///<param name="hit">Hit data of the ray, if any.</param>
         ///<returns>Whether or not the ray hits the sphere.</returns>
-        public static bool RayCastSphere(ref Ray ray, ref Vector3 spherePosition, float radius, float maximumLength, out RayHit hit)
+        public static bool RayCastSphere(ref Ray ray, ref Vector3 spherePosition, float radius, float maximumLength,
+            out RayHit hit)
         {
             Vector3 normalizedDirection;
-            float length = ray.Direction.Length();
+            var length = ray.Direction.Length();
             Vector3.Divide(ref ray.Direction, length, out normalizedDirection);
             maximumLength *= length;
             hit = new RayHit();
             Vector3 m;
             Vector3.Subtract(ref ray.Position, ref spherePosition, out m);
-            float b = Vector3.Dot(m, normalizedDirection);
-            float c = m.LengthSquared() - radius * radius;
+            var b = Vector3.Dot(m, normalizedDirection);
+            var c = m.LengthSquared() - radius * radius;
 
             if (c > 0 && b > 0)
+            {
                 return false;
-            float discriminant = b * b - c;
-            if (discriminant < 0)
-                return false;
+            }
 
-            hit.T = -b - (float)Math.Sqrt(discriminant);
-            if (hit.T < 0)
-                hit.T = 0;
-            if (hit.T > maximumLength)
+            var discriminant = b * b - c;
+            if (discriminant < 0)
+            {
                 return false;
+            }
+
+            hit.T = -b - (float) Math.Sqrt(discriminant);
+            if (hit.T < 0)
+            {
+                hit.T = 0;
+            }
+
+            if (hit.T > maximumLength)
+            {
+                return false;
+            }
+
             hit.T /= length;
             Vector3.Multiply(ref normalizedDirection, hit.T, out hit.Location);
             Vector3.Add(ref hit.Location, ref ray.Position, out hit.Location);
@@ -1460,7 +1556,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="linearVelocity">Linear velocity of the object.</param>
         /// <param name="angularVelocity">Angular velocity of the object.</param>
         /// <param name="velocity">Velocity of the point.</param>
-        public static void GetVelocityOfPoint(ref Vector3 point, ref Vector3 center, ref Vector3 linearVelocity, ref Vector3 angularVelocity, out Vector3 velocity)
+        public static void GetVelocityOfPoint(ref Vector3 point, ref Vector3 center, ref Vector3 linearVelocity,
+            ref Vector3 angularVelocity, out Vector3 velocity)
         {
             Vector3 offset;
             Vector3.Subtract(ref point, ref center, out offset);
@@ -1476,7 +1573,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="linearVelocity">Linear velocity of the object.</param>
         /// <param name="angularVelocity">Angular velocity of the object.</param>
         /// <returns>Velocity of the point.</returns>
-        public static Vector3 GetVelocityOfPoint(Vector3 point, Vector3 center, Vector3 linearVelocity, Vector3 angularVelocity)
+        public static Vector3 GetVelocityOfPoint(Vector3 point, Vector3 center, Vector3 linearVelocity,
+            Vector3 angularVelocity)
         {
             Vector3 toReturn;
             GetVelocityOfPoint(ref point, ref center, ref linearVelocity, ref angularVelocity, out toReturn);
@@ -1491,19 +1589,31 @@ namespace MinorEngine.BEPUutilities
         public static void ExpandBoundingBox(ref BoundingBox boundingBox, ref Vector3 sweep)
         {
             if (sweep.X > 0)
+            {
                 boundingBox.Max.X += sweep.X;
+            }
             else
+            {
                 boundingBox.Min.X += sweep.X;
+            }
 
             if (sweep.Y > 0)
+            {
                 boundingBox.Max.Y += sweep.Y;
+            }
             else
+            {
                 boundingBox.Min.Y += sweep.Y;
+            }
 
             if (sweep.Z > 0)
+            {
                 boundingBox.Max.Z += sweep.Z;
+            }
             else
+            {
                 boundingBox.Min.Z += sweep.Z;
+            }
         }
 
         /// <summary>
@@ -1537,6 +1647,7 @@ namespace MinorEngine.BEPUutilities
                 aabb.Max.X = c.X;
                 aabb.Min.X = a.X > b.X ? b.X : a.X;
             }
+
             //Y axis
             if (a.Y > b.Y && a.Y > c.Y)
             {
@@ -1556,6 +1667,7 @@ namespace MinorEngine.BEPUutilities
                 aabb.Max.Y = c.Y;
                 aabb.Min.Y = a.Y > b.Y ? b.Y : a.Y;
             }
+
             //Z axis
             if (a.Z > b.Z && a.Z > c.Z)
             {
@@ -1578,10 +1690,6 @@ namespace MinorEngine.BEPUutilities
         }
 
 
-
-
-
-
         /// <summary>
         /// Updates the quaternion using RK4 integration.
         /// </summary>
@@ -1590,7 +1698,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="angularMomentum">Angular momentum of the object.</param>
         /// <param name="dt">Time since last frame, in seconds.</param>
         /// <param name="newOrientation">New orientation quaternion.</param>
-        public static void UpdateOrientationRK4(ref Quaternion q, ref Matrix3x3 localInertiaTensorInverse, ref Vector3 angularMomentum, float dt, out Quaternion newOrientation)
+        public static void UpdateOrientationRK4(ref Quaternion q, ref Matrix3x3 localInertiaTensorInverse,
+            ref Vector3 angularMomentum, float dt, out Quaternion newOrientation)
         {
             //TODO: This is a little goofy
             //Quaternion diff = differentiateQuaternion(ref q, ref localInertiaTensorInverse, ref angularMomentum);
@@ -1635,7 +1744,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="localInertiaTensorInverse">Local-space inertia tensor of the object being updated.</param>
         /// <param name="angularMomentum">Angular momentum of the object.</param>
         ///  <param name="orientationChange">Change in quaternion.</param>
-        public static void DifferentiateQuaternion(ref Quaternion orientation, ref Matrix3x3 localInertiaTensorInverse, ref Vector3 angularMomentum, out Quaternion orientationChange)
+        public static void DifferentiateQuaternion(ref Quaternion orientation, ref Matrix3x3 localInertiaTensorInverse,
+            ref Vector3 angularMomentum, out Quaternion orientationChange)
         {
             Quaternion normalizedOrientation;
             Quaternion.Normalize(ref orientation, out normalizedOrientation);
@@ -1662,16 +1772,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="aWeight">Weight of the first vertex.</param>
         /// <param name="bWeight">Weight of the second vertex.</param>
         /// <param name="cWeight">Weight of the third vertex.</param>
-        public static void GetBarycentricCoordinates(ref Vector3 p, ref Vector3 a, ref Vector3 b, ref Vector3 c, out float aWeight, out float bWeight, out float cWeight)
+        public static void GetBarycentricCoordinates(ref Vector3 p, ref Vector3 a, ref Vector3 b, ref Vector3 c,
+            out float aWeight, out float bWeight, out float cWeight)
         {
             Vector3 ab, ac;
             Vector3.Subtract(ref b, ref a, out ab);
             Vector3.Subtract(ref c, ref a, out ac);
             Vector3 triangleNormal;
             Vector3.Cross(ref ab, ref ac, out triangleNormal);
-            float x = triangleNormal.X < 0 ? -triangleNormal.X : triangleNormal.X;
-            float y = triangleNormal.Y < 0 ? -triangleNormal.Y : triangleNormal.Y;
-            float z = triangleNormal.Z < 0 ? -triangleNormal.Z : triangleNormal.Z;
+            var x = triangleNormal.X < 0 ? -triangleNormal.X : triangleNormal.X;
+            var y = triangleNormal.Y < 0 ? -triangleNormal.Y : triangleNormal.Y;
+            var z = triangleNormal.Z < 0 ? -triangleNormal.Z : triangleNormal.Z;
 
             float numeratorU, numeratorV, denominator;
             if (x >= y && x >= z)
@@ -1735,12 +1846,7 @@ namespace MinorEngine.BEPUutilities
                     cWeight = 1;
                 }
             }
-
-
         }
-
-
-
 
         #endregion
     }

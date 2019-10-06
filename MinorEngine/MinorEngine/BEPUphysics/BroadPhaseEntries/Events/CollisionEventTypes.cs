@@ -1,6 +1,4 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
-using MinorEngine.BEPUphysics.CollisionTests;
+﻿using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
@@ -50,7 +48,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// <param name="pair">Pair presiding over the interaction of the two involved bodies.
     /// This reference cannot be safely kept outside of the scope of the handler; pairs can quickly return to the resource pool.</param>
     /// <param name="contact">Created contact data.</param>
-    public delegate void ContactCreatedEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair, ContactData contact);
+    public delegate void ContactCreatedEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair,
+        ContactData contact);
 
     /// <summary>
     /// Handles any special logic when two bodies are touching and generate a contact point.
@@ -64,7 +63,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// This reference cannot be safely kept outside of the scope of the handler; pairs can quickly return to the resource pool.</param>
     /// <param name="contact">Newly generated contact point between the pair's two bodies.
     /// This reference cannot be safely kept outside of the scope of the handler; contacts can quickly return to the resource pool.</param>
-    public delegate void CreatingContactEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair, Contact contact);
+    public delegate void CreatingContactEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair,
+        Contact contact);
 
     /// <summary>
     /// Handles any special logic when two bodies initally collide and generate a contact point.
@@ -73,7 +73,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// <param name="other">Other entry within the pair opposing the monitored entry.</param>
     /// <param name="pair">Pair presiding over the interaction of the two involved bodies.
     /// This reference cannot be safely kept outside of the scope of the handler; pairs can quickly return to the resource pool.</param>
-    public delegate void InitialCollisionDetectedEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair);
+    public delegate void
+        InitialCollisionDetectedEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair);
 
     /// <summary>
     /// Handles any special logic when two bodies initally collide and generate a contact point.
@@ -84,7 +85,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// <param name="other">Other entry within the pair opposing the monitored entry.</param>
     /// <param name="pair">Pair presiding over the interaction of the two involved bodies.
     /// This reference cannot be safely kept outside of the scope of the handler; pairs can quickly return to the resource pool.</param>
-    public delegate void DetectingInitialCollisionEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair);
+    public delegate void DetectingInitialCollisionEventHandler<T>(T sender, Collidable other,
+        CollidablePairHandler pair);
 
     /// <summary>
     /// Handles any special logic when a contact point between two bodies is removed.
@@ -94,7 +96,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// <param name="pair">Pair presiding over the interaction of the two involved bodies and data about the removed contact.
     /// This reference cannot be safely kept outside of the scope of the handler; pairs can quickly return to the resource pool.</param>
     /// <param name="contact">Removed contact data.</param>
-    public delegate void ContactRemovedEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair, ContactData contact);
+    public delegate void ContactRemovedEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair,
+        ContactData contact);
 
     /// <summary>
     /// Handles any special logic when a contact point between two bodies is removed.
@@ -107,7 +110,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// This reference cannot be safely kept outside of the scope of the handler; pairs can quickly return to the resource pool.</param>
     /// <param name="contact">Contact between the two entries.  This reference cannot be safely kept outside of the scope of the handler;
     /// it will be immediately returned to the resource pool after the event handler completes.</param>
-    public delegate void RemovingContactEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair, Contact contact);
+    public delegate void RemovingContactEventHandler<T>(T sender, Collidable other, CollidablePairHandler pair,
+        Contact contact);
 
     /// <summary>
     /// Handles any special logic when two bodies go from a touching state to a separated state.

@@ -2,7 +2,6 @@
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
 
-
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
 {
     /// <summary>
@@ -10,8 +9,6 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
     /// </summary>
     public class RevoluteLimit : JointLimit, I2DImpulseConstraintWithError, I2DJacobianConstraint
     {
-        private readonly JointBasis2D basis = new JointBasis2D();
-
         private Vector2 accumulatedImpulse;
         private Vector2 biasVelocity;
         private Vector3 jacobianMaxA;
@@ -57,17 +54,18 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// Will also be used as the base rotation axis representing 0 degrees.</param>
         /// <param name="minimumAngle">Minimum twist angle allowed.</param>
         /// <param name="maximumAngle">Maximum twist angle allowed.</param>
-        public RevoluteLimit(Entity connectionA, Entity connectionB, Vector3 limitedAxis, Vector3 testAxis, float minimumAngle, float maximumAngle)
+        public RevoluteLimit(Entity connectionA, Entity connectionB, Vector3 limitedAxis, Vector3 testAxis,
+            float minimumAngle, float maximumAngle)
         {
             ConnectionA = connectionA;
             ConnectionB = connectionB;
 
             //Put the axes into the joint transform of A.
-            basis.rotationMatrix = this.connectionA.orientationMatrix;
-            basis.SetWorldAxes(limitedAxis, testAxis);
+            Basis.rotationMatrix = this.connectionA.orientationMatrix;
+            Basis.SetWorldAxes(limitedAxis, testAxis);
 
             //Put the axes into the 'joint transform' of B too.
-            TestAxis = basis.xAxis;
+            TestAxis = Basis.xAxis;
 
             MinimumAngle = minimumAngle;
             MaximumAngle = maximumAngle;
@@ -92,17 +90,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// The primary axis represents the limited axis of rotation.  The 'measurement plane' which the test axis is tested against is based on this primary axis.
         /// The x axis defines the 'base' direction on the measurement plane corresponding to 0 degrees of relative rotation.
         /// </summary>
-        public JointBasis2D Basis
-        {
-            get { return basis; }
-        }
+        public JointBasis2D Basis { get; } = new JointBasis2D();
 
         /// <summary>
         /// Gets or sets the axis attached to entity B in its local space that will be tested against the limits.
         /// </summary>
         public Vector3 LocalTestAxis
         {
-            get { return localTestAxis; }
+            get => localTestAxis;
             set
             {
                 localTestAxis = Vector3.Normalize(value);
@@ -115,14 +110,19 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float MaximumAngle
         {
-            get { return maximumAngle; }
+            get => maximumAngle;
             set
             {
-                maximumAngle = value % (MathHelper.TwoPi);
+                maximumAngle = value % MathHelper.TwoPi;
                 if (minimumAngle > MathHelper.Pi)
+                {
                     minimumAngle -= MathHelper.TwoPi;
+                }
+
                 if (minimumAngle <= -MathHelper.Pi)
+                {
                     minimumAngle += MathHelper.TwoPi;
+                }
             }
         }
 
@@ -131,14 +131,19 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float MinimumAngle
         {
-            get { return minimumAngle; }
+            get => minimumAngle;
             set
             {
-                minimumAngle = value % (MathHelper.TwoPi);
+                minimumAngle = value % MathHelper.TwoPi;
                 if (minimumAngle > MathHelper.Pi)
+                {
                     minimumAngle -= MathHelper.TwoPi;
+                }
+
                 if (minimumAngle <= -MathHelper.Pi)
+                {
                     minimumAngle += MathHelper.TwoPi;
+                }
             }
         }
 
@@ -147,7 +152,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 TestAxis
         {
-            get { return worldTestAxis; }
+            get => worldTestAxis;
             set
             {
                 worldTestAxis = Vector3.Normalize(value);
@@ -170,21 +175,24 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 if (isLimitActive)
                 {
                     float velocityA, velocityB;
-                    Vector2 toReturn = Vector2.Zero;
+                    var toReturn = Vector2.Zero;
                     if (minIsActive)
                     {
                         Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMinA, out velocityA);
                         Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMinB, out velocityB);
                         toReturn.X = velocityA + velocityB;
                     }
+
                     if (maxIsActive)
                     {
                         Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMaxA, out velocityA);
                         Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMaxB, out velocityB);
                         toReturn.Y = velocityA + velocityB;
                     }
+
                     return toReturn;
                 }
+
                 return new Vector2();
             }
         }
@@ -194,20 +202,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// The x component corresponds to the minimum plane limit,
         /// while the y component corresponds to the maximum plane limit.
         /// </summary>
-        public Vector2 TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public Vector2 TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the current constraint error.
         /// The x component corresponds to the minimum plane limit,
         /// while the y component corresponds to the maximum plane limit.
         /// </summary>
-        public Vector2 Error
-        {
-            get { return error; }
-        }
+        public Vector2 Error => error;
 
         #endregion
 
@@ -311,6 +313,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     Vector3.Multiply(ref jacobianMinA, lambda, out impulse);
                     connectionA.ApplyAngularImpulse(ref impulse);
                 }
+
                 if (connectionB.isDynamic)
                 {
                     Vector3.Multiply(ref jacobianMinB, lambda, out impulse);
@@ -319,6 +322,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
 
                 lambdaTotal += Math.Abs(lambda);
             }
+
             if (maxIsActive)
             {
                 //Find the velocity contribution from each connection
@@ -342,6 +346,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     Vector3.Multiply(ref jacobianMaxA, lambda, out impulse);
                     connectionA.ApplyAngularImpulse(ref impulse);
                 }
+
                 if (connectionB.isDynamic)
                 {
                     Vector3.Multiply(ref jacobianMaxB, lambda, out impulse);
@@ -350,6 +355,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
 
                 lambdaTotal += Math.Abs(lambda);
             }
+
             return lambdaTotal;
         }
 
@@ -360,18 +366,18 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         public override void Update(float dt)
         {
             //Transform the axes into world space.
-            basis.rotationMatrix = connectionA.orientationMatrix;
-            basis.ComputeWorldSpaceAxes();
+            Basis.rotationMatrix = connectionA.orientationMatrix;
+            Basis.ComputeWorldSpaceAxes();
             Matrix3x3.Transform(ref localTestAxis, ref connectionB.orientationMatrix, out worldTestAxis);
 
             //Compute the plane normals.
             Vector3 minPlaneNormal, maxPlaneNormal;
             //Rotate basisA y axis around the basisA primary axis.
             Matrix3x3 rotation;
-            Matrix3x3.CreateFromAxisAngle(ref basis.primaryAxis, minimumAngle + MathHelper.PiOver2, out rotation);
-            Matrix3x3.Transform(ref basis.xAxis, ref rotation, out minPlaneNormal);
-            Matrix3x3.CreateFromAxisAngle(ref basis.primaryAxis, maximumAngle - MathHelper.PiOver2, out rotation);
-            Matrix3x3.Transform(ref basis.xAxis, ref rotation, out maxPlaneNormal);
+            Matrix3x3.CreateFromAxisAngle(ref Basis.primaryAxis, minimumAngle + MathHelper.PiOver2, out rotation);
+            Matrix3x3.Transform(ref Basis.xAxis, ref rotation, out minPlaneNormal);
+            Matrix3x3.CreateFromAxisAngle(ref Basis.primaryAxis, maximumAngle - MathHelper.PiOver2, out rotation);
+            Matrix3x3.Transform(ref Basis.xAxis, ref rotation, out maxPlaneNormal);
 
             //Compute the errors along the two normals.
             float planePositionMin, planePositionMax;
@@ -379,7 +385,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             Vector3.Dot(ref maxPlaneNormal, ref worldTestAxis, out planePositionMax);
 
 
-            float span = GetDistanceFromMinimum(maximumAngle);
+            var span = GetDistanceFromMinimum(maximumAngle);
 
             //Early out and compute the determine the plane normal.
             if (span >= MathHelper.Pi)
@@ -414,6 +420,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     minIsActive = true;
                     maxIsActive = false;
                 }
+
                 //There's never a non-degenerate situation where having both planes active with a span 
                 //greater than pi is useful.
             }
@@ -459,6 +466,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     maxIsActive = true;
                 }
             }
+
             isLimitActive = true;
 
 
@@ -472,25 +480,28 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             {
                 Vector3.Cross(ref minPlaneNormal, ref worldTestAxis, out jacobianMinA);
                 if (jacobianMinA.LengthSquared() < Toolbox.Epsilon)
-                {
                     //The plane normal is aligned with the test axis.
                     //Use the basis's free axis.
-                    jacobianMinA = basis.primaryAxis;
+                {
+                    jacobianMinA = Basis.primaryAxis;
                 }
+
                 jacobianMinA.Normalize();
                 jacobianMinB.X = -jacobianMinA.X;
                 jacobianMinB.Y = -jacobianMinA.Y;
                 jacobianMinB.Z = -jacobianMinA.Z;
             }
+
             if (maxIsActive)
             {
                 Vector3.Cross(ref maxPlaneNormal, ref worldTestAxis, out jacobianMaxA);
                 if (jacobianMaxA.LengthSquared() < Toolbox.Epsilon)
-                {
                     //The plane normal is aligned with the test axis.
                     //Use the basis's free axis.
-                    jacobianMaxA = basis.primaryAxis;
+                {
+                    jacobianMaxA = Basis.primaryAxis;
                 }
+
                 jacobianMaxA.Normalize();
                 jacobianMaxB.X = -jacobianMaxA.X;
                 jacobianMaxB.Y = -jacobianMaxA.Y;
@@ -500,7 +511,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Error is always positive
             if (minIsActive)
             {
-                biasVelocity.X = MathHelper.Min(MathHelper.Max(0, error.X - margin) * errorReduction, maxCorrectiveVelocity);
+                biasVelocity.X = MathHelper.Min(MathHelper.Max(0, error.X - margin) * errorReduction,
+                    maxCorrectiveVelocity);
                 if (bounciness > 0)
                 {
                     float relativeVelocity;
@@ -512,12 +524,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     biasVelocity.X = MathHelper.Max(biasVelocity.X, ComputeBounceVelocity(-relativeVelocity));
                 }
             }
+
             if (maxIsActive)
             {
-                biasVelocity.Y = MathHelper.Min(MathHelper.Max(0, error.Y - margin) * errorReduction, maxCorrectiveVelocity);
+                biasVelocity.Y = MathHelper.Min(MathHelper.Max(0, error.Y - margin) * errorReduction,
+                    maxCorrectiveVelocity);
                 if (bounciness > 0)
-                {
                     //Find the velocity contribution from each connection
+                {
                     if (maxIsActive)
                     {
                         float relativeVelocity;
@@ -544,20 +558,26 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     Vector3.Dot(ref transformedAxis, ref jacobianMinA, out minEntryA);
                 }
                 else
+                {
                     minEntryA = 0;
+                }
+
                 if (maxIsActive)
                 {
                     Matrix3x3.Transform(ref jacobianMaxA, ref connectionA.inertiaTensorInverse, out transformedAxis);
                     Vector3.Dot(ref transformedAxis, ref jacobianMaxA, out maxEntryA);
                 }
                 else
+                {
                     maxEntryA = 0;
+                }
             }
             else
             {
                 minEntryA = 0;
                 maxEntryA = 0;
             }
+
             //Connection B's contribution to the mass matrix
             if (connectionB.isDynamic)
             {
@@ -567,26 +587,30 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     Vector3.Dot(ref transformedAxis, ref jacobianMinB, out minEntryB);
                 }
                 else
+                {
                     minEntryB = 0;
+                }
+
                 if (maxIsActive)
                 {
                     Matrix3x3.Transform(ref jacobianMaxB, ref connectionB.inertiaTensorInverse, out transformedAxis);
                     Vector3.Dot(ref transformedAxis, ref jacobianMaxB, out maxEntryB);
                 }
                 else
+                {
                     maxEntryB = 0;
+                }
             }
             else
             {
                 minEntryB = 0;
                 maxEntryB = 0;
             }
+
             //Compute the inverse mass matrix
             //Notice that the mass matrix isn't linked, it's two separate ones.
             velocityToImpulse.X = 1 / (softness + minEntryA + minEntryB);
             velocityToImpulse.Y = 1 / (softness + maxEntryA + maxEntryB);
-
-
         }
 
         /// <summary>
@@ -605,14 +629,17 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 {
                     Vector3.Multiply(ref jacobianMinA, accumulatedImpulse.X, out impulse);
                 }
+
                 if (maxIsActive)
                 {
                     Vector3 temp;
                     Vector3.Multiply(ref jacobianMaxA, accumulatedImpulse.Y, out temp);
                     Vector3.Add(ref impulse, ref temp, out impulse);
                 }
+
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 var impulse = new Vector3();
@@ -620,12 +647,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 {
                     Vector3.Multiply(ref jacobianMinB, accumulatedImpulse.X, out impulse);
                 }
+
                 if (maxIsActive)
                 {
                     Vector3 temp;
                     Vector3.Multiply(ref jacobianMaxB, accumulatedImpulse.Y, out temp);
                     Vector3.Add(ref impulse, ref temp, out impulse);
                 }
+
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
         }
@@ -635,13 +664,23 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             if (minimumAngle > 0)
             {
                 if (angle >= minimumAngle)
+                {
                     return angle - minimumAngle;
+                }
+
                 if (angle > 0)
+                {
                     return MathHelper.TwoPi - minimumAngle + angle;
+                }
+
                 return MathHelper.TwoPi - minimumAngle + angle;
             }
+
             if (angle < minimumAngle)
+            {
                 return MathHelper.TwoPi - minimumAngle + angle;
+            }
+
             return angle - minimumAngle;
             //else //if (currentAngle >= 0)
             //    return angle - minimumAngle;

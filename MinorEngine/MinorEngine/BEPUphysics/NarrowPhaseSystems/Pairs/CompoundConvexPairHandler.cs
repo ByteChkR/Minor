@@ -2,7 +2,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 
-
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
     ///<summary>
@@ -10,19 +9,12 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class CompoundConvexPairHandler : CompoundGroupPairHandler
     {
-        ConvexCollidable convexInfo;
+        private ConvexCollidable convexInfo;
 
 
-        public override Collidable CollidableB
-        {
-            get { return convexInfo; }
-        }
+        public override Collidable CollidableB => convexInfo;
 
-        public override Entities.Entity EntityB
-        {
-            get { return convexInfo.entity; }
-        }
-
+        public override Entities.Entity EntityB => convexInfo.entity;
 
 
         ///<summary>
@@ -56,20 +48,17 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
         protected override void UpdateContainedPairs()
         {
             var overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(convexInfo.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
-                TryToAdd(overlappedElements.Elements[i].CollisionInformation, CollidableB, overlappedElements.Elements[i].Material);
+                TryToAdd(overlappedElements.Elements[i].CollisionInformation, CollidableB,
+                    overlappedElements.Elements[i].Material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
-
-
         }
-
     }
 }

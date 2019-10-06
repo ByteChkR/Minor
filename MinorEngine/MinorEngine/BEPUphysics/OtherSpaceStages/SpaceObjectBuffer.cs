@@ -1,19 +1,16 @@
-﻿using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUutilities.DataStructures;
+﻿using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.OtherSpaceStages
 {
-
-
     ///<summary>
     /// Thead-safely buffers up space objects for addition and removal.
     ///</summary>
     public class SpaceObjectBuffer : ProcessingStage
     {
-
         private struct SpaceObjectChange
         {
             public readonly ISpaceObject SpaceObject;
+
             //Could change to enumeration, or more generally, buffered 'action<ISpaceObject>' to perform on the space object.
             public readonly bool ShouldAdd;
 
@@ -23,16 +20,13 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
                 ShouldAdd = shouldAdd;
             }
         }
+
         private ConcurrentDeque<SpaceObjectChange> objectsToChange = new ConcurrentDeque<SpaceObjectChange>();
 
-        private Space space;
         ///<summary>
         /// Gets the space which owns this buffer.
         ///</summary>
-        public Space Space
-        {
-            get { return space; }
-        }
+        public Space Space { get; }
 
         ///<summary>
         /// Constructs the buffer.
@@ -41,7 +35,7 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
         public SpaceObjectBuffer(Space space)
         {
             Enabled = true;
-            this.space = space;
+            Space = space;
         }
 
         ///<summary>
@@ -71,13 +65,14 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             while (objectsToChange.TryDequeueFirst(out change))
             {
                 if (change.ShouldAdd)
-                    space.Add(change.SpaceObject);
+                {
+                    Space.Add(change.SpaceObject);
+                }
                 else
-                    space.Remove(change.SpaceObject);
+                {
+                    Space.Remove(change.SpaceObject);
+                }
             }
         }
-
-
-
     }
 }

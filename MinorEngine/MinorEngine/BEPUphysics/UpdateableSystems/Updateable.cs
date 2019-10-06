@@ -10,39 +10,37 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
     ///</summary>
     public abstract class Updateable : ISpaceUpdateable
     {
-
         protected Updateable()
         {
             IsUpdating = true;
         }
 
         #region ISpaceUpdateable Members
-        List<UpdateableManager> managers = new List<UpdateableManager>();
-        List<UpdateableManager> ISpaceUpdateable.Managers
-        {
-            get
-            {
-                return managers;
-            }
-        }
+
+        private List<UpdateableManager> managers = new List<UpdateableManager>();
+
+        List<UpdateableManager> ISpaceUpdateable.Managers => managers;
 
         private bool isUpdatedSequentially = true;
+
         /// <summary>
         /// Gets and sets whether or not the updateable should be updated sequentially even in a multithreaded space.
         /// If this is true, the updateable can make use of the space's ParallelLooper for internal multithreading.
         /// </summary>
         public bool IsUpdatedSequentially
         {
-            get { return isUpdatedSequentially; }
+            get => isUpdatedSequentially;
             set
             {
-                bool oldValue = isUpdatedSequentially;
+                var oldValue = isUpdatedSequentially;
                 isUpdatedSequentially = value;
                 if (value != oldValue)
-                    for (int i = 0; i < managers.Count; i++)
+                {
+                    for (var i = 0; i < managers.Count; i++)
                     {
                         managers[i].SequentialUpdatingStateChanged(this);
                     }
+                }
             }
         }
 
@@ -50,11 +48,7 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         /// <summary>
         /// Gets and sets whether or not the updateable should be updated by its manager.
         /// </summary>
-        public bool IsUpdating
-        {
-            get;
-            set;
-        }
+        public bool IsUpdating { get; set; }
 
 
         /// <summary>
@@ -74,39 +68,22 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         {
         }
 
-        private Space space;
         Space ISpaceObject.Space
         {
-            get
-            {
-                return space;
-            }
-            set
-            {
-                space = value;
-            }
+            get => Space;
+            set => Space = value;
         }
 
         ///<summary>
         /// Space that owns the updateable.
         ///</summary>
-        public Space Space
-        {
-            get
-            {
-                return space;
-            }
-        }
+        public Space Space { get; private set; }
 
         /// <summary>
         /// Gets or sets the user data associated with this object.
         /// </summary>
         public object Tag { get; set; }
+
         #endregion
-
-
-
-
-
     }
 }

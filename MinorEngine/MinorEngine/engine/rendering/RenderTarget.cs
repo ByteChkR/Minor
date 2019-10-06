@@ -60,7 +60,10 @@ namespace MinorEngine.engine.rendering
             }
 
             if (GL.CheckFramebufferStatus(FramebufferTarget.Framebuffer) != FramebufferErrorCode.FramebufferComplete)
+            {
                 Console.ReadLine();
+            }
+
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
@@ -85,13 +88,21 @@ namespace MinorEngine.engine.rendering
         public override bool Equals(object obj)
         {
             var other = obj as RenderTarget;
-            if (ReferenceEquals(other, null)) return false;
+            if (ReferenceEquals(other, null))
+            {
+                return false;
+            }
+
             return CompareTo(other) == 0;
         }
 
         public static bool operator ==(RenderTarget left, RenderTarget right)
         {
-            if (ReferenceEquals(left, null)) return ReferenceEquals(right, null);
+            if (ReferenceEquals(left, null))
+            {
+                return ReferenceEquals(right, null);
+            }
+
             return left.Equals(right);
         }
 

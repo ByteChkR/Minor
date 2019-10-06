@@ -1,9 +1,8 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUutilities.ResourceManagement;
 using MinorEngine.BEPUutilities;
-
+using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -12,22 +11,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class MobileMeshStaticMeshPairHandler : MobileMeshMeshPairHandler
     {
+        private StaticMesh mesh;
 
+        public override Collidable CollidableB => mesh;
 
-        StaticMesh mesh;
+        public override Entities.Entity EntityB => null;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return null; }
-        }
-        protected override Materials.Material MaterialB
-        {
-            get { return mesh.material; }
-        }
+        protected override Materials.Material MaterialB => mesh.material;
 
         protected override TriangleCollidable GetOpposingCollidable(int index)
         {
@@ -53,7 +43,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void ConfigureCollidable(TriangleEntry entry, float dt)
         {
-
         }
 
         ///<summary>
@@ -78,38 +67,26 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
-
-
-
         ///<summary>
         /// Cleans up the pair handler.
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             mesh = null;
-
-
         }
-
-
 
 
         protected override void UpdateContainedPairs(float dt)
         {
             var overlappedElements = CommonResources.GetIntList();
             mesh.Mesh.Tree.GetOverlaps(mobileMesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }
 
             CommonResources.GiveBack(overlappedElements);
-
         }
-
-
     }
 }

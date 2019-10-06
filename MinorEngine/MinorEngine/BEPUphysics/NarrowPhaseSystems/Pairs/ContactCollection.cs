@@ -8,15 +8,14 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class ContactCollection : IList<ContactInformation>
     {
-
         ///<summary>
         /// Enumerator for the contact collection.
         ///</summary>
         public struct Enumerator : IEnumerator<ContactInformation>
         {
-            ContactCollection contactCollection;
-            int index;
-            int count;
+            private ContactCollection contactCollection;
+            private int index;
+            private int count;
 
             internal Enumerator(ContactCollection contactCollection)
             {
@@ -32,10 +31,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             /// <returns>
             /// The element in the collection at the current position of the enumerator.
             /// </returns>
-            public ContactInformation Current
-            {
-                get { return contactCollection[index]; }
-            }
+            public ContactInformation Current => contactCollection[index];
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -45,10 +41,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Advances the enumerator to the next element of the collection.
@@ -73,7 +66,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             }
         }
 
-        CollidablePairHandler pair;
+        private CollidablePairHandler pair;
 
         internal ContactCollection(CollidablePairHandler pair)
         {
@@ -86,13 +79,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <returns>
         /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
-        public int Count
-        {
-            get
-            {
-                return pair.ContactCount;
-            }
-        }
+        public int Count => pair.ContactCount;
 
         /// <summary>
         /// Gets or sets the element at the specified index.
@@ -109,10 +96,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 pair.GetContactInformation(index, out toReturn);
                 return toReturn;
             }
-            set
-            {
-                throw new NotSupportedException();
-            }
+            set => throw new NotSupportedException();
         }
 
         IEnumerator<ContactInformation> IEnumerable<ContactInformation>.GetEnumerator()
@@ -143,12 +127,15 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param>
         public bool Contains(ContactInformation item)
         {
-            int count = Count;
-            for (int i = 0; i < count; i++)
+            var count = Count;
+            for (var i = 0; i < count; i++)
             {
                 if (this[i].Contact == item.Contact)
+                {
                     return true;
+                }
             }
+
             return false;
         }
 
@@ -158,8 +145,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
         public void CopyTo(ContactInformation[] array, int arrayIndex)
         {
-            int count = Count;
-            for (int i = 0; i < count; i++)
+            var count = Count;
+            for (var i = 0; i < count; i++)
             {
                 array[arrayIndex + i] = this[i];
             }
@@ -174,19 +161,19 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <param name="item">The object to locate in the <see cref="T:System.Collections.Generic.IList`1"/>.</param>
         public int IndexOf(ContactInformation item)
         {
-            int count = Count;
-            for (int i = 0; i < count; i++)
+            var count = Count;
+            for (var i = 0; i < count; i++)
             {
                 if (this[i].Contact == item.Contact)
+                {
                     return i;
+                }
             }
+
             return -1;
         }
 
-        bool ICollection<ContactInformation>.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool ICollection<ContactInformation>.IsReadOnly => true;
 
         bool ICollection<ContactInformation>.Remove(ContactInformation item)
         {
@@ -212,12 +199,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             throw new NotSupportedException();
         }
-
-
-
-
-
-
-
     }
 }

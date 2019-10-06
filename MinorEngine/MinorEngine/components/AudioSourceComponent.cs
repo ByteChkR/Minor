@@ -7,16 +7,19 @@ namespace MinorEngine.engine.audio.sources
     {
         protected override void OnDestroy()
         {
-            if (IsPlaying) Stop();
+            if (IsPlaying)
+            {
+                Stop();
+            }
         }
 
 
         protected override void Update(float deltaTime)
         {
-            Vector4 v = new Vector4(Owner.GetLocalPosition(), 1);
+            var v = new Vector4(Owner.GetLocalPosition(), 1);
             v *= Owner.GetWorldTransform() * Owner.World.Camera.ViewMatrix;
 
-            Vector3 v3 = new Vector3(v);
+            var v3 = new Vector3(v);
 
             AL.Source(source, ALSource3f.Position, ref v3);
         }

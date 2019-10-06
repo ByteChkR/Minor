@@ -9,15 +9,15 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public struct EntityCollidableCollection : IEnumerable<Entity>
     {
-
         ///<summary>
         /// Enumerator for the EntityCollidableCollection.
         ///</summary>
         public struct Enumerator : IEnumerator<Entity>
         {
-            EntityCollidableCollection collection;
-            EntityCollidable current;
-            int index;
+            private EntityCollidableCollection collection;
+            private EntityCollidable current;
+            private int index;
+
             ///<summary>
             /// Constructs a new enumerator.
             ///</summary>
@@ -35,10 +35,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
             /// <returns>
             /// The element in the collection at the current position of the enumerator.
             /// </returns>
-            public Entity Current
-            {
-                get { return current.entity; }
-            }
+            public Entity Current => current.entity;
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -48,10 +45,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Advances the enumerator to the next element of the collection.
@@ -66,11 +60,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
             {
                 while (++index < collection.owner.pairs.Count)
                 {
-                    if ((current = (collection.owner.pairs[index].broadPhaseOverlap.entryA == collection.owner ?
-                        collection.owner.pairs[index].broadPhaseOverlap.entryB : 
-                        collection.owner.pairs[index].broadPhaseOverlap.entryA) as EntityCollidable) != null)
+                    if ((current = (collection.owner.pairs[index].broadPhaseOverlap.entryA == collection.owner
+                            ? collection.owner.pairs[index].broadPhaseOverlap.entryB
+                            : collection.owner.pairs[index].broadPhaseOverlap.entryA) as EntityCollidable) != null)
+                    {
                         return true;
+                    }
                 }
+
                 return false;
             }
 
@@ -116,9 +113,5 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         {
             return new Enumerator(this);
         }
-
-
-
-
     }
 }

@@ -1,11 +1,10 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
+﻿using System;
+using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
 using MinorEngine.BEPUphysics.CollisionShapes;
 using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUutilities;
- 
-using MinorEngine.BEPUphysics.Settings;
-using System;
 using MinorEngine.BEPUphysics.PositionUpdating;
+using MinorEngine.BEPUphysics.Settings;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
 {
@@ -25,34 +24,23 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         }
 
 
-
-
-
         /// <summary>
         /// Gets the shape of the collidable.
         /// </summary>
         public new EntityShape Shape
         {
-            get
-            {
-                return (EntityShape)shape;
-            }
-            protected set
-            {
-                base.Shape = value;
-            }
+            get => (EntityShape) shape;
+            protected set => base.Shape = value;
         }
 
         protected internal Entity entity;
+
         ///<summary>
         /// Gets the entity owning the collidable.
         ///</summary>
         public Entity Entity
         {
-            get
-            {
-                return entity;
-            }
+            get => entity;
             protected internal set
             {
                 entity = value;
@@ -66,6 +54,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         }
 
         protected internal RigidTransform worldTransform;
+
         ///<summary>
         /// Gets or sets the world transform of the collidable.
         /// The EntityCollidable's LocalPosition is ignored for this process; the shape will end up
@@ -74,10 +63,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         ///</summary>
         public RigidTransform WorldTransform
         {
-            get
-            {
-                return worldTransform;
-            }
+            get => worldTransform;
             set
             {
                 //Remove the local position.  The UpdateBoundingBoxForTransform will reintroduce it; we want the final result to put the shape (i.e. the WorldTransform) right where defined.
@@ -93,15 +79,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// <summary>
         /// Gets whether this collidable is associated with an active entity. True if it is, false if it's not.
         /// </summary>
-        public override bool IsActive
-        {
-            get
-            {
-                return entity != null ? entity.activityInformation.IsActive : false;
-            }
-        }
+        public override bool IsActive => entity != null ? entity.activityInformation.IsActive : false;
 
         protected internal Vector3 localPosition;
+
         ///<summary>
         /// Gets or sets the local position of the collidable.
         /// The local position can be used to offset the collision geometry
@@ -109,10 +90,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         ///</summary>
         public Vector3 LocalPosition
         {
-            get
-            {
-                return localPosition;
-            }
+            get => localPosition;
             set
             {
                 localPosition = value;
@@ -197,24 +175,35 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
             //Expand bounding box with velocity.
             if (dt > 0)
             {
-                bool useExtraExpansion = MotionSettings.UseExtraExpansionForContinuousBoundingBoxes && entity.PositionUpdateMode == PositionUpdateMode.Continuous;
+                var useExtraExpansion = MotionSettings.UseExtraExpansionForContinuousBoundingBoxes &&
+                                        entity.PositionUpdateMode == PositionUpdateMode.Continuous;
                 float velocityScaling = useExtraExpansion ? 2 : 1;
                 if (entity.linearVelocity.X > 0)
+                {
                     boundingBox.Max.X += entity.linearVelocity.X * dt * velocityScaling;
+                }
                 else
+                {
                     boundingBox.Min.X += entity.linearVelocity.X * dt * velocityScaling;
+                }
 
                 if (entity.linearVelocity.Y > 0)
+                {
                     boundingBox.Max.Y += entity.linearVelocity.Y * dt * velocityScaling;
+                }
                 else
+                {
                     boundingBox.Min.Y += entity.linearVelocity.Y * dt * velocityScaling;
+                }
 
                 if (entity.linearVelocity.Z > 0)
+                {
                     boundingBox.Max.Z += entity.linearVelocity.Z * dt * velocityScaling;
+                }
                 else
+                {
                     boundingBox.Min.Z += entity.linearVelocity.Z * dt * velocityScaling;
-
-
+                }
 
 
                 if (useExtraExpansion)
@@ -227,12 +216,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                     //we stand a much better chance of not missing secondary collisions.
                     foreach (var e in OverlappedEntities)
                     {
-
-                        float velocity = e.linearVelocity.LengthSquared();
+                        var velocity = e.linearVelocity.LengthSquared();
                         if (velocity > expansion)
+                        {
                             expansion = velocity;
+                        }
                     }
-                    expansion = (float)Math.Sqrt(expansion) * dt;
+
+                    expansion = (float) Math.Sqrt(expansion) * dt;
 
 
                     boundingBox.Min.X -= expansion;
@@ -242,7 +233,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                     boundingBox.Max.X += expansion;
                     boundingBox.Max.Y += expansion;
                     boundingBox.Max.Z += expansion;
-
                 }
 
                 //Could use this to incorporate angular motion.  Since the bounding box is an approximation to begin with,
@@ -250,12 +240,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                 //then the commented area should be used.
                 //Math.Min(entity.angularVelocity.Length() * dt, Shape.maximumRadius) * velocityScaling;
                 //TODO: consider using minimum radius 
-
             }
 
             boundingBox.Validate();
         }
-
 
 
         protected override void CollisionRulesUpdated()
@@ -263,25 +251,29 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
             //Try to activate the entity since our collision rules just changed; broadphase might need to update some stuff.
             //Beware, though; if this collidable is still being constructed, then the entity won't be available.
             if (entity != null)
+            {
                 entity.activityInformation.Activate();
+            }
         }
 
 
         protected internal ContactEventManager<EntityCollidable> events;
+
         ///<summary>
         /// Gets or sets the event manager of the collidable.
         ///</summary>
         public ContactEventManager<EntityCollidable> Events
         {
-            get
-            {
-                return events;
-            }
+            get => events;
             set
             {
                 if (value.Owner != null && //Can't use a manager which is owned by a different entity.
                     value != events) //Stay quiet if for some reason the same event manager is being set.
-                    throw new ArgumentException("Event manager is already owned by an entity; event managers cannot be shared.");
+                {
+                    throw new ArgumentException(
+                        "Event manager is already owned by an entity; event managers cannot be shared.");
+                }
+
                 //Must pass on the link to the parent event manager to the new event manager in case we are the child of a compound.
                 CompoundEventManager oldParent = null;
                 if (events != null)
@@ -290,6 +282,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                     oldParent = events.Parent;
                     events.Parent = null;
                 }
+
                 events = value;
                 if (events != null)
                 {
@@ -298,23 +291,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
                 }
             }
         }
-        protected internal override IContactEventTriggerer EventTriggerer
-        {
-            get { return events; }
-        }
+
+        protected internal override IContactEventTriggerer EventTriggerer => events;
 
 
         ///<summary>
         /// Gets an enumerable collection of all entities overlapping this collidable.
         ///</summary>
-        public EntityCollidableCollection OverlappedEntities
-        {
-            get
-            {
-                return new EntityCollidableCollection(this);
-            }
-        }
-
-
+        public EntityCollidableCollection OverlappedEntities => new EntityCollidableCollection(this);
     }
 }

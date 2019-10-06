@@ -1,7 +1,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -11,14 +10,13 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class Box : Entity<ConvexCollidable<BoxShape>>
     {
-
         private Box(float width, float height, float length)
-            :base(new ConvexCollidable<BoxShape>(new BoxShape(width, height, length)))
+            : base(new ConvexCollidable<BoxShape>(new BoxShape(width, height, length)))
         {
         }
 
         private Box(float width, float height, float length, float mass)
-            :base(new ConvexCollidable<BoxShape>(new BoxShape(width, height, length)), mass)
+            : base(new ConvexCollidable<BoxShape>(new BoxShape(width, height, length)), mass)
         {
         }
 
@@ -64,7 +62,6 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         }
 
 
-
         /// <summary>
         /// Constructs a nondynamic box.
         /// </summary>
@@ -83,8 +80,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float HalfWidth
         {
-            get { return CollisionInformation.Shape.HalfWidth; }
-            set { CollisionInformation.Shape.HalfWidth = value; }
+            get => CollisionInformation.Shape.HalfWidth;
+            set => CollisionInformation.Shape.HalfWidth = value;
         }
 
 
@@ -93,8 +90,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float HalfHeight
         {
-            get { return CollisionInformation.Shape.HalfHeight; }
-            set { CollisionInformation.Shape.HalfHeight = value; }
+            get => CollisionInformation.Shape.HalfHeight;
+            set => CollisionInformation.Shape.HalfHeight = value;
         }
 
         /// <summary>
@@ -102,10 +99,9 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float HalfLength
         {
-            get { return CollisionInformation.Shape.HalfLength; }
-            set { CollisionInformation.Shape.HalfLength = value; }
+            get => CollisionInformation.Shape.HalfLength;
+            set => CollisionInformation.Shape.HalfLength = value;
         }
-
 
 
         /// <summary>
@@ -113,8 +109,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Width
         {
-            get { return CollisionInformation.Shape.Width; }
-            set { CollisionInformation.Shape.Width = value; }
+            get => CollisionInformation.Shape.Width;
+            set => CollisionInformation.Shape.Width = value;
         }
 
         /// <summary>
@@ -122,8 +118,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Height
         {
-            get { return CollisionInformation.Shape.Height; }
-            set { CollisionInformation.Shape.Height = value; }
+            get => CollisionInformation.Shape.Height;
+            set => CollisionInformation.Shape.Height = value;
         }
 
         /// <summary>
@@ -131,11 +127,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Length
         {
-            get { return CollisionInformation.Shape.Length; }
-            set { CollisionInformation.Shape.Length = value; }
+            get => CollisionInformation.Shape.Length;
+            set => CollisionInformation.Shape.Length = value;
         }
-
-
-
     }
 }

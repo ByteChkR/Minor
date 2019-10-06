@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUutilities.ResourceManagement
 {
@@ -21,14 +20,13 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             SubPoolFloatList = new LockingResourcePool<RawList<float>>();
             SubPoolVectorList = new LockingResourcePool<RawList<Vector3>>();
             SubPoolRayHitList = new LockingResourcePool<RawList<RayHit>>();
-
         }
 
-        static LockingResourcePool<RawList<RayHit>> SubPoolRayHitList;
-        static LockingResourcePool<RawList<int>> SubPoolIntList;
-        static LockingResourcePool<HashSet<int>> SubPoolIntSet;
-        static LockingResourcePool<RawList<float>> SubPoolFloatList;
-        static LockingResourcePool<RawList<Vector3>> SubPoolVectorList;
+        private static LockingResourcePool<RawList<RayHit>> SubPoolRayHitList;
+        private static LockingResourcePool<RawList<int>> SubPoolIntList;
+        private static LockingResourcePool<HashSet<int>> SubPoolIntSet;
+        private static LockingResourcePool<RawList<float>> SubPoolFloatList;
+        private static LockingResourcePool<RawList<Vector3>> SubPoolVectorList;
 
         /// <summary>
         /// Retrieves a ray hit list from the resource pool.
@@ -49,7 +47,6 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             SubPoolRayHitList.GiveBack(list);
         }
 
-        
 
         /// <summary>
         /// Retrieves a int list from the resource pool.
@@ -126,7 +123,5 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             list.Clear();
             SubPoolVectorList.GiveBack(list);
         }
-
-       
     }
 }

@@ -14,10 +14,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <summary>
         /// Gets the entity collidable associated with the pair.
         /// </summary>
-        public override EntityCollidable Collidable
-        {
-            get { return compound; }
-        }
+        public override EntityCollidable Collidable => compound;
 
         ///<summary>
         /// Initializes the pair handler.
@@ -46,14 +43,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             compound = null;
-
-
         }
-
-
 
 
         protected override void UpdateContainedPairs()
@@ -61,13 +53,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             //TODO: Triangle meshes have a worldspace hierarchy that could be more efficiently traversed with a tree vs tree test.
             //This is just a lot simpler to manage in the short term.
 
-            for (int i = 0; i < compound.children.Count; i++)
+            for (var i = 0; i < compound.children.Count; i++)
             {
                 TryToAdd(compound.children.Elements[i].CollisionInformation);
             }
-
         }
-
-
     }
 }

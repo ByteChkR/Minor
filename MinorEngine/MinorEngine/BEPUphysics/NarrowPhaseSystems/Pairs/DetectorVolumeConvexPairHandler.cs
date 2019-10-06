@@ -1,10 +1,10 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
+﻿using System;
+using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using System;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
-using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
+using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -13,17 +13,12 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     /// </summary>
     public class DetectorVolumeConvexPairHandler : DetectorVolumePairHandler
     {
-        ConvexCollidable convex;
+        private ConvexCollidable convex;
 
-        private bool checkContainment = true;
         /// <summary>
         /// Gets or sets whether or not to check the convex object for total containment within the detector volume.
         /// </summary>
-        public bool CheckContainment
-        {
-            get { return checkContainment; }
-            set { checkContainment = value; }
-        }
+        public bool CheckContainment { get; set; } = true;
 
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
@@ -38,34 +33,31 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
             }
         }
+
         public override void CleanUp()
         {
-
             base.CleanUp();
             convex = null;
-            checkContainment = true;
-
-
+            CheckContainment = true;
         }
 
-        public override EntityCollidable Collidable
-        {
-            get { return convex; }
-        }
+        public override EntityCollidable Collidable => convex;
 
-        RawList<int> overlaps = new RawList<int>(8);
-        private TriangleShape triangle = new TriangleShape { collisionMargin = 0 };
+        private RawList<int> overlaps = new RawList<int>(8);
+        private TriangleShape triangle = new TriangleShape {collisionMargin = 0};
+
         public override void UpdateCollision(float dt)
         {
             WasContaining = Containing;
             WasTouching = Touching;
 
 
-            var transform = new RigidTransform { Orientation = Quaternion.Identity };
+            var transform = new RigidTransform {Orientation = Quaternion.Identity};
             DetectorVolume.TriangleMesh.Tree.GetOverlaps(convex.boundingBox, overlaps);
-            for (int i = 0; i < overlaps.Count; i++)
+            for (var i = 0; i < overlaps.Count; i++)
             {
-                DetectorVolume.TriangleMesh.Data.GetTriangle(overlaps.Elements[i], out triangle.vA, out triangle.vB, out triangle.vC);
+                DetectorVolume.TriangleMesh.Data.GetTriangle(overlaps.Elements[i], out triangle.vA, out triangle.vB,
+                    out triangle.vC);
                 Vector3.Add(ref triangle.vA, ref triangle.vB, out transform.Position);
                 Vector3.Add(ref triangle.vC, ref transform.Position, out transform.Position);
                 Vector3.Multiply(ref transform.Position, 1 / 3f, out transform.Position);
@@ -104,11 +96,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             Touching = false;
             Containing = false;
 
-        events:
+            events:
             NotifyDetectorVolumeOfChanges();
         }
-
-
-
     }
 }

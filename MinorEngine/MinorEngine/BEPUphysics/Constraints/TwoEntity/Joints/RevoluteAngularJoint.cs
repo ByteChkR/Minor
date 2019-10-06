@@ -2,7 +2,6 @@
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
 
-
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
 {
     /// <summary>
@@ -57,7 +56,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalFreeAxisA
         {
-            get { return localAxisA; }
+            get => localAxisA;
             set
             {
                 localAxisA = Vector3.Normalize(value);
@@ -71,7 +70,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalFreeAxisB
         {
-            get { return localAxisB; }
+            get => localAxisB;
             set
             {
                 localAxisB = Vector3.Normalize(value);
@@ -86,7 +85,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 WorldFreeAxisA
         {
-            get { return worldAxisA; }
+            get => worldAxisA;
             set
             {
                 worldAxisA = Vector3.Normalize(value);
@@ -101,7 +100,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 WorldFreeAxisB
         {
-            get { return worldAxisB; }
+            get => worldAxisB;
             set
             {
                 worldAxisB = Vector3.Normalize(value);
@@ -116,6 +115,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 localConstrainedAxis1 = Vector3.Cross(Vector3.Right, localAxisA);
             }
+
             localConstrainedAxis2 = Vector3.Cross(localAxisA, localConstrainedAxis1);
             localConstrainedAxis1.Normalize();
             localConstrainedAxis2.Normalize();
@@ -134,7 +134,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
                 Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
 
 #if !WINDOWS
-                Vector2 lambda = new Vector2();
+                var lambda = new Vector2();
 #else
                 Vector2 lambda;
 #endif
@@ -147,18 +147,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public Vector2 TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public Vector2 TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public Vector2 Error
-        {
-            get { return error; }
-        }
+        public Vector2 Error => error;
 
         #endregion
 
@@ -229,8 +223,10 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             Matrix3x3.Transform(ref localAxisB, ref connectionB.orientationMatrix, out worldAxisB);
 
 
-            Matrix3x3.Transform(ref localConstrainedAxis1, ref connectionA.orientationMatrix, out worldConstrainedAxis1);
-            Matrix3x3.Transform(ref localConstrainedAxis2, ref connectionA.orientationMatrix, out worldConstrainedAxis2);
+            Matrix3x3.Transform(ref localConstrainedAxis1, ref connectionA.orientationMatrix,
+                out worldConstrainedAxis1);
+            Matrix3x3.Transform(ref localConstrainedAxis2, ref connectionA.orientationMatrix,
+                out worldConstrainedAxis2);
 
             Vector3 error;
             Vector3.Cross(ref worldAxisA, ref worldAxisB, out error);
@@ -245,10 +241,10 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
 
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            float length = biasVelocity.LengthSquared();
+            var length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                float multiplier = maxCorrectiveVelocity / (float)Math.Sqrt(length);
+                var multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
             }
@@ -257,7 +253,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             if (connectionA.isDynamic && connectionB.isDynamic)
             {
                 Matrix3x3 inertiaTensorSum;
-                Matrix3x3.Add(ref connectionA.inertiaTensorInverse, ref connectionB.inertiaTensorInverse, out inertiaTensorSum);
+                Matrix3x3.Add(ref connectionA.inertiaTensorInverse, ref connectionB.inertiaTensorInverse,
+                    out inertiaTensorSum);
 
                 Matrix3x3.Transform(ref worldConstrainedAxis1, ref inertiaTensorSum, out axis1I);
                 Matrix3x3.Transform(ref worldConstrainedAxis2, ref inertiaTensorSum, out axis2I);
@@ -285,8 +282,6 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             effectiveMassMatrix.M22 += softness;
             Matrix2x2.Invert(ref effectiveMassMatrix, out effectiveMassMatrix);
             Matrix2x2.Negate(ref effectiveMassMatrix, out effectiveMassMatrix);
-
-
         }
 
         /// <summary>
@@ -298,7 +293,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         {
             //Warm Starting
 #if !WINDOWS
-            Vector3 impulse = new Vector3();
+            var impulse = new Vector3();
 #else
             Vector3 impulse;
 #endif
@@ -309,6 +304,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Negate(ref impulse, out impulse);
@@ -329,7 +325,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
 
 #if !WINDOWS
-            Vector2 lambda = new Vector2();
+            var lambda = new Vector2();
 #else
             Vector2 lambda;
 #endif
@@ -344,7 +340,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
 
 
 #if !WINDOWS
-            Vector3 impulse = new Vector3();
+            var impulse = new Vector3();
 #else
             Vector3 impulse;
 #endif
@@ -355,15 +351,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Negate(ref impulse, out impulse);
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
 
-            return (Math.Abs(lambda.X) + Math.Abs(lambda.Y));
+            return Math.Abs(lambda.X) + Math.Abs(lambda.Y);
         }
-
-
     }
 }

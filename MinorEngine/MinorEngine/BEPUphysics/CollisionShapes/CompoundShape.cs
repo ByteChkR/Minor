@@ -16,10 +16,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         /// Local transform of the shape relative to its owning compound shape.
         ///</summary>
         public RigidTransform LocalTransform;
+
         /// <summary>
         /// Shape used by the compound.
         /// </summary>
         public EntityShape Shape;
+
         /// <summary>
         /// Weight of the entry.  This defines how much the entry contributes to its owner
         /// for the purposes of center of rotation computation.
@@ -70,6 +72,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             Shape = shape;
             Weight = weight;
         }
+
         ///<summary>
         /// Constructs a new compound shape entry using the volume of the shape as a weight.
         ///</summary>
@@ -121,6 +124,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             Shape = shape;
             Weight = shape.Volume;
         }
+
         ///<summary>
         /// Constructs a new compound shape entry using the volume of the shape as a weight.
         ///</summary>
@@ -134,25 +138,17 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
     }
 
 
-
-
     ///<summary>
     /// Shape composed of multiple other shapes.
     ///</summary>
     public class CompoundShape : EntityShape
     {
         internal RawList<CompoundShapeEntry> shapes;
+
         ///<summary>
         /// Gets the list of shapes in the compound shape.
         ///</summary>
-        public ReadOnlyList<CompoundShapeEntry> Shapes
-        {
-            get
-            {
-                return new ReadOnlyList<CompoundShapeEntry>(shapes);
-            }
-        }
-
+        public ReadOnlyList<CompoundShapeEntry> Shapes => new ReadOnlyList<CompoundShapeEntry>(shapes);
 
 
         ///<summary>
@@ -170,7 +166,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 
                 this.shapes = new RawList<CompoundShapeEntry>(shapes);
                 //Recenter the shapes.
-                for (int i = 0; i < this.shapes.Count; i++)
+                for (var i = 0; i < this.shapes.Count; i++)
                 {
                     this.shapes.Elements[i].LocalTransform.Position -= center;
                 }
@@ -196,7 +192,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 
                 this.shapes = new RawList<CompoundShapeEntry>(shapes);
                 //Recenter the shapes.
-                for (int i = 0; i < this.shapes.Count; i++)
+                for (var i = 0; i < this.shapes.Count; i++)
                 {
                     this.shapes.Elements[i].LocalTransform.Position -= center;
                 }
@@ -206,6 +202,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
                 throw new ArgumentException("Compound shape must have at least 1 subshape.");
             }
         }
+
         ///<summary>
         /// Constructs a new compound shape from cached data.
         ///</summary>
@@ -216,7 +213,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             this.shapes = new RawList<CompoundShapeEntry>(shapes);
             UpdateEntityShapeVolume(volumeDescription);
         }
-        
+
 
         /// <summary>
         /// Computes the volume distribution and center of the shape.
@@ -225,31 +222,39 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         /// <param name="volume">Summed volume of the constituent shapes. Intersecting volumes get double counted.</param>
         /// <param name="volumeDistribution">Volume distribution of the shape.</param>
         /// <param name="center">Center of the compound.</param>
-        public static void ComputeVolumeDistribution(IList<CompoundShapeEntry> entries, out float volume, out Matrix3x3 volumeDistribution, out Vector3 center)
+        public static void ComputeVolumeDistribution(IList<CompoundShapeEntry> entries, out float volume,
+            out Matrix3x3 volumeDistribution, out Vector3 center)
         {
             center = new Vector3();
             float totalWeight = 0;
             volume = 0;
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 center += entries[i].LocalTransform.Position * entries[i].Weight;
                 volume += entries[i].Shape.Volume;
                 totalWeight += entries[i].Weight;
             }
+
             if (totalWeight <= 0)
-                throw new NotFiniteNumberException("Cannot compute distribution; the total weight of a compound shape must be positive.");
-            float totalWeightInverse = 1 / totalWeight;
+            {
+                throw new NotFiniteNumberException(
+                    "Cannot compute distribution; the total weight of a compound shape must be positive.");
+            }
+
+            var totalWeightInverse = 1 / totalWeight;
             totalWeightInverse.Validate();
             center *= totalWeightInverse;
 
             volumeDistribution = new Matrix3x3();
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
-                RigidTransform transform = entries[i].LocalTransform;
+                var transform = entries[i].LocalTransform;
                 Matrix3x3 contribution;
-                TransformContribution(ref transform, ref center, ref entries[i].Shape.volumeDistribution, entries[i].Weight, out contribution);
+                TransformContribution(ref transform, ref center, ref entries[i].Shape.volumeDistribution,
+                    entries[i].Weight, out contribution);
                 Matrix3x3.Add(ref volumeDistribution, ref contribution, out volumeDistribution);
             }
+
             Matrix3x3.Multiply(ref volumeDistribution, totalWeightInverse, out volumeDistribution);
             volumeDistribution.Validate();
         }
@@ -263,12 +268,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         /// <param name="baseContribution">Original unmodified contribution.</param>
         /// <param name="weight">Weight of the contribution.</param>
         /// <param name="contribution">Transformed contribution.</param>
-        public static void TransformContribution(ref RigidTransform transform, ref Vector3 center, ref Matrix3x3 baseContribution, float weight, out Matrix3x3 contribution)
+        public static void TransformContribution(ref RigidTransform transform, ref Vector3 center,
+            ref Matrix3x3 baseContribution, float weight, out Matrix3x3 contribution)
         {
             Matrix3x3 rotation;
             Matrix3x3.CreateFromQuaternion(ref transform.Orientation, out rotation);
             Matrix3x3 temp;
-            
+
             //Do angular transformed contribution first...
             Matrix3x3.MultiplyTransposed(ref rotation, ref baseContribution, out temp);
             Matrix3x3.Multiply(ref temp, ref rotation, out temp);
@@ -287,7 +293,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 
             Matrix3x3.Add(ref contribution, ref temp, out contribution);
             Matrix3x3.Multiply(ref contribution, weight, out contribution);
-
         }
 
 
@@ -301,8 +306,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         }
 
 
-     
-
         /// <summary>
         /// Computes a bounding box for the shape given the specified transform.
         /// </summary>
@@ -314,7 +317,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             RigidTransform.Multiply(ref shapes.Elements[0].LocalTransform, ref transform, out combinedTransform);
             shapes.Elements[0].Shape.GetBoundingBox(ref combinedTransform, out boundingBox);
 
-            for (int i = 0; i < shapes.Count; i++)
+            for (var i = 0; i < shapes.Count; i++)
             {
                 RigidTransform.Multiply(ref shapes.Elements[i].LocalTransform, ref transform, out combinedTransform);
                 BoundingBox childBoundingBox;
@@ -323,6 +326,4 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             }
         }
     }
-
-
 }

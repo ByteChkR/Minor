@@ -28,8 +28,13 @@ namespace MinorEngine.engine.rendering
 
         private static bool _init;
         private static int _screenVAO;
-        private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, new Color(0, 0, 0, 0));
-        private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, new Color(0, 0, 0, 0));
+
+        private static RenderTarget _screenTarget0 =
+            new RenderTarget(new UICamera(), int.MaxValue, new Color(0, 0, 0, 0));
+
+        private static RenderTarget _screenTarget1 =
+            new RenderTarget(new UICamera(), int.MaxValue, new Color(0, 0, 0, 0));
+
         private static ShaderProgram _screenShader;
         private static Dictionary<MergeType, ShaderProgram> _mergeTypes = new Dictionary<MergeType, ShaderProgram>();
 
@@ -37,11 +42,11 @@ namespace MinorEngine.engine.rendering
         {
             _init = true;
             _screenVAO = GL.GenVertexArray();
-            int _screenVBO = GL.GenBuffer();
+            var _screenVBO = GL.GenBuffer();
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -51,16 +56,22 @@ namespace MinorEngine.engine.rendering
             {
                 {ShaderType.FragmentShader, "shader/MergeRenderer_Add.fs"},
                 {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
-            }, out ShaderProgram _mergeAddShader))
+            }, out var _mergeAddShader))
+            {
                 Console.ReadLine();
+            }
+
             _mergeTypes.Add(MergeType.Additive, _mergeAddShader);
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/MergeRenderer_Mul.fs"},
                 {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
-            }, out ShaderProgram _mergeMulShader))
+            }, out var _mergeMulShader))
+            {
                 Console.ReadLine();
+            }
+
             _mergeTypes.Add(MergeType.Multiplikative, _mergeMulShader);
 
 
@@ -69,7 +80,9 @@ namespace MinorEngine.engine.rendering
                 {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
                 {ShaderType.VertexShader, "shader/ScreenRenderer.vs"}
             }, out _screenShader))
+            {
                 Console.ReadLine();
+            }
         }
 
         private static bool _isOne;
@@ -91,18 +104,21 @@ namespace MinorEngine.engine.rendering
 
         public static void MergeAndDisplayTargets(List<RenderTarget> targets)
         {
-            if (!_init) Init();
+            if (!_init)
+            {
+                Init();
+            }
 
 
-            int divideCount = targets.Count;
+            var divideCount = targets.Count;
 
             //GL.Enable(EnableCap.ScissorTest);
 
             //GL.Enable(EnableCap.ScissorTest);
             foreach (var renderTarget in targets)
             {
-                RenderTarget dst = GetTarget();
-                RenderTarget src = GetSource();
+                var dst = GetTarget();
+                var src = GetSource();
 
                 _mergeTypes[renderTarget.MergeType].Use();
 

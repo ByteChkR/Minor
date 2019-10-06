@@ -10,21 +10,14 @@
         /// </summary>
         public override Bone TargetBone
         {
-            get { return AngularMotor.TargetBone; }
-            set
-            {
-                AngularMotor.TargetBone = value;
-            }
+            get => AngularMotor.TargetBone;
+            set => AngularMotor.TargetBone = value;
         }
 
         /// <summary>
         /// Gets or sets the linear motor used by the control.
         /// </summary>
-        public SingleBoneRevoluteConstraint AngularMotor
-        {
-            get;
-            private set;
-        }
+        public SingleBoneRevoluteConstraint AngularMotor { get; }
 
         public RevoluteControl()
         {
@@ -64,11 +57,8 @@
 
         public override float MaximumForce
         {
-            get { return AngularMotor.MaximumForce; }
-            set
-            {
-                AngularMotor.MaximumForce = value;
-            }
+            get => AngularMotor.MaximumForce;
+            set => AngularMotor.MaximumForce = value;
         }
     }
 }

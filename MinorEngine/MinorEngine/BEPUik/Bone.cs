@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 
@@ -44,16 +43,21 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public float Mass
         {
-            get { return 1 / inverseMass; }
+            get => 1 / inverseMass;
             set
             {
                 //Long chains could produce exceptionally small values.
                 //Attempting to invert them would result in NaNs.
                 //Clamp the lowest mass to 1e-7f.
                 if (value > Toolbox.Epsilon)
+                {
                     inverseMass = 1f / value;
+                }
                 else
+                {
                     inverseMass = 1e7f;
+                }
+
                 ComputeLocalInertiaTensor();
             }
         }
@@ -69,10 +73,7 @@ namespace MinorEngine.BEPUik
         /// <summary>
         /// Gets the list of joints affecting this bone.
         /// </summary>
-        public ReadOnlyList<IKJoint> Joints
-        {
-            get { return new ReadOnlyList<IKJoint>(joints); }
-        }
+        public ReadOnlyList<IKJoint> Joints => new ReadOnlyList<IKJoint>(joints);
 
 
         /// <summary>
@@ -86,14 +87,14 @@ namespace MinorEngine.BEPUik
         public bool IsActive { get; internal set; }
 
         private float radius;
+
         /// <summary>
         /// Gets or sets the radius of the bone.
         /// Setting the radius changes the inertia tensor of the bone.
         /// </summary>
         public float Radius
         {
-            get
-            { return radius; }
+            get => radius;
             set
             {
                 radius = value;
@@ -102,6 +103,7 @@ namespace MinorEngine.BEPUik
         }
 
         private float halfHeight;
+
         /// <summary>
         /// Gets or sets the height, divided by two, of the bone.
         /// The half height extends both ways from the center position of the bone.
@@ -109,7 +111,7 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public float HalfHeight
         {
-            get { return halfHeight; }
+            get => halfHeight;
             set
             {
                 halfHeight = value;
@@ -123,7 +125,7 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public float Height
         {
-            get { return halfHeight * 2; }
+            get => halfHeight * 2;
             set
             {
                 halfHeight = value / 2;
@@ -140,7 +142,7 @@ namespace MinorEngine.BEPUik
         /// <param name="height">Height of the bone.</param>
         /// <param name="mass">Mass of the bone.</param>
         public Bone(Vector3 position, Quaternion orientation, float radius, float height, float mass)
-            :this(position, orientation, radius, height)
+            : this(position, orientation, radius, height)
         {
             Mass = mass;
         }
@@ -162,11 +164,11 @@ namespace MinorEngine.BEPUik
         }
 
 
-        void ComputeLocalInertiaTensor()
+        private void ComputeLocalInertiaTensor()
         {
             var localInertiaTensor = new Matrix3x3();
             var multiplier = Mass * InertiaTensorScaling;
-            float diagValue = (.0833333333f * Height * Height + .25f * Radius * Radius) * multiplier;
+            var diagValue = (.0833333333f * Height * Height + .25f * Radius * Radius) * multiplier;
             localInertiaTensor.M11 = diagValue;
             localInertiaTensor.M22 = .5f * Radius * Radius * multiplier;
             localInertiaTensor.M33 = diagValue;
@@ -182,7 +184,8 @@ namespace MinorEngine.BEPUik
             //Iworld^-1 = RT * Ilocal^1 * R
             Matrix3x3 orientationMatrix;
             Matrix3x3.CreateFromQuaternion(ref Orientation, out orientationMatrix);
-            Matrix3x3.MultiplyTransposed(ref orientationMatrix, ref localInertiaTensorInverse, out inertiaTensorInverse);
+            Matrix3x3.MultiplyTransposed(ref orientationMatrix, ref localInertiaTensorInverse,
+                out inertiaTensorInverse);
             Matrix3x3.Multiply(ref inertiaTensorInverse, ref orientationMatrix, out inertiaTensorInverse);
         }
 
@@ -252,10 +255,10 @@ namespace MinorEngine.BEPUik
         /// Marking all the predecessors is conceptually simpler than attempting to mark the cycles in isolation.
         /// </summary>
         internal bool unstressedCycle;
-        
+
         /// <summary>
         /// True if the bone is targeted by a control in the current stress cycle traversal that isn't the current source control.
         /// </summary>
-        internal  bool targetedByOtherControl;
+        internal bool targetedByOtherControl;
     }
 }

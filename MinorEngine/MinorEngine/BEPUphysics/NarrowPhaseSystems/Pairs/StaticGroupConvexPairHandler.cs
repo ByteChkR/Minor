@@ -9,19 +9,12 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class StaticGroupConvexPairHandler : StaticGroupPairHandler
     {
-        ConvexCollidable convexInfo;
+        private ConvexCollidable convexInfo;
 
 
-        public override Collidable CollidableB
-        {
-            get { return convexInfo; }
-        }
+        public override Collidable CollidableB => convexInfo;
 
-        public override Entities.Entity EntityB
-        {
-            get { return convexInfo.entity; }
-        }
-
+        public override Entities.Entity EntityB => convexInfo.entity;
 
 
         ///<summary>
@@ -55,21 +48,18 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
         protected override void UpdateContainedPairs()
         {
             var overlappedElements = PhysicsResources.GetCollidableList();
             staticGroup.Shape.CollidableTree.GetOverlaps(convexInfo.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
                 var staticCollidable = overlappedElements.Elements[i] as StaticCollidable;
-                TryToAdd(overlappedElements.Elements[i], CollidableB, staticCollidable != null ? staticCollidable.Material : staticGroup.Material);
+                TryToAdd(overlappedElements.Elements[i], CollidableB,
+                    staticCollidable != null ? staticCollidable.Material : staticGroup.Material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
-
-
         }
-
     }
 }

@@ -2,7 +2,6 @@
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
 {
@@ -11,8 +10,6 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
     /// </summary>
     public class SingleEntityLinearMotor : SingleEntityConstraint, I3DImpulseConstraintWithError
     {
-        private readonly MotorSettings3D settings;
-
         /// <summary>
         /// Sum of forces applied to the constraint in the past.
         /// </summary>
@@ -46,14 +43,14 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public override Entity Entity
         {
-            get
-            {
-                return base.Entity;
-            }
+            get => base.Entity;
             set
             {
                 if (Entity != value)
+                {
                     accumulatedImpulse = new Vector3();
+                }
+
                 base.Entity = value;
             }
         }
@@ -69,7 +66,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             Entity = entity;
             Point = point;
 
-            settings = new MotorSettings3D(this) {servo = {goal = point}};
+            Settings = new MotorSettings3D(this) {servo = {goal = point}};
             //Not really necessary, just helps prevent 'snapping'.
         }
 
@@ -80,7 +77,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public SingleEntityLinearMotor()
         {
-            settings = new MotorSettings3D(this);
+            Settings = new MotorSettings3D(this);
             IsActive = false;
         }
 
@@ -89,7 +86,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public Vector3 LocalPoint
         {
-            get { return localPoint; }
+            get => localPoint;
             set
             {
                 localPoint = value;
@@ -103,7 +100,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public Vector3 Point
         {
-            get { return worldPoint; }
+            get => worldPoint;
             set
             {
                 worldPoint = value;
@@ -115,10 +112,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// <summary>
         /// Gets the motor's velocity and servo settings.
         /// </summary>
-        public MotorSettings3D Settings
-        {
-            get { return settings; }
-        }
+        public MotorSettings3D Settings { get; }
 
         #region I3DImpulseConstraintWithError Members
 
@@ -139,19 +133,13 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public Vector3 TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public Vector3 TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the current constraint error.
         /// If the motor is in velocity only mode, error is zero.
         /// </summary>
-        public Vector3 Error
-        {
-            get { return error; }
-        }
+        public Vector3 Error => error;
 
         #endregion
 
@@ -178,15 +166,15 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             Matrix3x3.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
 
             //Sum the impulse.
-            Vector3 previousAccumulatedImpulse = accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse += lambda;
 
             //If the impulse it takes to get to the goal is too high for the motor to handle, scale it back.
-            float sumImpulseLengthSquared = accumulatedImpulse.LengthSquared();
+            var sumImpulseLengthSquared = accumulatedImpulse.LengthSquared();
             if (sumImpulseLengthSquared > maxForceDtSquared)
             {
                 //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                accumulatedImpulse *= maxForceDt / (float)Math.Sqrt(sumImpulseLengthSquared);
+                accumulatedImpulse *= maxForceDt / (float) Math.Sqrt(sumImpulseLengthSquared);
 
                 //Since the limit was exceeded by this corrective impulse, limit it so that the accumulated impulse remains constrained.
                 lambda = accumulatedImpulse - previousAccumulatedImpulse;
@@ -198,7 +186,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             Vector3.Cross(ref r, ref lambda, out taImpulse);
             entity.ApplyAngularImpulse(ref taImpulse);
 
-            return (Math.Abs(lambda.X) + Math.Abs(lambda.Y) + Math.Abs(lambda.Z));
+            return Math.Abs(lambda.X) + Math.Abs(lambda.Y) + Math.Abs(lambda.Z);
         }
 
         ///<summary>
@@ -211,27 +199,29 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             Matrix3x3.Transform(ref localPoint, ref entity.orientationMatrix, out r);
             Vector3.Add(ref r, ref entity.position, out worldPoint);
 
-            float updateRate = 1 / dt;
-            if (settings.mode == MotorMode.Servomechanism)
+            var updateRate = 1 / dt;
+            if (Settings.mode == MotorMode.Servomechanism)
             {
-                Vector3.Subtract(ref settings.servo.goal, ref worldPoint, out error);
-                float separationDistance = error.Length();
+                Vector3.Subtract(ref Settings.servo.goal, ref worldPoint, out error);
+                var separationDistance = error.Length();
                 if (separationDistance > Toolbox.BigEpsilon)
                 {
                     float errorReduction;
-                    settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction, out usedSoftness);
+                    Settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction,
+                        out usedSoftness);
 
                     //The rate of correction can be based on a constant correction velocity as well as a 'spring like' correction velocity.
                     //The constant correction velocity could overshoot the destination, so clamp it.
-                    float correctionSpeed = MathHelper.Min(settings.servo.baseCorrectiveSpeed, separationDistance * updateRate) +
-                                            separationDistance * errorReduction;
+                    var correctionSpeed =
+                        MathHelper.Min(Settings.servo.baseCorrectiveSpeed, separationDistance * updateRate) +
+                        separationDistance * errorReduction;
 
                     Vector3.Multiply(ref error, correctionSpeed / separationDistance, out biasVelocity);
                     //Ensure that the corrective velocity doesn't exceed the max.
-                    float length = biasVelocity.LengthSquared();
-                    if (length > settings.servo.maxCorrectiveVelocitySquared)
+                    var length = biasVelocity.LengthSquared();
+                    if (length > Settings.servo.maxCorrectiveVelocitySquared)
                     {
-                        float multiplier = settings.servo.maxCorrectiveVelocity / (float)Math.Sqrt(length);
+                        var multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
                         biasVelocity.X *= multiplier;
                         biasVelocity.Y *= multiplier;
                         biasVelocity.Z *= multiplier;
@@ -245,13 +235,13 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             }
             else
             {
-                usedSoftness = settings.velocityMotor.softness * updateRate;
-                biasVelocity = settings.velocityMotor.goalVelocity;
+                usedSoftness = Settings.velocityMotor.softness * updateRate;
+                biasVelocity = Settings.velocityMotor.goalVelocity;
                 error = Vector3.Zero;
             }
 
             //Compute the maximum force that can be applied this frame.
-            ComputeMaxForces(settings.maximumForce, dt);
+            ComputeMaxForces(Settings.maximumForce, dt);
 
             //COMPUTE EFFECTIVE MASS MATRIX
             //Transforms a change in velocity to a change in momentum when multiplied.
@@ -269,7 +259,6 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
             effectiveMassMatrix.M33 += usedSoftness;
 
             Matrix3x3.Invert(ref effectiveMassMatrix, out effectiveMassMatrix);
-
         }
 
         /// <summary>

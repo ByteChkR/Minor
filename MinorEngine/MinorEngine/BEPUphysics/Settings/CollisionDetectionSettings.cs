@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace MinorEngine.BEPUphysics.Settings
 {
     ///<summary>
@@ -6,8 +7,6 @@ namespace MinorEngine.BEPUphysics.Settings
     ///</summary>
     public static class CollisionDetectionSettings
     {
-
-
         internal static float ContactInvalidationLengthSquared = .01f;
 
         /// <summary>
@@ -20,18 +19,13 @@ namespace MinorEngine.BEPUphysics.Settings
         /// </summary>
         public static float ContactInvalidationLength
         {
-            get
-            {
-                return (float)Math.Sqrt(ContactInvalidationLengthSquared);
-            }
-            set
-            {
-                ContactInvalidationLengthSquared = value * value;
-            }
+            get => (float) Math.Sqrt(ContactInvalidationLengthSquared);
+            set => ContactInvalidationLengthSquared = value * value;
         }
 
 
         internal static float ContactMinimumSeparationDistanceSquared = .0009f;
+
         /// <summary>
         /// In persistent manifolds, if two contacts are too close together, then 
         /// the system will not use one of them.  This avoids redundant constraints.
@@ -39,17 +33,12 @@ namespace MinorEngine.BEPUphysics.Settings
         /// </summary>
         public static float ContactMinimumSeparationDistance
         {
-            get
-            {
-                return (float)Math.Sqrt(ContactMinimumSeparationDistanceSquared);
-            }
-            set
-            {
-                ContactMinimumSeparationDistanceSquared = value * value;
-            }
+            get => (float) Math.Sqrt(ContactMinimumSeparationDistanceSquared);
+            set => ContactMinimumSeparationDistanceSquared = value * value;
         }
 
         internal static float nonconvexNormalDotMinimum = .99f;
+
         /// <summary>
         /// In regular convex manifolds, two contacts are considered redundant if their positions are too close together.  
         /// In nonconvex manifolds, the normal must also be tested, since a contact in the same location could have a different normal.
@@ -57,14 +46,8 @@ namespace MinorEngine.BEPUphysics.Settings
         /// </summary>
         public static float NonconvexNormalAngleDifferenceMinimum
         {
-            get
-            {
-                return (float)Math.Acos(nonconvexNormalDotMinimum);
-            }
-            set
-            {
-                nonconvexNormalDotMinimum = (float)Math.Cos(value);
-            }
+            get => (float) Math.Acos(nonconvexNormalDotMinimum);
+            set => nonconvexNormalDotMinimum = (float) Math.Cos(value);
         }
 
         /// <summary>
@@ -80,26 +63,25 @@ namespace MinorEngine.BEPUphysics.Settings
         public static float DefaultMargin = .04f;
 
         internal static float maximumContactDistance = .1f;
+
         /// <summary>
         /// Maximum distance between the surfaces defining a contact point allowed before removing the contact.
         /// Defaults to .1f.
         /// </summary>
         public static float MaximumContactDistance
         {
-            get
-            {
-                return maximumContactDistance;
-            }
+            get => maximumContactDistance;
             set
             {
                 if (value >= 0)
+                {
                     maximumContactDistance = value;
+                }
                 else
+                {
                     throw new ArgumentException("Distance must be nonnegative.");
+                }
             }
         }
-
-
-        
     }
 }

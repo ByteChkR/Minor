@@ -10,33 +10,24 @@ namespace MinorEngine.BEPUphysics.DataStructures
     public class TriangleMesh
     {
         private MeshBoundingBoxTreeData data;
+
         ///<summary>
         /// Gets or sets the bounding box data used in the mesh.
         ///</summary>
         public MeshBoundingBoxTreeData Data
         {
-            get
-            {
-                return data;
-            }
+            get => data;
             set
             {
                 data = value;
-                tree.Data = data;
+                Tree.Data = data;
             }
         }
 
-        private MeshBoundingBoxTree tree;
         ///<summary>
         /// Gets the bounding box tree that accelerates queries to this triangle mesh.
         ///</summary>
-        public MeshBoundingBoxTree Tree
-        {
-            get
-            {
-                return tree;
-            }
-        }
+        public MeshBoundingBoxTree Tree { get; }
 
         ///<summary>
         /// Constructs a new triangle mesh.
@@ -45,7 +36,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public TriangleMesh(MeshBoundingBoxTreeData data)
         {
             this.data = data;
-            tree = new MeshBoundingBoxTree(data);
+            Tree = new MeshBoundingBoxTree(data);
         }
 
         ///<summary>
@@ -57,7 +48,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public bool RayCast(Ray ray, out int hitCount)
         {
             var rayHits = CommonResources.GetRayHitList();
-            bool toReturn = RayCast(ray, rayHits);
+            var toReturn = RayCast(ray, rayHits);
             hitCount = rayHits.Count;
             CommonResources.GiveBack(rayHits);
             return toReturn;
@@ -132,19 +123,24 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public bool RayCast(Ray ray, float maximumLength, TriangleSidedness sidedness, out RayHit rayHit)
         {
             var rayHits = CommonResources.GetRayHitList();
-            bool toReturn = RayCast(ray, maximumLength, sidedness, rayHits);
+            var toReturn = RayCast(ray, maximumLength, sidedness, rayHits);
             if (toReturn)
             {
                 rayHit = rayHits[0];
-                for (int i = 1; i < rayHits.Count; i++)
+                for (var i = 1; i < rayHits.Count; i++)
                 {
-                    RayHit hit = rayHits[i];
+                    var hit = rayHits[i];
                     if (hit.T < rayHit.T)
+                    {
                         rayHit = hit;
+                    }
                 }
             }
             else
+            {
                 rayHit = new RayHit();
+            }
+
             CommonResources.GiveBack(rayHits);
             return toReturn;
         }
@@ -172,24 +168,21 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public bool RayCast(Ray ray, float maximumLength, TriangleSidedness sidedness, IList<RayHit> hits)
         {
             var hitElements = CommonResources.GetIntList();
-            tree.GetOverlaps(ray, maximumLength, hitElements);
-            for (int i = 0; i < hitElements.Count; i++)
+            Tree.GetOverlaps(ray, maximumLength, hitElements);
+            for (var i = 0; i < hitElements.Count; i++)
             {
                 Vector3 v1, v2, v3;
                 data.GetTriangle(hitElements[i], out v1, out v2, out v3);
                 RayHit hit;
-                if (Toolbox.FindRayTriangleIntersection(ref ray, maximumLength, sidedness, ref v1, ref v2, ref v3, out hit))
+                if (Toolbox.FindRayTriangleIntersection(ref ray, maximumLength, sidedness, ref v1, ref v2, ref v3,
+                    out hit))
                 {
                     hits.Add(hit);
                 }
             }
+
             CommonResources.GiveBack(hitElements);
             return hits.Count > 0;
         }
-
-        
-
-
-
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
+using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.Constraints;
 using MinorEngine.BEPUphysics.Entities;
+using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.Settings;
 
 namespace MinorEngine.BEPUphysics.Character
 {
@@ -14,31 +13,34 @@ namespace MinorEngine.BEPUphysics.Character
     /// </summary>
     public class VerticalMotionConstraint : SolverUpdateable
     {
-        Entity characterBody;
+        private Entity characterBody;
         private SupportFinder supportFinder;
 
-        SupportData supportData;
+        private SupportData supportData;
 
         private float maximumGlueForce;
+
         /// <summary>
         /// Gets or sets the maximum force that the constraint will apply in attempting to keep the character stuck to the ground.
         /// </summary>
         public float MaximumGlueForce
         {
-            get
-            {
-                return maximumGlueForce;
-            }
+            get => maximumGlueForce;
             set
             {
                 if (maximumGlueForce < 0)
+                {
                     throw new ArgumentException("Value must be nonnegative.");
+                }
+
                 maximumGlueForce = value;
             }
         }
-        float maximumForce;
 
-        float supportForceFactor = 1f;
+        private float maximumForce;
+
+        private float supportForceFactor = 1f;
+
         /// <summary>
         /// Gets or sets the scaling factor of forces applied to the supporting object if it is a dynamic entity.
         /// Low values (below 1) reduce the amount of motion imparted to the support object; it acts 'heavier' as far as vertical motion is concerned.
@@ -46,14 +48,14 @@ namespace MinorEngine.BEPUphysics.Character
         /// </summary>
         public float SupportForceFactor
         {
-            get
-            {
-                return supportForceFactor;
-            }
+            get => supportForceFactor;
             set
             {
                 if (value < 0)
+                {
                     throw new ArgumentException("Value must be nonnegative.");
+                }
+
                 supportForceFactor = value;
             }
         }
@@ -62,22 +64,16 @@ namespace MinorEngine.BEPUphysics.Character
         /// <summary>
         /// Gets the effective mass felt by the constraint.
         /// </summary>
-        public float EffectiveMass
-        {
-            get
-            {
-                return effectiveMass;
-            }
-        }
-        float effectiveMass;
-        Entity supportEntity;
-        Vector3 linearJacobianA;
-        Vector3 linearJacobianB;
-        Vector3 angularJacobianB;
+        public float EffectiveMass { get; private set; }
 
-   
-        float accumulatedImpulse;
-        float permittedVelocity;
+        private Entity supportEntity;
+        private Vector3 linearJacobianA;
+        private Vector3 linearJacobianB;
+        private Vector3 angularJacobianB;
+
+
+        private float accumulatedImpulse;
+        private float permittedVelocity;
 
         /// <summary>
         /// Constructs a new vertical motion constraint.
@@ -85,7 +81,8 @@ namespace MinorEngine.BEPUphysics.Character
         /// <param name="characterBody">Character body governed by the constraint.</param>
         /// <param name="supportFinder">Support finder used by the character.</param>
         /// <param name="maximumGlueForce">Maximum force the vertical motion constraint is allowed to apply in an attempt to keep the character on the ground.</param>
-        public VerticalMotionConstraint(Entity characterBody, SupportFinder supportFinder, float maximumGlueForce = 5000)
+        public VerticalMotionConstraint(Entity characterBody, SupportFinder supportFinder,
+            float maximumGlueForce = 5000)
         {
             this.characterBody = characterBody;
             this.supportFinder = supportFinder;
@@ -105,16 +102,17 @@ namespace MinorEngine.BEPUphysics.Character
             {
                 OnInvolvedEntitiesChanged();
             }
-
         }
 
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
             var entityCollidable = supportData.SupportObject as EntityCollidable;
             if (entityCollidable != null)
+            {
                 outputInvolvedEntities.Add(entityCollidable.Entity);
-            outputInvolvedEntities.Add(characterBody);
+            }
 
+            outputInvolvedEntities.Add(characterBody);
         }
 
 
@@ -125,9 +123,13 @@ namespace MinorEngine.BEPUphysics.Character
         public override void UpdateSolverActivity()
         {
             if (supportFinder.HasTraction)
+            {
                 base.UpdateSolverActivity();
+            }
             else
+            {
                 isActiveInSolver = false;
+            }
         }
 
         /// <summary>
@@ -144,14 +146,11 @@ namespace MinorEngine.BEPUphysics.Character
                 if (support != null)
                 {
                     supportEntity = support.Entity;
-
                 }
                 else
                 {
                     supportEntity = null;
-
                 }
-
             }
             else
             {
@@ -164,33 +163,36 @@ namespace MinorEngine.BEPUphysics.Character
             //Let the character escape penetration in a controlled manner. This mirrors the regular penetration recovery speed.
             //Since the vertical motion constraint works in the opposite direction of the contact penetration constraint,
             //this actually eliminates the 'bounce' that can occur with non-character objects in deep penetration.
-            permittedVelocity = Math.Min(Math.Max(supportData.Depth * CollisionResponseSettings.PenetrationRecoveryStiffness / dt, 0), CollisionResponseSettings.MaximumPenetrationRecoverySpeed);
+            permittedVelocity =
+                Math.Min(Math.Max(supportData.Depth * CollisionResponseSettings.PenetrationRecoveryStiffness / dt, 0),
+                    CollisionResponseSettings.MaximumPenetrationRecoverySpeed);
 
             //Compute the jacobians and effective mass matrix.  This constraint works along a single degree of freedom, so the mass matrix boils down to a scalar.
 
             linearJacobianA = supportData.Normal;
             Vector3.Negate(ref linearJacobianA, out linearJacobianB);
-            float inverseEffectiveMass = characterBody.InverseMass;
+            var inverseEffectiveMass = characterBody.InverseMass;
             if (supportEntity != null)
             {
-                Vector3 offsetB = supportData.Position - supportEntity.Position;
+                var offsetB = supportData.Position - supportEntity.Position;
                 Vector3.Cross(ref offsetB, ref linearJacobianB, out angularJacobianB);
                 if (supportEntity.IsDynamic)
                 {
                     //Only dynamic entities can actually contribute anything to the effective mass.
                     //Kinematic entities have infinite mass and inertia, so this would all zero out.
-                    Matrix3x3 inertiaInverse = supportEntity.InertiaTensorInverse;
+                    var inertiaInverse = supportEntity.InertiaTensorInverse;
                     Vector3 angularComponentB;
                     Matrix3x3.Transform(ref angularJacobianB, ref inertiaInverse, out angularComponentB);
                     float effectiveMassContribution;
                     Vector3.Dot(ref angularComponentB, ref angularJacobianB, out effectiveMassContribution);
 
-                    inverseEffectiveMass += supportForceFactor * (effectiveMassContribution + supportEntity.InverseMass);
+                    inverseEffectiveMass +=
+                        supportForceFactor * (effectiveMassContribution + supportEntity.InverseMass);
                 }
             }
-            effectiveMass = 1f / (inverseEffectiveMass);
-            //So much nicer and shorter than the horizontal constraint!
 
+            EffectiveMass = 1f / inverseEffectiveMass;
+            //So much nicer and shorter than the horizontal constraint!
         }
 
         /// <summary>
@@ -200,8 +202,8 @@ namespace MinorEngine.BEPUphysics.Character
         {
             //Warm start the constraint using the previous impulses and the new jacobians!
 #if !WINDOWS
-            Vector3 impulse = new Vector3();
-            Vector3 torque= new Vector3();
+            var impulse = new Vector3();
+            var torque = new Vector3();
 #else
             Vector3 impulse;
             Vector3 torque;
@@ -230,21 +232,21 @@ namespace MinorEngine.BEPUphysics.Character
             //y is the perpendicular direction.
 
             //Note that positive velocity is penetrating velocity.
-            float relativeVelocity = RelativeVelocity + permittedVelocity;
+            var relativeVelocity = RelativeVelocity + permittedVelocity;
 
 
             //Create the full velocity change, and convert it to an impulse in constraint space.
-            float lambda = -relativeVelocity * effectiveMass;
+            var lambda = -relativeVelocity * EffectiveMass;
 
             //Add and clamp the impulse.
-            float previousAccumulatedImpulse = accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, 0, maximumForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
             //Use the jacobians to put the impulse into world space.
 
 #if !WINDOWS
-            Vector3 impulse = new Vector3();
-            Vector3 torque= new Vector3();
+            var impulse = new Vector3();
+            var torque = new Vector3();
 #else
             Vector3 impulse;
             Vector3 torque;
@@ -262,9 +264,8 @@ namespace MinorEngine.BEPUphysics.Character
                 supportEntity.ApplyLinearImpulse(ref impulse);
                 supportEntity.ApplyAngularImpulse(ref torque);
             }
+
             return Math.Abs(lambda);
-
-
         }
 
         /// <summary>
@@ -285,12 +286,10 @@ namespace MinorEngine.BEPUphysics.Character
                     relativeVelocity += supportVelocity;
                     Vector3.Dot(ref angularJacobianB, ref supportEntity.angularVelocity, out supportVelocity);
                     relativeVelocity += supportVelocity;
-
                 }
+
                 return relativeVelocity;
             }
         }
-
-
     }
 }

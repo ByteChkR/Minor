@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading;
 
-
 namespace MinorEngine.BEPUutilities
 {
     /// <summary>
@@ -20,13 +19,14 @@ namespace MinorEngine.BEPUutilities
         /// </summary>
         public void Enter()
         {
-            int count = 0;
+            var count = 0;
             while (Interlocked.CompareExchange(ref owner, 0, -1) != -1)
             {
                 //Lock is owned by someone else.
                 count++;
                 WaitBriefly(ref count);
             }
+
             //It's my lock now!
         }
 

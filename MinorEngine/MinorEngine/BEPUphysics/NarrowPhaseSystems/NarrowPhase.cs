@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseSystems;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.Constraints;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.Threading;
 
@@ -63,34 +63,31 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(TypePair other)
         {
-            return (other.A == A && other.B == B) || (other.B == A && other.A == B);
+            return other.A == A && other.B == B || other.B == A && other.A == B;
         }
 
         #endregion
     }
+
     ///<summary>
     /// Manages and constructs pair handlers from broad phase overlaps.
     ///</summary>
     public class NarrowPhase : MultithreadedProcessingStage
     {
-        RawList<BroadPhaseOverlap> broadPhaseOverlaps;
         ///<summary>
         /// Gets or sets the list of broad phase overlaps used by the narrow phase to manage pairs.
         ///</summary>
-        public RawList<BroadPhaseOverlap> BroadPhaseOverlaps { get { return broadPhaseOverlaps; } set { broadPhaseOverlaps = value; } }
+        public RawList<BroadPhaseOverlap> BroadPhaseOverlaps { get; set; }
 
-        Dictionary<BroadPhaseOverlap, NarrowPhasePair> overlapMapping = new Dictionary<BroadPhaseOverlap, NarrowPhasePair>();
-        RawList<NarrowPhasePair> narrowPhasePairs = new RawList<NarrowPhasePair>();
+        private Dictionary<BroadPhaseOverlap, NarrowPhasePair> overlapMapping =
+            new Dictionary<BroadPhaseOverlap, NarrowPhasePair>();
+
+        private RawList<NarrowPhasePair> narrowPhasePairs = new RawList<NarrowPhasePair>();
+
         ///<summary>
         /// Gets the list of Pairs managed by the narrow phase.
         ///</summary>
-        public ReadOnlyList<NarrowPhasePair> Pairs
-        {
-            get
-            {
-                return new ReadOnlyList<NarrowPhasePair>(narrowPhasePairs);
-            }
-        }
+        public ReadOnlyList<NarrowPhasePair> Pairs => new ReadOnlyList<NarrowPhasePair>(narrowPhasePairs);
 
         ///<summary>
         /// Gets or sets the time step settings used by the narrow phase.
@@ -102,7 +99,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         /// </summary>
         public Solver Solver { get; set; }
 
-        ConcurrentDeque<NarrowPhasePair> newNarrowPhasePairs = new ConcurrentDeque<NarrowPhasePair>();
+        private ConcurrentDeque<NarrowPhasePair> newNarrowPhasePairs = new ConcurrentDeque<NarrowPhasePair>();
 
 
         ///<summary>
@@ -124,29 +121,31 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         public NarrowPhase(TimeStepSettings timeStepSettings, RawList<BroadPhaseOverlap> overlaps)
             : this(timeStepSettings)
         {
-            broadPhaseOverlaps = overlaps;
+            BroadPhaseOverlaps = overlaps;
         }
+
         ///<summary>
         /// Constructs a new narrow phase.
         ///</summary>
         ///<param name="timeStepSettings">Time step settings used by the narrow phase.</param>
         /// <param name="overlaps">Overlaps list used by the narrow phase to create pairs.</param>
         /// <param name="parallelLooper">Parallel loop provider used by the narrow phase.</param>
-        public NarrowPhase(TimeStepSettings timeStepSettings, RawList<BroadPhaseOverlap> overlaps, IParallelLooper parallelLooper)
+        public NarrowPhase(TimeStepSettings timeStepSettings, RawList<BroadPhaseOverlap> overlaps,
+            IParallelLooper parallelLooper)
             : this(timeStepSettings, overlaps)
         {
             ParallelLooper = parallelLooper;
             AllowMultithreading = true;
         }
 
-        Action<int> updateBroadPhaseOverlapDelegate;
-        void UpdateBroadPhaseOverlap(int i)
+        private Action<int> updateBroadPhaseOverlapDelegate;
+
+        private void UpdateBroadPhaseOverlap(int i)
         {
-            BroadPhaseOverlap overlap = broadPhaseOverlaps.Elements[i];
+            var overlap = BroadPhaseOverlaps.Elements[i];
 
             if (overlap.collisionRule < CollisionRule.NoNarrowPhasePair)
             {
-
                 NarrowPhasePair pair;
                 //see if the overlap is already present in the narrow phase.
                 if (!overlapMapping.TryGetValue(overlap, out pair))
@@ -161,8 +160,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
                         //It's just bunched together for maintainability despite the slight performance hit.
                         newNarrowPhasePairs.Enqueue(pair);
                     }
-
                 }
+
                 if (pair != null)
                 {
                     //Update the collision rule.
@@ -171,10 +170,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
                     {
                         pair.UpdateCollision(TimeStepSettings.TimeStepDuration);
                     }
+
                     pair.NeedsUpdate = false;
                 }
-
-
             }
         }
 
@@ -220,12 +218,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
 
         protected override void UpdateMultithreaded()
         {
-
 #if PROFILE
             startPairs = Stopwatch.GetTimestamp();
 #endif
 
-            ParallelLooper.ForLoop(0, broadPhaseOverlaps.Count, updateBroadPhaseOverlapDelegate);
+            ParallelLooper.ForLoop(0, BroadPhaseOverlaps.Count, updateBroadPhaseOverlapDelegate);
 
 #if PROFILE
             endPairs = Stopwatch.GetTimestamp();
@@ -245,9 +242,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
 #if PROFILE
             endFlushNew = Stopwatch.GetTimestamp();
 #endif
-
-
-
         }
 
 
@@ -257,8 +251,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
             startPairs = Stopwatch.GetTimestamp();
 #endif
 
-            int count = broadPhaseOverlaps.Count;
-            for (int i = 0; i < count; i++)
+            var count = BroadPhaseOverlaps.Count;
+            for (var i = 0; i < count; i++)
             {
                 UpdateBroadPhaseOverlap(i);
             }
@@ -282,17 +276,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
 #if PROFILE
             endFlushNew = Stopwatch.GetTimestamp();
 #endif
-
-
-
         }
 
 
-        void RemoveStaleOverlaps()
+        private void RemoveStaleOverlaps()
         {
-
             //Remove stale objects.
-            for (int i = narrowPhasePairs.Count - 1; i >= 0; i--)
+            for (var i = narrowPhasePairs.Count - 1; i >= 0; i--)
             {
                 var pair = narrowPhasePairs.Elements[i];
 
@@ -313,33 +303,31 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
 
 
                 if (pair.NeedsUpdate && //If we didn't receive an update in the previous narrow phase run and...
-                    (pair.broadPhaseOverlap.entryA.IsActive || pair.broadPhaseOverlap.entryB.IsActive || //one of us is active or..
-                    pair.broadPhaseOverlap.entryA.BroadPhase == null || pair.broadPhaseOverlap.entryB.BroadPhase == null)) //one of us doesn't exist anymore...
+                    (pair.broadPhaseOverlap.entryA.IsActive ||
+                     pair.broadPhaseOverlap.entryB.IsActive || //one of us is active or..
+                     pair.broadPhaseOverlap.entryA.BroadPhase == null ||
+                     pair.broadPhaseOverlap.entryB.BroadPhase == null)) //one of us doesn't exist anymore...
                 {
                     //Get rid of the pair!
                     if (RemovingPair != null)
+                    {
                         RemovingPair(pair);
+                    }
+
                     narrowPhasePairs.FastRemoveAt(i);
                     overlapMapping.Remove(pair.BroadPhaseOverlap);
                     //The clean up will issue an order to get rid of the solver updateable if it is active.
                     pair.CleanUp();
                     pair.Factory.GiveBack(pair);
-
-
                 }
                 else
                 {
                     pair.NeedsUpdate = true;
-
                 }
-
             }
-
-
-
         }
 
-        void AddNewNarrowPhaseObjects()
+        private void AddNewNarrowPhaseObjects()
         {
             //Add new narrow phase objects.  This will typically be a very tiny phase.
             NarrowPhasePair narrowPhaseObject;
@@ -374,13 +362,16 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
             overlapMapping.Add(pair.BroadPhaseOverlap, pair);
             pair.OnAddedToNarrowPhase();
             if (CreatingPair != null)
+            {
                 CreatingPair(pair);
+            }
         }
 
         ///<summary>
         /// Fires when the narrow phase creates a pair.
         ///</summary>
         public event Action<NarrowPhasePair> CreatingPair;
+
         ///<summary>
         /// Fires when the narrow phase removes a pair.
         ///</summary>
@@ -404,11 +395,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         {
             Solver.Remove(removedItem);
         }
-
-
-
-
-
-
     }
 }

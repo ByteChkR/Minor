@@ -2,10 +2,10 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
-using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUutilities.ResourceManagement;
 using MinorEngine.BEPUphysics.Settings;
+using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
+using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 {
@@ -14,44 +14,24 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class GeneralConvexContactManifold : ContactManifold
     {
-        RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
-        GeneralConvexPairTester pairTester;
+        private RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
 
         ///<summary>
         /// Gets the pair tester used by the manifold to do testing.
         ///</summary>
-        public GeneralConvexPairTester PairTester
-        {
-            get
-            {
-                return pairTester;
-            }
-
-        }
+        public GeneralConvexPairTester PairTester { get; }
 
         protected ConvexCollidable collidableA, collidableB;
 
         ///<summary>
         /// Gets the first collidable in the pair.
         ///</summary>
-        public ConvexCollidable CollidableA
-        {
-            get
-            {
-                return collidableA;
-            }
-        }
+        public ConvexCollidable CollidableA => collidableA;
 
         /// <summary>
         /// Gets the second collidable in the pair.
         /// </summary>
-        public ConvexCollidable CollidableB
-        {
-            get
-            {
-                return collidableB;
-            }
-        }
+        public ConvexCollidable CollidableB => collidableB;
 
         ///<summary>
         /// Constructs a new convex-convex manifold.
@@ -61,7 +41,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             contacts = new RawList<Contact>(4);
             unusedContacts = new UnsafeResourcePool<Contact>(4);
             contactIndicesToRemove = new RawList<int>(4);
-            pairTester = new GeneralConvexPairTester();
+            PairTester = new GeneralConvexPairTester();
         }
 
         ///<summary>
@@ -71,16 +51,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         public override void Update(float dt)
         {
             //First, refresh all existing contacts.  This is an incremental manifold.
-            ContactRefresher.ContactRefresh(contacts, supplementData, ref collidableA.worldTransform, ref collidableB.worldTransform, contactIndicesToRemove);
+            ContactRefresher.ContactRefresh(contacts, supplementData, ref collidableA.worldTransform,
+                ref collidableB.worldTransform, contactIndicesToRemove);
             RemoveQueuedContacts();
 
 
             //Now, generate a contact between the two shapes.
             ContactData contact;
-            if (pairTester.GenerateContactCandidate(out contact))
+            if (PairTester.GenerateContactCandidate(out contact))
             {
                 //Eliminate any old contacts which have normals which would fight with this new contact.
-                for (int i = 0; i < contacts.Count; ++i)
+                for (var i = 0; i < contacts.Count; ++i)
                 {
                     float normalDot;
                     Vector3.Dot(ref contacts.Elements[i].Normal, ref contact.Normal, out normalDot);
@@ -104,7 +85,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                         ContactReducer.ReduceContacts(contacts, ref contact, contactIndicesToRemove, out addCandidate);
                         RemoveQueuedContacts();
                         if (addCandidate)
+                        {
                             Add(ref contact);
+                        }
                     }
                     else
                     {
@@ -116,13 +99,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             else
             {
                 //No collision, clean out the manifold.
-                for (int i = contacts.Count - 1; i >= 0; i--)
+                for (var i = contacts.Count - 1; i >= 0; i--)
                 {
                     Remove(i);
                 }
             }
-
-
         }
 
         protected override void Add(ref ContactData contactCandidate)
@@ -130,11 +111,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             ContactSupplementData supplement;
             supplement.BasePenetrationDepth = contactCandidate.PenetrationDepth;
             //The closest point method computes the local space versions before transforming to world... consider cutting out the middle man
-            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableA.worldTransform, out supplement.LocalOffsetA);
-            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableB.worldTransform, out supplement.LocalOffsetB);
+            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableA.worldTransform,
+                out supplement.LocalOffsetA);
+            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableB.worldTransform,
+                out supplement.LocalOffsetB);
             supplementData.Add(ref supplement);
             base.Add(ref contactCandidate);
         }
+
         protected override void Remove(int contactIndex)
         {
             supplementData.RemoveAt(contactIndex);
@@ -145,10 +129,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         private bool IsContactUnique(ref ContactData contactCandidate)
         {
             contactCandidate.Validate();
-            for (int i = 0; i < contacts.Count; i++)
+            for (var i = 0; i < contacts.Count; i++)
             {
                 float distanceSquared;
-                Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);
+                Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position,
+                    out distanceSquared);
                 if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)
                 {
                     //Update the existing 'redundant' contact with the new information.
@@ -157,11 +142,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                     contacts.Elements[i].Position = contactCandidate.Position;
                     contacts.Elements[i].PenetrationDepth = contactCandidate.PenetrationDepth;
                     supplementData.Elements[i].BasePenetrationDepth = contactCandidate.PenetrationDepth;
-                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableA.worldTransform, out supplementData.Elements[i].LocalOffsetA);
-                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableB.worldTransform, out supplementData.Elements[i].LocalOffsetB);
+                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableA.worldTransform,
+                        out supplementData.Elements[i].LocalOffsetA);
+                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref collidableB.worldTransform,
+                        out supplementData.Elements[i].LocalOffsetB);
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -174,7 +162,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         {
             collidableA = newCollidableA as ConvexCollidable;
             collidableB = newCollidableB as ConvexCollidable;
-            pairTester.Initialize(newCollidableA, newCollidableB);
+            PairTester.Initialize(newCollidableA, newCollidableB);
 
 
             if (collidableA == null || collidableB == null)
@@ -191,9 +179,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             supplementData.Clear();
             collidableA = null;
             collidableB = null;
-            pairTester.CleanUp();
+            PairTester.CleanUp();
             base.CleanUp();
         }
-
     }
 }

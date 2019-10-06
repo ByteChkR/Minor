@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
 {
@@ -46,12 +45,19 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <param name="yAxis">Direction in world space along which the Y axis LinearAxisLimit and LinearAxisMotor work.
         /// This is usually chosen to be perpendicular to the planeNormal and the xAxis.</param>
         /// <param name="pointAnchor">Location of the anchor for the point to be attached to connectionB in world space.</param>
-        public PlaneSliderJoint(Entity connectionA, Entity connectionB, Vector3 planeAnchor, Vector3 planeNormal, Vector3 xAxis, Vector3 yAxis, Vector3 pointAnchor)
+        public PlaneSliderJoint(Entity connectionA, Entity connectionB, Vector3 planeAnchor, Vector3 planeNormal,
+            Vector3 xAxis, Vector3 yAxis, Vector3 pointAnchor)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             PointOnPlaneJoint = new PointOnPlaneJoint(connectionA, connectionB, planeAnchor, planeNormal, pointAnchor);
             LimitX = new LinearAxisLimit(connectionA, connectionB, planeAnchor, pointAnchor, xAxis, 0, 0);
             MotorX = new LinearAxisMotor(connectionA, connectionB, planeAnchor, pointAnchor, xAxis);
@@ -71,26 +77,26 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the distance limit for the slider along plane's X axis.
         /// </summary>
-        public LinearAxisLimit LimitX { get; private set; }
+        public LinearAxisLimit LimitX { get; }
 
         /// <summary>
         /// Gets the distance limit for the slider along plane's Y axis.
         /// </summary>
-        public LinearAxisLimit LimitY { get; private set; }
+        public LinearAxisLimit LimitY { get; }
 
         /// <summary>
         /// Gets the slider motor for the plane's X axis.
         /// </summary>
-        public LinearAxisMotor MotorX { get; private set; }
+        public LinearAxisMotor MotorX { get; }
 
         /// <summary>
         /// Gets the slider motor for the plane's Y axis.
         /// </summary>
-        public LinearAxisMotor MotorY { get; private set; }
+        public LinearAxisMotor MotorY { get; }
 
         /// <summary>
         /// Gets the plane joint that restricts one linear degree of freedom.
         /// </summary>
-        public PointOnPlaneJoint PointOnPlaneJoint { get; private set; }
+        public PointOnPlaneJoint PointOnPlaneJoint { get; }
     }
 }

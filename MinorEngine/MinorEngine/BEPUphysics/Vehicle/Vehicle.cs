@@ -1,15 +1,16 @@
 using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUphysics.UpdateableSystems;
+using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.Vehicle
 {
     /// <summary>
     /// Simulates wheeled vehicles using a variety of constraints and shape casts.
     /// </summary>
-    public class Vehicle : CombinedUpdateable, IDuringForcesUpdateable, IBeforeNarrowPhaseUpdateable, IEndOfTimeStepUpdateable, IEndOfFrameUpdateable
+    public class Vehicle : CombinedUpdateable, IDuringForcesUpdateable, IBeforeNarrowPhaseUpdateable,
+        IEndOfTimeStepUpdateable, IEndOfFrameUpdateable
     {
         //TODO: The vehicle uses wheel 'fake constraints' that were made prior to the changes to the constraint system that allow for customizable solver settings.
         //It would be convenient to use a SolverGroup to handle the wheel constraints, since the functionality is nearly the same.
@@ -42,11 +43,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
         {
             IsUpdatedSequentially = false;
             Body = shape;
-            Body.activityInformation.IsAlwaysActive = true;     
+            Body.activityInformation.IsAlwaysActive = true;
             //The body is always active, so don't bother with stabilization either.
             //Stabilization can introduce artifacts as well.
             body.activityInformation.AllowStabilization = false;
-            foreach (Wheel wheel in wheelList)
+            foreach (var wheel in wheelList)
             {
                 AddWheel(wheel);
             }
@@ -57,7 +58,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public Entity Body
         {
-            get { return body; }
+            get => body;
             set
             {
                 body = value;
@@ -73,12 +74,15 @@ namespace MinorEngine.BEPUphysics.Vehicle
         {
             get
             {
-                int toReturn = 0;
-                foreach (Wheel wheel in Wheels)
+                var toReturn = 0;
+                foreach (var wheel in Wheels)
                 {
                     if (wheel.HasSupport)
+                    {
                         toReturn++;
+                    }
                 }
+
                 return toReturn;
             }
         }
@@ -86,10 +90,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <summary>
         /// Gets the list of wheels supporting the vehicle.
         /// </summary>
-        public ReadOnlyList<Wheel> Wheels
-        {
-            get { return new ReadOnlyList<Wheel>(wheels); }
-        }
+        public ReadOnlyList<Wheel> Wheels => new ReadOnlyList<Wheel>(wheels);
 
 
         /// <summary>
@@ -100,7 +101,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         public override void OnAdditionToSpace(Space newSpace)
         {
             newSpace.Add(body);
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 wheel.OnAdditionToSpace(newSpace);
             }
@@ -112,10 +113,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public override void OnRemovalFromSpace(Space oldSpace)
         {
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 wheel.OnRemovalFromSpace(oldSpace);
             }
+
             oldSpace.Remove(Body);
         }
 
@@ -126,7 +128,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         void IEndOfFrameUpdateable.Update(float dt)
         {
             //Graphics should be updated at the end of each frame.
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 wheel.UpdateAtEndOfFrame(dt);
             }
@@ -139,7 +141,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         void IEndOfTimeStepUpdateable.Update(float dt)
         {
             //Graphics should be updated at the end of each frame.
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 wheel.UpdateAtEndOfUpdate(dt);
             }
@@ -148,16 +150,17 @@ namespace MinorEngine.BEPUphysics.Vehicle
         void IBeforeNarrowPhaseUpdateable.Update(float dt)
         {
             //After broadphase, test for supports.
-            foreach (Wheel wheel in wheels)
+            foreach (var wheel in wheels)
             {
                 wheel.FindSupport();
             }
+
             OnInvolvedEntitiesChanged();
         }
 
         void IDuringForcesUpdateable.Update(float dt)
         {
-            foreach (Wheel wheel in wheels)
+            foreach (var wheel in wheels)
             {
                 wheel.UpdateDuringForces(dt);
             }
@@ -175,7 +178,10 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 wheel.OnAddedToVehicle(this);
             }
             else
-                throw new InvalidOperationException("Can't add a wheel to a vehicle if it already belongs to a vehicle.");
+            {
+                throw new InvalidOperationException(
+                    "Can't add a wheel to a vehicle if it already belongs to a vehicle.");
+            }
         }
 
         /// <summary>
@@ -190,7 +196,9 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 wheels.Remove(wheel);
             }
             else
+            {
                 throw new InvalidOperationException("Can't remove a wheel from a vehicle that does not own it.");
+            }
         }
 
 
@@ -200,17 +208,27 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public override float SolveIteration()
         {
-            int numActive = 0;
-            foreach (Wheel wheel in Wheels)
+            var numActive = 0;
+            foreach (var wheel in Wheels)
             {
                 if (wheel.isActiveInSolver)
+                {
                     if (!wheel.ApplyImpulse())
+                    {
                         wheel.isActiveInSolver = false;
+                    }
                     else
+                    {
                         numActive++;
+                    }
+                }
             }
+
             if (numActive == 0)
+            {
                 isActiveInSolver = false;
+            }
+
             return solverSettings.minimumImpulse + 1; //We take care of ourselves.
         }
 
@@ -222,10 +240,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
             outputInvolvedEntities.Add(Body);
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 if (wheel.supportingEntity != null && !outputInvolvedEntities.Contains(wheel.supportingEntity))
+                {
                     outputInvolvedEntities.Add(wheel.supportingEntity);
+                }
             }
         }
 
@@ -243,10 +263,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
             //Maybe a SolverGroup instead of CombinedUpdateable, though.
 
             //Update the wheel 'constraints.'
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 if (wheel.isActiveInSolver)
+                {
                     wheel.PreStep(dt);
+                }
             }
         }
 
@@ -257,10 +279,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public override void ExclusiveUpdate()
         {
-            foreach (Wheel wheel in Wheels)
+            foreach (var wheel in Wheels)
             {
                 if (wheel.isActiveInSolver)
+                {
                     wheel.ExclusiveUpdate();
+                }
             }
         }
 
@@ -274,7 +298,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 isActiveInSolver = false;
                 if (body.activityInformation.IsActive)
                 {
-                    foreach (Wheel wheel in Wheels)
+                    foreach (var wheel in Wheels)
                     {
                         wheel.UpdateSolverActivity();
                         isActiveInSolver = isActiveInSolver || wheel.isActiveInSolver;
@@ -282,8 +306,9 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 }
             }
             else
+            {
                 isActiveInSolver = false;
+            }
         }
-
     }
 }

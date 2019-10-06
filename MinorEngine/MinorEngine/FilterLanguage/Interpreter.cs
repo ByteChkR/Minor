@@ -4,8 +4,8 @@ using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using MinorEngine.CLHelperLibrary;
 using Common;
+using MinorEngine.CLHelperLibrary;
 using MinorEngine.CLHelperLibrary.cltypes;
 using MinorEngine.debug;
 using MinorEngine.exceptions;
@@ -75,33 +75,34 @@ namespace MinorEngine.FilterLanguage
 
         #region Define Handler
 
-        void DefineScript(string[] arg)
+        private void DefineScript(string[] arg)
         {
             if (arg.Length < 2)
             {
                 Logger.Crash(new InvalidFLFunctionUseException(ScriptDefineKey, "Invalid Define statement"), true);
                 return;
             }
-            string varname = arg[0].Trim();
+
+            var varname = arg[0].Trim();
             if (_definedBuffers.ContainsKey(varname))
             {
                 Logger.Log("Overwriting " + varname, DebugChannel.Warning);
                 _definedBuffers.Remove(varname);
             }
 
-            string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
 
-            string filename = args[0].Trim();
+            var filename = args[0].Trim();
 
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
                 Logger.Log("Loading SubScript...", DebugChannel.Log);
 
-                MemoryBuffer buf =
+                var buf =
                     CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
-                Interpreter interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
+                var interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
                     _depth, _channelCount, _kernelDb, true);
 
                 do
@@ -114,21 +115,23 @@ namespace MinorEngine.FilterLanguage
             }
             else
             {
-                Logger.Crash(new InvalidFLFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."), true);
-                Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error,10);
+                Logger.Crash(new InvalidFLFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."),
+                    true);
+                Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
 
                 _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
             }
         }
 
-        void DefineTexture(string[] arg)
+        private void DefineTexture(string[] arg)
         {
             if (arg.Length < 2)
             {
                 Logger.Crash(new InvalidFLFunctionUseException(ScriptDefineKey, "Invalid Define statement"), true);
                 return;
             }
-            string varname = arg[0].Trim();
+
+            var varname = arg[0].Trim();
 
 
             if (_definedBuffers.ContainsKey(varname))
@@ -137,33 +140,38 @@ namespace MinorEngine.FilterLanguage
                 _definedBuffers.Remove(varname);
             }
 
-            MemoryFlag flags = MemoryFlag.ReadWrite;
-            string[] flagTest = varname.Split(' ');
+            var flags = MemoryFlag.ReadWrite;
+            var flagTest = varname.Split(' ');
             if (flagTest.Length > 1)
             {
                 varname = flagTest[1];
                 if (flagTest[0] == "r")
+                {
                     flags = MemoryFlag.ReadOnly;
+                }
 
-                else if (flagTest[0] == "w") flags = MemoryFlag.WriteOnly;
+                else if (flagTest[0] == "w")
+                {
+                    flags = MemoryFlag.WriteOnly;
+                }
             }
 
-            string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            var args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
 
-            string filename = args[0].Trim();
+            var filename = args[0].Trim();
 
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
+                var bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
                 _definedBuffers.Add(varname,
                     CL.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "random")
             {
-                MemoryBuffer buf = CL.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                var buf = CL.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
                 CL.WriteRandom(buf, randombytesource, _activeChannels);
                 _definedBuffers.Add(varname, buf);
             }
@@ -179,48 +187,56 @@ namespace MinorEngine.FilterLanguage
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
-                if (!int.TryParse(args[2], out int n))
+
+                if (!int.TryParse(args[2], out var n))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
-                if (!int.TryParse(args[3], out int width))
+
+                if (!int.TryParse(args[3], out var width))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
-                if (!int.TryParse(args[4], out int height))
+
+                if (!int.TryParse(args[4], out var height))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
-                if (!bool.TryParse(args[5], out bool periodicInput))
+
+                if (!bool.TryParse(args[5], out var periodicInput))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
-                if (!bool.TryParse(args[6], out bool periodicOutput))
+
+                if (!bool.TryParse(args[6], out var periodicOutput))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                 }
-                if (!int.TryParse(args[7], out int symetry))
-                {
-                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
-                }
-                if (!int.TryParse(args[8], out int ground))
+
+                if (!int.TryParse(args[7], out var symetry))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
-                if (!int.TryParse(args[9], out int limit))
+
+                if (!int.TryParse(args[8], out var ground))
+                {
+                    Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
+                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
+                    _definedBuffers.Add(varname, CL.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                }
+
+                if (!int.TryParse(args[9], out var limit))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -232,7 +248,7 @@ namespace MinorEngine.FilterLanguage
 
                 wfc.Run(limit);
 
-                Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
+                var bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                 _definedBuffers.Add(varname,
                     CL.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
@@ -298,13 +314,19 @@ namespace MinorEngine.FilterLanguage
             public override string ToString()
             {
                 _sb.Clear();
-                for (int i = 0; i < ActiveChannels.Length; i++) _sb.Append(ActiveChannels[i]);
+                for (var i = 0; i < ActiveChannels.Length; i++)
+                {
+                    _sb.Append(ActiveChannels[i]);
+                }
 
-                string channels = _sb.ToString();
+                var channels = _sb.ToString();
                 _sb.Clear();
                 foreach (var definedBuffer in DefinedBuffers)
+                {
                     _sb.Append($"\n  {definedBuffer.Key}({definedBuffer.Value.Size})");
-                string definedBuffers = _sb.ToString();
+                }
+
+                var definedBuffers = _sb.ToString();
 
                 return
                     $"Debug Step Info:\n SourceLine:{SourceLine}\n HasJumped:{HasJumped}\n Triggered Breakpoint:{TriggeredDebug}\n Terminated:{Terminated}\n Active Channels:{channels}\n Defined Buffers:{definedBuffers}";
@@ -416,12 +438,13 @@ namespace MinorEngine.FilterLanguage
         {
             get
             {
-                int idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
+                var idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
                 if (idx == -1 || _source.Count - 1 == idx)
                 {
                     Logger.Crash(new InvalidFLEntryPointException("There needs to be a main function."), true);
                     return 0;
                 }
+
                 return idx + 1;
             }
         }
@@ -446,21 +469,25 @@ namespace MinorEngine.FilterLanguage
                 return;
             }
 
-            byte[] temp = new byte[_channelCount];
+            var temp = new byte[_channelCount];
             while (_currentArgStack.Count != 1)
             {
-                object val = _currentArgStack.Pop();
+                var val = _currentArgStack.Pop();
                 if (!(val is decimal))
                 {
                     Logger.Crash(new InvalidFLFunctionUseException("setactive", "Invalid channel Arguments"), true);
                     val = 0;
                 }
 
-                byte channel = (byte)Convert.ChangeType(val, typeof(byte));
+                var channel = (byte) Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
+                {
                     Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
+                }
                 else
+                {
                     temp[channel] = 1;
+                }
             }
 
             if (_currentArgStack.Peek() == null ||
@@ -473,21 +500,23 @@ namespace MinorEngine.FilterLanguage
 
             if (_currentArgStack.Peek() is decimal)
             {
-                byte channel = (byte)Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
+                var channel = (byte) Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
                 temp[channel] = 1;
             }
             else
             {
-                _currentBuffer = (MemoryBuffer)_currentArgStack.Pop();
+                _currentBuffer = (MemoryBuffer) _currentArgStack.Pop();
             }
 
-            bool needCopy = false;
-            for (int i = 0; i < _channelCount; i++)
+            var needCopy = false;
+            for (var i = 0; i < _channelCount; i++)
+            {
                 if (_activeChannels[i] != temp[i])
                 {
                     needCopy = true;
                     break;
                 }
+            }
 
             if (needCopy)
             {
@@ -503,7 +532,7 @@ namespace MinorEngine.FilterLanguage
         /// <returns>a random byte</returns>
         private byte randombytesource()
         {
-            return (byte)rnd.Next();
+            return (byte) rnd.Next();
         }
 
         /// <summary>
@@ -511,18 +540,22 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         private void cmd_writerandom()
         {
-            if (_currentArgStack.Count == 0) CL.WriteRandom(_currentBuffer, randombytesource, _activeChannels);
+            if (_currentArgStack.Count == 0)
+            {
+                CL.WriteRandom(_currentBuffer, randombytesource, _activeChannels);
+            }
+
             while (_currentArgStack.Count != 0)
             {
-                object obj = _currentArgStack.Pop();
+                var obj = _currentArgStack.Pop();
                 if (!(obj is MemoryBuffer))
                 {
                     Logger.Crash(
                         new InvalidFLArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"),
                         true);
                     continue;
-                    
                 }
+
                 CL.WriteRandom(obj as MemoryBuffer, randombytesource, _activeChannels);
             }
         }
@@ -540,7 +573,11 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         private void cmd_break()
         {
-            if (_ignoreDebug) return;
+            if (_ignoreDebug)
+            {
+                return;
+            }
+
             _stepResult.TriggeredDebug = true;
             if (_currentArgStack.Count == 0)
             {
@@ -548,7 +585,7 @@ namespace MinorEngine.FilterLanguage
             }
             else if (_currentArgStack.Count == 1)
             {
-                object obj = _currentArgStack.Pop();
+                var obj = _currentArgStack.Pop();
                 if (!(obj is MemoryBuffer))
                 {
                     Logger.Crash(
@@ -556,6 +593,7 @@ namespace MinorEngine.FilterLanguage
                         true);
                     return;
                 }
+
                 _stepResult.DebugBuffer = obj as MemoryBuffer;
             }
             else
@@ -682,12 +720,18 @@ namespace MinorEngine.FilterLanguage
             _channelCount = channelCount;
             _kernelDb = kernelDB;
             _activeChannels = new byte[_channelCount];
-            for (int i = 0; i < _channelCount; i++) _activeChannels[i] = 1;
+            for (var i = 0; i < _channelCount; i++)
+            {
+                _activeChannels[i] = 1;
+            }
 
             _activeChannelBuffer = CL.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
 
             _currentArgStack = new Stack<object>();
-            foreach (KeyValuePair<string, MemoryBuffer> memoryBuffer in _definedBuffers) memoryBuffer.Value.Dispose();
+            foreach (var memoryBuffer in _definedBuffers)
+            {
+                memoryBuffer.Value.Dispose();
+            }
 
             _jumpStack.Clear();
             _definedBuffers.Clear();
@@ -720,7 +764,7 @@ namespace MinorEngine.FilterLanguage
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CL.ReadBuffer<T>(_currentBuffer, (int)_currentBuffer.Size);
+            return CL.ReadBuffer<T>(_currentBuffer, (int) _currentBuffer.Size);
         }
 
         /// <summary>
@@ -740,7 +784,7 @@ namespace MinorEngine.FilterLanguage
             }
             else
             {
-                string code = _source[_currentIndex].Split(CommentPrefix)[0];
+                var code = _source[_currentIndex].Split(CommentPrefix)[0];
                 if (code == string.Empty)
                 {
                     _currentIndex++; //Next Line since this one is emtpy
@@ -772,9 +816,13 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         private void ParseJumpLocations()
         {
-            for (int i = _source.Count - 1; i >= 0; i--)
+            for (var i = _source.Count - 1; i >= 0; i--)
+            {
                 if (_source[i].EndsWith(FunctionNamePostfix) && _source.Count - 1 != i)
+                {
                     _jumpLocations.Add(_source[i].Remove(_source[i].Length - 1, 1), i + 1);
+                }
+            }
         }
 
 
@@ -783,16 +831,19 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         /// <param name="code">the line to analyze</param>
         /// <returns>True if the program counter should be increased</returns>
-        bool Analyze(string code)
+        private bool Analyze(string code)
         {
-            string[] words = code.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
+            var words = code.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-            string function = words.Length == 0 ? "" : words[0];
+            var function = words.Length == 0 ? "" : words[0];
             CLKernel kernel = null;
-            if (function == "") return false;
+            if (function == "")
+            {
+                return false;
+            }
 
-            bool isBakedFunction = _flFunctions.ContainsKey(function);
-            bool isDirectExecute = function == "jmp";
+            var isBakedFunction = _flFunctions.ContainsKey(function);
+            var isDirectExecute = function == "jmp";
 
 
             if (!isBakedFunction && !_kernelDb.TryGetCLKernel(function, out kernel))
@@ -802,15 +853,20 @@ namespace MinorEngine.FilterLanguage
             }
 
             if (_leaveStack) //This keeps the stack when returning from a "function"
+            {
                 _leaveStack = false;
+            }
             else
+            {
                 _currentArgStack = new Stack<object>();
+            }
 
-            bool ret = true;
+            var ret = true;
             for (;
                 _currentWord < words.Length;
                 _currentWord++) //loop through the words. start value can be != 0 when returning from a function specified as an argument to a kernel
-                if (AnalyzeWord(words[_currentWord], out object val))
+            {
+                if (AnalyzeWord(words[_currentWord], out var val))
                 {
                     JumpTo(_jumpLocations[words[_currentWord]], isDirectExecute);
                     ret = false; //We Jumped to another point in the code.
@@ -822,6 +878,7 @@ namespace MinorEngine.FilterLanguage
                 {
                     _currentArgStack.Push(val); //push the value to the stack
                 }
+            }
 
             if (_currentWord == words.Length && ret) //We finished parsing the line and we didnt jump.
             {
@@ -831,15 +888,16 @@ namespace MinorEngine.FilterLanguage
                 }
                 else if (kernel == null || words.Length - 1 != kernel.Parameter.Count - FLHeaderArgCount)
                 {
-                    Logger.Crash(new InvalidFLFunctionUseException(function, "Not the right amount of arguments."), true);
+                    Logger.Crash(new InvalidFLFunctionUseException(function, "Not the right amount of arguments."),
+                        true);
                     return true;
                 }
                 else
                 {
                     //Execute filter
-                    for (int i = kernel.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
+                    for (var i = kernel.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
                     {
-                        object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
+                        var obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
                         kernel.SetArg(i, obj);
                     }
 
@@ -859,7 +917,7 @@ namespace MinorEngine.FilterLanguage
         /// <param name="word">The input word</param>
         /// <param name="val">the parsed output</param>
         /// <returns>if the word could be parsed</returns>
-        bool AnalyzeWord(string word, out object val)
+        private bool AnalyzeWord(string word, out object val)
         {
             if (_jumpLocations.ContainsKey(word))
             {
@@ -871,9 +929,13 @@ namespace MinorEngine.FilterLanguage
 
             val = null;
             if (_definedBuffers.ContainsKey(word))
+            {
                 val = _definedBuffers[word];
-            else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out decimal numberDecimal))
+            }
+            else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out var numberDecimal))
+            {
                 val = numberDecimal;
+            }
 
 #if !TRAVIS_TEST
             if (val == null)
@@ -910,21 +972,23 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         private void ParseDefines(string key, DefineHandler handler)
         {
-            for (int i = _source.Count - 1; i >= 0; i--)
+            for (var i = _source.Count - 1; i >= 0; i--)
+            {
                 if (_source[i].StartsWith(key))
                 {
-                    string[] kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
+                    var kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
 
                     handler?.Invoke(kvp);
                     _source.RemoveAt(i);
                 }
+            }
         }
 
 
         /// <summary>
         /// Detects if the Interpreter has reached the end of the current function
         /// </summary>
-        void DetectEnd()
+        private void DetectEnd()
         {
             if (_currentIndex == _source.Count || _source[_currentIndex].EndsWith(FunctionNamePostfix))
             {
@@ -936,7 +1000,7 @@ namespace MinorEngine.FilterLanguage
                 }
                 else
                 {
-                    InterpreterState lastState = _jumpStack.Pop();
+                    var lastState = _jumpStack.Pop();
 
                     Logger.Log("Returning to location: " + _source[lastState.Line], DebugChannel.Log);
                     _currentIndex = lastState.Line;
@@ -962,13 +1026,16 @@ namespace MinorEngine.FilterLanguage
         /// </summary>
         /// <param name="index">the index of the line to jump to</param>
         /// <param name="keepBuffer">a flag to optionally keep the current buffer</param>
-        void JumpTo(int index, bool keepBuffer = false)
+        private void JumpTo(int index, bool keepBuffer = false)
         {
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
             _stepResult.HasJumped = true;
-            int size = (int)_currentBuffer.Size;
+            var size = (int) _currentBuffer.Size;
             if (!keepBuffer)
+            {
                 _currentBuffer = CL.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
+            }
+
             _currentIndex = index;
             _currentWord = 1;
         }
@@ -977,24 +1044,31 @@ namespace MinorEngine.FilterLanguage
         /// Loads the source from file
         /// </summary>
         /// <param name="file"></param>
-        void LoadSource(string file)
+        private void LoadSource(string file)
         {
             Logger.Log("Loading Source..", DebugChannel.Log);
 
-            Dictionary<string, bool> defs = new Dictionary<string, bool>();
+            var defs = new Dictionary<string, bool>();
 
-            for (int i = 0; i < _channelCount; i++) defs.Add("channel" + i, true);
+            for (var i = 0; i < _channelCount; i++)
+            {
+                defs.Add("channel" + i, true);
+            }
 
-            List<string> lines = TextProcessorAPI.PreprocessLines(file, defs).ToList();
+            var lines = TextProcessorAPI.PreprocessLines(file, defs).ToList();
 
 
             for (var i = lines.Count - 1; i >= 0; i--)
             {
                 var line = lines[i].Trim();
                 if (line.StartsWith(CommentPrefix))
+                {
                     lines.RemoveAt(i); //Remove otherwise emtpty lines after removing comments
+                }
                 else
+                {
                     lines[i] = line.Split(CommentPrefix)[0];
+                }
             }
 
             _source = lines;

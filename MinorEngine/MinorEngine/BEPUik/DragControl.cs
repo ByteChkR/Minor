@@ -10,21 +10,14 @@
         /// </summary>
         public override Bone TargetBone
         {
-            get { return LinearMotor.TargetBone; }
-            set
-            {
-                LinearMotor.TargetBone = value;
-            }
+            get => LinearMotor.TargetBone;
+            set => LinearMotor.TargetBone = value;
         }
 
         /// <summary>
         /// Gets or sets the linear motor used by the control.
         /// </summary>
-        public SingleBoneLinearMotor LinearMotor
-        {
-            get;
-            private set;
-        }
+        public SingleBoneLinearMotor LinearMotor { get; }
 
         public DragControl()
         {
@@ -64,11 +57,8 @@
 
         public override float MaximumForce
         {
-            get { return LinearMotor.MaximumForce; }
-            set
-            {
-                LinearMotor.MaximumForce = value;
-            }
+            get => LinearMotor.MaximumForce;
+            set => LinearMotor.MaximumForce = value;
         }
     }
 }

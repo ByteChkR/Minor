@@ -8,60 +8,60 @@ namespace MinorEngine.BEPUphysics.Materials
     public class Material
     {
         internal float kineticFriction = MaterialManager.DefaultKineticFriction;
+
         ///<summary>
         /// Gets or sets the friction coefficient used when the object is sliding quickly and
         /// no special material relationship is defined between the colliding objects.
         ///</summary>
         public float KineticFriction
         {
-            get
-            {
-                return kineticFriction;
-            }
+            get => kineticFriction;
             set
             {
                 kineticFriction = value;
                 if (MaterialChanged != null)
+                {
                     MaterialChanged(this);
+                }
             }
         }
 
         internal float staticFriction = MaterialManager.DefaultStaticFriction;
+
         ///<summary>
         /// Gets or sets the friction coefficient used when the object is sliding slowly and
         /// no special material relationship is defined between the colliding objects.
         ///</summary>
         public float StaticFriction
         {
-            get
-            {
-                return staticFriction;
-            }
+            get => staticFriction;
             set
             {
                 staticFriction = value;
                 if (MaterialChanged != null)
+                {
                     MaterialChanged(this);
+                }
             }
         }
 
 
         internal float bounciness = MaterialManager.DefaultBounciness;
+
         ///<summary>
         /// Gets or sets the coefficient of restitution between the objects when
         /// no special material relationship is defined between the colliding objects.
         ///</summary>
         public float Bounciness
         {
-            get
-            {
-                return bounciness;
-            }
+            get => bounciness;
             set
             {
                 bounciness = value;
                 if (MaterialChanged != null)
+                {
                     MaterialChanged(this);
+                }
             }
         }
 
@@ -69,13 +69,15 @@ namespace MinorEngine.BEPUphysics.Materials
         /// Gets or sets user data associated with the material.
         ///</summary>
         public object Tag { get; set; }
-        int hashCode;
+
+        private int hashCode;
+
         ///<summary>
         /// Constructs a new material.
         ///</summary>
         public Material()
         {
-            hashCode = (int)(((uint)GetHashCode()) * 19999999);
+            hashCode = (int) ((uint) GetHashCode() * 19999999);
         }
 
         ///<summary>
@@ -108,6 +110,5 @@ namespace MinorEngine.BEPUphysics.Materials
         /// Fires when the material properties change.
         ///</summary>
         public event Action<Material> MaterialChanged;
-
     }
 }

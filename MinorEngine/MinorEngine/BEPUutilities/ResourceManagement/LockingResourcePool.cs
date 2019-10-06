@@ -46,10 +46,7 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// can still be requested; they will be allocated
         /// dynamically.
         /// </summary>
-        public override int Count
-        {
-            get { return stack.Count; }
-        }
+        public override int Count => stack.Count;
 
         /// <summary>
         /// Gives an item back to the resource pool.
@@ -73,12 +70,16 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
                 T toRemove;
                 stack.TryUnsafeDequeueFirst(out toRemove);
             }
-            int length = stack.lastIndex - stack.firstIndex + 1; //lastIndex is inclusive, so add 1.
+
+            var length = stack.lastIndex - stack.firstIndex + 1; //lastIndex is inclusive, so add 1.
             if (InstanceInitializer != null)
-                for (int i = 0; i < length; i++)
+            {
+                for (var i = 0; i < length; i++)
                 {
                     InstanceInitializer(stack.array[(stack.firstIndex + i) % stack.array.Length]);
                 }
+            }
+
             while (stack.Count < initialResourceCount)
             {
                 stack.UnsafeEnqueue(CreateNewResource());

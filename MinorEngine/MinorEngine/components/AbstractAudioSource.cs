@@ -20,7 +20,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.Pitch, out float pitch);
+                AL.GetSource(source, ALSourcef.Pitch, out var pitch);
                 return pitch;
             }
             set => AL.Source(source, ALSourcef.Pitch, value);
@@ -30,7 +30,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.MaxDistance, out float maxDistance);
+                AL.GetSource(source, ALSourcef.MaxDistance, out var maxDistance);
                 return maxDistance;
             }
             set => AL.Source(source, ALSourcef.MaxDistance, value);
@@ -40,7 +40,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.ReferenceDistance, out float referenceDistance);
+                AL.GetSource(source, ALSourcef.ReferenceDistance, out var referenceDistance);
                 return referenceDistance;
             }
             set => AL.Source(source, ALSourcef.ReferenceDistance, value);
@@ -50,7 +50,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.MaxGain, out float referenceDistance);
+                AL.GetSource(source, ALSourcef.MaxGain, out var referenceDistance);
                 return referenceDistance;
             }
             set => AL.Source(source, ALSourcef.MaxGain, value);
@@ -60,7 +60,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.MinGain, out float referenceDistance);
+                AL.GetSource(source, ALSourcef.MinGain, out var referenceDistance);
                 return referenceDistance;
             }
             set => AL.Source(source, ALSourcef.MinGain, value);
@@ -70,7 +70,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.Gain, out float referenceDistance);
+                AL.GetSource(source, ALSourcef.Gain, out var referenceDistance);
                 return referenceDistance;
             }
             set => AL.Source(source, ALSourcef.Gain, value);
@@ -80,7 +80,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.EfxAirAbsorptionFactor, out float absorptionFactor);
+                AL.GetSource(source, ALSourcef.EfxAirAbsorptionFactor, out var absorptionFactor);
                 return absorptionFactor;
             }
             set => AL.Source(source, ALSourcef.EfxAirAbsorptionFactor, value);
@@ -91,7 +91,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.EfxRoomRolloffFactor, out float rollOffFactor);
+                AL.GetSource(source, ALSourcef.EfxRoomRolloffFactor, out var rollOffFactor);
                 return rollOffFactor;
             }
             set => AL.Source(source, ALSourcef.EfxRoomRolloffFactor, value);
@@ -101,7 +101,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourcef.RolloffFactor, out float rollOffFactor);
+                AL.GetSource(source, ALSourcef.RolloffFactor, out var rollOffFactor);
                 return rollOffFactor;
             }
             set => AL.Source(source, ALSourcef.RolloffFactor, value);
@@ -111,14 +111,14 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALGetSourcei.ByteOffset, out int current);
-                float val = (float) current / clip.BufferSize;
+                AL.GetSource(source, ALGetSourcei.ByteOffset, out var current);
+                var val = (float) current / clip.BufferSize;
 
                 return Math.Clamp(val, 0f, 1f);
             }
             set
             {
-                float val = Math.Clamp(value, 0f, 1f);
+                var val = Math.Clamp(value, 0f, 1f);
                 AL.Source(source, ALSourcei.ByteOffset, (int) (clip.BufferSize * val));
             }
         }
@@ -127,7 +127,7 @@ namespace MinorEngine.engine.audio.sources
         {
             get
             {
-                AL.GetSource(source, ALSourceb.Looping, out bool state);
+                AL.GetSource(source, ALSourceb.Looping, out var state);
                 return state;
             }
             set => AL.Source(source, ALSourceb.Looping, value);
@@ -168,7 +168,11 @@ namespace MinorEngine.engine.audio.sources
 
         public void SetClip(AudioClip clip)
         {
-            if (IsPlaying) Stop();
+            if (IsPlaying)
+            {
+                Stop();
+            }
+
             this.clip = clip;
 
 

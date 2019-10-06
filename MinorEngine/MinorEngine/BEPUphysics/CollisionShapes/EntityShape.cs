@@ -1,5 +1,4 @@
 ﻿using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes
@@ -9,7 +8,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
     ///</summary>
     public abstract class EntityShape : CollisionShape
     {
-
         protected void UpdateEntityShapeVolume(EntityShapeVolumeDescription volume)
         {
             Volume = volume.Volume;
@@ -22,15 +20,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         public float Volume { get; internal set; }
 
         internal Matrix3x3 volumeDistribution;
+
         /// <summary>
         /// Gets the volume distribution of the shape.
         /// This can be considered the unscaled inertia tensor of the shape.
         /// By default, entities scale this distribution by Mass * InertiaHelper.InertiaTensorScale to compute their local inertia tensor.
         /// </summary>
-        public Matrix3x3 VolumeDistribution
-        {
-            get { return volumeDistribution; }
-        }
+        public Matrix3x3 VolumeDistribution => volumeDistribution;
 
 
         /// <summary>
@@ -55,7 +51,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         /// <param name="z">Local extreme point along the world Z axis.</param>
         /// <param name="transform">World transform.</param>
         /// <param name="result">Contains the transformed X coordinate of input X, transformed Y coordinate of input Y, and transformed Z coordinate of input Z.</param>
-        protected void TransformLocalExtremePoints(ref Vector3 x, ref Vector3 y, ref Vector3 z, ref Matrix3x3 transform, out Vector3 result)
+        protected void TransformLocalExtremePoints(ref Vector3 x, ref Vector3 y, ref Vector3 z, ref Matrix3x3 transform,
+            out Vector3 result)
         {
             result.X = x.X * transform.M11 + x.Y * transform.M21 + x.Z * transform.M31;
             result.Y = y.X * transform.M12 + y.Y * transform.M22 + y.Z * transform.M32;

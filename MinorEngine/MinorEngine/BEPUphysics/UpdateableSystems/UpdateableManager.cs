@@ -4,7 +4,6 @@ using MinorEngine.BEPUutilities.Threading;
 
 namespace MinorEngine.BEPUphysics.UpdateableSystems
 {
-
     ///<summary>
     /// Superclass of updateable managers.
     ///</summary>
@@ -12,16 +11,12 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
     {
         protected Action<int> multithreadedUpdateDelegate;
         protected TimeStepSettings timeStepSettings;
+
         ///<summary>
         /// Gets the time step settings used by the updateable manager.
         ///</summary>
-        public TimeStepSettings TimeStepSettings
-        {
-            get
-            {
-                return timeStepSettings;
-            }
-        }
+        public TimeStepSettings TimeStepSettings => timeStepSettings;
+
         protected UpdateableManager(TimeStepSettings timeStepSettings)
         {
             this.timeStepSettings = timeStepSettings;
@@ -70,8 +65,6 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         }
 
 
-
-
         protected abstract void MultithreadedUpdate(int i);
         protected abstract void SequentialUpdate(int i);
 
@@ -79,16 +72,20 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         {
             if (updateable.Managers.Contains(this))
             {
-                T u = updateable as T;
+                var u = updateable as T;
                 if (updateable.IsUpdatedSequentially)
                 {
                     if (simultaneouslyUpdatedUpdateables.Remove(u))
+                    {
                         sequentiallyUpdatedUpdateables.Add(u);
+                    }
                 }
                 else
                 {
                     if (sequentiallyUpdatedUpdateables.Remove(u))
+                    {
                         simultaneouslyUpdatedUpdateables.Add(u);
+                    }
                 }
             }
             else
@@ -107,9 +104,14 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
             if (!updateable.Managers.Contains(this))
             {
                 if (updateable.IsUpdatedSequentially)
+                {
                     sequentiallyUpdatedUpdateables.Add(updateable);
+                }
                 else
+                {
                     simultaneouslyUpdatedUpdateables.Add(updateable);
+                }
+
                 updateable.Managers.Add(this);
             }
             else
@@ -128,42 +130,43 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
             if (updateable.Managers.Contains(this))
             {
                 if (updateable.IsUpdatedSequentially)
+                {
                     sequentiallyUpdatedUpdateables.Remove(updateable);
+                }
                 else
+                {
                     simultaneouslyUpdatedUpdateables.Remove(updateable);
+                }
+
                 updateable.Managers.Remove(this);
             }
             else
             {
                 throw new ArgumentException("Updateable does not belong to this manager; cannot remove.");
             }
-
         }
 
         protected override void UpdateMultithreaded()
         {
-            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
+            for (var i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
             {
                 SequentialUpdate(i);
             }
+
             ParallelLooper.ForLoop(0, simultaneouslyUpdatedUpdateables.Count, multithreadedUpdateDelegate);
         }
 
         protected override void UpdateSingleThreaded()
         {
-            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
+            for (var i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
             {
                 SequentialUpdate(i);
             }
-            for (int i = 0; i < simultaneouslyUpdatedUpdateables.Count; i++)
+
+            for (var i = 0; i < simultaneouslyUpdatedUpdateables.Count; i++)
             {
                 MultithreadedUpdate(i);
             }
         }
-   
-
     }
-
-
-
 }

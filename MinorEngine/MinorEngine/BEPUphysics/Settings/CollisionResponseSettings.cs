@@ -41,7 +41,5 @@
         /// <para>Note that this value is not used directly by constraints; it is first scaled by the raw inverse effective mass. This allows consistent behavior across objects with different masses.</para>
         /// </summary>
         public static float Softness = .001f;
-
-
     }
 }

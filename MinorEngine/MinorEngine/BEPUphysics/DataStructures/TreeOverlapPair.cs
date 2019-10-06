@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUphysics.DataStructures
+﻿namespace MinorEngine.BEPUphysics.DataStructures
 {
     ///<summary>
     /// Result of an overlap test between two trees of specified type.
@@ -16,6 +11,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
         /// Overlap owned by the first tree.
         /// </summary>
         public T1 OverlapA;
+
         /// <summary>
         /// Overlap owned by the second tree.
         /// </summary>

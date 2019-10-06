@@ -10,33 +10,27 @@
         /// </summary>
         public override Bone TargetBone
         {
-            get { return LinearMotor.TargetBone; }
+            get => LinearMotor.TargetBone;
             set
             {
                 LinearMotor.TargetBone = value;
                 AngularMotor.TargetBone = value;
                 if (value != null)
+                {
                     AngularMotor.TargetOrientation = value.Orientation;
+                }
             }
         }
 
         /// <summary>
         /// Gets the linear motor used by the control.
         /// </summary>
-        public SingleBoneLinearMotor LinearMotor
-        {
-            get;
-            private set;
-        }
+        public SingleBoneLinearMotor LinearMotor { get; }
 
         /// <summary>
         /// Gets the angular motor used by the control.
         /// </summary>
-        public SingleBoneAngularMotor AngularMotor
-        {
-            get;
-            private set;
-        }
+        public SingleBoneAngularMotor AngularMotor { get; }
 
         public StateControl()
         {
@@ -85,7 +79,7 @@
 
         public override float MaximumForce
         {
-            get { return LinearMotor.MaximumForce; }
+            get => LinearMotor.MaximumForce;
             set
             {
                 LinearMotor.MaximumForce = value;

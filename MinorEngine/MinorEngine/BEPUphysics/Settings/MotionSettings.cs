@@ -1,10 +1,7 @@
-﻿using MinorEngine.BEPUphysics.PositionUpdating;
-using System;
-using MinorEngine.BEPUutilities;
+﻿using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MinorEngine.BEPUphysics.BroadPhaseEntries;
+using MinorEngine.BEPUphysics.PositionUpdating;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Settings
 {
@@ -21,22 +18,18 @@ namespace MinorEngine.BEPUphysics.Settings
         ///</summary>
         public static float CoreShapeScaling
         {
-            get
-            {
-                return coreShapeScaling;
-            }
-            set
-            {
-                //The reason why it doesn't allow up to 1.0 is there exist systems that require a small margin between the full minimum radius and the core shape.
-                coreShapeScaling = MathHelper.Clamp(value, 0, .99f);
-            }
+            get => coreShapeScaling;
+            set => coreShapeScaling = MathHelper.Clamp(value, 0, .99f);
         }
-        static float coreShapeScaling = .8f;
+
+        private static float coreShapeScaling = .8f;
+
         /// <summary>
         /// The default position updating mode used by position updateables.
         /// Defaults to Discrete.
         /// </summary>
         public static PositionUpdateMode DefaultPositionUpdateMode = PositionUpdateMode.Discrete;
+
         /// <summary>
         /// It is possible for an object in danger of being hit by a moving object to have a bounding box which
         /// does not contain the resulting motion, and CCD will fail to detect a secondary collision.
@@ -49,7 +42,6 @@ namespace MinorEngine.BEPUphysics.Settings
         public static bool UseExtraExpansionForContinuousBoundingBoxes;
 
 
-
         /// <summary>
         /// Delegate which determines if a given pair should be allowed to run continuous collision detection.
         /// This is only called for entities which are continuous and colliding with other objects.
@@ -57,8 +49,8 @@ namespace MinorEngine.BEPUphysics.Settings
         /// </summary>
         public static CCDFilter CCDFilter;
 
-       
-        static bool DefaultCCDFilter(CollidablePairHandler pair)
+
+        private static bool DefaultCCDFilter(CollidablePairHandler pair)
         {
             return pair.broadPhaseOverlap.collisionRule < CollisionRule.NoSolver;
         }
@@ -67,7 +59,6 @@ namespace MinorEngine.BEPUphysics.Settings
         {
             CCDFilter = DefaultCCDFilter;
         }
-
     }
 
     /// <summary>

@@ -58,21 +58,21 @@ namespace MinorEngine.engine.components
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
                 {ShaderType.VertexShader, "shader/UITextRender.vs"}
-            }, out ShaderProgram textShader);
+            }, out var textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UIRender.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
-            }, out ShaderProgram uiShader);
+            }, out var uiShader);
 
-            GameObject obj = new GameObject("Console");
-            GameObject _in = new GameObject("ConsoleInput");
-            GameObject _out = new GameObject("ConsoleOutput");
-            GameObject _titleObj = new GameObject("Title");
-            GameObject _bgObj = new GameObject("BackgroundImage");
-            GameObject _bgOutObj = new GameObject("BackgroundOutputImage");
-            GameObject _hint = new GameObject("HintText");
+            var obj = new GameObject("Console");
+            var _in = new GameObject("ConsoleInput");
+            var _out = new GameObject("ConsoleOutput");
+            var _titleObj = new GameObject("Title");
+            var _bgObj = new GameObject("BackgroundImage");
+            var _bgOutObj = new GameObject("BackgroundOutputImage");
+            var _hint = new GameObject("HintText");
 
             obj.Add(_in);
             obj.Add(_out);
@@ -87,29 +87,32 @@ namespace MinorEngine.engine.components
             rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
             GameEngine.Instance.AddRenderTarget(rt2);
 
-            UIImageRendererComponent _bgImage = new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false, 0.65f, uiShader);
+            var _bgImage =
+                new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false,
+                    0.65f, uiShader);
             _bgImage.RenderMask = 1 << 29;
 
-            UIImageRendererComponent _bgOutImage = new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false, 0.4f, uiShader);
+            var _bgOutImage =
+                new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false, 0.4f,
+                    uiShader);
             _bgOutImage.RenderMask = 1 << 28;
 
 
-
-            UITextRendererComponent _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
+            var _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = "GameEngine Console:"
             };
-            UITextRendererComponent _tHint = new UITextRendererComponent("Arial", false, 1f, textShader)
+            var _tHint = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = "GameEngine Console:"
             };
 
-            UITextRendererComponent _tIn = new UITextRendererComponent("Arial", false, 1f, textShader)
+            var _tIn = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = ""
             };
 
-            UITextRendererComponent _tOut = new UITextRendererComponent("Arial", false, 1f, textShader)
+            var _tOut = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = "Console Initialized.."
             };
@@ -146,9 +149,16 @@ namespace MinorEngine.engine.components
 
         public void WriteToConsole(string text)
         {
-            string[] arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in arr) _consoleOutBuffer.Enqueue(s);
-            while (_consoleOutBuffer.Count > MaxConsoleLines) _consoleOutBuffer.Dequeue();
+            var arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            foreach (var s in arr)
+            {
+                _consoleOutBuffer.Enqueue(s);
+            }
+
+            while (_consoleOutBuffer.Count > MaxConsoleLines)
+            {
+                _consoleOutBuffer.Dequeue();
+            }
         }
 
 
@@ -156,7 +166,10 @@ namespace MinorEngine.engine.components
         {
             _outSB.Clear();
 
-            foreach (var line in _consoleOutBuffer) _outSB.Append(line + "\n");
+            foreach (var line in _consoleOutBuffer)
+            {
+                _outSB.Append(line + "\n");
+            }
 
             return _outSB.ToString();
         }
@@ -205,15 +218,20 @@ namespace MinorEngine.engine.components
         {
             _sb.Clear();
             _sb.Append("Commands:");
-            int col = 10;
-            int count = 0;
+            var col = 10;
+            var count = 0;
             foreach (var consoleCommand in _commands)
             {
                 count++;
                 if (count % col == 0)
+                {
                     _sb.Append("\n ");
+                }
                 else
+                {
                     _sb.Append("   ");
+                }
+
                 _sb.Append(consoleCommand.Key);
             }
 
@@ -222,7 +240,10 @@ namespace MinorEngine.engine.components
 
         public void AddCommand(string name, ConsoleCommand command)
         {
-            if (!_commands.ContainsKey(name)) _commands.Add(name, command);
+            if (!_commands.ContainsKey(name))
+            {
+                _commands.Add(name, command);
+            }
         }
 
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
@@ -230,9 +251,13 @@ namespace MinorEngine.engine.components
             if (_showConsole)
             {
                 if (inputIndex >= _sb.Length)
+                {
                     _sb.Append(e.KeyChar);
+                }
                 else
+                {
                     _sb.Insert(inputIndex, e.KeyChar);
+                }
 
                 inputIndex++;
 
@@ -244,16 +269,26 @@ namespace MinorEngine.engine.components
 
         private string cmdExOnConsole(string[] args)
         {
-            if (args.Length == 0) return "Please enter a function to redirect";
-            string ret = args[0] + "\n";
+            if (args.Length == 0)
+            {
+                return "Please enter a function to redirect";
+            }
 
-            List<string> words = args.ToList();
-            if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
+            var ret = args[0] + "\n";
+
+            var words = args.ToList();
+            if (_commands.TryGetValue(words[0], out var cmd))
             {
                 words.RemoveAt(0);
-                string s = cmd?.Invoke(words.ToArray());
-                if (s == null) ret += "No Return";
-                else ret += s + "";
+                var s = cmd?.Invoke(words.ToArray());
+                if (s == null)
+                {
+                    ret += "No Return";
+                }
+                else
+                {
+                    ret += s + "";
+                }
             }
             else
             {
@@ -263,7 +298,6 @@ namespace MinorEngine.engine.components
             Logger.Log(ret, DebugChannel.Log);
 
             return "Success";
-
         }
 
         protected override void OnKeyUp(object sender, KeyboardKeyEventArgs e)
@@ -273,13 +307,16 @@ namespace MinorEngine.engine.components
                 if (e.Key == Key.Enter)
                 {
                     WriteToConsole(_sb.ToString());
-                    List<string> words = _sb.ToString().Split(' ').ToList();
+                    var words = _sb.ToString().Split(' ').ToList();
 
-                    if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
+                    if (_commands.TryGetValue(words[0], out var cmd))
                     {
                         words.RemoveAt(0);
-                        string s = cmd?.Invoke(words.ToArray());
-                        if (s == null) s = "No Return";
+                        var s = cmd?.Invoke(words.ToArray());
+                        if (s == null)
+                        {
+                            s = "No Return";
+                        }
 
                         WriteToConsole(s);
                     }
@@ -326,9 +363,13 @@ namespace MinorEngine.engine.components
                 else if (inputIndex > 0 && e.Key == Key.BackSpace)
                 {
                     if (inputIndex == _sb.Length)
+                    {
                         _sb.Remove(_sb.Length - 1, 1);
+                    }
                     else
+                    {
                         _sb.Remove(inputIndex - 1, 1);
+                    }
 
                     inputIndex--;
 
@@ -373,12 +414,18 @@ namespace MinorEngine.engine.components
             }
 
 
-            if (_invalidate) Invalidate();
+            if (_invalidate)
+            {
+                Invalidate();
+            }
         }
 
         private void ToggleConsole(bool state)
         {
-            if (_showConsole == state) return;
+            if (_showConsole == state)
+            {
+                return;
+            }
 
             if (_showConsole)
             {
@@ -397,21 +444,35 @@ namespace MinorEngine.engine.components
             _invalidate = false;
             if (_showConsole)
             {
-                string input = "Something Went Wrong.";
+                var input = "Something Went Wrong.";
                 if (_currentId == _commandHistory.Count)
+                {
                     input = _sb.ToString();
-                else if (_currentId >= 0) input = _commandHistory[_currentId];
+                }
+                else if (_currentId >= 0)
+                {
+                    input = _commandHistory[_currentId];
+                }
 
                 string inputCursor;
 
                 if (_blinkActive)
+                {
                     inputCursor = "|";
+                }
                 else
+                {
                     inputCursor = " ";
+                }
+
                 if (inputIndex >= input.Length)
+                {
                     input = input + inputCursor;
+                }
                 else
+                {
                     input = input.Insert(inputIndex, inputCursor);
+                }
 
                 _consoleInput.Text = ">>> " + input;
             }

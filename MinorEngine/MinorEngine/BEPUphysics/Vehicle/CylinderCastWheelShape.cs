@@ -1,10 +1,10 @@
 ﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUphysics.Materials;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Vehicle
 {
@@ -16,13 +16,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
         private CylinderShape shape;
 
         private Quaternion localWheelOrientation;
+
         /// <summary>
         /// Gets or sets the unsteered orientation of the wheel in the vehicle's local space.
         /// </summary>
         public Quaternion LocalWheelOrientation
         {
-            get { return localWheelOrientation; }
-            set { localWheelOrientation = value; }
+            get => localWheelOrientation;
+            set => localWheelOrientation = value;
         }
 
         /// <summary>
@@ -35,20 +36,21 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// This transform is applied first when creating the shape's worldTransform.</param>
         /// <param name="includeSteeringTransformInCast">Whether or not to include the steering transform in the wheel shape cast. If false, the casted wheel shape will always point straight forward.
         /// If true, it will rotate with steering. Sometimes, setting this to false is helpful when the cast shape would otherwise become exposed when steering.</param>
-        public CylinderCastWheelShape(float radius, float width, Quaternion localWheelOrientation, Matrix localGraphicTransform, bool includeSteeringTransformInCast)
+        public CylinderCastWheelShape(float radius, float width, Quaternion localWheelOrientation,
+            Matrix localGraphicTransform, bool includeSteeringTransformInCast)
         {
             shape = new CylinderShape(width, radius);
-            this.LocalWheelOrientation = localWheelOrientation;
+            LocalWheelOrientation = localWheelOrientation;
             LocalGraphicTransform = localGraphicTransform;
-            this.IncludeSteeringTransformInCast = includeSteeringTransformInCast;
+            IncludeSteeringTransformInCast = includeSteeringTransformInCast;
         }
 
         /// <summary>
         /// Gets or sets the radius of the wheel.
         /// </summary>
-        public override sealed float Radius
+        public sealed override float Radius
         {
-            get { return shape.Radius; }
+            get => shape.Radius;
             set
             {
                 shape.Radius = MathHelper.Max(value, 0);
@@ -61,7 +63,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float Width
         {
-            get { return shape.Height; }
+            get => shape.Height;
             set
             {
                 shape.Height = MathHelper.Max(value, 0);
@@ -84,14 +86,16 @@ namespace MinorEngine.BEPUphysics.Vehicle
         public override void UpdateWorldTransform()
         {
 #if !WINDOWS
-            Vector3 newPosition = new Vector3();
+            var newPosition = new Vector3();
 #else
             Vector3 newPosition;
 #endif
             Vector3 worldAttachmentPoint;
             Vector3 localAttach;
-            Vector3.Add(ref wheel.suspension.localAttachmentPoint, ref wheel.vehicle.Body.CollisionInformation.localPosition, out localAttach);
-            worldTransform = Matrix3x3.ToMatrix4X4(wheel.vehicle.Body.BufferedStates.InterpolatedStates.OrientationMatrix);
+            Vector3.Add(ref wheel.suspension.localAttachmentPoint,
+                ref wheel.vehicle.Body.CollisionInformation.localPosition, out localAttach);
+            worldTransform =
+                Matrix3x3.ToMatrix4X4(wheel.vehicle.Body.BufferedStates.InterpolatedStates.OrientationMatrix);
 
             Matrix.TransformNormal(ref localAttach, ref worldTransform, out worldAttachmentPoint);
             worldAttachmentPoint += wheel.vehicle.Body.BufferedStates.InterpolatedStates.Position;
@@ -99,7 +103,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
             Vector3 worldDirection;
             Matrix.Transform(ref wheel.suspension.localDirection, ref worldTransform, out worldDirection);
 
-            float length = wheel.suspension.currentLength;
+            var length = wheel.suspension.currentLength;
             newPosition.X = worldAttachmentPoint.X + worldDirection.X * length;
             newPosition.Y = worldAttachmentPoint.Y + worldDirection.Y * length;
             newPosition.Z = worldAttachmentPoint.Z + worldDirection.Z * length;
@@ -129,7 +133,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="entity">Supporting object.</param>
         /// <param name="material">Material of the wheel.</param>
         /// <returns>Whether or not any support was found.</returns>
-        protected internal override bool FindSupport(out Vector3 location, out Vector3 normal, out float suspensionLength, out Collidable supportingCollidable, out Entity entity, out Material material)
+        protected internal override bool FindSupport(out Vector3 location, out Vector3 normal,
+            out float suspensionLength, out Collidable supportingCollidable, out Entity entity, out Material material)
         {
             suspensionLength = float.MaxValue;
             location = Toolbox.NoVector;
@@ -141,22 +146,30 @@ namespace MinorEngine.BEPUphysics.Vehicle
             Collidable testCollidable;
             RayHit rayHit;
 
-            bool hit = false;
+            var hit = false;
 
             Quaternion localSteeringTransform;
-            Quaternion.CreateFromAxisAngle(ref wheel.suspension.localDirection, steeringAngle, out localSteeringTransform);
+            Quaternion.CreateFromAxisAngle(ref wheel.suspension.localDirection, steeringAngle,
+                out localSteeringTransform);
             var startingTransform = new RigidTransform
             {
                 Position = wheel.suspension.worldAttachmentPoint,
-                Orientation = Quaternion.Concatenate(Quaternion.Concatenate(LocalWheelOrientation, IncludeSteeringTransformInCast ? localSteeringTransform : Quaternion.Identity), wheel.vehicle.Body.orientation)
+                Orientation =
+                    Quaternion.Concatenate(
+                        Quaternion.Concatenate(LocalWheelOrientation,
+                            IncludeSteeringTransformInCast ? localSteeringTransform : Quaternion.Identity),
+                        wheel.vehicle.Body.orientation)
             };
             Vector3 sweep;
             Vector3.Multiply(ref wheel.suspension.worldDirection, wheel.suspension.restLength, out sweep);
 
-            for (int i = 0; i < detector.CollisionInformation.pairs.Count; i++)
+            for (var i = 0; i < detector.CollisionInformation.pairs.Count; i++)
             {
                 var pair = detector.CollisionInformation.pairs[i];
-                testCollidable = (pair.BroadPhaseOverlap.entryA == detector.CollisionInformation ? pair.BroadPhaseOverlap.entryB : pair.BroadPhaseOverlap.entryA) as Collidable;
+                testCollidable =
+                    (pair.BroadPhaseOverlap.entryA == detector.CollisionInformation
+                        ? pair.BroadPhaseOverlap.entryB
+                        : pair.BroadPhaseOverlap.entryA) as Collidable;
                 if (testCollidable != null)
                 {
                     if (CollisionRules.CollisionRuleCalculator(this, testCollidable) == CollisionRule.Normal &&
@@ -176,14 +189,18 @@ namespace MinorEngine.BEPUphysics.Vehicle
                             supportingCollidable = testCollidable;
                             var materialOwner = testCollidable as IMaterialOwner;
                             if (materialOwner != null)
+                            {
                                 material = materialOwner.Material;
+                            }
                         }
+
                         location = rayHit.Location;
                         normal = rayHit.Normal;
                         hit = true;
                     }
                 }
             }
+
             if (hit)
             {
                 if (suspensionLength > 0)
@@ -191,16 +208,21 @@ namespace MinorEngine.BEPUphysics.Vehicle
                     float dot;
                     Vector3.Dot(ref normal, ref wheel.suspension.worldDirection, out dot);
                     if (dot > 0)
-                    {
                         //The cylinder cast produced a normal which is opposite of what we expect.
+                    {
                         Vector3.Negate(ref normal, out normal);
                     }
+
                     normal.Normalize();
                 }
                 else
+                {
                     Vector3.Negate(ref wheel.suspension.worldDirection, out normal);
+                }
+
                 return true;
             }
+
             return false;
         }
 
@@ -211,24 +233,36 @@ namespace MinorEngine.BEPUphysics.Vehicle
         protected internal override void Initialize()
         {
             //Setup the dimensions of the detector.
-            var initialTransform = new RigidTransform { Orientation = LocalWheelOrientation };
+            var initialTransform = new RigidTransform {Orientation = LocalWheelOrientation};
             BoundingBox boundingBox;
             shape.GetBoundingBox(ref initialTransform, out boundingBox);
             var expansion = wheel.suspension.localDirection * wheel.suspension.restLength;
             if (expansion.X > 0)
+            {
                 boundingBox.Max.X += expansion.X;
+            }
             else if (expansion.X < 0)
+            {
                 boundingBox.Min.X += expansion.X;
+            }
 
             if (expansion.Y > 0)
+            {
                 boundingBox.Max.Y += expansion.Y;
+            }
             else if (expansion.Y < 0)
+            {
                 boundingBox.Min.Y += expansion.Y;
+            }
 
             if (expansion.Z > 0)
+            {
                 boundingBox.Max.Z += expansion.Z;
+            }
             else if (expansion.Z < 0)
+            {
                 boundingBox.Min.Z += expansion.Z;
+            }
 
 
             detector.Width = boundingBox.Max.X - boundingBox.Min.X;
@@ -242,20 +276,24 @@ namespace MinorEngine.BEPUphysics.Vehicle
         protected internal override void UpdateDetectorPosition()
         {
 #if !WINDOWS
-            Vector3 newPosition = new Vector3();
+            var newPosition = new Vector3();
 #else
             Vector3 newPosition;
 #endif
 
-            newPosition.X = wheel.suspension.worldAttachmentPoint.X + wheel.suspension.worldDirection.X * wheel.suspension.restLength * .5f;
-            newPosition.Y = wheel.suspension.worldAttachmentPoint.Y + wheel.suspension.worldDirection.Y * wheel.suspension.restLength * .5f;
-            newPosition.Z = wheel.suspension.worldAttachmentPoint.Z + wheel.suspension.worldDirection.Z * wheel.suspension.restLength * .5f;
+            newPosition.X = wheel.suspension.worldAttachmentPoint.X +
+                            wheel.suspension.worldDirection.X * wheel.suspension.restLength * .5f;
+            newPosition.Y = wheel.suspension.worldAttachmentPoint.Y +
+                            wheel.suspension.worldDirection.Y * wheel.suspension.restLength * .5f;
+            newPosition.Z = wheel.suspension.worldAttachmentPoint.Z +
+                            wheel.suspension.worldDirection.Z * wheel.suspension.restLength * .5f;
 
             detector.Position = newPosition;
             if (IncludeSteeringTransformInCast)
             {
                 Quaternion localSteeringTransform;
-                Quaternion.CreateFromAxisAngle(ref wheel.suspension.localDirection, steeringAngle, out localSteeringTransform);
+                Quaternion.CreateFromAxisAngle(ref wheel.suspension.localDirection, steeringAngle,
+                    out localSteeringTransform);
 
                 detector.Orientation = Quaternion.Concatenate(localSteeringTransform, wheel.Vehicle.Body.orientation);
             }
@@ -263,6 +301,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
             {
                 detector.Orientation = wheel.Vehicle.Body.orientation;
             }
+
             Vector3 linearVelocity;
             Vector3.Subtract(ref newPosition, ref wheel.vehicle.Body.position, out linearVelocity);
             Vector3.Cross(ref linearVelocity, ref wheel.vehicle.Body.angularVelocity, out linearVelocity);

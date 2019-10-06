@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
 {
@@ -40,12 +39,19 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <param name="lineAnchor">Location of the anchor for the line to be attached to connectionA in world space.</param>
         /// <param name="lineDirection">Axis in world space to be attached to connectionA along which connectionB can move and rotate.</param>
         /// <param name="pointAnchor">Location of the anchor for the point to be attached to connectionB in world space.</param>
-        public LineSliderJoint(Entity connectionA, Entity connectionB, Vector3 lineAnchor, Vector3 lineDirection, Vector3 pointAnchor)
+        public LineSliderJoint(Entity connectionA, Entity connectionB, Vector3 lineAnchor, Vector3 lineDirection,
+            Vector3 pointAnchor)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             PointOnLineJoint = new PointOnLineJoint(connectionA, connectionB, lineAnchor, lineDirection, pointAnchor);
             AngularJoint = new RevoluteAngularJoint(connectionA, connectionB, lineDirection);
             Limit = new LinearAxisLimit(connectionA, connectionB, lineAnchor, pointAnchor, lineDirection, 0, 0);
@@ -61,21 +67,21 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the angular joint which removes two degrees of freedom.
         /// </summary>
-        public RevoluteAngularJoint AngularJoint { get; private set; }
+        public RevoluteAngularJoint AngularJoint { get; }
 
         /// <summary>
         /// Gets the distance limits for the slider.
         /// </summary>
-        public LinearAxisLimit Limit { get; private set; }
+        public LinearAxisLimit Limit { get; }
 
         /// <summary>
         /// Gets the slider motor.
         /// </summary>
-        public LinearAxisMotor Motor { get; private set; }
+        public LinearAxisMotor Motor { get; }
 
         /// <summary>
         /// Gets the line joint that restricts two linear degrees of freedom.
         /// </summary>
-        public PointOnLineJoint PointOnLineJoint { get; private set; }
+        public PointOnLineJoint PointOnLineJoint { get; }
     }
 }

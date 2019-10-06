@@ -24,8 +24,5 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         /// List of managers owning the updateable.
         ///</summary>
         List<UpdateableManager> Managers { get; }
-
-
-
     }
 }

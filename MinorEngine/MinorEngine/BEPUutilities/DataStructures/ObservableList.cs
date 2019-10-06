@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace MinorEngine.BEPUutilities.DataStructures
 {
@@ -13,7 +13,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <summary>
         /// Gets the list wrapped by the observable list. Adds and removes made to this list directly will not trigger events.
         /// </summary>
-        public RawList<T> WrappedList { get; private set; }
+        public RawList<T> WrappedList { get; }
 
         ///<summary>
         /// Fires when elements in the list are changed.
@@ -26,8 +26,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///<param name="list">List to copy into the internal wrapped list.</param>
         public ObservableList(IList<T> list)
         {
-            this.WrappedList = new RawList<T>(list.Count);
-            list.CopyTo(this.WrappedList.Elements, 0);
+            WrappedList = new RawList<T>(list.Count);
+            list.CopyTo(WrappedList.Elements, 0);
         }
 
         ///<summary>
@@ -50,7 +50,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
         protected void OnChanged()
         {
             if (Changed != null)
+            {
                 Changed(this);
+            }
         }
 
 
@@ -93,10 +95,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <param name="index">The zero-based index of the element to get or set.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
         public T this[int index]
         {
-            get
-            {
-                return WrappedList[index];
-            }
+            get => WrappedList[index];
             set
             {
                 WrappedList[index] = value;
@@ -151,15 +150,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <returns>
         /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
-        public int Count
-        {
-            get { return WrappedList.Count; }
-        }
+        public int Count => WrappedList.Count;
 
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return (WrappedList as ICollection<T>).IsReadOnly; }
-        }
+        bool ICollection<T>.IsReadOnly => (WrappedList as ICollection<T>).IsReadOnly;
 
         /// <summary>
         /// Removes the first occurrence of a specific object from the <see cref="T:System.Collections.Generic.ICollection`1"/>.
@@ -175,6 +168,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 OnChanged();
                 return true;
             }
+
             return false;
         }
 

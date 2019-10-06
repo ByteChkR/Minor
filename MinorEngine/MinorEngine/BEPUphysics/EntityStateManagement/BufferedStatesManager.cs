@@ -10,40 +10,32 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
     ///</summary>
     public class BufferedStatesManager
     {
-
         ///<summary>
         /// Gets the buffers of last known entity states.
         ///</summary>
-        public StateReadBuffers ReadBuffers { get; private set; }
+        public StateReadBuffers ReadBuffers { get; }
+
         ///<summary>
         /// Gets the entity states blended between the current frame and previous frame based on
         /// the time remaining in internal time stepping.
         ///</summary>
-        public InterpolatedStatesManager InterpolatedStates { get; private set; }
+        public InterpolatedStatesManager InterpolatedStates { get; }
 
         internal RawList<Entity> entities = new RawList<Entity>();
 
         ///<summary>
         /// Gets the list of entities in the manager.
         ///</summary>
-        public ReadOnlyList<Entity> Entities
-        {
-            get
-            {
-                return new ReadOnlyList<Entity>(entities);
-            }
-        }
+        public ReadOnlyList<Entity> Entities => new ReadOnlyList<Entity>(entities);
 
-        bool enabled;
+        private bool enabled;
+
         ///<summary>
         /// Gets or sets whether or not the buffered states manager and its submanagers are updating.
         ///</summary>
         public bool Enabled
         {
-            get
-            {
-                return enabled;
-            }
+            get => enabled;
             set
             {
                 if (!enabled && value)
@@ -56,6 +48,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                     InterpolatedStates.Enabled = false;
                     ReadBuffers.Enabled = false;
                 }
+
                 enabled = value;
             }
         }
@@ -67,7 +60,6 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         {
             InterpolatedStates = new InterpolatedStatesManager(this);
             ReadBuffers = new StateReadBuffers(this);
-
         }
 
         ///<summary>
@@ -98,13 +90,20 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                         e.BufferedStates.motionStateIndex = entities.Count;
                         entities.Add(e);
                         if (ReadBuffers.Enabled)
+                        {
                             ReadBuffers.Add(e);
+                        }
+
                         if (InterpolatedStates.Enabled)
+                        {
                             InterpolatedStates.Add(e);
+                        }
                     }
                     else
-                        throw new InvalidOperationException("Entity already belongs to a BufferedStatesManager; cannot add.");
-
+                    {
+                        throw new InvalidOperationException(
+                            "Entity already belongs to a BufferedStatesManager; cannot add.");
+                    }
                 }
             }
         }
@@ -122,26 +121,35 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 {
                     if (e.BufferedStates.BufferedStatesManager == this)
                     {
-                        int index = entities.IndexOf(e);
+                        var index = entities.IndexOf(e);
 
-                        int endIndex = entities.Count - 1;
+                        var endIndex = entities.Count - 1;
                         entities[index] = entities[endIndex];
                         entities.RemoveAt(endIndex);
                         if (index < entities.Count)
+                        {
                             entities[index].BufferedStates.motionStateIndex = index;
+                        }
+
                         if (ReadBuffers.Enabled)
+                        {
                             ReadBuffers.Remove(index, endIndex);
+                        }
+
                         if (InterpolatedStates.Enabled)
+                        {
                             InterpolatedStates.Remove(index, endIndex);
+                        }
 
                         e.BufferedStates.BufferedStatesManager = null;
                     }
                     else
-                        throw new InvalidOperationException("Entity does not belong to this BufferedStatesManager; cannot remove.");
-
+                    {
+                        throw new InvalidOperationException(
+                            "Entity does not belong to this BufferedStatesManager; cannot remove.");
+                    }
                 }
             }
         }
-
     }
 }

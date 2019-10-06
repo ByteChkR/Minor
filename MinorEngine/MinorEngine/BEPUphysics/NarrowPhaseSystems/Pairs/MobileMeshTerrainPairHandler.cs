@@ -1,9 +1,9 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.ResourceManagement;
-using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -12,28 +12,20 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class MobileMeshTerrainPairHandler : MobileMeshMeshPairHandler
     {
+        private Terrain mesh;
 
+        public override Collidable CollidableB => mesh;
 
-        Terrain mesh;
+        public override Entities.Entity EntityB => null;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return null; }
-        }
-        protected override Materials.Material MaterialB
-        {
-            get { return mesh.material; }
-        }
+        protected override Materials.Material MaterialB => mesh.material;
 
         protected override TriangleCollidable GetOpposingCollidable(int index)
         {
             //Construct a TriangleCollidable from the static mesh.
             var toReturn = PhysicsResources.GetTriangleCollidable();
-            Vector3 terrainUp = new Vector3(mesh.worldTransform.LinearTransform.M21, mesh.worldTransform.LinearTransform.M22, mesh.worldTransform.LinearTransform.M23);
+            var terrainUp = new Vector3(mesh.worldTransform.LinearTransform.M21,
+                mesh.worldTransform.LinearTransform.M22, mesh.worldTransform.LinearTransform.M23);
             float dot;
             Vector3 AB, AC, normal;
             var shape = toReturn.Shape;
@@ -63,6 +55,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             {
                 shape.sidedness = TriangleSidedness.Counterclockwise;
             }
+
             shape.collisionMargin = mobileMesh.Shape.MeshCollisionMargin;
             return toReturn;
         }
@@ -70,7 +63,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void ConfigureCollidable(TriangleEntry entry, float dt)
         {
-
         }
 
         ///<summary>
@@ -94,23 +86,14 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
-
-
-
         ///<summary>
         /// Cleans up the pair handler.
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             mesh = null;
-
-
         }
-
-
 
 
         protected override void UpdateContainedPairs(float dt)
@@ -120,17 +103,15 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             Vector3 sweep;
             Vector3.Multiply(ref mobileMesh.entity.linearVelocity, dt, out sweep);
-            mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref mesh.worldTransform, ref sweep, out localBoundingBox);
+            mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref mesh.worldTransform, ref sweep,
+                out localBoundingBox);
             mesh.Shape.GetOverlaps(localBoundingBox, ref overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }
 
             overlappedElements.Dispose();
-
         }
-
-
     }
 }

@@ -1,13 +1,13 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.Entities;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
+using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUphysics.NarrowPhaseSystems;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MinorEngine.BEPUphysics.Settings;
-using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 
 namespace MinorEngine.BEPUphysics.Character
 {
@@ -32,11 +32,13 @@ namespace MinorEngine.BEPUphysics.Character
         }
 
 
-        Func<BroadPhaseEntry, bool> SupportRayFilter;
-        bool SupportRayFilterFunction(BroadPhaseEntry entry)
+        private Func<BroadPhaseEntry, bool> SupportRayFilter;
+
+        private bool SupportRayFilterFunction(BroadPhaseEntry entry)
         {
             //Only permit an object to be used as a support if it fully collides with the character.
-            return CollisionRules.CollisionRuleCalculator(entry, characterBody.CollisionInformation) == CollisionRule.Normal;
+            return CollisionRules.CollisionRuleCalculator(entry, characterBody.CollisionInformation) ==
+                   CollisionRule.Normal;
         }
 
         /// <summary>
@@ -64,10 +66,13 @@ namespace MinorEngine.BEPUphysics.Character
                     }
                 }
             }
-            if (earliestHit.T == float.MaxValue)
-                return false;
-            return true;
 
+            if (earliestHit.T == float.MaxValue)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -98,10 +103,13 @@ namespace MinorEngine.BEPUphysics.Character
                     }
                 }
             }
-            if (earliestHit.T == float.MaxValue)
-                return false;
-            return true;
 
+            if (earliestHit.T == float.MaxValue)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -125,11 +133,9 @@ namespace MinorEngine.BEPUphysics.Character
                     }
                 }
             }
+
             return false;
-
         }
-
-
 
 
         /// <summary>
@@ -142,7 +148,8 @@ namespace MinorEngine.BEPUphysics.Character
         /// <param name="headContacts">Output contacts on the head of the query object.</param>
         /// <param name="forceStandardPairsToBeQueries">An extremely hacky control parameter that makes any mesh-cylinder pair treat the mesh as double sided. Useful for not going through the ceiling when changing stances.</param>
         public void QueryContacts(EntityCollidable queryObject,
-            ref QuickList<CharacterContact> tractionContacts, ref QuickList<CharacterContact> supportContacts, ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts,
+            ref QuickList<CharacterContact> tractionContacts, ref QuickList<CharacterContact> supportContacts,
+            ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts,
             bool forceStandardPairsToBeQueries = false)
         {
             var downDirection = characterBody.orientationMatrix.Down;
@@ -153,8 +160,8 @@ namespace MinorEngine.BEPUphysics.Character
             headContacts.Clear();
 
             foreach (var collidable in characterBody.CollisionInformation.OverlappedCollidables)
-            {
                 //The query object is assumed to have a valid bounding box.
+            {
                 if (collidable.BoundingBox.Intersects(queryObject.BoundingBox))
                 {
                     var pair = new CollidablePair(collidable, queryObject);
@@ -171,8 +178,11 @@ namespace MinorEngine.BEPUphysics.Character
                             //direct test rather than stateful pair to perform the query here. Still some type-related annoyance to deal with, but a bit better.
                             var standardPair = pairHandler as StandardPairHandler;
                             if (standardPair != null)
+                            {
                                 standardPair.ContactManifold.IsQuery = true;
+                            }
                         }
+
                         pairHandler.SuppressEvents = true;
                         pairHandler.UpdateCollision(0);
                         pairHandler.SuppressEvents = false;
@@ -181,12 +191,16 @@ namespace MinorEngine.BEPUphysics.Character
                             //TODO: Again, superhack! Avoid this in v2.
                             var standardPair = pairHandler as StandardPairHandler;
                             if (standardPair != null)
+                            {
                                 standardPair.ContactManifold.IsQuery = false;
+                            }
                         }
 
-                        contactCategorizer.CategorizeContacts(pairHandler, characterBody.CollisionInformation, ref downDirection,
-                                                              ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts);
+                        contactCategorizer.CategorizeContacts(pairHandler, characterBody.CollisionInformation,
+                            ref downDirection,
+                            ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts);
                     }
+
                     //TODO: It would be nice if this was a bit easier.
                     //Having to remember to clean up AND give it back is a bit weird, especially with the property-diving.
                     //No one would ever just guess this correctly.
@@ -195,9 +209,7 @@ namespace MinorEngine.BEPUphysics.Character
                     pairHandler.Factory.GiveBack(pairHandler);
                 }
             }
-
         }
-
 
 
         /// <summary>
@@ -207,17 +219,18 @@ namespace MinorEngine.BEPUphysics.Character
         /// <param name="supportContacts">Contacts providing the character with support.</param>
         /// <param name="state">State of the contacts relative to the speculative character position.</param>
         /// <param name="supportContact">Representative contact to use, if any.</param>
-        public void AnalyzeSupportState(ref QuickList<CharacterContact> tractionContacts, ref QuickList<CharacterContact> supportContacts,
-                                        out CharacterContactPositionState state, out CharacterContact supportContact)
+        public void AnalyzeSupportState(ref QuickList<CharacterContact> tractionContacts,
+            ref QuickList<CharacterContact> supportContacts,
+            out CharacterContactPositionState state, out CharacterContact supportContact)
         {
-            float maxDepth = -float.MaxValue;
-            int deepestIndex = -1;
+            var maxDepth = -float.MaxValue;
+            var deepestIndex = -1;
             if (tractionContacts.Count > 0)
             {
                 //It has traction!
                 //But is it too deep?
                 //Find the deepest contact.
-                for (int i = 0; i < tractionContacts.Count; i++)
+                for (var i = 0; i < tractionContacts.Count; i++)
                 {
                     if (tractionContacts.Elements[i].Contact.PenetrationDepth > maxDepth)
                     {
@@ -225,6 +238,7 @@ namespace MinorEngine.BEPUphysics.Character
                         deepestIndex = i;
                     }
                 }
+
                 supportContact = tractionContacts.Elements[deepestIndex];
             }
             else if (supportContacts.Count > 0)
@@ -233,7 +247,7 @@ namespace MinorEngine.BEPUphysics.Character
                 //But is it too deep?
                 //Find the deepest contact.
 
-                for (int i = 0; i < supportContacts.Count; i++)
+                for (var i = 0; i < supportContacts.Count; i++)
                 {
                     if (supportContacts.Elements[i].Contact.PenetrationDepth > maxDepth)
                     {
@@ -241,6 +255,7 @@ namespace MinorEngine.BEPUphysics.Character
                         deepestIndex = i;
                     }
                 }
+
                 supportContact = supportContacts.Elements[deepestIndex];
             }
             else
@@ -249,30 +264,26 @@ namespace MinorEngine.BEPUphysics.Character
                 supportContact = new CharacterContact();
                 return;
             }
+
             //Check the depth.
             if (maxDepth > CollisionDetectionSettings.AllowedPenetration)
-            {
                 //It's too deep.
+            {
                 state = CharacterContactPositionState.TooDeep;
             }
             else if (maxDepth < 0)
-            {
                 //The depth is negative, meaning it's separated.  This shouldn't happen with the initial implementation of the character controller,
                 //but this case could conceivably occur in other usages of a system like this (or in a future version of the character),
                 //so go ahead and handle it.
+            {
                 state = CharacterContactPositionState.NoHit;
             }
             else
-            {
                 //The deepest contact appears to be very nicely aligned with the ground!
                 //It's fully supported.
+            {
                 state = CharacterContactPositionState.Accepted;
             }
         }
-
     }
-
-
-
-
 }

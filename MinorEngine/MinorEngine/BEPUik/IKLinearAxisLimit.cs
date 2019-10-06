@@ -28,8 +28,10 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 LineAnchor
         {
-            get { return ConnectionA.Position + Quaternion.Transform(LocalLineAnchor, ConnectionA.Orientation); }
-            set { LocalLineAnchor = Quaternion.Transform(value - ConnectionA.Position, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => ConnectionA.Position + Quaternion.Transform(LocalLineAnchor, ConnectionA.Orientation);
+            set =>
+                LocalLineAnchor = Quaternion.Transform(value - ConnectionA.Position,
+                    Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -38,8 +40,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 LineDirection
         {
-            get { return Quaternion.Transform(LocalLineDirection, ConnectionA.Orientation); }
-            set { LocalLineDirection = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(LocalLineDirection, ConnectionA.Orientation);
+            set => LocalLineDirection = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -47,29 +49,21 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AnchorB
         {
-            get { return ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation); }
-            set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation);
+            set =>
+                LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position,
+                    Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
-        private float minimumDistance;
         /// <summary>
         /// Gets or sets the minimum distance that the joint connections should be kept from each other.
         /// </summary>
-        public float MinimumDistance
-        {
-            get { return minimumDistance; }
-            set { minimumDistance = value; }
-        }
+        public float MinimumDistance { get; set; }
 
-         private float maximumDistance;
         /// <summary>
         /// Gets or sets the maximum distance that the joint connections should be kept from each other.
         /// </summary>
-        public float MaximumDistance
-        {
-            get { return maximumDistance; }
-            set { maximumDistance = value; }
-        }
+        public float MaximumDistance { get; set; }
 
         /// <summary>
         /// Constructs a new axis limit.
@@ -81,7 +75,8 @@ namespace MinorEngine.BEPUik
         /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
         /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other along the axis.</param>
         /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other along the axis.</param>
-        public IKLinearAxisLimit(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection, Vector3 anchorB, float minimumDistance, float maximumDistance)
+        public IKLinearAxisLimit(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection,
+            Vector3 anchorB, float minimumDistance, float maximumDistance)
             : base(connectionA, connectionB)
         {
             LineAnchor = lineAnchor;
@@ -110,27 +105,27 @@ namespace MinorEngine.BEPUik
             Vector3.Dot(ref separation, ref lineDirection, out currentDistance);
 
             //Compute jacobians
-            if (currentDistance > maximumDistance)
+            if (currentDistance > MaximumDistance)
             {
                 //We are exceeding the maximum limit.
-                velocityBias = new Vector3(errorCorrectionFactor * (currentDistance - maximumDistance), 0, 0);
+                velocityBias = new Vector3(errorCorrectionFactor * (currentDistance - MaximumDistance), 0, 0);
             }
-            else if (currentDistance < minimumDistance)
+            else if (currentDistance < MinimumDistance)
             {
                 //We are exceeding the minimum limit.
-                velocityBias = new Vector3(errorCorrectionFactor * (minimumDistance - currentDistance), 0, 0);
+                velocityBias = new Vector3(errorCorrectionFactor * (MinimumDistance - currentDistance), 0, 0);
                 //The limit can only push in one direction. Flip the jacobian!
                 Vector3.Negate(ref lineDirection, out lineDirection);
             }
-            else if (currentDistance - minimumDistance > (maximumDistance - minimumDistance) * 0.5f)
+            else if (currentDistance - MinimumDistance > (MaximumDistance - MinimumDistance) * 0.5f)
             {
                 //The objects are closer to hitting the maximum limit.
-                velocityBias = new Vector3(currentDistance - maximumDistance, 0, 0);
+                velocityBias = new Vector3(currentDistance - MaximumDistance, 0, 0);
             }
             else
             {
                 //The objects are closer to hitting the minimum limit.
-                velocityBias = new Vector3(minimumDistance - currentDistance, 0, 0);
+                velocityBias = new Vector3(MinimumDistance - currentDistance, 0, 0);
                 //The limit can only push in one direction. Flip the jacobian!
                 Vector3.Negate(ref lineDirection, out lineDirection);
             }
@@ -144,11 +139,10 @@ namespace MinorEngine.BEPUik
             Vector3.Cross(ref lineDirection, ref offsetB, out angularB);
 
             //Put all the 1x3 jacobians into a 3x3 matrix representation.
-            linearJacobianA = new Matrix3x3 { M11 = lineDirection.X, M12 = lineDirection.Y, M13 = lineDirection.Z };
-            linearJacobianB = new Matrix3x3 { M11 = -lineDirection.X, M12 = -lineDirection.Y, M13 = -lineDirection.Z };
-            angularJacobianA = new Matrix3x3 { M11 = angularA.X, M12 = angularA.Y, M13 = angularA.Z };
-            angularJacobianB = new Matrix3x3 { M11 = angularB.X, M12 = angularB.Y, M13 = angularB.Z };
-
+            linearJacobianA = new Matrix3x3 {M11 = lineDirection.X, M12 = lineDirection.Y, M13 = lineDirection.Z};
+            linearJacobianB = new Matrix3x3 {M11 = -lineDirection.X, M12 = -lineDirection.Y, M13 = -lineDirection.Z};
+            angularJacobianA = new Matrix3x3 {M11 = angularA.X, M12 = angularA.Y, M13 = angularA.Z};
+            angularJacobianB = new Matrix3x3 {M11 = angularB.X, M12 = angularB.Y, M13 = angularB.Z};
         }
     }
 }

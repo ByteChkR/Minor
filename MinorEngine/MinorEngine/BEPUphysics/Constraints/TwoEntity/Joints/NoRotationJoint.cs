@@ -1,7 +1,6 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
 {
@@ -48,8 +47,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Quaternion InitialOrientationA
         {
-            get { return Quaternion.Conjugate(initialQuaternionConjugateA); }
-            set { initialQuaternionConjugateA = Quaternion.Conjugate(value); }
+            get => Quaternion.Conjugate(initialQuaternionConjugateA);
+            set => initialQuaternionConjugateA = Quaternion.Conjugate(value);
         }
 
         /// <summary>
@@ -58,8 +57,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Quaternion InitialOrientationB
         {
-            get { return Quaternion.Conjugate(initialQuaternionConjugateB); }
-            set { initialQuaternionConjugateB = Quaternion.Conjugate(value); }
+            get => Quaternion.Conjugate(initialQuaternionConjugateB);
+            set => initialQuaternionConjugateB = Quaternion.Conjugate(value);
         }
 
         #region I3DImpulseConstraintWithError Members
@@ -72,7 +71,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             get
             {
                 Vector3 velocityDifference;
-                Vector3.Subtract(ref connectionB.angularVelocity, ref connectionA.angularVelocity, out velocityDifference);
+                Vector3.Subtract(ref connectionB.angularVelocity, ref connectionA.angularVelocity,
+                    out velocityDifference);
                 return velocityDifference;
             }
         }
@@ -80,18 +80,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public Vector3 TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public Vector3 TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public Vector3 Error
-        {
-            get { return error; }
-        }
+        public Vector3 Error => error;
 
         #endregion
 
@@ -180,6 +174,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 connectionA.ApplyAngularImpulse(ref lambda);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3 torqueB;
@@ -221,23 +216,21 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             biasVelocity.Z = errorReduction * error.Z;
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            float length = biasVelocity.LengthSquared();
+            var length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                float multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                var multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
                 biasVelocity.Z *= multiplier;
             }
 
-            Matrix3x3.Add(ref connectionA.inertiaTensorInverse, ref connectionB.inertiaTensorInverse, out effectiveMassMatrix);
+            Matrix3x3.Add(ref connectionA.inertiaTensorInverse, ref connectionB.inertiaTensorInverse,
+                out effectiveMassMatrix);
             effectiveMassMatrix.M11 += softness;
             effectiveMassMatrix.M22 += softness;
             effectiveMassMatrix.M33 += softness;
             Matrix3x3.Invert(ref effectiveMassMatrix, out effectiveMassMatrix);
-
-
-           
         }
 
         /// <summary>
@@ -252,12 +245,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 connectionA.ApplyAngularImpulse(ref accumulatedImpulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3 torqueB;
                 Vector3.Negate(ref accumulatedImpulse, out torqueB);
                 connectionB.ApplyAngularImpulse(ref torqueB);
             }
-        } 
+        }
     }
 }

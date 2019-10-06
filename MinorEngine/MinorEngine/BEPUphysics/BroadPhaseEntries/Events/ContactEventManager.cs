@@ -1,11 +1,9 @@
-﻿using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUphysics.CollisionTests;
+﻿using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
 {
-
     ///<summary>
     /// Event manager for collidables (things which can create contact points).
     ///</summary>
@@ -164,11 +162,20 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
                    base.EventsAreInactive();
         }
 
-        readonly ConcurrentDeque<EventStorageContactCreated> eventStorageContactCreated = new ConcurrentDeque<EventStorageContactCreated>(0);
-        readonly ConcurrentDeque<EventStorageInitialCollisionDetected> eventStorageInitialCollisionDetected = new ConcurrentDeque<EventStorageInitialCollisionDetected>(0);
-        readonly ConcurrentDeque<EventStorageContactRemoved> eventStorageContactRemoved = new ConcurrentDeque<EventStorageContactRemoved>(0);
-        readonly ConcurrentDeque<EventStorageCollisionEnded> eventStorageCollisionEnded = new ConcurrentDeque<EventStorageCollisionEnded>(0);
-        readonly ConcurrentDeque<EventStoragePairTouched> eventStoragePairTouched = new ConcurrentDeque<EventStoragePairTouched>(0);
+        private readonly ConcurrentDeque<EventStorageContactCreated> eventStorageContactCreated =
+            new ConcurrentDeque<EventStorageContactCreated>(0);
+
+        private readonly ConcurrentDeque<EventStorageInitialCollisionDetected> eventStorageInitialCollisionDetected =
+            new ConcurrentDeque<EventStorageInitialCollisionDetected>(0);
+
+        private readonly ConcurrentDeque<EventStorageContactRemoved> eventStorageContactRemoved =
+            new ConcurrentDeque<EventStorageContactRemoved>(0);
+
+        private readonly ConcurrentDeque<EventStorageCollisionEnded> eventStorageCollisionEnded =
+            new ConcurrentDeque<EventStorageCollisionEnded>(0);
+
+        private readonly ConcurrentDeque<EventStoragePairTouched> eventStoragePairTouched =
+            new ConcurrentDeque<EventStoragePairTouched>(0);
 
         protected override void DispatchEvents()
         {
@@ -180,28 +187,51 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
             //This is not a particularly clean behavior, but it's better than just crashing.
             EventStorageContactCreated contactCreated;
             while (eventStorageContactCreated.TryUnsafeDequeueFirst(out contactCreated))
+            {
                 if (InternalContactCreated != null)
-                    InternalContactCreated(owner, contactCreated.other, contactCreated.pair, contactCreated.contactData);
+                {
+                    InternalContactCreated(owner, contactCreated.other, contactCreated.pair,
+                        contactCreated.contactData);
+                }
+            }
 
             EventStorageInitialCollisionDetected initialCollisionDetected;
             while (eventStorageInitialCollisionDetected.TryUnsafeDequeueFirst(out initialCollisionDetected))
+            {
                 if (InternalInitialCollisionDetected != null)
-                    InternalInitialCollisionDetected(owner, initialCollisionDetected.other, initialCollisionDetected.pair);
+                {
+                    InternalInitialCollisionDetected(owner, initialCollisionDetected.other,
+                        initialCollisionDetected.pair);
+                }
+            }
 
             EventStorageContactRemoved contactRemoved;
             while (eventStorageContactRemoved.TryUnsafeDequeueFirst(out contactRemoved))
+            {
                 if (InternalContactRemoved != null)
-                    InternalContactRemoved(owner, contactRemoved.other, contactRemoved.pair, contactRemoved.contactData);
+                {
+                    InternalContactRemoved(owner, contactRemoved.other, contactRemoved.pair,
+                        contactRemoved.contactData);
+                }
+            }
 
             EventStorageCollisionEnded collisionEnded;
             while (eventStorageCollisionEnded.TryUnsafeDequeueFirst(out collisionEnded))
+            {
                 if (InternalCollisionEnded != null)
+                {
                     InternalCollisionEnded(owner, collisionEnded.other, collisionEnded.pair);
+                }
+            }
 
             EventStoragePairTouched collisionPairTouched;
             while (eventStoragePairTouched.TryUnsafeDequeueFirst(out collisionPairTouched))
+            {
                 if (InternalPairTouched != null)
+                {
                     InternalPairTouched(owner, collisionPairTouched.other, collisionPairTouched.pair);
+                }
+            }
 
             base.DispatchEvents();
         }
@@ -209,17 +239,27 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
         public void OnCollisionEnded(Collidable other, CollidablePairHandler collisionPair)
         {
             if (InternalCollisionEnded != null)
+            {
                 eventStorageCollisionEnded.Enqueue(new EventStorageCollisionEnded(other, collisionPair));
+            }
+
             if (CollisionEnding != null)
+            {
                 CollisionEnding(owner, other, collisionPair);
+            }
         }
 
         public void OnPairTouching(Collidable other, CollidablePairHandler collisionPair)
         {
             if (InternalPairTouched != null)
+            {
                 eventStoragePairTouched.Enqueue(new EventStoragePairTouched(other, collisionPair));
+            }
+
             if (PairTouching != null)
+            {
                 PairTouching(owner, other, collisionPair);
+            }
         }
 
         public void OnContactCreated(Collidable other, CollidablePairHandler collisionPair, Contact contact)
@@ -231,10 +271,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
                 contactData.Normal = contact.Normal;
                 contactData.PenetrationDepth = contact.PenetrationDepth;
                 contactData.Id = contact.Id;
-                eventStorageContactCreated.Enqueue(new EventStorageContactCreated(other, collisionPair, ref contactData));
+                eventStorageContactCreated.Enqueue(
+                    new EventStorageContactCreated(other, collisionPair, ref contactData));
             }
+
             if (CreatingContact != null)
+            {
                 CreatingContact(owner, other, collisionPair, contact);
+            }
         }
 
         public void OnContactRemoved(Collidable other, CollidablePairHandler collisionPair, Contact contact)
@@ -246,18 +290,28 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
                 contactData.Normal = contact.Normal;
                 contactData.PenetrationDepth = contact.PenetrationDepth;
                 contactData.Id = contact.Id;
-                eventStorageContactRemoved.Enqueue(new EventStorageContactRemoved(other, collisionPair, ref contactData));
+                eventStorageContactRemoved.Enqueue(
+                    new EventStorageContactRemoved(other, collisionPair, ref contactData));
             }
+
             if (RemovingContact != null)
+            {
                 RemovingContact(owner, other, collisionPair, contact);
+            }
         }
 
         public void OnInitialCollisionDetected(Collidable other, CollidablePairHandler collisionPair)
         {
             if (InternalInitialCollisionDetected != null)
-                eventStorageInitialCollisionDetected.Enqueue(new EventStorageInitialCollisionDetected(other, collisionPair));
+            {
+                eventStorageInitialCollisionDetected.Enqueue(
+                    new EventStorageInitialCollisionDetected(other, collisionPair));
+            }
+
             if (DetectingInitialCollision != null)
+            {
                 DetectingInitialCollision(owner, other, collisionPair);
+            }
         }
 
         ///<summary>
@@ -281,12 +335,5 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
         }
 
         #endregion
-
-
-
     }
-
-
-
-
 }

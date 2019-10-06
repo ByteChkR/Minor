@@ -20,13 +20,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the mesh of the pair.
         ///</summary>
-        public InstancedMesh Mesh
-        {
-            get
-            {
-                return mesh;
-            }
-        }
+        public InstancedMesh Mesh => mesh;
 
         protected internal override int FindOverlappingTriangles(float dt)
         {
@@ -41,19 +35,31 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 Vector3.Multiply(ref transformedVelocity, dt, out transformedVelocity);
 
                 if (transformedVelocity.X > 0)
+                {
                     boundingBox.Max.X += transformedVelocity.X;
+                }
                 else
+                {
                     boundingBox.Min.X += transformedVelocity.X;
+                }
 
                 if (transformedVelocity.Y > 0)
+                {
                     boundingBox.Max.Y += transformedVelocity.Y;
+                }
                 else
+                {
                     boundingBox.Min.Y += transformedVelocity.Y;
+                }
 
                 if (transformedVelocity.Z > 0)
+                {
                     boundingBox.Max.Z += transformedVelocity.Z;
+                }
                 else
+                {
                     boundingBox.Min.Z += transformedVelocity.Z;
+                }
             }
 
             mesh.Shape.TriangleMesh.Tree.GetOverlaps(boundingBox, overlappedTriangles);
@@ -65,16 +71,19 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         /// </summary>
         /// <param name="convexInverseWorldTransform">Inverse of the world transform of the convex shape.</param>
         /// <param name="fromMeshLocalToConvexLocal">Transform to apply to native local triangles to bring them into the local space of the convex.</param>
-        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform, out AffineTransform fromMeshLocalToConvexLocal)
+        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform,
+            out AffineTransform fromMeshLocalToConvexLocal)
         {
             //InstancedMeshShapes don't have a shape-level transform. The instance transform is all there is.
-            AffineTransform.Multiply(ref mesh.worldTransform, ref convexInverseWorldTransform, out fromMeshLocalToConvexLocal);
+            AffineTransform.Multiply(ref mesh.worldTransform, ref convexInverseWorldTransform,
+                out fromMeshLocalToConvexLocal);
         }
 
-        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape, out TriangleIndices indices)
+        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
+            out TriangleIndices indices)
         {
-            MeshBoundingBoxTreeData data = mesh.Shape.TriangleMesh.Data;
-            int triangleIndex = overlappedTriangles.Elements[i];
+            var data = mesh.Shape.TriangleMesh.Data;
+            var triangleIndex = overlappedTriangles.Elements[i];
             //TODO: Note the IsQuery hack to avoid missing contacts. Avoid doing this in v2.
             localTriangleShape.sidedness = IsQuery ? TriangleSidedness.DoubleSided : mesh.sidedness;
             localTriangleShape.collisionMargin = 0;
@@ -97,10 +106,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             overlappedTriangles.Clear();
         }
 
-        protected override bool UseImprovedBoundaryHandling
-        {
-            get { return mesh.improveBoundaryBehavior; }
-        }
+        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
 
 
         ///<summary>
@@ -129,11 +135,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 convex = newCollidableB as ConvexCollidable;
                 mesh = newCollidableA as InstancedMesh;
                 if (convex == null || mesh == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize contact manifold.");
+                }
             }
-
         }
-
-
     }
 }

@@ -9,6 +9,7 @@ namespace MinorEngine.BEPUik
         /// Gets or sets the offset in connection A's local space from the center of mass to the anchor point.
         /// </summary>
         public Vector3 LocalOffsetA;
+
         /// <summary>
         /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point.
         /// </summary>
@@ -19,8 +20,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 OffsetA
         {
-            get { return Quaternion.Transform(LocalOffsetA, ConnectionA.Orientation); }
-            set { LocalOffsetA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(LocalOffsetA, ConnectionA.Orientation);
+            set => LocalOffsetA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -28,8 +29,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 OffsetB
         {
-            get { return Quaternion.Transform(LocalOffsetB, ConnectionB.Orientation); }
-            set { LocalOffsetB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => Quaternion.Transform(LocalOffsetB, ConnectionB.Orientation);
+            set => LocalOffsetB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         /// <summary>
@@ -49,7 +50,7 @@ namespace MinorEngine.BEPUik
         {
             linearJacobianA = Matrix3x3.Identity;
             //The jacobian entries are is [ La, Aa, -Lb, -Ab ] because the relative velocity is computed using A-B. So, negate B's jacobians!
-            linearJacobianB = new Matrix3x3 { M11 = -1, M22 = -1, M33 = -1 };
+            linearJacobianB = new Matrix3x3 {M11 = -1, M22 = -1, M33 = -1};
             Vector3 rA;
             Quaternion.Transform(ref LocalOffsetA, ref ConnectionA.Orientation, out rA);
             Matrix3x3.CreateCrossProduct(ref rA, out angularJacobianA);
@@ -69,7 +70,6 @@ namespace MinorEngine.BEPUik
             Vector3 linearError;
             Vector3.Subtract(ref worldPositionB, ref worldPositionA, out linearError);
             Vector3.Multiply(ref linearError, errorCorrectionFactor, out velocityBias);
-
         }
     }
 }

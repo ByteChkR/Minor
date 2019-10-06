@@ -11,6 +11,7 @@ namespace MinorEngine.BEPUutilities
         /// Starting position of the ray.
         /// </summary>
         public Vector3 Position;
+
         /// <summary>
         /// Direction in which the ray points.
         /// </summary>
@@ -24,10 +25,9 @@ namespace MinorEngine.BEPUutilities
         /// <param name="direction">Direction in which the ray points.</param>
         public Ray(Vector3 position, Vector3 direction)
         {
-            this.Position = position;
-            this.Direction = direction;
+            Position = position;
+            Direction = direction;
         }
-
 
 
         /// <summary>
@@ -56,10 +56,11 @@ namespace MinorEngine.BEPUutilities
                 var t2 = (boundingBox.Max.X - Position.X) * inverseDirection;
                 if (t1 > t2)
                 {
-                    float temp = t1;
+                    var temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
+
                 tmin = Math.Max(tmin, t1);
                 tmax = Math.Min(tmax, t2);
                 if (tmin > tmax)
@@ -68,6 +69,7 @@ namespace MinorEngine.BEPUutilities
                     return false;
                 }
             }
+
             if (Math.Abs(Direction.Y) < Toolbox.Epsilon)
             {
                 if (Position.Y < boundingBox.Min.Y || Position.Y > boundingBox.Max.Y)
@@ -85,10 +87,11 @@ namespace MinorEngine.BEPUutilities
                 var t2 = (boundingBox.Max.Y - Position.Y) * inverseDirection;
                 if (t1 > t2)
                 {
-                    float temp = t1;
+                    var temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
+
                 tmin = Math.Max(tmin, t1);
                 tmax = Math.Min(tmax, t2);
                 if (tmin > tmax)
@@ -97,6 +100,7 @@ namespace MinorEngine.BEPUutilities
                     return false;
                 }
             }
+
             if (Math.Abs(Direction.Z) < Toolbox.Epsilon)
             {
                 if (Position.Z < boundingBox.Min.Z || Position.Z > boundingBox.Max.Z)
@@ -114,10 +118,11 @@ namespace MinorEngine.BEPUutilities
                 var t2 = (boundingBox.Max.Z - Position.Z) * inverseDirection;
                 if (t1 > t2)
                 {
-                    float temp = t1;
+                    var temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
+
                 tmin = Math.Max(tmin, t1);
                 tmax = Math.Min(tmax, t2);
                 if (tmin > tmax)
@@ -126,6 +131,7 @@ namespace MinorEngine.BEPUutilities
                     return false;
                 }
             }
+
             t = tmin;
             return true;
         }
@@ -156,6 +162,7 @@ namespace MinorEngine.BEPUutilities
                 t = 0;
                 return false;
             }
+
             float distanceAlongNormal;
             Vector3.Dot(ref Position, ref plane.Normal, out distanceAlongNormal);
             distanceAlongNormal += plane.D;

@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Resources;
 using MinorEngine.CLHelperLibrary;
 using MinorEngine.CLHelperLibrary.cltypes;
-using MinorEngine.FilterLanguage;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
+using MinorEngine.FilterLanguage;
 using OpenCl.DotNetCore.Memory;
-using ResourceManager = MinorEngine.engine.core.ResourceManager;
 
 namespace MinorEngine.components
 {
@@ -27,7 +25,10 @@ namespace MinorEngine.components
 
         private string cmd_RunFL(string[] args)
         {
-            if (args.Length != 1) return "Only One Filepath.";
+            if (args.Length != 1)
+            {
+                return "Only One Filepath.";
+            }
 
             RunOnObjImage(args[0]);
 
@@ -45,10 +46,13 @@ namespace MinorEngine.components
         {
             Tex = ResourceManager.TextureIO.ParameterToTexture(width, height, "FLTexture");
 
-            for (int i = 0; i < _previews.Count; i++) _previews[i].Model.SetTextureBuffer( new[] {Tex});
+            for (var i = 0; i < _previews.Count; i++)
+            {
+                _previews[i].Model.SetTextureBuffer(new[] {Tex});
+            }
 
 
-            DebugConsoleComponent console =
+            var console =
                 Owner.World.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
             console?.AddCommand("runfl", cmd_RunFL);
             console?.AddCommand("dbgfl", cmd_RunFLStepped);
@@ -71,9 +75,9 @@ namespace MinorEngine.components
 
         public void RunOnObjImage(string filename)
         {
-            MemoryBuffer buf = GetRendererTextureBuffer();
+            var buf = GetRendererTextureBuffer();
 
-            Interpreter interpreter =
+            var interpreter =
                 new Interpreter(filename, buf, (int) Tex.Width, (int) Tex.Height, 1, 4, _db, true);
 
 
@@ -87,7 +91,10 @@ namespace MinorEngine.components
 
         private string cmd_FLStop(string[] args)
         {
-            if (!_isInStepMode) return "Not in an active Debugging Session";
+            if (!_isInStepMode)
+            {
+                return "Not in an active Debugging Session";
+            }
 
             _stepInterpreter = null;
             _isInStepMode = false;
@@ -97,25 +104,33 @@ namespace MinorEngine.components
 
         private string cmd_FLStep(string[] args)
         {
-            if (!_isInStepMode) return "Not in an active Debugging Session";
+            if (!_isInStepMode)
+            {
+                return "Not in an active Debugging Session";
+            }
 
-            Interpreter.InterpreterStepResult stepResult = _stepInterpreter.Step();
-            MemoryBuffer res = stepResult.DebugBuffer;
+            var stepResult = _stepInterpreter.Step();
+            var res = stepResult.DebugBuffer;
             if (_stepInterpreter.Terminated)
             {
                 _isInStepMode = false;
                 res = _stepInterpreter.GetResultBuffer();
             }
 
-            ResourceManager.TextureIO.Update(Tex, CL.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width, (int) Tex.Height);
+            ResourceManager.TextureIO.Update(Tex, CL.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width,
+                (int) Tex.Height);
 
             return stepResult.ToString();
         }
 
         private string cmd_RunFLStepped(string[] args)
         {
-            if (args.Length == 0) return "No file specified.";
-            MemoryBuffer buf = GetRendererTextureBuffer();
+            if (args.Length == 0)
+            {
+                return "No file specified.";
+            }
+
+            var buf = GetRendererTextureBuffer();
 
 
             _isInStepMode = true;

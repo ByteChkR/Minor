@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
+using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.ResourceManagement;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.Threading;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
@@ -46,12 +46,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         /// By going deeper into the trees, a better distribution of work is achieved.
         /// Going above the tested core count theoretically benefits from a '0 if power of 2, 2 otherwise' rule of thumb.
         /// </summary>
-        private int[] threadSplitOffsets = new[]
-#if WINDOWS
-        { 0, 0, 4, 1, 2, 2, 2, 0, 2, 2, 2, 2 };
-#else
-        { 2, 2, 2, 1};
-#endif
+        private int[] threadSplitOffsets = {2, 2, 2, 1};
 #if PROFILE
         /// <summary>
         /// Gets the time used in refitting the acceleration structure and making any necessary incremental improvements.
@@ -106,7 +101,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             {
                 //The trees are now fully refit (and revalidated, if the refit process found it to be necessary).
                 //The overlap traversal is conceptually similar to the multithreaded refit, but is a bit easier since there's no need to go back up the stack.
-                if (!root.IsLeaf) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
+                if (!root.IsLeaf
+                ) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
                 {
                     root.GetMultithreadedOverlaps(root, splitDepth, 1, this, multithreadingSourceOverlaps);
                     ParallelLooper.ForLoop(0, multithreadingSourceOverlaps.Count, multithreadedOverlap);
@@ -126,10 +122,12 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             //The depth to which we dive is offset by some precomputed values (when available) or a guess based on whether or not the 
             //thread count is a power of 2.  Thread counts which are a power of 2 match well to the binary tree, while other thread counts
             //require going deeper for better distributions.
-            int offset = ParallelLooper.ThreadCount <= threadSplitOffsets.Length
-                             ? threadSplitOffsets[ParallelLooper.ThreadCount - 1]
-                             : (ParallelLooper.ThreadCount & (ParallelLooper.ThreadCount - 1)) == 0 ? 0 : 2;
-            return offset + (int)Math.Ceiling(Math.Log(ParallelLooper.ThreadCount, 2));
+            var offset = ParallelLooper.ThreadCount <= threadSplitOffsets.Length
+                ? threadSplitOffsets[ParallelLooper.ThreadCount - 1]
+                : (ParallelLooper.ThreadCount & (ParallelLooper.ThreadCount - 1)) == 0
+                    ? 0
+                    : 2;
+            return offset + (int) Math.Ceiling(Math.Log(ParallelLooper.ThreadCount, 2));
         }
 
         protected override void UpdateMultithreaded()
@@ -153,7 +151,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 #endif
                 }
             }
-
         }
 
         internal struct NodePair
@@ -162,16 +159,18 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             internal Node b;
         }
 
-        RawList<Node> multithreadingSourceNodes = new RawList<Node>(4);
-        Action<int> multithreadedRefit;
-        void MultithreadedRefit(int i)
+        private RawList<Node> multithreadingSourceNodes = new RawList<Node>(4);
+        private Action<int> multithreadedRefit;
+
+        private void MultithreadedRefit(int i)
         {
             multithreadingSourceNodes.Elements[i].Refit();
         }
 
-        RawList<NodePair> multithreadingSourceOverlaps = new RawList<NodePair>(10);
-        Action<int> multithreadedOverlap;
-        void MultithreadedOverlap(int i)
+        private RawList<NodePair> multithreadingSourceOverlaps = new RawList<NodePair>(10);
+        private Action<int> multithreadedOverlap;
+
+        private void MultithreadedOverlap(int i)
         {
             var overlap = multithreadingSourceOverlaps.Elements[i];
             //Note: It's okay not to check to see if a and b are equal and leaf nodes, because the systems which added nodes to the list already did it.
@@ -187,8 +186,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
 
         public void SingleThreadedOverlapPhase()
         {
-            if (!root.IsLeaf) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
+            if (!root.IsLeaf
+            ) //If the root is a leaf, it's alone- nothing to collide against! This test is required by the assumptions of the leaf-leaf test.
+            {
                 root.GetOverlaps(root, this);
+            }
         }
 
         protected override void UpdateSingleThreaded()
@@ -213,7 +215,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             }
         }
 
-        UnsafeResourcePool<LeafNode> leafNodes = new UnsafeResourcePool<LeafNode>();
+        private UnsafeResourcePool<LeafNode> leafNodes = new UnsafeResourcePool<LeafNode>();
 
         /// <summary>
         /// Adds an entry to the hierarchy.
@@ -226,7 +228,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             Vector3 offset;
             Vector3.Subtract(ref entry.boundingBox.Max, ref entry.boundingBox.Min, out offset);
             if (offset.X * offset.Y * offset.Z == 0)
+            {
                 entry.UpdateBoundingBox();
+            }
+
             //Could buffer additions to get a better construction in the tree.
             var node = leafNodes.Take();
             node.Initialize(entry);
@@ -238,20 +243,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
             else
             {
                 if (root.IsLeaf) //Root is alone.
+                {
                     root.TryToInsert(node, out root);
+                }
                 else
                 {
                     BoundingBox.CreateMerged(ref node.BoundingBox, ref root.BoundingBox, out root.BoundingBox);
-                    var internalNode = (InternalNode)root;
+                    var internalNode = (InternalNode) root;
                     Vector3.Subtract(ref root.BoundingBox.Max, ref root.BoundingBox.Min, out offset);
                     internalNode.currentVolume = offset.X * offset.Y * offset.Z;
                     //internalNode.maximumVolume = internalNode.currentVolume * InternalNode.MaximumVolumeScale;
                     //The caller is responsible for the merge.
                     var treeNode = root;
-                    while (!treeNode.TryToInsert(node, out treeNode)) ;//TryToInsert returns the next node, if any, and updates node bounding box.
+                    while (!treeNode.TryToInsert(node, out treeNode))
+                    {
+                        ; //TryToInsert returns the next node, if any, and updates node bounding box.
+                    }
                 }
             }
         }
+
         /// <summary>
         /// Removes an entry from the hierarchy.
         /// </summary>
@@ -259,12 +270,15 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         public override void Remove(BroadPhaseEntry entry)
         {
             if (root == null)
+            {
                 throw new InvalidOperationException("Entry not present in the hierarchy.");
+            }
+
             //Attempt to search for the entry with a boundingbox lookup first.
             if (!RemoveFast(entry))
-            {
                 //Oof, could not locate it with the fast method; it must have been force-moved or something.
                 //Fall back to a slow brute force approach.
+            {
                 if (!RemoveBrute(entry))
                 {
                     throw new InvalidOperationException("Entry not present in the hierarchy.");
@@ -283,6 +297,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 base.Remove(entry);
                 return true;
             }
+
             return false;
         }
 
@@ -297,10 +312,12 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 base.Remove(entry);
                 return true;
             }
+
             return false;
         }
 
         #region Debug
+
         internal void Analyze(List<int> depths, out int nodeCount)
         {
             nodeCount = 0;
@@ -315,7 +332,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
         {
             if (root != null && !root.IsLeaf)
             {
-                ((InternalNode)root).Revalidate();
+                ((InternalNode) root).Revalidate();
             }
         }
 
@@ -333,12 +350,16 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies
                 var offset = root.BoundingBox.Max - root.BoundingBox.Min;
                 var volume = offset.X * offset.Y * offset.Z;
                 if (volume < 1e-9f)
+                {
                     return 0;
+                }
+
                 return root.MeasureSubtreeCost() / volume;
             }
+
             return 0;
         }
+
         #endregion
     }
-
 }

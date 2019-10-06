@@ -11,11 +11,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class StandardPairHandler : CollidablePairHandler
     {
-
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
         public abstract ContactManifold ContactManifold { get; }
+
         /// <summary>
         /// Gets the contact constraint usd by the pair handler.
         /// </summary>
@@ -35,16 +35,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             ContactConstraint.AddContact(contact);
             base.OnContactAdded(contact);
-
         }
 
         protected override void OnContactRemoved(Contact contact)
         {
             ContactConstraint.RemoveContact(contact);
             base.OnContactRemoved(contact);
-
         }
-
 
 
         ///<summary>
@@ -60,9 +57,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             ContactConstraint.Initialize(EntityA, EntityB);
 
             base.Initialize(entryA, entryB);
-
-
-
         }
 
         ///<summary>
@@ -85,15 +79,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
-
         ///<summary>
         /// Cleans up the pair handler.
         ///</summary>
         public override void CleanUp()
         {
             //Deal with the remaining contacts.
-            for (int i = ContactManifold.contacts.Count - 1; i >= 0; i--)
+            for (var i = ContactManifold.contacts.Count - 1; i >= 0; i--)
             {
                 OnContactRemoved(ContactManifold.contacts[i]);
             }
@@ -102,16 +94,23 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             if (ContactConstraint.solver != null)
             {
                 if (Parent != null)
+                {
                     Parent.RemoveSolverUpdateable(ContactConstraint);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableRemoved(ContactConstraint);
+                }
             }
             else
             {
                 //Even though it's not in the solver, we still may need to notify the parent to remove it.
                 if (Parent != null && ContactConstraint.SolverGroup != null)
+                {
                     Parent.RemoveSolverUpdateable(ContactConstraint);
+                }
             }
+
             //Contact constraint cleanup changes the involved entities, which is acceptable because it's no longer in the solver.
             ContactConstraint.CleanUp();
 
@@ -123,7 +122,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             //Child cleanup is responsible for cleaning up direct references to the involved collidables.
         }
-
 
 
         ///<summary>
@@ -160,9 +158,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
                     //Add a solver item.
                     if (Parent != null)
+                    {
                         Parent.AddSolverUpdateable(ContactConstraint);
+                    }
                     else if (NarrowPhase != null)
+                    {
                         NarrowPhase.NotifyUpdateableAdded(ContactConstraint);
+                    }
 
                     //And notify the pair members.
                     if (!suppressEvents)
@@ -178,9 +180,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
                 //Remove the solver item.
                 if (Parent != null)
+                {
                     Parent.RemoveSolverUpdateable(ContactConstraint);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableRemoved(ContactConstraint);
+                }
 
                 if (!suppressEvents)
                 {
@@ -190,17 +196,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             }
 
             previousContactCount = ContactManifold.contacts.Count;
-
         }
 
 
         /// <summary>
         /// Gets the number of contacts associated with this pair handler.
         /// </summary>
-        protected internal override int ContactCount
-        {
-            get { return ContactManifold.contacts.Count; }
-        }
+        protected internal override int ContactCount => ContactManifold.contacts.Count;
 
         /// <summary>
         /// Clears the contacts associated with this pair handler.
@@ -213,9 +215,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
                 //Remove the solver item.
                 if (Parent != null)
+                {
                     Parent.RemoveSolverUpdateable(ContactConstraint);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableRemoved(ContactConstraint);
+                }
 
                 if (!suppressEvents)
                 {
@@ -225,10 +231,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                     b.EventTriggerer.OnCollisionEnded(a, this);
                 }
             }
+
             ContactManifold.ClearContacts();
             base.ClearContacts();
         }
-
     }
-
 }

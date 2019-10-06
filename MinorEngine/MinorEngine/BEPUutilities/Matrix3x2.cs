@@ -1,7 +1,4 @@
-﻿ 
-
-
-namespace MinorEngine.BEPUutilities
+﻿namespace MinorEngine.BEPUutilities
 {
     /// <summary>
     /// 3 row, 2 column matrix.
@@ -67,14 +64,14 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix3x2 a, ref Matrix3x2 b, out Matrix3x2 result)
         {
-            float m11 = a.M11 + b.M11;
-            float m12 = a.M12 + b.M12;
+            var m11 = a.M11 + b.M11;
+            var m12 = a.M12 + b.M12;
 
-            float m21 = a.M21 + b.M21;
-            float m22 = a.M22 + b.M22;
+            var m21 = a.M21 + b.M21;
+            var m22 = a.M22 + b.M22;
 
-            float m31 = a.M31 + b.M31;
-            float m32 = a.M32 + b.M32;
+            var m31 = a.M31 + b.M31;
+            var m32 = a.M32 + b.M32;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -94,14 +91,14 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix3x3 a, ref Matrix3x2 b, out Matrix3x2 result)
         {
-            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
 
-            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
 
-            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -121,14 +118,14 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix a, ref Matrix3x2 b, out Matrix3x2 result)
         {
-            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
 
-            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
 
-            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -147,14 +144,14 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Negated matrix.</param>
         public static void Negate(ref Matrix3x2 matrix, out Matrix3x2 result)
         {
-            float m11 = -matrix.M11;
-            float m12 = -matrix.M12;
+            var m11 = -matrix.M11;
+            var m12 = -matrix.M12;
 
-            float m21 = -matrix.M21;
-            float m22 = -matrix.M22;
+            var m21 = -matrix.M21;
+            var m22 = -matrix.M22;
 
-            float m31 = -matrix.M31;
-            float m32 = -matrix.M32;
+            var m31 = -matrix.M31;
+            var m32 = -matrix.M32;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -174,14 +171,14 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Difference of the two matrices.</param>
         public static void Subtract(ref Matrix3x2 a, ref Matrix3x2 b, out Matrix3x2 result)
         {
-            float m11 = a.M11 - b.M11;
-            float m12 = a.M12 - b.M12;
+            var m11 = a.M11 - b.M11;
+            var m12 = a.M12 - b.M12;
 
-            float m21 = a.M21 - b.M21;
-            float m22 = a.M22 - b.M22;
+            var m21 = a.M21 - b.M21;
+            var m22 = a.M22 - b.M22;
 
-            float m31 = a.M31 - b.M31;
-            float m32 = a.M32 - b.M32;
+            var m31 = a.M31 - b.M31;
+            var m32 = a.M32 - b.M32;
 
             result.M11 = m11;
             result.M12 = m12;

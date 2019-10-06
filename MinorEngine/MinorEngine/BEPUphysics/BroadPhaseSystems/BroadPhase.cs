@@ -1,8 +1,8 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUutilities;
+﻿using System;
+using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.CollisionRuleManagement;
+using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
-using System;
 using MinorEngine.BEPUutilities.Threading;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseSystems
@@ -12,12 +12,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
     ///</summary>
     public abstract class BroadPhase : MultithreadedProcessingStage
     {
-        readonly SpinLock overlapAddLock = new SpinLock();
+        private readonly SpinLock overlapAddLock = new SpinLock();
 
         ///<summary>
         /// Gets the object which is locked by the broadphase during synchronized update processes.
         ///</summary>
         public object Locker { get; protected set; }
+
         protected BroadPhase()
         {
             Locker = new object();
@@ -30,16 +31,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
             ParallelLooper = parallelLooper;
             AllowMultithreading = true;
         }
+
         //TODO: Initial capacity?  Special collection type other than list due to structs? RawList? Clear at beginning of each frame?
-        readonly RawList<BroadPhaseOverlap> overlaps = new RawList<BroadPhaseOverlap>();
+
         /// <summary>
         /// Gets the list of overlaps identified in the previous broad phase update.
         /// </summary>
-        public RawList<BroadPhaseOverlap> Overlaps
-        {
-            get { return overlaps; }
-        }
-
+        public RawList<BroadPhaseOverlap> Overlaps { get; } = new RawList<BroadPhaseOverlap>();
 
 
         ///<summary>
@@ -54,9 +52,13 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         public virtual void Add(BroadPhaseEntry entry)
         {
             if (entry.BroadPhase == null)
+            {
                 entry.BroadPhase = this;
+            }
             else
+            {
                 throw new ArgumentException("Cannot add entry; it already belongs to a broad phase.");
+            }
         }
 
         /// <summary>
@@ -66,15 +68,19 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         public virtual void Remove(BroadPhaseEntry entry)
         {
             if (entry.BroadPhase == this)
+            {
                 entry.BroadPhase = null;
+            }
             else
+            {
                 throw new ArgumentException("Cannot remove entry; it does not belong to this broad phase.");
+            }
         }
 
         protected internal void AddOverlap(BroadPhaseOverlap overlap)
         {
             overlapAddLock.Enter();
-            overlaps.Add(overlap);
+            Overlaps.Add(overlap);
             overlapAddLock.Exit();
         }
 
@@ -89,7 +95,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
             if ((rule = GetCollisionRule(entryA, entryB)) < CollisionRule.NoBroadPhase)
             {
                 overlapAddLock.Enter();
-                overlaps.Add(new BroadPhaseOverlap(entryA, entryB, rule));
+                Overlaps.Add(new BroadPhaseOverlap(entryA, entryB, rule));
                 overlapAddLock.Exit();
             }
         }
@@ -97,7 +103,10 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         protected internal CollisionRule GetCollisionRule(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
             if (entryA.IsActive || entryB.IsActive)
+            {
                 return CollisionRules.collisionRuleCalculator(entryA, entryB);
+            }
+
             return CollisionRule.NoBroadPhase;
         }
 

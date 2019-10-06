@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.UpdateableSystems;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Paths.PathFollowing
 {
@@ -52,14 +51,14 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
         /// This ensures that its interactions and collisions with
         /// other entities remain stable.
         /// </summary>
-        public SingleEntityAngularMotor AngularMotor { get; private set; }
+        public SingleEntityAngularMotor AngularMotor { get; }
 
         /// <summary>
         /// Gets or sets the entity being pushed by the entity rotator.
         /// </summary>
         public Entity Entity
         {
-            get { return entity; }
+            get => entity;
             set
             {
                 entity = value;
@@ -118,8 +117,10 @@ namespace MinorEngine.BEPUphysics.Paths.PathFollowing
         void IDuringForcesUpdateable.Update(float dt)
         {
             if (Entity != AngularMotor.Entity)
+            {
                 throw new InvalidOperationException(
                     "EntityRotator's entity differs from EntityRotator's motor's entities.  Ensure that the moved entity is only changed by setting the EntityRotator's entity property.");
+            }
 
             if (Entity.IsDynamic)
             {

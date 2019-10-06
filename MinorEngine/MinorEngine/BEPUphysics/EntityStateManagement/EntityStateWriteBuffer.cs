@@ -1,12 +1,9 @@
-﻿using System.Runtime.InteropServices;
-using MinorEngine.BEPUphysics.Entities;
+﻿using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 
-
 namespace MinorEngine.BEPUphysics.EntityStateManagement
 {
-
     ///<summary>
     /// Buffer containing pending writes to entity states.
     ///</summary>
@@ -17,7 +14,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             Position,
             Orientation,
             LinearVelocity,
-            AngularVelocity,
+            AngularVelocity
         }
 
         //TODO: Not a particularly elegant buffering mechanism.  Make a better in-order buffering scheme.
@@ -63,8 +60,10 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///<param name="newPosition">New position of the entity.</param>
         public void EnqueuePosition(Entity entity, ref Vector3 newPosition)
         {
-            stateChanges.Enqueue(new EntityStateChange { target = entity, vector = newPosition, targetField = TargetField.Position });
+            stateChanges.Enqueue(new EntityStateChange
+                {target = entity, vector = newPosition, targetField = TargetField.Position});
         }
+
         ///<summary>
         /// Enqueues a change to an entity's orientation.
         ///</summary>
@@ -72,8 +71,12 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///<param name="newOrientationQuaternion">New orientation of the entity.</param>
         public void EnqueueOrientation(Entity entity, ref Quaternion newOrientationQuaternion)
         {
-            stateChanges.Enqueue(new EntityStateChange { target = entity, orientationQuaternion = newOrientationQuaternion, targetField = TargetField.Orientation });
+            stateChanges.Enqueue(new EntityStateChange
+            {
+                target = entity, orientationQuaternion = newOrientationQuaternion, targetField = TargetField.Orientation
+            });
         }
+
         ///<summary>
         /// Enqueues a change to an entity's linear velocity.
         ///</summary>
@@ -81,8 +84,10 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///<param name="newLinearVelocity">New linear velocity of the entity.</param>
         public void EnqueueLinearVelocity(Entity entity, ref Vector3 newLinearVelocity)
         {
-            stateChanges.Enqueue(new EntityStateChange { target = entity, vector = newLinearVelocity, targetField = TargetField.LinearVelocity });
+            stateChanges.Enqueue(new EntityStateChange
+                {target = entity, vector = newLinearVelocity, targetField = TargetField.LinearVelocity});
         }
+
         ///<summary>
         /// Enqueues a change to an entity's angular velocity.
         ///</summary>
@@ -90,7 +95,8 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///<param name="newAngularVelocity">New angular velocity of the entity.</param>
         public void EnqueueAngularVelocity(Entity entity, ref Vector3 newAngularVelocity)
         {
-            stateChanges.Enqueue(new EntityStateChange { target = entity, vector = newAngularVelocity, targetField = TargetField.AngularVelocity });
+            stateChanges.Enqueue(new EntityStateChange
+                {target = entity, vector = newAngularVelocity, targetField = TargetField.AngularVelocity});
         }
 
 
@@ -99,7 +105,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             EntityStateChange item;
             while (stateChanges.TryDequeueFirst(out item))
             {
-                Entity target = item.target;
+                var target = item.target;
                 switch (item.targetField)
                 {
                     case TargetField.Position:
@@ -117,8 +123,5 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 }
             }
         }
-
-
-
     }
 }

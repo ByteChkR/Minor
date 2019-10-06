@@ -5,10 +5,8 @@ using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
 using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.DataStructures;
-using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUphysics.PositionUpdating;
 using MinorEngine.BEPUphysics.Settings;
- 
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -18,41 +16,29 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class InstancedMeshPairHandler : StandardPairHandler
     {
-        InstancedMesh instancedMesh;
-        ConvexCollidable convex;
+        private InstancedMesh instancedMesh;
+        private ConvexCollidable convex;
 
         private NonConvexContactManifoldConstraint contactConstraint;
 
-        public override Collidable CollidableA
-        {
-            get { return convex; }
-        }
-        public override Collidable CollidableB
-        {
-            get { return instancedMesh; }
-        }
-        public override Entities.Entity EntityA
-        {
-            get { return convex.entity; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return null; }
-        }
+        public override Collidable CollidableA => convex;
+
+        public override Collidable CollidableB => instancedMesh;
+
+        public override Entities.Entity EntityA => convex.entity;
+
+        public override Entities.Entity EntityB => null;
+
         /// <summary>
         /// Gets the contact constraint used by the pair handler.
         /// </summary>
-        public override ContactManifoldConstraint ContactConstraint
-        {
-            get { return contactConstraint; }
-        }
+        public override ContactManifoldConstraint ContactConstraint => contactConstraint;
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
-        public override ContactManifold ContactManifold
-        {
-            get { return MeshManifold; }
-        }
+        public override ContactManifold ContactManifold => MeshManifold;
+
         protected abstract InstancedMeshContactManifold MeshManifold { get; }
 
         protected InstancedMeshPairHandler()
@@ -67,7 +53,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
             instancedMesh = entryA as InstancedMesh;
             convex = entryB as ConvexCollidable;
 
@@ -77,9 +62,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 convex = entryA as ConvexCollidable;
 
                 if (instancedMesh == null || convex == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize pair.");
-            }            
-            
+                }
+            }
+
             //Contact normal goes from A to B.
             broadPhaseOverlap.entryA = convex;
             broadPhaseOverlap.entryB = instancedMesh;
@@ -88,11 +75,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
 
             base.Initialize(entryA, entryB);
-
-
-
-  
-
         }
 
 
@@ -104,9 +86,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             base.CleanUp();
             instancedMesh = null;
             convex = null;
-
         }
-
 
 
         ///<summary>
@@ -125,7 +105,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 //Only perform the test if the minimum radii are small enough relative to the size of the velocity.
                 Vector3 velocity;
                 Vector3.Multiply(ref convex.entity.linearVelocity, dt, out velocity);
-                float velocitySquared = velocity.LengthSquared();
+                var velocitySquared = velocity.LengthSquared();
 
                 var minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
@@ -134,10 +114,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                     var triangle = PhysicsThreadResources.GetTriangle();
                     triangle.collisionMargin = 0;
                     //Spherecast against all triangles to find the earliest time.
-                    for (int i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
+                    for (var i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
                     {
-                        MeshBoundingBoxTreeData data = instancedMesh.Shape.TriangleMesh.Data;
-                        int triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
+                        var data = instancedMesh.Shape.TriangleMesh.Data;
+                        var triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
                         data.GetTriangle(triangleIndex, out triangle.vA, out triangle.vB, out triangle.vC);
                         AffineTransform.Transform(ref triangle.vA, ref instancedMesh.worldTransform, out triangle.vA);
                         AffineTransform.Transform(ref triangle.vB, ref instancedMesh.worldTransform, out triangle.vB);
@@ -148,10 +128,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                         Vector3.Subtract(ref triangle.vC, ref convex.worldTransform.Position, out triangle.vC);
 
                         RayHit rayHit;
-                        if (GJKToolbox.CCDSphereCast(new Ray(Toolbox.ZeroVector, velocity), minimumRadius, triangle, ref Toolbox.RigidIdentity, timeOfImpact, out rayHit) &&
+                        if (GJKToolbox.CCDSphereCast(new Ray(Toolbox.ZeroVector, velocity), minimumRadius, triangle,
+                                ref Toolbox.RigidIdentity, timeOfImpact, out rayHit) &&
                             rayHit.T > Toolbox.BigEpsilon)
                         {
-
                             if (instancedMesh.sidedness != TriangleSidedness.DoubleSided)
                             {
                                 Vector3 AB, AC;
@@ -175,13 +155,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                             }
                         }
                     }
+
                     PhysicsThreadResources.GiveBack(triangle);
                 }
-
-
-
             }
-
         }
 
 
@@ -191,12 +168,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal and friction forces.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (int i = 0; i < contactConstraint.frictionConstraints.Count; i++)
+            for (var i = 0; i < contactConstraint.frictionConstraints.Count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {
                     info.FrictionImpulse = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
-                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
+                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint
+                        .accumulatedImpulse;
                     break;
                 }
             }
@@ -210,12 +188,12 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 Vector3.Add(ref velocity, ref convex.entity.linearVelocity, out info.RelativeVelocity);
             }
             else
+            {
                 info.RelativeVelocity = new Vector3();
+            }
 
 
             info.Pair = this;
         }
-
     }
-
 }

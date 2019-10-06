@@ -8,18 +8,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class CompoundStaticMeshPairHandler : CompoundGroupPairHandler
     {
-       
+        private StaticMesh mesh;
 
-        StaticMesh mesh;
+        public override Collidable CollidableB => mesh;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return null; }
-        }
+        public override Entities.Entity EntityB => null;
 
         ///<summary>
         /// Initializes the pair handler.
@@ -48,14 +41,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             mesh = null;
-
-
         }
-
-
 
 
         protected override void UpdateContainedPairs()
@@ -65,15 +53,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             var overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
-                TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh, overlappedElements.Elements[i].Material, mesh.material);
+                TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh,
+                    overlappedElements.Elements[i].Material, mesh.material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
-
         }
-
-
     }
 }

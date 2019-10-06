@@ -8,17 +8,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class CompoundInstancedMeshPairHandler : CompoundGroupPairHandler
     {
-        InstancedMesh mesh;
+        private InstancedMesh mesh;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
+        public override Collidable CollidableB => mesh;
 
-        public override Entities.Entity EntityB
-        {
-            get { return null; }
-        }
+        public override Entities.Entity EntityB => null;
 
         ///<summary>
         /// Initializes the pair handler.
@@ -30,7 +24,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             mesh = entryA as InstancedMesh;
             if (mesh == null)
             {
-                mesh = entryB as InstancedMesh; 
+                mesh = entryB as InstancedMesh;
                 if (mesh == null)
                 {
                     throw new ArgumentException("Inappropriate types used to initialize pair.");
@@ -46,34 +40,24 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             mesh = null;
-
-
         }
-
 
 
         protected override void UpdateContainedPairs()
         {
             //Could go other way; get triangles in mesh that overlap the compound.
             //Could be faster sometimes depending on the way it's set up.
-            var overlappedElements = PhysicsResources.GetCompoundChildList(); 
+            var overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
-                TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh, overlappedElements.Elements[i].Material, mesh.material);
+                TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh,
+                    overlappedElements.Elements[i].Material, mesh.material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
-
-
-
         }
-
-
-
-
     }
 }

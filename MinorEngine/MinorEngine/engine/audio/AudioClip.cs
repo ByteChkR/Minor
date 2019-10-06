@@ -14,7 +14,7 @@ namespace MinorEngine.engine.audio
             AL.BufferData(Buffer, AudioManager.GetSoundFormat(channel, bits), data, data.Length, bitRate);
 
 
-            AL.GetBuffer(Buffer, ALGetBufferi.Size, out int bufSize);
+            AL.GetBuffer(Buffer, ALGetBufferi.Size, out var bufSize);
 
             BufferSize = bufSize;
         }

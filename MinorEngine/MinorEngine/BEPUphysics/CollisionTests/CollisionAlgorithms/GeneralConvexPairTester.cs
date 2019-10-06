@@ -2,7 +2,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
- 
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
@@ -21,11 +20,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// but may decrease quality of behavior for curved shapes.
         ///</summary>
         public static bool UseSimplexCaching;
+
         private CollisionState state = CollisionState.Separated;
         private CollisionState previousState = CollisionState.Separated;
 
-        Vector3 localSeparatingAxis;
-        CachedSimplex cachedSimplex;
+        private Vector3 localSeparatingAxis;
+        private CachedSimplex cachedSimplex;
 
         protected internal ConvexCollidable collidableA;
         protected internal ConvexCollidable collidableB;
@@ -33,23 +33,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         ///<summary>
         /// Gets the first collidable in the pair.
         ///</summary>
-        public ConvexCollidable CollidableA
-        {
-            get
-            {
-                return collidableA;
-            }
-        }
+        public ConvexCollidable CollidableA => collidableA;
+
         ///<summary>
         /// Gets the second collidable in the pair.
         ///</summary>
-        public ConvexCollidable CollidableB
-        {
-            get
-            {
-                return collidableB;
-            }
-        }
+        public ConvexCollidable CollidableB => collidableB;
 
 
         ///<summary>
@@ -86,11 +75,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             switch (state)
             {
                 case CollisionState.Separated:
-                    if (GJKToolbox.AreShapesIntersecting(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform, ref collidableB.worldTransform, ref localSeparatingAxis))
+                    if (GJKToolbox.AreShapesIntersecting(collidableA.Shape, collidableB.Shape,
+                        ref collidableA.worldTransform, ref collidableB.worldTransform, ref localSeparatingAxis))
                     {
                         state = CollisionState.ShallowContact;
                         return DoShallowContact(out contact);
                     }
+
                     contact = new ContactData();
                     return false;
                 case CollisionState.ShallowContact:
@@ -130,18 +121,22 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //if (sub.LengthSquared() < Toolbox.Epsilon)
 
             if (UseSimplexCaching)
-                GJKToolbox.GetClosestPoints(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform, ref collidableB.worldTransform, ref cachedSimplex, out closestA, out closestB);
+            {
+                GJKToolbox.GetClosestPoints(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform,
+                    ref collidableB.worldTransform, ref cachedSimplex, out closestA, out closestB);
+            }
             else
             {
                 //The initialization of the pair creates a pretty decent simplex to start from.
                 //Just don't try to update it.
-                CachedSimplex preInitializedSimplex = cachedSimplex;
-                GJKToolbox.GetClosestPoints(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform, ref collidableB.worldTransform, ref preInitializedSimplex, out closestA, out closestB);
+                var preInitializedSimplex = cachedSimplex;
+                GJKToolbox.GetClosestPoints(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform,
+                    ref collidableB.worldTransform, ref preInitializedSimplex, out closestA, out closestB);
             }
-            
+
             Vector3 displacement;
             Vector3.Subtract(ref closestB, ref closestA, out displacement);
-            float distanceSquared = displacement.LengthSquared();
+            var distanceSquared = displacement.LengthSquared();
 
             if (distanceSquared < Toolbox.Epsilon)
             {
@@ -150,7 +145,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             localDirection = displacement; //Use this as the direction for future deep contacts.
-            float margin = collidableA.Shape.collisionMargin + collidableB.Shape.collisionMargin;
+            var margin = collidableA.Shape.collisionMargin + collidableB.Shape.collisionMargin;
 
 
             if (distanceSquared < margin * margin)
@@ -159,31 +154,38 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 contact = new ContactData();
                 //Displacement is from A to B.  point = A + t * AB, where t = marginA / margin.
                 if (margin > Toolbox.Epsilon) //Avoid a NaN!
-                    Vector3.Multiply(ref displacement, collidableA.Shape.collisionMargin / margin, out contact.Position); //t * AB
+                {
+                    Vector3.Multiply(ref displacement, collidableA.Shape.collisionMargin / margin,
+                        out contact.Position); //t * AB
+                }
                 else
+                {
                     contact.Position = new Vector3();
+                }
 
                 Vector3.Add(ref closestA, ref contact.Position, out contact.Position); //A + t * AB.
 
                 contact.Normal = displacement;
-                float distance = (float)Math.Sqrt(distanceSquared);
+                var distance = (float) Math.Sqrt(distanceSquared);
                 Vector3.Divide(ref contact.Normal, distance, out contact.Normal);
                 contact.PenetrationDepth = margin - distance;
                 return true;
-
             }
+
             //Too shallow to make a contact- move back to separation.
             state = CollisionState.Separated;
             contact = new ContactData();
             return false;
         }
 
-        Vector3 localDirection;
+        private Vector3 localDirection;
+
         private bool DoDeepContact(out ContactData contact)
         {
-           
             #region Informed search
-            if (previousState == CollisionState.Separated) //If it was shallow before, then its closest points will be used to find the normal.
+
+            if (previousState == CollisionState.Separated
+            ) //If it was shallow before, then its closest points will be used to find the normal.
             {
                 //It's overlapping! Find the relative velocity at the point relative to the two objects.  The point is still in local space!
                 //Vector3 velocityA;
@@ -198,22 +200,32 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //The above takes into account angular velocity, but linear velocity alone is a lot more stable and does the job just fine.
                 if (collidableA.entity != null && collidableB.entity != null)
-                    Vector3.Subtract(ref collidableA.entity.linearVelocity, ref collidableB.entity.linearVelocity, out localDirection);
+                {
+                    Vector3.Subtract(ref collidableA.entity.linearVelocity, ref collidableB.entity.linearVelocity,
+                        out localDirection);
+                }
                 else
+                {
                     localDirection = localSeparatingAxis;
+                }
 
                 if (localDirection.LengthSquared() < Toolbox.Epsilon)
                 {
                     localDirection = Vector3.Up;
                 }
-
             }
-            if (MPRToolbox.GetContact(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform, ref collidableB.worldTransform, ref localDirection, out contact))
+
+            if (MPRToolbox.GetContact(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform,
+                ref collidableB.worldTransform, ref localDirection, out contact))
             {
                 if (contact.PenetrationDepth < collidableA.Shape.collisionMargin + collidableB.Shape.collisionMargin)
+                {
                     state = CollisionState.ShallowContact;
+                }
+
                 return true;
             }
+
             //This is rare, but could happen.
             state = CollisionState.Separated;
             return false;
@@ -283,9 +295,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //state = CollisionState.Separated;
             //contact = new ContactData();
             //return false;
+
             #endregion
 
             #region Testing
+
             //RigidTransform localTransformB;
             //MinkowskiToolbox.GetLocalTransform(ref collidableA.worldTransform, ref collidableB.worldTransform, out localTransformB); 
             //contact.Id = -1;
@@ -301,9 +315,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //contact.Normal = new Vector3();
             //contact.PenetrationDepth = 0;
             //return false;
+
             #endregion
 
             #region v0.15.2 and before
+
             //if (MPRToolbox.AreObjectsColliding(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform, ref collidableB.worldTransform, out contact))
             //{
             //    if (contact.PenetrationDepth < collidableA.Shape.collisionMargin + collidableB.Shape.collisionMargin)
@@ -313,8 +329,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             ////This is rare, but could happen.
             //state = CollisionState.Separated;
             //return false;
-            #endregion
 
+            #endregion
         }
 
         ///<summary>
@@ -324,9 +340,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         ///<param name="shapeB">Second shape in the pair.</param>
         public void Initialize(Collidable shapeA, Collidable shapeB)
         {
-            collidableA = (ConvexCollidable)shapeA;
-            collidableB = (ConvexCollidable)shapeB;
-            cachedSimplex = new CachedSimplex { State = SimplexState.Point };// new CachedSimplex(informationA.Shape, informationB.Shape, ref informationA.worldTransform, ref informationB.worldTransform);
+            collidableA = (ConvexCollidable) shapeA;
+            collidableB = (ConvexCollidable) shapeB;
+            cachedSimplex = new CachedSimplex
+            {
+                State = SimplexState.Point
+            }; // new CachedSimplex(informationA.Shape, informationB.Shape, ref informationA.worldTransform, ref informationB.worldTransform);
         }
 
         ///<summary>
@@ -343,14 +362,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         }
 
 
-        enum CollisionState
+        private enum CollisionState
         {
             Separated,
             ShallowContact,
             DeepContact
         }
-
-
     }
-
 }

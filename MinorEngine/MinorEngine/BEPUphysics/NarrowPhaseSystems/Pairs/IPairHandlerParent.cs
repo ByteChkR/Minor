@@ -1,5 +1,5 @@
-﻿using MinorEngine.BEPUphysics.Constraints;
-using MinorEngine.BEPUphysics.CollisionTests;
+﻿using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.Constraints;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {

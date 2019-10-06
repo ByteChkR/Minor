@@ -48,12 +48,36 @@ namespace MinorEngine.CLHelperLibrary
 
         private static int GetVectorNum(string dtStr)
         {
-            if (!char.IsNumber(dtStr.Last())) return 1;
-            if (dtStr.Last() == '2') return 2;
-            if (dtStr.Last() == '3') return 3;
-            if (dtStr.Last() == '4') return 4;
-            if (dtStr.Last() == '8') return 8;
-            if (dtStr.Last() == '6') return 16;
+            if (!char.IsNumber(dtStr.Last()))
+            {
+                return 1;
+            }
+
+            if (dtStr.Last() == '2')
+            {
+                return 2;
+            }
+
+            if (dtStr.Last() == '3')
+            {
+                return 3;
+            }
+
+            if (dtStr.Last() == '4')
+            {
+                return 4;
+            }
+
+            if (dtStr.Last() == '8')
+            {
+                return 8;
+            }
+
+            if (dtStr.Last() == '6')
+            {
+                return 16;
+            }
+
             return 0;
         }
 
@@ -87,25 +111,25 @@ namespace MinorEngine.CLHelperLibrary
 
 #else
 
-            int vnum = GetVectorNum(_genType);
-            string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
+            var vnum = GetVectorNum(_genType);
+            var lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
                 vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
-            Dictionary<string, bool> defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
-            string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
-            string[] kernelNames = FindKernelNames(source);
+            var defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
+            var source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
+            var kernelNames = FindKernelNames(source);
 
             ClProgramHandle = CL.CreateCLProgramFromSource(source);
 #endif
 
 
-            foreach (string kernelName in kernelNames)
+            foreach (var kernelName in kernelNames)
             {
-                Kernel k = CL.CreateKernelFromName(ClProgramHandle, kernelName);
-                int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
+                var k = CL.CreateKernelFromName(ClProgramHandle, kernelName);
+                var kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = kernelNameIndex == -1
                     ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture)
                     : kernelNameIndex;
-                KernelParameter[] parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
+                var parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
                     kernelNameIndex,
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
 
@@ -121,24 +145,36 @@ namespace MinorEngine.CLHelperLibrary
         /// <returns>A list of kernel names</returns>
         private static string[] FindKernelNames(string source)
         {
-            List<string> kernelNames = new List<string>();
-            string[] s = source.Split(' ');
-            List<string> parts = new List<string>();
-            foreach (string part in s) parts.AddRange(part.Split('\n'));
-            for (int i = 0; i < parts.Count; i++)
+            var kernelNames = new List<string>();
+            var s = source.Split(' ');
+            var parts = new List<string>();
+            foreach (var part in s)
+            {
+                parts.AddRange(part.Split('\n'));
+            }
+
+            for (var i = 0; i < parts.Count; i++)
+            {
                 if (parts[i] == "__kernel" || parts[i] == "kernel")
+                {
                     if (i < parts.Count - 2 && parts[i + 1] == "void")
                     {
                         if (parts[i + 2].Contains('('))
+                        {
                             kernelNames.Add(
                                 parts[i + 2]. //The Kernel name
                                     Substring(0,
                                         parts[i + 2].IndexOf('(')
                                     )
                             );
+                        }
                         else
+                        {
                             kernelNames.Add(parts[i + 2]);
+                        }
                     }
+                }
+            }
 
             return kernelNames.ToArray();
         }

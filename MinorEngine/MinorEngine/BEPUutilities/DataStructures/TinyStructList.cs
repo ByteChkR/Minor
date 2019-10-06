@@ -27,10 +27,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <summary>
         /// Gets the current number of elements in the list.
         /// </summary>
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count => count;
 
         /// <summary>
         /// Creates a string representation of the list.
@@ -38,7 +35,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <returns>String representation of the list.</returns>
         public override string ToString()
         {
-            return "TinyStructList<" + typeof (T) + ">, Count: " + count;
+            return "TinyStructList<" + typeof(T) + ">, Count: " + count;
         }
 
         /// <summary>
@@ -78,6 +75,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 default:
                     return false;
             }
+
             count++;
             return true;
         }
@@ -101,9 +99,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             if (index > count - 1 || index < 0)
             {
-                item = default(T);
+                item = default;
                 return false;
             }
+
             switch (index)
             {
                 case 0:
@@ -132,7 +131,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                     return true;
                 default:
                     //Curious!
-                    item = default(T);
+                    item = default;
                     return false;
             }
         }
@@ -146,21 +145,45 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             //This isn't a super fast operation.
             if (entry1.Equals(item))
+            {
                 return 0;
+            }
+
             if (entry2.Equals(item))
+            {
                 return 1;
+            }
+
             if (entry3.Equals(item))
+            {
                 return 2;
+            }
+
             if (entry4.Equals(item))
+            {
                 return 3;
+            }
+
             if (entry5.Equals(item))
+            {
                 return 4;
+            }
+
             if (entry6.Equals(item))
+            {
                 return 5;
+            }
+
             if (entry7.Equals(item))
+            {
                 return 6;
+            }
+
             if (entry8.Equals(item))
+            {
                 return 7;
+            }
+
             return -1;
         }
 
@@ -172,12 +195,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool Remove(ref T item)
         {
             //Identity-based removes aren't a super high priority feature, so can be a little slower.
-            int index = IndexOf(ref item);
+            var index = IndexOf(ref item);
             if (index != -1)
             {
                 RemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -190,7 +214,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool RemoveAt(int index)
         {
             if (index > count - 1 || index < 0)
+            {
                 return false;
+            }
+
             switch (index)
             {
                 case 0:
@@ -236,6 +263,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                     entry7 = entry8;
                     break;
             }
+
             count--;
             return true;
         }
@@ -253,6 +281,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
                 return false;
             }
+
             switch (index)
             {
                 case 0:
@@ -282,6 +311,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 default:
                     return false;
             }
+
             return true;
         }
     }

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.OtherSpaceStages;
 
@@ -15,27 +12,29 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     /// </summary>
     public class CompoundEventManager : ContactEventManager<EntityCollidable>
     {
-
         protected override void DispatchEvents()
         {
             //Go through all children and dispatch events.
             //They won't be touched by the primary event manager otherwise.
-            var compound = this.owner as CompoundCollidable;
+            var compound = owner as CompoundCollidable;
             if (compound != null)
             {
                 foreach (var child in compound.children)
                 {
                     var deferredEventCreator = child.CollisionInformation.events as IDeferredEventCreator;
                     if (deferredEventCreator.IsActive)
+                    {
                         deferredEventCreator.DispatchEvents();
+                    }
                 }
             }
             else
             {
-                throw new InvalidOperationException("Cannot use a CompoundEventManager with anything but a CompoundCollidable.");
+                throw new InvalidOperationException(
+                    "Cannot use a CompoundEventManager with anything but a CompoundCollidable.");
             }
+
             base.DispatchEvents();
         }
     }
-
 }

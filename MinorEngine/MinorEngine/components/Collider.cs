@@ -1,9 +1,5 @@
-﻿using MinorEngine.BEPUphysics;
-using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
+﻿using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUphysics.Entities.Prefabs;
 using MinorEngine.BEPUutilities;
 using MinorEngine.debug;
 using MinorEngine.engine.components;
@@ -18,17 +14,17 @@ namespace MinorEngine.components
         public Entity PhysicsCollider { get; }
         public RigidBodyConstraints ColliderConstraints { get; set; }
         public int CollisionLayer { get; set; }
-        private bool _colliderRemoved = false;
+        private bool _colliderRemoved;
 
         public bool isTrigger
         {
             get => PhysicsCollider.CollisionInformation.CollisionRules.Personal == CollisionRule.NoSolver;
-            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal = value ? CollisionRule.NoSolver : CollisionRule.Normal;
+            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal =
+                value ? CollisionRule.NoSolver : CollisionRule.Normal;
         }
 
         public Collider(Entity shape, string layerName) : this(shape, LayerManager.NameToLayer(layerName))
         {
-
         }
 
         public Collider(Entity shape, int layerID)
@@ -41,7 +37,6 @@ namespace MinorEngine.components
 
         ~Collider()
         {
-
             if (!_colliderRemoved)
             {
                 Logger.Crash(new PossibleMemoryLeakException("Collider Component"), true);
@@ -67,6 +62,7 @@ namespace MinorEngine.components
         {
             PhysicsCollider.LinearVelocity = vel;
         }
+
         public void SetVelocityAngular(Vector3 vel)
         {
             PhysicsCollider.AngularVelocity = vel;
@@ -79,10 +75,12 @@ namespace MinorEngine.components
             {
                 veel.X = 0;
             }
+
             if ((ColliderConstraints.PositionConstraints & FreezeConstraints.Y) != 0)
             {
                 veel.Y = 0;
             }
+
             if ((ColliderConstraints.PositionConstraints & FreezeConstraints.Z) != 0)
             {
                 veel.Y = 0;
@@ -93,17 +91,18 @@ namespace MinorEngine.components
 
         private void enforceRotationConstraints()
         {
-            Matrix3x3 veel = PhysicsCollider.LocalInertiaTensorInverse;
+            var veel = PhysicsCollider.LocalInertiaTensorInverse;
 
             if ((ColliderConstraints.RotationConstraints & FreezeConstraints.X) != 0)
             {
                 veel.Left = new BEPUutilities.Vector3(0, 0, 0);
-
             }
+
             if ((ColliderConstraints.RotationConstraints & FreezeConstraints.Y) != 0)
             {
                 veel.Up = new BEPUutilities.Vector3(0, 0, 0);
             }
+
             if ((ColliderConstraints.RotationConstraints & FreezeConstraints.Z) != 0)
             {
                 veel.Backward = new BEPUutilities.Vector3(0, 0, 0);

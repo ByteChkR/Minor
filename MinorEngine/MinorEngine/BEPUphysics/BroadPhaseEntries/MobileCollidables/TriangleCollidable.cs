@@ -1,6 +1,5 @@
 ﻿using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
 {

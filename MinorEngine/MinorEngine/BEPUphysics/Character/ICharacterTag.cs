@@ -19,8 +19,7 @@ namespace MinorEngine.BEPUphysics.Character
     /// </summary>
     public class CharacterSynchronizer : ICharacterTag
     {
-
-        Entity body;
+        private Entity body;
 
         /// <summary>
         /// Constructs a new character tag.
@@ -34,9 +33,6 @@ namespace MinorEngine.BEPUphysics.Character
         /// <summary>
         /// Gets the unique instance identifier for this character.
         /// </summary>
-        public long InstanceId
-        {
-            get { return body.InstanceId; }
-        }
+        public long InstanceId => body.InstanceId;
     }
 }

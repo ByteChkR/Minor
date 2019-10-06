@@ -1,12 +1,7 @@
 ﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseSystems;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUphysics.Constraints.Collision;
-using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
 using MinorEngine.BEPUphysics.CollisionTests;
-using System;
-using MinorEngine.BEPUphysics.Constraints.SolverGroups;
+using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Materials;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -20,15 +15,18 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// Gets the first collidable associated with the pair.
         /// </summary>
         public abstract Collidable CollidableA { get; }
+
         /// <summary>
         /// Gets the second collidable associated with the pair.
         /// </summary>
         public abstract Collidable CollidableB { get; }
+
         //Entities could be null!
         /// <summary>
         /// Gets the first entity associated with the pair.  This could be null if no entity is associated with CollidableA.
         /// </summary>
-        public abstract Entity EntityA { get; }        
+        public abstract Entity EntityA { get; }
+
         /// <summary>
         /// Gets the second entity associated with the pair.  This could be null if no entity is associated with CollidableB.
         /// </summary>
@@ -38,13 +36,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// Index of this pair in CollidableA's pairs list.
         /// </summary>
         internal int listIndexA = -1;
+
         /// <summary>
         /// Index of this pair in CollidableB's pairs list.
         /// </summary>
         internal int listIndexB = -1;
 
         protected internal abstract int ContactCount { get; }
-
 
 
         protected internal int previousContactCount;
@@ -57,18 +55,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
 
         protected internal float timeOfImpact = 1;
+
         ///<summary>
         /// Gets the last computed time of impact of the pair handler.
         /// This is only computed when one of the members is a continuously
         /// updated object.
         ///</summary>
-        public float TimeOfImpact
-        {
-            get
-            {
-                return timeOfImpact;
-            }
-        }
+        public float TimeOfImpact => timeOfImpact;
 
         ///<summary>
         /// Updates the time of impact for the pair.
@@ -79,19 +72,14 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
 
         protected bool suppressEvents;
+
         ///<summary>
         /// Gets or sets whether or not to suppress events from this pair handler.
         ///</summary>
         public bool SuppressEvents
         {
-            get
-            {
-                return suppressEvents;
-            }
-            set
-            {
-                suppressEvents = value;
-            }
+            get => suppressEvents;
+            set => suppressEvents = value;
         }
 
         ///<summary>
@@ -101,7 +89,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// hierarchies of pairs for compound collisions.
         ///</summary>
         public IPairHandlerParent Parent { get; set; }
-
 
 
         ///<summary>
@@ -141,9 +128,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 CollidableA.EventTriggerer.OnContactCreated(CollidableB, this, contact);
                 CollidableB.EventTriggerer.OnContactCreated(CollidableA, this, contact);
             }
-            if (Parent != null)
-                Parent.OnContactAdded(contact);
 
+            if (Parent != null)
+            {
+                Parent.OnContactAdded(contact);
+            }
         }
 
         protected virtual void OnContactRemoved(Contact contact)
@@ -154,9 +143,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 CollidableA.EventTriggerer.OnContactRemoved(CollidableB, this, contact);
                 CollidableB.EventTriggerer.OnContactRemoved(CollidableA, this, contact);
             }
-            if (Parent != null)
-                Parent.OnContactRemoved(contact);
 
+            if (Parent != null)
+            {
+                Parent.OnContactRemoved(contact);
+            }
         }
 
 
@@ -165,7 +156,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             //Child types remove contacts from the pair handler and call OnContactRemoved.
             //Child types manage the removal of the constraint from the space, if necessary.
 
@@ -234,7 +224,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<summary>
         /// Gets a list of the contacts in the pair and their associated constraint information.
         ///</summary>
-        public ContactCollection Contacts { get; private set; }
+        public ContactCollection Contacts { get; }
 
         /// <summary>
         /// Gets whether or not this pair has any contacts in it with nonnegative penetration depths.
@@ -247,8 +237,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 foreach (var contact in Contacts)
                 {
                     if (contact.Contact.PenetrationDepth >= 0)
+                    {
                         return true;
+                    }
                 }
+
                 return false;
             }
         }

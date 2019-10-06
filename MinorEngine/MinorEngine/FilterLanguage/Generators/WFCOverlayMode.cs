@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using Common;
 using MinorEngine.debug;
 
 namespace MinorEngine.FilterLanguage.Generators
@@ -31,46 +30,68 @@ namespace MinorEngine.FilterLanguage.Generators
 
             var bitmap = new Bitmap(filename);
             int SMX = bitmap.Width, SMY = bitmap.Height;
-            byte[,] sample = new byte[SMX, SMY];
+            var sample = new byte[SMX, SMY];
             _colors = new List<Color>();
 
-            for (int y = 0; y < SMY; y++)
-            for (int x = 0; x < SMX; x++)
+            for (var y = 0; y < SMY; y++)
+            for (var x = 0; x < SMX; x++)
             {
-                Color color = bitmap.GetPixel(x, y);
+                var color = bitmap.GetPixel(x, y);
 
-                int i = 0;
+                var i = 0;
                 foreach (var c in _colors)
                 {
-                    if (c == color) break;
+                    if (c == color)
+                    {
+                        break;
+                    }
+
                     i++;
                 }
 
-                if (i == _colors.Count) _colors.Add(color);
+                if (i == _colors.Count)
+                {
+                    _colors.Add(color);
+                }
+
                 sample[x, y] = (byte) i;
             }
 
             Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log);
-            int C = _colors.Count;
-            long W = WaveCollapseUtils.Power(C, N * N);
+            var C = _colors.Count;
+            var W = WaveCollapseUtils.Power(C, N * N);
 
             byte[] pattern(Func<int, int, byte> f)
             {
-                byte[] result = new byte[N * N];
-                for (int y = 0; y < N; y++)
-                for (int x = 0; x < N; x++)
+                var result = new byte[N * N];
+                for (var y = 0; y < N; y++)
+                for (var x = 0; x < N; x++)
+                {
                     result[x + y * N] = f(x, y);
+                }
+
                 return result;
             }
 
-            byte[] patternFromSample(int x, int y) => pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
-            byte[] rotate(byte[] p) => pattern((x, y) => p[N - 1 - y + x * N]);
-            byte[] reflect(byte[] p) => pattern((x, y) => p[N - 1 - x + y * N]);
+            byte[] patternFromSample(int x, int y)
+            {
+                return pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
+            }
+
+            byte[] rotate(byte[] p)
+            {
+                return pattern((x, y) => p[N - 1 - y + x * N]);
+            }
+
+            byte[] reflect(byte[] p)
+            {
+                return pattern((x, y) => p[N - 1 - x + y * N]);
+            }
 
             long index(byte[] p)
             {
                 long result = 0, power = 1;
-                for (int i = 0; i < p.Length; i++)
+                for (var i = 0; i < p.Length; i++)
                 {
                     result += p[p.Length - 1 - i] * power;
                     power *= C;
@@ -82,14 +103,17 @@ namespace MinorEngine.FilterLanguage.Generators
             byte[] patternFromIndex(long ind)
             {
                 long residue = ind, power = W;
-                byte[] result = new byte[N * N];
+                var result = new byte[N * N];
 
-                for (int i = 0; i < result.Length; i++)
+                for (var i = 0; i < result.Length; i++)
                 {
                     power /= C;
-                    int count = 0;
+                    var count = 0;
 
-                    if (power == 0) continue;
+                    if (power == 0)
+                    {
+                        continue;
+                    }
 
                     while (residue >= power)
                     {
@@ -103,13 +127,13 @@ namespace MinorEngine.FilterLanguage.Generators
                 return result;
             }
 
-            Dictionary<long, int> weights = new Dictionary<long, int>();
-            List<long> ordering = new List<long>();
+            var weights = new Dictionary<long, int>();
+            var ordering = new List<long>();
 
-            for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
-            for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
+            for (var y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
+            for (var x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
             {
-                byte[][] ps = new byte[8][];
+                var ps = new byte[8][];
 
                 ps[0] = patternFromSample(x, y);
                 ps[1] = reflect(ps[0]);
@@ -120,9 +144,9 @@ namespace MinorEngine.FilterLanguage.Generators
                 ps[6] = rotate(ps[4]);
                 ps[7] = reflect(ps[6]);
 
-                for (int k = 0; k < symmetry; k++)
+                for (var k = 0; k < symmetry; k++)
                 {
-                    long ind = index(ps[k]);
+                    var ind = index(ps[k]);
                     if (weights.ContainsKey(ind))
                     {
                         weights[ind]++;
@@ -140,8 +164,8 @@ namespace MinorEngine.FilterLanguage.Generators
             _patterns = new byte[T][];
             Weights = new double[T];
 
-            int counter = 0;
-            foreach (long w in ordering)
+            var counter = 0;
+            foreach (var w in ordering)
             {
                 _patterns[counter] = patternFromIndex(w);
                 Weights[counter] = weights[w];
@@ -154,74 +178,104 @@ namespace MinorEngine.FilterLanguage.Generators
                     xmax = dx < 0 ? dx + N : N,
                     ymin = dy < 0 ? 0 : dy,
                     ymax = dy < 0 ? dy + N : N;
-                for (int y = ymin; y < ymax; y++)
-                for (int x = xmin; x < xmax; x++)
+                for (var y = ymin; y < ymax; y++)
+                for (var x = xmin; x < xmax; x++)
+                {
                     if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
+                    {
                         return false;
+                    }
+                }
+
                 return true;
             }
 
             Propagator = new int[4][][];
-            for (int d = 0; d < 4; d++)
+            for (var d = 0; d < 4; d++)
             {
                 Propagator[d] = new int[T][];
-                for (int t = 0; t < T; t++)
+                for (var t = 0; t < T; t++)
                 {
-                    List<int> list = new List<int>();
-                    for (int t2 = 0; t2 < T; t2++)
+                    var list = new List<int>();
+                    for (var t2 = 0; t2 < T; t2++)
+                    {
                         if (agrees(_patterns[t], _patterns[t2], Dx[d], Dy[d]))
+                        {
                             list.Add(t2);
+                        }
+                    }
+
                     Propagator[d][t] = new int[list.Count];
-                    for (int c = 0; c < list.Count; c++) Propagator[d][t][c] = list[c];
+                    for (var c = 0; c < list.Count; c++)
+                    {
+                        Propagator[d][t][c] = list[c];
+                    }
                 }
             }
         }
 
-        protected override bool OnBoundary(int x, int y) =>
-            !Periodic && (x + _n > Fmx || y + _n > Fmy || x < 0 || y < 0);
+        protected override bool OnBoundary(int x, int y)
+        {
+            return !Periodic && (x + _n > Fmx || y + _n > Fmy || x < 0 || y < 0);
+        }
 
         public override Bitmap Graphics()
         {
-            Bitmap result = new Bitmap(Fmx, Fmy);
-            int[] bitmapData = new int[result.Height * result.Width];
+            var result = new Bitmap(Fmx, Fmy);
+            var bitmapData = new int[result.Height * result.Width];
 
             if (Observed != null)
-                for (int y = 0; y < Fmy; y++)
+            {
+                for (var y = 0; y < Fmy; y++)
                 {
-                    int dy = y < Fmy - _n + 1 ? 0 : _n - 1;
-                    for (int x = 0; x < Fmx; x++)
+                    var dy = y < Fmy - _n + 1 ? 0 : _n - 1;
+                    for (var x = 0; x < Fmx; x++)
                     {
-                        int dx = x < Fmx - _n + 1 ? 0 : _n - 1;
-                        Color c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
+                        var dx = x < Fmx - _n + 1 ? 0 : _n - 1;
+                        var c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
                         bitmapData[x + y * Fmx] = unchecked((int) 0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
                     }
                 }
+            }
             else
-                for (int i = 0; i < Wave.Length; i++)
+            {
+                for (var i = 0; i < Wave.Length; i++)
                 {
                     int contributors = 0, r = 0, g = 0, b = 0;
                     int x = i % Fmx, y = i / Fmx;
 
-                    for (int dy = 0; dy < _n; dy++)
-                    for (int dx = 0; dx < _n; dx++)
+                    for (var dy = 0; dy < _n; dy++)
+                    for (var dx = 0; dx < _n; dx++)
                     {
-                        int sx = x - dx;
-                        if (sx < 0) sx += Fmx;
+                        var sx = x - dx;
+                        if (sx < 0)
+                        {
+                            sx += Fmx;
+                        }
 
-                        int sy = y - dy;
-                        if (sy < 0) sy += Fmy;
+                        var sy = y - dy;
+                        if (sy < 0)
+                        {
+                            sy += Fmy;
+                        }
 
-                        int s = sx + sy * Fmx;
-                        if (OnBoundary(sx, sy)) continue;
-                        for (int t = 0; t < T; t++)
+                        var s = sx + sy * Fmx;
+                        if (OnBoundary(sx, sy))
+                        {
+                            continue;
+                        }
+
+                        for (var t = 0; t < T; t++)
+                        {
                             if (Wave[s][t])
                             {
                                 contributors++;
-                                Color color = _colors[_patterns[t][dx + dy * _n]];
+                                var color = _colors[_patterns[t][dx + dy * _n]];
                                 r += color.R;
                                 g += color.G;
                                 b += color.B;
                             }
+                        }
                     }
 
                     if (contributors == 0)
@@ -231,8 +285,9 @@ namespace MinorEngine.FilterLanguage.Generators
                     }
 
                     bitmapData[i] = unchecked((int) 0xff000000 | ((r / contributors) << 16) |
-                                              ((g / contributors) << 8) | b / contributors);
+                                              ((g / contributors) << 8) | (b / contributors));
                 }
+            }
 
             var bits = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly,
                 PixelFormat.Format32bppArgb);
@@ -248,12 +303,20 @@ namespace MinorEngine.FilterLanguage.Generators
 
             if (_ground != 0)
             {
-                for (int x = 0; x < Fmx; x++)
+                for (var x = 0; x < Fmx; x++)
                 {
-                    for (int t = 0; t < T; t++)
+                    for (var t = 0; t < T; t++)
+                    {
                         if (t != _ground)
+                        {
                             Ban(x + (Fmy - 1) * Fmx, t);
-                    for (int y = 0; y < Fmy - 1; y++) Ban(x + y * Fmx, _ground);
+                        }
+                    }
+
+                    for (var y = 0; y < Fmy - 1; y++)
+                    {
+                        Ban(x + y * Fmx, _ground);
+                    }
                 }
 
                 Propagate();

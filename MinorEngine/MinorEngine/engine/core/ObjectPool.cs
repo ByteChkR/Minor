@@ -11,6 +11,7 @@ namespace MinorEngine.engine.core
         public bool IsUsed { get; private set; }
         public ObjectPool<T> ContainingPool { get; }
         public int PoolHandle { get; }
+
         public PooledObject(T value, ObjectPool<T> containingPool, int poolHandle)
         {
             Object = value;
@@ -33,8 +34,6 @@ namespace MinorEngine.engine.core
         {
             return pooledInstance.Object;
         }
-
-
     }
 
     public class ObjectPool<T> : IDisposable where T : IDisposable
@@ -42,14 +41,21 @@ namespace MinorEngine.engine.core
         public delegate T CreateNew();
 
         private List<PooledObject<T>> _InternalList = new List<PooledObject<T>>();
-        private int _nextID = 0;
+        private int _nextID;
         private int _maxItems;
         private CreateNew _Factory;
+
         public ObjectPool(int size, int maxSize, CreateNew factory)
         {
-            if (size > maxSize) Logger.Crash(new ObjectPoolException("Object Pool size is bigger than its defined max size."), true);
-            if (factory == null) Logger.Crash(new ObjectPoolException("No Factory passted to ObjectPool Constructor"), false);
+            if (size > maxSize)
+            {
+                Logger.Crash(new ObjectPoolException("Object Pool size is bigger than its defined max size."), true);
+            }
 
+            if (factory == null)
+            {
+                Logger.Crash(new ObjectPoolException("No Factory passted to ObjectPool Constructor"), false);
+            }
 
 
             _Factory = factory;
@@ -69,9 +75,9 @@ namespace MinorEngine.engine.core
 
         private void InitializeSize(int size)
         {
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
-                T ret = _Factory();
+                var ret = _Factory();
 
                 _InternalList.Add(new PooledObject<T>(ret, this, i));
             }
@@ -79,14 +85,20 @@ namespace MinorEngine.engine.core
 
         private int findNext(int startidx)
         {
-            for (int i = startidx; i < _InternalList.Count; i++)
+            for (var i = startidx; i < _InternalList.Count; i++)
             {
-                if (!_InternalList[i].IsUsed) return i;
+                if (!_InternalList[i].IsUsed)
+                {
+                    return i;
+                }
             }
 
-            for (int i = 0; i < startidx - 1; i++)
+            for (var i = 0; i < startidx - 1; i++)
             {
-                if (!_InternalList[i].IsUsed) return i;
+                if (!_InternalList[i].IsUsed)
+                {
+                    return i;
+                }
             }
 
             return -1;
@@ -99,12 +111,11 @@ namespace MinorEngine.engine.core
                 _nextID = 0;
             }
 
-            int id = findNext(_nextID);
+            var id = findNext(_nextID);
             if (id == -1 && _InternalList.Count < _maxItems) //No free objects found
             {
                 id = _InternalList.Count;
                 _InternalList.Add(new PooledObject<T>(_Factory(), this, id));
-
             }
 
             return id;
@@ -120,11 +131,11 @@ namespace MinorEngine.engine.core
 
         public PooledObject<T> Take()
         {
-            int id = GetFreeID();
+            var id = GetFreeID();
             if (id == -1)
             {
                 Logger.Log("Object Pool is full, returning Unmanaged Instance.", DebugChannel.Warning);
-                PooledObject<T> item = new PooledObject<T>(_Factory(), null, -1);
+                var item = new PooledObject<T>(_Factory(), null, -1);
 
                 return item;
             }
@@ -135,7 +146,7 @@ namespace MinorEngine.engine.core
 
         public void Clean()
         {
-            for (int i = _InternalList.Count - 1; i >= 0; i--)
+            for (var i = _InternalList.Count - 1; i >= 0; i--)
             {
                 if (!_InternalList[i].IsUsed)
                 {
@@ -147,13 +158,12 @@ namespace MinorEngine.engine.core
 
         public void Dispose()
         {
-            for (int i = 0; i < _InternalList.Count; i++)
+            for (var i = 0; i < _InternalList.Count; i++)
             {
                 _InternalList[i].Object.Dispose();
             }
 
             _InternalList.Clear();
         }
-
     }
 }

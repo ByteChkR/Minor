@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUphysics.DeactivationManagement
+﻿namespace MinorEngine.BEPUphysics.DeactivationManagement
 {
     /// <summary>
     /// Denotes a class which owns a simulation island connection.
@@ -13,9 +8,6 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         /// <summary>
         /// Gets the connection associated with the object.
         /// </summary>
-        SimulationIslandConnection SimulationIslandConnection
-        {
-            get;
-        }
+        SimulationIslandConnection SimulationIslandConnection { get; }
     }
 }

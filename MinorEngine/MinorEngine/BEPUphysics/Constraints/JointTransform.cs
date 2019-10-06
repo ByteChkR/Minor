@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints
 {
@@ -20,10 +19,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <summary>
         /// Gets the primary axis of the transform in local space.
         /// </summary>
-        public Vector3 LocalPrimaryAxis
-        {
-            get { return localPrimaryAxis; }
-        }
+        public Vector3 LocalPrimaryAxis => localPrimaryAxis;
 
         /// <summary>
         /// Gets or sets the local transform of the basis.
@@ -35,39 +31,30 @@ namespace MinorEngine.BEPUphysics.Constraints
                 var toReturn = new Matrix3x3 {Right = localXAxis, Up = localYAxis, Backward = localPrimaryAxis};
                 return toReturn;
             }
-            set { SetLocalAxes(value); }
+            set => SetLocalAxes(value);
         }
 
         /// <summary>
         /// Gets the X axis of the transform in local space.
         /// </summary>
-        public Vector3 LocalXAxis
-        {
-            get { return localXAxis; }
-        }
+        public Vector3 LocalXAxis => localXAxis;
 
         /// <summary>
         /// Gets the Y axis of the transform in local space.
         /// </summary>
-        public Vector3 LocalYAxis
-        {
-            get { return localYAxis; }
-        }
+        public Vector3 LocalYAxis => localYAxis;
 
         /// <summary>
         /// Gets the primary axis of the transform.
         /// </summary>
-        public Vector3 PrimaryAxis
-        {
-            get { return primaryAxis; }
-        }
+        public Vector3 PrimaryAxis => primaryAxis;
 
         /// <summary>
         /// Gets or sets the rotation matrix used by the joint transform to convert local space axes to world space.
         /// </summary>
         public Matrix3x3 RotationMatrix
         {
-            get { return rotationMatrix; }
+            get => rotationMatrix;
             set
             {
                 rotationMatrix = value;
@@ -85,24 +72,18 @@ namespace MinorEngine.BEPUphysics.Constraints
                 var toReturn = new Matrix3x3 {Right = xAxis, Up = yAxis, Backward = primaryAxis};
                 return toReturn;
             }
-            set { SetWorldAxes(value); }
+            set => SetWorldAxes(value);
         }
 
         /// <summary>
         /// Gets the X axis of the transform.
         /// </summary>
-        public Vector3 XAxis
-        {
-            get { return xAxis; }
-        }
+        public Vector3 XAxis => xAxis;
 
         /// <summary>
         /// Gets the Y axis of the transform.
         /// </summary>
-        public Vector3 YAxis
-        {
-            get { return yAxis; }
-        }
+        public Vector3 YAxis => yAxis;
 
 
         /// <summary>
@@ -130,7 +111,10 @@ namespace MinorEngine.BEPUphysics.Constraints
             if (Math.Abs(Vector3.Dot(primaryAxis, xAxis)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(primaryAxis, yAxis)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(xAxis, yAxis)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            }
 
             localPrimaryAxis = Vector3.Normalize(primaryAxis);
             localXAxis = Vector3.Normalize(xAxis);
@@ -150,7 +134,10 @@ namespace MinorEngine.BEPUphysics.Constraints
             if (Math.Abs(Vector3.Dot(matrix.Backward, matrix.Right)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(matrix.Backward, matrix.Up)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(matrix.Right, matrix.Up)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            }
 
             localPrimaryAxis = Vector3.Normalize(matrix.Backward);
             localXAxis = Vector3.Normalize(matrix.Right);
@@ -183,7 +170,10 @@ namespace MinorEngine.BEPUphysics.Constraints
             if (Math.Abs(Vector3.Dot(primaryAxis, xAxis)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(primaryAxis, yAxis)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(xAxis, yAxis)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            }
 
             this.primaryAxis = Vector3.Normalize(primaryAxis);
             this.xAxis = Vector3.Normalize(xAxis);
@@ -205,14 +195,17 @@ namespace MinorEngine.BEPUphysics.Constraints
             if (Math.Abs(Vector3.Dot(matrix.Backward, matrix.Right)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(matrix.Backward, matrix.Up)) > Toolbox.BigEpsilon ||
                 Math.Abs(Vector3.Dot(matrix.Right, matrix.Up)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform do not form an orthonormal basis.  Ensure that each axis is perpendicular to the other two.");
+            }
 
             primaryAxis = Vector3.Normalize(matrix.Backward);
             xAxis = Vector3.Normalize(matrix.Right);
             yAxis = Vector3.Normalize(matrix.Up);
-            Matrix3x3.TransformTranspose(ref this.primaryAxis, ref rotationMatrix, out localPrimaryAxis);
-            Matrix3x3.TransformTranspose(ref this.xAxis, ref rotationMatrix, out localXAxis);
-            Matrix3x3.TransformTranspose(ref this.yAxis, ref rotationMatrix, out localYAxis);
+            Matrix3x3.TransformTranspose(ref primaryAxis, ref rotationMatrix, out localPrimaryAxis);
+            Matrix3x3.TransformTranspose(ref xAxis, ref rotationMatrix, out localXAxis);
+            Matrix3x3.TransformTranspose(ref yAxis, ref rotationMatrix, out localYAxis);
         }
 
         internal void ComputeWorldSpaceAxes()
@@ -237,33 +230,24 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <summary>
         /// Gets the primary axis of the transform in local space.
         /// </summary>
-        public Vector3 LocalPrimaryAxis
-        {
-            get { return localPrimaryAxis; }
-        }
+        public Vector3 LocalPrimaryAxis => localPrimaryAxis;
 
         /// <summary>
         /// Gets the X axis of the transform in local space.
         /// </summary>
-        public Vector3 LocalXAxis
-        {
-            get { return localXAxis; }
-        }
+        public Vector3 LocalXAxis => localXAxis;
 
         /// <summary>
         /// Gets the primary axis of the transform.
         /// </summary>
-        public Vector3 PrimaryAxis
-        {
-            get { return primaryAxis; }
-        }
+        public Vector3 PrimaryAxis => primaryAxis;
 
         /// <summary>
         /// Gets or sets the rotation matrix used by the joint transform to convert local space axes to world space.
         /// </summary>
         public Matrix3x3 RotationMatrix
         {
-            get { return rotationMatrix; }
+            get => rotationMatrix;
             set
             {
                 rotationMatrix = value;
@@ -274,10 +258,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <summary>
         /// Gets the X axis of the transform.
         /// </summary>
-        public Vector3 XAxis
-        {
-            get { return xAxis; }
-        }
+        public Vector3 XAxis => xAxis;
 
 
         /// <summary>
@@ -300,7 +281,10 @@ namespace MinorEngine.BEPUphysics.Constraints
         public void SetLocalAxes(Vector3 primaryAxis, Vector3 xAxis)
         {
             if (Math.Abs(Vector3.Dot(primaryAxis, xAxis)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            }
 
             localPrimaryAxis = Vector3.Normalize(primaryAxis);
             localXAxis = Vector3.Normalize(xAxis);
@@ -316,7 +300,11 @@ namespace MinorEngine.BEPUphysics.Constraints
         public void SetLocalAxes(Matrix3x3 matrix)
         {
             if (Math.Abs(Vector3.Dot(matrix.Backward, matrix.Right)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            }
+
             localPrimaryAxis = Vector3.Normalize(matrix.Backward);
             localXAxis = Vector3.Normalize(matrix.Right);
             ComputeWorldSpaceAxes();
@@ -343,7 +331,11 @@ namespace MinorEngine.BEPUphysics.Constraints
         public void SetWorldAxes(Vector3 primaryAxis, Vector3 xAxis)
         {
             if (Math.Abs(Vector3.Dot(primaryAxis, xAxis)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            }
+
             this.primaryAxis = Vector3.Normalize(primaryAxis);
             this.xAxis = Vector3.Normalize(xAxis);
             Matrix3x3.TransformTranspose(ref this.primaryAxis, ref rotationMatrix, out localPrimaryAxis);
@@ -359,11 +351,15 @@ namespace MinorEngine.BEPUphysics.Constraints
         public void SetWorldAxes(Matrix3x3 matrix)
         {
             if (Math.Abs(Vector3.Dot(matrix.Backward, matrix.Right)) > Toolbox.BigEpsilon)
-                throw new ArgumentException("The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            {
+                throw new ArgumentException(
+                    "The axes provided to the joint transform are not perpendicular.  Ensure that the specified axes form a valid constraint.");
+            }
+
             primaryAxis = Vector3.Normalize(matrix.Backward);
             xAxis = Vector3.Normalize(matrix.Right);
-            Matrix3x3.TransformTranspose(ref this.primaryAxis, ref rotationMatrix, out localPrimaryAxis);
-            Matrix3x3.TransformTranspose(ref this.xAxis, ref rotationMatrix, out localXAxis);
+            Matrix3x3.TransformTranspose(ref primaryAxis, ref rotationMatrix, out localPrimaryAxis);
+            Matrix3x3.TransformTranspose(ref xAxis, ref rotationMatrix, out localXAxis);
         }
 
         internal void ComputeWorldSpaceAxes()

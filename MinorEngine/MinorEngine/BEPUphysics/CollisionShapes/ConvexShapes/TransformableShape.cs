@@ -1,27 +1,22 @@
-﻿using System;
-using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-
+﻿using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 {
-
     ///<summary>
     /// Shape which can take any convex shape and use a linear transform to shear, scale, and rotate it.
     ///</summary>
     public class TransformableShape : ConvexShape
     {
         protected ConvexShape shape;
+
         ///<summary>
         /// Gets or sets the convex shape to be transformed.
         ///</summary>
         public ConvexShape Shape
         {
-            get
-            {
-                return shape;
-            }
+            get => shape;
             set
             {
                 shape = value;
@@ -30,15 +25,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         }
 
         protected Matrix3x3 transform;
+
         ///<summary>
         /// Gets or sets the linear transform used to transform the convex shape.
         ///</summary>
         public Matrix3x3 Transform
         {
-            get
-            {
-                return transform;
-            }
+            get => transform;
             set
             {
                 transform = value;
@@ -57,9 +50,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             this.transform = transform;
 
             UpdateConvexShapeInfo();
+        }
 
-        }        
-        
         ///<summary>
         /// Constructs a new transformable shape.
         ///</summary>
@@ -88,9 +80,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             //Compute the volume distribution.
             var samples = CommonResources.GetVectorList();
             if (samples.Capacity < InertiaHelper.SampleDirections.Length)
+            {
                 samples.Capacity = InertiaHelper.SampleDirections.Length;
+            }
+
             samples.Count = InertiaHelper.SampleDirections.Length;
-            for (int i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
+            for (var i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
             {
                 shape.GetLocalExtremePointWithoutMargin(ref InertiaHelper.SampleDirections[i], out samples.Elements[i]);
             }
@@ -103,12 +98,11 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             Volume = volume;
 
             //Estimate the minimum radius based on the surface mesh.
-            MinimumRadius = InertiaHelper.ComputeMinimumRadius(samples, triangles, ref Toolbox.ZeroVector) + collisionMargin;
+            MinimumRadius = InertiaHelper.ComputeMinimumRadius(samples, triangles, ref Toolbox.ZeroVector) +
+                            collisionMargin;
             MaximumRadius = ComputeMaximumRadius();
             CommonResources.GiveBack(samples);
             CommonResources.GiveBack(triangles);
-
-
         }
 
 
@@ -135,18 +129,14 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public float ComputeMaximumRadius()
         {
             //This will overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
-            RigidTransform identity = RigidTransform.Identity;
+            var identity = RigidTransform.Identity;
             BoundingBox boundingBox;
             GetBoundingBox(ref identity, out boundingBox);
             Vector3 diameter;
             Vector3.Subtract(ref boundingBox.Max, ref boundingBox.Min, out diameter);
             return diameter.Length();
-
         }
 
-        
-
-       
 
         /// <summary>
         /// Retrieves an instance of an EntityCollidable that uses this EntityShape.  Mainly used by compound bodies.
@@ -156,6 +146,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             return new ConvexCollidable<TransformableShape>(this);
         }
-
     }
 }

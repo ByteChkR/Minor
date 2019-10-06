@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
@@ -11,7 +10,6 @@ namespace MinorEngine.BEPUutilities
     /// </summary>
     public static partial class ConvexHullHelper
     {
-
         /// <summary>
         /// Identifies the indices of points in a set which are on the outer convex hull of the set.
         /// </summary>
@@ -25,10 +23,11 @@ namespace MinorEngine.BEPUutilities
             rawPoints.AddRange(points);
             GetConvexHull(rawPoints, rawIndices);
             CommonResources.GiveBack(rawPoints);
-            for (int i = 0; i < rawIndices.Count; i++)
+            for (var i = 0; i < rawIndices.Count; i++)
             {
                 outputTriangleIndices.Add(rawIndices[i]);
             }
+
             CommonResources.GiveBack(rawIndices);
         }
 
@@ -64,17 +63,19 @@ namespace MinorEngine.BEPUutilities
         /// <param name="outputTriangleIndices">List of indices into the input point set composing the triangulated surface of the convex hull.
         /// Each group of 3 indices represents a triangle on the surface of the hull.</param>
         /// <param name="outputSurfacePoints">Unique points on the surface of the convex hull.</param>
-        public static void GetConvexHull(IList<Vector3> points, IList<int> outputTriangleIndices, IList<Vector3> outputSurfacePoints)
+        public static void GetConvexHull(IList<Vector3> points, IList<int> outputTriangleIndices,
+            IList<Vector3> outputSurfacePoints)
         {
             var rawPoints = CommonResources.GetVectorList();
             var rawIndices = CommonResources.GetIntList();
             rawPoints.AddRange(points);
             GetConvexHull(rawPoints, rawIndices, outputSurfacePoints);
             CommonResources.GiveBack(rawPoints);
-            for (int i = 0; i < rawIndices.Count; i++)
+            for (var i = 0; i < rawIndices.Count; i++)
             {
                 outputTriangleIndices.Add(rawIndices[i]);
             }
+
             CommonResources.GiveBack(rawIndices);
         }
 
@@ -85,15 +86,16 @@ namespace MinorEngine.BEPUutilities
         /// <param name="outputTriangleIndices">List of indices into the input point set composing the triangulated surface of the convex hull.
         /// Each group of 3 indices represents a triangle on the surface of the hull.</param>
         /// <param name="outputSurfacePoints">Unique points on the surface of the convex hull.</param>
-        public static void GetConvexHull(RawList<Vector3> points, RawList<int> outputTriangleIndices, IList<Vector3> outputSurfacePoints)
+        public static void GetConvexHull(RawList<Vector3> points, RawList<int> outputTriangleIndices,
+            IList<Vector3> outputSurfacePoints)
         {
             GetConvexHull(points, outputTriangleIndices);
 
             var alreadyContainedIndices = CommonResources.GetIntSet();
 
-            for (int i = outputTriangleIndices.Count - 1; i >= 0; i--)
+            for (var i = outputTriangleIndices.Count - 1; i >= 0; i--)
             {
-                int index = outputTriangleIndices[i];
+                var index = outputTriangleIndices[i];
                 if (alreadyContainedIndices.Add(index))
                 {
                     outputSurfacePoints.Add(points[index]);
@@ -101,8 +103,6 @@ namespace MinorEngine.BEPUutilities
             }
 
             CommonResources.GiveBack(alreadyContainedIndices);
-
-
         }
 
         /// <summary>
@@ -117,9 +117,12 @@ namespace MinorEngine.BEPUutilities
             {
                 throw new ArgumentException("Point set must have volume.");
             }
-            RawList<int> outsidePoints = CommonResources.GetIntList();
+
+            var outsidePoints = CommonResources.GetIntList();
             if (outsidePoints.Capacity < points.Count - 4)
+            {
                 outsidePoints.Capacity = points.Count - 4;
+            }
 
             //Build the initial tetrahedron.
             //It will also give us the location of a point which is guaranteed to be within the
@@ -138,18 +141,18 @@ namespace MinorEngine.BEPUutilities
 
             //We're now ready to begin the main loop.
             while (outsidePoints.Count > 0)
-            {
                 //While the convex hull is incomplete...
-                for (int k = 0; k < outputTriangleIndices.Count; k += 3)
+            {
+                for (var k = 0; k < outputTriangleIndices.Count; k += 3)
                 {
                     //Find the normal of the triangle
                     Vector3 normal;
                     FindNormal(outputTriangleIndices, points, k, out normal);
 
                     //Get the furthest point in the direction of the normal.
-                    int maxIndexInOutsideList = GetExtremePoint(ref normal, points, outsidePoints);
-                    int maxIndex = outsidePoints.Elements[maxIndexInOutsideList];
-                    Vector3 maximum = points.Elements[maxIndex];
+                    var maxIndexInOutsideList = GetExtremePoint(ref normal, points, outsidePoints);
+                    var maxIndex = outsidePoints.Elements[maxIndexInOutsideList];
+                    var maximum = points.Elements[maxIndex];
 
                     //If the point is beyond the current triangle, continue.
                     Vector3 offset;
@@ -163,9 +166,9 @@ namespace MinorEngine.BEPUutilities
                         //Remove any triangles that can see the point, including itself!
                         edges.Clear();
                         toRemove.Clear();
-                        for (int n = outputTriangleIndices.Count - 3; n >= 0; n -= 3)
-                        {
+                        for (var n = outputTriangleIndices.Count - 3; n >= 0; n -= 3)
                             //Go through each triangle, if it can be seen, delete it and use maintainEdge on its edges.
+                        {
                             if (IsTriangleVisibleFromPoint(outputTriangleIndices, points, n, ref maximum))
                             {
                                 //This triangle can see it!
@@ -179,17 +182,18 @@ namespace MinorEngine.BEPUutilities
                                 outputTriangleIndices.FastRemoveAt(n + 2);
                                 outputTriangleIndices.FastRemoveAt(n + 1);
                                 outputTriangleIndices.FastRemoveAt(n);
-
                             }
                         }
+
                         //Create new triangles.
-                        for (int n = 0; n < edges.Count; n += 2)
+                        for (var n = 0; n < edges.Count; n += 2)
                         {
                             //For each edge, create a triangle with the extreme point.
                             newTriangles.Add(edges[n]);
                             newTriangles.Add(edges[n + 1]);
                             newTriangles.Add(maxIndex);
                         }
+
                         //Only verify the windings of the new triangles.
                         VerifyWindings(newTriangles, points, ref insidePoint);
                         outputTriangleIndices.AddRange(newTriangles);
@@ -213,16 +217,17 @@ namespace MinorEngine.BEPUutilities
 
         private static void MaintainEdge(int a, int b, RawList<int> edges)
         {
-            bool contained = false;
-            int index = 0;
-            for (int k = 0; k < edges.Count; k += 2)
+            var contained = false;
+            var index = 0;
+            for (var k = 0; k < edges.Count; k += 2)
             {
-                if ((edges[k] == a && edges[k + 1] == b) || (edges[k] == b && edges[k + 1] == a))
+                if (edges[k] == a && edges[k + 1] == b || edges[k] == b && edges[k + 1] == a)
                 {
                     contained = true;
                     index = k;
                 }
             }
+
             //If it isn't present, add it to the edge list.
             if (!contained)
             {
@@ -239,9 +244,9 @@ namespace MinorEngine.BEPUutilities
 
         private static int GetExtremePoint(ref Vector3 direction, RawList<Vector3> points, RawList<int> outsidePoints)
         {
-            float maximumDot = -float.MaxValue;
-            int extremeIndex = 0;
-            for (int i = 0; i < outsidePoints.Count; ++i)
+            var maximumDot = -float.MaxValue;
+            var extremeIndex = 0;
+            for (var i = 0; i < outsidePoints.Count; ++i)
             {
                 float dot;
                 Vector3.Dot(ref points.Elements[outsidePoints[i]], ref direction, out dot);
@@ -251,10 +256,12 @@ namespace MinorEngine.BEPUutilities
                     extremeIndex = i;
                 }
             }
+
             return extremeIndex;
         }
 
-        private static void GetExtremePoints(ref Vector3 direction, RawList<Vector3> points, out float maximumDot, out float minimumDot, out int maximumIndex, out int minimumIndex)
+        private static void GetExtremePoints(ref Vector3 direction, RawList<Vector3> points, out float maximumDot,
+            out float minimumDot, out int maximumIndex, out int minimumIndex)
         {
             maximumIndex = 0;
             minimumIndex = 0;
@@ -263,7 +270,7 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref points.Elements[0], ref direction, out dot);
             minimumDot = dot;
             maximumDot = dot;
-            for (int i = 1; i < points.Count; ++i)
+            for (var i = 1; i < points.Count; ++i)
             {
                 Vector3.Dot(ref points.Elements[i], ref direction, out dot);
                 if (dot > maximumDot)
@@ -279,7 +286,8 @@ namespace MinorEngine.BEPUutilities
             }
         }
 
-        private static void ComputeInitialTetrahedron(RawList<Vector3> points, RawList<int> outsidePointCandidates, RawList<int> triangleIndices, out Vector3 centroid)
+        private static void ComputeInitialTetrahedron(RawList<Vector3> points, RawList<int> outsidePointCandidates,
+            RawList<int> triangleIndices, out Vector3 centroid)
         {
             //Find four points on the hull.
             //We'll start with using the x axis to identify two points on the hull.
@@ -288,7 +296,7 @@ namespace MinorEngine.BEPUutilities
             //Find the extreme points along the x axis.
             float minimumX = float.MaxValue, maximumX = -float.MaxValue;
             int minimumXIndex = 0, maximumXIndex = 0;
-            for (int i = 0; i < points.Count; ++i)
+            for (var i = 0; i < points.Count; ++i)
             {
                 var v = points.Elements[i];
                 if (v.X > maximumX)
@@ -302,18 +310,24 @@ namespace MinorEngine.BEPUutilities
                     minimumXIndex = i;
                 }
             }
+
             a = minimumXIndex;
             b = maximumXIndex;
             //Check for redundancies..
             if (a == b)
+            {
                 throw new ArgumentException("Point set is degenerate; convex hulls must have volume.");
+            }
 
             //Now, use a second axis perpendicular to the two points we found.
             Vector3 ab;
             Vector3.Subtract(ref points.Elements[b], ref points.Elements[a], out ab);
             Vector3.Cross(ref ab, ref Toolbox.UpVector, out direction);
             if (direction.LengthSquared() < Toolbox.Epsilon)
+            {
                 Vector3.Cross(ref ab, ref Toolbox.RightVector, out direction);
+            }
+
             float minimumDot, maximumDot;
             int minimumIndex, maximumIndex;
             GetExtremePoints(ref direction, points, out maximumDot, out minimumDot, out maximumIndex, out minimumIndex);
@@ -322,19 +336,21 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref direction, ref points.Elements[a], out dot);
             //Use the point further from the axis.
             if (Math.Abs(dot - minimumDot) > Math.Abs(dot - maximumDot))
-            {
                 //In this case, we should use the minimum index.
+            {
                 c = minimumIndex;
             }
             else
-            {
                 //In this case, we should use the maximum index.
+            {
                 c = maximumIndex;
             }
 
             //Check for redundancies..
             if (a == c || b == c)
+            {
                 throw new ArgumentException("Point set is degenerate; convex hulls must have volume.");
+            }
 
             //Use a third axis perpendicular to the plane defined by the three unique points a, b, and c.
             Vector3 ac;
@@ -346,19 +362,21 @@ namespace MinorEngine.BEPUutilities
             Vector3.Dot(ref direction, ref points.Elements[a], out dot);
             //Use the point further from the plane. 
             if (Math.Abs(dot - minimumDot) > Math.Abs(dot - maximumDot))
-            {
                 //In this case, we should use the minimum index.
+            {
                 d = minimumIndex;
             }
             else
-            {
                 //In this case, we should use the maximum index.
+            {
                 d = maximumIndex;
             }
 
             //Check for redundancies..
             if (a == d || b == d || c == d)
+            {
                 throw new ArgumentException("Point set is degenerate; convex hulls must have volume.");
+            }
 
             //Add the triangles.
             triangleIndices.Add(a);
@@ -383,7 +401,7 @@ namespace MinorEngine.BEPUutilities
             Vector3.Add(ref centroid, ref points.Elements[d], out centroid);
             Vector3.Multiply(ref centroid, 0.25f, out centroid);
 
-            for (int i = 0; i < triangleIndices.Count; i += 3)
+            for (var i = 0; i < triangleIndices.Count; i += 3)
             {
                 var vA = points.Elements[triangleIndices.Elements[i]];
                 var vB = points.Elements[triangleIndices.Elements[i + 1]];
@@ -403,6 +421,7 @@ namespace MinorEngine.BEPUutilities
                 {
                     throw new ArgumentException("Point set is degenerate; convex hulls must have volume.");
                 }
+
                 if (volume < 0)
                 {
                     //If the signed volume is negative, that means the triangle's winding is opposite of what we want.
@@ -421,12 +440,12 @@ namespace MinorEngine.BEPUutilities
             tetrahedronIndices.Add(d);
             //Sort the indices to allow a linear time loop.
             Array.Sort(tetrahedronIndices.Elements, 0, 4);
-            int tetrahedronIndex = 0;
-            for (int i = 0; i < points.Count; ++i)
+            var tetrahedronIndex = 0;
+            for (var i = 0; i < points.Count; ++i)
             {
                 if (tetrahedronIndex < 4 && i == tetrahedronIndices[tetrahedronIndex])
-                {
                     //Don't add a tetrahedron index. Now that we've found this index, though, move on to the next one.
+                {
                     ++tetrahedronIndex;
                 }
                 else
@@ -434,24 +453,26 @@ namespace MinorEngine.BEPUutilities
                     outsidePointCandidates.Add(i);
                 }
             }
+
             CommonResources.GiveBack(tetrahedronIndices);
         }
 
-        private static void RemoveInsidePoints(RawList<Vector3> points, RawList<int> triangleIndices, RawList<int> outsidePoints)
+        private static void RemoveInsidePoints(RawList<Vector3> points, RawList<int> triangleIndices,
+            RawList<int> outsidePoints)
         {
             var insidePoints = CommonResources.GetIntList();
             //We're going to remove points from this list as we go to prune it down to the truly inner points.
             insidePoints.AddRange(outsidePoints);
             outsidePoints.Clear();
 
-            for (int i = 0; i < triangleIndices.Count && insidePoints.Count > 0; i += 3)
+            for (var i = 0; i < triangleIndices.Count && insidePoints.Count > 0; i += 3)
             {
                 //Compute the triangle's plane in point-normal representation to test other points against.
                 Vector3 normal;
                 FindNormal(triangleIndices, points, i, out normal);
-                Vector3 p = points.Elements[triangleIndices.Elements[i]];
+                var p = points.Elements[triangleIndices.Elements[i]];
 
-                for (int j = insidePoints.Count - 1; j >= 0; --j)
+                for (var j = insidePoints.Count - 1; j >= 0; --j)
                 {
                     //Offset from the triangle to the current point, tested against the normal, determines if the current point is visible
                     //from the triangle face.
@@ -468,11 +489,13 @@ namespace MinorEngine.BEPUutilities
                     }
                 }
             }
+
             CommonResources.GiveBack(insidePoints);
         }
 
 
-        private static void FindNormal(RawList<int> indices, RawList<Vector3> points, int triangleIndex, out Vector3 normal)
+        private static void FindNormal(RawList<int> indices, RawList<Vector3> points, int triangleIndex,
+            out Vector3 normal)
         {
             var a = points.Elements[indices.Elements[triangleIndex]];
             Vector3 ab, ac;
@@ -481,7 +504,8 @@ namespace MinorEngine.BEPUutilities
             Vector3.Cross(ref ac, ref ab, out normal);
         }
 
-        private static bool IsTriangleVisibleFromPoint(RawList<int> indices, RawList<Vector3> points, int triangleIndex, ref Vector3 point)
+        private static bool IsTriangleVisibleFromPoint(RawList<int> indices, RawList<Vector3> points, int triangleIndex,
+            ref Vector3 point)
         {
             //Compute the normal of the triangle.
             var a = points.Elements[indices.Elements[triangleIndex]];
@@ -501,14 +525,14 @@ namespace MinorEngine.BEPUutilities
         private static void VerifyWindings(RawList<int> newIndices, RawList<Vector3> points, ref Vector3 centroid)
         {
             //Go through every triangle.
-            for (int k = 0; k < newIndices.Count; k += 3)
-            {
+            for (var k = 0; k < newIndices.Count; k += 3)
                 //Check if the triangle faces away or towards the centroid.
 
+            {
                 if (IsTriangleVisibleFromPoint(newIndices, points, k, ref centroid))
                 {
                     //If it's towards, flip the winding.
-                    int temp = newIndices[k + 1];
+                    var temp = newIndices[k + 1];
                     newIndices[k + 1] = newIndices[k + 2];
                     newIndices[k + 2] = temp;
                 }

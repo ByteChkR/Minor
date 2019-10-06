@@ -1,14 +1,9 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
-using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
+﻿using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.BEPUphysics.OtherSpaceStages;
-using MinorEngine.BEPUutilities;
-using System;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
 {
-
     ///<summary>
     /// Event manager for BroadPhaseEntries (all types that live in the broad phase).
     ///</summary>
@@ -16,28 +11,26 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
     public class EntryEventManager<T> : IDeferredEventCreator, IEntryEventTriggerer where T : BroadPhaseEntry
     {
         protected internal int childDeferredEventCreators;
+
         /// <summary>
         /// Number of child deferred event creators.
         /// </summary>
         int IDeferredEventCreator.ChildDeferredEventCreators
         {
-            get
-            {
-                return childDeferredEventCreators;
-            }
+            get => childDeferredEventCreators;
             set
             {
-                int previousValue = childDeferredEventCreators;
+                var previousValue = childDeferredEventCreators;
                 childDeferredEventCreators = value;
                 if (childDeferredEventCreators == 0 && previousValue != 0)
                 {
                     //Deactivate!
                     if (EventsAreInactive())
-                    {
                         //The events are inactive method tests to see if this event manager
                         //has any events that need to be deferred.
                         //If we get here, that means that there's zero children active, and we aren't active...
-                        ((IDeferredEventCreator)this).IsActive = false;
+                    {
+                        ((IDeferredEventCreator) this).IsActive = false;
                     }
                 }
                 else if (childDeferredEventCreators != 0 && previousValue == 0)
@@ -45,51 +38,49 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
                     //Activate!
                     //It doesn't matter if there are any events active in this instance, just try to activate anyway.
                     //If it is already active, nothing will happen.
-                    ((IDeferredEventCreator)this).IsActive = true;
+                    ((IDeferredEventCreator) this).IsActive = true;
                 }
             }
         }
 
         private CompoundEventManager parent;
+
         /// <summary>
         /// The parent of the event manager, if any.
         /// </summary>
         protected internal CompoundEventManager Parent
         {
-            get
-            {
-                return parent;
-            }
+            get => parent;
             set
             {
                 //The child deferred event creator links must be maintained.
                 if (parent != null && isActive)
-                    ((IDeferredEventCreator)parent).ChildDeferredEventCreators--;
+                {
+                    ((IDeferredEventCreator) parent).ChildDeferredEventCreators--;
+                }
+
                 parent = value;
                 if (parent != null && isActive)
-                    ((IDeferredEventCreator)parent).ChildDeferredEventCreators++;
+                {
+                    ((IDeferredEventCreator) parent).ChildDeferredEventCreators++;
+                }
             }
-
         }
 
         protected internal T owner;
+
         ///<summary>
         /// Owner of the event manager.
         ///</summary>
         public T Owner
         {
-            get
-            {
-                return owner;
-            }
-            protected internal set
-            {
-                owner = value;
-            }
+            get => owner;
+            protected internal set => owner = value;
         }
 
 
         #region Events
+
         /// <summary>
         /// Fires when this entity's bounding box newly overlaps another entity's bounding box.
         /// </summary>
@@ -179,7 +170,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
         {
             if (EventsAreInactive() && childDeferredEventCreators == 0)
             {
-                ((IDeferredEventCreator)this).IsActive = false;
+                ((IDeferredEventCreator) this).IsActive = false;
             }
         }
 
@@ -193,31 +184,32 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
 
         protected void AddToEventfuls()
         {
-            ((IDeferredEventCreator)this).IsActive = true;
+            ((IDeferredEventCreator) this).IsActive = true;
         }
 
 
         private DeferredEventDispatcher deferredEventDispatcher;
+
         DeferredEventDispatcher IDeferredEventCreator.DeferredEventDispatcher
         {
-            get
-            {
-                return deferredEventDispatcher;
-            }
-            set
-            {
-                deferredEventDispatcher = value;
-            }
+            get => deferredEventDispatcher;
+            set => deferredEventDispatcher = value;
         }
 
-        readonly ConcurrentDeque<EventStoragePairCreated> eventStoragePairCreated = new ConcurrentDeque<EventStoragePairCreated>(0);
-        readonly ConcurrentDeque<EventStoragePairRemoved> eventStoragePairRemoved = new ConcurrentDeque<EventStoragePairRemoved>(0);
-        readonly ConcurrentDeque<EventStoragePairUpdated> eventStoragePairUpdated = new ConcurrentDeque<EventStoragePairUpdated>(0);
+        private readonly ConcurrentDeque<EventStoragePairCreated> eventStoragePairCreated =
+            new ConcurrentDeque<EventStoragePairCreated>(0);
+
+        private readonly ConcurrentDeque<EventStoragePairRemoved> eventStoragePairRemoved =
+            new ConcurrentDeque<EventStoragePairRemoved>(0);
+
+        private readonly ConcurrentDeque<EventStoragePairUpdated> eventStoragePairUpdated =
+            new ConcurrentDeque<EventStoragePairUpdated>(0);
 
         void IDeferredEventCreator.DispatchEvents()
         {
             DispatchEvents();
         }
+
         protected virtual void DispatchEvents()
         {
             //Note: Deferred event creation should be performed sequentially with dispatching.
@@ -228,27 +220,44 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
             //This is not a particularly clean behavior, but it's better than just crashing.
             EventStoragePairCreated collisionPairCreated;
             while (eventStoragePairCreated.TryUnsafeDequeueFirst(out collisionPairCreated))
+            {
                 if (InternalPairCreated != null)
+                {
                     InternalPairCreated(owner, collisionPairCreated.other, collisionPairCreated.pair);
+                }
+            }
+
             EventStoragePairRemoved collisionPairRemoved;
             while (eventStoragePairRemoved.TryUnsafeDequeueFirst(out collisionPairRemoved))
+            {
                 if (InternalPairRemoved != null)
+                {
                     InternalPairRemoved(owner, collisionPairRemoved.other);
+                }
+            }
+
             EventStoragePairUpdated collisionPairUpdated;
             while (eventStoragePairUpdated.TryUnsafeDequeueFirst(out collisionPairUpdated))
+            {
                 if (InternalPairUpdated != null)
+                {
                     InternalPairUpdated(owner, collisionPairUpdated.other, collisionPairUpdated.pair);
-
-
+                }
+            }
         }
 
 
         public void OnPairCreated(BroadPhaseEntry other, NarrowPhasePair collisionPair)
         {
             if (InternalPairCreated != null)
+            {
                 eventStoragePairCreated.Enqueue(new EventStoragePairCreated(other, collisionPair));
+            }
+
             if (CreatingPair != null)
+            {
                 CreatingPair(owner, other, collisionPair);
+            }
         }
 
         public void OnPairRemoved(BroadPhaseEntry other)
@@ -257,6 +266,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
             {
                 eventStoragePairRemoved.Enqueue(new EventStoragePairRemoved(other));
             }
+
             if (RemovingPair != null)
             {
                 RemovingPair(owner, other);
@@ -266,20 +276,23 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
         public void OnPairUpdated(BroadPhaseEntry other, NarrowPhasePair collisionPair)
         {
             if (InternalPairUpdated != null)
+            {
                 eventStoragePairUpdated.Enqueue(new EventStoragePairUpdated(other, collisionPair));
+            }
+
             if (PairUpdating != null)
+            {
                 PairUpdating(owner, other, collisionPair);
+            }
         }
 
 
         private bool isActive;
+
         //IsActive is enabled whenever this collision information can dispatch events.
         bool IDeferredEventCreator.IsActive
         {
-            get
-            {
-                return isActive;
-            }
+            get => isActive;
             set
             {
                 if (!isActive && value)
@@ -287,20 +300,28 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
                     isActive = true;
                     //Notify the parent that it needs to activate.
                     if (parent != null)
-                        ((IDeferredEventCreator)parent).ChildDeferredEventCreators++;
+                    {
+                        ((IDeferredEventCreator) parent).ChildDeferredEventCreators++;
+                    }
 
                     if (deferredEventDispatcher != null)
+                    {
                         deferredEventDispatcher.CreatorActivityChanged(this);
+                    }
                 }
                 else if (isActive && !value)
                 {
                     isActive = false;
                     //Notify the parent that it can deactivate.
                     if (parent != null)
-                        ((IDeferredEventCreator)parent).ChildDeferredEventCreators--;
+                    {
+                        ((IDeferredEventCreator) parent).ChildDeferredEventCreators--;
+                    }
 
                     if (deferredEventDispatcher != null)
+                    {
                         deferredEventDispatcher.CreatorActivityChanged(this);
+                    }
                 }
             }
         }
@@ -321,12 +342,5 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
         }
 
         #endregion
-
-
-
     }
-
-
-
-
 }

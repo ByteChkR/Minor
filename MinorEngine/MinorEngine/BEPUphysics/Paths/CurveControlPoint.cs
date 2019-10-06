@@ -29,14 +29,14 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <summary>
         /// Gets the curve associated with this control point.
         /// </summary>
-        public Curve<TValue> Curve { get; private set; }
+        public Curve<TValue> Curve { get; }
 
         /// <summary>
         /// Gets or sets the time at which this control point is positioned.
         /// </summary>
         public double Time
         {
-            get { return time; }
+            get => time;
             set
             {
                 time = value;
@@ -52,7 +52,7 @@ namespace MinorEngine.BEPUphysics.Paths
         /// </summary>
         public TValue Value
         {
-            get { return value; }
+            get => value;
             set
             {
                 this.value = value;
@@ -73,9 +73,15 @@ namespace MinorEngine.BEPUphysics.Paths
         public int CompareTo(CurveControlPoint<TValue> other)
         {
             if (other.Time < Time)
+            {
                 return 1;
+            }
+
             if (other.Time > Time)
+            {
                 return -1;
+            }
+
             return 0;
         }
 

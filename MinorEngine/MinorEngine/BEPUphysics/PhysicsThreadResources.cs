@@ -1,13 +1,11 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
-using MinorEngine.BEPUphysics.Entities;
-
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.DeactivationManagement;
-using MinorEngine.BEPUutilities.DataStructures;
+using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics
@@ -17,22 +15,16 @@ namespace MinorEngine.BEPUphysics
     /// </summary>
     public static class PhysicsThreadResources
     {
-        [ThreadStatic]
-        static UnsafeResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
-        [ThreadStatic]
-        static UnsafeResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
-        [ThreadStatic]
-        static UnsafeResourcePool<RawList<Collidable>> SubPoolCollidableList;
-        [ThreadStatic]
-        static UnsafeResourcePool<RawList<Entity>> SubPoolEntityRawList;
-        [ThreadStatic]
-        static UnsafeResourcePool<TriangleShape> SubPoolTriangleShape;
-        [ThreadStatic]
-        static UnsafeResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
-        [ThreadStatic]
-        static UnsafeResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
-        [ThreadStatic]
-        static UnsafeResourcePool<SimulationIslandConnection> SimulationIslandConnections;
+        [ThreadStatic] private static UnsafeResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
+        [ThreadStatic] private static UnsafeResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
+        [ThreadStatic] private static UnsafeResourcePool<RawList<Collidable>> SubPoolCollidableList;
+        [ThreadStatic] private static UnsafeResourcePool<RawList<Entity>> SubPoolEntityRawList;
+        [ThreadStatic] private static UnsafeResourcePool<TriangleShape> SubPoolTriangleShape;
+        [ThreadStatic] private static UnsafeResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
+        [ThreadStatic] private static UnsafeResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
+
+        [ThreadStatic] private static UnsafeResourcePool<SimulationIslandConnection> SimulationIslandConnections;
+
         //#endif
         /// <summary>
         /// Retrieves a ray cast result list from the resource pool.
@@ -41,7 +33,10 @@ namespace MinorEngine.BEPUphysics
         public static RawList<RayCastResult> GetRayCastResultList()
         {
             if (SubPoolRayCastResultList == null)
+            {
                 SubPoolRayCastResultList = new UnsafeResourcePool<RawList<RayCastResult>>();
+            }
+
             return SubPoolRayCastResultList.Take();
         }
 
@@ -52,7 +47,10 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(RawList<RayCastResult> list)
         {
             if (SubPoolRayCastResultList == null)
+            {
                 SubPoolRayCastResultList = new UnsafeResourcePool<RawList<RayCastResult>>();
+            }
+
             list.Clear();
             SubPoolRayCastResultList.GiveBack(list);
         }
@@ -64,7 +62,10 @@ namespace MinorEngine.BEPUphysics
         public static RawList<BroadPhaseEntry> GetBroadPhaseEntryList()
         {
             if (SubPoolBroadPhaseEntryList == null)
+            {
                 SubPoolBroadPhaseEntryList = new UnsafeResourcePool<RawList<BroadPhaseEntry>>();
+            }
+
             return SubPoolBroadPhaseEntryList.Take();
         }
 
@@ -75,7 +76,10 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(RawList<BroadPhaseEntry> list)
         {
             if (SubPoolBroadPhaseEntryList == null)
+            {
                 SubPoolBroadPhaseEntryList = new UnsafeResourcePool<RawList<BroadPhaseEntry>>();
+            }
+
             list.Clear();
             SubPoolBroadPhaseEntryList.GiveBack(list);
         }
@@ -87,7 +91,10 @@ namespace MinorEngine.BEPUphysics
         public static RawList<Collidable> GetCollidableList()
         {
             if (SubPoolCollidableList == null)
+            {
                 SubPoolCollidableList = new UnsafeResourcePool<RawList<Collidable>>();
+            }
+
             return SubPoolCollidableList.Take();
         }
 
@@ -98,7 +105,10 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(RawList<Collidable> list)
         {
             if (SubPoolCollidableList == null)
+            {
                 SubPoolCollidableList = new UnsafeResourcePool<RawList<Collidable>>();
+            }
+
             list.Clear();
             SubPoolCollidableList.GiveBack(list);
         }
@@ -110,7 +120,10 @@ namespace MinorEngine.BEPUphysics
         public static RawList<CompoundChild> GetCompoundChildList()
         {
             if (SubPoolCompoundChildList == null)
+            {
                 SubPoolCompoundChildList = new UnsafeResourcePool<RawList<CompoundChild>>();
+            }
+
             return SubPoolCompoundChildList.Take();
         }
 
@@ -121,11 +134,13 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(RawList<CompoundChild> list)
         {
             if (SubPoolCompoundChildList == null)
+            {
                 SubPoolCompoundChildList = new UnsafeResourcePool<RawList<CompoundChild>>();
+            }
+
             list.Clear();
             SubPoolCompoundChildList.GiveBack(list);
         }
-
 
 
         /// <summary>
@@ -135,7 +150,10 @@ namespace MinorEngine.BEPUphysics
         public static RawList<Entity> GetEntityRawList()
         {
             if (SubPoolEntityRawList == null)
+            {
                 SubPoolEntityRawList = new UnsafeResourcePool<RawList<Entity>>();
+            }
+
             return SubPoolEntityRawList.Take();
         }
 
@@ -146,7 +164,10 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(RawList<Entity> list)
         {
             if (SubPoolEntityRawList == null)
+            {
                 SubPoolEntityRawList = new UnsafeResourcePool<RawList<Entity>>();
+            }
+
             list.Clear();
             SubPoolEntityRawList.GiveBack(list);
         }
@@ -158,7 +179,10 @@ namespace MinorEngine.BEPUphysics
         public static TriangleShape GetTriangle()
         {
             if (SubPoolTriangleShape == null)
+            {
                 SubPoolTriangleShape = new UnsafeResourcePool<TriangleShape>();
+            }
+
             return SubPoolTriangleShape.Take();
         }
 
@@ -169,7 +193,10 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(TriangleShape triangle)
         {
             if (SubPoolTriangleShape == null)
+            {
                 SubPoolTriangleShape = new UnsafeResourcePool<TriangleShape>();
+            }
+
             triangle.collisionMargin = 0;
             triangle.sidedness = TriangleSidedness.DoubleSided;
             SubPoolTriangleShape.GiveBack(triangle);
@@ -186,7 +213,10 @@ namespace MinorEngine.BEPUphysics
         public static TriangleCollidable GetTriangleCollidable(ref Vector3 a, ref Vector3 b, ref Vector3 c)
         {
             if (SubPoolTriangleCollidables == null)
+            {
                 SubPoolTriangleCollidables = new UnsafeResourcePool<TriangleCollidable>();
+            }
+
             var tri = SubPoolTriangleCollidables.Take();
             var shape = tri.Shape;
             shape.vA = a;
@@ -195,7 +225,6 @@ namespace MinorEngine.BEPUphysics
             var identity = RigidTransform.Identity;
             tri.UpdateBoundingBoxForTransform(ref identity);
             return tri;
-
         }
 
         /// <summary>
@@ -205,7 +234,10 @@ namespace MinorEngine.BEPUphysics
         public static TriangleCollidable GetTriangleCollidable()
         {
             if (SubPoolTriangleCollidables == null)
+            {
                 SubPoolTriangleCollidables = new UnsafeResourcePool<TriangleCollidable>();
+            }
+
             return SubPoolTriangleCollidables.Take();
         }
 
@@ -216,7 +248,10 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(TriangleCollidable triangle)
         {
             if (SubPoolTriangleCollidables == null)
+            {
                 SubPoolTriangleCollidables = new UnsafeResourcePool<TriangleCollidable>();
+            }
+
             triangle.CleanUp();
             SubPoolTriangleCollidables.GiveBack(triangle);
         }
@@ -229,9 +264,11 @@ namespace MinorEngine.BEPUphysics
         public static SimulationIslandConnection GetSimulationIslandConnection()
         {
             if (SimulationIslandConnections == null)
+            {
                 SimulationIslandConnections = new UnsafeResourcePool<SimulationIslandConnection>();
-            return SimulationIslandConnections.Take();
+            }
 
+            return SimulationIslandConnections.Take();
         }
 
         /// <summary>
@@ -241,10 +278,12 @@ namespace MinorEngine.BEPUphysics
         public static void GiveBack(SimulationIslandConnection connection)
         {
             if (SimulationIslandConnections == null)
+            {
                 SimulationIslandConnections = new UnsafeResourcePool<SimulationIslandConnection>();
+            }
+
             connection.CleanUp();
             SimulationIslandConnections.GiveBack(connection);
-
         }
     }
 }

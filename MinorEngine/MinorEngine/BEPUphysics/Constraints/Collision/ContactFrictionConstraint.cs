@@ -1,9 +1,8 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Entities;
- 
-using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.Constraints.Collision
 {
@@ -12,28 +11,15 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
     /// </summary>
     public class ContactFrictionConstraint : SolverUpdateable
     {
-        private ContactManifoldConstraint contactManifoldConstraint;
         ///<summary>
         /// Gets the manifold constraint associated with this friction constraint.
         ///</summary>
-        public ContactManifoldConstraint ContactManifoldConstraint
-        {
-            get
-            {
-                return contactManifoldConstraint;
-            }
-        }
-        private ContactPenetrationConstraint penetrationConstraint;
+        public ContactManifoldConstraint ContactManifoldConstraint { get; private set; }
+
         ///<summary>
         /// Gets the penetration constraint associated with this friction constraint.
         ///</summary>
-        public ContactPenetrationConstraint PenetrationConstraint
-        {
-            get
-            {
-                return penetrationConstraint;
-            }
-        }
+        public ContactPenetrationConstraint PenetrationConstraint { get; private set; }
 
         ///<summary>
         /// Constructs a new friction constraint.
@@ -44,6 +30,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         }
 
         internal float accumulatedImpulse;
+
         //float linearBX, linearBY, linearBZ;
         private float angularAX, angularAY, angularAZ;
         private float angularBX, angularBY, angularBZ;
@@ -63,10 +50,11 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///</summary>
         ///<param name="contactManifoldConstraint">Manifold to which the constraint belongs.</param>
         ///<param name="penetrationConstraint">Penetration constraint associated with this friction constraint.</param>
-        public void Setup(ContactManifoldConstraint contactManifoldConstraint, ContactPenetrationConstraint penetrationConstraint)
+        public void Setup(ContactManifoldConstraint contactManifoldConstraint,
+            ContactPenetrationConstraint penetrationConstraint)
         {
-            this.contactManifoldConstraint = contactManifoldConstraint;
-            this.penetrationConstraint = penetrationConstraint;
+            ContactManifoldConstraint = contactManifoldConstraint;
+            PenetrationConstraint = penetrationConstraint;
             IsActive = true;
             linearAX = 0;
             linearAY = 0;
@@ -82,8 +70,8 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         public void CleanUp()
         {
             accumulatedImpulse = 0;
-            contactManifoldConstraint = null;
-            penetrationConstraint = null;
+            ContactManifoldConstraint = null;
+            PenetrationConstraint = null;
             entityA = null;
             entityB = null;
             IsActive = false;
@@ -92,18 +80,12 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// <summary>
         /// Gets the direction in which the friction force acts.
         /// </summary>
-        public Vector3 FrictionDirection
-        {
-            get { return new Vector3(linearAX, linearAY, linearAZ); }
-        }
+        public Vector3 FrictionDirection => new Vector3(linearAX, linearAY, linearAZ);
 
         /// <summary>
         /// Gets the total impulse applied by this friction constraint in the last time step.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse => accumulatedImpulse;
 
         ///<summary>
         /// Gets the relative velocity of the constraint.  This is the velocity along the tangent movement direction.
@@ -114,11 +96,21 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             {
                 float velocity = 0;
                 if (entityA != null)
-                    velocity += entityA.linearVelocity.X * linearAX + entityA.linearVelocity.Y * linearAY + entityA.linearVelocity.Z * linearAZ +
-                                entityA.angularVelocity.X * angularAX + entityA.angularVelocity.Y * angularAY + entityA.angularVelocity.Z * angularAZ;
+                {
+                    velocity += entityA.linearVelocity.X * linearAX + entityA.linearVelocity.Y * linearAY +
+                                entityA.linearVelocity.Z * linearAZ +
+                                entityA.angularVelocity.X * angularAX + entityA.angularVelocity.Y * angularAY +
+                                entityA.angularVelocity.Z * angularAZ;
+                }
+
                 if (entityB != null)
-                    velocity += -entityB.linearVelocity.X * linearAX - entityB.linearVelocity.Y * linearAY - entityB.linearVelocity.Z * linearAZ +
-                                entityB.angularVelocity.X * angularBX + entityB.angularVelocity.Y * angularBY + entityB.angularVelocity.Z * angularBZ;
+                {
+                    velocity += -entityB.linearVelocity.X * linearAX - entityB.linearVelocity.Y * linearAY -
+                                entityB.linearVelocity.Z * linearAZ +
+                                entityB.angularVelocity.X * angularBX + entityB.angularVelocity.Y * angularBY +
+                                entityB.angularVelocity.Z * angularBZ;
+                }
+
                 return velocity;
             }
         }
@@ -131,19 +123,19 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         public override float SolveIteration()
         {
             //Compute relative velocity and convert to impulse
-            float lambda = RelativeVelocity * velocityToImpulse;
+            var lambda = RelativeVelocity * velocityToImpulse;
 
 
             //Clamp accumulated impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            float maxForce = friction * penetrationConstraint.accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
+            var maxForce = friction * PenetrationConstraint.accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForce, maxForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -158,6 +150,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 entityA.ApplyLinearImpulse(ref linear);
                 entityA.ApplyAngularImpulse(ref angular);
             }
+
             if (entityBIsDynamic)
             {
                 linear.X = -linear.X;
@@ -179,47 +172,48 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// <param name="dt">Time since the last frame.</param>
         public override void Update(float dt)
         {
-
-
             entityAIsDynamic = entityA != null && entityA.isDynamic;
             entityBIsDynamic = entityB != null && entityB.isDynamic;
 
             //Compute the three dimensional relative velocity at the point.
 
             Vector3 velocityA = new Vector3(), velocityB = new Vector3();
-            Vector3 ra = penetrationConstraint.ra, rb = penetrationConstraint.rb;
+            Vector3 ra = PenetrationConstraint.ra, rb = PenetrationConstraint.rb;
             if (entityA != null)
             {
                 Vector3.Cross(ref entityA.angularVelocity, ref ra, out velocityA);
                 Vector3.Add(ref velocityA, ref entityA.linearVelocity, out velocityA);
             }
+
             if (entityB != null)
             {
                 Vector3.Cross(ref entityB.angularVelocity, ref rb, out velocityB);
                 Vector3.Add(ref velocityB, ref entityB.linearVelocity, out velocityB);
             }
+
             Vector3 relativeVelocity;
             Vector3.Subtract(ref velocityA, ref velocityB, out relativeVelocity);
 
             //Get rid of the normal velocity.
-            Vector3 normal = penetrationConstraint.contact.Normal;
-            float normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y + normal.Z * relativeVelocity.Z;
+            var normal = PenetrationConstraint.contact.Normal;
+            var normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y +
+                                       normal.Z * relativeVelocity.Z;
             relativeVelocity.X -= normalVelocityScalar * normal.X;
             relativeVelocity.Y -= normalVelocityScalar * normal.Y;
             relativeVelocity.Z -= normalVelocityScalar * normal.Z;
 
             //Create the jacobian entry and decide the friction coefficient.
-            float length = relativeVelocity.LengthSquared();
+            var length = relativeVelocity.LengthSquared();
             if (length > Toolbox.Epsilon)
             {
-                length = (float)Math.Sqrt(length);
+                length = (float) Math.Sqrt(length);
                 linearAX = relativeVelocity.X / length;
                 linearAY = relativeVelocity.Y / length;
                 linearAZ = relativeVelocity.Z / length;
 
                 friction = length > CollisionResponseSettings.StaticFrictionVelocityThreshold
-                               ? contactManifoldConstraint.materialInteraction.KineticFriction
-                               : contactManifoldConstraint.materialInteraction.StaticFriction;
+                    ? ContactManifoldConstraint.materialInteraction.KineticFriction
+                    : ContactManifoldConstraint.materialInteraction.StaticFriction;
             }
             else
             {
@@ -233,7 +227,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 //if the above doesn't work well, try using the previous frame's jacobian.
                 if (linearAX != 0 || linearAY != 0 || linearAZ != 0)
                 {
-                    friction = contactManifoldConstraint.materialInteraction.StaticFriction;
+                    friction = ContactManifoldConstraint.materialInteraction.StaticFriction;
                 }
                 else
                 {
@@ -246,14 +240,14 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
 
 
             //angular A = Ra x N
-            angularAX = (ra.Y * linearAZ) - (ra.Z * linearAY);
-            angularAY = (ra.Z * linearAX) - (ra.X * linearAZ);
-            angularAZ = (ra.X * linearAY) - (ra.Y * linearAX);
+            angularAX = ra.Y * linearAZ - ra.Z * linearAY;
+            angularAY = ra.Z * linearAX - ra.X * linearAZ;
+            angularAZ = ra.X * linearAY - ra.Y * linearAX;
 
             //Angular B = N x Rb
-            angularBX = (linearAY * rb.Z) - (linearAZ * rb.Y);
-            angularBY = (linearAZ * rb.X) - (linearAX * rb.Z);
-            angularBZ = (linearAX * rb.Y) - (linearAY * rb.X);
+            angularBX = linearAY * rb.Z - linearAZ * rb.Y;
+            angularBY = linearAZ * rb.X - linearAX * rb.Z;
+            angularBZ = linearAX * rb.Y - linearAY * rb.X;
 
             //Compute inverse effective mass matrix
             float entryA, entryB;
@@ -262,28 +256,35 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             float tX, tY, tZ;
             if (entityAIsDynamic)
             {
-                tX = angularAX * entityA.inertiaTensorInverse.M11 + angularAY * entityA.inertiaTensorInverse.M21 + angularAZ * entityA.inertiaTensorInverse.M31;
-                tY = angularAX * entityA.inertiaTensorInverse.M12 + angularAY * entityA.inertiaTensorInverse.M22 + angularAZ * entityA.inertiaTensorInverse.M32;
-                tZ = angularAX * entityA.inertiaTensorInverse.M13 + angularAY * entityA.inertiaTensorInverse.M23 + angularAZ * entityA.inertiaTensorInverse.M33;
+                tX = angularAX * entityA.inertiaTensorInverse.M11 + angularAY * entityA.inertiaTensorInverse.M21 +
+                     angularAZ * entityA.inertiaTensorInverse.M31;
+                tY = angularAX * entityA.inertiaTensorInverse.M12 + angularAY * entityA.inertiaTensorInverse.M22 +
+                     angularAZ * entityA.inertiaTensorInverse.M32;
+                tZ = angularAX * entityA.inertiaTensorInverse.M13 + angularAY * entityA.inertiaTensorInverse.M23 +
+                     angularAZ * entityA.inertiaTensorInverse.M33;
                 entryA = tX * angularAX + tY * angularAY + tZ * angularAZ + entityA.inverseMass;
             }
             else
+            {
                 entryA = 0;
+            }
 
             if (entityBIsDynamic)
             {
-                tX = angularBX * entityB.inertiaTensorInverse.M11 + angularBY * entityB.inertiaTensorInverse.M21 + angularBZ * entityB.inertiaTensorInverse.M31;
-                tY = angularBX * entityB.inertiaTensorInverse.M12 + angularBY * entityB.inertiaTensorInverse.M22 + angularBZ * entityB.inertiaTensorInverse.M32;
-                tZ = angularBX * entityB.inertiaTensorInverse.M13 + angularBY * entityB.inertiaTensorInverse.M23 + angularBZ * entityB.inertiaTensorInverse.M33;
+                tX = angularBX * entityB.inertiaTensorInverse.M11 + angularBY * entityB.inertiaTensorInverse.M21 +
+                     angularBZ * entityB.inertiaTensorInverse.M31;
+                tY = angularBX * entityB.inertiaTensorInverse.M12 + angularBY * entityB.inertiaTensorInverse.M22 +
+                     angularBZ * entityB.inertiaTensorInverse.M32;
+                tZ = angularBX * entityB.inertiaTensorInverse.M13 + angularBY * entityB.inertiaTensorInverse.M23 +
+                     angularBZ * entityB.inertiaTensorInverse.M33;
                 entryB = tX * angularBX + tY * angularBY + tZ * angularBZ + entityB.inverseMass;
             }
             else
+            {
                 entryB = 0;
+            }
 
             velocityToImpulse = -1 / (entryA + entryB); //Softness?
-
-
-
         }
 
         /// <summary>
@@ -295,8 +296,8 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         {
             //Warm starting
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -311,6 +312,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 entityA.ApplyLinearImpulse(ref linear);
                 entityA.ApplyAngularImpulse(ref angular);
             }
+
             if (entityBIsDynamic)
             {
                 linear.X = -linear.X;
@@ -328,9 +330,14 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         {
             //This should never really have to be called.
             if (entityA != null)
+            {
                 outputInvolvedEntities.Add(entityA);
+            }
+
             if (entityB != null)
+            {
                 outputInvolvedEntities.Add(entityB);
+            }
         }
     }
 }

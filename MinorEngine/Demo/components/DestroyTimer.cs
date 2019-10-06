@@ -6,6 +6,7 @@ namespace Demo.components
     {
         private float _destroyTime;
         private float _time;
+
         public DestroyTimer(float destroyTime)
         {
             _destroyTime = destroyTime;

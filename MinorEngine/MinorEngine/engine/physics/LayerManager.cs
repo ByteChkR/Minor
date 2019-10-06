@@ -6,12 +6,10 @@ using MinorEngine.exceptions;
 
 namespace MinorEngine.engine.physics
 {
-
     public static class LayerManager
     {
         private static List<Tuple<Layer, string>> _internalLayerStore = new List<Tuple<Layer, string>>();
         private static Dictionary<string, int> _registeredLayers = new Dictionary<string, int>();
-
 
 
         public static int RegisterLayer(string name, Layer layer)
@@ -20,6 +18,7 @@ namespace MinorEngine.engine.physics
             {
                 return _registeredLayers[name];
             }
+
             _internalLayerStore.Add(new Tuple<Layer, string>(layer, name));
             _registeredLayers.Add(name, _internalLayerStore.Count - 1);
             return _internalLayerStore.Count - 1;
@@ -27,8 +26,12 @@ namespace MinorEngine.engine.physics
 
         private static Layer IDToInternalLayer(int layer)
         {
-            if (layer >= 0 && layer < _internalLayerStore.Count) return _internalLayerStore[layer].Item1;
-            bool rec = _registeredLayers.Count > 0;
+            if (layer >= 0 && layer < _internalLayerStore.Count)
+            {
+                return _internalLayerStore[layer].Item1;
+            }
+
+            var rec = _registeredLayers.Count > 0;
             Logger.Crash(new LayerNotFoundException(layer), rec);
             return _internalLayerStore[_registeredLayers.ElementAt(0).Value].Item1;
         }
@@ -45,14 +48,18 @@ namespace MinorEngine.engine.physics
 
         public static string LayerToName(int layer)
         {
-            if (layer >= 0 && layer < _internalLayerStore.Count) return _internalLayerStore[layer].Item2;
+            if (layer >= 0 && layer < _internalLayerStore.Count)
+            {
+                return _internalLayerStore[layer].Item2;
+            }
+
             return "Not Found";
         }
 
         public static void DisableCollisions(int layerA, int layerB)
         {
-            Layer a = IDToInternalLayer(layerA);
-            Layer b = IDToInternalLayer(layerB);
+            var a = IDToInternalLayer(layerA);
+            var b = IDToInternalLayer(layerB);
             Layer.DisableCollision(ref a, ref b);
         }
 

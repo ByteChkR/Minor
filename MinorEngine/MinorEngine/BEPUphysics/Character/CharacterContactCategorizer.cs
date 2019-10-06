@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionTests;
@@ -18,6 +17,7 @@ namespace MinorEngine.BEPUphysics.Character
         private float tractionThreshold;
         private float supportThreshold;
         private float headThreshold;
+
         /// <summary>
         /// Gets or sets the value compared against the result of dot(outward facing contact normal, character down direction) to determine if a character has traction because of a contact.
         /// A value near 1 implies that the character will have traction only when the support normal is almost aligned with the character's vertical axis.
@@ -25,11 +25,15 @@ namespace MinorEngine.BEPUphysics.Character
         /// </summary>
         public float TractionThreshold
         {
-            get { return tractionThreshold; }
+            get => tractionThreshold;
             set
             {
                 if (value < Toolbox.BigEpsilon || value > 1)
-                    throw new ArgumentException("Traction threshold values must range from " + Toolbox.BigEpsilon + " to 1, inclusive.");
+                {
+                    throw new ArgumentException("Traction threshold values must range from " + Toolbox.BigEpsilon +
+                                                " to 1, inclusive.");
+                }
+
                 tractionThreshold = value;
             }
         }
@@ -42,11 +46,15 @@ namespace MinorEngine.BEPUphysics.Character
         /// </summary>
         public float SupportThreshold
         {
-            get { return supportThreshold; }
+            get => supportThreshold;
             set
             {
                 if (value < Toolbox.BigEpsilon || value > 1)
-                    throw new ArgumentException("Support threshold values must range from " + Toolbox.BigEpsilon + " to 1, inclusive.");
+                {
+                    throw new ArgumentException("Support threshold values must range from " + Toolbox.BigEpsilon +
+                                                " to 1, inclusive.");
+                }
+
                 supportThreshold = value;
             }
         }
@@ -58,11 +66,15 @@ namespace MinorEngine.BEPUphysics.Character
         /// </summary>
         public float HeadThreshold
         {
-            get { return headThreshold; }
+            get => headThreshold;
             set
             {
                 if (value < -1 || value > -Toolbox.BigEpsilon)
-                    throw new ArgumentException("Head threshold values must range from -1 to " + -Toolbox.BigEpsilon + ", inclusive.");
+                {
+                    throw new ArgumentException("Head threshold values must range from -1 to " + -Toolbox.BigEpsilon +
+                                                ", inclusive.");
+                }
+
                 headThreshold = value;
             }
         }
@@ -72,16 +84,17 @@ namespace MinorEngine.BEPUphysics.Character
         /// </summary>
         public float MaximumTractionSlope
         {
-            get { return (float)Math.Acos(TractionThreshold); }
-            set { TractionThreshold = (float)Math.Cos(value); }
+            get => (float) Math.Acos(TractionThreshold);
+            set => TractionThreshold = (float) Math.Cos(value);
         }
+
         /// <summary>
         /// Gets or sets the maximum slope that a character can be supported by.
         /// </summary>
         public float MaximumSupportSlope
         {
-            get { return (float)Math.Acos(SupportThreshold); }
-            set { SupportThreshold = (float)Math.Cos(value); }
+            get => (float) Math.Acos(SupportThreshold);
+            set => SupportThreshold = (float) Math.Cos(value);
         }
 
         /// <summary>
@@ -92,12 +105,14 @@ namespace MinorEngine.BEPUphysics.Character
         /// <param name="headThreshold">Value compared against the result of dot(outward facing contact normal, character down direction) to determine if a contact is on top of the character.
         /// A value near -1 implies that the contact will only be considered a 'head' contact when the support normal is almost aligned with the character's vertical axis.
         /// A value near -epsilon implies that almost all upper contacts will be considered head contacts.</param>
-        public CharacterContactCategorizer(float maximumTractionSlope, float maximumSupportSlope, float headThreshold = -.01f)
+        public CharacterContactCategorizer(float maximumTractionSlope, float maximumSupportSlope,
+            float headThreshold = -.01f)
         {
             MaximumTractionSlope = maximumTractionSlope;
             MaximumSupportSlope = maximumSupportSlope;
             HeadThreshold = headThreshold;
-            Debug.Assert(SupportThreshold <= TractionThreshold, "The character's support threshold should be no higher than the traction threshold for the traction threshold to be meaningful.");
+            Debug.Assert(SupportThreshold <= TractionThreshold,
+                "The character's support threshold should be no higher than the traction threshold for the traction threshold to be meaningful.");
         }
 
         /// <summary>
@@ -111,17 +126,20 @@ namespace MinorEngine.BEPUphysics.Character
         /// <param name="sideContacts">List to contain the side contacts found in the input contacts list.</param>
         /// <param name="headContacts">List to contain the head contacts found in the input contacts list.</param>
         /// <typeparam name="TOutputContacts">List type used to store the output character contact structs.</typeparam>
-        public void CategorizeContacts<TOutputContacts>(CollidablePairHandler pair, EntityCollidable characterCollidable, ref Vector3 downDirection, 
-                                                        ref TOutputContacts tractionContacts, ref TOutputContacts supportContacts, ref TOutputContacts sideContacts, ref TOutputContacts headContacts)
-                                                            where TOutputContacts : IList<CharacterContact>
+        public void CategorizeContacts<TOutputContacts>(CollidablePairHandler pair,
+            EntityCollidable characterCollidable, ref Vector3 downDirection,
+            ref TOutputContacts tractionContacts, ref TOutputContacts supportContacts, ref TOutputContacts sideContacts,
+            ref TOutputContacts headContacts)
+            where TOutputContacts : IList<CharacterContact>
         {
             var contactCollection = pair.Contacts;
-            for (int i = pair.ContactCount - 1; i >= 0; --i)
+            for (var i = pair.ContactCount - 1; i >= 0; --i)
             {
                 var contactInfo = contactCollection[i];
                 CharacterContact characterContact;
                 characterContact.Contact = new ContactData(contactInfo.Contact);
-                characterContact.Collidable = pair.CollidableA == characterCollidable ? pair.CollidableB : pair.CollidableA;
+                characterContact.Collidable =
+                    pair.CollidableA == characterCollidable ? pair.CollidableB : pair.CollidableA;
 
                 //It's possible that a subpair has a non-normal collision rule, even if the parent pair is normal.
                 //Note that only contacts with nonnegative penetration depths are used.
@@ -129,16 +147,20 @@ namespace MinorEngine.BEPUphysics.Character
                 //If we were to use such a speculative contact for support, the character would find supports
                 //in situations where it should not.
                 //This can actually be useful in some situations, but keep it disabled by default.
-                if (contactInfo.Pair.CollisionRule != CollisionRule.Normal || characterContact.Contact.PenetrationDepth < 0)
+                if (contactInfo.Pair.CollisionRule != CollisionRule.Normal ||
+                    characterContact.Contact.PenetrationDepth < 0)
+                {
                     continue;
+                }
 
                 float dot;
                 Vector3 offset;
-                Vector3.Subtract(ref characterContact.Contact.Position, ref characterCollidable.worldTransform.Position, out offset);
+                Vector3.Subtract(ref characterContact.Contact.Position, ref characterCollidable.worldTransform.Position,
+                    out offset);
                 Vector3.Dot(ref characterContact.Contact.Normal, ref offset, out dot);
                 if (dot < 0)
-                {
                     //The normal should face outward.
+                {
                     Vector3.Negate(ref characterContact.Contact.Normal, out characterContact.Contact.Normal);
                 }
 
@@ -148,13 +170,13 @@ namespace MinorEngine.BEPUphysics.Character
                     //It's a support.
                     supportContacts.Add(characterContact);
                     if (dot > TractionThreshold)
-                    {
                         //It's a traction contact.
+                    {
                         tractionContacts.Add(characterContact);
                     }
                     else
-                    {
                         //Considering the side contacts to be supports can help with upstepping.
+                    {
                         sideContacts.Add(characterContact);
                     }
                 }
@@ -167,7 +189,6 @@ namespace MinorEngine.BEPUphysics.Character
                 {
                     //It's a side contact.  These could obstruct the stepping.
                     sideContacts.Add(characterContact);
-
                 }
             }
         }

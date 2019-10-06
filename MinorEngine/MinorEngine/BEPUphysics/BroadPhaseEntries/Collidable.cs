@@ -1,8 +1,8 @@
-﻿using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
+﻿using System;
+using MinorEngine.BEPUphysics.BroadPhaseEntries.Events;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionShapes;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using System;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries
@@ -19,29 +19,34 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         }
 
 
+        protected internal CollisionShape
+            shape; //Having this non-private allows for some very special-casey stuff; see TriangleShape initialization.
 
-        protected internal CollisionShape shape; //Having this non-private allows for some very special-casey stuff; see TriangleShape initialization.
         ///<summary>
         /// Gets the shape used by the collidable.
         ///</summary>
         public CollisionShape Shape
         {
-            get
-            {
-                return shape;
-            }
+            get => shape;
             protected set
             {
                 if (shape != null && shapeChangedHooked)
+                {
                     shape.ShapeChanged -= shapeChangedDelegate;
+                }
+
                 shape = value;
                 if (shape != null && shapeChangedHooked)
+                {
                     shape.ShapeChanged += shapeChangedDelegate;
+                }
+
                 OnShapeChanged(shape);
             }
         }
 
-        bool shapeChangedHooked = true;
+        private bool shapeChangedHooked = true;
+
         /// <summary>
         /// Gets or sets whether the shape changed event is hooked. Setting this modifies the event delegate list on the associated shape, if any shape exists.
         /// If no shape exists, getting this property returns whether the event would be hooked if a shape was present.
@@ -49,10 +54,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         /// <remarks>Yes, this is a hack.</remarks>
         public bool ShapeChangedHooked
         {
-            get
-            {
-                return shapeChangedHooked;
-            }
+            get => shapeChangedHooked;
             set
             {
                 if (shape != null)
@@ -66,12 +68,12 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
                         shape.ShapeChanged += shapeChangedDelegate;
                     }
                 }
+
                 shapeChangedHooked = value;
             }
         }
 
         protected internal abstract IContactEventTriggerer EventTriggerer { get; }
-
 
 
         /// <summary>
@@ -80,45 +82,35 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         /// </summary>
         public bool IgnoreShapeChanges { get; set; }
 
-        Action<CollisionShape> shapeChangedDelegate;
+        private Action<CollisionShape> shapeChangedDelegate;
+
         protected virtual void OnShapeChanged(CollisionShape collisionShape)
         {
         }
 
 
         internal RawList<CollidablePairHandler> pairs = new RawList<CollidablePairHandler>();
+
         ///<summary>
         /// Gets the list of pairs associated with the collidable.
         /// These pairs are found by the broad phase and are managed by the narrow phase;
         /// they can contain other collidables, entities, and contacts.
         ///</summary>
-        public ReadOnlyList<CollidablePairHandler> Pairs
-        {
-            get
-            {
-                return new ReadOnlyList<CollidablePairHandler>(pairs);
-            }
-        }
+        public ReadOnlyList<CollidablePairHandler> Pairs => new ReadOnlyList<CollidablePairHandler>(pairs);
 
         ///<summary>
         /// Gets a list of all other collidables that this collidable overlaps.
         ///</summary>
-        public CollidableCollection OverlappedCollidables
-        {
-            get
-            {
-                return new CollidableCollection(this);
-            }
-        }
+        public CollidableCollection OverlappedCollidables => new CollidableCollection(this);
 
         protected override void CollisionRulesUpdated()
         {
-            for (int i = 0; i < pairs.Count; i++)
+            for (var i = 0; i < pairs.Count; i++)
             {
-                pairs[i].CollisionRule = CollisionRules.CollisionRuleCalculator(pairs[i].BroadPhaseOverlap.entryA, pairs[i].BroadPhaseOverlap.entryB);
+                pairs[i].CollisionRule = CollisionRules.CollisionRuleCalculator(pairs[i].BroadPhaseOverlap.entryA,
+                    pairs[i].BroadPhaseOverlap.entryB);
             }
         }
-
 
 
         internal void AddPair(CollidablePairHandler pair, ref int index)
@@ -136,16 +128,17 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
                 {
                     var endPair = pairs.Elements[index];
                     if (endPair.CollidableA == this)
+                    {
                         endPair.listIndexA = index;
+                    }
                     else
+                    {
                         endPair.listIndexB = index;
+                    }
                 }
             }
+
             index = -1;
         }
-
-
     }
-
-
 }

@@ -18,8 +18,11 @@ namespace MinorEngine.engine.rendering.ui
         public FontLibrary(string folderPath)
         {
             _fonts = new Dictionary<string, GameFont>();
-            string[] files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
-            foreach (var file in files) LoadFont(file);
+            var files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
+            foreach (var file in files)
+            {
+                LoadFont(file);
+            }
         }
 
         public void LoadFont(string filename)
@@ -29,20 +32,26 @@ namespace MinorEngine.engine.rendering.ui
 
         public void LoadFont(string filename, int pixelSize)
         {
-            FontFace ff = new FontFace(File.OpenRead(filename));
+            var ff = new FontFace(File.OpenRead(filename));
 
-            if (_fonts.ContainsKey(ff.FullName)) return;
-
-            Dictionary<char, TextCharacter> fontAtlas = new Dictionary<char, TextCharacter>();
-
-            for (int i = 0; i < ushort.MaxValue; i++)
+            if (_fonts.ContainsKey(ff.FullName))
             {
-                Glyph g = ff.GetGlyph(new CodePoint(i), pixelSize);
-                if (g == null) continue;
+                return;
+            }
 
-                byte[] buf = new byte[g.RenderWidth * g.RenderHeight];
-                GCHandle handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
-                Surface s = new Surface
+            var fontAtlas = new Dictionary<char, TextCharacter>();
+
+            for (var i = 0; i < ushort.MaxValue; i++)
+            {
+                var g = ff.GetGlyph(new CodePoint(i), pixelSize);
+                if (g == null)
+                {
+                    continue;
+                }
+
+                var buf = new byte[g.RenderWidth * g.RenderHeight];
+                var handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
+                var s = new Surface
                 {
                     Bits = handle.AddrOfPinnedObject(),
                     Width = g.RenderWidth,
@@ -54,11 +63,11 @@ namespace MinorEngine.engine.rendering.ui
                 GameTexture glTex;
                 if (g.RenderWidth != 0 && g.RenderHeight != 0)
                 {
-                    Bitmap bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
-                    BitmapData data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
+                    var bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
+                    var data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    byte[] iimgBuf = new byte[buf.Length * 4];
-                    for (int j = 0; j < buf.Length; j++)
+                    var iimgBuf = new byte[buf.Length * 4];
+                    for (var j = 0; j < buf.Length; j++)
                     {
                         iimgBuf[j * 4 + 3] = 255;
                         iimgBuf[j * 4 + 1] = buf[j];
@@ -75,20 +84,21 @@ namespace MinorEngine.engine.rendering.ui
                     data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                    GameTexture tex = ResourceManager.TextureIO.ParameterToTexture(bmp.Width, bmp.Height, false, "FONT_" + ff.FullName + "_" + (char)i);
+                    var tex = ResourceManager.TextureIO.ParameterToTexture(bmp.Width, bmp.Height, false,
+                        "FONT_" + ff.FullName + "_" + (char) i);
                     glTex = tex;
                     GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
                     GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, g.RenderWidth, g.RenderHeight,
                         0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapS,
-                        (int)TextureWrapMode.ClampToEdge);
+                        (int) TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapT,
-                        (int)TextureWrapMode.ClampToEdge);
+                        (int) TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMinFilter,
-                        (int)TextureMinFilter.Linear);
+                        (int) TextureMinFilter.Linear);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMagFilter,
-                        (int)TextureMagFilter.Linear);
+                        (int) TextureMagFilter.Linear);
 
                     bmp.UnlockBits(data);
                 }
@@ -97,7 +107,7 @@ namespace MinorEngine.engine.rendering.ui
                     glTex = null;
                 }
 
-                TextCharacter c = new TextCharacter
+                var c = new TextCharacter
                 {
                     GlTexture = glTex,
                     Width = s.Width,
@@ -106,10 +116,10 @@ namespace MinorEngine.engine.rendering.ui
                     BearingX = g.HorizontalMetrics.Bearing.X,
                     BearingY = g.HorizontalMetrics.Bearing.Y
                 };
-                fontAtlas.Add((char)i, c);
+                fontAtlas.Add((char) i, c);
             }
 
-            GameFont font = new GameFont(ff, pixelSize, fontAtlas);
+            var font = new GameFont(ff, pixelSize, fontAtlas);
             _fonts.Add(ff.FullName, font);
         }
 

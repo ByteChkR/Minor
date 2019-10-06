@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.Constraints;
-using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.Constraints;
+using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUutilities.DataStructures;
 
@@ -20,6 +20,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// Index of the triangle that was the source of this entry.
         /// </summary>
         public int Index;
+
         /// <summary>
         /// Collidable for the triangle.
         /// </summary>
@@ -52,28 +53,26 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class MeshGroupPairHandler : CollidablePairHandler, IPairHandlerParent
     {
-        ContactManifoldConstraintGroup manifoldConstraintGroup;
+        private ContactManifoldConstraintGroup manifoldConstraintGroup;
 
-        Dictionary<TriangleEntry, MobileMeshPairHandler> subPairs = new Dictionary<TriangleEntry, MobileMeshPairHandler>();
-        HashSet<TriangleEntry> containedPairs = new HashSet<TriangleEntry>();
-        RawList<TriangleEntry> pairsToRemove = new RawList<TriangleEntry>();
+        private Dictionary<TriangleEntry, MobileMeshPairHandler> subPairs =
+            new Dictionary<TriangleEntry, MobileMeshPairHandler>();
+
+        private HashSet<TriangleEntry> containedPairs = new HashSet<TriangleEntry>();
+        private RawList<TriangleEntry> pairsToRemove = new RawList<TriangleEntry>();
 
 
         ///<summary>
         /// Gets a list of the pairs associated with children.
         ///</summary>
-        public ReadOnlyDictionary<TriangleEntry, MobileMeshPairHandler> ChildPairs
-        {
-            get
-            {
-                return new ReadOnlyDictionary<TriangleEntry, MobileMeshPairHandler>(subPairs);
-            }
-        }
+        public ReadOnlyDictionary<TriangleEntry, MobileMeshPairHandler> ChildPairs =>
+            new ReadOnlyDictionary<TriangleEntry, MobileMeshPairHandler>(subPairs);
 
         /// <summary>
         /// Material of the first collidable.
         /// </summary>
         protected abstract Material MaterialA { get; }
+
         /// <summary>
         /// Material of the second collidable.
         /// </summary>
@@ -86,8 +85,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             manifoldConstraintGroup = new ContactManifoldConstraintGroup();
         }
-
-
 
 
         ///<summary>
@@ -123,7 +120,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
             //Child initialization is responsible for setting up the entries.
             //Child initialization is responsible for setting up the manifold, if any.
             manifoldConstraintGroup.Initialize(EntityA, EntityB);
@@ -136,19 +132,19 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             //The pair handler cleanup will get rid of contacts.
             foreach (var pairHandler in subPairs.Values)
             {
                 //The contained pairs list pulled TriangleCollidables from a pool to create the opposing collidables.
                 //Clean those up now.
                 //CollidableA is used without checking, because MobileMeshPairHandlers always put the convex in slot A.
-                CleanUpCollidable((TriangleCollidable)pairHandler.CollidableA);
-                pairHandler.CleanUp();             
+                CleanUpCollidable((TriangleCollidable) pairHandler.CollidableA);
+                pairHandler.CleanUp();
                 //Don't forget to give the pair back to the factory!
                 //There'd be a lot of leaks otherwise.
                 pairHandler.Factory.GiveBack(pairHandler);
             }
+
             subPairs.Clear();
             //don't need to remove constraints directly from our group, since cleaning up our children should get rid of them.
 
@@ -161,21 +157,22 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected void TryToAdd(int index)
         {
-            var entry = new TriangleEntry { Index = index };
+            var entry = new TriangleEntry {Index = index};
             if (!subPairs.ContainsKey(entry))
             {
                 var collidablePair = new CollidablePair(CollidableA, entry.Collidable = GetOpposingCollidable(index));
-                var newPair = (MobileMeshPairHandler)NarrowPhaseHelper.GetPairHandler(ref collidablePair);
+                var newPair = (MobileMeshPairHandler) NarrowPhaseHelper.GetPairHandler(ref collidablePair);
                 if (newPair != null)
                 {
                     newPair.CollisionRule = CollisionRule;
-                    newPair.UpdateMaterialProperties(MaterialA, MaterialB);  //Override the materials, if necessary.  Meshes don't currently support custom materials but..
+                    newPair.UpdateMaterialProperties(MaterialA,
+                        MaterialB); //Override the materials, if necessary.  Meshes don't currently support custom materials but..
                     newPair.Parent = this;
                     subPairs.Add(entry, newPair);
                 }
             }
-            containedPairs.Add(entry);
 
+            containedPairs.Add(entry);
         }
 
         /// <summary>
@@ -210,32 +207,35 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         protected virtual void UpdateContacts(float dt)
         {
-
             UpdateContainedPairs(dt);
             //Eliminate old pairs.
             foreach (var pair in subPairs.Keys)
             {
                 if (!containedPairs.Contains(pair))
+                {
                     pairsToRemove.Add(pair);
+                }
             }
-            for (int i = 0; i < pairsToRemove.Count; i++)
+
+            for (var i = 0; i < pairsToRemove.Count; i++)
             {
                 var toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);
                 //The contained pairs list pulled TriangleCollidables from a pool to create the opposing collidables.
                 //Clean those up now.
                 //CollidableA is used without checking, because MobileMeshPairHandlers always put the convex in slot A.
-                CleanUpCollidable((TriangleCollidable)toReturn.CollidableA);
+                CleanUpCollidable((TriangleCollidable) toReturn.CollidableA);
                 toReturn.CleanUp();
                 toReturn.Factory.GiveBack(toReturn);
-
             }
+
             containedPairs.Clear();
             pairsToRemove.Clear();
 
             foreach (var pair in subPairs)
             {
-                if (pair.Value.BroadPhaseOverlap.collisionRule < CollisionRule.NoNarrowPhaseUpdate) //Don't test if the collision rules say don't.
+                if (pair.Value.BroadPhaseOverlap.collisionRule < CollisionRule.NoNarrowPhaseUpdate
+                ) //Don't test if the collision rules say don't.
                 {
                     ConfigureCollidable(pair.Key, dt);
                     //Update the contact count using our (the parent) contact count so that the child can avoid costly solidity testing.
@@ -243,8 +243,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                     pair.Value.UpdateCollision(dt);
                 }
             }
-
-
         }
 
 
@@ -254,7 +252,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateCollision(float dt)
         {
-
             if (!suppressEvents)
             {
                 CollidableA.EventTriggerer.OnPairUpdated(CollidableB, this);
@@ -289,8 +286,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
                 //No solver updateable removal in this method since it's handled by the "RemoveSolverUpdateable" method.
             }
-            previousContactCount = contactCount;
 
+            previousContactCount = contactCount;
         }
 
         ///<summary>
@@ -306,11 +303,18 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 //The system uses the identity of the requester to determine if it needs to do handle the TOI calculation.
                 //Use the child pair's own entries as a proxy.
                 if (BroadPhaseOverlap.entryA == requester)
-                    pair.UpdateTimeOfImpact((Collidable)pair.BroadPhaseOverlap.entryA, dt);
+                {
+                    pair.UpdateTimeOfImpact((Collidable) pair.BroadPhaseOverlap.entryA, dt);
+                }
                 else
-                    pair.UpdateTimeOfImpact((Collidable)pair.BroadPhaseOverlap.entryB, dt);
+                {
+                    pair.UpdateTimeOfImpact((Collidable) pair.BroadPhaseOverlap.entryB, dt);
+                }
+
                 if (pair.timeOfImpact < timeOfImpact)
+                {
                     timeOfImpact = pair.timeOfImpact;
+                }
             }
         }
 
@@ -319,50 +323,53 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             foreach (CollidablePairHandler pair in subPairs.Values)
             {
-                int count = pair.Contacts.Count;
+                var count = pair.Contacts.Count;
                 if (index - count < 0)
                 {
                     pair.GetContactInformation(index, out info);
                     return;
                 }
+
                 index -= count;
             }
-            throw new IndexOutOfRangeException("Contact index is not present in the pair.");
 
+            throw new IndexOutOfRangeException("Contact index is not present in the pair.");
         }
 
 
         void IPairHandlerParent.AddSolverUpdateable(SolverUpdateable addedItem)
         {
-
             manifoldConstraintGroup.Add(addedItem);
             //If this is the first child solver item to be added, we need to add ourselves to our parent too.
             if (manifoldConstraintGroup.SolverUpdateables.Count == 1)
             {
                 if (Parent != null)
+                {
                     Parent.AddSolverUpdateable(manifoldConstraintGroup);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableAdded(manifoldConstraintGroup);
+                }
             }
-
         }
 
         void IPairHandlerParent.RemoveSolverUpdateable(SolverUpdateable removedItem)
         {
-
             manifoldConstraintGroup.Remove(removedItem);
 
             //If this is the last child solver item, we need to remove ourselves from our parent too.
             if (manifoldConstraintGroup.SolverUpdateables.Count == 0)
             {
                 if (Parent != null)
+                {
                     Parent.RemoveSolverUpdateable(manifoldConstraintGroup);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableRemoved(manifoldConstraintGroup);
-
+                }
             }
-
-
         }
 
 
@@ -379,16 +386,12 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
+        private int contactCount;
 
-
-        int contactCount;
         /// <summary>
         /// Gets the number of contacts in the pair.
         /// </summary>
-        protected internal override int ContactCount
-        {
-            get { return contactCount; }
-        }
+        protected internal override int ContactCount => contactCount;
 
         /// <summary>
         /// Clears the pair's contacts.
@@ -399,6 +402,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             {
                 pair.ClearContacts();
             }
+
             base.ClearContacts();
         }
     }

@@ -49,7 +49,10 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         {
             var toReturn = new T();
             if (InstanceInitializer != null)
+            {
                 InstanceInitializer(toReturn);
+            }
+
             return toReturn;
         }
 
@@ -57,6 +60,5 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// Removes all elements from the pool.
         /// </summary>
         public abstract void Clear();
-
     }
 }

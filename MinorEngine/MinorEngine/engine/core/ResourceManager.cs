@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -21,32 +20,30 @@ using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace MinorEngine.engine.core
 {
-
-
-
     public static class ResourceManager
     {
-
         #region Texture IO
 
         public static class TextureIO
         {
-
-
             public static GameTexture BytesToTexture(IntPtr ptr, int width, int height, string cacheName = "")
             {
                 return BytesToTexture(ptr, width, height, true, cacheName);
             }
 
-            internal static GameTexture BytesToTexture(IntPtr ptr, int width, int height, bool writeLog, string cacheName = "")
+            internal static GameTexture BytesToTexture(IntPtr ptr, int width, int height, bool writeLog,
+                string cacheName = "")
             {
                 //cacheName = SanitizeName(cacheName);
 
-                GameTexture ret = new GameTexture(cacheName);
+                var ret = new GameTexture(cacheName);
                 //AddReference(ret, cacheName); //Adding it to the cache
 
                 if (writeLog)
-                    Logger.Log($"Loading Texture with Name: {cacheName}... Width: {width} Height: {height}", DebugChannel.Log);
+                {
+                    Logger.Log($"Loading Texture with Name: {cacheName}... Width: {width} Height: {height}",
+                        DebugChannel.Log);
+                }
 
                 GL.BindTexture(TextureTarget.Texture2D, ret.TextureId);
                 GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, width, height, 0, PixelFormat.Bgra,
@@ -60,8 +57,8 @@ namespace MinorEngine.engine.core
 
             public static GameTexture BytesToTexture(byte[] buffer, int width, int height, string cacheName = "")
             {
-                GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-                GameTexture ret = BytesToTexture(handle.AddrOfPinnedObject(), width, height, cacheName);
+                var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                var ret = BytesToTexture(handle.AddrOfPinnedObject(), width, height, cacheName);
 
                 handle.Free();
                 return ret;
@@ -69,14 +66,12 @@ namespace MinorEngine.engine.core
 
             internal static GameTexture ParameterToTexture(int width, int height, bool writeLog, string cacheName = "")
             {
-
                 return BytesToTexture(IntPtr.Zero, width, height, writeLog, cacheName);
             }
 
             public static GameTexture ParameterToTexture(int width, int height, string cacheName = "")
             {
                 return ParameterToTexture(width, height, true, cacheName);
-
             }
 
             //public static int GetRefCount(GameTexture tex)
@@ -86,11 +81,11 @@ namespace MinorEngine.engine.core
 
             private static byte[] TextureToByteArray(GameTexture tex)
             {
-                byte[] buffer = new byte[(int)(tex.Width * tex.Height * 4)];
-                GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+                var buffer = new byte[(int) (tex.Width * tex.Height * 4)];
+                var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
                 GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
-                GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int)tex.Width, (int)tex.Height, 1, PixelFormat.Bgra,
+                GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int) tex.Width, (int) tex.Height, 1, PixelFormat.Bgra,
                     PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
 
                 handle.Free();
@@ -99,7 +94,7 @@ namespace MinorEngine.engine.core
 
             public static MemoryBuffer TextureToMemoryBuffer(GameTexture tex)
             {
-                byte[] buffer = TextureToByteArray(tex);
+                var buffer = TextureToByteArray(tex);
                 return CL.CreateBuffer(buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
             }
 
@@ -113,16 +108,15 @@ namespace MinorEngine.engine.core
 
             public static void UpdateTexture(GameTexture tex, MemoryBuffer data)
             {
-                Update(tex, TextureToByteArray(tex), (int)tex.Width, (int)tex.Height);
+                Update(tex, TextureToByteArray(tex), (int) tex.Width, (int) tex.Height);
             }
 
             public static GameTexture BitmapToTexture(Bitmap bmp, string cacheName = "")
             {
-
-                BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+                var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
                     System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                GameTexture tex = BytesToTexture(data.Scan0, bmp.Width, bmp.Height, cacheName);
+                var tex = BytesToTexture(data.Scan0, bmp.Width, bmp.Height, cacheName);
 
                 bmp.UnlockBits(data);
                 return tex;
@@ -131,17 +125,27 @@ namespace MinorEngine.engine.core
 
             public static GameTexture[] AssimpSceneToTextures(Scene scene)
             {
-                if (!scene.HasTextures) return new GameTexture[0];
-                List<GameTexture> list = new List<GameTexture>();
-                foreach (var x in scene.Textures) list.Add(AssimpEmbeddedToTexture(x));
+                if (!scene.HasTextures)
+                {
+                    return new GameTexture[0];
+                }
+
+                var list = new List<GameTexture>();
+                foreach (var x in scene.Textures)
+                {
+                    list.Add(AssimpEmbeddedToTexture(x));
+                }
 
                 return list.ToArray();
             }
 
             private static byte[] flattenImageData(Texel[] imageData)
             {
-                byte[] ret = new byte[imageData.Length * 4];
-                for (int i = 0; i < imageData.Length; i++) TexelToByteSequence(i * 4, ret, imageData[i]);
+                var ret = new byte[imageData.Length * 4];
+                for (var i = 0; i < imageData.Length; i++)
+                {
+                    TexelToByteSequence(i * 4, ret, imageData[i]);
+                }
 
                 return ret;
             }
@@ -169,16 +173,18 @@ namespace MinorEngine.engine.core
             private static void DefaultTexParameter()
             {
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                    (int)TextureMinFilter.Linear);
+                    (int) TextureMinFilter.Linear);
                 GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                    (int)TextureMagFilter.Linear);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.Repeat);
-                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.Repeat);
+                    (int) TextureMagFilter.Linear);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
+                    (int) TextureWrapMode.Repeat);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
+                    (int) TextureWrapMode.Repeat);
             }
 
             private static GameTexture Copy(GameTexture other, string cacheName = "")
             {
-                return BytesToTexture(TextureToByteArray(other), (int)other.Width, (int)other.Height, cacheName);
+                return BytesToTexture(TextureToByteArray(other), (int) other.Width, (int) other.Height, cacheName);
             }
 
             internal static void AddConsoleCommands(DebugConsoleComponent console)
@@ -187,20 +193,24 @@ namespace MinorEngine.engine.core
                 console.AddCommand("ltex", cmd_TextureInfo);
                 console.AddCommand("ltex2c", cmd_LtexToConsole);
             }
-
         }
+
         #endregion
 
 
         #region MeshIO
+
         public static class MeshIO
         {
-
             //Todo: Create Dummy texture that will be returned when not found
             public static GameMesh FileToMesh(string filename)
             {
-                List<GameMesh> meshes = LoadModel(filename);
-                if (meshes.Count > 0) return meshes[0];
+                var meshes = LoadModel(filename);
+                if (meshes.Count > 0)
+                {
+                    return meshes[0];
+                }
+
                 return null;
             }
 
@@ -211,9 +221,9 @@ namespace MinorEngine.engine.core
 
             private static List<GameMesh> LoadModel(string path)
             {
-                AssimpContext context = new AssimpContext();
+                var context = new AssimpContext();
                 context.SetConfig(new NormalSmoothingAngleConfig(66));
-                Scene s = context.ImportFile(path);
+                var s = context.ImportFile(path);
 
                 if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
                 {
@@ -221,15 +231,18 @@ namespace MinorEngine.engine.core
                     return new List<GameMesh>();
                 }
 
-                string directory = Path.GetDirectoryName(path);
-                if (directory == string.Empty) directory = ".";
+                var directory = Path.GetDirectoryName(path);
+                if (directory == string.Empty)
+                {
+                    directory = ".";
+                }
 
 
                 Logger.Log("Loading Model Finished.", DebugChannel.Log);
 
                 Logger.Log("Processing Nodes...", DebugChannel.Log);
 
-                List<GameMesh> ret = new List<GameMesh>();
+                var ret = new List<GameMesh>();
 
                 processNode(s.RootNode, s, ret, directory, path);
                 return ret;
@@ -241,34 +254,41 @@ namespace MinorEngine.engine.core
                 if (node.HasMeshes)
                 {
                     Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
-                    for (int i = 0; i < node.MeshCount; i++) meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir, DebugName));
+                    for (var i = 0; i < node.MeshCount; i++)
+                    {
+                        meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir, DebugName));
+                    }
                 }
 
                 if (node.HasChildren)
-                    for (int i = 0; i < node.Children.Count; i++)
+                {
+                    for (var i = 0; i < node.Children.Count; i++)
+                    {
                         processNode(node.Children[i], s, meshes, dir, DebugName);
+                    }
+                }
             }
 
             private static GameMesh processMesh(Mesh mesh, Scene s, string dir, string debugName)
             {
-                List<GameVertex> vertices = new List<GameVertex>();
-                List<uint> indices = new List<uint>();
-                List<GameTexture> textures = new List<GameTexture>();
+                var vertices = new List<GameVertex>();
+                var indices = new List<uint>();
+                var textures = new List<GameTexture>();
 
 
                 Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log);
 
 
                 Logger.Log("Copying Vertex Data...", DebugChannel.Log);
-                for (int i = 0; i < mesh.VertexCount; i++)
+                for (var i = 0; i < mesh.VertexCount; i++)
                 {
-                    Vector3D vert = mesh.Vertices[i];
-                    Vector3D norm = mesh.Normals[i];
-                    Vector3D tan = mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0);
-                    Vector3D bit = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0);
-                    Vector3D uv = mesh.HasTextureCoords(0) ? mesh.TextureCoordinateChannels[0][i] : new Vector3D(0);
+                    var vert = mesh.Vertices[i];
+                    var norm = mesh.Normals[i];
+                    var tan = mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0);
+                    var bit = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0);
+                    var uv = mesh.HasTextureCoords(0) ? mesh.TextureCoordinateChannels[0][i] : new Vector3D(0);
 
-                    GameVertex v = new GameVertex
+                    var v = new GameVertex
                     {
                         Position = new Vector3(vert.X, vert.Y, vert.Z),
                         Normal = new Vector3(norm.X, norm.Y, norm.Z),
@@ -283,14 +303,14 @@ namespace MinorEngine.engine.core
 
                 Logger.Log("Calculating Indices...", DebugChannel.Log);
 
-                for (int i = 0; i < mesh.FaceCount; i++)
+                for (var i = 0; i < mesh.FaceCount; i++)
                 {
-                    Face f = mesh.Faces[i];
-                    indices.AddRange(f.Indices.Select(x => (uint)x));
+                    var f = mesh.Faces[i];
+                    indices.AddRange(f.Indices.Select(x => (uint) x));
                 }
 
 
-                Material m = s.Materials[mesh.MaterialIndex];
+                var m = s.Materials[mesh.MaterialIndex];
 
                 Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log);
 
@@ -304,15 +324,15 @@ namespace MinorEngine.engine.core
 
             private static List<GameTexture> loadMaterialTextures(Material m, TextureType texType, string dir)
             {
-                List<GameTexture> ret = new List<GameTexture>();
+                var ret = new List<GameTexture>();
 
                 Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
                     DebugChannel.Log);
-                for (int i = 0; i < m.GetMaterialTextureCount(texType); i++)
+                for (var i = 0; i < m.GetMaterialTextureCount(texType); i++)
                 {
                     TextureSlot s;
                     m.GetMaterialTexture(texType, i, out s);
-                    GameTexture tx = TextureIO.FileToTexture(dir + s.FilePath);
+                    var tx = TextureIO.FileToTexture(dir + s.FilePath);
                     tx.TexType = texType;
                     tx.Path = s.FilePath;
                     ret.Add(tx);
@@ -320,10 +340,7 @@ namespace MinorEngine.engine.core
 
                 return ret;
             }
-
-
         }
-
 
         #endregion
 
@@ -331,7 +348,7 @@ namespace MinorEngine.engine.core
 
         private static string cmd_TextureInfo(string[] args)
         {
-            return "Loaded Textures: ";// + _GameTextureCache.Count;
+            return "Loaded Textures: "; // + _GameTextureCache.Count;
         }
 
         private static string cmd_LtexToConsole(string[] args)
@@ -343,7 +360,7 @@ namespace MinorEngine.engine.core
 
         private static string cmd_ListTextures(string[] args)
         {
-            string s = "Textures:";
+            var s = "Textures:";
             //foreach (var i1 in _GameTextureCache)
             //{
             //    if (!i1.Key.StartsWith("FONT_"))
@@ -394,6 +411,5 @@ namespace MinorEngine.engine.core
 
         //Material
         //Contains uniform values in xml/json/lua? format
-
     }
 }

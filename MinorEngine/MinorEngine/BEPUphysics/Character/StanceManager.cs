@@ -1,11 +1,11 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
+using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUphysics.CollisionTests;
-using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.Character
@@ -20,10 +20,10 @@ namespace MinorEngine.BEPUphysics.Character
         /// </summary>
         private Cylinder characterBody;
 
-        ConvexCollidable<CylinderShape> standingQueryObject;
-        ConvexCollidable<CylinderShape> crouchingQueryObject;
-        ConvexCollidable<CylinderShape> proneQueryObject;
-        ConvexCollidable<CylinderShape> currentQueryObject;
+        private ConvexCollidable<CylinderShape> standingQueryObject;
+        private ConvexCollidable<CylinderShape> crouchingQueryObject;
+        private ConvexCollidable<CylinderShape> proneQueryObject;
+        private ConvexCollidable<CylinderShape> currentQueryObject;
 
         /// <summary>
         /// Updates the query objects to match the character controller's current state.  Called when BodyRadius, StanceManager.StandingHeight, or StanceManager.CrouchingHeight is set.
@@ -42,68 +42,82 @@ namespace MinorEngine.BEPUphysics.Character
         }
 
         private float standingHeight;
+
         /// <summary>
         /// Gets or sets the height of the character while standing.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently standing.
         /// </summary>
         public float StandingHeight
         {
-            get { return standingHeight; }
+            get => standingHeight;
             set
             {
                 if (value <= 0 || value < CrouchingHeight)
-                    throw new ArgumentException("Standing height must be positive and greater than the crouching height.");
+                {
+                    throw new ArgumentException(
+                        "Standing height must be positive and greater than the crouching height.");
+                }
+
                 standingHeight = value;
                 UpdateQueryShapes();
                 if (CurrentStance == Stance.Standing)
-                {
                     //If we're currently standing, then the current shape must be modified as well.
                     //This isn't entirely safe, but dynamic resizing generally isn't.
+                {
                     characterBody.Height = standingHeight;
                 }
             }
         }
 
         private float crouchingHeight;
+
         /// <summary>
         /// Gets or sets the height of the character while crouching.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently crouching.
         /// </summary>
         public float CrouchingHeight
         {
-            get { return crouchingHeight; }
+            get => crouchingHeight;
             set
             {
                 if (value <= 0 || value > StandingHeight)
+                {
                     throw new ArgumentException("Crouching height must be positive and less than the standing height.");
+                }
+
                 crouchingHeight = value;
                 UpdateQueryShapes();
 
                 if (CurrentStance == Stance.Crouching)
-                {
                     //If we're currently crouching, then the current shape must be modified as well.
                     //This isn't entirely safe, but dynamic resizing generally isn't.
+                {
                     characterBody.Height = crouchingHeight;
                 }
             }
         }
 
         private float proneHeight;
+
         /// <summary>
         /// Gets or sets the height of the character while prone.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently prone.
         /// </summary>
         public float ProneHeight
         {
-            get { return proneHeight; }
+            get => proneHeight;
             set
             {
                 if (value <= 0 || value > CrouchingHeight)
-                    throw new ArgumentException("Crouching height must be positive and less than the crouching height.");
+                {
+                    throw new ArgumentException(
+                        "Crouching height must be positive and less than the crouching height.");
+                }
+
                 proneHeight = value;
                 UpdateQueryShapes();
 
                 if (CurrentStance == Stance.Prone)
-                {
                     //If we're currently crouching, then the current shape must be modified as well.
                     //This isn't entirely safe, but dynamic resizing generally isn't.
+                {
                     characterBody.Height = proneHeight;
                 }
             }
@@ -112,23 +126,15 @@ namespace MinorEngine.BEPUphysics.Character
         /// <summary>
         /// Gets the current stance of the character.
         /// </summary>
-        public Stance CurrentStance
-        {
-            get;
-            private set;
-        }
+        public Stance CurrentStance { get; private set; }
 
         /// <summary>
         /// Gets or sets the stance that the character is trying to move into.
         /// </summary>
-        public Stance DesiredStance
-        {
-            get;
-            set;
-        }
+        public Stance DesiredStance { get; set; }
 
-        private QueryManager QueryManager { get; set; }
-        private SupportFinder SupportFinder { get; set; }
+        private QueryManager QueryManager { get; }
+        private SupportFinder SupportFinder { get; }
 
         /// <summary>
         /// Constructs a stance manager for a character.
@@ -138,26 +144,41 @@ namespace MinorEngine.BEPUphysics.Character
         /// <param name="proneHeight">Prone height of the character.</param>
         /// <param name="queryManager">Provider of queries used by the stance manager to test if it is okay to change stances.</param>
         /// <param name="supportFinder">Support finder used by the character.</param>
-        public StanceManager(Cylinder characterBody, float crouchingHeight, float proneHeight, QueryManager queryManager, SupportFinder supportFinder)
+        public StanceManager(Cylinder characterBody, float crouchingHeight, float proneHeight,
+            QueryManager queryManager, SupportFinder supportFinder)
         {
-            this.QueryManager = queryManager;
-            this.SupportFinder = supportFinder;
+            QueryManager = queryManager;
+            SupportFinder = supportFinder;
             this.characterBody = characterBody;
             standingHeight = characterBody.Height;
             if (crouchingHeight < standingHeight)
+            {
                 this.crouchingHeight = crouchingHeight;
+            }
             else
+            {
                 throw new ArgumentException("Crouching height must be less than standing height.");
+            }
+
             if (proneHeight < crouchingHeight)
+            {
                 this.proneHeight = proneHeight;
+            }
             else
+            {
                 throw new ArgumentException("Prone height must be less than crouching height.");
+            }
 
             //We can share the real shape with the query objects.
             currentQueryObject = new ConvexCollidable<CylinderShape>(characterBody.CollisionInformation.Shape);
-            standingQueryObject = new ConvexCollidable<CylinderShape>(new CylinderShape(StandingHeight, characterBody.Radius) { CollisionMargin = currentQueryObject.Shape.CollisionMargin });
-            crouchingQueryObject = new ConvexCollidable<CylinderShape>(new CylinderShape(CrouchingHeight, characterBody.Radius) { CollisionMargin = currentQueryObject.Shape.CollisionMargin });
-            proneQueryObject = new ConvexCollidable<CylinderShape>(new CylinderShape(proneHeight, characterBody.Radius) { CollisionMargin = currentQueryObject.Shape.CollisionMargin });
+            standingQueryObject = new ConvexCollidable<CylinderShape>(
+                new CylinderShape(StandingHeight, characterBody.Radius)
+                    {CollisionMargin = currentQueryObject.Shape.CollisionMargin});
+            crouchingQueryObject = new ConvexCollidable<CylinderShape>(
+                new CylinderShape(CrouchingHeight, characterBody.Radius)
+                    {CollisionMargin = currentQueryObject.Shape.CollisionMargin});
+            proneQueryObject = new ConvexCollidable<CylinderShape>(new CylinderShape(proneHeight, characterBody.Radius)
+                {CollisionMargin = currentQueryObject.Shape.CollisionMargin});
             //Share the collision rules between the main body and its query objects.  That way, the character's queries return valid results.
             currentQueryObject.CollisionRules = characterBody.CollisionInformation.CollisionRules;
             standingQueryObject.CollisionRules = characterBody.CollisionInformation.CollisionRules;
@@ -189,7 +210,6 @@ namespace MinorEngine.BEPUphysics.Character
 
             if (CurrentStance != targetStance)
             {
-
                 float currentHeight;
                 switch (CurrentStance)
                 {
@@ -203,6 +223,7 @@ namespace MinorEngine.BEPUphysics.Character
                         currentHeight = standingHeight;
                         break;
                 }
+
                 float targetHeight;
                 switch (targetStance)
                 {
@@ -222,18 +243,20 @@ namespace MinorEngine.BEPUphysics.Character
                 {
                     //The character is getting smaller, so no validation queries are required.
                     if (SupportFinder.HasSupport)
-                    {
                         //On the ground, so need to move the position down.
+                    {
                         newPosition = currentPosition + down * ((currentHeight - targetHeight) * 0.5f);
                     }
                     else
-                    {
                         //We're in the air, so we don't have to change the position at all- just change the height.
+                    {
                         newPosition = currentPosition;
                     }
+
                     newHeight = targetHeight;
                     return true;
                 }
+
                 //The character is getting bigger, so validation is required.
                 ConvexCollidable<CylinderShape> queryObject;
                 switch (targetStance)
@@ -263,12 +286,14 @@ namespace MinorEngine.BEPUphysics.Character
                         //there's no need to do the full query.
                         newPosition = currentPosition - down * ((targetHeight - currentHeight) * .5f);
                         PrepareQueryObject(queryObject, ref newPosition);
-                        QueryManager.QueryContacts(queryObject, ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts, true);
+                        QueryManager.QueryContacts(queryObject, ref tractionContacts, ref supportContacts,
+                            ref sideContacts, ref headContacts, true);
                         if (IsObstructed(ref supportContacts, ref sideContacts, ref headContacts))
-                        {
                             //Can't stand up if something is in the way!
+                        {
                             return false;
                         }
+
                         newHeight = targetHeight;
                         return true;
                     }
@@ -280,19 +305,20 @@ namespace MinorEngine.BEPUphysics.Character
                         //(We arbitrarily ignore the case where the character could push off a ceiling.)
                         //The goal is to put the feet of the character on any support that can be found, and then verify that the rest of its body fits in that location.
                         float lowestBound = 0;
-                        float originalHighestBound = (targetHeight - currentHeight) * -.5f;
-                        float highestBound = originalHighestBound;
+                        var originalHighestBound = (targetHeight - currentHeight) * -.5f;
+                        var highestBound = originalHighestBound;
                         float currentOffset = 0;
 
-                        int attempts = 0;
+                        var attempts = 0;
                         //Don't keep querying indefinitely.  If we fail to reach it in a few informed steps, it's probably not worth continuing.
                         //The bound size check prevents the system from continuing to search a meaninglessly tiny interval.
                         var lastState = CharacterContactPositionState.Accepted;
                         while (attempts++ < 5 && lowestBound - highestBound > Toolbox.BigEpsilon)
                         {
-                            Vector3 candidatePosition = currentPosition + currentOffset * down;
+                            var candidatePosition = currentPosition + currentOffset * down;
                             float hintOffset;
-                            switch (lastState = TrySupportLocation(queryObject, ref candidatePosition, out hintOffset, ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts))
+                            switch (lastState = TrySupportLocation(queryObject, ref candidatePosition, out hintOffset,
+                                ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts))
                             {
                                 case CharacterContactPositionState.Accepted:
                                     currentOffset += hintOffset;
@@ -307,6 +333,7 @@ namespace MinorEngine.BEPUphysics.Character
                                     {
                                         return false;
                                     }
+
                                 case CharacterContactPositionState.NoHit:
                                     highestBound = currentOffset + hintOffset;
                                     currentOffset = (lowestBound + highestBound) * .5f;
@@ -321,15 +348,18 @@ namespace MinorEngine.BEPUphysics.Character
                                     break;
                             }
                         }
+
                         //If it terminated in a safe state, it can increase in size.
                         //TODO: You could handle this more efficiently by early terminating the above loop once obstruction is clearly unavoidable.
                         //(Not messing with it right now because this is likely going to change completely.)
-                        if (lastState == CharacterContactPositionState.Accepted || lastState == CharacterContactPositionState.NoHit)
+                        if (lastState == CharacterContactPositionState.Accepted ||
+                            lastState == CharacterContactPositionState.NoHit)
                         {
                             newPosition = currentPosition;
                             newHeight = targetHeight;
                             return true;
                         }
+
                         return false;
                     }
                 }
@@ -358,105 +388,130 @@ namespace MinorEngine.BEPUphysics.Character
                 characterBody.Height = newHeight;
                 return true;
             }
+
             return false;
         }
 
-        bool IsObstructed(ref QuickList<CharacterContact> supportContacts, ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts)
+        private bool IsObstructed(ref QuickList<CharacterContact> supportContacts,
+            ref QuickList<CharacterContact> sideContacts,
+            ref QuickList<CharacterContact> headContacts)
         {
             if (IsObstructed(ref sideContacts, ref headContacts))
+            {
                 return true;
+            }
 
-            for (int i = 0; i < supportContacts.Count; ++i)
+            for (var i = 0; i < supportContacts.Count; ++i)
             {
                 if (IsSupportContactObstructive(ref supportContacts.Elements[i].Contact))
+                {
                     return true;
+                }
             }
+
             return false;
         }
 
-        bool IsSupportContactObstructive(ref ContactData contact)
+        private bool IsSupportContactObstructive(ref ContactData contact)
         {
             //If the contact has less than the allowed penetration depth, allow it.
             if (contact.PenetrationDepth <= CollisionDetectionSettings.AllowedPenetration)
             {
                 return false;
             }
+
             //If there is already a contact that is deeper than the new contact, then allow it. It won't make things worse.
             foreach (var c in SupportFinder.Supports)
             {
                 //An existing contact is considered 'deeper' if its normal-adjusted depth is greater than the new contact.
-                float dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
-                float depth = dot * c.Contact.PenetrationDepth + Toolbox.BigEpsilon;
+                var dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
+                var depth = dot * c.Contact.PenetrationDepth + Toolbox.BigEpsilon;
                 if (depth >= contact.PenetrationDepth)
+                {
                     return false;
+                }
             }
+
             return true;
         }
 
-        bool IsObstructed(ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts)
+        private bool IsObstructed(ref QuickList<CharacterContact> sideContacts,
+            ref QuickList<CharacterContact> headContacts)
         {
             //No head contacts can exist!
             if (headContacts.Count > 0)
+            {
                 return true;
+            }
+
             //A contact is considered obstructive if its projected depth is deeper than any existing contact along the existing contacts' normals.
-            for (int i = 0; i < sideContacts.Count; i++)
+            for (var i = 0; i < sideContacts.Count; i++)
             {
                 if (SupportFinder.IsSideContactObstructive(ref sideContacts.Elements[i].Contact))
+                {
                     return true;
+                }
             }
+
             return false;
         }
 
 
-        CharacterContactPositionState TrySupportLocation(ConvexCollidable<CylinderShape> queryObject, ref Vector3 position, out float hintOffset,
-            ref QuickList<CharacterContact> tractionContacts, ref QuickList<CharacterContact> supportContacts, ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts)
+        private CharacterContactPositionState TrySupportLocation(ConvexCollidable<CylinderShape> queryObject,
+            ref Vector3 position, out float hintOffset,
+            ref QuickList<CharacterContact> tractionContacts, ref QuickList<CharacterContact> supportContacts,
+            ref QuickList<CharacterContact> sideContacts, ref QuickList<CharacterContact> headContacts)
         {
             hintOffset = 0;
             PrepareQueryObject(queryObject, ref position);
-            QueryManager.QueryContacts(queryObject, ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts, true);
+            QueryManager.QueryContacts(queryObject, ref tractionContacts, ref supportContacts, ref sideContacts,
+                ref headContacts, true);
 
-            bool obstructed = IsObstructed(ref sideContacts, ref headContacts);
+            var obstructed = IsObstructed(ref sideContacts, ref headContacts);
             if (obstructed)
             {
                 return CharacterContactPositionState.Obstructed;
             }
+
             if (supportContacts.Count > 0)
             {
                 CharacterContactPositionState supportState;
                 CharacterContact supportContact;
-                QueryManager.AnalyzeSupportState(ref tractionContacts, ref supportContacts, out supportState, out supportContact);
+                QueryManager.AnalyzeSupportState(ref tractionContacts, ref supportContacts, out supportState,
+                    out supportContact);
                 var down = characterBody.orientationMatrix.Down;
                 //Note that traction is not tested for; it isn't important for the stance manager.
                 if (supportState == CharacterContactPositionState.Accepted)
                 {
                     //We're done! The guess found a good spot to stand on.
                     //We need to have fairly good contacts after this process, so only push it up a bit.
-                    hintOffset = Math.Min(0, Vector3.Dot(supportContact.Contact.Normal, down) * (CollisionDetectionSettings.AllowedPenetration * .5f - supportContact.Contact.PenetrationDepth));
+                    hintOffset = Math.Min(0,
+                        Vector3.Dot(supportContact.Contact.Normal, down) *
+                        (CollisionDetectionSettings.AllowedPenetration * .5f -
+                         supportContact.Contact.PenetrationDepth));
                     return CharacterContactPositionState.Accepted;
                 }
-                else if (supportState == CharacterContactPositionState.TooDeep)
+
+                if (supportState == CharacterContactPositionState.TooDeep)
                 {
                     //Looks like we have to keep trying, but at least we found a good hint.
-                    hintOffset = Math.Min(0, Vector3.Dot(supportContact.Contact.Normal, down) * (CollisionDetectionSettings.AllowedPenetration * .5f - supportContact.Contact.PenetrationDepth));
+                    hintOffset = Math.Min(0,
+                        Vector3.Dot(supportContact.Contact.Normal, down) *
+                        (CollisionDetectionSettings.AllowedPenetration * .5f -
+                         supportContact.Contact.PenetrationDepth));
                     return CharacterContactPositionState.TooDeep;
                 }
-                else //if (supportState == SupportState.Separated)
-                {
-                    //It's not obstructed, but the support isn't quite right.
-                    //It's got a negative penetration depth.
-                    //We can use that as a hint.
-                    hintOffset = -.001f - Vector3.Dot(supportContact.Contact.Normal, down) * supportContact.Contact.PenetrationDepth;
-                    return CharacterContactPositionState.NoHit;
-                }
-            }
-            else //Not obstructed, but no support.
-            {
+
+                //It's not obstructed, but the support isn't quite right.
+                //It's got a negative penetration depth.
+                //We can use that as a hint.
+                hintOffset = -.001f - Vector3.Dot(supportContact.Contact.Normal, down) *
+                             supportContact.Contact.PenetrationDepth;
                 return CharacterContactPositionState.NoHit;
             }
+
+            return CharacterContactPositionState.NoHit;
         }
-
-
-
     }
 
     //The StanceManager, as is, is semi-extensible.  Technically additional states can be added.
@@ -471,10 +526,12 @@ namespace MinorEngine.BEPUphysics.Character
         /// Tallest stance.
         /// </summary>
         Standing,
+
         /// <summary>
         /// Middle-height stance; must be taller than prone and shorter than standing.
         /// </summary>
         Crouching,
+
         /// <summary>
         /// The shortest stance; the character is essentially on the ground. Note that the width and length of the character do not change while prone.
         /// </summary>

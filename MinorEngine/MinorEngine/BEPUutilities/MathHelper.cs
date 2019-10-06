@@ -34,18 +34,19 @@ namespace MinorEngine.BEPUutilities
         /// <returns>Wrapped angle.</returns>
         public static float WrapAngle(float angle)
         {
-            angle = (float)System.Math.IEEERemainder(angle, TwoPi);
+            angle = (float) Math.IEEERemainder(angle, TwoPi);
             if (angle < -Pi)
             {
                 angle += TwoPi;
                 return angle;
             }
+
             if (angle >= Pi)
             {
                 angle -= TwoPi;
             }
-            return angle;
 
+            return angle;
         }
 
         /// <summary>
@@ -58,9 +59,15 @@ namespace MinorEngine.BEPUutilities
         public static float Clamp(float value, float min, float max)
         {
             if (value < min)
+            {
                 return min;
-            else if (value > max)
+            }
+
+            if (value > max)
+            {
                 return max;
+            }
+
             return value;
         }
 

@@ -37,6 +37,7 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
             {
                 affectedEntities.Add(entity);
             }
+
             return affectedEntities;
         }
 

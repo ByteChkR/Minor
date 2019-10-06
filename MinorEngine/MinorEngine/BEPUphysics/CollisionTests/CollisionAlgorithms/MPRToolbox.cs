@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUutilities;
- 
-using System.Diagnostics;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 {
@@ -22,32 +17,36 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// Number of iterations that the MPR system will run in its inner loop before giving up and returning with failure.
         /// </summary>
         public static int InnerIterationLimit = 15;
+
         /// <summary>
         /// Number of iterations that the MPR system will run in its outer loop before giving up and moving on to its inner loop.
         /// </summary>
         public static int OuterIterationLimit = 15;
 
         private static float surfaceEpsilon = 1e-7f;
+
         /// <summary>
         /// Gets or sets how close surface-finding based MPR methods have to get before exiting.
         /// Defaults to 1e-7.
         /// </summary>
         public static float SurfaceEpsilon
         {
-            get
-            {
-                return surfaceEpsilon;
-            }
+            get => surfaceEpsilon;
             set
             {
                 if (value > 0)
+                {
                     surfaceEpsilon = value;
-                else throw new ArgumentException("Epsilon must be positive.");
-
+                }
+                else
+                {
+                    throw new ArgumentException("Epsilon must be positive.");
+                }
             }
         }
 
         private static float depthRefinementEpsilon = 1e-4f;
+
         /// <summary>
         /// Gets or sets how close the penetration depth refinement system should converge before quitting.
         /// Making this smaller can help more precisely find a local minimum at the cost of performance.
@@ -56,40 +55,44 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// </summary>
         public static float DepthRefinementEpsilon
         {
-            get
-            {
-                return depthRefinementEpsilon;
-            }
+            get => depthRefinementEpsilon;
             set
             {
                 if (value > 0)
+                {
                     depthRefinementEpsilon = value;
-                else throw new ArgumentException("Epsilon must be positive.");
-
+                }
+                else
+                {
+                    throw new ArgumentException("Epsilon must be positive.");
+                }
             }
         }
 
         private static float rayCastSurfaceEpsilon = 1e-9f;
+
         /// <summary>
         /// Gets or sets how close surface-finding ray casts have to get before exiting.
         /// Defaults to 1e-9.
         /// </summary>
         public static float RayCastSurfaceEpsilon
         {
-            get
-            {
-                return rayCastSurfaceEpsilon;
-            }
+            get => rayCastSurfaceEpsilon;
             set
             {
                 if (value > 0)
+                {
                     rayCastSurfaceEpsilon = value;
+                }
                 else
+                {
                     throw new ArgumentException("Epsilon must be positive.");
+                }
             }
         }
 
         private static int maximumDepthRefinementIterations = 3;
+
         /// <summary>
         /// Gets or sets the maximum number of iterations to use to reach the local penetration depth minimum when using the RefinePenetration function.
         /// Increasing this allows the system to work longer to find local penetration minima.
@@ -98,15 +101,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// </summary>
         public static int MaximumDepthRefinementIterations
         {
-            get
-            {
-                return maximumDepthRefinementIterations;
-            }
+            get => maximumDepthRefinementIterations;
             set
             {
                 if (value > 0)
+                {
                     maximumDepthRefinementIterations = value;
-                else throw new ArgumentException("Iteration count must be positive.");
+                }
+                else
+                {
+                    throw new ArgumentException("Iteration count must be positive.");
+                }
             }
         }
 
@@ -119,14 +124,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="transformB">Transformation to apply to the second shape.</param>
         /// <param name="position">Position within the overlapped volume of the two shapes, if any.</param>
         /// <returns>Whether or not the two shapes overlap.</returns>
-        public static bool GetOverlapPosition(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform transformA, ref RigidTransform transformB, out Vector3 position)
+        public static bool GetOverlapPosition(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform transformA,
+            ref RigidTransform transformB, out Vector3 position)
         {
             RigidTransform localTransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localTransformB);
-            bool toReturn = GetLocalOverlapPosition(shapeA, shapeB, ref localTransformB, out position);
+            var toReturn = GetLocalOverlapPosition(shapeA, shapeB, ref localTransformB, out position);
             RigidTransform.Transform(ref position, ref transformA, out position);
             return toReturn;
-
         }
 
 
@@ -138,12 +143,15 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="localTransformB">Transform of shapeB within the local space of A.</param>
         /// <param name="position">Position within the overlapped volume of the two shapes in shape A's local space, if any.</param>
         /// <returns>Whether or not the two shapes overlap.</returns>
-        public static bool GetLocalOverlapPosition(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, out Vector3 position)
+        public static bool GetLocalOverlapPosition(ConvexShape shapeA, ConvexShape shapeB,
+            ref RigidTransform localTransformB, out Vector3 position)
         {
-            return GetLocalOverlapPosition(shapeA, shapeB, ref localTransformB.Position, ref localTransformB, out position);
+            return GetLocalOverlapPosition(shapeA, shapeB, ref localTransformB.Position, ref localTransformB,
+                out position);
         }
 
-        internal static bool GetLocalOverlapPosition(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 originRay, ref RigidTransform localTransformB, out Vector3 position)
+        internal static bool GetLocalOverlapPosition(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 originRay,
+            ref RigidTransform localTransformB, out Vector3 position)
         {
             //Compute the origin ray.  This points from a point known to be inside the minkowski sum to the origin.
             //The centers of the shapes are used to create the interior point.
@@ -161,15 +169,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Negate(ref originRay, out v0); //Since we're in A's local space, A-B is just -B.
 
 
-
             //Now that the origin ray is known, create a portal through which the ray passes.
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = originRay;
+            var n = originRay;
             Vector3 v1;
-            Vector3 v1A, v1B; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
-            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1A, out v1B, out v1);
+            Vector3
+                v1A,
+                v1B; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
+            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1A, out v1B,
+                out v1);
 
             //Find another extreme point in a direction perpendicular to the previous.
             Vector3 v2;
@@ -190,17 +200,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     position = new Vector3();
                     return false;
                 }
+
                 //Origin is inside.
                 //Compute barycentric coordinates along simplex (segment).
                 float dotv0;
                 //Dot > 0, so dotv0 starts out negative.
                 Vector3.Dot(ref v0, ref originRay, out dotv0);
-                float barycentricCoordinate = -dotv0 / (dot - dotv0);
+                var barycentricCoordinate = -dotv0 / (dot - dotv0);
                 //Vector3.Subtract(ref v1A, ref v0A, out offset); //'v0a' is just the zero vector, so there's no need to calculate the offset.
                 Vector3.Multiply(ref v1A, barycentricCoordinate, out position);
                 return true;
             }
-            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2A, out v2B, out v2);
+
+            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2A, out v2B,
+                out v2);
 
             Vector3 temp1, temp2;
             //Set n for the first iteration.
@@ -210,14 +223,18 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3A, v3B, v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
-                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3A, out v3B, out v3);
+                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3A,
+                    out v3B, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
+                {
                     break;
+                }
+
                 count++;
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the origin ray found earlier actually passes through the portal
                 //defined by v1, v2, v3.
@@ -254,6 +271,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref temp1, ref temp2, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -302,24 +320,26 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                     if (v0v1v2v3volume > Toolbox.Epsilon * .01f)
                     {
-                        float inverseTotalVolume = 1 / v0v1v2v3volume;
-                        float v0Weight = ov1v2v3volume * inverseTotalVolume;
-                        float v1Weight = v0ov2v3volume * inverseTotalVolume;
-                        float v2Weight = v0v1ov3volume * inverseTotalVolume;
-                        float v3Weight = 1 - v0Weight - v1Weight - v2Weight;
+                        var inverseTotalVolume = 1 / v0v1v2v3volume;
+                        var v0Weight = ov1v2v3volume * inverseTotalVolume;
+                        var v1Weight = v0ov2v3volume * inverseTotalVolume;
+                        var v2Weight = v0v1ov3volume * inverseTotalVolume;
+                        var v3Weight = 1 - v0Weight - v1Weight - v2Weight;
                         position = v1Weight * v1A + v2Weight * v2A + v3Weight * v3A;
                     }
                     else
                     {
                         position = new Vector3();
                     }
+
                     //DEBUGlastPosition = position;
                     return true;
                 }
 
                 //We haven't yet found the origin.  Find the support point in the portal's outward facing direction.
                 Vector3 v4, v4A, v4B;
-                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v4A, out v4B, out v4);
+                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v4A,
+                    out v4B, out v4);
                 //If the origin is further along the direction than the extreme point, it's not inside the shape.
                 float dot2;
                 Vector3.Dot(ref v4, ref n, out dot2);
@@ -332,12 +352,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //If the plane which generated the normal is very close to the extreme point, then we're at the surface
                 //and we have not found the origin; it's either just BARELY inside, or it is outside.  Assume it's outside.
-                if (dot2 - dot < surfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (dot2 - dot < surfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     position = new Vector3();
                     //DEBUGlastPosition = position;
                     return false;
                 }
+
                 count++;
 
                 //Still haven't exited, so refine the portal.
@@ -379,12 +401,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //if (!VerifySimplex(ref v0, ref v1, ref v2, ref v3, ref localPoint.Position))
                 //    Debug.WriteLine("Break.");
-
             }
-
-
         }
-
 
 
         /// <summary>
@@ -395,12 +413,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="transformA">Transformation to apply to shape A.</param>
         /// <param name="transformB">Transformation to apply to shape B.</param>
         /// <returns>Whether or not the shapes are overlapping.</returns>
-        public static bool AreShapesOverlapping(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform transformA, ref RigidTransform transformB)
+        public static bool AreShapesOverlapping(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform transformA,
+            ref RigidTransform transformB)
         {
             RigidTransform localTransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localTransformB);
             return AreLocalShapesOverlapping(shapeA, shapeB, ref localTransformB);
-
         }
 
         /// <summary>
@@ -410,7 +428,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="shapeB">Second shape of the pair.</param>
         /// <param name="localTransformB">Relative transform of shape B to shape A.</param>
         /// <returns>Whether or not the shapes are overlapping.</returns>
-        public static bool AreLocalShapesOverlapping(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB)
+        public static bool AreLocalShapesOverlapping(ConvexShape shapeA, ConvexShape shapeB,
+            ref RigidTransform localTransformB)
         {
             return AreLocalShapesOverlapping(shapeA, shapeB, ref localTransformB.Position, ref localTransformB);
         }
@@ -423,7 +442,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="originRay">Direction in which to cast the overlap ray.  Necessary when an object's origin is not contained in its geometry.</param>
         /// <param name="localTransformB">Relative transform of shape B to shape A.</param>
         /// <returns>Whether or not the shapes are overlapping.</returns>
-        internal static bool AreLocalShapesOverlapping(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 originRay, ref RigidTransform localTransformB)
+        internal static bool AreLocalShapesOverlapping(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 originRay,
+            ref RigidTransform localTransformB)
         {
             //Compute the origin ray.  This points from a point known to be inside the minkowski sum to the origin.
             //The centers of the shapes are used to create the interior point.
@@ -439,12 +459,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Negate(ref originRay, out v0); //Since we're in A's local space, A-B is just -B.
 
 
-
             //Now that the origin ray is known, create a portal through which the ray passes.
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = originRay;
+            var n = originRay;
             Vector3 v1;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1);
 
@@ -461,13 +480,15 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float dot;
                 Vector3.Dot(ref v1, ref originRay, out dot);
                 if (dot < 0)
-                {
                     //Origin is outside.
+                {
                     return false;
                 }
+
                 //Origin is inside.
                 return true;
             }
+
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2);
 
             Vector3 temp1, temp2;
@@ -478,14 +499,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
                 MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
+                {
                     break;
+                }
+
                 count++;
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the origin ray found earlier actually passes through the portal
                 //defined by v1, v2, v3.
@@ -518,6 +542,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref temp1, ref temp2, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -547,17 +572,19 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float dot2;
                 Vector3.Dot(ref v4, ref n, out dot2);
                 if (dot2 < 0)
-                {
                     //The origin is outside!
+                {
                     return false;
                 }
 
                 //If the plane which generated the normal is very close to the extreme point, then we're at the surface
                 //and we have not found the origin; it's either just BARELY inside, or it is outside.  Assume it's outside.
-                if (dot2 - dot < surfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (dot2 - dot < surfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     return false;
                 }
+
                 count++;
 
                 //Still haven't exited, so refine the portal.
@@ -591,10 +618,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //if (!VerifySimplex(ref v0, ref v1, ref v2, ref v3, ref localPoint.Position))
                 //    Debug.WriteLine("Break.");
-
             }
-
-
         }
 
         /// <summary>
@@ -607,7 +631,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="direction">Direction to cast the ray.</param>
         /// <param name="t">Length along the direction vector that the impact was found.</param>
         /// <param name="normal">Normal of the impact at the surface of the convex.</param>
-        public static void LocalSurfaceCast(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, ref Vector3 direction, out float t, out Vector3 normal)
+        public static void LocalSurfaceCast(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB,
+            ref Vector3 direction, out float t, out Vector3 normal)
         {
             // Local surface cast is very similar to regular MPR.  However, instead of starting at an interior point and targeting the origin,
             // the ray starts at the origin (a point known to be in both shape and shapeB), and just goes towards the direction until the surface
@@ -621,7 +646,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = direction;
+            var n = direction;
             Vector3 v1;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1);
             //v1 could be zero in some degenerate cases.
@@ -641,25 +666,33 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //This isn't a bad thing- it means the direction is exactly aligned with the extreme point offset.
                 //In other words, if the raycast is followed out to the surface, it will arrive at the extreme point!
 
-                float rayLengthSquared = direction.LengthSquared();
+                var rayLengthSquared = direction.LengthSquared();
                 if (rayLengthSquared > Toolbox.Epsilon * .01f)
-                    Vector3.Divide(ref direction, (float)Math.Sqrt(rayLengthSquared), out normal);
+                {
+                    Vector3.Divide(ref direction, (float) Math.Sqrt(rayLengthSquared), out normal);
+                }
                 else
+                {
                     normal = new Vector3();
+                }
 
                 float rate;
-                Vector3.Dot(ref  normal, ref direction, out rate);
+                Vector3.Dot(ref normal, ref direction, out rate);
                 float distance;
-                Vector3.Dot(ref  normal, ref v1, out distance);
+                Vector3.Dot(ref normal, ref v1, out distance);
                 if (rate > 0)
+                {
                     t = distance / rate;
+                }
                 else
+                {
                     t = 0;
+                }
+
                 return;
             }
+
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2);
-
-
 
 
             Vector3 temp1, temp2;
@@ -680,19 +713,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
                 MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
                 {
                     //Can't enclose the origin! That's a bit odd; something is wrong.
                     t = float.MaxValue;
                     normal = Toolbox.UpVector;
                     return;
                 }
+
                 count++;
 
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the ray actually passes through the portal
@@ -721,6 +755,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref v2, ref v3, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -748,7 +783,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float supportDot;
                 Vector3.Dot(ref v4, ref n, out supportDot);
 
-                if (supportDot - dot < surfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (supportDot - dot < surfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //normal = n;
                     //float normalLengthInverse = 1 / normal.Length();
@@ -756,10 +792,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     ////Find the distance from the origin to the plane.
                     //t = dot * normalLengthInverse;
 
-                    float lengthSquared = n.LengthSquared();
+                    var lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .01f)
                     {
-                        Vector3.Divide(ref n, (float)Math.Sqrt(lengthSquared), out normal);
+                        Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out normal);
 
                         //The plane is very close to the surface, and the ray is known to pass through it.
                         //dot is the rate.
@@ -767,9 +803,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                         //supportDot is the distance to the plane.
                         Vector3.Dot(ref normal, ref v1, out supportDot);
                         if (dot > 0)
+                        {
                             t = supportDot / dot;
+                        }
                         else
+                        {
                             t = 0;
+                        }
                     }
                     else
                     {
@@ -790,7 +830,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //Still haven't exited, so refine the portal.
                 //Test direction against the three planes that separate the new portal candidates: (v1,v4,v0) (v2,v4,v0) (v3,v4,v0)
-
 
 
                 //This may look a little weird at first.
@@ -832,7 +871,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 count++;
 
                 //Here's an unoptimized equivalent without the scalar triple product reorder.
+
                 #region Equivalent refinement
+
                 //Vector3.Cross(ref v1, ref v4, out temp1);
                 //Vector3.Dot(ref temp1, ref direction, out dot);
                 //if (dot > 0)
@@ -865,6 +906,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //        v1 = v4;
                 //    }
                 //}
+
                 #endregion
 
                 //if (!VerifySimplex(ref Toolbox.ZeroVector, ref v1, ref v2, ref v3, ref direction))
@@ -883,7 +925,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="t">Length along the direction vector that the impact was found.</param>
         /// <param name="normal">Normal of the impact at the surface of the convex.</param>
         /// <param name="position">Location of the ray cast hit on the surface of A.</param>
-        public static void LocalSurfaceCast(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, ref Vector3 direction, out float t, out Vector3 normal, out Vector3 position)
+        public static void LocalSurfaceCast(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB,
+            ref Vector3 direction, out float t, out Vector3 normal, out Vector3 position)
         {
             // Local surface cast is very similar to regular MPR.  However, instead of starting at an interior point and targeting the origin,
             // the ray starts at the origin (a point known to be in both shape and shapeB), and just goes towards the direction until the surface
@@ -897,7 +940,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = direction;
+            var n = direction;
             Vector3 v1, v1A;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1A, out v1);
             //v1 could be zero in some degenerate cases.
@@ -917,26 +960,34 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //This isn't a bad thing- it means the direction is exactly aligned with the extreme point offset.
                 //In other words, if the raycast is followed out to the surface, it will arrive at the extreme point!
 
-                float rayLengthSquared = direction.LengthSquared();
+                var rayLengthSquared = direction.LengthSquared();
                 if (rayLengthSquared > Toolbox.Epsilon * .01f)
-                    Vector3.Divide(ref direction, (float)Math.Sqrt(rayLengthSquared), out normal);
+                {
+                    Vector3.Divide(ref direction, (float) Math.Sqrt(rayLengthSquared), out normal);
+                }
                 else
+                {
                     normal = new Vector3();
+                }
 
                 float rate;
-                Vector3.Dot(ref  normal, ref direction, out rate);
+                Vector3.Dot(ref normal, ref direction, out rate);
                 float distance;
-                Vector3.Dot(ref  normal, ref v1, out distance);
+                Vector3.Dot(ref normal, ref v1, out distance);
                 if (rate > 0)
+                {
                     t = distance / rate;
+                }
                 else
+                {
                     t = 0;
+                }
+
                 position = v1A;
                 return;
             }
+
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2A, out v2);
-
-
 
 
             Vector3 temp1, temp2;
@@ -961,13 +1012,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3, v3A;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
-                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3A, out v3);
+                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3A,
+                    out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
                 {
                     //Can't enclose the origin! That's a bit odd; something is wrong.
                     t = float.MaxValue;
@@ -975,6 +1027,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     position = new Vector3();
                     return;
                 }
+
                 count++;
 
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the ray actually passes through the portal
@@ -1005,6 +1058,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref v2, ref v3, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -1024,7 +1078,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //Keep working towards the surface.  Find the next extreme point.
                 Vector3 v4, v4A;
-                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v4A, out v4);
+                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v4A,
+                    out v4);
 
 
                 //If the plane which generated the normal is very close to the extreme point, then we're at the surface.
@@ -1032,7 +1087,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float supportDot;
                 Vector3.Dot(ref v4, ref n, out supportDot);
 
-                if (supportDot - dot < surfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (supportDot - dot < surfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //normal = n;
                     //float normalLengthInverse = 1 / normal.Length();
@@ -1040,10 +1096,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     ////Find the distance from the origin to the plane.
                     //t = dot * normalLengthInverse;
 
-                    float lengthSquared = n.LengthSquared();
+                    var lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .01f)
                     {
-                        Vector3.Divide(ref n, (float)Math.Sqrt(lengthSquared), out normal);
+                        Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out normal);
 
                         //The plane is very close to the surface, and the ray is known to pass through it.
                         //dot is the rate.
@@ -1051,9 +1107,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                         //supportDot is the distance to the plane.
                         Vector3.Dot(ref normal, ref v1, out supportDot);
                         if (dot > 0)
+                        {
                             t = supportDot / dot;
+                        }
                         else
+                        {
                             t = 0;
+                        }
                     }
                     else
                     {
@@ -1064,7 +1124,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     float v1Weight, v2Weight, v3Weight;
                     Vector3.Multiply(ref direction, t, out position);
 
-                    Toolbox.GetBarycentricCoordinates(ref position, ref v1, ref v2, ref v3, out v1Weight, out v2Weight, out v3Weight);
+                    Toolbox.GetBarycentricCoordinates(ref position, ref v1, ref v2, ref v3, out v1Weight, out v2Weight,
+                        out v3Weight);
                     Vector3.Multiply(ref v1A, v1Weight, out position);
                     Vector3 temp;
                     Vector3.Multiply(ref v2A, v2Weight, out temp);
@@ -1085,7 +1146,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //Still haven't exited, so refine the portal.
                 //Test direction against the three planes that separate the new portal candidates: (v1,v4,v0) (v2,v4,v0) (v3,v4,v0)
-
 
 
                 //This may look a little weird at first.
@@ -1131,7 +1191,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 count++;
 
                 //Here's an unoptimized equivalent without the scalar triple product reorder.
+
                 #region Equivalent refinement
+
                 //Vector3.Cross(ref v1, ref v4, out temp1);
                 //Vector3.Dot(ref temp1, ref direction, out dot);
                 //if (dot > 0)
@@ -1164,6 +1226,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //        v1 = v4;
                 //    }
                 //}
+
                 #endregion
 
                 //if (!VerifySimplex(ref Toolbox.ZeroVector, ref v1, ref v2, ref v3, ref direction))
@@ -1171,21 +1234,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
         }
 
-        static bool VerifySimplex(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, ref Vector3 v3, ref Vector3 direction)
+        private static bool VerifySimplex(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, ref Vector3 v3,
+            ref Vector3 direction)
         {
-
-
             //v1, v0, v3
-            Vector3 cross = Vector3.Cross(v0 - v1, v3 - v1);
-            float planeProduct1 = Vector3.Dot(cross, direction);
+            var cross = Vector3.Cross(v0 - v1, v3 - v1);
+            var planeProduct1 = Vector3.Dot(cross, direction);
             //v3, v0, v2
             cross = Vector3.Cross(v0 - v3, v2 - v3);
-            float planeProduct2 = Vector3.Dot(cross, direction);
+            var planeProduct2 = Vector3.Dot(cross, direction);
             //v2, v0, v1
             cross = Vector3.Cross(v0 - v2, v1 - v2);
-            float planeProduct3 = Vector3.Dot(cross, direction);
-            return (planeProduct1 <= 0 && planeProduct2 <= 0 && planeProduct3 <= 0) ||
-                (planeProduct1 >= 0 && planeProduct2 >= 0 && planeProduct3 >= 0);
+            var planeProduct3 = Vector3.Dot(cross, direction);
+            return planeProduct1 <= 0 && planeProduct2 <= 0 && planeProduct3 <= 0 ||
+                   planeProduct1 >= 0 && planeProduct2 >= 0 && planeProduct3 >= 0;
         }
 
         /// <summary>
@@ -1198,25 +1260,29 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="penetrationAxis">Axis along which to first test the penetration depth.</param>
         /// <param name="contact">Contact data between the two shapes, if any.</param>
         /// <returns>Whether or not the shapes overlap.</returns>
-        public static bool GetContact(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform transformA, ref RigidTransform transformB, ref Vector3 penetrationAxis, out ContactData contact)
+        public static bool GetContact(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform transformA,
+            ref RigidTransform transformB, ref Vector3 penetrationAxis, out ContactData contact)
         {
             RigidTransform localTransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localTransformB);
-            if (MPRToolbox.AreLocalShapesOverlapping(shapeA, shapeB, ref localTransformB))
+            if (AreLocalShapesOverlapping(shapeA, shapeB, ref localTransformB))
             {
                 //First, try to use the heuristically found direction.  This comes from either the GJK shallow contact separating axis or from the relative velocity.
                 Vector3 rayCastDirection;
-                float lengthSquared = penetrationAxis.LengthSquared();
+                var lengthSquared = penetrationAxis.LengthSquared();
                 if (lengthSquared > Toolbox.Epsilon)
                 {
-                    Vector3.Divide(ref penetrationAxis, (float)Math.Sqrt(lengthSquared), out rayCastDirection);// (Vector3.Normalize(localDirection) + Vector3.Normalize(collidableB.worldTransform.Position - collidableA.worldTransform.Position)) / 2;
-                    MPRToolbox.LocalSurfaceCast(shapeA, shapeB, ref localTransformB, ref rayCastDirection, out contact.PenetrationDepth, out contact.Normal);
+                    Vector3.Divide(ref penetrationAxis, (float) Math.Sqrt(lengthSquared),
+                        out rayCastDirection); // (Vector3.Normalize(localDirection) + Vector3.Normalize(collidableB.worldTransform.Position - collidableA.worldTransform.Position)) / 2;
+                    LocalSurfaceCast(shapeA, shapeB, ref localTransformB, ref rayCastDirection,
+                        out contact.PenetrationDepth, out contact.Normal);
                 }
                 else
                 {
                     contact.PenetrationDepth = float.MaxValue;
                     contact.Normal = Toolbox.UpVector;
                 }
+
                 //Try the offset between the origins as a second option.  Sometimes this is a better choice than the relative velocity.
                 //TODO: Could use the position-finding MPR iteration to find the A-B direction hit by continuing even after the origin has been found (optimization).
                 Vector3 normalCandidate;
@@ -1224,8 +1290,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 lengthSquared = localTransformB.Position.LengthSquared();
                 if (lengthSquared > Toolbox.Epsilon)
                 {
-                    Vector3.Divide(ref localTransformB.Position, (float)Math.Sqrt(lengthSquared), out rayCastDirection);
-                    MPRToolbox.LocalSurfaceCast(shapeA, shapeB, ref localTransformB, ref rayCastDirection, out depthCandidate, out normalCandidate);
+                    Vector3.Divide(ref localTransformB.Position, (float) Math.Sqrt(lengthSquared),
+                        out rayCastDirection);
+                    LocalSurfaceCast(shapeA, shapeB, ref localTransformB, ref rayCastDirection, out depthCandidate,
+                        out normalCandidate);
                     if (depthCandidate < contact.PenetrationDepth)
                     {
                         contact.Normal = normalCandidate;
@@ -1237,7 +1305,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //    Debug.WriteLine("Break.");
 
                 //Correct the penetration depth.
-                RefinePenetration(shapeA, shapeB, ref localTransformB, contact.PenetrationDepth, ref contact.Normal, out contact.PenetrationDepth, out contact.Normal, out contact.Position);
+                RefinePenetration(shapeA, shapeB, ref localTransformB, contact.PenetrationDepth, ref contact.Normal,
+                    out contact.PenetrationDepth, out contact.Normal, out contact.Position);
 
                 ////Correct the penetration depth.
                 //MPRTesting.LocalSurfaceCast(shape, shapeB, ref localPoint, ref contact.Normal, out contact.PenetrationDepth, out rayCastDirection);
@@ -1264,6 +1333,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 Vector3.Add(ref contact.Position, ref transformA.Position, out contact.Position);
                 return true;
             }
+
             contact = new ContactData();
             return false;
         }
@@ -1279,10 +1349,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="penetrationDepth">Refined penetration depth.</param>
         /// <param name="refinedNormal">Refined normal.</param>
         /// <param name="position">Refined position.</param>
-        public static void RefinePenetration(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, float initialDepth, ref Vector3 initialNormal, out float penetrationDepth, out Vector3 refinedNormal, out Vector3 position)
+        public static void RefinePenetration(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB,
+            float initialDepth, ref Vector3 initialNormal, out float penetrationDepth, out Vector3 refinedNormal,
+            out Vector3 position)
         {
             //The local casting can optionally continue.  Eventually, it will converge to the local minimum.
-            int optimizingCount = 0;
+            var optimizingCount = 0;
             refinedNormal = initialNormal;
             penetrationDepth = initialDepth;
             float candidateDepth;
@@ -1290,8 +1362,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             while (true)
             {
-
-                MPRToolbox.LocalSurfaceCast(shapeA, shapeB, ref localTransformB, ref refinedNormal, out candidateDepth, out candidateNormal, out position);
+                LocalSurfaceCast(shapeA, shapeB, ref localTransformB, ref refinedNormal, out candidateDepth,
+                    out candidateNormal, out position);
                 if (penetrationDepth - candidateDepth <= depthRefinementEpsilon ||
                     ++optimizingCount >= maximumDepthRefinementIterations)
                 {
@@ -1304,7 +1376,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 penetrationDepth = candidateDepth;
                 refinedNormal = candidateNormal;
-
             }
         }
 
@@ -1321,7 +1392,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="transformB">Initial transform to apply to the second shape.</param>
         /// <param name="hit">Hit data between the two shapes, if any.</param>
         /// <returns>Whether or not the swept shapes hit each other.</returns>
-        public static bool Sweep(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 sweepA, ref Vector3 sweepB, ref RigidTransform transformA, ref RigidTransform transformB, out RayHit hit)
+        public static bool Sweep(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 sweepA, ref Vector3 sweepB,
+            ref RigidTransform transformA, ref RigidTransform transformB, out RayHit hit)
         {
             //Put the relative velocity into shape's local space.
             Vector3 velocityWorld;
@@ -1345,7 +1417,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //If there's going to be a hit, then the origin will be within this expanded shape.
 
 
-
             //If the sweep direction is found to be negative, the ray can be thought of as pointing away from the shape.
             //However, the minkowski difference may contain the shape.  In this case, the time of impact is zero.
 
@@ -1356,7 +1427,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //Once the surface is found, the final t parameter of the ray is equal to the sweep distance minus the local raycast computed t parameter.
 
 
-
             RigidTransform localTransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localTransformB);
 
@@ -1364,32 +1434,35 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //First: Compute the sweep amount along the sweep direction.
             //This sweep amount needs to expand the minkowski difference to fully intersect the plane defined by the sweep direction and origin.
 
-            float rayLengthSquared = localDirection.LengthSquared();
+            var rayLengthSquared = localDirection.LengthSquared();
             float sweepLength;
             if (rayLengthSquared > Toolbox.Epsilon * .01f)
             {
                 Vector3.Dot(ref localTransformB.Position, ref localDirection, out sweepLength);
                 sweepLength /= rayLengthSquared;
                 //Scale the sweep length by the margins.  Divide by the length to pull the margin into terms of the length of the ray.
-                sweepLength += (shapeA.MaximumRadius + shapeB.MaximumRadius) / (float)Math.Sqrt(rayLengthSquared);
+                sweepLength += (shapeA.MaximumRadius + shapeB.MaximumRadius) / (float) Math.Sqrt(rayLengthSquared);
             }
             else
             {
                 rayLengthSquared = 0;
                 sweepLength = 0;
             }
+
             //If the sweep direction is found to be negative, the ray can be thought of as pointing away from the shape.
             //Do not sweep backward.
-            bool negativeLength = sweepLength < 0;
+            var negativeLength = sweepLength < 0;
             if (negativeLength)
+            {
                 sweepLength = 0;
-
+            }
 
 
             Vector3 sweep;
             Vector3.Multiply(ref localDirection, sweepLength, out sweep);
             //Check to see if the origin is contained within the swept shape.
-            if (!AreSweptShapesIntersecting(shapeA, shapeB, ref sweep, ref localTransformB, out hit.Location)) //Computes a hit location to be used if the early-outs due to being in contact.
+            if (!AreSweptShapesIntersecting(shapeA, shapeB, ref sweep, ref localTransformB, out hit.Location)
+            ) //Computes a hit location to be used if the early-outs due to being in contact.
             {
                 //The origin is not contained within the sweep volume.  The raycast definitely misses.
                 hit.T = float.MaxValue;
@@ -1397,6 +1470,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 hit.Location = new Vector3();
                 return false;
             }
+
             if (negativeLength)
             {
                 //The origin is contained, but we shouldn't continue.
@@ -1412,10 +1486,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             //OKAY! We've finally finished all the pre-testing.  Cast the ray!
-            if (LocalSweepCast(shapeA, shapeB, sweepLength, rayLengthSquared, ref localDirection, ref sweep, ref localTransformB, out hit))
+            if (LocalSweepCast(shapeA, shapeB, sweepLength, rayLengthSquared, ref localDirection, ref sweep,
+                ref localTransformB, out hit))
             {
                 //Compute the actual hit location on the minkowski surface.
-                Vector3 minkowskiRayHit = -hit.T * localDirection;
+                var minkowskiRayHit = -hit.T * localDirection;
                 //TODO: This uses MPR to identify a witness point on shape A.
                 //It's a very roundabout way to do it.  There should be a much simpler/faster way to compute the witness point directly, or with a little sampling. 
                 GetLocalPosition(shapeA, shapeB, ref localTransformB, ref minkowskiRayHit, out hit.Location);
@@ -1428,18 +1503,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 Vector3.Add(ref temp, ref hit.Location, out hit.Location);
                 return true;
             }
-            return false;
 
+            return false;
         }
 
-        private static bool LocalSweepCast(ConvexShape shape, ConvexShape shapeB, float sweepLength, float rayLengthSquared, ref Vector3 localDirection, ref Vector3 sweep, ref RigidTransform localTransformB, out RayHit hit)
+        private static bool LocalSweepCast(ConvexShape shape, ConvexShape shapeB, float sweepLength,
+            float rayLengthSquared, ref Vector3 localDirection, ref Vector3 sweep, ref RigidTransform localTransformB,
+            out RayHit hit)
         {
             //By now, the ray is known to be within the swept shape and facing the right direction for a normal raycast.
 
             //First guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = localDirection;
+            var n = localDirection;
             Vector3 v1, v1A;
             GetSweptExtremePoint(shape, shapeB, ref localTransformB, ref sweep, ref n, out v1A, out v1);
             //v1 could be zero in some degenerate cases.
@@ -1466,21 +1543,31 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //In other words, if the raycast is followed out to the surface, it will arrive at the extreme point!
 
                 if (rayLengthSquared > Toolbox.Epsilon * .01f)
-                    Vector3.Divide(ref localDirection, (float)Math.Sqrt(rayLengthSquared), out hit.Normal);
+                {
+                    Vector3.Divide(ref localDirection, (float) Math.Sqrt(rayLengthSquared), out hit.Normal);
+                }
                 else
+                {
                     hit.Normal = new Vector3();
+                }
 
                 float rate;
-                Vector3.Dot(ref  hit.Normal, ref localDirection, out rate);
+                Vector3.Dot(ref hit.Normal, ref localDirection, out rate);
                 float distance;
-                Vector3.Dot(ref  hit.Normal, ref v1, out distance);
+                Vector3.Dot(ref hit.Normal, ref v1, out distance);
                 if (rate > 0)
+                {
                     hit.T = sweepLength - distance / rate;
+                }
                 else
+                {
                     hit.T = sweepLength;
+                }
 
                 if (hit.T < 0)
+                {
                     hit.T = 0;
+                }
 
                 //Vector3.Transform(ref hit.Normal, ref transform.Orientation, out hit.Normal);
                 ////hit.Location = hit.T * localDirection;
@@ -1488,12 +1575,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //Vector3.Add(ref hit.Location, ref transform.Position, out hit.Location);
                 //hit.Location += sweepA * hit.T;
                 return hit.T <= 1;
-
-
             }
+
             GetSweptExtremePoint(shape, shapeB, ref localTransformB, ref sweep, ref n, out v2A, out v2);
-
-
 
 
             Vector3 temp1, temp2;
@@ -1517,13 +1601,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3, v3A;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
                 GetSweptExtremePoint(shape, shapeB, ref localTransformB, ref sweep, ref n, out v3A, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
                 {
                     //Can't enclose the origin! That's a bit odd.  Something is wrong; the preparation for this raycast
                     //guarantees that the origin is enclosed.  Could be a numerical problem.
@@ -1532,6 +1616,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     hit.Location = new Vector3();
                     return false;
                 }
+
                 count++;
 
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the ray actually passes through the portal
@@ -1562,6 +1647,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref v2, ref v3, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -1586,19 +1672,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float supportDot;
                 Vector3.Dot(ref v4, ref n, out supportDot);
 
-                if (supportDot - dot < rayCastSurfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (supportDot - dot < rayCastSurfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //The portal is now on the surface.  The algorithm can now compute the TOI and exit.
-                    float lengthSquared = n.LengthSquared();
+                    var lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .00001f)
                     {
-                        Vector3.Divide(ref n, (float)Math.Sqrt(lengthSquared), out hit.Normal);
+                        Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out hit.Normal);
 
                         //The plane is very close to the surface, and the ray is known to pass through it.
                         //dot is the rate.
-                        Vector3.Dot(ref  hit.Normal, ref localDirection, out dot);
+                        Vector3.Dot(ref hit.Normal, ref localDirection, out dot);
                         //supportDot is the distance to the plane.
-                        Vector3.Dot(ref  hit.Normal, ref v1, out supportDot);
+                        Vector3.Dot(ref hit.Normal, ref v1, out supportDot);
 
 
                         hit.T = sweepLength - supportDot / dot;
@@ -1608,10 +1695,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                         Vector3.Normalize(ref localDirection, out hit.Normal);
                         hit.T = sweepLength;
                     }
+
                     //Sometimes, when the objects are intersecting, the T parameter can be negative.
                     //In this case, just go with t = 0.
                     if (hit.T < 0)
+                    {
                         hit.T = 0;
+                    }
 
 
                     //Vector3.Transform(ref hit.Normal, ref transform.Orientation, out hit.Normal);
@@ -1678,7 +1768,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 }
 
                 count++;
-
             }
         }
 
@@ -1692,7 +1781,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="localTransformB">Transform of shape B in the local space of A.</param>
         /// <param name="minkowskiPosition">Position in minkowski space to pull into the local space of A.</param>
         /// <param name="position">Position of the minkowski space point in the local space of A.</param>
-        internal static void GetLocalPosition(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, ref Vector3 minkowskiPosition, out Vector3 position)
+        internal static void GetLocalPosition(ConvexShape shapeA, ConvexShape shapeB,
+            ref RigidTransform localTransformB, ref Vector3 minkowskiPosition, out Vector3 position)
         {
             //Compute the ray.  This points from a point known to be inside the minkowski sum to the test minkowski position;
             //The centers of the shapes are used to create the interior point.
@@ -1713,15 +1803,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Negate(ref localTransformB.Position, out v0); //Since we're in A's local space, A-B is just -B.
 
 
-
             //Now that the ray is known, create a portal through which the ray passes.
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = rayDirection;
+            var n = rayDirection;
             Vector3 v1;
-            Vector3 v1A, v1B; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
-            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1A, out v1B, out v1);
+            Vector3
+                v1A,
+                v1B; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
+            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1A, out v1B,
+                out v1);
 
             //Find another extreme point in a direction perpendicular to the previous.
             Vector3 v2;
@@ -1736,7 +1828,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //If the origin is within this extreme point, then there is an intersection.
                 //For this test, we already guarantee that the point is extremely close to the A-B shape or inside of it, so don't bother
                 //trying to return false.
-                float dot = Vector3.Dot(v1 - minkowskiPosition, rayDirection);
+                var dot = Vector3.Dot(v1 - minkowskiPosition, rayDirection);
                 //Vector3.Dot(ref v1, ref rayDirection, out dot);
                 //if (dot < 0) //if we were trying to return false here (in a IsPointContained style test), then the '0' should actually be a dot between the minkowskiPoint and rayDirection (simplified by a subtraction and then a dot).
                 //{
@@ -1746,17 +1838,19 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //}
                 //Origin is inside.
                 //Compute barycentric coordinates along simplex (segment).
-                float dotv0 = Vector3.Dot(v0 - minkowskiPosition, rayDirection);
+                var dotv0 = Vector3.Dot(v0 - minkowskiPosition, rayDirection);
                 //Dot > 0, so dotv0 starts out negative.
                 //Vector3.Dot(ref v0, ref rayDirection, out dotv0);
-                float barycentricCoordinate = -dotv0 / (dot - dotv0);
+                var barycentricCoordinate = -dotv0 / (dot - dotv0);
                 //Vector3.Subtract(ref v1A, ref v0A, out offset); //'v0a' is just the zero vector, so there's no need to calculate the offset.
                 Vector3.Multiply(ref v1A, barycentricCoordinate, out position);
                 Vector3 offset;
                 Vector3.Subtract(ref v1B, ref localTransformB.Position, out offset);
                 return;
             }
-            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2A, out v2B, out v2);
+
+            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v2A, out v2B,
+                out v2);
 
             Vector3 temp;
             Vector3 v0v1, v0v2;
@@ -1768,14 +1862,18 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3 pointToV0;
             Vector3.Subtract(ref v0, ref minkowskiPosition, out pointToV0);
             Vector3 v3A, v3B, v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
-                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3A, out v3B, out v3);
+                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v3A,
+                    out v3B, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
+                {
                     break;
+                }
+
                 count++;
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the origin ray found earlier actually passes through the portal
                 //defined by v1, v2, v3.
@@ -1812,6 +1910,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref v0v2, ref v0v3, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -1882,7 +1981,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //We haven't yet found the origin.  Find the support point in the portal's outward facing direction.
                 Vector3 v4, v4A, v4B;
-                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v4A, out v4B, out v4);
+                MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v4A,
+                    out v4B, out v4);
                 //If the origin is further along the direction than the extreme point, it's not inside the shape.
                 float dot2;
                 Vector3 pointToV4;
@@ -1897,14 +1997,16 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //If the plane which generated the normal is very close to the extreme point, then we're at the surface
                 //and we have not found the origin; it's either just BARELY inside, or it is outside.  Assume it's outside.
-                if (dot2 - dot < rayCastSurfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (dot2 - dot < rayCastSurfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //We found the surface.  Technically, we did not find the minkowski point yet, but it must be really close based on the guarantees
                     //required by this method.
                     //The ray intersection with the plane defined by our final portal should be extremely close to the actual minkowski point.
                     //In fact, it is probably close enough such that the barycentric coordinates can be computed using the minkowski point directly!
                     float weight1, weight2, weight3;
-                    Toolbox.GetBarycentricCoordinates(ref minkowskiPosition, ref v1, ref v2, ref v3, out weight1, out weight2, out weight3);
+                    Toolbox.GetBarycentricCoordinates(ref minkowskiPosition, ref v1, ref v2, ref v3, out weight1,
+                        out weight2, out weight3);
                     Vector3.Multiply(ref v1A, weight1, out position);
                     Vector3.Multiply(ref v2A, weight2, out v2A);
                     Vector3.Multiply(ref v3A, weight3, out v3A);
@@ -1913,6 +2015,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                     return;
                 }
+
                 count++;
 
                 //Still haven't exited, so refine the portal.
@@ -1958,10 +2061,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //if (!VerifySimplex(ref v0, ref v1, ref v2, ref v3, ref rayDirection))
                 //    Debug.WriteLine("Break.");
-
             }
-
-
         }
 
         /// <summary>
@@ -1973,7 +2073,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="localTransformB">Transformation of shape B in the local space of A.</param>
         /// <param name="position">Position of the minkowski difference origin in the local space of A, if the swept volumes intersect.</param>
         /// <returns>Whether the swept shapes intersect.</returns>
-        public static bool AreSweptShapesIntersecting(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 sweep, ref RigidTransform localTransformB, out Vector3 position)
+        public static bool AreSweptShapesIntersecting(ConvexShape shapeA, ConvexShape shapeB, ref Vector3 sweep,
+            ref RigidTransform localTransformB, out Vector3 position)
         {
             //It's possible that the two objects' centers are overlapping, or very very close to it.  In this case, 
             //they are obviously colliding and we can immediately exit.
@@ -1987,14 +2088,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Negate(ref localTransformB.Position, out v0); //Since we're in A's local space, A-B is just -B.
 
 
-
             //Now that the origin ray is known, create a portal through which the ray passes.
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = localTransformB.Position;
+            var n = localTransformB.Position;
             Vector3 v1;
-            Vector3 v1A; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
+            Vector3
+                v1A; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
             //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v1A, out v1B, out v1);
             GetSweptExtremePoint(shapeA, shapeB, ref localTransformB, ref sweep, ref n, out v1A, out v1);
 
@@ -2017,16 +2118,18 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     position = new Vector3();
                     return false;
                 }
+
                 //Origin is inside.
                 //Compute barycentric coordinates along simplex (segment).
                 float dotv0;
                 //Dot > 0, so dotv0 starts out negative.
                 Vector3.Dot(ref v0, ref localTransformB.Position, out dotv0);
-                float barycentricCoordinate = -dotv0 / (dot - dotv0);
+                var barycentricCoordinate = -dotv0 / (dot - dotv0);
                 //Vector3.Subtract(ref v1A, ref v0A, out offset); //'v0a' is just the zero vector, so there's no need to calculate the offset.
                 Vector3.Multiply(ref v1A, barycentricCoordinate, out position);
                 return true;
             }
+
             //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v2A, out v2B, out v2);
             GetSweptExtremePoint(shapeA, shapeB, ref localTransformB, ref sweep, ref n, out v2A, out v2);
 
@@ -2038,15 +2141,18 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3A, v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
                 //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v3A, out v3B, out v3);
                 GetSweptExtremePoint(shapeA, shapeB, ref localTransformB, ref sweep, ref n, out v3A, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
+                {
                     break;
+                }
+
                 count++;
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the origin ray found earlier actually passes through the portal
                 //defined by v1, v2, v3.
@@ -2081,6 +2187,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref temp1, ref temp2, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -2128,11 +2235,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Dot(ref cross, ref temp3, out v0v1ov3volume);
 
 
-                    float inverseTotalVolume = 1 / v0v1v2v3volume;
-                    float v0Weight = ov1v2v3volume * inverseTotalVolume;
-                    float v1Weight = v0ov2v3volume * inverseTotalVolume;
-                    float v2Weight = v0v1ov3volume * inverseTotalVolume;
-                    float v3Weight = 1 - v0Weight - v1Weight - v2Weight;
+                    var inverseTotalVolume = 1 / v0v1v2v3volume;
+                    var v0Weight = ov1v2v3volume * inverseTotalVolume;
+                    var v1Weight = v0ov2v3volume * inverseTotalVolume;
+                    var v2Weight = v0v1ov3volume * inverseTotalVolume;
+                    var v3Weight = 1 - v0Weight - v1Weight - v2Weight;
                     position = v1Weight * v1A + v2Weight * v2A + v3Weight * v3A;
                     //DEBUGlastPosition = position;
                     return true;
@@ -2155,12 +2262,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //If the plane which generated the normal is very close to the extreme point, then we're at the surface
                 //and we have not found the origin; it's either just BARELY inside, or it is outside.  Assume it's outside.
-                if (dot2 - dot < surfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (dot2 - dot < surfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     position = new Vector3();
                     //DEBUGlastPosition = position;
                     return false;
                 }
+
                 count++;
 
                 //Still haven't exited, so refine the portal.
@@ -2198,17 +2307,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //if (!VerifySimplex(ref v0, ref v1, ref v2, ref v3, ref localPoint.Position))
                 //    Debug.WriteLine("Break.");
-
             }
-
-
         }
 
 
-        static void GetSweptExtremePoint(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB, ref Vector3 sweep, ref Vector3 extremePointDirection, out Vector3 extremePointA, out Vector3 extremePoint)
+        private static void GetSweptExtremePoint(ConvexShape shapeA, ConvexShape shapeB,
+            ref RigidTransform localTransformB,
+            ref Vector3 sweep, ref Vector3 extremePointDirection, out Vector3 extremePointA, out Vector3 extremePoint)
         {
             Vector3 b;
-            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref extremePointDirection, ref localTransformB, out extremePointA, out b, out extremePoint);
+            MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref extremePointDirection,
+                ref localTransformB, out extremePointA, out b, out extremePoint);
             float dot;
             Vector3.Dot(ref extremePointDirection, ref sweep, out dot);
             if (dot > 0)
@@ -2227,7 +2336,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="transform">Transform to apply to the shape.</param>
         /// <param name="hit">Hit data of the ray on the shape, if any.</param>
         /// <returns>Whether or not the swept shapes hit each other.</returns>
-        public static bool RayCast(Ray ray, float maximumLength, ConvexShape shape, ref RigidTransform transform, out RayHit hit)
+        public static bool RayCast(Ray ray, float maximumLength, ConvexShape shape, ref RigidTransform transform,
+            out RayHit hit)
         {
             //Compute the local origin and direction of the ray.
             Ray localRay;
@@ -2255,7 +2365,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //If there's going to be a hit, then the origin will be within this expanded shape.
 
 
-
             //If the sweep direction is found to be negative, the ray can be thought of as pointing away from the shape.
             //However, the minkowski difference may contain the shape.  In this case, the time of impact is zero.
 
@@ -2270,7 +2379,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             //a huge amount to match could manifest numerical issues.  Instead, pull the ray up close to the object.
             RayHit sphereHit;
 
-            if (Toolbox.RayCastSphere(ref ray, ref transform.Position, shape.MaximumRadius, maximumLength, out sphereHit))
+            if (Toolbox.RayCastSphere(ref ray, ref transform.Position, shape.MaximumRadius, maximumLength,
+                out sphereHit))
             {
                 //We can scoot ourselves almost all the way up to the intersection with the outer sphere.
                 //Stop just short to prevent a possible erroneous 'just-barely-contained' result.
@@ -2289,11 +2399,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
 
-
             //First: Compute the sweep amount along the sweep direction.
             //This sweep amount needs to expand the minkowski difference to fully intersect the plane defined by the sweep direction and origin.
 
-            float rayLengthSquared = localRay.Direction.LengthSquared();
+            var rayLengthSquared = localRay.Direction.LengthSquared();
             float sweepLength;
             if (rayLengthSquared > Toolbox.Epsilon * .01f)
             {
@@ -2301,19 +2410,21 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //Ray length isn't necessarily normalized...
                 sweepLength /= rayLengthSquared;
                 //Scale the sweep length by the margins.  Divide by the length to pull the margin into terms of the length of the ray.
-                sweepLength += shape.MaximumRadius / (float)Math.Sqrt(rayLengthSquared);
+                sweepLength += shape.MaximumRadius / (float) Math.Sqrt(rayLengthSquared);
             }
             else
             {
                 rayLengthSquared = 0;
                 sweepLength = 0;
             }
+
             //If the sweep direction is found to be negative, the ray can be thought of as pointing away from the shape.
             //Do not sweep backward.
-            bool negativeLength = sweepLength < 0;
+            var negativeLength = sweepLength < 0;
             if (negativeLength)
+            {
                 sweepLength = 0;
-
+            }
 
 
             Vector3 sweep;
@@ -2327,6 +2438,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 hit.Location = new Vector3();
                 return false;
             }
+
             if (negativeLength)
             {
                 //The origin is contained, but we shouldn't continue.
@@ -2338,7 +2450,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             //OKAY! We've finally finished all the pre-testing.  Cast the ray!
-            if (LocalSweepCast(shape, sweepLength, rayLengthSquared, ref localRay.Direction, ref sweep, ref localRay.Position, out hit))
+            if (LocalSweepCast(shape, sweepLength, rayLengthSquared, ref localRay.Direction, ref sweep,
+                ref localRay.Position, out hit))
             {
                 hit.T += sphereHit.T;
                 if (hit.T <= maximumLength)
@@ -2351,8 +2464,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     return true;
                 }
             }
-            return false;
 
+            return false;
         }
 
         /// <summary>
@@ -2375,12 +2488,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Negate(ref localPoint, out v0); //Since we're in A's local space, A-B is just -B.
 
 
-
             //Now that the origin ray is known, create a portal through which the ray passes.
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = localPoint;
+            var n = localPoint;
             Vector3 v1;
             //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v1A, out v1B, out v1);
             GetSweptExtremePoint(shape, ref localPoint, ref sweep, ref n, out v1);
@@ -2398,12 +2510,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float dot;
                 Vector3.Dot(ref v1, ref localPoint, out dot);
                 if (dot < 0)
-                {
                     //Origin is outside.
+                {
                     return false;
                 }
+
                 return true;
             }
+
             //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v2A, out v2B, out v2);
             GetSweptExtremePoint(shape, ref localPoint, ref sweep, ref n, out v2);
 
@@ -2415,15 +2529,18 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
                 //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v3A, out v3B, out v3);
                 GetSweptExtremePoint(shape, ref localPoint, ref sweep, ref n, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
+                {
                     break;
+                }
+
                 count++;
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the origin ray found earlier actually passes through the portal
                 //defined by v1, v2, v3.
@@ -2456,6 +2573,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref temp1, ref temp2, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -2487,18 +2605,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float dot2;
                 Vector3.Dot(ref v4, ref n, out dot2);
                 if (dot2 < 0)
-                {
                     //The origin is outside!
+                {
                     return false;
                 }
 
                 //If the plane which generated the normal is very close to the extreme point, then we're at the surface
                 //and we have not found the origin; it's either just BARELY inside, or it is outside.  Assume it's outside.
-                if (dot2 - dot < surfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
-                {
+                if (dot2 - dot < surfaceEpsilon || count > InnerIterationLimit
+                    ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                     //DEBUGlastPosition = position;
+                {
                     return false;
                 }
+
                 count++;
 
                 //Still haven't exited, so refine the portal.
@@ -2532,21 +2652,19 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                 //if (!VerifySimplex(ref v0, ref v1, ref v2, ref v3, ref localPoint.Position))
                 //    Debug.WriteLine("Break.");
-
             }
-
-
         }
 
 
-        private static bool LocalSweepCast(ConvexShape shape, float sweepLength, float rayLengthSquared, ref Vector3 localDirection, ref Vector3 sweep, ref Vector3 rayOrigin, out RayHit hit)
+        private static bool LocalSweepCast(ConvexShape shape, float sweepLength, float rayLengthSquared,
+            ref Vector3 localDirection, ref Vector3 sweep, ref Vector3 rayOrigin, out RayHit hit)
         {
             //By now, the ray is known to be within the swept shape and facing the right direction for a normal raycast.
 
             //First guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            Vector3 n = localDirection;
+            var n = localDirection;
             Vector3 v1;
             GetSweptExtremePoint(shape, ref rayOrigin, ref sweep, ref n, out v1);
             //v1 could be zero in some degenerate cases.
@@ -2573,21 +2691,31 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //In other words, if the raycast is followed out to the surface, it will arrive at the extreme point!
 
                 if (rayLengthSquared > Toolbox.Epsilon * .01f)
-                    Vector3.Divide(ref localDirection, (float)Math.Sqrt(rayLengthSquared), out hit.Normal);
+                {
+                    Vector3.Divide(ref localDirection, (float) Math.Sqrt(rayLengthSquared), out hit.Normal);
+                }
                 else
+                {
                     hit.Normal = new Vector3();
+                }
 
                 float rate;
-                Vector3.Dot(ref  hit.Normal, ref localDirection, out rate);
+                Vector3.Dot(ref hit.Normal, ref localDirection, out rate);
                 float distance;
-                Vector3.Dot(ref  hit.Normal, ref v1, out distance);
+                Vector3.Dot(ref hit.Normal, ref v1, out distance);
                 if (rate > 0)
+                {
                     hit.T = sweepLength - distance / rate;
+                }
                 else
+                {
                     hit.T = sweepLength;
+                }
 
                 if (hit.T < 0)
+                {
                     hit.T = 0;
+                }
 
                 //Vector3.Transform(ref hit.Normal, ref transform.Orientation, out hit.Normal);
                 ////hit.Location = hit.T * localDirection;
@@ -2595,12 +2723,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //Vector3.Add(ref hit.Location, ref transform.Position, out hit.Location);
                 //hit.Location += sweepA * hit.T;
                 return hit.T <= 1;
-
-
             }
+
             GetSweptExtremePoint(shape, ref rayOrigin, ref sweep, ref n, out v2);
-
-
 
 
             Vector3 temp1, temp2;
@@ -2621,13 +2746,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3;
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
                 GetSweptExtremePoint(shape, ref rayOrigin, ref sweep, ref n, out v3);
 
-                if (count > MPRToolbox.OuterIterationLimit)
+                if (count > OuterIterationLimit)
                 {
                     //Can't enclose the origin! That's a bit odd.  Something is wrong; the preparation for this raycast
                     //guarantees that the origin is enclosed.  Could be a numerical problem.
@@ -2636,6 +2761,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     hit.Location = new Vector3();
                     return false;
                 }
+
                 count++;
 
                 //By now, the simplex is a tetrahedron, but it is not known whether or not the ray actually passes through the portal
@@ -2664,6 +2790,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Cross(ref v2, ref v3, out n);
                     continue;
                 }
+
                 break;
             }
 
@@ -2688,19 +2815,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float supportDot;
                 Vector3.Dot(ref v4, ref n, out supportDot);
 
-                if (supportDot - dot < rayCastSurfaceEpsilon || count > MPRToolbox.InnerIterationLimit) // TODO: Could use a dynamic epsilon for possibly better behavior.
+                if (supportDot - dot < rayCastSurfaceEpsilon || count > InnerIterationLimit
+                ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //The portal is now on the surface.  The algorithm can now compute the TOI and exit.
-                    float lengthSquared = n.LengthSquared();
+                    var lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .00001f)
                     {
-                        Vector3.Divide(ref n, (float)Math.Sqrt(lengthSquared), out hit.Normal);
+                        Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out hit.Normal);
 
                         //The plane is very close to the surface, and the ray is known to pass through it.
                         //dot is the rate.
-                        Vector3.Dot(ref  hit.Normal, ref localDirection, out dot);
+                        Vector3.Dot(ref hit.Normal, ref localDirection, out dot);
                         //supportDot is the distance to the plane.
-                        Vector3.Dot(ref  hit.Normal, ref v1, out supportDot);
+                        Vector3.Dot(ref hit.Normal, ref v1, out supportDot);
 
 
                         hit.T = sweepLength - supportDot / dot;
@@ -2710,10 +2838,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                         Vector3.Normalize(ref localDirection, out hit.Normal);
                         hit.T = sweepLength;
                     }
+
                     //Sometimes, when the objects are intersecting, the T parameter can be negative.
                     //In this case, just go with t = 0.
                     if (hit.T < 0)
+                    {
                         hit.T = 0;
+                    }
+
                     return true;
                 }
 
@@ -2758,11 +2890,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 }
 
                 count++;
-
             }
         }
 
-        static void GetSweptExtremePoint(ConvexShape shape, ref Vector3 point, ref Vector3 sweep, ref Vector3 extremePointDirection, out Vector3 extremePoint)
+        private static void GetSweptExtremePoint(ConvexShape shape, ref Vector3 point, ref Vector3 sweep,
+            ref Vector3 extremePointDirection, out Vector3 extremePoint)
         {
             shape.GetExtremePoint(extremePointDirection, ref Toolbox.RigidIdentity, out extremePoint);
             Vector3.Subtract(ref extremePoint, ref point, out extremePoint);
@@ -2773,7 +2905,5 @@ namespace MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms
                 Vector3.Add(ref extremePoint, ref sweep, out extremePoint);
             }
         }
-
-
     }
 }

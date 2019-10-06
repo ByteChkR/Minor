@@ -8,14 +8,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public struct CollidableCollection : IList<Collidable>
     {
-
         ///<summary>
         /// Enumerator for the CollidableCollection.
         ///</summary>
         public struct Enumerator : IEnumerator<Collidable>
         {
-            CollidableCollection collection;
-            int index;
+            private CollidableCollection collection;
+            private int index;
+
             ///<summary>
             /// Constructs an enumerator.
             ///</summary>
@@ -32,10 +32,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
             /// <returns>
             /// The element in the collection at the current position of the enumerator.
             /// </returns>
-            public Collidable Current
-            {
-                get { return collection[index]; }
-            }
+            public Collidable Current => collection[index];
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -45,10 +42,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Advances the enumerator to the next element of the collection.
@@ -121,11 +115,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         ///                                                </see> .</param>
         public int IndexOf(Collidable item)
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 if (item == this[i])
+                {
                     return i;
+                }
             }
+
             return -1;
         }
 
@@ -149,15 +146,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         ///                                                                                                is read-only.</exception>
         public Collidable this[int index]
         {
-            get
-            {
-                //It's guaranteed to be a CollisionInformation, because it's a member of a CollidablePairHandler.
-                return (Collidable)(owner.pairs[index].broadPhaseOverlap.entryA == owner ? owner.pairs[index].broadPhaseOverlap.entryB : owner.pairs[index].broadPhaseOverlap.entryA);
-            }
-            set
-            {
-                throw new NotSupportedException();
-            }
+            get =>
+                (Collidable) (owner.pairs[index].broadPhaseOverlap.entryA == owner
+                    ? owner.pairs[index].broadPhaseOverlap.entryB
+                    : owner.pairs[index].broadPhaseOverlap.entryA);
+            set => throw new NotSupportedException();
         }
 
 
@@ -176,11 +169,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         ///                                                </see> .</param>
         public bool Contains(Collidable item)
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 if (item == this[i])
+                {
                     return true;
+                }
             }
+
             return false;
         }
 
@@ -202,7 +198,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         ///                                                                                                                 </see> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException"><paramref name="array"/> is multidimensional.-or-The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.-or-Type cannot be cast automatically to the type of the destination <paramref name="array"/>.</exception>
         public void CopyTo(Collidable[] array, int arrayIndex)
         {
-            for (int i = 0; i < Count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 array[arrayIndex + i] = this[i];
             }
@@ -218,15 +214,9 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         ///                                           <cref>T:System.Collections.Generic.ICollection`1</cref>
         ///                                         </see> .
         /// </returns>
-        public int Count
-        {
-            get { return owner.pairs.Count; }
-        }
+        public int Count => owner.pairs.Count;
 
-        bool ICollection<Collidable>.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool ICollection<Collidable>.IsReadOnly => true;
 
         bool ICollection<Collidable>.Remove(Collidable item)
         {

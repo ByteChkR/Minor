@@ -27,6 +27,7 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
         /// Gets or sets the query accelerator used by the force field to find entities.
         ///</summary>
         public IQueryAccelerator QueryAccelerator { get; set; }
+
         ///<summary>
         /// Gets or sets the multithreaded looper used by the force field.
         ///</summary>
@@ -39,7 +40,7 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
         protected ForceField(ForceFieldShape shape)
         {
             Shape = shape;
-            subfunction = new Action<int>(CalculateImpulsesSubfunction);
+            subfunction = CalculateImpulsesSubfunction;
             AllowMultithreading = true;
         }
 
@@ -53,16 +54,20 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
         /// </summary>
         public ForceFieldShape Shape
         {
-            get { return shape; }
+            get => shape;
             set
             {
                 if (value != null && value.ForceField != null)
+                {
                     throw new ArgumentException("The force field shape already belongs to another force field.");
+                }
+
                 //Get rid of my old shape.
                 if (shape != null)
                 {
                     shape.ForceField = null;
                 }
+
                 //Get my new shape!
                 shape = value;
                 if (shape != null)
@@ -77,7 +82,6 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
         /// </summary>
         protected virtual void PreUpdate()
         {
-
         }
 
         /// <summary>
@@ -98,8 +102,8 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
             {
                 currentTimestep = dt;
                 //No multithreading, so do it directly.
-                int count = affectedEntities.Count;
-                for (int i = 0; i < count; i++)
+                var count = affectedEntities.Count;
+                for (var i = 0; i < count; i++)
                 {
                     CalculateImpulsesSubfunction(i);
                 }
@@ -116,11 +120,14 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
 
         private void CalculateImpulsesSubfunction(int index)
         {
-            Entity e = affectedEntities[index];
+            var e = affectedEntities[index];
             if (e.isDynamic && (e.activityInformation.IsActive || ForceWakeUp) && Shape.IsEntityAffected(e))
             {
                 if (ForceWakeUp)
+                {
                     e.activityInformation.Activate();
+                }
+
                 Vector3 impulse;
                 CalculateImpulse(e, currentTimestep, out impulse);
                 e.ApplyLinearImpulse(ref impulse);
@@ -135,7 +142,7 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
         {
             base.OnAdditionToSpace(newSpace);
             var space = newSpace;
-            if(space != null)
+            if (space != null)
             {
                 ParallelLooper = space.ParallelLooper;
                 QueryAccelerator = space.BroadPhase.QueryAccelerator;
@@ -152,6 +159,5 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
             ParallelLooper = null;
             QueryAccelerator = null;
         }
-
     }
 }

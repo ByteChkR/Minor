@@ -18,13 +18,7 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <summary>
         /// Gets the tangents used by the curve per control point.
         /// </summary>
-        public ReadOnlyList<Vector3> Tangents
-        {
-            get
-            {
-                return new ReadOnlyList<Vector3>(tangents);
-            }
-        }
+        public ReadOnlyList<Vector3> Tangents => new ReadOnlyList<Vector3>(tangents);
 
         /// <summary>
         /// Evaluates the curve section starting at the control point index using
@@ -68,7 +62,8 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="curveControlPoint">Changed control point.</param>
         /// <param name="oldIndex">Old index of the control point.</param>
         /// <param name="newIndex">New index of the control point.</param>
-        protected internal override void ControlPointTimeChanged(CurveControlPoint<Vector3> curveControlPoint, int oldIndex, int newIndex)
+        protected internal override void ControlPointTimeChanged(CurveControlPoint<Vector3> curveControlPoint,
+            int oldIndex, int newIndex)
         {
             tangents.Clear();
             ComputeTangents();

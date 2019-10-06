@@ -1,7 +1,7 @@
 ﻿using System;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionShapes;
 using MinorEngine.BEPUphysics.Materials;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.OtherSpaceStages;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries
@@ -11,8 +11,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public abstract class StaticCollidable : Collidable, ISpaceObject, IMaterialOwner, IDeferredEventCreatorOwner
     {
-
-
         ///<summary>
         /// Performs common initialization.
         ///</summary>
@@ -32,35 +30,42 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         protected override void OnShapeChanged(CollisionShape collisionShape)
         {
             if (!IgnoreShapeChanges)
+            {
                 UpdateBoundingBox();
+            }
         }
 
         internal Material material;
+
         //NOT thread safe due to material change pair update.
         ///<summary>
         /// Gets or sets the material used by the collidable.
         ///</summary>
         public Material Material
         {
-            get
-            {
-                return material;
-            }
+            get => material;
             set
             {
                 if (material != null)
+                {
                     material.MaterialChanged -= materialChangedDelegate;
+                }
+
                 material = value;
                 if (material != null)
+                {
                     material.MaterialChanged += materialChangedDelegate;
+                }
+
                 OnMaterialChanged(material);
             }
         }
 
-        Action<Material> materialChangedDelegate;
+        private Action<Material> materialChangedDelegate;
+
         protected virtual void OnMaterialChanged(Material newMaterial)
         {
-            for (int i = 0; i < pairs.Count; i++)
+            for (var i = 0; i < pairs.Count; i++)
             {
                 pairs[i].UpdateMaterialProperties();
             }
@@ -69,35 +74,19 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         /// <summary>
         /// Gets whether this collidable is associated with an active entity. Returns false for all static collidables.
         /// </summary>
-        public override bool IsActive
-        {
-            get { return false; }
-        }
+        public override bool IsActive => false;
 
 
-
-        Space space;
         Space ISpaceObject.Space
         {
-            get
-            {
-                return space;
-            }
-            set
-            {
-                space = value;
-            }
+            get => Space;
+            set => Space = value;
         }
+
         ///<summary>
         /// Gets the space that owns the mesh.
         ///</summary>
-        public Space Space
-        {
-            get
-            {
-                return space;
-            }
-        }
+        public Space Space { get; private set; }
 
         void ISpaceObject.OnAdditionToSpace(Space newSpace)
         {
@@ -108,22 +97,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         }
 
 
-
-        IDeferredEventCreator IDeferredEventCreatorOwner.EventCreator
-        {
-            get
-            {
-                return EventCreator;
-            }
-        }
+        IDeferredEventCreator IDeferredEventCreatorOwner.EventCreator => EventCreator;
 
         /// <summary>
         /// Gets the event creator associated with this collidable.
         /// </summary>
-        protected abstract IDeferredEventCreator EventCreator
-        {
-            get;
-        }
-
+        protected abstract IDeferredEventCreator EventCreator { get; }
     }
 }

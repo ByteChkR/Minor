@@ -15,14 +15,10 @@ namespace MinorEngine.BEPUphysics.Entities
         ///<summary>
         /// Gets the collidable used by the entity.
         ///</summary>
-        public new T CollisionInformation
-        {
-            get { return (T)collisionInformation; }
-        }
+        public new T CollisionInformation => (T) collisionInformation;
 
         protected internal Entity()
         {
-
         }
 
         ///<summary>
@@ -44,6 +40,7 @@ namespace MinorEngine.BEPUphysics.Entities
         {
             Initialize(collisionInformation, mass);
         }
+
         ///<summary>
         /// Constructs a dynamic Entity.
         ///</summary>
@@ -54,7 +51,5 @@ namespace MinorEngine.BEPUphysics.Entities
         {
             Initialize(collisionInformation, mass, inertiaTensor);
         }
-
-
     }
 }

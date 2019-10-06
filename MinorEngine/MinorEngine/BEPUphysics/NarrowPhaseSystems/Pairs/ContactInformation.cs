@@ -1,7 +1,6 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -32,7 +31,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         /// friction is calculated.
         /// </summary>
         public float FrictionImpulse;
-        
+
         ///<summary>
         /// Relative velocity of the colliding objects at the position of the contact.
         ///</summary>
@@ -41,7 +40,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
         public override string ToString()
         {
-            return Contact + " NormalImpulse: " + NormalImpulse + " FrictionImpulse: " + FrictionImpulse + " RelativeVelocity: " + RelativeVelocity;
+            return Contact + " NormalImpulse: " + NormalImpulse + " FrictionImpulse: " + FrictionImpulse +
+                   " RelativeVelocity: " + RelativeVelocity;
         }
 
 

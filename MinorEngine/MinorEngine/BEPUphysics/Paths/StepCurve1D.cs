@@ -26,9 +26,13 @@
         {
             maxIndex = ControlPoints.Count - 1;
             if (maxIndex < 0)
+            {
                 minIndex = -1;
+            }
             else
+            {
                 minIndex = 0;
+            }
         }
 
         protected internal override void ControlPointAdded(CurveControlPoint<float> curveControlPoint, int index)
@@ -39,7 +43,8 @@
         {
         }
 
-        protected internal override void ControlPointTimeChanged(CurveControlPoint<float> curveControlPoint, int oldIndex, int newIndex)
+        protected internal override void ControlPointTimeChanged(CurveControlPoint<float> curveControlPoint,
+            int oldIndex, int newIndex)
         {
         }
 

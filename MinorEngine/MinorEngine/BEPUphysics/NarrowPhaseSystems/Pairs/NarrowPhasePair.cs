@@ -9,7 +9,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class NarrowPhasePair
     {
-
         ///<summary>
         /// Updates the collision between the broad phase entries.
         ///</summary>
@@ -27,26 +26,18 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public CollisionRule CollisionRule
         {
-            get
-            {
-                return broadPhaseOverlap.collisionRule;
-            }
-            set
-            {
-                broadPhaseOverlap.collisionRule = value;
-            }
+            get => broadPhaseOverlap.collisionRule;
+            set => broadPhaseOverlap.collisionRule = value;
         }
 
         protected internal BroadPhaseOverlap broadPhaseOverlap;
+
         ///<summary>
         /// Gets the overlap used to create the pair.
         ///</summary>
         public BroadPhaseOverlap BroadPhaseOverlap
         {
-            get
-            {
-                return broadPhaseOverlap;
-            }
+            get => broadPhaseOverlap;
             set
             {
                 broadPhaseOverlap = value;
@@ -70,14 +61,15 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryA">First entry in the pair.</param>
         ///<param name="entryB">Second entry in the pair.</param>
         public abstract void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB);
+
         /// <summary>
         /// Called when the pair is added to the narrow phase.
         /// </summary>
         protected internal abstract void OnAddedToNarrowPhase();
+
         /// <summary>
         /// Cleans up the pair, preparing it to go inactive.
         /// </summary>
         public abstract void CleanUp();
-
     }
 }

@@ -8,17 +8,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class InstancedMeshSphereContactManifold : InstancedMeshContactManifold
     {
+        private static LockingResourcePool<TriangleSpherePairTester> testerPool =
+            new LockingResourcePool<TriangleSpherePairTester>();
 
-        static LockingResourcePool<TriangleSpherePairTester> testerPool = new LockingResourcePool<TriangleSpherePairTester>();
         protected override void GiveBackTester(TrianglePairTester tester)
         {
-            testerPool.GiveBack((TriangleSpherePairTester)tester);
+            testerPool.GiveBack((TriangleSpherePairTester) tester);
         }
 
         protected override TrianglePairTester GetTester()
         {
             return testerPool.Take();
         }
-
     }
 }

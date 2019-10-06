@@ -1,16 +1,13 @@
-﻿using Assimp;
-using MinorEngine.debug;
+﻿using MinorEngine.debug;
 using MinorEngine.engine.components;
 using MinorEngine.engine.rendering;
 using MinorEngine.engine.rendering.contexts;
-using OpenTK;
-using OpenTK.Graphics.ES20;
 
 namespace MinorEngine.components
 {
     public class MeshRendererComponent : AbstractComponent, IRenderingComponent
     {
-        private RenderContext _context = null;
+        private RenderContext _context;
 
         public RenderContext Context
         {
@@ -18,7 +15,7 @@ namespace MinorEngine.components
             {
                 if (_context == null)
                 {
-                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, RenderType);
+                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] {Model}, RenderType);
                 }
                 else
                 {
@@ -45,23 +42,25 @@ namespace MinorEngine.components
             Model = model;
             RenderMask = renderMask;
             DisposeMeshOnDestroy = disposeOnDestroy;
-
         }
 
         protected override void OnDestroy()
         {
-            if (DisposeMeshOnDestroy) Model.Dispose();
+            if (DisposeMeshOnDestroy)
+            {
+                Model.Dispose();
+            }
         }
 
         protected override void Awake()
         {
-
-            Logger.Log($"Mesh Info:{Owner.Name} (IDs: VAO: {Model.Vao}, VBO: {Model.Vbo}, EBO: {Model.Ebo})..", DebugChannel.Log);
+            Logger.Log($"Mesh Info:{Owner.Name} (IDs: VAO: {Model.Vao}, VBO: {Model.Vbo}, EBO: {Model.Ebo})..",
+                DebugChannel.Log);
             if (Model.GetTextureBuffer().Length != 0)
             {
-                Logger.Log("Attached Textures: " + Owner.Name + " : " + Model.GetTextureBuffer()[0].TextureId, DebugChannel.Log);
+                Logger.Log("Attached Textures: " + Owner.Name + " : " + Model.GetTextureBuffer()[0].TextureId,
+                    DebugChannel.Log);
             }
-
         }
     }
 }

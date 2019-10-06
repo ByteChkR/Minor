@@ -18,7 +18,7 @@ namespace MinorEngine.BEPUutilities
 
         public override bool Equals(object obj)
         {
-            return Equals((Int2)obj);
+            return Equals((Int2) obj);
         }
 
         public bool Equals(Int2 other)
@@ -45,7 +45,5 @@ namespace MinorEngine.BEPUutilities
         {
             return "{" + X + ", " + Y + "}";
         }
-
-
     }
 }

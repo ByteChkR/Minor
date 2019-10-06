@@ -1,11 +1,9 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 {
-
     ///<summary>
     /// Triangle collision shape.
     ///</summary>
@@ -18,10 +16,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///</summary>
         public Vector3 VertexA
         {
-            get
-            {
-                return vA;
-            }
+            get => vA;
             set
             {
                 vA = value;
@@ -34,10 +29,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///</summary>
         public Vector3 VertexB
         {
-            get
-            {
-                return vB;
-            }
+            get => vB;
             set
             {
                 vB = value;
@@ -50,10 +42,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///</summary>
         public Vector3 VertexC
         {
-            get
-            {
-                return vC;
-            }
+            get => vC;
             set
             {
                 vC = value;
@@ -62,12 +51,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         }
 
         internal TriangleSidedness sidedness;
+
         ///<summary>
         /// Gets or sets the sidedness of the triangle.
         ///</summary>
         public TriangleSidedness Sidedness
         {
-            get { return sidedness; }
+            get => sidedness;
             set
             {
                 sidedness = value;
@@ -94,7 +84,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public TriangleShape(Vector3 vA, Vector3 vB, Vector3 vC)
         {
             //Recenter.  Convexes should contain the origin.
-            Vector3 center = (vA + vB + vC) / 3;
+            var center = (vA + vB + vC) / 3;
             this.vA = vA - center;
             this.vB = vB - center;
             this.vC = vC - center;
@@ -137,8 +127,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         }
 
 
-
-
         /// <summary>
         /// Computes a convex shape description for a TransformableShape.
         /// </summary>
@@ -147,7 +135,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="vC">Third local vertex in the triangle.</param>
         ///<param name="collisionMargin">Collision margin of the shape.</param>
         /// <returns>Description required to define a convex shape.</returns>
-        public static ConvexShapeDescription ComputeDescription(Vector3 vA, Vector3 vB, Vector3 vC, float collisionMargin)
+        public static ConvexShapeDescription ComputeDescription(Vector3 vA, Vector3 vB, Vector3 vC,
+            float collisionMargin)
         {
             ConvexShapeDescription description;
             // A triangle by itself technically has no volume, but shapes try to include the collision margin in the volume when feasible (e.g. BoxShape).
@@ -166,9 +155,11 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 1, 1, 2);
 
             Matrix3x3.MultiplyTransposed(ref v, ref s, out description.EntityShapeVolume.VolumeDistribution);
-            Matrix3x3.Multiply(ref description.EntityShapeVolume.VolumeDistribution, ref v, out description.EntityShapeVolume.VolumeDistribution);
+            Matrix3x3.Multiply(ref description.EntityShapeVolume.VolumeDistribution, ref v,
+                out description.EntityShapeVolume.VolumeDistribution);
             var scaling = doubleArea / 24f;
-            Matrix3x3.Multiply(ref description.EntityShapeVolume.VolumeDistribution, -scaling, out description.EntityShapeVolume.VolumeDistribution);
+            Matrix3x3.Multiply(ref description.EntityShapeVolume.VolumeDistribution, -scaling,
+                out description.EntityShapeVolume.VolumeDistribution);
 
             //The square-of-sum term is ignored since the parameters should already be localized (and so would sum to zero).
             var sums = scaling * (vA.LengthSquared() + vB.LengthSquared() + vC.LengthSquared());
@@ -248,7 +239,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <returns>Volume distribution of the shape.</returns>
         public static Matrix3x3 ComputeVolumeDistribution(Vector3 vA, Vector3 vB, Vector3 vC)
         {
-            Vector3 center = (vA + vB + vC) * (1 / 3f);
+            var center = (vA + vB + vC) * (1 / 3f);
 
             //Calculate distribution of mass.
 
@@ -259,28 +250,31 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             //I = I + [ (-j * j)  (j * j + z * z)  (-j * z) ]
             //	      [ (-j * z)  (-j * z)  (j * j + j * j) ]
 
-            float i = vA.X - center.X;
-            float j = vA.Y - center.Y;
-            float k = vA.Z - center.Z;
+            var i = vA.X - center.X;
+            var j = vA.Y - center.Y;
+            var k = vA.Z - center.Z;
             //localInertiaTensor += new Matrix(j * j + k * k, -j * j, -j * k, 0, -j * j, j * j + k * k, -j * k, 0, -j * k, -j * k, j * j + j * j, 0, 0, 0, 0, 0); //No mass per point.
-            var volumeDistribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j), massPerPoint * (-i * k),
-                                                   massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
-                                                   massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
+            var volumeDistribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
+                massPerPoint * (-i * k),
+                massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
+                massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
 
             i = vB.X - center.X;
             j = vB.Y - center.Y;
             k = vB.Z - center.Z;
-            var pointContribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j), massPerPoint * (-i * k),
-                                                  massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
-                                                  massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
+            var pointContribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
+                massPerPoint * (-i * k),
+                massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
+                massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
             Matrix3x3.Add(ref volumeDistribution, ref pointContribution, out volumeDistribution);
 
             i = vC.X - center.X;
             j = vC.Y - center.Y;
             k = vC.Z - center.Z;
-            pointContribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j), massPerPoint * (-i * k),
-                                              massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
-                                              massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
+            pointContribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
+                massPerPoint * (-i * k),
+                massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
+                massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
             Matrix3x3.Add(ref volumeDistribution, ref pointContribution, out volumeDistribution);
             return volumeDistribution;
         }
@@ -308,7 +302,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <returns>Normal of the triangle in world space.</returns>
         public Vector3 GetNormal(RigidTransform transform)
         {
-            Vector3 normal = GetLocalNormal();
+            var normal = GetLocalNormal();
             Quaternion.Transform(ref normal, ref transform.Orientation, out normal);
             return normal;
         }
@@ -332,7 +326,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             Vector3.Subtract(ref ray.Position, ref transform.Position, out localRay.Position);
             Quaternion.Transform(ref localRay.Position, ref conjugate, out localRay.Position);
 
-            bool toReturn = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref vA, ref vB, ref vC, out hit);
+            var toReturn = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref vA, ref vB,
+                ref vC, out hit);
             //Move the hit back into world space.
             Vector3.Multiply(ref ray.Direction, hit.T, out hit.Location);
             Vector3.Add(ref ray.Position, ref hit.Location, out hit.Location);
@@ -360,7 +355,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             return new ConvexCollidable<TriangleShape>(this);
         }
-
     }
-
 }

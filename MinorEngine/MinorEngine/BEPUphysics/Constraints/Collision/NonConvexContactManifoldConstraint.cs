@@ -1,5 +1,5 @@
-﻿using MinorEngine.BEPUphysics.CollisionTests;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.BEPUutilities.DataStructures;
 
@@ -21,32 +21,25 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         //One friction constraint for each contact.
 
         internal RawList<ContactPenetrationConstraint> penetrationConstraints;
+
         ///<summary>
         /// Gets the penetration constraints in the manifold.
         ///</summary>
-        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints
-        {
-            get
-            {
-                return new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
-            }
-        }
+        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints =>
+            new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
 
-        Stack<ContactPenetrationConstraint> penetrationConstraintPool = new Stack<ContactPenetrationConstraint>(4);
+        private Stack<ContactPenetrationConstraint> penetrationConstraintPool =
+            new Stack<ContactPenetrationConstraint>(4);
 
         internal RawList<ContactFrictionConstraint> frictionConstraints;
+
         ///<summary>
         /// Gets the friction constraints in the manifold.
         ///</summary>
-        public ReadOnlyList<ContactFrictionConstraint> ContactFrictionConstraints
-        {
-            get
-            {
-                return new ReadOnlyList<ContactFrictionConstraint>(frictionConstraints);
-            }
-        }
+        public ReadOnlyList<ContactFrictionConstraint> ContactFrictionConstraints =>
+            new ReadOnlyList<ContactFrictionConstraint>(frictionConstraints);
 
-        Stack<ContactFrictionConstraint> frictionConstraintPool = new Stack<ContactFrictionConstraint>(4);
+        private Stack<ContactFrictionConstraint> frictionConstraintPool = new Stack<ContactFrictionConstraint>(4);
 
 
         ///<summary>
@@ -61,7 +54,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             penetrationConstraints = new RawList<ContactPenetrationConstraint>(4);
             frictionConstraints = new RawList<ContactFrictionConstraint>(4);
 
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 var penetrationConstraint = new ContactPenetrationConstraint();
                 penetrationConstraintPool.Push(penetrationConstraint);
@@ -71,7 +64,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 frictionConstraintPool.Push(frictionConstraint);
                 Add(frictionConstraint);
             }
-
         }
 
 
@@ -82,7 +74,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         {
             base.CleanUp();
             //Deactivate any remaining constraints.
-            for (int i = penetrationConstraints.Count - 1; i >= 0; i--)
+            for (var i = penetrationConstraints.Count - 1; i >= 0; i--)
             {
                 var penetrationConstraint = penetrationConstraints.Elements[i];
                 penetrationConstraint.CleanUp();
@@ -90,21 +82,14 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 penetrationConstraintPool.Push(penetrationConstraint);
             }
 
-            for (int i = frictionConstraints.Count - 1; i >= 0; i--)
+            for (var i = frictionConstraints.Count - 1; i >= 0; i--)
             {
                 var frictionConstraint = frictionConstraints.Elements[i];
                 frictionConstraint.CleanUp();
                 frictionConstraints.RemoveAt(i);
                 frictionConstraintPool.Push(frictionConstraint);
             }
-
-
         }
-
-
-
-
-
 
 
         //TODO: PROBLEM IS that the add contact/remove contact, when they go from 0 -> !0 or !0 -> 0, the whole constraint is added/removed from the solver.
@@ -128,7 +113,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             var frictionConstraint = frictionConstraintPool.Pop();
             frictionConstraint.Setup(this, penetrationConstraint);
             frictionConstraints.Add(frictionConstraint);
-
         }
 
         ///<summary>
@@ -137,9 +121,8 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///<param name="contact">Contact to remove.</param>
         public override void RemoveContact(Contact contact)
         {
-
             ContactPenetrationConstraint penetrationConstraint = null;
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            for (var i = 0; i < penetrationConstraints.Count; i++)
             {
                 if ((penetrationConstraint = penetrationConstraints.Elements[i]).contact == contact)
                 {
@@ -149,9 +132,10 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                     break;
                 }
             }
-            for (int i = frictionConstraints.Count - 1; i >= 0; i--)
+
+            for (var i = frictionConstraints.Count - 1; i >= 0; i--)
             {
-                ContactFrictionConstraint frictionConstraint = frictionConstraints[i];
+                var frictionConstraint = frictionConstraints[i];
                 if (frictionConstraint.PenetrationConstraint == penetrationConstraint)
                 {
                     frictionConstraint.CleanUp();
@@ -160,9 +144,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                     break;
                 }
             }
-
         }
-
 
 
         //NOTE: Even though the order of addition to the solver group ensures penetration constraints come first, the
@@ -179,10 +161,15 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public sealed override void Update(float dt)
         {
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            for (var i = 0; i < penetrationConstraints.Count; i++)
+            {
                 UpdateUpdateable(penetrationConstraints.Elements[i], dt);
-            for (int i = 0; i < frictionConstraints.Count; i++)
+            }
+
+            for (var i = 0; i < frictionConstraints.Count; i++)
+            {
                 UpdateUpdateable(frictionConstraints.Elements[i], dt);
+            }
         }
 
 
@@ -193,10 +180,15 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// </summary>
         public sealed override void ExclusiveUpdate()
         {
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            for (var i = 0; i < penetrationConstraints.Count; i++)
+            {
                 ExclusiveUpdateUpdateable(penetrationConstraints.Elements[i]);
-            for (int i = 0; i < frictionConstraints.Count; i++)
+            }
+
+            for (var i = 0; i < frictionConstraints.Count; i++)
+            {
                 ExclusiveUpdateUpdateable(frictionConstraints.Elements[i]);
+            }
         }
 
 
@@ -206,13 +198,21 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// <returns>The rough applied impulse magnitude.</returns>
         public sealed override float SolveIteration()
         {
-            int activeConstraints = 0;
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            var activeConstraints = 0;
+            for (var i = 0; i < penetrationConstraints.Count; i++)
+            {
                 SolveUpdateable(penetrationConstraints.Elements[i], ref activeConstraints);
-            for (int i = 0; i < frictionConstraints.Count; i++)
+            }
+
+            for (var i = 0; i < frictionConstraints.Count; i++)
+            {
                 SolveUpdateable(frictionConstraints.Elements[i], ref activeConstraints);
+            }
+
             isActiveInSolver = activeConstraints > 0;
-            return solverSettings.minimumImpulse + 1; //Never let the system deactivate due to low impulses; solver group takes care of itself.
+            return
+                solverSettings.minimumImpulse +
+                1; //Never let the system deactivate due to low impulses; solver group takes care of itself.
         }
     }
 }

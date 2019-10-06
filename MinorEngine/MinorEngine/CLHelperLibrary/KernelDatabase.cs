@@ -35,7 +35,7 @@ namespace MinorEngine.CLHelperLibrary
             {
                 Logger.Crash(new InvalidFolderPathException(folderName), true);
 
-                Logger.Log("Creating Folder: "+folderName, DebugChannel.Warning);
+                Logger.Log("Creating Folder: " + folderName, DebugChannel.Warning);
 
                 Directory.CreateDirectory(folderName);
             }
@@ -51,9 +51,12 @@ namespace MinorEngine.CLHelperLibrary
         /// </summary>
         private void Initialize()
         {
-            string[] files = Directory.GetFiles(_folderName, "*.cl");
+            var files = Directory.GetFiles(_folderName, "*.cl");
 
-            foreach (string file in files) AddProgram(file);
+            foreach (var file in files)
+            {
+                AddProgram(file);
+            }
         }
 
 
@@ -70,17 +73,23 @@ namespace MinorEngine.CLHelperLibrary
             }
 
 
-            string path = Path.GetFullPath(file);
+            var path = Path.GetFullPath(file);
 
             Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
-            CLProgram program = new CLProgram(path, GenDataType);
+            var program = new CLProgram(path, GenDataType);
 
-            foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
+            foreach (var containedKernel in program.ContainedKernels)
+            {
                 if (!_loadedKernels.ContainsKey(containedKernel.Key))
+                {
                     _loadedKernels.Add(containedKernel.Key, containedKernel.Value);
+                }
                 else
+                {
                     Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
                         DebugChannel.Warning);
+                }
+            }
         }
 
         /// <summary>

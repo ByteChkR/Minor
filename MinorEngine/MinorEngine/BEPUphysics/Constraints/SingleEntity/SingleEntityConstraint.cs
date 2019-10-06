@@ -24,7 +24,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public virtual Entity Entity
         {
-            get { return entity; }
+            get => entity;
             set
             {
                 //TODO: Should this clear accumulated impulses?
@@ -42,9 +42,11 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
-            if (entity != null) //sometimes, the entity is set to null to 'deactivate' it.  Don't add null to the involved entities list.
+            if (entity != null
+            ) //sometimes, the entity is set to null to 'deactivate' it.  Don't add null to the involved entities list.
+            {
                 outputInvolvedEntities.Add(entity);
+            }
         }
-
     }
 }

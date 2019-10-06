@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using MinorEngine.BEPUutilities.ResourceManagement;
-using System.Collections.Generic;
+
 #if FORCEINLINE
 using System.Runtime.CompilerServices;
 #endif
@@ -18,11 +19,11 @@ namespace MinorEngine.BEPUutilities.DataStructures
     public struct QuickList<T> : IDisposable, IList<T>
     {
         private int poolIndex;
-        private BufferPool<T> pool;
+
         /// <summary>
         /// Gets the pool used by the quick list.
         /// </summary>
-        public BufferPool<T> Pool { get { return pool; } }
+        public BufferPool<T> Pool { get; }
 
         /// <summary>
         /// Gets the backing array containing the elements of the list.
@@ -31,15 +32,17 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public readonly T[] Elements;
 
         private int count;
+
         /// <summary>
         /// Gets or sets the number of elements in the list.
         /// </summary>
         public int Count
         {
-            get { return count; }
+            get => count;
             set
             {
-                Debug.Assert(value >= 0 && value <= Elements.Length, "Count should fit in the current backing array length.");
+                Debug.Assert(value >= 0 && value <= Elements.Length,
+                    "Count should fit in the current backing array length.");
                 count = value;
             }
         }
@@ -79,12 +82,11 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <param name="initialPoolIndex">Initial pool index to pull the backing array from. The size of the initial buffer will be 2^initialPoolIndex.</param>
         public QuickList(BufferPool<T> pool, int initialPoolIndex = 5)
         {
-            this.pool = pool;
+            Pool = pool;
             poolIndex = initialPoolIndex;
             Elements = pool.TakeFromPoolIndex(poolIndex);
 
             count = 0;
-
         }
 
         /// <summary>
@@ -101,9 +103,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
 
         private void Resize(int newPoolIndex)
         {
-            Debug.Assert(Count <= (1 << newPoolIndex), "New pool index must contain all elements in the list.");
+            Debug.Assert(Count <= 1 << newPoolIndex, "New pool index must contain all elements in the list.");
             var oldList = this;
-            this = new QuickList<T>(pool, newPoolIndex);
+            this = new QuickList<T>(Pool, newPoolIndex);
             Count = oldList.Count;
             Array.Copy(oldList.Elements, Elements, Count);
             oldList.Dispose();
@@ -120,7 +122,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Validate();
             if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
+            }
+
             Elements[Count] = element;
             ++Count;
         }
@@ -150,7 +155,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Validate();
             if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
+            }
+
             Elements[Count] = element;
             ++Count;
         }
@@ -214,6 +222,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 RemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -234,6 +243,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 RemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -254,6 +264,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 FastRemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -274,6 +285,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 FastRemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -290,12 +302,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
             ValidateIndex(index);
             --Count;
             if (index < Count)
-            {
                 //Copy everything from the removal point onward backward one slot.
+            {
                 Array.Copy(Elements, index + 1, Elements, index, Count - index);
             }
+
             //Clear out the former last slot.
-            Elements[Count] = default(T);
+            Elements[Count] = default;
         }
 
         /// <summary>
@@ -311,12 +324,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
             ValidateIndex(index);
             --Count;
             if (index < Count)
-            {
                 //Put the final element in the removed slot.
+            {
                 Elements[index] = Elements[Count];
             }
+
             //Clear out the former last slot.
-            Elements[Count] = default(T);
+            Elements[Count] = default;
         }
 
 
@@ -337,7 +351,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 element = Elements[Count];
                 return true;
             }
-            element = default(T);
+
+            element = default;
             return false;
         }
 
@@ -354,7 +369,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Validate();
             if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
+            }
+
             Array.Copy(Elements, index, Elements, index + 1, count - index);
             Elements[index] = element;
             ++Count;
@@ -373,7 +391,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Validate();
             if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
+            }
+
             Array.Copy(Elements, index, Elements, index + 1, count - index);
             Elements[index] = element;
             ++Count;
@@ -444,7 +465,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
             Validate();
             var newPoolIndex = BufferPool<T>.GetPoolIndex(Count);
             if (newPoolIndex != poolIndex)
+            {
                 Resize(newPoolIndex);
+            }
         }
 
         /// <summary>
@@ -453,23 +476,24 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void Dispose()
         {
             Clear();
-            pool.GiveBack(Elements, poolIndex);
+            Pool.GiveBack(Elements, poolIndex);
 #if DEBUG
             pool = null;
 #endif
         }
 
         [Conditional("DEBUG")]
-        void ValidateIndex(int index)
+        private void ValidateIndex(int index)
         {
-            Debug.Assert(index >= 0 && index < Count, "Index must be nonnegative and less than the number of elements in the list.");
+            Debug.Assert(index >= 0 && index < Count,
+                "Index must be nonnegative and less than the number of elements in the list.");
         }
 
 
         [Conditional("DEBUG")]
         private void Validate()
         {
-            Debug.Assert(pool != null, "Should not use a default-constructed or disposed QuickList.");
+            Debug.Assert(Pool != null, "Should not use a default-constructed or disposed QuickList.");
         }
 
         public Enumerator GetEnumerator()
@@ -500,19 +524,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 index = -1;
             }
 
-            public T Current
-            {
-                get { return backingArray[index]; }
-            }
+            public T Current => backingArray[index];
 
             public void Dispose()
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             public bool MoveNext()
             {
@@ -526,16 +544,12 @@ namespace MinorEngine.BEPUutilities.DataStructures
         }
 
 
-
         /// <summary>
         /// Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.
         /// </summary>
         /// <returns>
         /// true if the <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only; otherwise, false.
         /// </returns>
-        bool ICollection<T>.IsReadOnly
-        {
-            get { return false; }
-        }
+        bool ICollection<T>.IsReadOnly => false;
     }
 }

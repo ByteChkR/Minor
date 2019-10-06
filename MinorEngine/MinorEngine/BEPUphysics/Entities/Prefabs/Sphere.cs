@@ -1,7 +1,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -16,26 +15,19 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Radius
         {
-            get
-            {
-                return CollisionInformation.Shape.Radius;
-            }
-            set
-            {
-                CollisionInformation.Shape.Radius = value;
-            }
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
         }
 
         private Sphere(float radius)
-            :base(new ConvexCollidable<SphereShape>(new SphereShape(radius)))
+            : base(new ConvexCollidable<SphereShape>(new SphereShape(radius)))
         {
         }
 
         private Sphere(float radius, float mass)
-            :base(new ConvexCollidable<SphereShape>(new SphereShape(radius)), mass)
+            : base(new ConvexCollidable<SphereShape>(new SphereShape(radius)), mass)
         {
         }
-
 
 
         /// <summary>
@@ -83,8 +75,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
-
-
     }
 }

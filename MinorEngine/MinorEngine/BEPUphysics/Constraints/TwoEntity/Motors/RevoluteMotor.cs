@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Entities;
- 
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
@@ -10,12 +9,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
     /// </summary>
     public class RevoluteMotor : Motor, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
-        private readonly JointBasis2D basis = new JointBasis2D();
-        private readonly MotorSettings1D settings;
-        private float accumulatedImpulse;
         protected float biasVelocity;
         private Vector3 jacobianA, jacobianB;
-        private float error;
 
         private Vector3 localTestAxis;
 
@@ -31,7 +26,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public RevoluteMotor()
         {
-            settings = new MotorSettings1D(this);
+            Settings = new MotorSettings1D(this);
             IsActive = false;
         }
 
@@ -47,7 +42,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
             ConnectionB = connectionB;
             SetupJointTransforms(motorizedAxis);
 
-            settings = new MotorSettings1D(this);
+            Settings = new MotorSettings1D(this);
         }
 
         /// <summary>
@@ -55,10 +50,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// The primary axis represents the motorized axis of rotation.  The 'measurement plane' which the test axis is tested against is based on this primary axis.
         /// The x axis defines the 'base' direction on the measurement plane corresponding to 0 degrees of relative rotation.
         /// </summary>
-        public JointBasis2D Basis
-        {
-            get { return basis; }
-        }
+        public JointBasis2D Basis { get; } = new JointBasis2D();
 
         /// <summary>
         /// Gets or sets the axis attached to entity B in its local space.
@@ -66,7 +58,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public Vector3 LocalTestAxis
         {
-            get { return localTestAxis; }
+            get => localTestAxis;
             set
             {
                 localTestAxis = Vector3.Normalize(value);
@@ -77,10 +69,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the motor's velocity and servo settings.
         /// </summary>
-        public MotorSettings1D Settings
-        {
-            get { return settings; }
-        }
+        public MotorSettings1D Settings { get; }
 
         /// <summary>
         /// Gets or sets the axis attached to entity B in world space.
@@ -88,7 +77,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public Vector3 TestAxis
         {
-            get { return worldTestAxis; }
+            get => worldTestAxis;
             set
             {
                 worldTestAxis = Vector3.Normalize(value);
@@ -115,19 +104,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse { get; private set; }
 
         /// <summary>
         /// Gets the current constraint error.
         /// If the motor is in velocity only mode, the error is zero.
         /// </summary>
-        public float Error
-        {
-            get { return error; }
-        }
+        public float Error { get; private set; }
 
         #endregion
 
@@ -189,19 +172,19 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
             //Compute a vector which is perpendicular to the axis.  It'll be added in local space to both connections.
             Vector3 xAxis;
             Vector3.Cross(ref motorizedAxis, ref Toolbox.UpVector, out xAxis);
-            float length = xAxis.LengthSquared();
+            var length = xAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref motorizedAxis, ref Toolbox.RightVector, out xAxis);
             }
 
             //Put the axes into the joint transform of A.
-            basis.rotationMatrix = connectionA.orientationMatrix;
-            basis.SetWorldAxes(motorizedAxis, xAxis);
+            Basis.rotationMatrix = connectionA.orientationMatrix;
+            Basis.SetWorldAxes(motorizedAxis, xAxis);
 
 
             //Put the axes into the 'joint transform' of B too.
-            TestAxis = basis.xAxis;
+            TestAxis = Basis.xAxis;
         }
 
         ///<summary>
@@ -211,42 +194,45 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         public override void Update(float dt)
         {
             //Transform the axes into world space.
-            basis.rotationMatrix = connectionA.orientationMatrix;
-            basis.ComputeWorldSpaceAxes();
+            Basis.rotationMatrix = connectionA.orientationMatrix;
+            Basis.ComputeWorldSpaceAxes();
             Matrix3x3.Transform(ref localTestAxis, ref connectionB.orientationMatrix, out worldTestAxis);
 
-            float updateRate = 1 / dt;
-            if (settings.mode == MotorMode.Servomechanism)
+            var updateRate = 1 / dt;
+            if (Settings.mode == MotorMode.Servomechanism)
             {
                 float y, x;
                 Vector3 yAxis;
-                Vector3.Cross(ref basis.primaryAxis, ref basis.xAxis, out yAxis);
+                Vector3.Cross(ref Basis.primaryAxis, ref Basis.xAxis, out yAxis);
                 Vector3.Dot(ref worldTestAxis, ref yAxis, out y);
-                Vector3.Dot(ref worldTestAxis, ref basis.xAxis, out x);
-                var angle = (float)Math.Atan2(y, x);
+                Vector3.Dot(ref worldTestAxis, ref Basis.xAxis, out x);
+                var angle = (float) Math.Atan2(y, x);
 
                 //****** VELOCITY BIAS ******//
                 //Compute the correction velocity.
-                error = GetDistanceFromGoal(angle);
+                Error = GetDistanceFromGoal(angle);
 
 
-                float absErrorOverDt = Math.Abs(error * updateRate);
+                var absErrorOverDt = Math.Abs(Error * updateRate);
                 float errorReduction;
-                settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction, out usedSoftness);
-                biasVelocity = Math.Sign(error) * MathHelper.Min(settings.servo.baseCorrectiveSpeed, absErrorOverDt) + error * errorReduction;
+                Settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction,
+                    out usedSoftness);
+                biasVelocity = Math.Sign(Error) * MathHelper.Min(Settings.servo.baseCorrectiveSpeed, absErrorOverDt) +
+                               Error * errorReduction;
 
-                biasVelocity = MathHelper.Clamp(biasVelocity, -settings.servo.maxCorrectiveVelocity, settings.servo.maxCorrectiveVelocity);
+                biasVelocity = MathHelper.Clamp(biasVelocity, -Settings.servo.maxCorrectiveVelocity,
+                    Settings.servo.maxCorrectiveVelocity);
             }
             else
             {
-                biasVelocity = settings.velocityMotor.goalVelocity;
-                usedSoftness = settings.velocityMotor.softness * updateRate;
-                error = 0;
+                biasVelocity = Settings.velocityMotor.goalVelocity;
+                usedSoftness = Settings.velocityMotor.softness * updateRate;
+                Error = 0;
             }
 
 
             //Compute the jacobians
-            jacobianA = basis.primaryAxis;
+            jacobianA = Basis.primaryAxis;
             jacobianB.X = -jacobianA.X;
             jacobianB.Y = -jacobianA.Y;
             jacobianB.Z = -jacobianA.Z;
@@ -262,7 +248,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                 Vector3.Dot(ref transformedAxis, ref jacobianA, out entryA);
             }
             else
+            {
                 entryA = 0;
+            }
 
             //Connection B's contribution to the mass matrix
             float entryB;
@@ -272,17 +260,16 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                 Vector3.Dot(ref transformedAxis, ref jacobianB, out entryB);
             }
             else
+            {
                 entryB = 0;
+            }
 
             //Compute the inverse mass matrix
             velocityToImpulse = 1 / (usedSoftness + entryA + entryB);
 
 
             //Update the maximum force
-            ComputeMaxForces(settings.maximumForce, dt);
-
-
-
+            ComputeMaxForces(Settings.maximumForce, dt);
         }
 
         /// <summary>
@@ -297,12 +284,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
             Vector3 impulse;
             if (connectionA.isDynamic)
             {
-                Vector3.Multiply(ref jacobianA, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jacobianA, TotalImpulse, out impulse);
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
-                Vector3.Multiply(ref jacobianB, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jacobianB, TotalImpulse, out impulse);
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
         }
@@ -318,15 +306,15 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            float lambda = -(velocityA + velocityB) - biasVelocity - usedSoftness * accumulatedImpulse;
+            var lambda = -(velocityA + velocityB) - biasVelocity - usedSoftness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Accumulate the impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForceDt, maxForceDt);
-            lambda = accumulatedImpulse - previousAccumulatedImpulse;
+            var previousAccumulatedImpulse = TotalImpulse;
+            TotalImpulse = MathHelper.Clamp(TotalImpulse + lambda, -maxForceDt, maxForceDt);
+            lambda = TotalImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
             Vector3 impulse;
@@ -335,6 +323,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
                 Vector3.Multiply(ref jacobianA, lambda, out impulse);
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Multiply(ref jacobianB, lambda, out impulse);
@@ -345,30 +334,40 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors
         }
 
 
-
         private float GetDistanceFromGoal(float angle)
         {
-
             float forwardDistance;
-            float goalAngle = MathHelper.WrapAngle(settings.servo.goal);
+            var goalAngle = MathHelper.WrapAngle(Settings.servo.goal);
             if (goalAngle > 0)
             {
                 if (angle > goalAngle)
+                {
                     forwardDistance = angle - goalAngle;
+                }
                 else if (angle > 0)
+                {
                     forwardDistance = MathHelper.TwoPi - goalAngle + angle;
+                }
                 else //if (angle <= 0)
+                {
                     forwardDistance = MathHelper.TwoPi - goalAngle + angle;
+                }
             }
             else
             {
                 if (angle < goalAngle)
+                {
                     forwardDistance = MathHelper.TwoPi - goalAngle + angle;
+                }
                 else //if (angle < 0)
+                {
                     forwardDistance = angle - goalAngle;
+                }
+
                 //else //if (currentAngle >= 0)
                 //    return angle - myMinimumAngle;
             }
+
             return forwardDistance > MathHelper.Pi ? MathHelper.TwoPi - forwardDistance : -forwardDistance;
         }
     }

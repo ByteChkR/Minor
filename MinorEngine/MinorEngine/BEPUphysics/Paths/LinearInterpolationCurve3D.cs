@@ -1,6 +1,5 @@
-﻿
+﻿using MinorEngine.BEPUutilities;
 
-using MinorEngine.BEPUutilities;
 namespace MinorEngine.BEPUphysics.Paths
 {
     /// <summary>
@@ -17,7 +16,8 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="value">Value at the given location.</param>
         public override void Evaluate(int controlPointIndex, float weight, out Vector3 value)
         {
-            value = Vector3.Lerp(ControlPoints[controlPointIndex].Value, ControlPoints[controlPointIndex + 1].Value, weight);
+            value = Vector3.Lerp(ControlPoints[controlPointIndex].Value, ControlPoints[controlPointIndex + 1].Value,
+                weight);
         }
 
         /// <summary>
@@ -29,9 +29,13 @@ namespace MinorEngine.BEPUphysics.Paths
         {
             maxIndex = ControlPoints.Count - 1;
             if (maxIndex < 0)
+            {
                 minIndex = -1;
+            }
             else
+            {
                 minIndex = 0;
+            }
         }
 
         /// <summary>
@@ -58,7 +62,8 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="curveControlPoint">Changed control point.</param>
         /// <param name="oldIndex">Old index of the control point.</param>
         /// <param name="newIndex">New index of the control point.</param>
-        protected internal override void ControlPointTimeChanged(CurveControlPoint<Vector3> curveControlPoint, int oldIndex, int newIndex)
+        protected internal override void ControlPointTimeChanged(CurveControlPoint<Vector3> curveControlPoint,
+            int oldIndex, int newIndex)
         {
         }
 

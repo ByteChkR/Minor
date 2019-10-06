@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 
 namespace MinorEngine.BEPUphysics
 {
@@ -36,8 +35,8 @@ namespace MinorEngine.BEPUphysics
         }
 
         long start, end;
-      
-          
+
+
 #endif
         ///<summary>
         /// Updates the stage.
@@ -45,9 +44,14 @@ namespace MinorEngine.BEPUphysics
         public void Update()
         {
             if (!Enabled)
+            {
                 return;
+            }
+
             if (Starting != null)
+            {
                 Starting();
+            }
 #if PROFILE
             start = Stopwatch.GetTimestamp();
 #endif
@@ -58,8 +62,11 @@ namespace MinorEngine.BEPUphysics
             end = Stopwatch.GetTimestamp();
 #endif
             if (Finishing != null)
+            {
                 Finishing();
+            }
         }
+
         protected abstract void UpdateStage();
     }
 }

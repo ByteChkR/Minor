@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 
@@ -15,13 +15,7 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// <summary>
         /// List of the points composing the surface of the convex hull in local space.
         /// </summary>
-        public ReadOnlyList<Vector3> Vertices
-        {
-            get
-            {
-                return CollisionInformation.Shape.Vertices;
-            }
-        }
+        public ReadOnlyList<Vector3> Vertices => CollisionInformation.Shape.Vertices;
 
 
         /// <summary>
@@ -97,7 +91,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
-
     }
 }

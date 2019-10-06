@@ -10,7 +10,6 @@ namespace MinorEngine.BEPUphysics
     /// </summary>
     public static class PhysicsChecker
     {
-
         /// <summary>
         /// Checks the contact to see if it contains NaNs or infinities.  If it is, an exception is thrown.
         /// This is only run when the CHECKMATH symbol is defined.
@@ -20,7 +19,10 @@ namespace MinorEngine.BEPUphysics
         {
             contact.Normal.Validate();
             if (contact.Normal.LengthSquared() < 0.9f)
+            {
                 throw new ArithmeticException("Invalid contact normal.");
+            }
+
             contact.Position.Validate();
             contact.PenetrationDepth.Validate();
         }
@@ -37,6 +39,5 @@ namespace MinorEngine.BEPUphysics
             contact.Position.Validate();
             contact.PenetrationDepth.Validate();
         }
-
     }
 }

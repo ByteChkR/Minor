@@ -7,7 +7,6 @@ using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.DataStructures;
 using MinorEngine.BEPUphysics.PositionUpdating;
 using MinorEngine.BEPUphysics.Settings;
- 
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -17,42 +16,29 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class MobileMeshPairHandler : StandardPairHandler
     {
-        MobileMeshCollidable mobileMesh;
-        ConvexCollidable convex;
+        private MobileMeshCollidable mobileMesh;
+        private ConvexCollidable convex;
 
         private NonConvexContactManifoldConstraint contactConstraint;
 
 
-        public override Collidable CollidableA
-        {
-            get { return convex; }
-        }
-        public override Collidable CollidableB
-        {
-            get { return mobileMesh; }
-        }
-        public override Entities.Entity EntityA
-        {
-            get { return convex.entity; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return mobileMesh.entity; }
-        }
+        public override Collidable CollidableA => convex;
+
+        public override Collidable CollidableB => mobileMesh;
+
+        public override Entities.Entity EntityA => convex.entity;
+
+        public override Entities.Entity EntityB => mobileMesh.entity;
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
-        public override ContactManifold ContactManifold
-        {
-            get { return MeshManifold; }
-        }
+        public override ContactManifold ContactManifold => MeshManifold;
+
         /// <summary>
         /// Gets the contact constraint used by the pair handler.
         /// </summary>
-        public override ContactManifoldConstraint ContactConstraint
-        {
-            get { return contactConstraint; }
-        }
+        public override ContactManifoldConstraint ContactConstraint => contactConstraint;
 
         protected internal abstract MobileMeshContactManifold MeshManifold { get; }
 
@@ -68,7 +54,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
             mobileMesh = entryA as MobileMeshCollidable;
             convex = entryB as ConvexCollidable;
 
@@ -78,7 +63,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 convex = entryA as ConvexCollidable;
 
                 if (mobileMesh == null || convex == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize pair.");
+                }
             }
 
 
@@ -88,11 +75,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             //It's possible that the convex does not have an entity if it is a proxy for a non-entity collidable.
             //Similarly, the mesh could be a query object.
-            UpdateMaterialProperties(convex.entity != null ? convex.entity.material : null, mobileMesh.entity != null ? mobileMesh.entity.material : null);
+            UpdateMaterialProperties(convex.entity != null ? convex.entity.material : null,
+                mobileMesh.entity != null ? mobileMesh.entity.material : null);
 
 
             base.Initialize(entryA, entryB);
-
         }
 
 
@@ -101,15 +88,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
-
             base.CleanUp();
 
             mobileMesh = null;
             convex = null;
-
         }
-
 
 
         ///<summary>
@@ -120,23 +103,21 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
             var overlap = BroadPhaseOverlap;
-            var meshMode = mobileMesh.entity == null ? PositionUpdateMode.Discrete : mobileMesh.entity.PositionUpdateMode;
+            var meshMode = mobileMesh.entity == null
+                ? PositionUpdateMode.Discrete
+                : mobileMesh.entity.PositionUpdateMode;
             var convexMode = convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
 
             if (
-                    (mobileMesh.IsActive || convex.IsActive) && //At least one has to be active.
-                    (
-                        (
-                            convexMode == PositionUpdateMode.Continuous &&   //If both are continuous, only do the process for A.
-                            meshMode == PositionUpdateMode.Continuous &&
-                            overlap.entryA == requester
-                        ) ||
-                        (
-                            convexMode == PositionUpdateMode.Continuous ^   //If only one is continuous, then we must do it.
-                            meshMode == PositionUpdateMode.Continuous
-                        )
-                    )
+                (mobileMesh.IsActive || convex.IsActive) && //At least one has to be active.
+                (
+                    convexMode == PositionUpdateMode.Continuous && //If both are continuous, only do the process for A.
+                    meshMode == PositionUpdateMode.Continuous &&
+                    overlap.entryA == requester ||
+                    (convexMode == PositionUpdateMode.Continuous) ^ //If only one is continuous, then we must do it.
+                    (meshMode == PositionUpdateMode.Continuous)
                 )
+            )
             {
                 //TODO: This system could be made more robust by using a similar region-based rejection of edges.
                 //CCD events are awfully rare under normal circumstances, so this isn't usually an issue.
@@ -144,38 +125,39 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 //Only perform the test if the minimum radii are small enough relative to the size of the velocity.
                 Vector3 velocity;
                 if (convexMode == PositionUpdateMode.Discrete)
-                {                    
                     //Convex is static for the purposes of CCD.
+                {
                     Vector3.Negate(ref mobileMesh.entity.linearVelocity, out velocity);
                 }
                 else if (meshMode == PositionUpdateMode.Discrete)
-                {
                     //Mesh is static for the purposes of CCD.
+                {
                     velocity = convex.entity.linearVelocity;
                 }
                 else
-                {
                     //Both objects can move.
-                    Vector3.Subtract(ref convex.entity.linearVelocity, ref mobileMesh.entity.linearVelocity, out velocity);
-
+                {
+                    Vector3.Subtract(ref convex.entity.linearVelocity, ref mobileMesh.entity.linearVelocity,
+                        out velocity);
                 }
+
                 Vector3.Multiply(ref velocity, dt, out velocity);
-                float velocitySquared = velocity.LengthSquared();
+                var velocitySquared = velocity.LengthSquared();
 
                 var minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
                 if (minimumRadius * minimumRadius < velocitySquared)
                 {
-                    TriangleSidedness sidedness = mobileMesh.Shape.Sidedness;
+                    var sidedness = mobileMesh.Shape.Sidedness;
                     Matrix3x3 orientation;
                     Matrix3x3.CreateFromQuaternion(ref mobileMesh.worldTransform.Orientation, out orientation);
                     var triangle = PhysicsThreadResources.GetTriangle();
                     triangle.collisionMargin = 0;
                     //Spherecast against all triangles to find the earliest time.
-                    for (int i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
+                    for (var i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
                     {
-                        MeshBoundingBoxTreeData data = mobileMesh.Shape.TriangleMesh.Data;
-                        int triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
+                        var data = mobileMesh.Shape.TriangleMesh.Data;
+                        var triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
                         data.GetTriangle(triangleIndex, out triangle.vA, out triangle.vB, out triangle.vC);
                         Matrix3x3.Transform(ref triangle.vA, ref orientation, out triangle.vA);
                         Matrix3x3.Transform(ref triangle.vB, ref orientation, out triangle.vB);
@@ -189,10 +171,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                         Vector3.Subtract(ref triangle.vC, ref convex.worldTransform.Position, out triangle.vC);
 
                         RayHit rayHit;
-                        if (GJKToolbox.CCDSphereCast(new Ray(Toolbox.ZeroVector, velocity), minimumRadius, triangle, ref Toolbox.RigidIdentity, timeOfImpact, out rayHit) &&
+                        if (GJKToolbox.CCDSphereCast(new Ray(Toolbox.ZeroVector, velocity), minimumRadius, triangle,
+                                ref Toolbox.RigidIdentity, timeOfImpact, out rayHit) &&
                             rayHit.T > Toolbox.BigEpsilon)
                         {
-
                             if (sidedness != TriangleSidedness.DoubleSided)
                             {
                                 Vector3 AB, AC;
@@ -216,13 +198,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                             }
                         }
                     }
+
                     PhysicsThreadResources.GiveBack(triangle);
                 }
-
-
-
             }
-
         }
 
 
@@ -232,12 +211,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal and friction forces.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (int i = 0; i < contactConstraint.frictionConstraints.Count; i++)
+            for (var i = 0; i < contactConstraint.frictionConstraints.Count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {
                     info.FrictionImpulse = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
-                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
+                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint
+                        .accumulatedImpulse;
                     break;
                 }
             }
@@ -251,7 +231,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 Vector3.Add(ref velocity, ref convex.entity.linearVelocity, out info.RelativeVelocity);
             }
             else
+            {
                 info.RelativeVelocity = new Vector3();
+            }
 
             if (mobileMesh.entity != null)
             {
@@ -263,9 +245,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             info.Pair = this;
         }
-
-
-
     }
-
 }

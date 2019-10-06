@@ -18,6 +18,7 @@ namespace MinorEngine.BEPUik
         private const float StiffnessOverDamping = 0.25f;
 
         private float rigidity = 16;
+
         /// <summary>
         /// Gets the rigidity of the constraint. Higher values correspond to more rigid constraints, lower values to less rigid constraints. Must be positive.
         /// </summary>
@@ -29,14 +30,14 @@ namespace MinorEngine.BEPUik
         /// </remarks>
         public float Rigidity
         {
-            get
-            {
-                return rigidity;
-            }
+            get => rigidity;
             set
             {
                 if (value <= 0)
+                {
                     throw new ArgumentException("Rigidity must be positive.");
+                }
+
                 rigidity = value;
             }
         }
@@ -50,11 +51,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public float MaximumForce
         {
-            get { return maximumForce; }
-            set
-            {
-                maximumForce = Math.Max(value, 0);
-            }
+            get => maximumForce;
+            set => maximumForce = Math.Max(value, 0);
         }
 
         /// <summary>
@@ -64,14 +62,13 @@ namespace MinorEngine.BEPUik
         /// <param name="updateRate">Inverse time step duration.</param>
         protected internal void Preupdate(float dt, float updateRate)
         {
-            float stiffness = StiffnessOverDamping * rigidity;
-            float damping = rigidity;
-            float multiplier = 1 / (dt * stiffness + damping);
+            var stiffness = StiffnessOverDamping * rigidity;
+            var damping = rigidity;
+            var multiplier = 1 / (dt * stiffness + damping);
             errorCorrectionFactor = stiffness * multiplier;
             softness = updateRate * multiplier;
             maximumImpulse = maximumForce * dt;
             maximumImpulseSquared = Math.Min(float.MaxValue, maximumImpulse * maximumImpulse);
-
         }
 
         /// <summary>

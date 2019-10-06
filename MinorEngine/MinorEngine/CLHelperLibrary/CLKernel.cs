@@ -5,7 +5,6 @@ using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 
-using MinorEngine.debug;
 namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
@@ -116,7 +115,7 @@ namespace MinorEngine.CLHelperLibrary
             MemoryBuffer enabledChannels, int channelCount)
         {
 #if !TRAVIS_TEST
-            int size = dimensions.x * dimensions.y * dimensions.z * channelCount;
+            var size = dimensions.x * dimensions.y * dimensions.z * channelCount;
 
             SetArg(0, image);
             SetArg(1, dimensions);

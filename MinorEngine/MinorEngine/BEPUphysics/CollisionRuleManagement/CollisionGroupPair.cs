@@ -2,7 +2,6 @@
 
 namespace MinorEngine.BEPUphysics.CollisionRuleManagement
 {
-
     /// <summary>
     /// Storage strucure containing two CollisionGroup instances used as a key in a collision rules dictionary.
     /// </summary>
@@ -28,24 +27,30 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         public CollisionGroupPair(CollisionGroup groupA, CollisionGroup groupB)
         {
             if (groupA == null)
+            {
                 throw new ArgumentNullException("groupA",
-                                                "The first collision group in the pair is null.  If this pair was being created for CollisionRule calculation purposes, simply consider the rule to be CollisionRule.Defer.");
+                    "The first collision group in the pair is null.  If this pair was being created for CollisionRule calculation purposes, simply consider the rule to be CollisionRule.Defer.");
+            }
+
             if (groupB == null)
+            {
                 throw new ArgumentNullException("groupB",
-                                                "The second collision group in the pair is null.  If this pair was being created for CollisionRule calculation purposes, simply consider the rule to be CollisionRule.Defer.");
+                    "The second collision group in the pair is null.  If this pair was being created for CollisionRule calculation purposes, simply consider the rule to be CollisionRule.Defer.");
+            }
+
             A = groupA;
             B = groupB;
             const ulong prime = 0xd8163841;
             //Note that the order of the pair is irrelevant- this is required
-            ulong hash = ((ulong)(groupA.GetHashCode()) + (ulong)(groupB.GetHashCode())) * prime;
-            hashCode = (int)(hash); // % (int.MaxValue - 1));
+            var hash = ((ulong) groupA.GetHashCode() + (ulong) groupB.GetHashCode()) * prime;
+            hashCode = (int) hash; // % (int.MaxValue - 1));
         }
 
         #region IEquatable<CollisionGroupPair> Members
 
         bool IEquatable<CollisionGroupPair>.Equals(CollisionGroupPair other)
         {
-            return (other.A == A && other.B == B) || (other.B == A && other.A == B);
+            return other.A == A && other.B == B || other.B == A && other.A == B;
         }
 
         #endregion
@@ -59,8 +64,8 @@ namespace MinorEngine.BEPUphysics.CollisionRuleManagement
         public override bool Equals(object obj)
         {
             //This method requires boxing, so make sure any attempt to call it is caught.
-            var other = (CollisionGroupPair)obj;
-            return (other.A == A && other.B == B) || (other.B == A && other.A == B);
+            var other = (CollisionGroupPair) obj;
+            return other.A == A && other.B == B || other.B == A && other.A == B;
         }
 
         /// <summary>

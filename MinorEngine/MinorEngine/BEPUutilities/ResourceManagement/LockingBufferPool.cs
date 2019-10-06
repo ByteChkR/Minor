@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace MinorEngine.BEPUutilities.ResourceManagement
+﻿namespace MinorEngine.BEPUutilities.ResourceManagement
 {
     /// <summary>
     /// Provides storage for reusable arrays with power-of-2 lengths.
@@ -25,7 +21,7 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             locker.Exit();
             return toReturn;
         }
-        
+
         /// <summary>
         /// Releases a buffer back to the pool without clearing it out.
         /// </summary>
@@ -37,7 +33,5 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             base.GiveBack(buffer, poolIndex);
             locker.Exit();
         }
-
-
     }
 }

@@ -8,10 +8,10 @@ namespace MinorEngine.engine.audio
     {
         protected override void Update(float deltaTime)
         {
-            Vector4 v = new Vector4(Owner.GetLocalPosition(), 1);
+            var v = new Vector4(Owner.GetLocalPosition(), 1);
             v *= Owner.GetWorldTransform() * Owner.World.Camera.ViewMatrix;
 
-            Vector3 v3 = new Vector3(v);
+            var v3 = new Vector3(v);
 
             AL.Listener(ALListener3f.Position, ref v3);
         }

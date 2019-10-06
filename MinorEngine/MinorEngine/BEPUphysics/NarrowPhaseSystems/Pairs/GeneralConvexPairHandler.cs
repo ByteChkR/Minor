@@ -1,14 +1,7 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
-using MinorEngine.BEPUphysics.Constraints.Collision;
-using MinorEngine.BEPUphysics.PositionUpdating;
-using MinorEngine.BEPUphysics.Settings;
- 
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -17,35 +10,24 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class GeneralConvexPairHandler : ConvexConstraintPairHandler
     {
-        ConvexCollidable convexA;
-        ConvexCollidable convexB;
+        private ConvexCollidable convexA;
+        private ConvexCollidable convexB;
 
-        GeneralConvexContactManifold contactManifold = new GeneralConvexContactManifold();
+        private GeneralConvexContactManifold contactManifold = new GeneralConvexContactManifold();
 
 
-        public override Collidable CollidableA
-        {
-            get { return convexA; }
-        }
-        public override Collidable CollidableB
-        {
-            get { return convexB; }
-        }    
+        public override Collidable CollidableA => convexA;
+
+        public override Collidable CollidableB => convexB;
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
-        public override ContactManifold ContactManifold
-        {
-            get { return contactManifold; }
-        }
-        public override Entities.Entity EntityA
-        {
-            get { return convexA.entity; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return convexB.entity; }
-        }
+        public override ContactManifold ContactManifold => contactManifold;
+
+        public override Entities.Entity EntityA => convexA.entity;
+
+        public override Entities.Entity EntityB => convexB.entity;
 
         ///<summary>
         /// Initializes the pair handler.
@@ -54,7 +36,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
             convexA = entryA as ConvexCollidable;
             convexB = entryB as ConvexCollidable;
 
@@ -64,8 +45,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             }
 
             base.Initialize(entryA, entryB);
-
-
         }
 
 
@@ -78,13 +57,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             convexA = null;
             convexB = null;
-
-
-
         }
-
-
-
-
     }
 }

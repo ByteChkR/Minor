@@ -1,5 +1,4 @@
-﻿ 
-using MinorEngine.BEPUutilities;
+﻿using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.EntityStateManagement
 {
@@ -12,10 +11,12 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
     public class BufferedStatesAccessor
     {
         internal EntityBufferedStates bufferedStates;
+
         ///<summary>
         /// Gets and sets the states write buffer used when buffered properties are written.
         ///</summary>
         public EntityStateWriteBuffer WriteBuffer { get; set; }
+
         ///<summary>
         /// Constructs a new accessor.
         ///</summary>
@@ -25,12 +26,13 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             this.bufferedStates = bufferedStates;
         }
 
-        bool IsReadBufferAccessible()
+        private bool IsReadBufferAccessible()
         {
-            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled && bufferedStates.BufferedStatesManager.ReadBuffers.Enabled;
+            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled &&
+                   bufferedStates.BufferedStatesManager.ReadBuffers.Enabled;
         }
 
-        bool IsWriteBufferAccessible()
+        private bool IsWriteBufferAccessible()
         {
             return WriteBuffer != null && WriteBuffer.Enabled;
         }
@@ -44,15 +46,23 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsReadBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex).Position;
+                {
+                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex)
+                        .Position;
+                }
+
                 return bufferedStates.Entity.Position;
             }
             set
             {
                 if (IsWriteBufferAccessible())
+                {
                     WriteBuffer.EnqueuePosition(bufferedStates.Entity, ref value);
+                }
                 else
+                {
                     bufferedStates.Entity.Position = value;
+                }
             }
         }
 
@@ -64,15 +74,23 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsReadBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex).Orientation;
+                {
+                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex)
+                        .Orientation;
+                }
+
                 return bufferedStates.Entity.Orientation;
             }
             set
             {
                 if (IsWriteBufferAccessible())
+                {
                     WriteBuffer.EnqueueOrientation(bufferedStates.Entity, ref value);
+                }
                 else
+                {
                     bufferedStates.Entity.Orientation = value;
+                }
             }
         }
 
@@ -86,18 +104,22 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 Matrix3x3 toReturn;
                 if (IsReadBufferAccessible())
                 {
-                    Quaternion o = bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex).Orientation;
+                    var o = bufferedStates.BufferedStatesManager.ReadBuffers
+                        .GetState(bufferedStates.motionStateIndex).Orientation;
                     Matrix3x3.CreateFromQuaternion(ref o, out toReturn);
                 }
                 else
+                {
                     Matrix3x3.CreateFromQuaternion(ref bufferedStates.Entity.orientation, out toReturn);
+                }
+
                 return toReturn;
             }
             set
             {
                 if (IsWriteBufferAccessible())
                 {
-                    Quaternion toSet = Quaternion.Normalize(Quaternion.CreateFromRotationMatrix(value));
+                    var toSet = Quaternion.Normalize(Quaternion.CreateFromRotationMatrix(value));
                     WriteBuffer.EnqueueOrientation(bufferedStates.Entity, ref toSet);
                 }
                 else
@@ -115,15 +137,23 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsReadBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex).LinearVelocity;
+                {
+                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex)
+                        .LinearVelocity;
+                }
+
                 return bufferedStates.Entity.LinearVelocity;
             }
             set
             {
                 if (IsWriteBufferAccessible())
+                {
                     WriteBuffer.EnqueueLinearVelocity(bufferedStates.Entity, ref value);
+                }
                 else
+                {
                     bufferedStates.Entity.LinearVelocity = value;
+                }
             }
         }
 
@@ -136,15 +166,23 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsReadBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex).AngularVelocity;
+                {
+                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex)
+                        .AngularVelocity;
+                }
+
                 return bufferedStates.Entity.AngularVelocity;
             }
             set
             {
                 if (IsWriteBufferAccessible())
+                {
                     WriteBuffer.EnqueueAngularVelocity(bufferedStates.Entity, ref value);
+                }
                 else
+                {
                     bufferedStates.Entity.AngularVelocity = value;
+                }
             }
         }
 
@@ -156,14 +194,18 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsReadBufferAccessible())
-                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex).WorldTransform;
+                {
+                    return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex)
+                        .WorldTransform;
+                }
+
                 return bufferedStates.Entity.WorldTransform;
             }
             set
             {
                 if (IsWriteBufferAccessible())
                 {
-                    Vector3 translation = value.Translation;
+                    var translation = value.Translation;
                     Quaternion orientation;
                     Quaternion.CreateFromRotationMatrix(ref value, out orientation);
                     orientation.Normalize();
@@ -185,7 +227,10 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             get
             {
                 if (IsReadBufferAccessible())
+                {
                     return bufferedStates.BufferedStatesManager.ReadBuffers.GetState(bufferedStates.motionStateIndex);
+                }
+
                 return bufferedStates.Entity.MotionState;
             }
             set
@@ -203,7 +248,5 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 }
             }
         }
-
-
     }
 }

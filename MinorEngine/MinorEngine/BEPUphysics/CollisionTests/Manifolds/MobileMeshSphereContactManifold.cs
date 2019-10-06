@@ -8,17 +8,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class MobileMeshSphereContactManifold : MobileMeshContactManifold
     {
+        private UnsafeResourcePool<TriangleSpherePairTester> testerPool =
+            new UnsafeResourcePool<TriangleSpherePairTester>();
 
-        UnsafeResourcePool<TriangleSpherePairTester> testerPool = new UnsafeResourcePool<TriangleSpherePairTester>();
         protected override void GiveBackTester(TrianglePairTester tester)
         {
-            testerPool.GiveBack((TriangleSpherePairTester)tester);
+            testerPool.GiveBack((TriangleSpherePairTester) tester);
         }
 
         protected override TrianglePairTester GetTester()
         {
             return testerPool.Take();
         }
-
     }
 }

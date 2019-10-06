@@ -10,7 +10,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
     ///</summary>
     public abstract class ConvexCollidable : EntityCollidable
     {
-
         protected ConvexCollidable(ConvexShape shape)
             : base(shape)
         {
@@ -20,20 +19,15 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         ///<summary>
         /// Gets the shape of the collidable.
         ///</summary>
-        public new ConvexShape Shape
+        public new ConvexShape Shape => (ConvexShape) shape;
+
+
+        public override bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
+            out RayHit hit)
         {
-            get
-            {
-                return (ConvexShape)shape;
-            }
+            return MPRToolbox.Sweep(castShape, Shape, ref sweep, ref Toolbox.ZeroVector, ref startingTransform,
+                ref worldTransform, out hit);
         }
-
-
-        public override bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, out RayHit hit)
-        {
-            return MPRToolbox.Sweep(castShape, Shape, ref sweep, ref Toolbox.ZeroVector, ref startingTransform, ref worldTransform, out hit);
-        }
-
     }
 
     ///<summary>
@@ -45,13 +39,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         ///<summary>
         /// Gets the shape of the collidable.
         ///</summary>
-        public new T Shape
-        {
-            get
-            {
-                return (T)shape;
-            }
-        }
+        public new T Shape => (T) shape;
 
         ///<summary>
         /// Constructs a new convex collidable.
@@ -60,7 +48,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         public ConvexCollidable(T shape)
             : base(shape)
         {
-
         }
 
 
@@ -77,17 +64,11 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables
         }
 
 
-
         protected internal override void UpdateBoundingBoxInternal(float dt)
         {
             Shape.GetBoundingBox(ref worldTransform, out boundingBox);
 
             ExpandBoundingBox(ref boundingBox, dt);
         }
-
-
-
-
-
     }
 }

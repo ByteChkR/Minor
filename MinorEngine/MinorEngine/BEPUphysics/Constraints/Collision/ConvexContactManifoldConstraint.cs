@@ -1,5 +1,5 @@
-﻿using MinorEngine.BEPUphysics.CollisionTests;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.BEPUutilities.DataStructures;
 
@@ -19,50 +19,37 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         //One twist constraint.
 
         internal TwistFrictionConstraint twistFriction;
+
         ///<summary>
         /// Gets the twist friction constraint used by the manifold.
         ///</summary>
-        public TwistFrictionConstraint TwistFriction
-        {
-            get
-            {
-                return twistFriction;
-            }
-        }
+        public TwistFrictionConstraint TwistFriction => twistFriction;
+
         internal SlidingFrictionTwoAxis slidingFriction;
+
         ///<summary>
         /// Gets the sliding friction constraint used by the manifold.
         ///</summary>
-        public SlidingFrictionTwoAxis SlidingFriction
-        {
-            get
-            {
-                return slidingFriction;
-            }
-        }
-
+        public SlidingFrictionTwoAxis SlidingFriction => slidingFriction;
 
 
         internal RawList<ContactPenetrationConstraint> penetrationConstraints;
+
         ///<summary>
         /// Gets the penetration constraints used by the manifold.
         ///</summary>
-        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints
-        {
-            get
-            {
-                return new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
-            }
-        }
+        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints =>
+            new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
 
-        Stack<ContactPenetrationConstraint> penetrationConstraintPool = new Stack<ContactPenetrationConstraint>(4);
+        private Stack<ContactPenetrationConstraint> penetrationConstraintPool =
+            new Stack<ContactPenetrationConstraint>(4);
 
 
         ///<summary>
         /// Constructs a new convex contact manifold constraint.
         ///</summary>
         public ConvexContactManifoldConstraint(CollidablePairHandler pairHandler)
-            :base(pairHandler)
+            : base(pairHandler)
         {
             //All of the constraints are always in the solver group.  Some of them are just deactivated sometimes.
             //This reduces some bookkeeping complications.
@@ -72,18 +59,17 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
 
 
             //Order matters in this adding process.  Sliding friction computes some information used by the twist friction, and both use penetration impulses.
-            for (int i = 0; i < 4; i++)
+            for (var i = 0; i < 4; i++)
             {
                 var penetrationConstraint = new ContactPenetrationConstraint();
                 Add(penetrationConstraint);
                 penetrationConstraintPool.Push(penetrationConstraint);
             }
+
             slidingFriction = new SlidingFrictionTwoAxis();
             Add(slidingFriction);
             twistFriction = new TwistFrictionConstraint();
             Add(twistFriction);
-
-
         }
 
         ///<summary>
@@ -93,20 +79,19 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         {
             base.CleanUp();
             //Deactivate any remaining constraints.
-            for (int i = penetrationConstraints.Count - 1; i >= 0; i--)
+            for (var i = penetrationConstraints.Count - 1; i >= 0; i--)
             {
                 var penetrationConstraint = penetrationConstraints.Elements[i];
                 penetrationConstraint.CleanUp();
                 penetrationConstraints.RemoveAt(i);
                 penetrationConstraintPool.Push(penetrationConstraint);
             }
+
             if (twistFriction.isActive)
             {
                 twistFriction.CleanUp();
                 slidingFriction.CleanUp();
             }
-
-
         }
 
 
@@ -134,7 +119,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///<param name="contact">Contact to remove.</param>
         public override void RemoveContact(Contact contact)
         {
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            for (var i = 0; i < penetrationConstraints.Count; i++)
             {
                 ContactPenetrationConstraint penetrationConstraint;
                 if ((penetrationConstraint = penetrationConstraints.Elements[i]).contact == contact)
@@ -145,6 +130,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                     break;
                 }
             }
+
             if (penetrationConstraints.Count == 0)
             {
                 //No more contacts.  Disable everything.
@@ -153,7 +139,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 slidingFriction.CleanUp();
             }
         }
-
 
 
         //NOTE: Even though the order of addition to the solver group ensures penetration constraints come first, the
@@ -170,12 +155,14 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public sealed override void Update(float dt)
         {
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            for (var i = 0; i < penetrationConstraints.Count; i++)
+            {
                 UpdateUpdateable(penetrationConstraints.Elements[i], dt);
+            }
+
             UpdateUpdateable(slidingFriction, dt);
             UpdateUpdateable(twistFriction, dt);
         }
-
 
 
         /// <summary>
@@ -185,8 +172,11 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// </summary>
         public sealed override void ExclusiveUpdate()
         {
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            for (var i = 0; i < penetrationConstraints.Count; i++)
+            {
                 ExclusiveUpdateUpdateable(penetrationConstraints.Elements[i]);
+            }
+
             ExclusiveUpdateUpdateable(slidingFriction);
             ExclusiveUpdateUpdateable(twistFriction);
         }
@@ -198,18 +188,21 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// <returns>The rough applied impulse magnitude.</returns>
         public sealed override float SolveIteration()
         {
-
-            int activeConstraints = 0;
-            for (int i = 0; i < penetrationConstraints.Count; i++)
+            var activeConstraints = 0;
+            for (var i = 0; i < penetrationConstraints.Count; i++)
+            {
                 SolveUpdateable(penetrationConstraints.Elements[i], ref activeConstraints);
+            }
+
             SolveUpdateable(slidingFriction, ref activeConstraints);
             SolveUpdateable(twistFriction, ref activeConstraints);
 
 
             isActiveInSolver = activeConstraints > 0;
 
-            return solverSettings.minimumImpulse + 1; //Never let the system deactivate due to low impulses; solver group takes care of itself.
+            return
+                solverSettings.minimumImpulse +
+                1; //Never let the system deactivate due to low impulses; solver group takes care of itself.
         }
-
     }
 }

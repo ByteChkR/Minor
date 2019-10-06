@@ -7,12 +7,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class InstancedMeshSpherePairHandler : InstancedMeshPairHandler
     {
-        InstancedMeshSphereContactManifold contactManifold = new InstancedMeshSphereContactManifold();
-        protected override InstancedMeshContactManifold MeshManifold
-        {
-            get { return contactManifold; }
-        }
-        
-    }
+        private InstancedMeshSphereContactManifold contactManifold = new InstancedMeshSphereContactManifold();
 
+        protected override InstancedMeshContactManifold MeshManifold => contactManifold;
+    }
 }

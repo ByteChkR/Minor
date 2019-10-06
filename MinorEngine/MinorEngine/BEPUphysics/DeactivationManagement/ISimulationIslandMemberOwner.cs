@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUphysics.DeactivationManagement
+﻿namespace MinorEngine.BEPUphysics.DeactivationManagement
 {
     /// <summary>
     /// Defines an object which owns a SimulationIslandMember.

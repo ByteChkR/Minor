@@ -1,16 +1,9 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
-using MinorEngine.BEPUphysics.Constraints.Collision;
-using MinorEngine.BEPUphysics.PositionUpdating;
-using MinorEngine.BEPUphysics.Settings;
-
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
+using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -20,50 +13,30 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class BoxSpherePairHandler : ConvexPairHandler
     {
-        ConvexCollidable<BoxShape> box;
-        ConvexCollidable<SphereShape> sphere;
+        private ConvexCollidable<BoxShape> box;
+        private ConvexCollidable<SphereShape> sphere;
 
         //Using a non-convex one since they have slightly lower overhead than their Convex friends when dealing with a single contact point.
-        BoxSphereContactManifold contactManifold = new BoxSphereContactManifold();
+        private BoxSphereContactManifold contactManifold = new BoxSphereContactManifold();
         private NonConvexContactManifoldConstraint contactConstraint;
 
-        public override Collidable CollidableA
-        {
-            get { return box; }
-        }
+        public override Collidable CollidableA => box;
 
-        public override Collidable CollidableB
-        {
-            get { return sphere; }
-        }
+        public override Collidable CollidableB => sphere;
 
         /// <summary>
         /// Gets the contact constraint used by the pair handler.
         /// </summary>
-        public override ContactManifoldConstraint ContactConstraint
-        {
-            get
-            {
-                return contactConstraint;
-            }
-        }
+        public override ContactManifoldConstraint ContactConstraint => contactConstraint;
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
-        public override ContactManifold ContactManifold
-        {
-            get { return contactManifold; }
-        }
+        public override ContactManifold ContactManifold => contactManifold;
 
-        public override Entities.Entity EntityA
-        {
-            get { return box.entity; }
-        }
+        public override Entities.Entity EntityA => box.entity;
 
-        public override Entities.Entity EntityB
-        {
-            get { return sphere.entity; }
-        }
+        public override Entities.Entity EntityB => sphere.entity;
 
         public BoxSpherePairHandler()
         {
@@ -77,8 +50,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
-
             box = entryA as ConvexCollidable<BoxShape>;
             sphere = entryB as ConvexCollidable<SphereShape>;
 
@@ -97,8 +68,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             broadPhaseOverlap.entryB = sphere;
 
             base.Initialize(entryA, entryB);
-
-
         }
 
 
@@ -111,7 +80,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             box = null;
             sphere = null;
-
         }
 
 
@@ -121,15 +89,17 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's force.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (int i = 0; i < contactConstraint.frictionConstraints.Count; i++)
+            for (var i = 0; i < contactConstraint.frictionConstraints.Count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {
                     info.FrictionImpulse = contactConstraint.frictionConstraints.Elements[i].accumulatedImpulse;
-                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.accumulatedImpulse;
+                    info.NormalImpulse = contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint
+                        .accumulatedImpulse;
                     break;
                 }
             }
+
             //Compute relative velocity
             Vector3 velocity;
 
@@ -140,7 +110,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 Vector3.Add(ref velocity, ref EntityA.linearVelocity, out info.RelativeVelocity);
             }
             else
+            {
                 info.RelativeVelocity = new Vector3();
+            }
 
             if (EntityB != null)
             {
@@ -151,8 +123,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             }
 
             info.Pair = this;
-
         }
     }
-
 }

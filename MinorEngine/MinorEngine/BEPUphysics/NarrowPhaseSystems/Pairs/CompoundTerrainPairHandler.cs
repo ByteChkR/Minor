@@ -8,17 +8,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class CompoundTerrainPairHandler : CompoundGroupPairHandler
     {
+        private Terrain terrain;
 
-        Terrain terrain;
+        public override Collidable CollidableB => terrain;
 
-        public override Collidable CollidableB
-        {
-            get { return terrain; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return null; }
-        }
+        public override Entities.Entity EntityB => null;
 
         ///<summary>
         /// Initializes the pair handler.
@@ -30,7 +24,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             terrain = entryA as Terrain;
             if (terrain == null)
             {
-
                 terrain = entryB as Terrain;
                 if (terrain == null)
                 {
@@ -47,33 +40,24 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             terrain = null;
-
-
         }
 
 
-
-
-
         protected override void UpdateContainedPairs()
-        {           
+        {
             //Could go other way; get triangles in mesh that overlap the compound.
             //Could be faster sometimes depending on the way it's set up.
             var overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(terrain.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
-                TryToAdd(overlappedElements.Elements[i].CollisionInformation, terrain, overlappedElements.Elements[i].Material, terrain.Material);
-
+                TryToAdd(overlappedElements.Elements[i].CollisionInformation, terrain,
+                    overlappedElements.Elements[i].Material, terrain.Material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
         }
-
-
-
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
+﻿namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 {
     internal struct TerrainVertexIndices
     {

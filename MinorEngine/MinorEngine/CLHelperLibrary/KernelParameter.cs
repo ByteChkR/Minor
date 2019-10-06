@@ -165,7 +165,7 @@ namespace MinorEngine.CLHelperLibrary
         {
             if (IsArray)
             {
-                object[] data = (object[]) value;
+                var data = (object[]) value;
 
                 return CL.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
                     Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
@@ -195,14 +195,14 @@ namespace MinorEngine.CLHelperLibrary
         /// <returns>A parsed list of Kernel parameters</returns>
         public static KernelParameter[] CreateKernelParametersFromKernelCode(string code, int startIndex, int endIndex)
         {
-            string kernelHeader = code.Substring(startIndex, endIndex);
+            var kernelHeader = code.Substring(startIndex, endIndex);
             int start = kernelHeader.IndexOf('('), end = kernelHeader.LastIndexOf(')');
-            string parameters = kernelHeader.Substring(start + 1, end - start - 1);
-            string[] pars = parameters.Split(',');
-            KernelParameter[] ret = new KernelParameter[pars.Length];
-            for (int i = 0; i < pars.Length; i++)
+            var parameters = kernelHeader.Substring(start + 1, end - start - 1);
+            var pars = parameters.Split(',');
+            var ret = new KernelParameter[pars.Length];
+            for (var i = 0; i < pars.Length; i++)
             {
-                string[] parametr = pars[i].Trim().Split(' ');
+                var parametr = pars[i].Trim().Split(' ');
 
                 ret[i] = new KernelParameter
                 {
@@ -226,16 +226,25 @@ namespace MinorEngine.CLHelperLibrary
         public static string GetDataString(DataTypes type)
         {
             foreach (var dataTypePair in DataTypePairs)
+            {
                 if (dataTypePair.Item3 == type)
+                {
                     return dataTypePair.Item1;
+                }
+            }
+
             return "UNKNOWN";
         }
 
         public static float GetDataMaxSize(string genType)
         {
             foreach (var dataTypePair in DataTypePairs)
+            {
                 if (dataTypePair.Item1 == genType)
+                {
                     return dataTypePair.Item2;
+                }
+            }
 
             return 0;
         }
@@ -248,8 +257,12 @@ namespace MinorEngine.CLHelperLibrary
         public static DataTypes GetDataType(string str)
         {
             foreach (var dataTypePair in DataTypePairs)
+            {
                 if (dataTypePair.Item1 == str)
+                {
                     return dataTypePair.Item3;
+                }
+            }
 
             return DataTypes.UNKNOWN;
         }

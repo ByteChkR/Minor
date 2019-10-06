@@ -39,7 +39,7 @@ namespace MinorEngine.engine.rendering.ui
         private void Initialize()
         {
             quadVAO = GL.GenVertexArray();
-            int screenVbo = GL.GenBuffer();
+            var screenVbo = GL.GenBuffer();
             GL.BindVertexArray(quadVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, screenVbo);
 
@@ -53,8 +53,10 @@ namespace MinorEngine.engine.rendering.ui
             {
                 {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
-            }, out ShaderProgram shader))
+            }, out var shader))
+            {
                 Console.ReadLine();
+            }
 
             DefaultUIShader = shader;
         }

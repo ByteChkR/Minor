@@ -1,8 +1,6 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Constraints;
 using MinorEngine.BEPUphysics.Entities;
- 
-using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Vehicle
@@ -32,7 +30,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="usingKineticFriction">True if the friction coefficients passed into the blender are kinetic coefficients, false otherwise.</param>
         /// <param name="wheel">Wheel being blended.</param>
         /// <returns>Blended friction coefficient.</returns>
-        public static float BlendFriction(float wheelFriction, float materialFriction, bool usingKineticFriction, Wheel wheel)
+        public static float BlendFriction(float wheelFriction, float materialFriction, bool usingKineticFriction,
+            Wheel wheel)
         {
             return wheelFriction * materialFriction;
         }
@@ -46,15 +45,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
         private float angularBX, angularBY, angularBZ;
         internal bool isActive = true;
         private float linearAX, linearAY, linearAZ;
-        private float blendedCoefficient;
         private float kineticBrakingFrictionCoefficient;
-        private WheelFrictionBlender frictionBlender = DefaultRollingFrictionBlender;
-        private bool isBraking;
         private float rollingFrictionCoefficient;
         internal SolverSettings solverSettings = new SolverSettings();
         private float staticBrakingFrictionCoefficient;
         private float staticFrictionVelocityThreshold = 5f;
-        private Wheel wheel;
         internal int numIterationsAtZeroImpulse;
         private Entity vehicleEntity, supportEntity;
 
@@ -69,7 +64,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="dynamicBrakingFrictionCoefficient">Coefficient of dynamic friction of the wheel for friction when the brake is active.</param>
         /// <param name="staticBrakingFrictionCoefficient">Coefficient of static friction of the wheel for friction when the brake is active.</param>
         /// <param name="rollingFrictionCoefficient">Coefficient of friction of the wheel for rolling friction when the brake isn't active.</param>
-        public WheelBrake(float dynamicBrakingFrictionCoefficient, float staticBrakingFrictionCoefficient, float rollingFrictionCoefficient)
+        public WheelBrake(float dynamicBrakingFrictionCoefficient, float staticBrakingFrictionCoefficient,
+            float rollingFrictionCoefficient)
         {
             KineticBrakingFrictionCoefficient = dynamicBrakingFrictionCoefficient;
             StaticBrakingFrictionCoefficient = staticBrakingFrictionCoefficient;
@@ -85,10 +81,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// Gets the coefficient of rolling friction between the wheel and support.
         /// This coefficient is the blended result of the supporting entity's friction and the wheel's friction.
         /// </summary>
-        public float BlendedCoefficient
-        {
-            get { return blendedCoefficient; }
-        }
+        public float BlendedCoefficient { get; private set; }
 
         /// <summary>
         /// Gets or sets the coefficient of braking dynamic friction for this wheel.
@@ -99,37 +92,26 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float KineticBrakingFrictionCoefficient
         {
-            get { return kineticBrakingFrictionCoefficient; }
-            set { kineticBrakingFrictionCoefficient = MathHelper.Max(value, 0); }
+            get => kineticBrakingFrictionCoefficient;
+            set => kineticBrakingFrictionCoefficient = MathHelper.Max(value, 0);
         }
 
         /// <summary>
         /// Gets the axis along which rolling friction is applied.
         /// </summary>
-        public Vector3 FrictionAxis
-        {
-            get { return wheel.drivingMotor.ForceAxis; }
-        }
+        public Vector3 FrictionAxis => Wheel.drivingMotor.ForceAxis;
 
         /// <summary>
         /// Gets or sets the function used to blend the supporting entity's friction and the wheel's friction.
         /// </summary>
-        public WheelFrictionBlender FrictionBlender
-        {
-            get { return frictionBlender; }
-            set { frictionBlender = value; }
-        }
+        public WheelFrictionBlender FrictionBlender { get; set; } = DefaultRollingFrictionBlender;
 
         /// <summary>
         /// Gets or sets whether or not the wheel is braking.
         /// When set to true, the brakingFrictionCoefficient is used.
         /// When false, the rollingFrictionCoefficient is used.
         /// </summary>
-        public bool IsBraking
-        {
-            get { return isBraking; }
-            set { isBraking = value; }
-        }
+        public bool IsBraking { get; set; }
 
         /// <summary>
         /// Gets or sets the coefficient of rolling friction for this wheel.
@@ -140,8 +122,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float RollingFrictionCoefficient
         {
-            get { return rollingFrictionCoefficient; }
-            set { rollingFrictionCoefficient = MathHelper.Max(value, 0); }
+            get => rollingFrictionCoefficient;
+            set => rollingFrictionCoefficient = MathHelper.Max(value, 0);
         }
 
         /// <summary>
@@ -153,8 +135,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float StaticBrakingFrictionCoefficient
         {
-            get { return staticBrakingFrictionCoefficient; }
-            set { staticBrakingFrictionCoefficient = MathHelper.Max(value, 0); }
+            get => staticBrakingFrictionCoefficient;
+            set => staticBrakingFrictionCoefficient = MathHelper.Max(value, 0);
         }
 
         /// <summary>
@@ -162,36 +144,26 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float StaticFrictionVelocityThreshold
         {
-            get { return staticFrictionVelocityThreshold; }
-            set { staticFrictionVelocityThreshold = Math.Abs(value); }
+            get => staticFrictionVelocityThreshold;
+            set => staticFrictionVelocityThreshold = Math.Abs(value);
         }
 
         /// <summary>
         /// Gets the force 
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the wheel that this rolling friction applies to.
         /// </summary>
-        public Wheel Wheel
-        {
-            get { return wheel; }
-            internal set { wheel = value; }
-        }
+        public Wheel Wheel { get; internal set; }
 
         #region ISolverSettings Members
 
         /// <summary>
         /// Gets the solver settings used by this wheel constraint.
         /// </summary>
-        public SolverSettings SolverSettings
-        {
-            get { return solverSettings; }
-        }
+        public SolverSettings SolverSettings => solverSettings;
 
         #endregion
 
@@ -202,11 +174,20 @@ namespace MinorEngine.BEPUphysics.Vehicle
         {
             get
             {
-                float velocity = vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY + vehicleEntity.linearVelocity.Z * linearAZ +
-                            vehicleEntity.angularVelocity.X * angularAX + vehicleEntity.angularVelocity.Y * angularAY + vehicleEntity.angularVelocity.Z * angularAZ;
+                var velocity = vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY +
+                               vehicleEntity.linearVelocity.Z * linearAZ +
+                               vehicleEntity.angularVelocity.X * angularAX +
+                               vehicleEntity.angularVelocity.Y * angularAY +
+                               vehicleEntity.angularVelocity.Z * angularAZ;
                 if (supportEntity != null)
-                    velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY - supportEntity.linearVelocity.Z * linearAZ +
-                                supportEntity.angularVelocity.X * angularBX + supportEntity.angularVelocity.Y * angularBY + supportEntity.angularVelocity.Z * angularBZ;
+                {
+                    velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY -
+                                supportEntity.linearVelocity.Z * linearAZ +
+                                supportEntity.angularVelocity.X * angularBX +
+                                supportEntity.angularVelocity.Y * angularBY +
+                                supportEntity.angularVelocity.Z * angularBZ;
+                }
+
                 return velocity;
             }
         }
@@ -214,19 +195,19 @@ namespace MinorEngine.BEPUphysics.Vehicle
         internal float ApplyImpulse()
         {
             //Compute relative velocity and convert to impulse
-            float lambda = RelativeVelocity * velocityToImpulse;
+            var lambda = RelativeVelocity * velocityToImpulse;
 
 
             //Clamp accumulated impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            float maxForce = -blendedCoefficient * wheel.suspension.accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
+            var maxForce = -BlendedCoefficient * Wheel.suspension.accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForce, maxForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -241,6 +222,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 vehicleEntity.ApplyLinearImpulse(ref linear);
                 vehicleEntity.ApplyAngularImpulse(ref angular);
             }
+
             if (supportIsDynamic)
             {
                 linear.X = -linear.X;
@@ -258,44 +240,51 @@ namespace MinorEngine.BEPUphysics.Vehicle
 
         internal void PreStep(float dt)
         {
-            vehicleEntity = wheel.Vehicle.Body;
-            supportEntity = wheel.SupportingEntity;
+            vehicleEntity = Wheel.Vehicle.Body;
+            supportEntity = Wheel.SupportingEntity;
             supportIsDynamic = supportEntity != null && supportEntity.isDynamic;
 
             //Grab jacobian and mass matrix from the driving motor!
-            linearAX = wheel.drivingMotor.linearAX;
-            linearAY = wheel.drivingMotor.linearAY;
-            linearAZ = wheel.drivingMotor.linearAZ;
+            linearAX = Wheel.drivingMotor.linearAX;
+            linearAY = Wheel.drivingMotor.linearAY;
+            linearAZ = Wheel.drivingMotor.linearAZ;
 
-            angularAX = wheel.drivingMotor.angularAX;
-            angularAY = wheel.drivingMotor.angularAY;
-            angularAZ = wheel.drivingMotor.angularAZ;
-            angularBX = wheel.drivingMotor.angularBX;
-            angularBY = wheel.drivingMotor.angularBY;
-            angularBZ = wheel.drivingMotor.angularBZ;
+            angularAX = Wheel.drivingMotor.angularAX;
+            angularAY = Wheel.drivingMotor.angularAY;
+            angularAZ = Wheel.drivingMotor.angularAZ;
+            angularBX = Wheel.drivingMotor.angularBX;
+            angularBY = Wheel.drivingMotor.angularBY;
+            angularBZ = Wheel.drivingMotor.angularBZ;
 
-            velocityToImpulse = wheel.drivingMotor.velocityToImpulse;
+            velocityToImpulse = Wheel.drivingMotor.velocityToImpulse;
 
             //Friction
             //Which coefficient? Check velocity.
-            if (isBraking)
+            if (IsBraking)
+            {
                 if (Math.Abs(RelativeVelocity) < staticFrictionVelocityThreshold)
-                    blendedCoefficient = frictionBlender(staticBrakingFrictionCoefficient, wheel.supportMaterial.staticFriction, false, wheel);
+                {
+                    BlendedCoefficient = FrictionBlender(staticBrakingFrictionCoefficient,
+                        Wheel.supportMaterial.staticFriction, false, Wheel);
+                }
                 else
-                    blendedCoefficient = frictionBlender(kineticBrakingFrictionCoefficient, wheel.supportMaterial.kineticFriction, true, wheel);
+                {
+                    BlendedCoefficient = FrictionBlender(kineticBrakingFrictionCoefficient,
+                        Wheel.supportMaterial.kineticFriction, true, Wheel);
+                }
+            }
             else
-                blendedCoefficient = rollingFrictionCoefficient;
-
-
+            {
+                BlendedCoefficient = rollingFrictionCoefficient;
+            }
         }
 
         internal void ExclusiveUpdate()
         {
-
             //Warm starting
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -310,6 +299,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 vehicleEntity.ApplyLinearImpulse(ref linear);
                 vehicleEntity.ApplyAngularImpulse(ref angular);
             }
+
             if (supportIsDynamic)
             {
                 linear.X = -linear.X;

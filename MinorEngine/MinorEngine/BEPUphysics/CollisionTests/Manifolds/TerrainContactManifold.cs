@@ -19,13 +19,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the terrain associated with this pair.
         ///</summary>
-        public Terrain Terrain
-        {
-            get
-            {
-                return terrain;
-            }
-        }
+        public Terrain Terrain => terrain;
 
         protected internal override int FindOverlappingTriangles(float dt)
         {
@@ -43,19 +37,31 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 
 
                 if (transformedVelocity.X > 0)
+                {
                     boundingBox.Max.X += transformedVelocity.X;
+                }
                 else
+                {
                     boundingBox.Min.X += transformedVelocity.X;
+                }
 
                 if (transformedVelocity.Y > 0)
+                {
                     boundingBox.Max.Y += transformedVelocity.Y;
+                }
                 else
+                {
                     boundingBox.Min.Y += transformedVelocity.Y;
+                }
 
                 if (transformedVelocity.Z > 0)
+                {
                     boundingBox.Max.Z += transformedVelocity.Z;
+                }
                 else
+                {
                     boundingBox.Min.Z += transformedVelocity.Z;
+                }
             }
 
 
@@ -68,16 +74,19 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         /// </summary>
         /// <param name="convexInverseWorldTransform">Inverse of the world transform of the convex shape.</param>
         /// <param name="fromMeshLocalToConvexLocal">Transform to apply to native local triangles to bring them into the local space of the convex.</param>
-        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform, out AffineTransform fromMeshLocalToConvexLocal)
+        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform,
+            out AffineTransform fromMeshLocalToConvexLocal)
         {
-            AffineTransform.Multiply(ref terrain.worldTransform, ref convexInverseWorldTransform, out fromMeshLocalToConvexLocal);
+            AffineTransform.Multiply(ref terrain.worldTransform, ref convexInverseWorldTransform,
+                out fromMeshLocalToConvexLocal);
         }
 
-        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape, out TriangleIndices indices)
+        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
+            out TriangleIndices indices)
         {
             TerrainVertexIndices a, b, c;
             terrain.Shape.GetLocalIndices(overlappedTriangles[i], out a, out b, out c);
-            int terrainWidth = terrain.Shape.Heights.GetLength(0);
+            var terrainWidth = terrain.Shape.Heights.GetLength(0);
             indices.A = a.ToSequentialIndex(terrainWidth);
             indices.B = b.ToSequentialIndex(terrainWidth);
             indices.C = c.ToSequentialIndex(terrainWidth);
@@ -87,7 +96,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             localTriangleShape.collisionMargin = 0;
 
             localTriangleShape.sidedness = terrain.sidedness;
- 
+
             //Unlike other 'instanced' geometries, terrains are almost always axis aligned in some way and/or have low triangle density relative to what they are colliding with.
             //Instead of performing additional tests, just assume that it's a fairly regular situation.
             return true;
@@ -102,13 +111,15 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         protected override void ProcessCandidates(ref QuickList<ContactData> candidates)
         {
             //If the candidates list is empty, then let's see if the convex is in the 'thickness' of the terrain.
-            if (candidates.Count == 0 & terrain.thickness > 0)
+            if ((candidates.Count == 0) & (terrain.thickness > 0))
             {
                 RayHit rayHit;
-                Ray ray = new Ray { Position = convex.worldTransform.Position, Direction = terrain.worldTransform.LinearTransform.Up };
+                var ray = new Ray
+                    {Position = convex.worldTransform.Position, Direction = terrain.worldTransform.LinearTransform.Up};
                 ray.Direction.Normalize();
                 //The raycast has to use doublesidedness, since we're casting from the bottom up.
-                if (terrain.Shape.RayCast(ref ray, terrain.thickness, ref terrain.worldTransform, TriangleSidedness.DoubleSided, out rayHit))
+                if (terrain.Shape.RayCast(ref ray, terrain.thickness, ref terrain.worldTransform,
+                    TriangleSidedness.DoubleSided, out rayHit))
                 {
                     //Found a hit!
                     rayHit.Normal.Normalize();
@@ -123,8 +134,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                         PenetrationDepth = -rayHit.T * dot + convex.Shape.MinimumRadius
                     };
                     newContact.Validate();
-                    bool found = false;
-                    for (int i = 0; i < contacts.Count; i++)
+                    var found = false;
+                    for (var i = 0; i < contacts.Count; i++)
                     {
                         if (contacts.Elements[i].Id == 2)
                         {
@@ -139,16 +150,16 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                             break;
                         }
                     }
+
                     if (!found)
+                    {
                         candidates.Add(ref newContact);
+                    }
                 }
             }
         }
 
-        protected override bool UseImprovedBoundaryHandling
-        {
-            get { return terrain.improveBoundaryBehavior; }
-        }
+        protected override bool UseImprovedBoundaryHandling => terrain.improveBoundaryBehavior;
 
 
         ///<summary>
@@ -177,11 +188,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 convex = newCollidableB as ConvexCollidable;
                 terrain = newCollidableA as Terrain;
                 if (convex == null || terrain == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize contact manifold.");
+                }
             }
-
         }
-
-
     }
 }

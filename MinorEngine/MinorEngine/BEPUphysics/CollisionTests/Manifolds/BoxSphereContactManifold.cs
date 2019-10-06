@@ -1,8 +1,8 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
@@ -18,24 +18,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the first collidable in the pair.
         ///</summary>
-        public ConvexCollidable<BoxShape> CollidableA
-        {
-            get
-            {
-                return box;
-            }
-        }
+        public ConvexCollidable<BoxShape> CollidableA => box;
 
         /// <summary>
         /// Gets the second collidable in the pair.
         /// </summary>
-        public ConvexCollidable<SphereShape> CollidableB
-        {
-            get
-            {
-                return sphere;
-            }
-        }
+        public ConvexCollidable<SphereShape> CollidableB => sphere;
 
         ///<summary>
         /// Constructs a new manifold.
@@ -45,8 +33,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             contacts = new RawList<Contact>(1);
         }
 
-        Contact contact = new Contact();
-        bool previouslyColliding;
+        private Contact contact = new Contact();
+        private bool previouslyColliding;
 
         ///<summary>
         /// Updates the manifold.
@@ -55,10 +43,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         public override void Update(float dt)
         {
             ContactData contactData;
-            bool colliding = false;
-            if (BoxSphereTester.AreShapesColliding(box.Shape, sphere.Shape, ref box.worldTransform, ref sphere.worldTransform.Position, out contactData))
+            var colliding = false;
+            if (BoxSphereTester.AreShapesColliding(box.Shape, sphere.Shape, ref box.worldTransform,
+                ref sphere.worldTransform.Position, out contactData))
             {
-                if (!previouslyColliding && contactData.PenetrationDepth >= 0)//Don't use the contact if it's an initial contact and the depth is negative.  Why not? Bounciness and InitialCollisionDetected.
+                if (!previouslyColliding && contactData.PenetrationDepth >= 0
+                ) //Don't use the contact if it's an initial contact and the depth is negative.  Why not? Bounciness and InitialCollisionDetected.
                 {
                     Add(ref contactData);
                     colliding = true;
@@ -75,8 +65,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             else
             {
                 if (previouslyColliding)
+                {
                     Remove(0);
+                }
             }
+
             previouslyColliding = colliding;
         }
 
@@ -96,7 +89,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             contacts.RemoveAt(index);
             OnRemoved(contact);
         }
-
 
 
         ///<summary>
@@ -119,7 +111,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                     throw new ArgumentException("Inappropriate types used to initialize pair.");
                 }
             }
-
         }
 
         ///<summary>
@@ -142,6 +133,5 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             previouslyColliding = false;
             base.ClearContacts();
         }
-
     }
 }

@@ -8,22 +8,18 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
     public struct CollidablePair : IEquatable<CollidablePair>
     {
         internal Collidable collidableA;
+
         ///<summary>
         /// First collidable in the pair.
         ///</summary>
-        public Collidable CollidableA
-        {
-            get { return collidableA; }
-        }
+        public Collidable CollidableA => collidableA;
 
         internal Collidable collidableB;
+
         /// <summary>
         /// Second collidable in the pair.
         /// </summary>
-        public Collidable CollidableB
-        {
-            get { return collidableB; }
-        }
+        public Collidable CollidableB => collidableB;
 
         ///<summary>
         /// Constructs a new collidable pair.
@@ -51,7 +47,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         }
 
 
-
         #region IEquatable<BroadPhaseOverlap> Members
 
         /// <summary>
@@ -63,7 +58,8 @@ namespace MinorEngine.BEPUphysics.BroadPhaseEntries
         /// <param name="other">An object to compare with this object.</param>
         public bool Equals(CollidablePair other)
         {
-            return (other.collidableA == collidableA && other.collidableB == collidableB) || (other.collidableA == collidableB && other.collidableB == collidableA);
+            return other.collidableA == collidableA && other.collidableB == collidableB ||
+                   other.collidableA == collidableB && other.collidableB == collidableA;
         }
 
         #endregion

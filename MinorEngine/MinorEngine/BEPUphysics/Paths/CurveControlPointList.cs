@@ -21,23 +21,17 @@ namespace MinorEngine.BEPUphysics.Paths
         /// </summary>
         /// <param name="index">Index into the list.</param>
         /// <returns>Control point at the index.</returns>
-        public CurveControlPoint<TValue> this[int index]
-        {
-            get { return list[index]; }
-        }
+        public CurveControlPoint<TValue> this[int index] => list[index];
 
         /// <summary>
         /// Gets the number of elements in the list.
         /// </summary>
-        public int Count
-        {
-            get { return list.Count; }
-        }
+        public int Count => list.Count;
 
         /// <summary>
         /// Gets the curve associated with this control point list.
         /// </summary>
-        public Curve<TValue> Curve { get; private set; }
+        public Curve<TValue> Curve { get; }
 
         #region IEnumerable<CurveControlPoint<TValue>> Members
 
@@ -49,6 +43,7 @@ namespace MinorEngine.BEPUphysics.Paths
         {
             return list.GetEnumerator();
         }
+
         IEnumerator<CurveControlPoint<TValue>> IEnumerable<CurveControlPoint<TValue>>.GetEnumerator()
         {
             return list.GetEnumerator();
@@ -67,7 +62,7 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="point">New control point to add to the curve.</param>
         public void Add(CurveControlPoint<TValue> point)
         {
-            int index = Curve.GetPreviousIndex(point.Time) + 1;
+            var index = Curve.GetPreviousIndex(point.Time) + 1;
             //TODO: Test for time-wise duplicate?
             //IndexA would be the one that's possibly duplicated.
             //Even with duplicate, this is still technically sorted.
@@ -103,11 +98,9 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="index">Index to remove at.</param>
         public void RemoveAt(int index)
         {
-            CurveControlPoint<TValue> removed = list[index];
+            var removed = list[index];
             list.RemoveAt(index);
             Curve.ControlPointRemoved(removed, index);
         }
-
-
     }
 }

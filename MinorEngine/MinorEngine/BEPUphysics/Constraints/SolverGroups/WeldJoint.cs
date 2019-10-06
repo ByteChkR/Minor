@@ -28,11 +28,20 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         {
             var anchor = new Vector3();
             if (connectionA != null)
+            {
                 anchor += connectionA.position;
+            }
+
             if (connectionB != null)
+            {
                 anchor += connectionB.position;
+            }
+
             if (connectionA != null && connectionB != null)
+            {
                 anchor *= 0.5f;
+            }
+
             return anchor;
         }
 
@@ -56,9 +65,15 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         public WeldJoint(Entity connectionA, Entity connectionB, Vector3 anchor)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             BallSocketJoint = new BallSocketJoint(connectionA, connectionB, anchor);
             NoRotationJoint = new NoRotationJoint(connectionA, connectionB);
             Add(BallSocketJoint);
@@ -68,13 +83,11 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the ball socket joint that restricts linear degrees of freedom.
         /// </summary>
-        public BallSocketJoint BallSocketJoint { get; private set; }
+        public BallSocketJoint BallSocketJoint { get; }
 
         /// <summary>
         /// Gets the no rotation joint that prevents angular motion.
         /// </summary>
-        public NoRotationJoint NoRotationJoint { get; private set; }
-
-        
+        public NoRotationJoint NoRotationJoint { get; }
     }
 }

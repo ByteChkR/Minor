@@ -48,7 +48,6 @@ namespace MinorEngine.BEPUphysics.Entities
         {
             private RawList<SimulationIslandConnection> connections;
             private int index;
-            private SolverUpdateable current;
 
             /// <summary>
             /// Constructs an enumerator for the solver updateables list.
@@ -58,7 +57,7 @@ namespace MinorEngine.BEPUphysics.Entities
             {
                 this.connections = connections;
                 index = -1;
-                current = null;
+                Current = null;
             }
 
             /// <summary>
@@ -67,10 +66,7 @@ namespace MinorEngine.BEPUphysics.Entities
             /// <returns>
             /// The element in the collection at the current position of the enumerator.
             /// </returns>
-            public SolverUpdateable Current
-            {
-                get { return current; }
-            }
+            public SolverUpdateable Current { get; private set; }
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -80,10 +76,7 @@ namespace MinorEngine.BEPUphysics.Entities
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Advances the enumerator to the next element of the collection.
@@ -98,11 +91,14 @@ namespace MinorEngine.BEPUphysics.Entities
                 {
                     if (!connections.Elements[index].SlatedForRemoval)
                     {
-                        current = connections.Elements[index].Owner as SolverUpdateable;
-                        if (current != null)
+                        Current = connections.Elements[index].Owner as SolverUpdateable;
+                        if (Current != null)
+                        {
                             return true;
+                        }
                     }
                 }
+
                 return false;
             }
 
@@ -113,7 +109,7 @@ namespace MinorEngine.BEPUphysics.Entities
             public void Reset()
             {
                 index = -1;
-                current = null;
+                Current = null;
             }
         }
     }

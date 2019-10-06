@@ -8,11 +8,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     public sealed class TerrainSpherePairHandler : TerrainPairHandler
     {
         private TerrainSphereContactManifold contactManifold = new TerrainSphereContactManifold();
-        protected override TerrainContactManifold TerrainManifold
-        {
-            get { return contactManifold; }
-        }
 
+        protected override TerrainContactManifold TerrainManifold => contactManifold;
     }
-
 }

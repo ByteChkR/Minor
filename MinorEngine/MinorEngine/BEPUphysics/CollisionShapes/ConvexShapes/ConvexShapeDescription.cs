@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
+﻿namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 {
     /// <summary>
     /// Stores information needed by all convex shapes.

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
-
 using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes
 {
@@ -14,6 +12,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
     public class TerrainShape : CollisionShape
     {
         private float[,] heights;
+
         //note: changing heights in array does not fire OnShapeChanged automatically.
         //Need to notify parent manually if you do it.
         ///<summary>
@@ -21,10 +20,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///</summary>
         public float[,] Heights
         {
-            get
-            {
-                return heights;
-            }
+            get => heights;
             set
             {
                 heights = value;
@@ -33,17 +29,14 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         }
 
 
+        private QuadTriangleOrganization quadTriangleOrganization;
 
-        QuadTriangleOrganization quadTriangleOrganization;
         ///<summary>
         /// Gets or sets the quad triangle organization.
         ///</summary>
         public QuadTriangleOrganization QuadTriangleOrganization
         {
-            get
-            {
-                return quadTriangleOrganization;
-            }
+            get => quadTriangleOrganization;
             set
             {
                 quadTriangleOrganization = value;
@@ -63,6 +56,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             {
                 throw new ArgumentException("Terrains must have a least 2x2 vertices (one quad).");
             }
+
             this.heights = heights;
             quadTriangleOrganization = triangleOrganization;
         }
@@ -77,7 +71,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         }
 
 
-
         ///<summary>
         /// Constructs the bounding box of the terrain given a transform.
         ///</summary>
@@ -88,55 +81,56 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 #if !WINDOWS
             boundingBox = new BoundingBox();
 #endif
-            float minX = float.MaxValue, maxX = -float.MaxValue,
-                  minY = float.MaxValue, maxY = -float.MaxValue,
-                  minZ = float.MaxValue, maxZ = -float.MaxValue;
+            float minX = float.MaxValue,
+                maxX = -float.MaxValue,
+                minY = float.MaxValue,
+                maxY = -float.MaxValue,
+                minZ = float.MaxValue,
+                maxZ = -float.MaxValue;
             Vector3 minXvertex = new Vector3(),
-                    maxXvertex = new Vector3(),
-                    minYvertex = new Vector3(),
-                    maxYvertex = new Vector3(),
-                    minZvertex = new Vector3(),
-                    maxZvertex = new Vector3();
+                maxXvertex = new Vector3(),
+                minYvertex = new Vector3(),
+                maxYvertex = new Vector3(),
+                minZvertex = new Vector3(),
+                maxZvertex = new Vector3();
 
             //Find the extreme locations.
-            for (int i = 0; i < heights.GetLength(0); i++)
+            for (var i = 0; i < heights.GetLength(0); i++)
+            for (var j = 0; j < heights.GetLength(1); j++)
             {
-                for (int j = 0; j < heights.GetLength(1); j++)
+                var vertex = new Vector3(i, heights[i, j], j);
+                Matrix3x3.Transform(ref vertex, ref transform.LinearTransform, out vertex);
+                if (vertex.X < minX)
                 {
-                    var vertex = new Vector3(i, heights[i, j], j);
-                    Matrix3x3.Transform(ref vertex, ref transform.LinearTransform, out vertex);
-                    if (vertex.X < minX)
-                    {
-                        minX = vertex.X;
-                        minXvertex = vertex;
-                    }
-                    else if (vertex.X > maxX)
-                    {
-                        maxX = vertex.X;
-                        maxXvertex = vertex;
-                    }
+                    minX = vertex.X;
+                    minXvertex = vertex;
+                }
+                else if (vertex.X > maxX)
+                {
+                    maxX = vertex.X;
+                    maxXvertex = vertex;
+                }
 
-                    if (vertex.Y < minY)
-                    {
-                        minY = vertex.Y;
-                        minYvertex = vertex;
-                    }
-                    else if (vertex.Y > maxY)
-                    {
-                        maxY = vertex.Y;
-                        maxYvertex = vertex;
-                    }
+                if (vertex.Y < minY)
+                {
+                    minY = vertex.Y;
+                    minYvertex = vertex;
+                }
+                else if (vertex.Y > maxY)
+                {
+                    maxY = vertex.Y;
+                    maxYvertex = vertex;
+                }
 
-                    if (vertex.Z < minZ)
-                    {
-                        minZ = vertex.Z;
-                        minZvertex = vertex;
-                    }
-                    else if (vertex.Z > maxZ)
-                    {
-                        maxZ = vertex.Z;
-                        maxZvertex = vertex;
-                    }
+                if (vertex.Z < minZ)
+                {
+                    minZ = vertex.Z;
+                    minZvertex = vertex;
+                }
+                else if (vertex.Z > maxZ)
+                {
+                    maxZ = vertex.Z;
+                    maxZvertex = vertex;
                 }
             }
 
@@ -161,6 +155,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         {
             return RayCast(ref ray, maximumLength, ref transform, TriangleSidedness.Counterclockwise, out hit);
         }
+
         ///<summary>
         /// Tests a ray against the terrain shape.
         ///</summary>
@@ -170,7 +165,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///<param name="sidedness">Sidedness of the triangles to use when raycasting.</param>
         ///<param name="hit">Hit data of the ray cast, if any.</param>
         ///<returns>Whether or not the ray hit the transformed terrain shape.</returns>
-        public bool RayCast(ref Ray ray, float maximumLength, ref AffineTransform transform, TriangleSidedness sidedness, out RayHit hit)
+        public bool RayCast(ref Ray ray, float maximumLength, ref AffineTransform transform,
+            TriangleSidedness sidedness, out RayHit hit)
         {
             hit = new RayHit();
             //Put the ray into local space.
@@ -186,7 +182,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             float maxX = heights.GetLength(0) - 1;
             float maxZ = heights.GetLength(1) - 1;
 
-            Vector3 progressingOrigin = localRay.Position;
+            var progressingOrigin = localRay.Position;
             float distance = 0;
             //Check the outside cases first.
             if (progressingOrigin.X < 0)
@@ -194,73 +190,87 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
                 if (localRay.Direction.X > 0)
                 {
                     //Off the left side.
-                    float timeToMinX = -progressingOrigin.X / localRay.Direction.X;
+                    var timeToMinX = -progressingOrigin.X / localRay.Direction.X;
                     distance += timeToMinX;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinX, out increment);
                     Vector3.Add(ref increment, ref progressingOrigin, out progressingOrigin);
                 }
                 else
+                {
                     return false; //Outside and pointing away from the terrain.
+                }
             }
             else if (progressingOrigin.X > maxX)
             {
                 if (localRay.Direction.X < 0)
                 {
                     //Off the left side.
-                    float timeToMinX = -(progressingOrigin.X - maxX) / localRay.Direction.X;
+                    var timeToMinX = -(progressingOrigin.X - maxX) / localRay.Direction.X;
                     distance += timeToMinX;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinX, out increment);
                     Vector3.Add(ref increment, ref progressingOrigin, out progressingOrigin);
                 }
                 else
+                {
                     return false; //Outside and pointing away from the terrain.
+                }
             }
 
             if (progressingOrigin.Z < 0)
             {
                 if (localRay.Direction.Z > 0)
                 {
-                    float timeToMinZ = -progressingOrigin.Z / localRay.Direction.Z;
+                    var timeToMinZ = -progressingOrigin.Z / localRay.Direction.Z;
                     distance += timeToMinZ;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinZ, out increment);
                     Vector3.Add(ref increment, ref progressingOrigin, out progressingOrigin);
                 }
                 else
+                {
                     return false;
+                }
             }
             else if (progressingOrigin.Z > maxZ)
             {
                 if (localRay.Direction.Z < 0)
                 {
-                    float timeToMinZ = -(progressingOrigin.Z - maxZ) / localRay.Direction.Z;
+                    var timeToMinZ = -(progressingOrigin.Z - maxZ) / localRay.Direction.Z;
                     distance += timeToMinZ;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinZ, out increment);
                     Vector3.Add(ref increment, ref progressingOrigin, out progressingOrigin);
                 }
                 else
+                {
                     return false;
+                }
             }
 
             if (distance > maximumLength)
+            {
                 return false;
-
+            }
 
 
             //By now, we should be entering the main body of the terrain.
 
-            int xCell = (int)progressingOrigin.X;
-            int zCell = (int)progressingOrigin.Z;
+            var xCell = (int) progressingOrigin.X;
+            var zCell = (int) progressingOrigin.Z;
             //If it's hitting the border and going in, then correct the index
             //so that it will initially target a valid quad.
             //Without this, a quad beyond the border would be tried and failed.
             if (xCell == heights.GetLength(0) - 1 && localRay.Direction.X < 0)
+            {
                 xCell = heights.GetLength(0) - 2;
+            }
+
             if (zCell == heights.GetLength(1) - 1 && localRay.Direction.Z < 0)
+            {
                 zCell = heights.GetLength(1) - 2;
+            }
 
             while (true)
             {
@@ -269,7 +279,9 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
                     zCell < 0 ||
                     xCell >= heights.GetLength(0) - 1 ||
                     zCell >= heights.GetLength(1) - 1)
+                {
                     return false;
+                }
 
                 //Test the triangles of this cell.
                 Vector3 v1, v2, v3, v4;
@@ -285,38 +297,55 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 
                 //Don't bother doing ray intersection tests if the ray can't intersect it.
 
-                float highest = v1.Y;
-                float lowest = v1.Y;
+                var highest = v1.Y;
+                var lowest = v1.Y;
                 if (v2.Y > highest)
+                {
                     highest = v2.Y;
+                }
                 else if (v2.Y < lowest)
+                {
                     lowest = v2.Y;
+                }
+
                 if (v3.Y > highest)
+                {
                     highest = v3.Y;
+                }
                 else if (v3.Y < lowest)
+                {
                     lowest = v3.Y;
+                }
+
                 if (v4.Y > highest)
+                {
                     highest = v4.Y;
+                }
                 else if (v4.Y < lowest)
+                {
                     lowest = v4.Y;
+                }
 
 
                 if (!(progressingOrigin.Y > highest && localRay.Direction.Y > 0 ||
-                    progressingOrigin.Y < lowest && localRay.Direction.Y < 0))
+                      progressingOrigin.Y < lowest && localRay.Direction.Y < 0))
                 {
-
-
                     if (quadTriangleOrganization == QuadTriangleOrganization.BottomLeftUpperRight)
                     {
                         //Always perform the raycast as if Y+ in local space is the way the triangles are facing.
-                        didHit1 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v1, ref v2, ref v3, out hit1);
-                        didHit2 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v2, ref v4, ref v3, out hit2);
+                        didHit1 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v1,
+                            ref v2, ref v3, out hit1);
+                        didHit2 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v2,
+                            ref v4, ref v3, out hit2);
                     }
                     else //if (quadTriangleOrganization == CollisionShapes.QuadTriangleOrganization.BottomRightUpperLeft)
                     {
-                        didHit1 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v1, ref v2, ref v4, out hit1);
-                        didHit2 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v1, ref v4, ref v3, out hit2);
+                        didHit1 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v1,
+                            ref v2, ref v4, out hit1);
+                        didHit2 = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref v1,
+                            ref v4, ref v3, out hit2);
                     }
+
                     if (didHit1 && didHit2)
                     {
                         if (hit1.T < hit2.T)
@@ -327,13 +356,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
                             hit.T = hit1.T;
                             return true;
                         }
+
                         Vector3.Multiply(ref ray.Direction, hit2.T, out hit.Location);
                         Vector3.Add(ref hit.Location, ref ray.Position, out hit.Location);
                         Matrix3x3.TransformTranspose(ref hit2.Normal, ref inverse.LinearTransform, out hit.Normal);
                         hit.T = hit2.T;
                         return true;
                     }
-                    else if (didHit1)
+
+                    if (didHit1)
                     {
                         Vector3.Multiply(ref ray.Direction, hit1.T, out hit.Location);
                         Vector3.Add(ref hit.Location, ref ray.Position, out hit.Location);
@@ -341,7 +372,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
                         hit.T = hit1.T;
                         return true;
                     }
-                    else if (didHit2)
+
+                    if (didHit2)
                     {
                         Vector3.Multiply(ref ray.Direction, hit2.T, out hit.Location);
                         Vector3.Add(ref hit.Location, ref ray.Position, out hit.Location);
@@ -355,31 +387,49 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
 
                 float timeToX;
                 if (localRay.Direction.X < 0)
+                {
                     timeToX = -(progressingOrigin.X - xCell) / localRay.Direction.X;
+                }
                 else if (localRay.Direction.X > 0)
+                {
                     timeToX = (xCell + 1 - progressingOrigin.X) / localRay.Direction.X;
+                }
                 else
+                {
                     timeToX = float.MaxValue;
+                }
 
                 float timeToZ;
                 if (localRay.Direction.Z < 0)
+                {
                     timeToZ = -(progressingOrigin.Z - zCell) / localRay.Direction.Z;
+                }
                 else if (localRay.Direction.Z > 0)
+                {
                     timeToZ = (zCell + 1 - progressingOrigin.Z) / localRay.Direction.Z;
+                }
                 else
+                {
                     timeToZ = float.MaxValue;
+                }
 
                 //Move to the next cell.
                 if (timeToX < timeToZ)
                 {
                     if (localRay.Direction.X < 0)
+                    {
                         xCell--;
+                    }
                     else
+                    {
                         xCell++;
+                    }
 
                     distance += timeToX;
                     if (distance > maximumLength)
+                    {
                         return false;
+                    }
 
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToX, out increment);
@@ -388,22 +438,25 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
                 else
                 {
                     if (localRay.Direction.Z < 0)
+                    {
                         zCell--;
+                    }
                     else
+                    {
                         zCell++;
+                    }
 
                     distance += timeToZ;
                     if (distance > maximumLength)
+                    {
                         return false;
+                    }
 
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToZ, out increment);
                     Vector3.Add(ref increment, ref progressingOrigin, out progressingOrigin);
                 }
-
             }
-
-
         }
 
         ///<summary>
@@ -432,13 +485,22 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         public void GetPosition(int columnIndex, int rowIndex, ref AffineTransform transform, out Vector3 position)
         {
             if (columnIndex <= 0)
+            {
                 columnIndex = 0;
+            }
             else if (columnIndex >= heights.GetLength(0))
+            {
                 columnIndex = heights.GetLength(0) - 1;
+            }
+
             if (rowIndex <= 0)
+            {
                 rowIndex = 0;
+            }
             else if (rowIndex >= heights.GetLength(1))
+            {
                 rowIndex = heights.GetLength(1) - 1;
+            }
 #if !WINDOWS
             position = new Vector3();
 #endif
@@ -446,8 +508,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             position.Y = heights[columnIndex, rowIndex];
             position.Z = rowIndex;
             AffineTransform.Transform(ref position, ref transform, out position);
-
-
         }
 
 
@@ -459,11 +519,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         /// <param name="normal">Non-normalized local space normal at the given indices.</param>
         public void GetLocalNormal(int columnIndex, int rowIndex, out Vector3 normal)
         {
-
-            float topHeight = heights[columnIndex, Math.Min(rowIndex + 1, heights.GetLength(1) - 1)];
-            float bottomHeight = heights[columnIndex, Math.Max(rowIndex - 1, 0)];
-            float rightHeight = heights[Math.Min(columnIndex + 1, heights.GetLength(0) - 1), rowIndex];
-            float leftHeight = heights[Math.Max(columnIndex - 1, 0), rowIndex];
+            var topHeight = heights[columnIndex, Math.Min(rowIndex + 1, heights.GetLength(1) - 1)];
+            var bottomHeight = heights[columnIndex, Math.Max(rowIndex - 1, 0)];
+            var rightHeight = heights[Math.Min(columnIndex + 1, heights.GetLength(0) - 1), rowIndex];
+            var leftHeight = heights[Math.Max(columnIndex - 1, 0), rowIndex];
 
             //Since the horizontal offsets are known to be 1 in local space, we can omit quite a few operations compared to a full Vector3 and cross product.
 
@@ -484,7 +543,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
             normal.X = rightHeight - leftHeight;
             normal.Y = 2;
             normal.Z = topHeight - bottomHeight;
-
         }
 
 
@@ -494,53 +552,67 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///<param name="localBoundingBox">Bounding box in the local space of the terrain shape.</param>
         ///<param name="overlappedElements">Indices of triangles whose bounding boxes overlap the input bounding box. Encoded as 2 * (quadRowIndex * terrainWidthInQuads + quadColumnIndex) + isFirstTriangleOfQuad ? 0 : 1, where isFirstTriangleOfQuad refers to which of the two triangles in a quad is being requested. Matches the input of the TerrainShape.GetTriangle function.</param>
         ///<typeparam name="T">Type of the list to fill with overlaps.</typeparam>
-        public bool GetOverlaps<T>(BoundingBox localBoundingBox, ref T overlappedElements) where T : IList<int> //Designed to work with value type ILists, hence anti-boxing interface constraint and ref.
+        public bool GetOverlaps<T>(BoundingBox localBoundingBox, ref T overlappedElements)
+            where T : IList<int> //Designed to work with value type ILists, hence anti-boxing interface constraint and ref.
         {
-            int width = heights.GetLength(0);
-            int minX = Math.Max((int)localBoundingBox.Min.X, 0);
-            int minY = Math.Max((int)localBoundingBox.Min.Z, 0);
-            int maxX = Math.Min((int)localBoundingBox.Max.X, width - 2);
-            int maxY = Math.Min((int)localBoundingBox.Max.Z, heights.GetLength(1) - 2);
-            for (int i = minX; i <= maxX; i++)
+            var width = heights.GetLength(0);
+            var minX = Math.Max((int) localBoundingBox.Min.X, 0);
+            var minY = Math.Max((int) localBoundingBox.Min.Z, 0);
+            var maxX = Math.Min((int) localBoundingBox.Max.X, width - 2);
+            var maxY = Math.Min((int) localBoundingBox.Max.Z, heights.GetLength(1) - 2);
+            for (var i = minX; i <= maxX; i++)
+            for (var j = minY; j <= maxY; j++)
             {
-                for (int j = minY; j <= maxY; j++)
+                //Before adding a triangle to the list, make sure the object isn't too high or low from the quad.
+                float highest, lowest;
+                var y1 = heights[i, j];
+                var y2 = heights[i + 1, j];
+                var y3 = heights[i, j + 1];
+                var y4 = heights[i + 1, j + 1];
+
+                highest = y1;
+                lowest = y1;
+                if (y2 > highest)
                 {
-                    //Before adding a triangle to the list, make sure the object isn't too high or low from the quad.
-                    float highest, lowest;
-                    float y1 = heights[i, j];
-                    float y2 = heights[i + 1, j];
-                    float y3 = heights[i, j + 1];
-                    float y4 = heights[i + 1, j + 1];
-
-                    highest = y1;
-                    lowest = y1;
-                    if (y2 > highest)
-                        highest = y2;
-                    else if (y2 < lowest)
-                        lowest = y2;
-                    if (y3 > highest)
-                        highest = y3;
-                    else if (y3 < lowest)
-                        lowest = y3;
-                    if (y4 > highest)
-                        highest = y4;
-                    else if (y4 < lowest)
-                        lowest = y4;
-
-
-                    if (localBoundingBox.Max.Y < lowest ||
-                        localBoundingBox.Min.Y > highest)
-                        continue;
-
-                    //Now the local bounding box is very likely intersecting those of the triangles.
-                    //Add the triangles to the list.
-                    int quadIndex = (i + j * width) << 1;
-                    overlappedElements.Add(quadIndex);
-                    overlappedElements.Add(quadIndex | 1);
-
-
+                    highest = y2;
                 }
+                else if (y2 < lowest)
+                {
+                    lowest = y2;
+                }
+
+                if (y3 > highest)
+                {
+                    highest = y3;
+                }
+                else if (y3 < lowest)
+                {
+                    lowest = y3;
+                }
+
+                if (y4 > highest)
+                {
+                    highest = y4;
+                }
+                else if (y4 < lowest)
+                {
+                    lowest = y4;
+                }
+
+
+                if (localBoundingBox.Max.Y < lowest ||
+                    localBoundingBox.Min.Y > highest)
+                {
+                    continue;
+                }
+
+                //Now the local bounding box is very likely intersecting those of the triangles.
+                //Add the triangles to the list.
+                var quadIndex = (i + j * width) << 1;
+                overlappedElements.Add(quadIndex);
+                overlappedElements.Add(quadIndex | 1);
             }
+
             return overlappedElements.Count > 0;
         }
 
@@ -554,7 +626,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///<param name="a">First vertex of the triangle.</param>
         ///<param name="b">Second vertex of the triangle.</param>
         ///<param name="c">Third vertex of the triangle.</param>
-        public void GetFirstTriangle(int columnIndex, int rowIndex, ref AffineTransform transform, out Vector3 a, out Vector3 b, out Vector3 c)
+        public void GetFirstTriangle(int columnIndex, int rowIndex, ref AffineTransform transform, out Vector3 a,
+            out Vector3 b, out Vector3 c)
         {
             if (quadTriangleOrganization == QuadTriangleOrganization.BottomLeftUpperRight)
             {
@@ -579,7 +652,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///<param name="a">First vertex of the triangle.</param>
         ///<param name="b">Second vertex of the triangle.</param>
         ///<param name="c">Third vertex of the triangle.</param>
-        public void GetSecondTriangle(int columnIndex, int rowIndex, ref AffineTransform transform, out Vector3 a, out Vector3 b, out Vector3 c)
+        public void GetSecondTriangle(int columnIndex, int rowIndex, ref AffineTransform transform, out Vector3 a,
+            out Vector3 b, out Vector3 c)
         {
             if (quadTriangleOrganization == QuadTriangleOrganization.BottomLeftUpperRight)
             {
@@ -607,10 +681,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         public void GetTriangle(int index, ref AffineTransform transform, out Vector3 a, out Vector3 b, out Vector3 c)
         {
             //Find the quad.
-            int quadIndex = index / 2;
+            var quadIndex = index / 2;
             //TODO: This division could be avoided if you're willing to get tricky or impose some size requirements.
-            int rowIndex = quadIndex / heights.GetLength(0);
-            int columnIndex = quadIndex - rowIndex * heights.GetLength(0);
+            var rowIndex = quadIndex / heights.GetLength(0);
+            var columnIndex = quadIndex - rowIndex * heights.GetLength(0);
             if ((index & 1) == 0) //Check if this is the first or second triangle.
             {
                 GetFirstTriangle(columnIndex, rowIndex, ref transform, out a, out b, out c);
@@ -622,41 +696,41 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         }
 
 
-
-        internal void GetLocalIndices(int i, out TerrainVertexIndices a, out TerrainVertexIndices b, out TerrainVertexIndices c)
+        internal void GetLocalIndices(int i, out TerrainVertexIndices a, out TerrainVertexIndices b,
+            out TerrainVertexIndices c)
         {
-            int quadIndex = i / 2;
+            var quadIndex = i / 2;
             //TODO: This division could be avoided if you're willing to get tricky or impose some size requirements.
-            int rowIndex = quadIndex / heights.GetLength(0);
-            int columnIndex = quadIndex - rowIndex * heights.GetLength(0);
+            var rowIndex = quadIndex / heights.GetLength(0);
+            var columnIndex = quadIndex - rowIndex * heights.GetLength(0);
             if ((i & 1) == 0) //Check if this is the first or second triangle.
             {
                 if (quadTriangleOrganization == QuadTriangleOrganization.BottomLeftUpperRight)
                 {
-                    a = new TerrainVertexIndices { ColumnIndex = columnIndex, RowIndex = rowIndex };
-                    b = new TerrainVertexIndices { ColumnIndex = columnIndex + 1, RowIndex = rowIndex };
-                    c = new TerrainVertexIndices { ColumnIndex = columnIndex, RowIndex = rowIndex + 1 };
+                    a = new TerrainVertexIndices {ColumnIndex = columnIndex, RowIndex = rowIndex};
+                    b = new TerrainVertexIndices {ColumnIndex = columnIndex + 1, RowIndex = rowIndex};
+                    c = new TerrainVertexIndices {ColumnIndex = columnIndex, RowIndex = rowIndex + 1};
                 }
                 else
                 {
-                    a = new TerrainVertexIndices { ColumnIndex = columnIndex, RowIndex = rowIndex };
-                    b = new TerrainVertexIndices { ColumnIndex = columnIndex + 1, RowIndex = rowIndex };
-                    c = new TerrainVertexIndices { ColumnIndex = columnIndex + 1, RowIndex = rowIndex + 1 };
+                    a = new TerrainVertexIndices {ColumnIndex = columnIndex, RowIndex = rowIndex};
+                    b = new TerrainVertexIndices {ColumnIndex = columnIndex + 1, RowIndex = rowIndex};
+                    c = new TerrainVertexIndices {ColumnIndex = columnIndex + 1, RowIndex = rowIndex + 1};
                 }
             }
             else
             {
                 if (quadTriangleOrganization == QuadTriangleOrganization.BottomLeftUpperRight)
                 {
-                    a = new TerrainVertexIndices { ColumnIndex = columnIndex, RowIndex = rowIndex + 1 };
-                    c = new TerrainVertexIndices { ColumnIndex = columnIndex + 1, RowIndex = rowIndex + 1 };
-                    b = new TerrainVertexIndices { ColumnIndex = columnIndex + 1, RowIndex = rowIndex };
+                    a = new TerrainVertexIndices {ColumnIndex = columnIndex, RowIndex = rowIndex + 1};
+                    c = new TerrainVertexIndices {ColumnIndex = columnIndex + 1, RowIndex = rowIndex + 1};
+                    b = new TerrainVertexIndices {ColumnIndex = columnIndex + 1, RowIndex = rowIndex};
                 }
                 else
                 {
-                    a = new TerrainVertexIndices { ColumnIndex = columnIndex, RowIndex = rowIndex };
-                    b = new TerrainVertexIndices { ColumnIndex = columnIndex + 1, RowIndex = rowIndex + 1 };
-                    c = new TerrainVertexIndices { ColumnIndex = columnIndex, RowIndex = rowIndex + 1 };
+                    a = new TerrainVertexIndices {ColumnIndex = columnIndex, RowIndex = rowIndex};
+                    b = new TerrainVertexIndices {ColumnIndex = columnIndex + 1, RowIndex = rowIndex + 1};
+                    c = new TerrainVertexIndices {ColumnIndex = columnIndex, RowIndex = rowIndex + 1};
                 }
             }
         }
@@ -671,6 +745,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         /// Triangle with a right angle at the (-i,-j) position and another at the (+i,+j) position.
         /// </summary>
         BottomLeftUpperRight,
+
         /// <summary>
         /// Triangle with a right angle at the (+i,-j) position and another at the high (-i,+j) position.
         /// </summary>

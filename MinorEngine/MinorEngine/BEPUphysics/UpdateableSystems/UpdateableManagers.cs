@@ -2,7 +2,6 @@
 
 namespace MinorEngine.BEPUphysics.UpdateableSystems
 {
-
     ///<summary>
     /// Manages updateables that update during the forces stage.
     ///</summary>
@@ -30,16 +29,18 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         protected override void MultithreadedUpdate(int i)
         {
             if (simultaneouslyUpdatedUpdateables[i].IsUpdating)
+            {
                 simultaneouslyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void SequentialUpdate(int i)
         {
             if (sequentiallyUpdatedUpdateables[i].IsUpdating)
+            {
                 sequentiallyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
-
-
     }
 
     ///<summary>
@@ -69,15 +70,18 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         protected override void MultithreadedUpdate(int i)
         {
             if (simultaneouslyUpdatedUpdateables[i].IsUpdating)
+            {
                 simultaneouslyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void SequentialUpdate(int i)
         {
             if (sequentiallyUpdatedUpdateables[i].IsUpdating)
+            {
                 sequentiallyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
-
     }
 
     ///<summary>
@@ -107,15 +111,18 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         protected override void MultithreadedUpdate(int i)
         {
             if (simultaneouslyUpdatedUpdateables[i].IsUpdating)
+            {
                 simultaneouslyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void SequentialUpdate(int i)
         {
             if (sequentiallyUpdatedUpdateables[i].IsUpdating)
+            {
                 sequentiallyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
-
     }
 
     ///<summary>
@@ -145,16 +152,18 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         protected override void MultithreadedUpdate(int i)
         {
             if (simultaneouslyUpdatedUpdateables[i].IsUpdating)
+            {
                 simultaneouslyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void SequentialUpdate(int i)
         {
             if (sequentiallyUpdatedUpdateables[i].IsUpdating)
+            {
                 sequentiallyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
-
-
     }
 
     ///<summary>
@@ -184,16 +193,18 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         protected override void MultithreadedUpdate(int i)
         {
             if (simultaneouslyUpdatedUpdateables[i].IsUpdating)
+            {
                 simultaneouslyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void SequentialUpdate(int i)
         {
             if (sequentiallyUpdatedUpdateables[i].IsUpdating)
+            {
                 sequentiallyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
-
-
     }
 
     ///<summary>
@@ -223,15 +234,17 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems
         protected override void MultithreadedUpdate(int i)
         {
             if (simultaneouslyUpdatedUpdateables[i].IsUpdating)
+            {
                 simultaneouslyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
 
         protected override void SequentialUpdate(int i)
         {
             if (sequentiallyUpdatedUpdateables[i].IsUpdating)
+            {
                 sequentiallyUpdatedUpdateables[i].Update(timeStepSettings.TimeStepDuration);
+            }
         }
-
-
     }
 }

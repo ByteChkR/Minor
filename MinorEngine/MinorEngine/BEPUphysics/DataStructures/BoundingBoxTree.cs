@@ -18,9 +18,11 @@ namespace MinorEngine.BEPUphysics.DataStructures
             get
             {
                 if (root != null)
+                {
                     return root.BoundingBox;
-                else
-                    return new BoundingBox();
+                }
+
+                return new BoundingBox();
             }
         }
 
@@ -43,12 +45,12 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public void Reconstruct(IList<T> elements)
         {
             root = null;
-            int count = elements.Count;
-            for (int i = 0; i < count; i++)
-            {
+            var count = elements.Count;
+            for (var i = 0; i < count; i++)
                 //Use a permuted version of the elements instead of the actual elements list.
                 //Permuting makes the input basically random, improving the quality of the tree.
-                Add(elements[(int)((982451653L * i) % count)]);
+            {
+                Add(elements[(int) (982451653L * i % count)]);
             }
         }
 
@@ -60,7 +62,9 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public void Refit()
         {
             if (root != null)
+            {
                 root.Refit();
+            }
         }
 
         private void Analyze(out List<int> depths, out int minDepth, out int maxDepth, out int nodeCount)
@@ -71,12 +75,17 @@ namespace MinorEngine.BEPUphysics.DataStructures
 
             maxDepth = 0;
             minDepth = int.MaxValue;
-            for (int i = 0; i < depths.Count; i++)
+            for (var i = 0; i < depths.Count; i++)
             {
                 if (depths[i] > maxDepth)
+                {
                     maxDepth = depths[i];
+                }
+
                 if (depths[i] < minDepth)
+                {
                     minDepth = depths[i];
+                }
             }
         }
 
@@ -99,13 +108,18 @@ namespace MinorEngine.BEPUphysics.DataStructures
             else
             {
                 if (root.IsLeaf) //Root is alone.
+                {
                     root.TryToInsert(node, out root);
+                }
                 else
                 {
                     //The caller is responsible for the merge.
                     BoundingBox.CreateMerged(ref node.BoundingBox, ref root.BoundingBox, out root.BoundingBox);
-                    Node treeNode = root;
-                    while (!treeNode.TryToInsert(node, out treeNode)) ; //TryToInsert returns the next node, if any, and updates node bounding box.
+                    var treeNode = root;
+                    while (!treeNode.TryToInsert(node, out treeNode))
+                    {
+                        ; //TryToInsert returns the next node, if any, and updates node bounding box.
+                    }
                 }
             }
         }
@@ -116,11 +130,10 @@ namespace MinorEngine.BEPUphysics.DataStructures
         /// <param name="element">Element to remove.</param>
         public void Remove(T element)
         {
-            if (root == null || (!root.Remove(element, out root) && !root.RemoveBrute(element, out root)))
+            if (root == null || !root.Remove(element, out root) && !root.RemoveBrute(element, out root))
             {
                 throw new ArgumentException("Element is not present in the tree.");
             }
-
         }
 
         /// <summary>
@@ -136,8 +149,11 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 root.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects)
+                {
                     root.GetOverlaps(ref boundingBox, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
 
@@ -154,10 +170,14 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 root.BoundingBox.Intersects(ref boundingSphere, out intersects);
                 if (intersects)
+                {
                     root.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
+
         ///// <summary>
         ///// Gets the triangles whose bounding boxes are overlapped by the query.
         ///// </summary>
@@ -187,10 +207,14 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 float result;
                 if (ray.Intersects(ref root.BoundingBox, out result))
+                {
                     root.GetOverlaps(ref ray, float.MaxValue, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
+
         /// <summary>
         /// Gets the triangles whose bounding boxes are overlapped by the query.
         /// </summary>
@@ -204,8 +228,11 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 float result;
                 if (ray.Intersects(ref root.BoundingBox, out result))
+                {
                     root.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+                }
             }
+
             return outputOverlappedElements.Count > 0;
         }
 
@@ -216,15 +243,17 @@ namespace MinorEngine.BEPUphysics.DataStructures
         /// <param name="tree">Other tree to test.</param>
         /// <param name="outputOverlappedElements">List of overlaps found by the query.</param>
         /// <returns>Whether or not any overlaps were found.</returns>
-        public bool GetOverlaps<TElement>(BoundingBoxTree<TElement> tree, IList<TreeOverlapPair<T, TElement>> outputOverlappedElements)
+        public bool GetOverlaps<TElement>(BoundingBoxTree<TElement> tree,
+            IList<TreeOverlapPair<T, TElement>> outputOverlappedElements)
             where TElement : IBoundingBoxOwner
         {
             bool intersects;
             root.BoundingBox.Intersects(ref tree.root.BoundingBox, out intersects);
             if (intersects)
             {
-                root.GetOverlaps<TElement>(tree.root, outputOverlappedElements);
+                root.GetOverlaps(tree.root, outputOverlappedElements);
             }
+
             return outputOverlappedElements.Count > 0;
         }
 
@@ -236,17 +265,23 @@ namespace MinorEngine.BEPUphysics.DataStructures
         public void CollectLeaves(IList<T> outputCollidables)
         {
             if (root != null)
+            {
                 root.CollectLeaves(outputCollidables);
+            }
         }
 
         internal abstract class Node
         {
             internal BoundingBox BoundingBox;
             internal abstract void GetOverlaps(ref BoundingBox boundingBox, IList<T> outputOverlappedElements);
+
             internal abstract void GetOverlaps(ref BoundingSphere boundingSphere, IList<T> outputOverlappedElements);
+
             //internal abstract void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<T> outputOverlappedElements);
             internal abstract void GetOverlaps(ref Ray ray, float maximumLength, IList<T> outputOverlappedElements);
-            internal abstract void GetOverlaps<TElement>(BoundingBoxTree<TElement>.Node opposingNode, IList<TreeOverlapPair<T, TElement>> outputOverlappedElements) where TElement : IBoundingBoxOwner;
+
+            internal abstract void GetOverlaps<TElement>(BoundingBoxTree<TElement>.Node opposingNode,
+                IList<TreeOverlapPair<T, TElement>> outputOverlappedElements) where TElement : IBoundingBoxOwner;
 
             internal abstract bool IsLeaf { get; }
 
@@ -255,7 +290,6 @@ namespace MinorEngine.BEPUphysics.DataStructures
             internal abstract T Element { get; }
 
             internal abstract bool TryToInsert(LeafNode node, out Node treeNode);
-
 
 
             internal abstract void Analyze(List<int> depths, int depth, ref int nodeCount);
@@ -274,32 +308,13 @@ namespace MinorEngine.BEPUphysics.DataStructures
             internal Node childA;
             internal Node childB;
 
-            internal override Node ChildA
-            {
-                get
-                {
-                    return childA;
-                }
-            }
-            internal override Node ChildB
-            {
-                get
-                {
-                    return childB;
-                }
-            }
-            internal override T Element
-            {
-                get
-                {
-                    return default(T);
-                }
-            }
+            internal override Node ChildA => childA;
 
-            internal override bool IsLeaf
-            {
-                get { return false; }
-            }
+            internal override Node ChildB => childB;
+
+            internal override T Element => default;
+
+            internal override bool IsLeaf => false;
 
 
             internal override void GetOverlaps(ref BoundingBox boundingBox, IList<T> outputOverlappedElements)
@@ -310,10 +325,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 childA.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects)
+                {
                     childA.GetOverlaps(ref boundingBox, outputOverlappedElements);
+                }
+
                 childB.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects)
+                {
                     childB.GetOverlaps(ref boundingBox, outputOverlappedElements);
+                }
             }
 
             internal override void GetOverlaps(ref BoundingSphere boundingSphere, IList<T> outputOverlappedElements)
@@ -321,10 +341,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 bool intersects;
                 childA.BoundingBox.Intersects(ref boundingSphere, out intersects);
                 if (intersects)
+                {
                     childA.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+                }
+
                 childB.BoundingBox.Intersects(ref boundingSphere, out intersects);
                 if (intersects)
+                {
                     childB.GetOverlaps(ref boundingSphere, outputOverlappedElements);
+                }
             }
 
             //internal override void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<T> outputOverlappedElements)
@@ -342,12 +367,18 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 float result;
                 if (ray.Intersects(ref childA.BoundingBox, out result) && result < maximumLength)
+                {
                     childA.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+                }
+
                 if (ray.Intersects(ref childB.BoundingBox, out result) && result < maximumLength)
+                {
                     childB.GetOverlaps(ref ray, maximumLength, outputOverlappedElements);
+                }
             }
 
-            internal override void GetOverlaps<TElement>(BoundingBoxTree<TElement>.Node opposingNode, IList<TreeOverlapPair<T, TElement>> outputOverlappedElements)
+            internal override void GetOverlaps<TElement>(BoundingBoxTree<TElement>.Node opposingNode,
+                IList<TreeOverlapPair<T, TElement>> outputOverlappedElements)
             {
                 bool intersects;
 
@@ -356,10 +387,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
                     //If it's a leaf, go deeper in our hierarchy, but not the opposition.
                     childA.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childA.GetOverlaps(opposingNode, outputOverlappedElements);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingNode.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childB.GetOverlaps(opposingNode, outputOverlappedElements);
+                    }
                 }
                 else
                 {
@@ -368,24 +404,28 @@ namespace MinorEngine.BEPUphysics.DataStructures
                     //If it's not a leaf, try to go deeper in both hierarchies.
                     childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childA.GetOverlaps(opposingChildA, outputOverlappedElements);
+                    }
+
                     childA.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childA.GetOverlaps(opposingChildB, outputOverlappedElements);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childB.GetOverlaps(opposingChildA, outputOverlappedElements);
+                    }
+
                     childB.BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
+                    {
                         childB.GetOverlaps(opposingChildB, outputOverlappedElements);
-
-
+                    }
                 }
-
-
-
-
-
             }
 
 
@@ -441,43 +481,33 @@ namespace MinorEngine.BEPUphysics.DataStructures
                     //merging A produces a better result.
                     if (childA.IsLeaf)
                     {
-                        childA = new InternalNode() { BoundingBox = mergedA, childA = this.childA, childB = node };
+                        childA = new InternalNode {BoundingBox = mergedA, childA = childA, childB = node};
                         treeNode = null;
                         return true;
                     }
-                    else
-                    {
-                        childA.BoundingBox = mergedA;
-                        treeNode = childA;
-                        return false;
-                    }
+
+                    childA.BoundingBox = mergedA;
+                    treeNode = childA;
+                    return false;
                 }
-                else
+
+                //merging B produces a better result.
+                if (childB.IsLeaf)
                 {
-                    //merging B produces a better result.
-                    if (childB.IsLeaf)
-                    {
-                        //Target is a leaf! Return.
-                        childB = new InternalNode() { BoundingBox = mergedB, childA = node, childB = this.childB };
-                        treeNode = null;
-                        return true;
-                    }
-                    else
-                    {
-                        childB.BoundingBox = mergedB;
-                        treeNode = childB;
-                        return false;
-                    }
+                    //Target is a leaf! Return.
+                    childB = new InternalNode {BoundingBox = mergedB, childA = node, childB = childB};
+                    treeNode = null;
+                    return true;
                 }
 
-
-
+                childB.BoundingBox = mergedB;
+                treeNode = childB;
+                return false;
             }
 
             public override string ToString()
             {
                 return "{" + childA + ", " + childB + "}";
-
             }
 
             internal override void Analyze(List<int> depths, int depth, ref int nodeCount)
@@ -500,7 +530,9 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 if (childA.RemoveBrute(entry, out replacementNode))
                 {
                     if (childA.IsLeaf)
+                    {
                         replacementNode = childB;
+                    }
                     else
                     {
                         //It was not a leaf node, but a child found the leaf.
@@ -508,13 +540,16 @@ namespace MinorEngine.BEPUphysics.DataStructures
                         childA = replacementNode;
                         replacementNode = this; //We don't need to be replaced!
                     }
-                    return true;
 
+                    return true;
                 }
+
                 if (childB.RemoveBrute(entry, out replacementNode))
                 {
                     if (childB.IsLeaf)
+                    {
                         replacementNode = childA;
+                    }
                     else
                     {
                         //It was not a leaf node, but a child found the leaf.
@@ -522,8 +557,10 @@ namespace MinorEngine.BEPUphysics.DataStructures
                         childB = replacementNode;
                         replacementNode = this; //We don't need to be replaced!
                     }
+
                     return true;
                 }
+
                 replacementNode = this;
                 return false;
             }
@@ -537,7 +574,9 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 if (intersects && childA.Remove(entry, out replacementNode))
                 {
                     if (childA.IsLeaf)
+                    {
                         replacementNode = childB;
+                    }
                     else
                     {
                         //It was not a leaf node, but a child found the leaf.
@@ -545,14 +584,17 @@ namespace MinorEngine.BEPUphysics.DataStructures
                         childA = replacementNode;
                         replacementNode = this; //We don't need to be replaced!
                     }
-                    return true;
 
+                    return true;
                 }
+
                 childB.BoundingBox.Intersects(ref boundingBox, out intersects);
                 if (intersects && childB.Remove(entry, out replacementNode))
                 {
                     if (childB.IsLeaf)
+                    {
                         replacementNode = childA;
+                    }
                     else
                     {
                         //It was not a leaf node, but a child found the leaf.
@@ -560,8 +602,10 @@ namespace MinorEngine.BEPUphysics.DataStructures
                         childB = replacementNode;
                         replacementNode = this; //We don't need to be replaced!
                     }
+
                     return true;
                 }
+
                 replacementNode = this;
                 return false;
             }
@@ -571,47 +615,26 @@ namespace MinorEngine.BEPUphysics.DataStructures
                 childA.CollectLeaves(outputLeaves);
                 childB.CollectLeaves(outputLeaves);
             }
-
         }
 
         /// <summary>
         /// The tiny extra margin added to leaf bounding boxes that allow the volume cost metric to function properly even in degenerate cases.
         /// </summary>
         public static float LeafMargin = .001f;
+
         internal sealed class LeafNode : Node
         {
-            T element;
-            internal override Node ChildA
-            {
-                get
-                {
-                    return null;
-                }
-            }
-            internal override Node ChildB
-            {
-                get
-                {
-                    return null;
-                }
-            }
+            internal override Node ChildA => null;
 
-            internal override T Element
-            {
-                get
-                {
-                    return element;
-                }
-            }
+            internal override Node ChildB => null;
 
-            internal override bool IsLeaf
-            {
-                get { return true; }
-            }
+            internal override T Element { get; }
+
+            internal override bool IsLeaf => true;
 
             internal LeafNode(T element)
             {
-                this.element = element;
+                Element = element;
                 BoundingBox = element.BoundingBox;
                 //Having an ever-so-slight margin allows the hierarchy use a volume metric even for degenerate shapes (consider a flat tessellated plane).
                 BoundingBox.Max.X += LeafMargin;
@@ -625,12 +648,12 @@ namespace MinorEngine.BEPUphysics.DataStructures
             internal override void GetOverlaps(ref BoundingBox boundingBox, IList<T> outputOverlappedElements)
             {
                 //Our parent already tested the bounding box.  All that's left is to add myself to the list.
-                outputOverlappedElements.Add(element);
+                outputOverlappedElements.Add(Element);
             }
 
             internal override void GetOverlaps(ref BoundingSphere boundingSphere, IList<T> outputOverlappedElements)
             {
-                outputOverlappedElements.Add(element);
+                outputOverlappedElements.Add(Element);
             }
 
             //internal override void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<T> outputOverlappedElements)
@@ -640,17 +663,18 @@ namespace MinorEngine.BEPUphysics.DataStructures
 
             internal override void GetOverlaps(ref Ray ray, float maximumLength, IList<T> outputOverlappedElements)
             {
-                outputOverlappedElements.Add(element);
+                outputOverlappedElements.Add(Element);
             }
 
-            internal override void GetOverlaps<TElement>(BoundingBoxTree<TElement>.Node opposingNode, IList<TreeOverlapPair<T, TElement>> outputOverlappedElements)
+            internal override void GetOverlaps<TElement>(BoundingBoxTree<TElement>.Node opposingNode,
+                IList<TreeOverlapPair<T, TElement>> outputOverlappedElements)
             {
                 bool intersects;
 
                 if (opposingNode.IsLeaf)
                 {
                     //We're both leaves!  Our parents have already done the testing for us, so we know we're overlapping.
-                    outputOverlappedElements.Add(new TreeOverlapPair<T, TElement>(element, opposingNode.Element));
+                    outputOverlappedElements.Add(new TreeOverlapPair<T, TElement>(Element, opposingNode.Element));
                 }
                 else
                 {
@@ -659,11 +683,15 @@ namespace MinorEngine.BEPUphysics.DataStructures
                     //If it's not a leaf, try to go deeper in the opposing hierarchy.
                     BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
-                        GetOverlaps<TElement>(opposingChildA, outputOverlappedElements);
+                    {
+                        GetOverlaps(opposingChildA, outputOverlappedElements);
+                    }
+
                     BoundingBox.Intersects(ref opposingChildB.BoundingBox, out intersects);
                     if (intersects)
-                        GetOverlaps<TElement>(opposingChildB, outputOverlappedElements);
-
+                    {
+                        GetOverlaps(opposingChildB, outputOverlappedElements);
+                    }
                 }
             }
 
@@ -679,7 +707,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
 
             public override string ToString()
             {
-                return element.ToString();
+                return Element.ToString();
             }
 
             internal override void Analyze(List<int> depths, int depth, ref int nodeCount)
@@ -690,7 +718,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
 
             internal override void Refit()
             {
-                BoundingBox = element.BoundingBox;
+                BoundingBox = Element.BoundingBox;
                 //Having an ever-so-slight margin allows the hierarchy use a volume metric even for degenerate shapes (consider a flat tessellated plane).
                 BoundingBox.Max.X += LeafMargin;
                 BoundingBox.Max.Y += LeafMargin;
@@ -704,23 +732,22 @@ namespace MinorEngine.BEPUphysics.DataStructures
             {
                 return Remove(entry, out replacementNode);
             }
+
             internal override bool Remove(T entry, out Node replacementNode)
             {
                 replacementNode = null;
-                if (EqualityComparer<T>.Default.Equals(element, entry))
+                if (EqualityComparer<T>.Default.Equals(Element, entry))
                 {
                     return true;
                 }
+
                 return false;
             }
 
             internal override void CollectLeaves(IList<T> outputLeaves)
             {
-                outputLeaves.Add(element);
+                outputLeaves.Add(Element);
             }
         }
-
     }
-
-
 }

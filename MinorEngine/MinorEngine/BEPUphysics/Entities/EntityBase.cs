@@ -1,19 +1,17 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using MinorEngine.BEPUphysics.BroadPhaseSystems;
+using MinorEngine.BEPUphysics.CollisionRuleManagement;
+using MinorEngine.BEPUphysics.CollisionShapes;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.DeactivationManagement;
 using MinorEngine.BEPUphysics.EntityStateManagement;
+using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUphysics.OtherSpaceStages;
 using MinorEngine.BEPUphysics.PositionUpdating;
 using MinorEngine.BEPUphysics.Settings;
-
 using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUphysics.Materials;
-using MinorEngine.BEPUphysics.CollisionShapes;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
-using MathChecker = MinorEngine.BEPUutilities.MathChecker;
 
 namespace MinorEngine.BEPUphysics.Entities
 {
@@ -43,34 +41,28 @@ namespace MinorEngine.BEPUphysics.Entities
         internal bool isDynamic;
 
 
-
         ///<summary>
         /// Gets or sets the position of the Entity.  This Position acts
         /// as the center of mass for dynamic entities.
         ///</summary>
         public Vector3 Position
         {
-            get
-            {
-                return position;
-            }
+            get => position;
             set
             {
                 position = value;
                 activityInformation.Activate();
 
-                MathChecker.Validate(position);
+                position.Validate();
             }
         }
+
         ///<summary>
         /// Gets or sets the orientation quaternion of the entity.
         ///</summary>
         public Quaternion Orientation
         {
-            get
-            {
-                return orientation;
-            }
+            get => orientation;
             set
             {
                 Quaternion.Normalize(ref value, out orientation);
@@ -83,24 +75,23 @@ namespace MinorEngine.BEPUphysics.Entities
                 Matrix3x3.Multiply(ref multiplied, ref orientationMatrix, out inertiaTensor);
                 activityInformation.Activate();
 
-                MathChecker.Validate(orientation);
+                orientation.Validate();
             }
         }
+
         /// <summary>
         /// Gets or sets the orientation matrix of the entity.
         /// </summary>
         public Matrix3x3 OrientationMatrix
         {
-            get
-            {
-                return orientationMatrix;
-            }
+            get => orientationMatrix;
             set
             {
                 Quaternion.CreateFromRotationMatrix(ref value, out orientation);
                 Orientation = orientation; //normalizes and sets.
             }
         }
+
         ///<summary>
         /// Gets or sets the world transform of the entity.
         /// The upper left 3x3 part is the Orientation, and the translation is the Position.
@@ -123,31 +114,28 @@ namespace MinorEngine.BEPUphysics.Entities
                 position = value.Translation;
                 activityInformation.Activate();
 
-                MathChecker.Validate(position);
+                position.Validate();
             }
-
         }
+
         /// <summary>
         /// Gets or sets the angular velocity of the entity.
         /// </summary>
         public Vector3 AngularVelocity
         {
-            get
-            {
-                return angularVelocity;
-            }
+            get { return angularVelocity; }
             set
             {
                 angularVelocity = value;
-                MathChecker.Validate(angularVelocity);
+                angularVelocity.Validate();
 #if CONSERVE
                 Matrix3x3.Transform(ref value, ref inertiaTensor, out angularMomentum);
                 MathChecker.Validate(angularMomentum);
 #endif
                 activityInformation.Activate();
-
             }
         }
+
         /// <summary>
         /// Gets or sets the angular momentum of the entity.
         /// </summary>
@@ -172,26 +160,25 @@ namespace MinorEngine.BEPUphysics.Entities
                 Matrix3x3.Transform(ref value, ref inertiaTensorInverse, out angularVelocity);
                 activityInformation.Activate();
 #endif
-                MathChecker.Validate(angularVelocity);
+                angularVelocity.Validate();
             }
         }
+
         /// <summary>
         /// Gets or sets the linear velocity of the entity.
         /// </summary>
         public Vector3 LinearVelocity
         {
-            get
-            {
-                return linearVelocity;
-            }
+            get => linearVelocity;
             set
             {
                 linearVelocity = value;
                 activityInformation.Activate();
 
-                MathChecker.Validate(linearVelocity);
+                linearVelocity.Validate();
             }
         }
+
         /// <summary>
         /// Gets or sets the linear momentum of the entity.
         /// </summary>
@@ -208,9 +195,10 @@ namespace MinorEngine.BEPUphysics.Entities
                 Vector3.Multiply(ref value, inverseMass, out linearVelocity);
                 activityInformation.Activate();
 
-                MathChecker.Validate(linearVelocity);
+                linearVelocity.Validate();
             }
         }
+
         /// <summary>
         /// Gets or sets the position, orientation, linear velocity, and angular velocity of the entity.
         /// </summary>
@@ -240,18 +228,12 @@ namespace MinorEngine.BEPUphysics.Entities
         /// to collisions.  Kinematic (non-dynamic) entities
         /// have infinite mass and inertia and will plow through anything.
         /// </summary>
-        public bool IsDynamic
-        {
-            get
-            {
-                return isDynamic;
-            }
-        }
+        public bool IsDynamic => isDynamic;
 
 
-
-        bool hasPersonalGravity;
+        private bool hasPersonalGravity;
         private Vector3 personalGravity;
+
         ///<summary>
         /// Gets or sets the entity's personal gravity. If null, the ForceUpdater's gravity is used instead. Defaults to null.
         ///</summary>
@@ -263,6 +245,7 @@ namespace MinorEngine.BEPUphysics.Entities
                 {
                     return personalGravity;
                 }
+
                 return null;
             }
             set
@@ -270,20 +253,22 @@ namespace MinorEngine.BEPUphysics.Entities
                 if (value != null)
                 {
                     if (!hasPersonalGravity || personalGravity != value.Value)
-                    {
                         //Personal gravity either turned on or changed; wake up to handle it.
+                    {
                         activityInformation.Activate();
                     }
+
                     hasPersonalGravity = true;
                     personalGravity = value.Value;
                 }
                 else
                 {
                     if (hasPersonalGravity)
-                    {
                         //Personal gravity turned off; wake up to handle it.
+                    {
                         activityInformation.Activate();
                     }
+
                     hasPersonalGravity = false;
                     personalGravity = new Vector3();
                 }
@@ -298,38 +283,30 @@ namespace MinorEngine.BEPUphysics.Entities
         /// giving entity motion a smooth appearance even when updates aren't occurring consistently every frame.  
         /// Both are buffered for asynchronous access.
         ///</summary>
-        public EntityBufferedStates BufferedStates { get; private set; }
+        public EntityBufferedStates BufferedStates { get; }
 
         internal Matrix3x3 inertiaTensorInverse;
+
         ///<summary>
         /// Gets the world space inertia tensor inverse of the entity.
         ///</summary>
-        public Matrix3x3 InertiaTensorInverse
-        {
-            get
-            {
-                return inertiaTensorInverse;
-            }
-        }
+        public Matrix3x3 InertiaTensorInverse => inertiaTensorInverse;
+
         internal Matrix3x3 inertiaTensor;
+
         ///<summary>
         /// Gets the world space inertia tensor of the entity.
         ///</summary>
-        public Matrix3x3 InertiaTensor
-        {
-            get { return inertiaTensor; }
-        }
+        public Matrix3x3 InertiaTensor => inertiaTensor;
 
         internal Matrix3x3 localInertiaTensor;
+
         ///<summary>
         /// Gets or sets the local inertia tensor of the entity.
         ///</summary>
         public Matrix3x3 LocalInertiaTensor
         {
-            get
-            {
-                return localInertiaTensor;
-            }
+            get => localInertiaTensor;
             set
             {
                 localInertiaTensor = value;
@@ -344,16 +321,15 @@ namespace MinorEngine.BEPUphysics.Entities
                 localInertiaTensorInverse.Validate();
             }
         }
+
         internal Matrix3x3 localInertiaTensorInverse;
+
         /// <summary>
         /// Gets or sets the local inertia tensor inverse of the entity.
         /// </summary>
         public Matrix3x3 LocalInertiaTensorInverse
         {
-            get
-            {
-                return localInertiaTensorInverse;
-            }
+            get => localInertiaTensorInverse;
             set
             {
                 localInertiaTensorInverse = value;
@@ -371,6 +347,7 @@ namespace MinorEngine.BEPUphysics.Entities
         }
 
         internal float mass;
+
         ///<summary>
         /// Gets or sets the mass of the entity.  Setting this to an invalid value, such as a non-positive number, NaN, or infinity, makes the entity kinematic.
         /// Setting it to a valid positive number will also scale the inertia tensor if it was already dynamic, or force the calculation of a new inertia tensor
@@ -378,14 +355,13 @@ namespace MinorEngine.BEPUphysics.Entities
         ///</summary>
         public float Mass
         {
-            get
-            {
-                return mass;
-            }
+            get => mass;
             set
             {
                 if (value <= 0 || float.IsNaN(value) || float.IsInfinity(value))
+                {
                     BecomeKinematic();
+                }
                 else
                 {
                     if (isDynamic)
@@ -405,24 +381,25 @@ namespace MinorEngine.BEPUphysics.Entities
         }
 
         internal float inverseMass;
+
         /// <summary>
         /// Gets or sets the inverse mass of the entity.
         /// </summary>
         public float InverseMass
         {
-            get
-            {
-                return inverseMass;
-            }
+            get => inverseMass;
             set
             {
                 if (value > 0)
+                {
                     Mass = 1 / value;
+                }
                 else
+                {
                     Mass = 0;
+                }
             }
         }
-
 
 
         ///<summary>
@@ -431,21 +408,27 @@ namespace MinorEngine.BEPUphysics.Entities
         public event Action<Entity> PositionUpdated;
 
 
-
         protected EntityCollidable collisionInformation;
+
         ///<summary>
         /// Gets the collidable used by the entity.
         ///</summary>
         public EntityCollidable CollisionInformation
         {
-            get { return collisionInformation; }
+            get => collisionInformation;
             protected set
             {
                 if (collisionInformation != null)
+                {
                     collisionInformation.Shape.ShapeChanged -= shapeChangedDelegate;
+                }
+
                 collisionInformation = value;
                 if (collisionInformation != null)
+                {
                     collisionInformation.Shape.ShapeChanged += shapeChangedDelegate;
+                }
+
                 //Entity constructors do their own initialization when the collision information changes.
                 //Might be able to condense it up here, but don't really need it right now.
                 //ShapeChangedHandler(collisionInformation.shape);
@@ -466,44 +449,44 @@ namespace MinorEngine.BEPUphysics.Entities
         //}
 
         protected internal SpinLock locker = new SpinLock();
+
         ///<summary>
         /// Gets the synchronization object used by systems that need
         /// exclusive access to the entity's properties.
         ///</summary>
-        public SpinLock Locker
-        {
-            get
-            {
-                return locker;
-            }
-        }
+        public SpinLock Locker => locker;
 
         internal Material material;
+
         //NOT thread safe due to material change pair update.
         ///<summary>
         /// Gets or sets the material used by the entity.
         ///</summary>
         public Material Material
         {
-            get
-            {
-                return material;
-            }
+            get => material;
             set
             {
                 if (material != null)
+                {
                     material.MaterialChanged -= materialChangedDelegate;
+                }
+
                 material = value;
                 if (material != null)
+                {
                     material.MaterialChanged += materialChangedDelegate;
+                }
+
                 OnMaterialChanged(material);
             }
         }
 
-        Action<Material> materialChangedDelegate;
-        void OnMaterialChanged(Material newMaterial)
+        private Action<Material> materialChangedDelegate;
+
+        private void OnMaterialChanged(Material newMaterial)
         {
-            for (int i = 0; i < collisionInformation.pairs.Count; i++)
+            for (var i = 0; i < collisionInformation.pairs.Count; i++)
             {
                 collisionInformation.pairs[i].UpdateMaterialProperties();
             }
@@ -513,24 +496,14 @@ namespace MinorEngine.BEPUphysics.Entities
         ///<summary>
         /// Gets all the EntitySolverUpdateables associated with this entity.
         ///</summary>
-        public EntitySolverUpdateableCollection SolverUpdateables
-        {
-            get
-            {
-                return new EntitySolverUpdateableCollection(activityInformation.connections);
-            }
-        }
+        public EntitySolverUpdateableCollection SolverUpdateables =>
+            new EntitySolverUpdateableCollection(activityInformation.connections);
 
         ///<summary>
         /// Gets the two-entity constraints associated with this entity (a subset of the solver updateables).
         ///</summary>
-        public EntityConstraintCollection Constraints
-        {
-            get
-            {
-                return new EntityConstraintCollection(activityInformation.connections);
-            }
-        }
+        public EntityConstraintCollection Constraints =>
+            new EntityConstraintCollection(activityInformation.connections);
 
         #region Construction
 
@@ -547,8 +520,6 @@ namespace MinorEngine.BEPUphysics.Entities
             shapeChangedDelegate = OnShapeChanged;
 
             activityInformation = new SimulationIslandMember(this);
-
-
         }
 
         ///<summary>
@@ -618,9 +589,6 @@ namespace MinorEngine.BEPUphysics.Entities
         }
 
 
-
-
-
         //These initialize methods make it easier to construct some Entity prefab types.
         protected internal void Initialize(EntityCollidable collisionInformation)
         {
@@ -635,7 +603,8 @@ namespace MinorEngine.BEPUphysics.Entities
 
             if (mass > 0)
             {
-                BecomeDynamic(mass, collisionInformation.Shape.VolumeDistribution * (mass * InertiaHelper.InertiaTensorScale));
+                BecomeDynamic(mass,
+                    collisionInformation.Shape.VolumeDistribution * (mass * InertiaHelper.InertiaTensorScale));
             }
             else
             {
@@ -650,49 +619,32 @@ namespace MinorEngine.BEPUphysics.Entities
             CollisionInformation = collisionInformation;
 
             if (mass > 0)
+            {
                 BecomeDynamic(mass, inertiaTensor);
+            }
             else
+            {
                 BecomeKinematic();
+            }
 
             collisionInformation.Entity = this;
         }
-
 
         #endregion
 
         #region IDeferredEventCreatorOwner Members
 
-        IDeferredEventCreator IDeferredEventCreatorOwner.EventCreator
-        {
-            get { return CollisionInformation.Events; }
-        }
+        IDeferredEventCreator IDeferredEventCreatorOwner.EventCreator => CollisionInformation.Events;
 
         #endregion
 
         internal SimulationIslandMember activityInformation;
-        public SimulationIslandMember ActivityInformation
-        {
-            get
-            {
-                return activityInformation;
-            }
-        }
 
-        bool IForceUpdateable.IsActive
-        {
-            get
-            {
-                return activityInformation.IsActive;
-            }
-        }
-        bool IPositionUpdateable.IsActive
-        {
-            get
-            {
-                return activityInformation.IsActive;
-            }
-        }
+        public SimulationIslandMember ActivityInformation => activityInformation;
 
+        bool IForceUpdateable.IsActive => activityInformation.IsActive;
+
+        bool IPositionUpdateable.IsActive => activityInformation.IsActive;
 
 
         ///<summary>
@@ -730,7 +682,7 @@ namespace MinorEngine.BEPUphysics.Entities
 #if WINDOWS
             Vector3 positionDifference;
 #else
-            Vector3 positionDifference = new Vector3();
+            var positionDifference = new Vector3();
 #endif
             positionDifference.X = location.X - position.X;
             positionDifference.Y = location.Y - position.Y;
@@ -739,7 +691,6 @@ namespace MinorEngine.BEPUphysics.Entities
             Vector3 cross;
             Vector3.Cross(ref positionDifference, ref impulse, out cross);
             ApplyAngularImpulse(ref cross);
-
         }
 
 
@@ -756,9 +707,9 @@ namespace MinorEngine.BEPUphysics.Entities
             linearVelocity.X += impulse.X * inverseMass;
             linearVelocity.Y += impulse.Y * inverseMass;
             linearVelocity.Z += impulse.Z * inverseMass;
-            MathChecker.Validate(linearVelocity);
-
+            linearVelocity.Validate();
         }
+
         /// <summary>
         /// Applies an angular velocity change to the entity using the given impulse.
         /// This method does not wake up the object or perform any other nonessential operation;
@@ -773,18 +724,24 @@ namespace MinorEngine.BEPUphysics.Entities
             angularMomentum.X += impulse.X;
             angularMomentum.Y += impulse.Y;
             angularMomentum.Z += impulse.Z;
-            angularVelocity.X = angularMomentum.X * inertiaTensorInverse.M11 + angularMomentum.Y * inertiaTensorInverse.M21 + angularMomentum.Z * inertiaTensorInverse.M31;
-            angularVelocity.Y = angularMomentum.X * inertiaTensorInverse.M12 + angularMomentum.Y * inertiaTensorInverse.M22 + angularMomentum.Z * inertiaTensorInverse.M32;
-            angularVelocity.Z = angularMomentum.X * inertiaTensorInverse.M13 + angularMomentum.Y * inertiaTensorInverse.M23 + angularMomentum.Z * inertiaTensorInverse.M33;
+            angularVelocity.X =
+ angularMomentum.X * inertiaTensorInverse.M11 + angularMomentum.Y * inertiaTensorInverse.M21 + angularMomentum.Z * inertiaTensorInverse.M31;
+            angularVelocity.Y =
+ angularMomentum.X * inertiaTensorInverse.M12 + angularMomentum.Y * inertiaTensorInverse.M22 + angularMomentum.Z * inertiaTensorInverse.M32;
+            angularVelocity.Z =
+ angularMomentum.X * inertiaTensorInverse.M13 + angularMomentum.Y * inertiaTensorInverse.M23 + angularMomentum.Z * inertiaTensorInverse.M33;
             
             MathChecker.Validate(angularMomentum);
 #else
-            angularVelocity.X += impulse.X * inertiaTensorInverse.M11 + impulse.Y * inertiaTensorInverse.M21 + impulse.Z * inertiaTensorInverse.M31;
-            angularVelocity.Y += impulse.X * inertiaTensorInverse.M12 + impulse.Y * inertiaTensorInverse.M22 + impulse.Z * inertiaTensorInverse.M32;
-            angularVelocity.Z += impulse.X * inertiaTensorInverse.M13 + impulse.Y * inertiaTensorInverse.M23 + impulse.Z * inertiaTensorInverse.M33;
+            angularVelocity.X += impulse.X * inertiaTensorInverse.M11 + impulse.Y * inertiaTensorInverse.M21 +
+                                 impulse.Z * inertiaTensorInverse.M31;
+            angularVelocity.Y += impulse.X * inertiaTensorInverse.M12 + impulse.Y * inertiaTensorInverse.M22 +
+                                 impulse.Z * inertiaTensorInverse.M32;
+            angularVelocity.Z += impulse.X * inertiaTensorInverse.M13 + impulse.Y * inertiaTensorInverse.M23 +
+                                 impulse.Z * inertiaTensorInverse.M33;
 #endif
 
-            MathChecker.Validate(angularVelocity);
+            angularVelocity.Validate();
         }
 
         /// <summary>
@@ -792,7 +749,8 @@ namespace MinorEngine.BEPUphysics.Entities
         /// </summary>
         public bool IgnoreShapeChanges { get; set; }
 
-        Action<CollisionShape> shapeChangedDelegate;
+        private Action<CollisionShape> shapeChangedDelegate;
+
         protected void OnShapeChanged(CollisionShape shape)
         {
             if (!IgnoreShapeChanges)
@@ -801,7 +759,8 @@ namespace MinorEngine.BEPUphysics.Entities
                 activityInformation.Activate();
                 if (isDynamic)
                 {
-                    LocalInertiaTensor = collisionInformation.Shape.VolumeDistribution * (InertiaHelper.InertiaTensorScale * mass);
+                    LocalInertiaTensor = collisionInformation.Shape.VolumeDistribution *
+                                         (InertiaHelper.InertiaTensorScale * mass);
                 }
                 else
                 {
@@ -817,7 +776,7 @@ namespace MinorEngine.BEPUphysics.Entities
         ///</summary>
         public void BecomeKinematic()
         {
-            bool previousState = isDynamic;
+            var previousState = isDynamic;
             isDynamic = false;
             LocalInertiaTensorInverse = new Matrix3x3();
             mass = 0;
@@ -827,15 +786,22 @@ namespace MinorEngine.BEPUphysics.Entities
             if (previousState)
             {
                 if (activityInformation.DeactivationManager != null)
+                {
                     activityInformation.DeactivationManager.RemoveSimulationIslandFromMember(activityInformation);
+                }
 
-                if (((IForceUpdateable)this).ForceUpdater != null)
-                    ((IForceUpdateable)this).ForceUpdater.ForceUpdateableBecomingKinematic(this);
+                if (((IForceUpdateable) this).ForceUpdater != null)
+                {
+                    ((IForceUpdateable) this).ForceUpdater.ForceUpdateableBecomingKinematic(this);
+                }
             }
+
             //Change the collision group if it was using the default.
             if (collisionInformation.CollisionRules.Group == CollisionRules.DefaultDynamicCollisionGroup ||
                 collisionInformation.CollisionRules.Group == null)
+            {
                 collisionInformation.CollisionRules.Group = CollisionRules.DefaultKinematicCollisionGroup;
+            }
 
             activityInformation.Activate();
 
@@ -851,7 +817,8 @@ namespace MinorEngine.BEPUphysics.Entities
         ///<param name="mass">Mass to use for the entity.</param>
         public void BecomeDynamic(float mass)
         {
-            BecomeDynamic(mass, collisionInformation.Shape.VolumeDistribution * (mass * InertiaHelper.InertiaTensorScale));
+            BecomeDynamic(mass,
+                collisionInformation.Shape.VolumeDistribution * (mass * InertiaHelper.InertiaTensorScale));
         }
 
         ///<summary>
@@ -862,26 +829,37 @@ namespace MinorEngine.BEPUphysics.Entities
         public void BecomeDynamic(float mass, Matrix3x3 localInertiaTensor)
         {
             if (mass <= 0 || float.IsInfinity(mass) || float.IsNaN(mass))
-                throw new InvalidOperationException("Cannot use a mass of " + mass + " for a dynamic entity.  Consider using a kinematic entity instead.");
-            bool previousState = isDynamic;
+            {
+                throw new InvalidOperationException("Cannot use a mass of " + mass +
+                                                    " for a dynamic entity.  Consider using a kinematic entity instead.");
+            }
+
+            var previousState = isDynamic;
             isDynamic = true;
             LocalInertiaTensor = localInertiaTensor;
             this.mass = mass;
-            this.inverseMass = 1 / mass;
+            inverseMass = 1 / mass;
 
             //Notify simulation island system of the change.
             if (!previousState)
             {
                 if (activityInformation.DeactivationManager != null)
+                {
                     activityInformation.DeactivationManager.AddSimulationIslandToMember(activityInformation);
+                }
 
-                if (((IForceUpdateable)this).ForceUpdater != null)
-                    ((IForceUpdateable)this).ForceUpdater.ForceUpdateableBecomingDynamic(this);
+                if (((IForceUpdateable) this).ForceUpdater != null)
+                {
+                    ((IForceUpdateable) this).ForceUpdater.ForceUpdateableBecomingDynamic(this);
+                }
             }
+
             //Change the group if it was using the defaults.
             if (collisionInformation.CollisionRules.Group == CollisionRules.DefaultKinematicCollisionGroup ||
                 collisionInformation.CollisionRules.Group == null)
+            {
                 collisionInformation.CollisionRules.Group = CollisionRules.DefaultDynamicCollisionGroup;
+            }
 
             activityInformation.Activate();
 
@@ -889,13 +867,11 @@ namespace MinorEngine.BEPUphysics.Entities
             //Preserve velocity and reinitialize momentum for new state.
             LinearVelocity = linearVelocity;
             AngularVelocity = angularVelocity;
-
         }
 
 
         void IForceUpdateable.UpdateForForces(float dt)
         {
-
             //Apply gravity.
             if (hasPersonalGravity)
             {
@@ -910,31 +886,36 @@ namespace MinorEngine.BEPUphysics.Entities
 
             //Boost damping at very low velocities.  This is a strong stabilizer; removes a ton of energy from the system.
             if (activityInformation.DeactivationManager.useStabilization && activityInformation.allowStabilization &&
-                (activityInformation.isSlowing || activityInformation.velocityTimeBelowLimit > activityInformation.DeactivationManager.lowVelocityTimeMinimum))
+                (activityInformation.isSlowing || activityInformation.velocityTimeBelowLimit >
+                 activityInformation.DeactivationManager.lowVelocityTimeMinimum))
             {
-                float energy = linearVelocity.LengthSquared() + angularVelocity.LengthSquared();
+                var energy = linearVelocity.LengthSquared() + angularVelocity.LengthSquared();
                 if (energy < activityInformation.DeactivationManager.velocityLowerLimitSquared)
                 {
-                    float boost = 1 - (float)(Math.Sqrt(energy) / (2f * activityInformation.DeactivationManager.velocityLowerLimit));
+                    var boost = 1 - (float) (Math.Sqrt(energy) /
+                                             (2f * activityInformation.DeactivationManager.velocityLowerLimit));
                     ModifyAngularDamping(boost);
                     ModifyLinearDamping(boost);
                 }
             }
 
             //Damping
-            float linear = LinearDamping + linearDampingBoost;
+            var linear = LinearDamping + linearDampingBoost;
             if (linear > 0)
             {
-                Vector3.Multiply(ref linearVelocity, (float)Math.Pow(MathHelper.Clamp(1 - linear, 0, 1), dt), out linearVelocity);
+                Vector3.Multiply(ref linearVelocity, (float) Math.Pow(MathHelper.Clamp(1 - linear, 0, 1), dt),
+                    out linearVelocity);
             }
+
             //When applying angular damping, the momentum or velocity is damped depending on the conservation setting.
-            float angular = AngularDamping + angularDampingBoost;
+            var angular = AngularDamping + angularDampingBoost;
             if (angular > 0)
             {
 #if CONSERVE
                 Vector3.Multiply(ref angularMomentum, (float)Math.Pow(MathHelper.Clamp(1 - angular, 0, 1), dt), out angularMomentum);
 #else
-                Vector3.Multiply(ref angularVelocity, (float)Math.Pow(MathHelper.Clamp(1 - angular, 0, 1), dt), out angularVelocity);
+                Vector3.Multiply(ref angularVelocity, (float) Math.Pow(MathHelper.Clamp(1 - angular, 0, 1), dt),
+                    out angularVelocity);
 #endif
             }
 
@@ -955,49 +936,30 @@ namespace MinorEngine.BEPUphysics.Entities
             Matrix3x3.Transform(ref angularMomentum, ref inertiaTensorInverse, out angularVelocity);
             MathChecker.Validate(angularMomentum);
 #endif
-            MathChecker.Validate(linearVelocity);
-            MathChecker.Validate(angularVelocity);
-
-
+            linearVelocity.Validate();
+            angularVelocity.Validate();
         }
 
         private ForceUpdater forceUpdater;
+
         ForceUpdater IForceUpdateable.ForceUpdater
         {
-            get
-            {
-                return forceUpdater;
-            }
-            set
-            {
-                forceUpdater = value;
-            }
+            get => forceUpdater;
+            set => forceUpdater = value;
         }
 
         #region ISpaceObject
 
-        Space space;
         Space ISpaceObject.Space
         {
-            get
-            {
-                return space;
-            }
-            set
-            {
-                space = value;
-            }
+            get => Space;
+            set => Space = value;
         }
+
         ///<summary>
         /// Gets the space that owns the entity.
         ///</summary>
-        public Space Space
-        {
-            get
-            {
-                return space;
-            }
-        }
+        public Space Space { get; private set; }
 
 
         void ISpaceObject.OnAdditionToSpace(Space newSpace)
@@ -1017,39 +979,34 @@ namespace MinorEngine.BEPUphysics.Entities
         protected virtual void OnRemovalFromSpace(Space oldSpace)
         {
         }
+
         #endregion
 
 
         #region ICCDPositionUpdateable
 
-        PositionUpdater IPositionUpdateable.PositionUpdater
-        {
-            get;
-            set;
-        }
+        PositionUpdater IPositionUpdateable.PositionUpdater { get; set; }
 
-        PositionUpdateMode positionUpdateMode = MotionSettings.DefaultPositionUpdateMode;
+        private PositionUpdateMode positionUpdateMode = MotionSettings.DefaultPositionUpdateMode;
+
         ///<summary>
         /// Gets the position update mode of the entity.
         ///</summary>
         public PositionUpdateMode PositionUpdateMode
         {
-            get
-            {
-                return positionUpdateMode;
-            }
+            get => positionUpdateMode;
             set
             {
                 var previous = positionUpdateMode;
                 positionUpdateMode = value;
                 //Notify our owner of the change, if needed.
                 if (positionUpdateMode != previous &&
-                    ((IPositionUpdateable)this).PositionUpdater != null &&
-                    (((IPositionUpdateable)this).PositionUpdater as ContinuousPositionUpdater) != null)
+                    ((IPositionUpdateable) this).PositionUpdater != null &&
+                    ((IPositionUpdateable) this).PositionUpdater as ContinuousPositionUpdater != null)
                 {
-                    (((IPositionUpdateable)this).PositionUpdater as ContinuousPositionUpdater).UpdateableModeChanged(this, previous);
+                    (((IPositionUpdateable) this).PositionUpdater as ContinuousPositionUpdater).UpdateableModeChanged(
+                        this, previous);
                 }
-
             }
         }
 
@@ -1059,17 +1016,20 @@ namespace MinorEngine.BEPUphysics.Entities
             //I must order the pairs to compute a time of impact.
 
             //The pair method works in such a way that, when this method is run asynchronously, there will be no race conditions.
-            for (int i = 0; i < collisionInformation.pairs.Count; i++)
-            {
+            for (var i = 0; i < collisionInformation.pairs.Count; i++)
                 //Only perform CCD if we're either supposed to test against no solver pairs or if this isn't a no solver pair.
+            {
                 if (MotionSettings.CCDFilter(collisionInformation.pairs.Elements[i]))
+                {
                     collisionInformation.pairs.Elements[i].UpdateTimeOfImpact(collisionInformation, dt);
+                }
             }
         }
+
         void ICCDPositionUpdateable.ResetTimesOfImpact()
         {
             //Reset all of the times of impact to 1, allowing the entity to move all the way through its velocity-defined motion.
-            for (int i = 0; i < collisionInformation.pairs.Count; i++)
+            for (var i = 0; i < collisionInformation.pairs.Count; i++)
             {
                 collisionInformation.pairs.Elements[i].timeOfImpact = 1;
             }
@@ -1078,10 +1038,12 @@ namespace MinorEngine.BEPUphysics.Entities
         void ICCDPositionUpdateable.UpdatePositionContinuously(float dt)
         {
             float minimumToi = 1;
-            for (int i = 0; i < collisionInformation.pairs.Count; i++)
+            for (var i = 0; i < collisionInformation.pairs.Count; i++)
             {
                 if (collisionInformation.pairs.Elements[i].timeOfImpact < minimumToi)
+                {
                     minimumToi = collisionInformation.pairs.Elements[i].timeOfImpact;
+                }
             }
 
             //The orientation was already updated by the PreUpdatePosition.
@@ -1095,12 +1057,14 @@ namespace MinorEngine.BEPUphysics.Entities
             collisionInformation.UpdateWorldTransform(ref position, ref orientation);
 
             if (PositionUpdated != null)
+            {
                 PositionUpdated(this);
+            }
 
-            MathChecker.Validate(linearVelocity);
-            MathChecker.Validate(angularVelocity);
-            MathChecker.Validate(position);
-            MathChecker.Validate(orientation);
+            linearVelocity.Validate();
+            angularVelocity.Validate();
+            position.Validate();
+            orientation.Validate();
 #if CONSERVE
             MathChecker.Validate(angularMomentum);
 #endif
@@ -1127,27 +1091,27 @@ namespace MinorEngine.BEPUphysics.Entities
                 collisionInformation.UpdateWorldTransform(ref position, ref orientation);
                 //The position update is complete if this is a discretely updated object.
                 if (PositionUpdated != null)
+                {
                     PositionUpdated(this);
+                }
             }
 
-            MathChecker.Validate(linearVelocity);
-            MathChecker.Validate(angularVelocity);
-            MathChecker.Validate(position);
-            MathChecker.Validate(orientation);
+            linearVelocity.Validate();
+            angularVelocity.Validate();
+            position.Validate();
+            orientation.Validate();
 #if CONSERVE
             MathChecker.Validate(angularMomentum);
 #endif
         }
 
-
-
         #endregion
 
 
+        private float linearDampingBoost, angularDampingBoost;
+        private float angularDamping = .15f;
+        private float linearDamping = .03f;
 
-        float linearDampingBoost, angularDampingBoost;
-        float angularDamping = .15f;
-        float linearDamping = .03f;
         ///<summary>
         /// Gets or sets the angular damping of the entity.
         /// Values range from 0 to 1, corresponding to a fraction of angular momentum removed
@@ -1155,15 +1119,10 @@ namespace MinorEngine.BEPUphysics.Entities
         ///</summary>
         public float AngularDamping
         {
-            get
-            {
-                return angularDamping;
-            }
-            set
-            {
-                angularDamping = MathHelper.Clamp(value, 0, 1);
-            }
+            get => angularDamping;
+            set => angularDamping = MathHelper.Clamp(value, 0, 1);
         }
+
         ///<summary>
         /// Gets or sets the linear damping of the entity.
         /// Values range from 0 to 1, corresponding to a fraction of linear momentum removed
@@ -1171,15 +1130,9 @@ namespace MinorEngine.BEPUphysics.Entities
         ///</summary>
         public float LinearDamping
         {
-            get
-            {
-                return linearDamping;
-            }
+            get => linearDamping;
 
-            set
-            {
-                linearDamping = MathHelper.Clamp(value, 0, 1);
-            }
+            set => linearDamping = MathHelper.Clamp(value, 0, 1);
         }
 
         /// <summary>
@@ -1189,10 +1142,11 @@ namespace MinorEngine.BEPUphysics.Entities
         /// <param name="damping">Damping to add.</param>
         public void ModifyLinearDamping(float damping)
         {
-            float totalDamping = LinearDamping + linearDampingBoost;
-            float remainder = 1 - totalDamping;
+            var totalDamping = LinearDamping + linearDampingBoost;
+            var remainder = 1 - totalDamping;
             linearDampingBoost += damping * remainder;
         }
+
         /// <summary>
         /// Temporarily adjusts the angular damping by an amount.  After the value is used, the
         /// damping returns to the base value.
@@ -1200,8 +1154,8 @@ namespace MinorEngine.BEPUphysics.Entities
         /// <param name="damping">Damping to add.</param>
         public void ModifyAngularDamping(float damping)
         {
-            float totalDamping = AngularDamping + angularDampingBoost;
-            float remainder = 1 - totalDamping;
+            var totalDamping = AngularDamping + angularDampingBoost;
+            var remainder = 1 - totalDamping;
             angularDampingBoost += damping * remainder;
         }
 
@@ -1214,30 +1168,22 @@ namespace MinorEngine.BEPUphysics.Entities
         public object Tag { get; set; }
 
 
-
         CollisionRules ICollisionRulesOwner.CollisionRules
         {
-            get
-            {
-                return collisionInformation.collisionRules;
-            }
-            set
-            {
-                collisionInformation.CollisionRules = value;
-            }
+            get => collisionInformation.collisionRules;
+            set => collisionInformation.CollisionRules = value;
         }
 
-        BroadPhaseEntry IBroadPhaseEntryOwner.Entry
-        {
-            get { return collisionInformation; }
-        }
+        BroadPhaseEntry IBroadPhaseEntryOwner.Entry => collisionInformation;
 
         public override string ToString()
         {
             if (Tag == null)
+            {
                 return base.ToString();
-            else
-                return base.ToString() + ", " + Tag;
+            }
+
+            return base.ToString() + ", " + Tag;
         }
 
 
@@ -1248,21 +1194,22 @@ namespace MinorEngine.BEPUphysics.Entities
         /// </summary>
         public int InstanceId { get; private set; }
 #else
-        static long idCounter;
+        private static long idCounter;
         /// <summary>
         /// Gets the entity's unique instance id.
         /// </summary>
         public long InstanceId { get; private set; }
 #endif
-        void InitializeId()
+        private void InitializeId()
         {
             InstanceId = System.Threading.Interlocked.Increment(ref idCounter);
 
-            hashCode = (int)((((ulong)InstanceId) * 4294967311UL) % 4294967296UL);
+            hashCode = (int) ((ulong) InstanceId * 4294967311UL % 4294967296UL);
         }
 
 
-        int hashCode;
+        private int hashCode;
+
         public override int GetHashCode()
         {
             return hashCode;
@@ -1276,7 +1223,7 @@ namespace MinorEngine.BEPUphysics.Entities
 
         public override bool Equals(object obj)
         {
-            return Equals((Entity)obj);
+            return Equals((Entity) obj);
         }
     }
 }

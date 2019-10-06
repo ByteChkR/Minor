@@ -6,13 +6,14 @@ namespace MinorEngine.BEPUik
     public class IKRevoluteJoint : IKJoint
     {
         private Vector3 localFreeAxisA;
+
         /// <summary>
         /// Gets or sets the free axis in connection A's local space.
         /// Must be unit length.
         /// </summary>
         public Vector3 LocalFreeAxisA
         {
-            get { return localFreeAxisA; }
+            get => localFreeAxisA;
             set
             {
                 localFreeAxisA = value;
@@ -21,13 +22,14 @@ namespace MinorEngine.BEPUik
         }
 
         private Vector3 localFreeAxisB;
+
         /// <summary>
         /// Gets or sets the free axis in connection B's local space.
         /// Must be unit length.
         /// </summary>
         public Vector3 LocalFreeAxisB
         {
-            get { return localFreeAxisB; }
+            get => localFreeAxisB;
             set
             {
                 localFreeAxisB = value;
@@ -36,18 +38,14 @@ namespace MinorEngine.BEPUik
         }
 
 
-
         /// <summary>
         /// Gets or sets the free axis attached to connection A in world space.
         /// This does not change the other connection's free axis.
         /// </summary>
         public Vector3 WorldFreeAxisA
         {
-            get { return Quaternion.Transform(localFreeAxisA, ConnectionA.Orientation); }
-            set
-            {
-                LocalFreeAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
-            }
+            get => Quaternion.Transform(localFreeAxisA, ConnectionA.Orientation);
+            set => LocalFreeAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -56,25 +54,23 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 WorldFreeAxisB
         {
-            get { return Quaternion.Transform(localFreeAxisB, ConnectionB.Orientation); }
-            set
-            {
-                LocalFreeAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
-            }
+            get => Quaternion.Transform(localFreeAxisB, ConnectionB.Orientation);
+            set => LocalFreeAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         private Vector3 localConstrainedAxis1, localConstrainedAxis2;
-        void ComputeConstrainedAxes()
+
+        private void ComputeConstrainedAxes()
         {
-            Vector3 worldAxisA = WorldFreeAxisA;
-            Vector3 error = Vector3.Cross(worldAxisA, WorldFreeAxisB);
-            float lengthSquared = error.LengthSquared();
+            var worldAxisA = WorldFreeAxisA;
+            var error = Vector3.Cross(worldAxisA, WorldFreeAxisB);
+            var lengthSquared = error.LengthSquared();
             Vector3 worldConstrainedAxis1, worldConstrainedAxis2;
             //Find the first constrained axis.
             if (lengthSquared > Toolbox.Epsilon)
             {
                 //The error direction can be used as the first axis!
-                Vector3.Divide(ref error, (float)Math.Sqrt(lengthSquared), out worldConstrainedAxis1);
+                Vector3.Divide(ref error, (float) Math.Sqrt(lengthSquared), out worldConstrainedAxis1);
             }
             else
             {
@@ -85,7 +81,8 @@ namespace MinorEngine.BEPUik
                 if (lengthSquared > Toolbox.Epsilon)
                 {
                     //The up vector worked!
-                    Vector3.Divide(ref worldConstrainedAxis1, (float)Math.Sqrt(lengthSquared), out worldConstrainedAxis1);
+                    Vector3.Divide(ref worldConstrainedAxis1, (float) Math.Sqrt(lengthSquared),
+                        out worldConstrainedAxis1);
                 }
                 else
                 {
@@ -94,11 +91,14 @@ namespace MinorEngine.BEPUik
                     worldConstrainedAxis1.Normalize();
                 }
             }
+
             //Don't have to normalize the second constraint axis; it's the cross product of two perpendicular normalized vectors.
             Vector3.Cross(ref worldAxisA, ref worldConstrainedAxis1, out worldConstrainedAxis2);
 
-            localConstrainedAxis1 = Quaternion.Transform(worldConstrainedAxis1, Quaternion.Conjugate(ConnectionA.Orientation));
-            localConstrainedAxis2 = Quaternion.Transform(worldConstrainedAxis2, Quaternion.Conjugate(ConnectionA.Orientation));
+            localConstrainedAxis1 =
+                Quaternion.Transform(worldConstrainedAxis1, Quaternion.Conjugate(ConnectionA.Orientation));
+            localConstrainedAxis2 =
+                Quaternion.Transform(worldConstrainedAxis2, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -153,8 +153,6 @@ namespace MinorEngine.BEPUik
             Vector3.Dot(ref error, ref worldConstrainedAxis2, out constraintSpaceError.Y);
             velocityBias.X = errorCorrectionFactor * constraintSpaceError.X;
             velocityBias.Y = errorCorrectionFactor * constraintSpaceError.Y;
-
-
         }
     }
 }

@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
 {
@@ -14,7 +13,6 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
     /// </summary>
     public class RevoluteJoint : SolverGroup
     {
-
         /// <summary>
         /// Constructs a new constraint which restricts three degrees of linear freedom and two degrees of angular freedom between two entities.
         /// This constructs the internal constraints, but does not configure them.  Before using a constraint constructed in this manner,
@@ -46,9 +44,15 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         public RevoluteJoint(Entity connectionA, Entity connectionB, Vector3 anchor, Vector3 freeAxis)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             BallSocketJoint = new BallSocketJoint(connectionA, connectionB, anchor);
             AngularJoint = new RevoluteAngularJoint(connectionA, connectionB, freeAxis);
             Limit = new RevoluteLimit(connectionA, connectionB);
@@ -57,9 +61,13 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
             Motor.IsActive = false;
 
             //Ensure that the base and test direction is perpendicular to the free axis.
-            Vector3 baseAxis = anchor - connectionA.position;
-            if (baseAxis.LengthSquared() < Toolbox.BigEpsilon) //anchor and connection a in same spot, so try the other way.
+            var baseAxis = anchor - connectionA.position;
+            if (baseAxis.LengthSquared() < Toolbox.BigEpsilon
+            ) //anchor and connection a in same spot, so try the other way.
+            {
                 baseAxis = connectionB.position - anchor;
+            }
+
             baseAxis -= Vector3.Dot(baseAxis, freeAxis) * freeAxis;
             if (baseAxis.LengthSquared() < Toolbox.BigEpsilon)
             {
@@ -70,6 +78,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                     baseAxis = Vector3.Cross(freeAxis, Vector3.Right);
                 }
             }
+
             Limit.Basis.SetWorldAxes(freeAxis, baseAxis, connectionA.orientationMatrix);
             Motor.Basis.SetWorldAxes(freeAxis, baseAxis, connectionA.orientationMatrix);
 
@@ -84,6 +93,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                     baseAxis = Vector3.Cross(freeAxis, Vector3.Right);
                 }
             }
+
             Limit.TestAxis = baseAxis;
             Motor.TestAxis = baseAxis;
 
@@ -97,21 +107,21 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the angular joint which removes two degrees of freedom.
         /// </summary>
-        public RevoluteAngularJoint AngularJoint { get; private set; }
+        public RevoluteAngularJoint AngularJoint { get; }
 
         /// <summary>
         /// Gets the ball socket joint that restricts linear degrees of freedom.
         /// </summary>
-        public BallSocketJoint BallSocketJoint { get; private set; }
+        public BallSocketJoint BallSocketJoint { get; }
 
         /// <summary>
         /// Gets the rotational limit of the hinge.
         /// </summary>
-        public RevoluteLimit Limit { get; private set; }
+        public RevoluteLimit Limit { get; }
 
         /// <summary>
         /// Gets the motor of the hinge.
         /// </summary>
-        public RevoluteMotor Motor { get; private set; }
+        public RevoluteMotor Motor { get; }
     }
 }

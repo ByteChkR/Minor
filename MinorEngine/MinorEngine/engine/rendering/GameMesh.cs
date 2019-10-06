@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Assimp;
 using MinorEngine.debug;
-using MinorEngine.engine.core;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using PrimitiveType = OpenTK.Graphics.OpenGL.PrimitiveType;
@@ -68,8 +67,11 @@ namespace MinorEngine.engine.rendering
 
         public Vector3[] ToSequentialVertexList(List<uint> indices, List<GameVertex> vertices)
         {
-            Vector3[] verts = new Vector3[indices.Count];
-            for (int i = 0; i < indices.Count; i++) verts[i] = verts[indices[i]];
+            var verts = new Vector3[indices.Count];
+            for (var i = 0; i < indices.Count; i++)
+            {
+                verts[i] = verts[indices[i]];
+            }
 
             return verts;
         }
@@ -79,12 +81,12 @@ namespace MinorEngine.engine.rendering
             uint diff, spec, norm, hegt, unknown;
             diff = spec = norm = hegt = unknown = 1;
 
-            for (int i = 0; i < Textures.Length; i++)
+            for (var i = 0; i < Textures.Length; i++)
             {
                 GL.ActiveTexture(TextureUnit.Texture0 + i);
 
-                string name = "";
-                string number = "";
+                var name = "";
+                var number = "";
                 switch (Textures[i].TexType)
                 {
                     case TextureType.Diffuse:
@@ -133,13 +135,13 @@ namespace MinorEngine.engine.rendering
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, Vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, Ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers
@@ -185,17 +187,17 @@ namespace MinorEngine.engine.rendering
             GL.DeleteVertexArray(Vao);
 
             if (DisposeTexturesOnDestroy)
+            {
                 foreach (var gameTexture in Textures)
                 {
                     gameTexture.Dispose();
                 }
-
-
+            }
         }
 
         private static IntPtr offsetOf(string name)
         {
-            IntPtr off = Marshal.OffsetOf(typeof(GameVertex), name);
+            var off = Marshal.OffsetOf(typeof(GameVertex), name);
             return off;
         }
     }

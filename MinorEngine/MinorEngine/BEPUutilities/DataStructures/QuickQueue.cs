@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using MinorEngine.BEPUutilities.ResourceManagement;
-using System.Collections.Generic;
+
 #if FORCEINLINE
 using System.Runtime.CompilerServices;
 #endif
@@ -19,7 +20,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
     {
         private int poolIndex;
         private BufferPool<T> pool;
-        int capacityMask;
+        private int capacityMask;
 
 
         /// <summary>
@@ -29,39 +30,20 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// </summary>
         public readonly T[] Elements;
 
-        int firstIndex;
         /// <summary>
         /// Gets the index of the first element in the queue.
         /// </summary>
-        public int FirstIndex
-        {
-            get
-            {
-                return firstIndex;
-            }
-        }
+        public int FirstIndex { get; private set; }
 
-        int lastIndex;
         /// <summary>
         /// Gets the index of the last element in the queue.
         /// </summary>
-        public int LastIndex
-        {
-            get
-            {
-                return lastIndex;
-            }
-        }
+        public int LastIndex { get; private set; }
 
-        private int count;
         /// <summary>
         /// Gets the number of elements in the queue.
         /// </summary>
-        public int Count
-        {
-            get { return count; }
-        }
-
+        public int Count { get; private set; }
 
 
         /// <summary>
@@ -102,26 +84,27 @@ namespace MinorEngine.BEPUutilities.DataStructures
             this.pool = pool;
             poolIndex = initialPoolIndex;
             Elements = pool.TakeFromPoolIndex(poolIndex);
-            count = 0;
+            Count = 0;
             capacityMask = Elements.Length - 1;
-            firstIndex = 0;
-            lastIndex = capacityMask; //length - 1
-
+            FirstIndex = 0;
+            LastIndex = capacityMask; //length - 1
         }
 
         private void Resize(int newPoolIndex)
         {
-            Debug.Assert(count <= (1 << newPoolIndex), "New pool index must contain all elements in the queue.");
+            Debug.Assert(Count <= 1 << newPoolIndex, "New pool index must contain all elements in the queue.");
             var oldQueue = this;
             this = new QuickQueue<T>(pool, newPoolIndex);
-            count = oldQueue.Count;
+            Count = oldQueue.Count;
             //Copy the old first-end to the first part of the new array.
-            Array.Copy(oldQueue.Elements, oldQueue.firstIndex, Elements, 0, oldQueue.Elements.Length - oldQueue.firstIndex);
+            Array.Copy(oldQueue.Elements, oldQueue.FirstIndex, Elements, 0,
+                oldQueue.Elements.Length - oldQueue.FirstIndex);
             //Copy the old begin-first to the second part of the new array.
-            Array.Copy(oldQueue.Elements, 0, Elements, oldQueue.Elements.Length - oldQueue.firstIndex, oldQueue.firstIndex);
+            Array.Copy(oldQueue.Elements, 0, Elements, oldQueue.Elements.Length - oldQueue.FirstIndex,
+                oldQueue.FirstIndex);
 
-            firstIndex = 0;
-            lastIndex = count - 1;
+            FirstIndex = 0;
+            LastIndex = Count - 1;
 
             oldQueue.Dispose();
         }
@@ -136,10 +119,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void Enqueue(T element)
         {
             Validate();
-            if (count == Elements.Length)
+            if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
-            Elements[(lastIndex = ((lastIndex + 1) & capacityMask))] = element;
-            ++count;
+            }
+
+            Elements[LastIndex = (LastIndex + 1) & capacityMask] = element;
+            ++Count;
         }
 
         /// <summary>
@@ -152,10 +138,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void EnqueueFirst(T element)
         {
             Validate();
-            if (count == Elements.Length)
+            if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
-            Elements[(firstIndex = ((firstIndex - 1) & capacityMask))] = element;
-            ++count;
+            }
+
+            Elements[FirstIndex = (FirstIndex - 1) & capacityMask] = element;
+            ++Count;
         }
 
         /// <summary>
@@ -168,10 +157,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void Enqueue(ref T element)
         {
             Validate();
-            if (count == Elements.Length)
+            if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
-            Elements[(lastIndex = ((lastIndex + 1) & capacityMask))] = element;
-            ++count;
+            }
+
+            Elements[LastIndex = (LastIndex + 1) & capacityMask] = element;
+            ++Count;
         }
 
         /// <summary>
@@ -184,10 +176,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void EnqueueFirst(ref T element)
         {
             Validate();
-            if (count == Elements.Length)
+            if (Count == Elements.Length)
+            {
                 Resize(poolIndex + 1);
-            Elements[(firstIndex = ((firstIndex - 1) & capacityMask))] = element;
-            ++count;
+            }
+
+            Elements[FirstIndex = (FirstIndex - 1) & capacityMask] = element;
+            ++Count;
         }
 
         /// <summary>
@@ -200,14 +195,16 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public T Dequeue()
         {
             Validate();
-            if (count == 0)
+            if (Count == 0)
+            {
                 throw new InvalidOperationException("The queue is empty.");
-            var element = Elements[firstIndex];
-            Elements[firstIndex] = default(T);
-            firstIndex = (firstIndex + 1) & capacityMask;
-            --count;
-            return element;
+            }
 
+            var element = Elements[FirstIndex];
+            Elements[FirstIndex] = default;
+            FirstIndex = (FirstIndex + 1) & capacityMask;
+            --Count;
+            return element;
         }
 
         /// <summary>
@@ -220,14 +217,16 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public T DequeueLast()
         {
             Validate();
-            if (count == 0)
+            if (Count == 0)
+            {
                 throw new InvalidOperationException("The queue is empty.");
-            var element = Elements[lastIndex];
-            Elements[lastIndex] = default(T);
-            lastIndex = (lastIndex - 1) & capacityMask;
-            --count;
-            return element;
+            }
 
+            var element = Elements[LastIndex];
+            Elements[LastIndex] = default;
+            LastIndex = (LastIndex - 1) & capacityMask;
+            --Count;
+            return element;
         }
 
         /// <summary>
@@ -241,17 +240,17 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool TryDequeue(out T element)
         {
             Validate();
-            if (count > 0)
+            if (Count > 0)
             {
-                element = Elements[firstIndex];
-                Elements[firstIndex] = default(T);
-                firstIndex = (firstIndex + 1) & capacityMask;
-                --count;
+                element = Elements[FirstIndex];
+                Elements[FirstIndex] = default;
+                FirstIndex = (FirstIndex + 1) & capacityMask;
+                --Count;
                 return true;
             }
-            element = default(T);
-            return false;
 
+            element = default;
+            return false;
         }
 
         /// <summary>
@@ -265,17 +264,17 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool TryDequeueLast(out T element)
         {
             Validate();
-            if (count > 0)
+            if (Count > 0)
             {
-                element = Elements[lastIndex];
-                Elements[lastIndex] = default(T);
-                lastIndex = (lastIndex - 1) & capacityMask;
-                --count;
+                element = Elements[LastIndex];
+                Elements[LastIndex] = default;
+                LastIndex = (LastIndex - 1) & capacityMask;
+                --Count;
                 return true;
             }
-            element = default(T);
-            return false;
 
+            element = default;
+            return false;
         }
 
         /// <summary>
@@ -287,18 +286,18 @@ namespace MinorEngine.BEPUutilities.DataStructures
 #endif
         public void CopyTo(T[] array, int arrayIndex)
         {
-            if (count > 0)
+            if (Count > 0)
             {
-                if (firstIndex <= lastIndex)
+                if (FirstIndex <= LastIndex)
                 {
-                    Array.Copy(Elements, firstIndex, array, arrayIndex, count);
+                    Array.Copy(Elements, FirstIndex, array, arrayIndex, Count);
                 }
                 else
                 {
                     //Copy the old first-end to the first part of the new array.
-                    Array.Copy(Elements, firstIndex, array, arrayIndex, Elements.Length - firstIndex);
+                    Array.Copy(Elements, FirstIndex, array, arrayIndex, Elements.Length - FirstIndex);
                     //Copy the old begin-last to the second part of the new array.
-                    Array.Copy(Elements, 0, array, arrayIndex + Elements.Length - firstIndex, lastIndex + 1);
+                    Array.Copy(Elements, 0, array, arrayIndex + Elements.Length - FirstIndex, LastIndex + 1);
                 }
             }
         }
@@ -312,18 +311,19 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public void Clear()
         {
             Validate();
-            if (lastIndex >= firstIndex)
+            if (LastIndex >= FirstIndex)
             {
-                Array.Clear(Elements, firstIndex, count);
+                Array.Clear(Elements, FirstIndex, Count);
             }
-            else if (count > 0)
+            else if (Count > 0)
             {
-                Array.Clear(Elements, firstIndex, Elements.Length - firstIndex);
-                Array.Clear(Elements, 0, lastIndex + 1);
+                Array.Clear(Elements, FirstIndex, Elements.Length - FirstIndex);
+                Array.Clear(Elements, 0, LastIndex + 1);
             }
-            count = 0;
-            firstIndex = 0;
-            lastIndex = capacityMask; //length - 1
+
+            Count = 0;
+            FirstIndex = 0;
+            LastIndex = capacityMask; //length - 1
         }
 
         /// <summary>
@@ -334,9 +334,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
 #endif
         public void FastClear()
         {
-            count = 0;
-            firstIndex = 0;
-            lastIndex = capacityMask;
+            Count = 0;
+            FirstIndex = 0;
+            LastIndex = capacityMask;
         }
 
         /// <summary>
@@ -347,7 +347,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
             Validate();
             var newPoolIndex = BufferPool<T>.GetPoolIndex(Count);
             if (newPoolIndex != poolIndex)
+            {
                 Resize(newPoolIndex);
+            }
         }
 
         /// <summary>
@@ -363,9 +365,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         }
 
         [Conditional("DEBUG")]
-        void ValidateIndex(int index)
+        private void ValidateIndex(int index)
         {
-            Debug.Assert(index >= 0 && index < Count, "Index must be nonnegative and less than the number of elements in the queue.");
+            Debug.Assert(index >= 0 && index < Count,
+                "Index must be nonnegative and less than the number of elements in the queue.");
         }
 
 
@@ -377,7 +380,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
 
         public Enumerator GetEnumerator()
         {
-            return new Enumerator(Elements, count, firstIndex);
+            return new Enumerator(Elements, Count, FirstIndex);
         }
 
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
@@ -403,23 +406,17 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 this.backingArray = backingArray;
                 this.count = count;
                 this.firstIndex = firstIndex;
-                this.capacityMask = backingArray.Length - 1;
+                capacityMask = backingArray.Length - 1;
                 index = -1;
             }
 
-            public T Current
-            {
-                get { return backingArray[(firstIndex + index) & capacityMask]; }
-            }
+            public T Current => backingArray[(firstIndex + index) & capacityMask];
 
             public void Dispose()
             {
             }
 
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             public bool MoveNext()
             {

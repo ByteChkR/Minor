@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
+﻿using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-using MinorEngine.BEPUphysics.CollisionTests;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseEntries.Events
 {

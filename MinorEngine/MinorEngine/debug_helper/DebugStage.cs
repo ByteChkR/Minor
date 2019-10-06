@@ -9,8 +9,6 @@
         Update = 16,
         Physics = 32,
         CleanUp = 64,
-        Render = 128,
-
-
+        Render = 128
     }
 }

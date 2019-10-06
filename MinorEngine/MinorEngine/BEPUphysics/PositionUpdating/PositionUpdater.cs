@@ -9,23 +9,18 @@ namespace MinorEngine.BEPUphysics.PositionUpdating
     public abstract class PositionUpdater : MultithreadedProcessingStage
     {
         protected TimeStepSettings timeStepSettings;
+
         ///<summary>
         /// Gets or sets the time step settings used by the updater.
         ///</summary>
         public TimeStepSettings TimeStepSettings
         {
-            get
-            {
-                return timeStepSettings;
-            }
-            set
-            {
-                timeStepSettings = value;
-            }
+            get => timeStepSettings;
+            set => timeStepSettings = value;
         }
 
         protected PositionUpdater(TimeStepSettings timeStepSettings, IParallelLooper parallelLooper)
-            :this(timeStepSettings)
+            : this(timeStepSettings)
         {
             ParallelLooper = parallelLooper;
             AllowMultithreading = true;
@@ -36,12 +31,14 @@ namespace MinorEngine.BEPUphysics.PositionUpdating
             this.timeStepSettings = timeStepSettings;
             Enabled = true;
         }
+
         ///<summary>
         /// Adds an object to the position updater.
         ///</summary>
         ///<param name="updateable">Updateable to add.</param>
         ///<exception cref="Exception">Thrown if the updateable already belongs to a position updater.</exception>
         public abstract void Add(IPositionUpdateable updateable);
+
         ///<summary>
         /// Removes an updateable from the updater.
         ///</summary>

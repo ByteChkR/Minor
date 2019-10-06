@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
 {
@@ -47,14 +46,21 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         public SwivelHingeJoint(Entity connectionA, Entity connectionB, Vector3 anchor, Vector3 hingeAxis)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             BallSocketJoint = new BallSocketJoint(connectionA, connectionB, anchor);
             AngularJoint = new SwivelHingeAngularJoint(connectionA, connectionB, hingeAxis, -BallSocketJoint.OffsetB);
             HingeLimit = new RevoluteLimit(connectionA, connectionB);
             HingeMotor = new RevoluteMotor(connectionA, connectionB, hingeAxis);
-            TwistLimit = new TwistLimit(connectionA, connectionB, BallSocketJoint.OffsetA, -BallSocketJoint.OffsetB, 0, 0);
+            TwistLimit = new TwistLimit(connectionA, connectionB, BallSocketJoint.OffsetA, -BallSocketJoint.OffsetB, 0,
+                0);
             TwistMotor = new TwistMotor(connectionA, connectionB, BallSocketJoint.OffsetA, -BallSocketJoint.OffsetB);
             HingeLimit.IsActive = false;
             HingeMotor.IsActive = false;
@@ -62,9 +68,13 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
             TwistMotor.IsActive = false;
 
             //Ensure that the base and test direction is perpendicular to the free axis.
-            Vector3 baseAxis = anchor - connectionA.position;
-            if (baseAxis.LengthSquared() < Toolbox.BigEpsilon) //anchor and connection a in same spot, so try the other way.
+            var baseAxis = anchor - connectionA.position;
+            if (baseAxis.LengthSquared() < Toolbox.BigEpsilon
+            ) //anchor and connection a in same spot, so try the other way.
+            {
                 baseAxis = connectionB.position - anchor;
+            }
+
             baseAxis -= Vector3.Dot(baseAxis, hingeAxis) * hingeAxis;
             if (baseAxis.LengthSquared() < Toolbox.BigEpsilon)
             {
@@ -75,6 +85,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                     baseAxis = Vector3.Cross(hingeAxis, Vector3.Right);
                 }
             }
+
             HingeLimit.Basis.SetWorldAxes(hingeAxis, baseAxis, connectionA.orientationMatrix);
             HingeMotor.Basis.SetWorldAxes(hingeAxis, baseAxis, connectionA.orientationMatrix);
 
@@ -89,6 +100,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
                     baseAxis = Vector3.Cross(hingeAxis, Vector3.Right);
                 }
             }
+
             HingeLimit.TestAxis = baseAxis;
             HingeMotor.TestAxis = baseAxis;
 
@@ -104,31 +116,31 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the angular joint which removes one degree of freedom.
         /// </summary>
-        public SwivelHingeAngularJoint AngularJoint { get; private set; }
+        public SwivelHingeAngularJoint AngularJoint { get; }
 
         /// <summary>
         /// Gets the ball socket joint that restricts linear degrees of freedom.
         /// </summary>
-        public BallSocketJoint BallSocketJoint { get; private set; }
+        public BallSocketJoint BallSocketJoint { get; }
 
         /// <summary>
         /// Gets the rotational limit of the hinge.
         /// </summary>
-        public RevoluteLimit HingeLimit { get; private set; }
+        public RevoluteLimit HingeLimit { get; }
 
         /// <summary>
         /// Gets the motor of the hinge.
         /// </summary>
-        public RevoluteMotor HingeMotor { get; private set; }
+        public RevoluteMotor HingeMotor { get; }
 
         /// <summary>
         /// Gets the rotational limit of the swivel hinge.
         /// </summary>
-        public TwistLimit TwistLimit { get; private set; }
+        public TwistLimit TwistLimit { get; }
 
         /// <summary>
         /// Gets the twist motor of the swivel hinge.
         /// </summary>
-        public TwistMotor TwistMotor { get; private set; }
+        public TwistMotor TwistMotor { get; }
     }
 }

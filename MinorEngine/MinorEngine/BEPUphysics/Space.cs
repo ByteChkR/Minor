@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
+using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.BroadPhaseSystems;
 using MinorEngine.BEPUphysics.BroadPhaseSystems.Hierarchies;
-using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.Constraints;
 using MinorEngine.BEPUphysics.DeactivationManagement;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.EntityStateManagement;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems;
 using MinorEngine.BEPUphysics.OtherSpaceStages;
 using MinorEngine.BEPUphysics.PositionUpdating;
-using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUphysics.NarrowPhaseSystems;
 using MinorEngine.BEPUphysics.UpdateableSystems;
+using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.Threading;
 
@@ -25,15 +25,13 @@ namespace MinorEngine.BEPUphysics
     public class Space
     {
         private TimeStepSettings timeStepSettings;
+
         ///<summary>
         /// Gets or sets the time step settings used by the space.
         ///</summary>
         public TimeStepSettings TimeStepSettings
         {
-            get
-            {
-                return timeStepSettings;
-            }
+            get => timeStepSettings;
             set
             {
                 timeStepSettings = value;
@@ -42,20 +40,17 @@ namespace MinorEngine.BEPUphysics
                 BoundingBoxUpdater.TimeStepSettings = value;
                 Solver.TimeStepSettings = value;
                 PositionUpdater.TimeStepSettings = value;
-
             }
         }
 
-        IParallelLooper parallelLooper;
+        private IParallelLooper parallelLooper;
+
         ///<summary>
         /// Gets or sets the parallel loop provider used by the space.
         ///</summary>
         public IParallelLooper ParallelLooper
         {
-            get
-            {
-                return parallelLooper;
-            }
+            get => parallelLooper;
             set
             {
                 parallelLooper = value;
@@ -79,29 +74,35 @@ namespace MinorEngine.BEPUphysics
         /// added to and removed from the space.
         ///</summary>
         public SpaceObjectBuffer SpaceObjectBuffer { get; set; }
+
         ///<summary>
         /// Gets or sets the entity state write buffer used by the space.
         /// The write buffer contains buffered writes to entity states that are
         /// flushed each frame when the buffer is updated.
         ///</summary>
         public EntityStateWriteBuffer EntityStateWriteBuffer { get; set; }
+
         ///<summary>
         /// Gets or sets the deactivation manager used by the space.
         /// The deactivation manager controls the activity state objects, putting them
         /// to sleep and managing the connections between objects and simulation islands.
         ///</summary>
         public DeactivationManager DeactivationManager { get; set; }
+
         ///<summary>
         /// Gets or sets the force updater used by the space.
         /// The force updater applies forces to all dynamic objects in the space each frame.
         ///</summary>
         public ForceUpdater ForceUpdater { get; set; }
+
         ///<summary>
         /// Gets or sets the bounding box updater used by the space.
         /// The bounding box updater updates the bounding box of mobile collidables each frame.
         ///</summary>
         public BoundingBoxUpdater BoundingBoxUpdater { get; set; }
+
         private BroadPhase broadPhase;
+
         /// <summary>
         /// Gets or sets the broad phase used by the space.
         /// The broad phase finds overlaps between broad phase entries and passes
@@ -109,14 +110,12 @@ namespace MinorEngine.BEPUphysics
         /// </summary>
         public BroadPhase BroadPhase
         {
-            get
-            {
-                return broadPhase;
-            }
+            get => broadPhase;
             set
             {
                 broadPhase = value;
                 if (NarrowPhase != null)
+                {
                     if (value != null)
                     {
                         NarrowPhase.BroadPhaseOverlaps = broadPhase.Overlaps;
@@ -125,8 +124,10 @@ namespace MinorEngine.BEPUphysics
                     {
                         NarrowPhase.BroadPhaseOverlaps = null;
                     }
+                }
             }
         }
+
         ///<summary>
         /// Gets or sets the narrow phase used by the space.
         /// The narrow phase uses overlaps found by the broad phase
@@ -134,16 +135,19 @@ namespace MinorEngine.BEPUphysics
         /// create things like contacts and constraints.
         ///</summary>
         public NarrowPhase NarrowPhase { get; set; }
+
         ///<summary>
         /// Gets or sets the solver used by the space.
         /// The solver iteratively finds a solution to the constraints in the simulation.
         ///</summary>
         public Solver Solver { get; set; }
+
         ///<summary>
         /// Gets or sets the position updater used by the space.
         /// The position updater moves everything around each frame.
         ///</summary>
         public PositionUpdater PositionUpdater { get; set; }
+
         ///<summary>
         /// Gets or sets the buffered states manager used by the space.
         /// The buffered states manager keeps track of read buffered entity states
@@ -151,6 +155,7 @@ namespace MinorEngine.BEPUphysics
         /// time steps.
         ///</summary>
         public BufferedStatesManager BufferedStates { get; set; }
+
         ///<summary>
         /// Gets or sets the deferred event dispatcher used by the space.
         /// The event dispatcher gathers up deferred events created
@@ -162,22 +167,27 @@ namespace MinorEngine.BEPUphysics
         /// Gets or sets the updateable manager that handles updateables that update during force application.
         ///</summary>
         public DuringForcesUpdateableManager DuringForcesUpdateables { get; set; }
+
         ///<summary>
         /// Gets or sets the updateable manager that handles updateables that update before the narrow phase.
         ///</summary>
         public BeforeNarrowPhaseUpdateableManager BeforeNarrowPhaseUpdateables { get; set; }
+
         ///<summary>
         /// Gets or sets the updateable manager that handles updateables that update before the solver
         ///</summary>
         public BeforeSolverUpdateableManager BeforeSolverUpdateables { get; set; }
+
         ///<summary>
         /// Gets or sets the updateable manager that handles updateables that update right before the position update phase.
         ///</summary>
         public BeforePositionUpdateUpdateableManager BeforePositionUpdateUpdateables { get; set; }
+
         ///<summary>
         /// Gets or sets the updateable manager that handles updateables that update at the end of a timestep.
         ///</summary>
         public EndOfTimeStepUpdateableManager EndOfTimeStepUpdateables { get; set; }
+
         ///<summary>
         /// Gets or sets the updateable manager that handles updateables that update at the end of a frame.
         ///</summary>
@@ -187,10 +197,7 @@ namespace MinorEngine.BEPUphysics
         ///<summary>
         /// Gets the list of entities in the space.
         ///</summary>
-        public ReadOnlyList<Entity> Entities
-        {
-            get { return BufferedStates.Entities; }
-        }
+        public ReadOnlyList<Entity> Entities => BufferedStates.Entities;
 
         ///<summary>
         /// Constructs a new space for things to live in.
@@ -227,10 +234,10 @@ namespace MinorEngine.BEPUphysics
             DuringForcesUpdateables = new DuringForcesUpdateableManager(timeStepSettings, ParallelLooper);
             BeforeNarrowPhaseUpdateables = new BeforeNarrowPhaseUpdateableManager(timeStepSettings, ParallelLooper);
             BeforeSolverUpdateables = new BeforeSolverUpdateableManager(timeStepSettings, ParallelLooper);
-            BeforePositionUpdateUpdateables = new BeforePositionUpdateUpdateableManager(timeStepSettings, ParallelLooper);
+            BeforePositionUpdateUpdateables =
+                new BeforePositionUpdateUpdateableManager(timeStepSettings, ParallelLooper);
             EndOfTimeStepUpdateables = new EndOfTimeStepUpdateableManager(timeStepSettings, ParallelLooper);
             EndOfFrameUpdateables = new EndOfFrameUpdateableManager(timeStepSettings, ParallelLooper);
-
         }
 
 
@@ -241,42 +248,45 @@ namespace MinorEngine.BEPUphysics
         public void Add(ISpaceObject spaceObject)
         {
             if (spaceObject.Space != null)
+            {
                 throw new ArgumentException("The object belongs to some Space already; cannot add it again.");
+            }
+
             spaceObject.Space = this;
 
-            SimulationIslandMember simulationIslandMember = spaceObject as SimulationIslandMember;
+            var simulationIslandMember = spaceObject as SimulationIslandMember;
             if (simulationIslandMember != null)
             {
                 DeactivationManager.Add(simulationIslandMember);
             }
 
-            ISimulationIslandMemberOwner simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
+            var simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
             if (simulationIslandMemberOwner != null)
             {
                 DeactivationManager.Add(simulationIslandMemberOwner.ActivityInformation);
             }
 
             //Go through each stage, adding the space object to it if necessary.
-            IForceUpdateable velocityUpdateable = spaceObject as IForceUpdateable;
+            var velocityUpdateable = spaceObject as IForceUpdateable;
             if (velocityUpdateable != null)
             {
                 ForceUpdater.Add(velocityUpdateable);
             }
 
-            MobileCollidable boundingBoxUpdateable = spaceObject as MobileCollidable;
+            var boundingBoxUpdateable = spaceObject as MobileCollidable;
             if (boundingBoxUpdateable != null)
             {
                 BoundingBoxUpdater.Add(boundingBoxUpdateable);
             }
 
-            BroadPhaseEntry broadPhaseEntry = spaceObject as BroadPhaseEntry;
+            var broadPhaseEntry = spaceObject as BroadPhaseEntry;
             if (broadPhaseEntry != null)
             {
                 BroadPhase.Add(broadPhaseEntry);
             }
 
             //Entites own collision proxies, but are not entries themselves.
-            IBroadPhaseEntryOwner broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
+            var broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
             if (broadPhaseEntryOwner != null)
             {
                 BroadPhase.Add(broadPhaseEntryOwner.Entry);
@@ -287,68 +297,69 @@ namespace MinorEngine.BEPUphysics
                 }
             }
 
-            SolverUpdateable solverUpdateable = spaceObject as SolverUpdateable;
+            var solverUpdateable = spaceObject as SolverUpdateable;
             if (solverUpdateable != null)
             {
                 Solver.Add(solverUpdateable);
             }
 
-            IPositionUpdateable integrable = spaceObject as IPositionUpdateable;
+            var integrable = spaceObject as IPositionUpdateable;
             if (integrable != null)
             {
                 PositionUpdater.Add(integrable);
             }
 
-            Entity entity = spaceObject as Entity;
+            var entity = spaceObject as Entity;
             if (entity != null)
             {
                 BufferedStates.Add(entity);
             }
 
-            IDeferredEventCreator deferredEventCreator = spaceObject as IDeferredEventCreator;
+            var deferredEventCreator = spaceObject as IDeferredEventCreator;
             if (deferredEventCreator != null)
             {
                 DeferredEventDispatcher.AddEventCreator(deferredEventCreator);
             }
 
-            IDeferredEventCreatorOwner deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
+            var deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
             if (deferredEventCreatorOwner != null)
             {
                 DeferredEventDispatcher.AddEventCreator(deferredEventCreatorOwner.EventCreator);
             }
 
             //Updateable stages.
-            IDuringForcesUpdateable duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
+            var duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
             if (duringForcesUpdateable != null)
             {
                 DuringForcesUpdateables.Add(duringForcesUpdateable);
             }
 
-            IBeforeNarrowPhaseUpdateable beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
+            var beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
             if (beforeNarrowPhaseUpdateable != null)
             {
                 BeforeNarrowPhaseUpdateables.Add(beforeNarrowPhaseUpdateable);
             }
 
-            IBeforeSolverUpdateable beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
+            var beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
             if (beforeSolverUpdateable != null)
             {
                 BeforeSolverUpdateables.Add(beforeSolverUpdateable);
             }
 
-            IBeforePositionUpdateUpdateable beforePositionUpdateUpdateable = spaceObject as IBeforePositionUpdateUpdateable;
+            var beforePositionUpdateUpdateable =
+                spaceObject as IBeforePositionUpdateUpdateable;
             if (beforePositionUpdateUpdateable != null)
             {
                 BeforePositionUpdateUpdateables.Add(beforePositionUpdateUpdateable);
             }
 
-            IEndOfTimeStepUpdateable endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
+            var endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
             if (endOfStepUpdateable != null)
             {
                 EndOfTimeStepUpdateables.Add(endOfStepUpdateable);
             }
 
-            IEndOfFrameUpdateable endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
+            var endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
             if (endOfFrameUpdateable != null)
             {
                 EndOfFrameUpdateables.Add(endOfFrameUpdateable);
@@ -364,41 +375,43 @@ namespace MinorEngine.BEPUphysics
         public void Remove(ISpaceObject spaceObject)
         {
             if (spaceObject.Space != this)
+            {
                 throw new ArgumentException("The object does not belong to this space; cannot remove it.");
+            }
 
-            SimulationIslandMember simulationIslandMember = spaceObject as SimulationIslandMember;
+            var simulationIslandMember = spaceObject as SimulationIslandMember;
             if (simulationIslandMember != null)
             {
                 DeactivationManager.Remove(simulationIslandMember);
             }
 
-            ISimulationIslandMemberOwner simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
+            var simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
             if (simulationIslandMemberOwner != null)
             {
                 DeactivationManager.Remove(simulationIslandMemberOwner.ActivityInformation);
             }
 
             //Go through each stage, removing the space object from it if necessary.
-            IForceUpdateable velocityUpdateable = spaceObject as IForceUpdateable;
+            var velocityUpdateable = spaceObject as IForceUpdateable;
             if (velocityUpdateable != null)
             {
                 ForceUpdater.Remove(velocityUpdateable);
             }
 
-            MobileCollidable boundingBoxUpdateable = spaceObject as MobileCollidable;
+            var boundingBoxUpdateable = spaceObject as MobileCollidable;
             if (boundingBoxUpdateable != null)
             {
                 BoundingBoxUpdater.Remove(boundingBoxUpdateable);
             }
 
-            BroadPhaseEntry broadPhaseEntry = spaceObject as BroadPhaseEntry;
+            var broadPhaseEntry = spaceObject as BroadPhaseEntry;
             if (broadPhaseEntry != null)
             {
                 BroadPhase.Remove(broadPhaseEntry);
             }
 
             //Entites own collision proxies, but are not entries themselves.
-            IBroadPhaseEntryOwner broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
+            var broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
             if (broadPhaseEntryOwner != null)
             {
                 BroadPhase.Remove(broadPhaseEntryOwner.Entry);
@@ -409,69 +422,70 @@ namespace MinorEngine.BEPUphysics
                 }
             }
 
-            SolverUpdateable solverUpdateable = spaceObject as SolverUpdateable;
+            var solverUpdateable = spaceObject as SolverUpdateable;
             if (solverUpdateable != null)
             {
                 Solver.Remove(solverUpdateable);
             }
 
-            IPositionUpdateable integrable = spaceObject as IPositionUpdateable;
+            var integrable = spaceObject as IPositionUpdateable;
             if (integrable != null)
             {
                 PositionUpdater.Remove(integrable);
             }
 
-            Entity entity = spaceObject as Entity;
+            var entity = spaceObject as Entity;
             if (entity != null)
             {
                 BufferedStates.Remove(entity);
             }
 
-            IDeferredEventCreator deferredEventCreator = spaceObject as IDeferredEventCreator;
+            var deferredEventCreator = spaceObject as IDeferredEventCreator;
             if (deferredEventCreator != null)
             {
                 DeferredEventDispatcher.RemoveEventCreator(deferredEventCreator);
             }
 
-            IDeferredEventCreatorOwner deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
+            var deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
             if (deferredEventCreatorOwner != null)
             {
                 DeferredEventDispatcher.RemoveEventCreator(deferredEventCreatorOwner.EventCreator);
             }
 
             //Updateable stages.
-            IDuringForcesUpdateable duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
+            var duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
             if (duringForcesUpdateable != null)
             {
                 DuringForcesUpdateables.Remove(duringForcesUpdateable);
             }
 
-            IBeforeNarrowPhaseUpdateable beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
+            var beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
             if (beforeNarrowPhaseUpdateable != null)
             {
                 BeforeNarrowPhaseUpdateables.Remove(beforeNarrowPhaseUpdateable);
             }
 
-            IBeforeSolverUpdateable beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
+            var beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
             if (beforeSolverUpdateable != null)
             {
                 BeforeSolverUpdateables.Remove(beforeSolverUpdateable);
             }
 
 
-            IBeforePositionUpdateUpdateable beforePositionUpdateUpdateable = spaceObject as IBeforePositionUpdateUpdateable;
+            var beforePositionUpdateUpdateable =
+                spaceObject as IBeforePositionUpdateUpdateable;
             if (beforePositionUpdateUpdateable != null)
             {
                 BeforePositionUpdateUpdateables.Remove(beforePositionUpdateUpdateable);
             }
 
-            IEndOfTimeStepUpdateable endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
+            var endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
             if (endOfStepUpdateable != null)
             {
                 EndOfTimeStepUpdateables.Remove(endOfStepUpdateable);
             }
 
-            IEndOfFrameUpdateable endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
+            var endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
             if (endOfFrameUpdateable != null)
             {
                 EndOfFrameUpdateables.Remove(endOfFrameUpdateable);
@@ -493,7 +507,7 @@ namespace MinorEngine.BEPUphysics
         private long start, end;
 #endif
 
-        void DoTimeStep()
+        private void DoTimeStep()
         {
 #if PROFILE
             start = Stopwatch.GetTimestamp();
@@ -517,8 +531,6 @@ namespace MinorEngine.BEPUphysics
 #if PROFILE
             end = Stopwatch.GetTimestamp();
 #endif
-
-
         }
 
         ///<summary>
@@ -537,7 +549,7 @@ namespace MinorEngine.BEPUphysics
         public void Update(float dt)
         {
             TimeStepSettings.AccumulatedTime += dt;
-            for (int i = 0; i < TimeStepSettings.MaximumTimeStepsPerFrame; i++)
+            for (var i = 0; i < TimeStepSettings.MaximumTimeStepsPerFrame; i++)
             {
                 if (TimeStepSettings.AccumulatedTime >= TimeStepSettings.TimeStepDuration)
                 {
@@ -550,7 +562,8 @@ namespace MinorEngine.BEPUphysics
                 }
             }
 
-            BufferedStates.InterpolatedStates.BlendAmount = TimeStepSettings.AccumulatedTime / TimeStepSettings.TimeStepDuration;
+            BufferedStates.InterpolatedStates.BlendAmount =
+                TimeStepSettings.AccumulatedTime / TimeStepSettings.TimeStepDuration;
             BufferedStates.InterpolatedStates.Update();
             EndOfFrameUpdateables.Update();
         }
@@ -588,14 +601,17 @@ namespace MinorEngine.BEPUphysics
         public bool RayCast(Ray ray, float maximumLength, out RayCastResult result)
         {
             var resultsList = PhysicsResources.GetRayCastResultList();
-            bool didHit = RayCast(ray, maximumLength, resultsList);
+            var didHit = RayCast(ray, maximumLength, resultsList);
             result = resultsList.Elements[0];
-            for (int i = 1; i < resultsList.Count; i++)
+            for (var i = 1; i < resultsList.Count; i++)
             {
-                RayCastResult candidate = resultsList.Elements[i];
+                var candidate = resultsList.Elements[i];
                 if (candidate.HitData.T < result.HitData.T)
+                {
                     result = candidate;
+                }
             }
+
             PhysicsResources.GiveBack(resultsList);
 
             return didHit;
@@ -612,14 +628,17 @@ namespace MinorEngine.BEPUphysics
         public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayCastResult result)
         {
             var resultsList = PhysicsResources.GetRayCastResultList();
-            bool didHit = RayCast(ray, maximumLength, filter, resultsList);
+            var didHit = RayCast(ray, maximumLength, filter, resultsList);
             result = resultsList.Elements[0];
-            for (int i = 1; i < resultsList.Count; i++)
+            for (var i = 1; i < resultsList.Count; i++)
             {
-                RayCastResult candidate = resultsList.Elements[i];
+                var candidate = resultsList.Elements[i];
                 if (candidate.HitData.T < result.HitData.T)
+                {
                     result = candidate;
+                }
             }
+
             PhysicsResources.GiveBack(resultsList);
 
             return didHit;
@@ -637,17 +656,17 @@ namespace MinorEngine.BEPUphysics
             var outputIntersections = PhysicsResources.GetBroadPhaseEntryList();
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
-
-                for (int i = 0; i < outputIntersections.Count; i++)
+                for (var i = 0; i < outputIntersections.Count; i++)
                 {
                     RayHit rayHit;
-                    BroadPhaseEntry candidate = outputIntersections.Elements[i];
+                    var candidate = outputIntersections.Elements[i];
                     if (candidate.RayCast(ray, maximumLength, out rayHit))
                     {
                         outputRayCastResults.Add(new RayCastResult(rayHit, candidate));
                     }
                 }
             }
+
             PhysicsResources.GiveBack(outputIntersections);
             return outputRayCastResults.Count > 0;
         }
@@ -660,22 +679,23 @@ namespace MinorEngine.BEPUphysics
         /// <param name="filter">Delegate to prune out hit candidates before performing a cast against them. Return true from the filter to process an entry or false to ignore the entry.</param>
         /// <param name="outputRayCastResults">Hit data of the ray, if any.</param>
         /// <returns>Whether or not the ray hit anything.</returns>
-        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, IList<RayCastResult> outputRayCastResults)
+        public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter,
+            IList<RayCastResult> outputRayCastResults)
         {
             var outputIntersections = PhysicsResources.GetBroadPhaseEntryList();
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
-
-                for (int i = 0; i < outputIntersections.Count; i++)
+                for (var i = 0; i < outputIntersections.Count; i++)
                 {
                     RayHit rayHit;
-                    BroadPhaseEntry candidate = outputIntersections.Elements[i];
+                    var candidate = outputIntersections.Elements[i];
                     if (candidate.RayCast(ray, maximumLength, filter, out rayHit))
                     {
                         outputRayCastResults.Add(new RayCastResult(rayHit, candidate));
                     }
                 }
             }
+
             PhysicsResources.GiveBack(outputIntersections);
             return outputRayCastResults.Count > 0;
         }
@@ -689,17 +709,21 @@ namespace MinorEngine.BEPUphysics
         /// <param name="sweep">Sweep to apply to the shape. Avoid extremely long convex casts for better stability and performance.</param>
         /// <param name="castResult">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, out RayCastResult castResult)
+        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
+            out RayCastResult castResult)
         {
             var castResults = PhysicsResources.GetRayCastResultList();
-            bool didHit = ConvexCast(castShape, ref startingTransform, ref sweep, castResults);
+            var didHit = ConvexCast(castShape, ref startingTransform, ref sweep, castResults);
             castResult = castResults.Elements[0];
-            for (int i = 1; i < castResults.Count; i++)
+            for (var i = 1; i < castResults.Count; i++)
             {
-                RayCastResult candidate = castResults.Elements[i];
+                var candidate = castResults.Elements[i];
                 if (candidate.HitData.T < castResult.HitData.T)
+                {
                     castResult = candidate;
+                }
             }
+
             PhysicsResources.GiveBack(castResults);
             return didHit;
         }
@@ -714,17 +738,21 @@ namespace MinorEngine.BEPUphysics
         /// <param name="filter">Delegate to prune out hit candidates before performing a cast against them. Return true from the filter to process an entry or false to ignore the entry.</param>
         /// <param name="castResult">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, out RayCastResult castResult)
+        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
+            Func<BroadPhaseEntry, bool> filter, out RayCastResult castResult)
         {
             var castResults = PhysicsResources.GetRayCastResultList();
-            bool didHit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, castResults);
+            var didHit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, castResults);
             castResult = castResults.Elements[0];
-            for (int i = 1; i < castResults.Count; i++)
+            for (var i = 1; i < castResults.Count; i++)
             {
-                RayCastResult candidate = castResults.Elements[i];
+                var candidate = castResults.Elements[i];
                 if (candidate.HitData.T < castResult.HitData.T)
+                {
                     castResult = candidate;
+                }
             }
+
             PhysicsResources.GiveBack(castResults);
             return didHit;
         }
@@ -738,21 +766,24 @@ namespace MinorEngine.BEPUphysics
         /// <param name="sweep">Sweep to apply to the shape. Avoid extremely long convex casts for better stability and performance.</param>
         /// <param name="outputCastResults">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, IList<RayCastResult> outputCastResults)
+        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
+            IList<RayCastResult> outputCastResults)
         {
             var overlappedElements = PhysicsResources.GetBroadPhaseEntryList();
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
 
             BroadPhase.QueryAccelerator.GetEntries(boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; ++i)
+            for (var i = 0; i < overlappedElements.Count; ++i)
             {
                 RayHit hit;
                 if (overlappedElements.Elements[i].ConvexCast(castShape, ref startingTransform, ref sweep, out hit))
                 {
-                    outputCastResults.Add(new RayCastResult { HitData = hit, HitObject = overlappedElements.Elements[i] });
+                    outputCastResults.Add(new RayCastResult
+                        {HitData = hit, HitObject = overlappedElements.Elements[i]});
                 }
             }
+
             PhysicsResources.GiveBack(overlappedElements);
             return outputCastResults.Count > 0;
         }
@@ -767,27 +798,27 @@ namespace MinorEngine.BEPUphysics
         /// <param name="filter">Delegate to prune out hit candidates before performing a cast against them. Return true from the filter to process an entry or false to ignore the entry.</param>
         /// <param name="outputCastResults">Hit data, if any.</param>
         /// <returns>Whether or not the cast hit anything.</returns>
-        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep, Func<BroadPhaseEntry, bool> filter, IList<RayCastResult> outputCastResults)
+        public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
+            Func<BroadPhaseEntry, bool> filter, IList<RayCastResult> outputCastResults)
         {
             var overlappedElements = PhysicsResources.GetBroadPhaseEntryList();
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
 
             BroadPhase.QueryAccelerator.GetEntries(boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; ++i)
+            for (var i = 0; i < overlappedElements.Count; ++i)
             {
                 RayHit hit;
-                if (overlappedElements.Elements[i].ConvexCast(castShape, ref startingTransform, ref sweep, filter, out hit))
+                if (overlappedElements.Elements[i]
+                    .ConvexCast(castShape, ref startingTransform, ref sweep, filter, out hit))
                 {
-                    outputCastResults.Add(new RayCastResult { HitData = hit, HitObject = overlappedElements.Elements[i] });
+                    outputCastResults.Add(new RayCastResult
+                        {HitData = hit, HitObject = overlappedElements.Elements[i]});
                 }
             }
+
             PhysicsResources.GiveBack(overlappedElements);
             return outputCastResults.Count > 0;
         }
-
-
     }
-
-
 }

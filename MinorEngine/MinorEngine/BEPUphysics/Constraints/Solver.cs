@@ -11,36 +11,33 @@ namespace MinorEngine.BEPUphysics.Constraints
     ///</summary>
     public class Solver : MultithreadedProcessingStage
     {
-        RawList<SolverUpdateable> solverUpdateables = new RawList<SolverUpdateable>();
+        private RawList<SolverUpdateable> solverUpdateables = new RawList<SolverUpdateable>();
         internal int iterationLimit = 10;
+
         ///<summary>
         /// Gets or sets the maximum number of iterations the solver will attempt to use to solve the simulation's constraints.
         ///</summary>
-        public int IterationLimit { get { return iterationLimit; } set { iterationLimit = Math.Max(value, 0); } }
+        public int IterationLimit
+        {
+            get => iterationLimit;
+            set => iterationLimit = Math.Max(value, 0);
+        }
+
         ///<summary>
         /// Gets the list of solver updateables in the solver.
         ///</summary>
-        public ReadOnlyList<SolverUpdateable> SolverUpdateables
-        {
-            get
-            {
-                return new ReadOnlyList<SolverUpdateable>(solverUpdateables);
-            }
-        }
+        public ReadOnlyList<SolverUpdateable> SolverUpdateables =>
+            new ReadOnlyList<SolverUpdateable>(solverUpdateables);
+
         protected internal TimeStepSettings timeStepSettings;
+
         ///<summary>
         /// Gets or sets the time step settings used by the solver.
         ///</summary>
         public TimeStepSettings TimeStepSettings
         {
-            get
-            {
-                return timeStepSettings;
-            }
-            set
-            {
-                timeStepSettings = value;
-            }
+            get => timeStepSettings;
+            set => timeStepSettings = value;
         }
 
         ///<summary>
@@ -54,7 +51,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         /// <summary>
         /// Gets the permutation mapper used by the solver.
         /// </summary>
-        public PermutationMapper PermutationMapper { get; private set; }
+        public PermutationMapper PermutationMapper { get; }
 
         ///<summary>
         /// Constructs a Solver.
@@ -71,13 +68,15 @@ namespace MinorEngine.BEPUphysics.Constraints
             Enabled = true;
             PermutationMapper = new PermutationMapper();
         }
+
         ///<summary>
         /// Constructs a Solver.
         ///</summary>
         ///<param name="timeStepSettings">Time step settings used by the solver.</param>
         ///<param name="deactivationManager">Deactivation manager used by the solver.</param>
         /// <param name="parallelLooper">Parallel loop provider used by the solver.</param>
-        public Solver(TimeStepSettings timeStepSettings, DeactivationManager deactivationManager, IParallelLooper parallelLooper)
+        public Solver(TimeStepSettings timeStepSettings, DeactivationManager deactivationManager,
+            IParallelLooper parallelLooper)
             : this(timeStepSettings, deactivationManager)
         {
             ParallelLooper = parallelLooper;
@@ -106,8 +105,12 @@ namespace MinorEngine.BEPUphysics.Constraints
                 item.OnAdditionToSolver(this);
             }
             else
-                throw new ArgumentException("Solver updateable already belongs to something; it can't be added.", "item");
+            {
+                throw new ArgumentException("Solver updateable already belongs to something; it can't be added.",
+                    "item");
+            }
         }
+
         ///<summary>
         /// Removes a solver updateable from the solver.
         ///</summary>
@@ -115,10 +118,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         ///<exception cref="ArgumentException">Thrown when the item does not belong to the solver.</exception>
         public void Remove(SolverUpdateable item)
         {
-
             if (item.Solver == this)
             {
-
                 item.Solver = null;
 
 
@@ -131,6 +132,7 @@ namespace MinorEngine.BEPUphysics.Constraints
                     //Update the replacement's solver index to its new location.
                     solverUpdateables.Elements[item.solverIndex].solverIndex = item.solverIndex;
                 }
+
                 solverUpdateables.Elements[solverUpdateables.Count] = null;
                 addRemoveLocker.Exit();
 
@@ -139,15 +141,16 @@ namespace MinorEngine.BEPUphysics.Constraints
             }
 
             else
-                throw new ArgumentException("Solver updateable doesn't belong to this solver; it can't be removed.", "item");
-
+            {
+                throw new ArgumentException("Solver updateable doesn't belong to this solver; it can't be removed.",
+                    "item");
+            }
         }
 
 
+        private Action<int> multithreadedPrestepDelegate;
 
-
-        Action<int> multithreadedPrestepDelegate;
-        void MultithreadedPrestep(int i)
+        private void MultithreadedPrestep(int i)
         {
             var updateable = solverUpdateables.Elements[i];
             updateable.UpdateSolverActivity();
@@ -160,7 +163,8 @@ namespace MinorEngine.BEPUphysics.Constraints
         }
 
         private Action<int> multithreadedExclusiveUpdateDelegate;
-        void MultithreadedExclusiveUpdate(int i)
+
+        private void MultithreadedExclusiveUpdate(int i)
         {
             var updateable = solverUpdateables.Elements[i];
             if (updateable.isActiveInSolver)
@@ -178,8 +182,9 @@ namespace MinorEngine.BEPUphysics.Constraints
         }
 
 
-        Action<int> multithreadedIterationDelegate;
-        void MultithreadedIteration(int i)
+        private Action<int> multithreadedIterationDelegate;
+
+        private void MultithreadedIteration(int i)
         {
             //'i' is currently an index into an implicit array of solver updateables that goes from 0 to solverUpdateables.count * iterationLimit.
             //It includes iterationLimit copies of each updateable.
@@ -187,12 +192,12 @@ namespace MinorEngine.BEPUphysics.Constraints
             var updateable = solverUpdateables.Elements[PermutationMapper.GetMappedIndex(i, solverUpdateables.Count)];
 
 
-            SolverSettings solverSettings = updateable.solverSettings;
+            var solverSettings = updateable.solverSettings;
             //Updateables only ever go from active to inactive during iterations,
             //so it's safe to check for activity before we do hard (synchronized) work.
             if (updateable.isActiveInSolver)
             {
-                int incrementedIterations = -1;
+                var incrementedIterations = -1;
                 updateable.EnterLock();
                 //This duplicate test protects against the possibility that the updateable went inactive between the first check and the lock.
                 if (updateable.isActiveInSolver)
@@ -201,7 +206,9 @@ namespace MinorEngine.BEPUphysics.Constraints
                     {
                         solverSettings.iterationsAtZeroImpulse++;
                         if (solverSettings.iterationsAtZeroImpulse > solverSettings.minimumIterationCount)
+                        {
                             updateable.isActiveInSolver = false;
+                        }
                     }
                     else
                     {
@@ -211,6 +218,7 @@ namespace MinorEngine.BEPUphysics.Constraints
                     //Increment the iteration count.
                     incrementedIterations = solverSettings.currentIterations++;
                 }
+
                 updateable.ExitLock();
                 //Since the updateables only ever go from active to inactive, it's safe to check outside of the lock.
                 //Keeping this if statement out of the lock allows other waiters to get to work a few nanoseconds faster.
@@ -219,11 +227,7 @@ namespace MinorEngine.BEPUphysics.Constraints
                 {
                     updateable.isActiveInSolver = false;
                 }
-
             }
-
-
-
         }
 
         protected override void UpdateMultithreaded()
@@ -238,28 +242,26 @@ namespace MinorEngine.BEPUphysics.Constraints
 
         protected override void UpdateSingleThreaded()
         {
-
-            int totalUpdateableCount = solverUpdateables.Count;
-            for (int i = 0; i < totalUpdateableCount; i++)
+            var totalUpdateableCount = solverUpdateables.Count;
+            for (var i = 0; i < totalUpdateableCount; i++)
             {
                 UnsafePrestep(solverUpdateables.Elements[i]);
             }
 
             //By performing all velocity modifications after the prestep, the prestep is free to read velocities consistently.
             //If the exclusive update was performed in the same call as the prestep, the velocities would enter inconsistent states based on update order.
-            for (int i = 0; i < totalUpdateableCount; i++)
+            for (var i = 0; i < totalUpdateableCount; i++)
             {
                 UnsafeExclusiveUpdate(solverUpdateables.Elements[i]);
             }
 
-            int totalCount = iterationLimit * totalUpdateableCount;
+            var totalCount = iterationLimit * totalUpdateableCount;
             ++PermutationMapper.PermutationIndex;
-            for (int i = 0; i < totalCount; i++)
+            for (var i = 0; i < totalCount; i++)
             {
-                UnsafeSolveIteration(solverUpdateables.Elements[PermutationMapper.GetMappedIndex(i, totalUpdateableCount)]);
+                UnsafeSolveIteration(
+                    solverUpdateables.Elements[PermutationMapper.GetMappedIndex(i, totalUpdateableCount)]);
             }
-
-
         }
 
         protected internal void UnsafePrestep(SolverUpdateable updateable)
@@ -267,7 +269,7 @@ namespace MinorEngine.BEPUphysics.Constraints
             updateable.UpdateSolverActivity();
             if (updateable.isActiveInSolver)
             {
-                SolverSettings solverSettings = updateable.solverSettings;
+                var solverSettings = updateable.solverSettings;
                 solverSettings.currentIterations = 0;
                 solverSettings.iterationsAtZeroImpulse = 0;
                 updateable.Update(timeStepSettings.TimeStepDuration);
@@ -286,7 +288,7 @@ namespace MinorEngine.BEPUphysics.Constraints
         {
             if (updateable.isActiveInSolver)
             {
-                SolverSettings solverSettings = updateable.solverSettings;
+                var solverSettings = updateable.solverSettings;
 
 
                 solverSettings.currentIterations++;
@@ -297,8 +299,9 @@ namespace MinorEngine.BEPUphysics.Constraints
                     {
                         solverSettings.iterationsAtZeroImpulse++;
                         if (solverSettings.iterationsAtZeroImpulse > solverSettings.minimumIterationCount)
+                        {
                             updateable.isActiveInSolver = false;
-
+                        }
                     }
                     else
                     {
@@ -309,10 +312,7 @@ namespace MinorEngine.BEPUphysics.Constraints
                 {
                     updateable.isActiveInSolver = false;
                 }
-
             }
         }
-
-
     }
 }

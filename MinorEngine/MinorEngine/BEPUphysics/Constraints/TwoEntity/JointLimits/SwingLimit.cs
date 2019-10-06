@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Entities;
-
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
@@ -10,11 +9,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
     /// </summary>
     public class SwingLimit : JointLimit, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
-        private float accumulatedImpulse;
         private float biasVelocity;
         private Vector3 hingeAxis;
         private float minimumCosine = 1;
-        private float error;
 
         private Vector3 localAxisA;
 
@@ -57,7 +54,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 LocalAxisA
         {
-            get { return localAxisA; }
+            get => localAxisA;
             set
             {
                 localAxisA = Vector3.Normalize(value);
@@ -70,7 +67,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 LocalAxisB
         {
-            get { return localAxisB; }
+            get => localAxisB;
             set
             {
                 localAxisB = Vector3.Normalize(value);
@@ -83,8 +80,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float MaximumAngle
         {
-            get { return (float)Math.Acos(minimumCosine); }
-            set { minimumCosine = (float)Math.Cos(MathHelper.Clamp(value, 0, MathHelper.Pi)); }
+            get => (float) Math.Acos(minimumCosine);
+            set => minimumCosine = (float) Math.Cos(MathHelper.Clamp(value, 0, MathHelper.Pi));
         }
 
         /// <summary>
@@ -92,7 +89,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 WorldAxisA
         {
-            get { return worldAxisA; }
+            get => worldAxisA;
             set
             {
                 worldAxisA = Vector3.Normalize(value);
@@ -107,7 +104,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 WorldAxisB
         {
-            get { return worldAxisB; }
+            get => worldAxisB;
             set
             {
                 worldAxisB = Vector3.Normalize(value);
@@ -129,11 +126,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 if (isLimitActive)
                 {
                     Vector3 relativeVelocity;
-                    Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out relativeVelocity);
+                    Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity,
+                        out relativeVelocity);
                     float lambda;
                     Vector3.Dot(ref relativeVelocity, ref hingeAxis, out lambda);
                     return lambda;
                 }
+
                 return 0;
             }
         }
@@ -141,18 +140,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse { get; private set; }
 
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public float Error
-        {
-            get { return error; }
-        }
+        public float Error { get; private set; }
 
         #endregion
 
@@ -216,15 +209,15 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Transform the velocity to with the jacobian
             Vector3.Dot(ref relativeVelocity, ref hingeAxis, out lambda);
             //Add in the constraint space bias velocity
-            lambda = -lambda + biasVelocity - softness * accumulatedImpulse;
+            lambda = -lambda + biasVelocity - softness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Clamp accumulated impulse (can't go negative)
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            accumulatedImpulse = MathHelper.Max(accumulatedImpulse + lambda, 0);
-            lambda = accumulatedImpulse - previousAccumulatedImpulse;
+            var previousAccumulatedImpulse = TotalImpulse;
+            TotalImpulse = MathHelper.Max(TotalImpulse + lambda, 0);
+            lambda = TotalImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
             Vector3 impulse;
@@ -233,13 +226,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             {
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Negate(ref impulse, out impulse);
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
 
-            return (Math.Abs(lambda));
+            return Math.Abs(lambda);
         }
 
         /// <summary>
@@ -261,25 +255,26 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             if (dot > minimumCosine)
             {
                 isActiveInSolver = false;
-                error = 0;
-                accumulatedImpulse = 0;
+                Error = 0;
+                TotalImpulse = 0;
                 isLimitActive = false;
                 return;
             }
+
             isLimitActive = true;
 
             //Hinge axis is actually the jacobian entry for angular A (negative angular B).
             Vector3.Cross(ref worldAxisA, ref worldAxisB, out hingeAxis);
-            float lengthSquared = hingeAxis.LengthSquared();
+            var lengthSquared = hingeAxis.LengthSquared();
             if (lengthSquared < Toolbox.Epsilon)
             {
                 //They're parallel; for the sake of continuity, pick some axis which is perpendicular to both that ISN'T the zero vector.
                 Vector3.Cross(ref worldAxisA, ref Toolbox.UpVector, out hingeAxis);
                 lengthSquared = hingeAxis.LengthSquared();
                 if (lengthSquared < Toolbox.Epsilon)
-                {
                     //That's improbable; b's world axis was apparently parallel with the up vector!
                     //So just use the right vector (it can't be parallel with both the up and right vectors).
+                {
                     Vector3.Cross(ref worldAxisA, ref Toolbox.RightVector, out hingeAxis);
                 }
             }
@@ -289,15 +284,16 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
 
             //Further away from 0 degrees is further negative; if the dot is below the minimum cosine, it means the angle is above the maximum angle.
-            error = Math.Max(0, minimumCosine - dot - margin);
-            biasVelocity = MathHelper.Clamp(errorReduction * error, -maxCorrectiveVelocity, maxCorrectiveVelocity);
+            Error = Math.Max(0, minimumCosine - dot - margin);
+            biasVelocity = MathHelper.Clamp(errorReduction * Error, -maxCorrectiveVelocity, maxCorrectiveVelocity);
 
             if (bounciness > 0)
             {
                 //Compute the speed around the axis.
                 float relativeSpeed;
                 Vector3 relativeVelocity;
-                Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out relativeVelocity);
+                Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity,
+                    out relativeVelocity);
                 Vector3.Dot(ref relativeVelocity, ref hingeAxis, out relativeSpeed);
 
                 biasVelocity = MathHelper.Max(biasVelocity, ComputeBounceVelocity(-relativeSpeed));
@@ -312,7 +308,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 Vector3.Dot(ref transformedAxis, ref hingeAxis, out entryA);
             }
             else
+            {
                 entryA = 0;
+            }
 
             //Connection B's contribution to the mass matrix
             float entryB;
@@ -322,23 +320,24 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 Vector3.Dot(ref transformedAxis, ref hingeAxis, out entryB);
             }
             else
+            {
                 entryB = 0;
+            }
 
             //Compute the inverse mass matrix
             velocityToImpulse = 1 / (softness + entryA + entryB);
-
-
         }
 
         public override void ExclusiveUpdate()
         {
             //Apply accumulated impulse
             Vector3 impulse;
-            Vector3.Multiply(ref hingeAxis, accumulatedImpulse, out impulse);
+            Vector3.Multiply(ref hingeAxis, TotalImpulse, out impulse);
             if (connectionA.isDynamic)
             {
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Negate(ref impulse, out impulse);

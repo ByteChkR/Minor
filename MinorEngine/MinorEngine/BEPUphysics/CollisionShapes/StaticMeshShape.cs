@@ -1,6 +1,5 @@
-﻿using MinorEngine.BEPUutilities;
- 
-using MinorEngine.BEPUphysics.DataStructures;
+﻿using MinorEngine.BEPUphysics.DataStructures;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes
 {
@@ -11,21 +10,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
     ///</summary>
     public class StaticMeshShape : CollisionShape
     {
-        TransformableMeshData triangleMeshData;
         ///<summary>
         /// Gets the triangle mesh data composing the StaticMeshShape.
         ///</summary>
-        public TransformableMeshData TriangleMeshData
-        {
-            get
-            {
-                return triangleMeshData;
-            }
-        }
-
-
-
-
+        public TransformableMeshData TriangleMeshData { get; }
 
 
         ///<summary>
@@ -36,9 +24,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///<param name="worldTransform">World transform to use in the local space data.</param>
         public StaticMeshShape(Vector3[] vertices, int[] indices, AffineTransform worldTransform)
         {
-            triangleMeshData = new TransformableMeshData(vertices, indices, worldTransform);
+            TriangleMeshData = new TransformableMeshData(vertices, indices, worldTransform);
         }
-
 
 
         ///<summary>
@@ -48,9 +35,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         ///<param name="indices">Indices of the mesh.</param>
         public StaticMeshShape(Vector3[] vertices, int[] indices)
         {
-            triangleMeshData = new TransformableMeshData(vertices, indices);
+            TriangleMeshData = new TransformableMeshData(vertices, indices);
         }
-
-
     }
 }

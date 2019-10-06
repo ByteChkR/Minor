@@ -5,8 +5,8 @@ namespace MinorEngine.engine.rendering.contexts
 {
     public abstract class RenderContext : IComparable<RenderContext>
     {
-
-        protected RenderContext(ShaderProgram program, Matrix4 modelMatrix, bool worldSpace, Renderer.RenderType renderType, int renderQueue)
+        protected RenderContext(ShaderProgram program, Matrix4 modelMatrix, bool worldSpace,
+            Renderer.RenderType renderType, int renderQueue)
         {
             Program = program;
             ModelMat = modelMatrix;
@@ -23,26 +23,30 @@ namespace MinorEngine.engine.rendering.contexts
             {
                 if (WorldSpace && other.WorldSpace)
                 {
-                    float d = MVPosition.LengthSquared - other.MVPosition.LengthSquared;
+                    var d = MVPosition.LengthSquared - other.MVPosition.LengthSquared;
                     if (d > 0)
                     {
                         return 1;
                     }
+
                     return -1;
                 }
+
                 if (WorldSpace)
                 {
                     return -1;
                 }
+
                 if (other.WorldSpace)
                 {
                     return 1;
                 }
-                int ret = RenderQueue.CompareTo(other.RenderQueue);
+
+                var ret = RenderQueue.CompareTo(other.RenderQueue);
                 return ret;
             }
-            return 0;
 
+            return 0;
         }
 
         public ShaderProgram Program { get; }

@@ -1,6 +1,4 @@
-﻿using System;
-using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-
+﻿using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
@@ -10,12 +8,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class SphereShape : ConvexShape
     {
-
         //This is a convenience method.  People expect to see a 'radius' of some kind.
         ///<summary>
         /// Gets or sets the radius of the sphere.
         ///</summary>
-        public float Radius { get { return collisionMargin; } set { CollisionMargin = value; } }
+        public float Radius
+        {
+            get => collisionMargin;
+            set => CollisionMargin = value;
+        }
 
         ///<summary>
         /// Constructs a new sphere shape.
@@ -54,7 +55,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             ConvexShapeDescription description;
             description.EntityShapeVolume.Volume = 1.333333f * MathHelper.Pi * radius * radius * radius;
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            float diagValue = ((2f / 5f) * radius * radius);
+            var diagValue = 2f / 5f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;
@@ -120,6 +121,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             return new ConvexCollidable<SphereShape>(this);
         }
-
     }
 }

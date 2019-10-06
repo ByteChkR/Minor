@@ -1,6 +1,5 @@
 using System;
 using MinorEngine.BEPUphysics.Entities;
-
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
@@ -10,14 +9,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
     /// </summary>
     public class DistanceLimit : JointLimit, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
-        private float accumulatedImpulse;
         private Vector3 anchorA;
 
         private Vector3 anchorB;
         private float biasVelocity;
         private Vector3 jAngularA, jAngularB;
         private Vector3 jLinearA, jLinearB;
-        private float error;
 
         private Vector3 localAnchorA;
 
@@ -58,7 +55,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <param name="anchorB"> Connection to the spring from the second connected body in world space.</param>
         /// <param name="minimumLength">Minimum distance maintained between the anchors.</param>
         /// <param name="maximumLength">Maximum distance allowed between the anchors.</param>
-        public DistanceLimit(Entity connectionA, Entity connectionB, Vector3 anchorA, Vector3 anchorB, float minimumLength, float maximumLength)
+        public DistanceLimit(Entity connectionA, Entity connectionB, Vector3 anchorA, Vector3 anchorB,
+            float minimumLength, float maximumLength)
         {
             ConnectionA = connectionA;
             ConnectionB = connectionB;
@@ -74,7 +72,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 LocalAnchorA
         {
-            get { return localAnchorA; }
+            get => localAnchorA;
             set
             {
                 localAnchorA = value;
@@ -88,7 +86,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 LocalAnchorB
         {
-            get { return localAnchorB; }
+            get => localAnchorB;
             set
             {
                 localAnchorB = value;
@@ -102,7 +100,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float MaximumLength
         {
-            get { return maximumLength; }
+            get => maximumLength;
             set
             {
                 maximumLength = Math.Max(0, value);
@@ -115,7 +113,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float MinimumLength
         {
-            get { return minimumLength; }
+            get => minimumLength;
             set
             {
                 minimumLength = Math.Max(0, value);
@@ -128,11 +126,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 WorldAnchorA
         {
-            get { return anchorA; }
+            get => anchorA;
             set
             {
                 anchorA = value;
-                localAnchorA = Quaternion.Transform(anchorA - connectionA.position, Quaternion.Conjugate(connectionA.orientation));
+                localAnchorA = Quaternion.Transform(anchorA - connectionA.position,
+                    Quaternion.Conjugate(connectionA.orientation));
             }
         }
 
@@ -141,11 +140,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public Vector3 WorldAnchorB
         {
-            get { return anchorB; }
+            get => anchorB;
             set
             {
                 anchorB = value;
-                localAnchorB = Quaternion.Transform(anchorB - connectionB.position, Quaternion.Conjugate(connectionB.orientation));
+                localAnchorB = Quaternion.Transform(anchorB - connectionB.position,
+                    Quaternion.Conjugate(connectionB.orientation));
             }
         }
 
@@ -170,6 +170,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     lambda += dot;
                     return lambda;
                 }
+
                 return 0;
             }
         }
@@ -178,18 +179,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse { get; private set; }
 
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public float Error
-        {
-            get { return error; }
-        }
+        public float Error { get; private set; }
 
         #endregion
 
@@ -259,15 +254,15 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             lambda += dot;
 
             //Add in the constraint space bias velocity
-            lambda = -lambda + biasVelocity - softness * accumulatedImpulse;
+            lambda = -lambda + biasVelocity - softness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Clamp accumulated impulse (can't go negative)
-            float previousAccumulatedImpulse = accumulatedImpulse;
-            accumulatedImpulse = MathHelper.Max(accumulatedImpulse + lambda, 0);
-            lambda = accumulatedImpulse - previousAccumulatedImpulse;
+            var previousAccumulatedImpulse = TotalImpulse;
+            TotalImpulse = MathHelper.Max(TotalImpulse + lambda, 0);
+            lambda = TotalImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
             Vector3 impulse;
@@ -278,6 +273,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 Vector3.Multiply(ref jAngularA, lambda, out impulse);
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Multiply(ref jLinearB, lambda, out impulse);
@@ -286,7 +282,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
 
-            return (Math.Abs(lambda));
+            return Math.Abs(lambda);
         }
 
         /// <summary>
@@ -304,15 +300,16 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            float distance = separation.Length();
+            var distance = separation.Length();
             if (distance <= maximumLength && distance >= minimumLength)
             {
                 isActiveInSolver = false;
-                accumulatedImpulse = 0;
-                error = 0;
+                TotalImpulse = 0;
+                Error = 0;
                 isLimitActive = false;
                 return;
             }
+
             isLimitActive = true;
 
 
@@ -327,7 +324,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     jLinearA.Z = separation.Z / distance;
                 }
                 else
+                {
                     jLinearB = Toolbox.ZeroVector;
+                }
 
                 jLinearB.X = -jLinearA.X;
                 jLinearB.Y = -jLinearA.Y;
@@ -346,7 +345,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                     jLinearB.Z = separation.Z / distance;
                 }
                 else
+                {
                     jLinearB = Toolbox.ZeroVector;
+                }
 
                 jLinearA.X = -jLinearB.X;
                 jLinearA.Y = -jLinearB.Y;
@@ -394,7 +395,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             {
                 //No point in trying to solve with two kinematics.
                 isActiveInSolver = false;
-                accumulatedImpulse = 0;
+                TotalImpulse = 0;
                 return;
             }
 
@@ -409,10 +410,15 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
 
             //Compute bias velocity
             if (distance > maximumLength)
-                error = Math.Max(0, distance - maximumLength - Margin);
+            {
+                Error = Math.Max(0, distance - maximumLength - Margin);
+            }
             else
-                error = Math.Max(0, minimumLength - Margin - distance);
-            biasVelocity = Math.Min(errorReduction * error, maxCorrectiveVelocity);
+            {
+                Error = Math.Max(0, minimumLength - Margin - distance);
+            }
+
+            biasVelocity = Math.Min(errorReduction * Error, maxCorrectiveVelocity);
             if (bounciness > 0)
             {
                 //Compute currently relative velocity for bounciness.
@@ -426,8 +432,6 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
                 relativeVelocity += dot;
                 biasVelocity = Math.Max(biasVelocity, ComputeBounceVelocity(-relativeVelocity));
             }
-
-
         }
 
         /// <summary>
@@ -441,16 +445,17 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
             Vector3 impulse;
             if (connectionA.isDynamic)
             {
-                Vector3.Multiply(ref jLinearA, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jLinearA, TotalImpulse, out impulse);
                 connectionA.ApplyLinearImpulse(ref impulse);
-                Vector3.Multiply(ref jAngularA, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jAngularA, TotalImpulse, out impulse);
                 connectionA.ApplyAngularImpulse(ref impulse);
             }
+
             if (connectionB.isDynamic)
             {
-                Vector3.Multiply(ref jLinearB, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jLinearB, TotalImpulse, out impulse);
                 connectionB.ApplyLinearImpulse(ref impulse);
-                Vector3.Multiply(ref jAngularB, accumulatedImpulse, out impulse);
+                Vector3.Multiply(ref jAngularB, TotalImpulse, out impulse);
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
 {
@@ -54,9 +53,10 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
                 {
                     return maximumForce;
                 }
+
                 return 0;
             }
-            set { maximumForce = value >= 0 ? value : 0; }
+            set => maximumForce = value >= 0 ? value : 0;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public float MaximumSpeed
         {
-            get { return maximumSpeed; }
+            get => maximumSpeed;
             set
             {
                 maximumSpeed = MathHelper.Max(0, value);
@@ -82,8 +82,8 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public float Softness
         {
-            get { return softness; }
-            set { softness = Math.Max(0, value); }
+            get => softness;
+            set => softness = Math.Max(0, value);
         }
 
         #region I3DImpulseConstraint Members
@@ -91,18 +91,12 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// <summary>
         /// Gets the current relative velocity between the connected entities with respect to the constraint.
         /// </summary>
-        Vector3 I3DImpulseConstraint.RelativeVelocity
-        {
-            get { return entity.angularVelocity; }
-        }
+        Vector3 I3DImpulseConstraint.RelativeVelocity => entity.angularVelocity;
 
         /// <summary>
         /// Gets the total impulse applied by the constraint.
         /// </summary>
-        public Vector3 TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public Vector3 TotalImpulse => accumulatedImpulse;
 
         #endregion
 
@@ -112,14 +106,15 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public override float SolveIteration()
         {
-            float angularSpeed = entity.angularVelocity.LengthSquared();
+            var angularSpeed = entity.angularVelocity.LengthSquared();
             if (angularSpeed > maximumSpeedSquared)
             {
-                angularSpeed = (float)Math.Sqrt(angularSpeed);
+                angularSpeed = (float) Math.Sqrt(angularSpeed);
                 Vector3 impulse;
                 //divide by angularSpeed to normalize the velocity.
                 //Multiply by angularSpeed - maximumSpeed to get the 'velocity change vector.'
-                Vector3.Multiply(ref entity.angularVelocity, -(angularSpeed - maximumSpeed) / angularSpeed, out impulse);
+                Vector3.Multiply(ref entity.angularVelocity, -(angularSpeed - maximumSpeed) / angularSpeed,
+                    out impulse);
 
                 //incorporate softness
                 Vector3 softnessImpulse;
@@ -131,13 +126,13 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
 
 
                 //Accumulate
-                Vector3 previousAccumulatedImpulse = accumulatedImpulse;
+                var previousAccumulatedImpulse = accumulatedImpulse;
                 Vector3.Add(ref accumulatedImpulse, ref impulse, out accumulatedImpulse);
-                float forceMagnitude = accumulatedImpulse.LengthSquared();
+                var forceMagnitude = accumulatedImpulse.LengthSquared();
                 if (forceMagnitude > maxForceDtSquared)
                 {
                     //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                    float multiplier = maxForceDt / (float)Math.Sqrt(forceMagnitude);
+                    var multiplier = maxForceDt / (float) Math.Sqrt(forceMagnitude);
                     accumulatedImpulse.X *= multiplier;
                     accumulatedImpulse.Y *= multiplier;
                     accumulatedImpulse.Z *= multiplier;
@@ -151,7 +146,7 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
                 entity.ApplyAngularImpulse(ref impulse);
 
 
-                return (Math.Abs(impulse.X) + Math.Abs(impulse.Y) + Math.Abs(impulse.Z));
+                return Math.Abs(impulse.X) + Math.Abs(impulse.Y) + Math.Abs(impulse.Z);
             }
 
             return 0;
@@ -185,13 +180,11 @@ namespace MinorEngine.BEPUphysics.Constraints.SingleEntity
                 maxForceDt = float.MaxValue;
                 maxForceDtSquared = float.MaxValue;
             }
-
         }
 
 
         public override void ExclusiveUpdate()
         {
-
             //Can't do warmstarting due to the strangeness of this constraint (not based on a position error, nor is it really a motor).
             accumulatedImpulse = Toolbox.ZeroVector;
         }

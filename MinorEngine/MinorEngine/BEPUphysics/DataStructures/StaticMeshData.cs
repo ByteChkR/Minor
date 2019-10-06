@@ -1,6 +1,5 @@
-﻿
+﻿using MinorEngine.BEPUutilities;
 
-using MinorEngine.BEPUutilities;
 namespace MinorEngine.BEPUphysics.DataStructures
 {
     ///<summary>
@@ -44,7 +43,5 @@ namespace MinorEngine.BEPUphysics.DataStructures
         {
             vertex = vertices[i];
         }
-
-
     }
 }

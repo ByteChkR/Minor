@@ -1,5 +1,4 @@
-﻿using System;
-using MinorEngine.BEPUutilities;
+﻿using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUik
 {
@@ -14,7 +13,7 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 FreeAxis
         {
-            get { return freeAxis; }
+            get => freeAxis;
             set
             {
                 freeAxis = value;
@@ -23,6 +22,7 @@ namespace MinorEngine.BEPUik
                 {
                     constrainedAxis1 = Vector3.Cross(freeAxis, Vector3.Right);
                 }
+
                 constrainedAxis1.Normalize();
                 constrainedAxis2 = Vector3.Cross(freeAxis, constrainedAxis1);
             }
@@ -36,8 +36,6 @@ namespace MinorEngine.BEPUik
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {
- 
-
             linearJacobian = new Matrix3x3();
 
             Vector3 boneAxis;
@@ -62,10 +60,6 @@ namespace MinorEngine.BEPUik
             Vector3.Dot(ref error, ref constrainedAxis2, out constraintSpaceError.Y);
             velocityBias.X = errorCorrectionFactor * constraintSpaceError.X;
             velocityBias.Y = errorCorrectionFactor * constraintSpaceError.Y;
-
-
         }
-
-
     }
 }

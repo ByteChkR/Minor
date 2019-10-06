@@ -1,6 +1,5 @@
-﻿
+﻿using MinorEngine.BEPUutilities;
 
-using MinorEngine.BEPUutilities;
 namespace MinorEngine.BEPUphysics.Paths
 {
     /// <summary>
@@ -18,8 +17,8 @@ namespace MinorEngine.BEPUphysics.Paths
         /// </summary>
         public float Tension
         {
-            get { return tension; }
-            set { tension = MathHelper.Clamp(value, 0, 1); }
+            get => tension;
+            set => tension = MathHelper.Clamp(value, 0, 1);
         }
 
 
@@ -45,15 +44,17 @@ namespace MinorEngine.BEPUphysics.Paths
         protected override void ComputeTangents()
         {
             tangents.Add(Vector3.Zero);
-            for (int i = 1; i < ControlPoints.Count - 1; i++)
+            for (var i = 1; i < ControlPoints.Count - 1; i++)
             {
                 Vector3 tangent;
-                Vector3 previous = ControlPoints[i - 1].Value;
-                Vector3 next = ControlPoints[i + 1].Value;
+                var previous = ControlPoints[i - 1].Value;
+                var next = ControlPoints[i + 1].Value;
                 Vector3.Subtract(ref next, ref previous, out tangent);
-                Vector3.Multiply(ref tangent, (float)((1 - tension) / (ControlPoints[i + 1].Time - ControlPoints[i - 1].Time)), out tangent);
+                Vector3.Multiply(ref tangent,
+                    (float) ((1 - tension) / (ControlPoints[i + 1].Time - ControlPoints[i - 1].Time)), out tangent);
                 tangents.Add(tangent);
             }
+
             tangents.Add(Vector3.Zero);
         }
     }

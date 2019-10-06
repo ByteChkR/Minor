@@ -8,15 +8,15 @@ namespace MinorEngine.engine.rendering.contexts
     {
         private static float[] _screenQuadVertexData =
         {
-                // positions   // texCoords
-                -1.0f, 1.0f, 0.0f, 1.0f,
-                -1.0f, -1.0f, 0.0f, 0.0f,
-                1.0f, -1.0f, 1.0f, 0.0f,
+            // positions   // texCoords
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
 
-                -1.0f, 1.0f, 0.0f, 1.0f,
-                1.0f, -1.0f, 1.0f, 0.0f,
-                1.0f, 1.0f, 1.0f, 1.0f
-            };
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f
+        };
 
         public GameTexture Texture { get; set; }
 
@@ -24,7 +24,9 @@ namespace MinorEngine.engine.rendering.contexts
         private bool _init;
         private int _vao;
 
-        public UIImageRenderContext(Vector2 position, Vector2 scale, Matrix4 modelMatrix, GameTexture tex, bool worldSpace, float alpha, ShaderProgram program, int renderQueue) : base(position, scale, modelMatrix, worldSpace, alpha, program, renderQueue)
+        public UIImageRenderContext(Vector2 position, Vector2 scale, Matrix4 modelMatrix, GameTexture tex,
+            bool worldSpace, float alpha, ShaderProgram program, int renderQueue) : base(position, scale, modelMatrix,
+            worldSpace, alpha, program, renderQueue)
         {
             Texture = tex;
         }
@@ -33,11 +35,11 @@ namespace MinorEngine.engine.rendering.contexts
         {
             _init = true;
             _vao = GL.GenVertexArray();
-            int _screenVBO = GL.GenBuffer();
+            var _screenVBO = GL.GenBuffer();
             GL.BindVertexArray(_vao);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -47,13 +49,16 @@ namespace MinorEngine.engine.rendering.contexts
 
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
-            if (!_init) SetUpGLBuffers();
+            if (!_init)
+            {
+                SetUpGLBuffers();
+            }
 
             GL.Enable(EnableCap.Blend);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             Program.Use();
 
-            Matrix4 mat = Matrix4.Identity;
+            var mat = Matrix4.Identity;
 
             if (WorldSpace)
             {
@@ -81,5 +86,4 @@ namespace MinorEngine.engine.rendering.contexts
             GL.Disable(EnableCap.Blend);
         }
     }
-
 }

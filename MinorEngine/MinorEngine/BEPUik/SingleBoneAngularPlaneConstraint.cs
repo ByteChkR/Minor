@@ -1,5 +1,4 @@
-﻿using System;
-using MinorEngine.BEPUutilities;
+﻿using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUik
 {
@@ -11,7 +10,6 @@ namespace MinorEngine.BEPUik
         public Vector3 PlaneNormal;
 
 
-
         /// <summary>
         /// Axis to constrain to the plane in the bone's local space.
         /// </summary>
@@ -19,8 +17,6 @@ namespace MinorEngine.BEPUik
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {
- 
-
             linearJacobian = new Matrix3x3();
 
             Vector3 boneAxis;
@@ -33,16 +29,12 @@ namespace MinorEngine.BEPUik
             {
                 M11 = jacobian.X,
                 M12 = jacobian.Y,
-                M13 = jacobian.Z,
+                M13 = jacobian.Z
             };
 
 
             Vector3.Dot(ref boneAxis, ref PlaneNormal, out velocityBias.X);
             velocityBias.X = -errorCorrectionFactor * velocityBias.X;
-
-
         }
-
-
     }
 }

@@ -11,15 +11,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     {
         protected CompoundCollidable compoundInfo;
 
-        public override Collidable CollidableA
-        {
-            get { return compoundInfo; }
-        }
-        public override Entities.Entity EntityA
-        {
-            get { return compoundInfo.entity; }
-        }
+        public override Collidable CollidableA => compoundInfo;
 
+        public override Entities.Entity EntityA => compoundInfo.entity;
 
 
         ///<summary>
@@ -53,8 +47,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             compoundInfo = null;
             //Child type needs to null out other reference.
         }
-
-
-
     }
 }

@@ -2,7 +2,7 @@
 
 namespace MinorEngine.exceptions
 {
-    public class LayerNotFoundException: EngineException
+    public class LayerNotFoundException : EngineException
     {
         public LayerNotFoundException(int index, Exception inner) : base(
             "The Layer at index " + index + " could not be found.", inner)

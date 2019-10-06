@@ -1,13 +1,9 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using Common;
-using MinorEngine.BEPUphysics.CollisionTests;
+﻿using MinorEngine.BEPUphysics.CollisionTests;
 using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.components;
 using MinorEngine.engine.core;
-using MinorEngine.debug;
 using OpenTK;
 using OpenTK.Input;
-using OpenTK.Platform.Windows;
 
 namespace MinorEngine.engine.components
 {
@@ -24,7 +20,6 @@ namespace MinorEngine.engine.components
 
         internal void _Destroy()
         {
-
             OnDestroy();
 
             if (Owner != null)
@@ -43,7 +38,6 @@ namespace MinorEngine.engine.components
 
         protected virtual void OnDestroy()
         {
-
         }
 
         protected virtual void OnKeyPress(object sender, KeyPressEventArgs e)
@@ -90,6 +84,7 @@ namespace MinorEngine.engine.components
 
             OnKeyUp(sender, e);
         }
+
         protected virtual void Update(float deltaTime)
         {
         }
@@ -112,6 +107,7 @@ namespace MinorEngine.engine.components
         protected virtual void OnCollisionEnded(Collider other, CollidablePairHandler handler)
         {
         }
+
         protected virtual void OnContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
         {
         }
@@ -119,6 +115,7 @@ namespace MinorEngine.engine.components
         protected virtual void OnContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
         {
         }
+
         internal void onInitialCollisionDetected(Collider other, CollidablePairHandler handler)
         {
             if (!_awake)
@@ -159,9 +156,8 @@ namespace MinorEngine.engine.components
                 Awake();
                 _awake = true;
             }
+
             OnContactCreated(other, handler, contact);
         }
-
-
     }
 }

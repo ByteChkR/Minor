@@ -1,7 +1,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -16,14 +15,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///</summary>
         public ConvexShape Shape
         {
-            get
-            {
-                return CollisionInformation.Shape.Shape;
-            }
-            set
-            {
-                CollisionInformation.Shape.Shape = value;
-            }
+            get => CollisionInformation.Shape.Shape;
+            set => CollisionInformation.Shape.Shape = value;
         }
 
         ///<summary>
@@ -31,14 +24,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///</summary>
         public Matrix3x3 Transform
         {
-            get
-            {
-                return CollisionInformation.Shape.Transform;
-            }
-            set
-            {
-                CollisionInformation.Shape.Transform = value;
-            }
+            get => CollisionInformation.Shape.Transform;
+            set => CollisionInformation.Shape.Transform = value;
         }
 
         private TransformableEntity(ConvexShape shape, Matrix3x3 transform)
@@ -50,7 +37,6 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
             : base(new ConvexCollidable<TransformableShape>(new TransformableShape(shape, transform)), mass)
         {
         }
-
 
 
         /// <summary>
@@ -104,8 +90,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
-
-
     }
 }

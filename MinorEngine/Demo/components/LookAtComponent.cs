@@ -19,7 +19,10 @@ namespace Demo.components
 
         protected override void Update(float deltaTime)
         {
-            if (target != null) Owner.LookAt(target);
+            if (target != null)
+            {
+                Owner.LookAt(target);
+            }
         }
     }
 }

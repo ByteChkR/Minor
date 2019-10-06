@@ -1,5 +1,5 @@
-﻿using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-using System;
+﻿using System;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
 using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
@@ -20,6 +20,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         /// </summary>
         /// <param name="pair">Pair to return.</param>
         public abstract void GiveBack(NarrowPhasePair pair);
+
         /// <summary>
         /// Gets or sets the number of elements in the pair factory that are ready to take.
         /// If the factory runs out, it will construct new instances to give away (unless AllowOnDemandConstruction is set to false).
@@ -27,20 +28,15 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         public abstract int Count { get; set; }
 
         protected bool allowOnDemandConstruction = true;
+
         /// <summary>
         /// Gets or sets whether or not to allow the factory to create additional instances when it runs
         /// out of its initial set.  Defaults to true.
         /// </summary>
         public bool AllowOnDemandConstruction
         {
-            get
-            {
-                return allowOnDemandConstruction;
-            }
-            set
-            {
-                allowOnDemandConstruction = value;
-            }
+            get => allowOnDemandConstruction;
+            set => allowOnDemandConstruction = value;
         }
 
         /// <summary>
@@ -50,7 +46,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         public void EnsureCount(int minimumCount)
         {
             if (Count < minimumCount)
+            {
                 Count = minimumCount;
+            }
         }
 
         /// <summary>
@@ -60,21 +58,25 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         public void CapCount(int maximumCount)
         {
             if (Count > maximumCount)
+            {
                 Count = maximumCount;
+            }
         }
-        
+
         /// <summary>
         /// Removes all elements from the factory.
         /// </summary>
         public abstract void Clear();
     }
+
     ///<summary>
     /// Manufactures a given type of narrow phase pairs.
     ///</summary>
     /// <typeparam name="T">Type of the pair to manufacture.</typeparam>
     public class NarrowPhasePairFactory<T> : NarrowPhasePairFactory where T : NarrowPhasePair, new()
     {
-        LockingResourcePool<T> pool = new LockingResourcePool<T>();
+        private LockingResourcePool<T> pool = new LockingResourcePool<T>();
+
         /// <summary>
         /// Get a resource from the factory.
         /// </summary>
@@ -82,7 +84,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         public override NarrowPhasePair GetNarrowPhasePair()
         {
             if (!allowOnDemandConstruction && pool.Count == 0)
-                throw new InvalidOperationException("Cannot request additional resources from this factory; it is exhausted.  Consider specifying a greater number of initial resources or setting AllowOnDemandConstruction to true.");
+            {
+                throw new InvalidOperationException(
+                    "Cannot request additional resources from this factory; it is exhausted.  Consider specifying a greater number of initial resources or setting AllowOnDemandConstruction to true.");
+            }
+
             var pair = pool.Take();
             pair.NeedsUpdate = true;
             return pair;
@@ -95,9 +101,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         public override void GiveBack(NarrowPhasePair pair)
         {
             pair.NarrowPhase = null;
-            pool.GiveBack((T)pair);
+            pool.GiveBack((T) pair);
         }
-
 
 
         /// <summary>
@@ -106,16 +111,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         /// </summary>
         public override int Count
         {
-            get
-            {
-                return pool.Count;
-            }
-            set
-            {
-                pool.Initialize(value);
-            }
+            get => pool.Count;
+            set => pool.Initialize(value);
         }
-
 
 
         /// <summary>
@@ -125,8 +123,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems
         {
             pool.Clear();
         }
-
-
-
     }
 }

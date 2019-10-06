@@ -10,22 +10,18 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
     public struct BroadPhaseOverlap : IEquatable<BroadPhaseOverlap>
     {
         internal BroadPhaseEntry entryA;
+
         /// <summary>
         /// First entry in the pair.
         /// </summary>
-        public BroadPhaseEntry EntryA
-        {
-            get { return entryA; }
-        }
+        public BroadPhaseEntry EntryA => entryA;
 
         internal BroadPhaseEntry entryB;
+
         /// <summary>
         /// Second entry in the pair.
         /// </summary>
-        public BroadPhaseEntry EntryB
-        {
-            get { return entryB; }
-        }
+        public BroadPhaseEntry EntryB => entryB;
 
         internal CollisionRule collisionRule;
 
@@ -57,10 +53,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         /// <summary>
         /// Gets the collision rule calculated for the pair.
         /// </summary>
-        public CollisionRule CollisionRule
-        {
-            get { return collisionRule; }
-        }
+        public CollisionRule CollisionRule => collisionRule;
 
         /// <summary>
         /// Gets the hash code of the object.
@@ -69,7 +62,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         public override int GetHashCode()
         {
             //TODO: Use old prime-based system?
-            return (int)((entryA.hashCode + entryB.hashCode) * 0xd8163841);
+            return (int) ((entryA.hashCode + entryB.hashCode) * 0xd8163841);
         }
 
 
@@ -82,7 +75,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         /// <returns>Whether or not the overlaps were equal.</returns>
         public bool Equals(BroadPhaseOverlap other)
         {
-            return (other.entryA == entryA && other.entryB == entryB) || (other.entryA == entryB && other.entryB == entryA);
+            return other.entryA == entryA && other.entryB == entryB || other.entryA == entryB && other.entryB == entryA;
         }
 
         #endregion

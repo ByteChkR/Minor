@@ -11,18 +11,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     {
         protected MobileMeshCollidable mobileMesh;
 
-        public override Collidable CollidableA
-        {
-            get { return mobileMesh; }
-        }
-        public override Entities.Entity EntityA
-        {
-            get { return mobileMesh.entity; }
-        }
-        protected override Materials.Material MaterialA
-        {
-            get { return mobileMesh.entity.material; }
-        }
+        public override Collidable CollidableA => mobileMesh;
+
+        public override Entities.Entity EntityA => mobileMesh.entity;
+
+        protected override Materials.Material MaterialA => mobileMesh.entity.material;
 
 
         ///<summary>
@@ -56,8 +49,5 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             mobileMesh = null;
             //Child type needs to null out other reference.
         }
-
-
-
     }
 }

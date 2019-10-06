@@ -47,10 +47,7 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
         /// can still be requested; they will be allocated
         /// dynamically.
         /// </summary>
-        public override int Count
-        {
-            get { return stack.Count; }
-        }
+        public override int Count => stack.Count;
 
         /// <summary>
         /// Gives an item back to the resource pool.
@@ -73,11 +70,15 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             {
                 stack.Pop();
             }
+
             if (InstanceInitializer != null)
-                foreach (T t in stack)
+            {
+                foreach (var t in stack)
                 {
                     InstanceInitializer(t);
                 }
+            }
+
             while (stack.Count < initialResourceCount)
             {
                 stack.Push(CreateNewResource());
@@ -94,10 +95,8 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
             {
                 return stack.Pop();
             }
-            else
-            {
-                return CreateNewResource();
-            }
+
+            return CreateNewResource();
         }
 
         /// <summary>

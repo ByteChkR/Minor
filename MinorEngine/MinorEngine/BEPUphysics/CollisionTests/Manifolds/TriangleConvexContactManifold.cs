@@ -1,12 +1,12 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
-using MinorEngine.BEPUutilities.ResourceManagement;
-using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
+using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
+using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 {
@@ -15,21 +15,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class TriangleConvexContactManifold : ContactManifold
     {
-        RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
-        TriangleConvexPairTester pairTester;
-        TriangleShape localTriangleShape = new TriangleShape();
+        private RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
+        private TriangleShape localTriangleShape = new TriangleShape();
 
         ///<summary>
         /// Gets the pair tester used by the manifold.
         ///</summary>
-        public TriangleConvexPairTester PairTester
-        {
-            get
-            {
-                return pairTester;
-            }
-
-        }
+        public TriangleConvexPairTester PairTester { get; }
 
         protected ConvexCollidable convex;
         protected ConvexCollidable<TriangleShape> triangle;
@@ -37,24 +29,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the convex associated with the pair.
         ///</summary>
-        public ConvexCollidable Convex
-        {
-            get
-            {
-                return convex;
-            }
-        }
+        public ConvexCollidable Convex => convex;
 
         ///<summary>
         /// Gets the triangle associated with the pair.
         ///</summary>
-        public ConvexCollidable<TriangleShape> Triangle
-        {
-            get
-            {
-                return triangle;
-            }
-        }
+        public ConvexCollidable<TriangleShape> Triangle => triangle;
 
         ///<summary>
         /// Constructs a new manifold.
@@ -64,13 +44,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             contacts = new RawList<Contact>(4);
             unusedContacts = new UnsafeResourcePool<Contact>(4);
             contactIndicesToRemove = new RawList<int>(4);
-            pairTester = new TriangleConvexPairTester();
+            PairTester = new TriangleConvexPairTester();
         }
 
         public override void Update(float dt)
         {
             //First, refresh all existing contacts.  This is an incremental manifold.
-            ContactRefresher.ContactRefresh(contacts, supplementData, ref convex.worldTransform, ref triangle.worldTransform, contactIndicesToRemove);
+            ContactRefresher.ContactRefresh(contacts, supplementData, ref convex.worldTransform,
+                ref triangle.worldTransform, contactIndicesToRemove);
             RemoveQueuedContacts();
 
 
@@ -98,9 +79,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             //Now, generate a contact between the two shapes.
             ContactData contact;
             TinyStructList<ContactData> contactList;
-            if (pairTester.GenerateContactCandidates(localTriangleShape, out contactList))
+            if (PairTester.GenerateContactCandidates(localTriangleShape, out contactList))
             {
-                for (int i = 0; i < contactList.Count; i++)
+                for (var i = 0; i < contactList.Count; i++)
                 {
                     contactList.Get(i, out contact);
                     //Put the contact into world space.
@@ -115,10 +96,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                         {
                             //Adding that contact would overflow the manifold.  Reduce to the best subset.
                             bool addCandidate;
-                            ContactReducer.ReduceContacts(contacts, ref contact, contactIndicesToRemove, out addCandidate);
+                            ContactReducer.ReduceContacts(contacts, ref contact, contactIndicesToRemove,
+                                out addCandidate);
                             RemoveQueuedContacts();
                             if (addCandidate)
+                            {
                                 Add(ref contact);
+                            }
                         }
                         else
                         {
@@ -129,12 +113,13 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 }
             }
             else
-            {
                 //Clear out the contacts, it's separated.
-                for (int i = contacts.Count - 1; i >= 0; i--)
+            {
+                for (var i = contacts.Count - 1; i >= 0; i--)
+                {
                     Remove(i);
+                }
             }
-
         }
 
         protected override void Add(ref ContactData contactCandidate)
@@ -142,8 +127,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             ContactSupplementData supplement;
             supplement.BasePenetrationDepth = contactCandidate.PenetrationDepth;
             //The closest point method computes the local space versions before transforming to world... consider cutting out the middle man
-            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref convex.worldTransform, out supplement.LocalOffsetA);
-            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref triangle.worldTransform, out supplement.LocalOffsetB);
+            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref convex.worldTransform,
+                out supplement.LocalOffsetA);
+            RigidTransform.TransformByInverse(ref contactCandidate.Position, ref triangle.worldTransform,
+                out supplement.LocalOffsetB);
             supplementData.Add(ref supplement);
             base.Add(ref contactCandidate);
         }
@@ -159,9 +146,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         {
             contactCandidate.Validate();
             float distanceSquared;
-            for (int i = 0; i < contacts.Count; i++)
+            for (var i = 0; i < contacts.Count; i++)
             {
-                Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position, out distanceSquared);
+                Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position,
+                    out distanceSquared);
                 if (distanceSquared < CollisionDetectionSettings.ContactMinimumSeparationDistanceSquared)
                 {
                     //Update the existing 'redundant' contact with the new information.
@@ -170,11 +158,14 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                     contacts.Elements[i].Position = contactCandidate.Position;
                     contacts.Elements[i].PenetrationDepth = contactCandidate.PenetrationDepth;
                     supplementData.Elements[i].BasePenetrationDepth = contactCandidate.PenetrationDepth;
-                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref convex.worldTransform, out supplementData.Elements[i].LocalOffsetA);
-                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref triangle.worldTransform, out supplementData.Elements[i].LocalOffsetB);
+                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref convex.worldTransform,
+                        out supplementData.Elements[i].LocalOffsetA);
+                    RigidTransform.TransformByInverse(ref contactCandidate.Position, ref triangle.worldTransform,
+                        out supplementData.Elements[i].LocalOffsetB);
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -189,10 +180,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 convex = newCollidableB as ConvexCollidable;
                 triangle = newCollidableA as ConvexCollidable<TriangleShape>;
                 if (convex == null || triangle == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize contact manifold.");
+                }
             }
 
-            pairTester.Initialize(convex.Shape);
+            PairTester.Initialize(convex.Shape);
         }
 
         public override void CleanUp()
@@ -200,10 +193,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             supplementData.Clear();
             convex = null;
             triangle = null;
-            pairTester.CleanUp();
+            PairTester.CleanUp();
             base.CleanUp();
         }
-
-
     }
 }

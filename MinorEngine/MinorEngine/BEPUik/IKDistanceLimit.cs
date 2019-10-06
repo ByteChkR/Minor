@@ -12,6 +12,7 @@ namespace MinorEngine.BEPUik
         /// Gets or sets the offset in connection A's local space from the center of mass to the anchor point.
         /// </summary>
         public Vector3 LocalAnchorA;
+
         /// <summary>
         /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point.
         /// </summary>
@@ -22,8 +23,10 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AnchorA
         {
-            get { return ConnectionA.Position + Quaternion.Transform(LocalAnchorA, ConnectionA.Orientation); }
-            set { LocalAnchorA = Quaternion.Transform(value - ConnectionA.Position, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => ConnectionA.Position + Quaternion.Transform(LocalAnchorA, ConnectionA.Orientation);
+            set =>
+                LocalAnchorA = Quaternion.Transform(value - ConnectionA.Position,
+                    Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -31,28 +34,32 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AnchorB
         {
-            get { return ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation); }
-            set { LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => ConnectionB.Position + Quaternion.Transform(LocalAnchorB, ConnectionB.Orientation);
+            set =>
+                LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position,
+                    Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         private float minimumDistance;
+
         /// <summary>
         /// Gets or sets the minimum distance that the joint connections should be kept from each other.
         /// </summary>
         public float MinimumDistance
         {
-            get { return minimumDistance; }
-            set { minimumDistance = Math.Max(0, value); }
+            get => minimumDistance;
+            set => minimumDistance = Math.Max(0, value);
         }
 
-         private float maximumDistance;
+        private float maximumDistance;
+
         /// <summary>
         /// Gets or sets the maximum distance that the joint connections should be kept from each other.
         /// </summary>
         public float MaximumDistance
         {
-            get { return maximumDistance; }
-            set { maximumDistance = Math.Max(0, value); }
+            get => maximumDistance;
+            set => maximumDistance = Math.Max(0, value);
         }
 
         /// <summary>
@@ -64,7 +71,8 @@ namespace MinorEngine.BEPUik
         /// <param name="anchorB">Anchor point on the second bone in world space.</param>
         /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other.</param>
         /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other.</param>
-        public IKDistanceLimit(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB, float minimumDistance, float maximumDistance)
+        public IKDistanceLimit(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB,
+            float minimumDistance, float maximumDistance)
             : base(connectionA, connectionB)
         {
             AnchorA = anchorA;
@@ -86,7 +94,7 @@ namespace MinorEngine.BEPUik
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            float currentDistance = separation.Length();
+            var currentDistance = separation.Length();
 
             //Compute jacobians
             Vector3 linearA;
@@ -136,11 +144,10 @@ namespace MinorEngine.BEPUik
             Vector3.Cross(ref linearA, ref offsetB, out angularB);
 
             //Put all the 1x3 jacobians into a 3x3 matrix representation.
-            linearJacobianA = new Matrix3x3 { M11 = linearA.X, M12 = linearA.Y, M13 = linearA.Z };
-            linearJacobianB = new Matrix3x3 { M11 = -linearA.X, M12 = -linearA.Y, M13 = -linearA.Z };
-            angularJacobianA = new Matrix3x3 { M11 = angularA.X, M12 = angularA.Y, M13 = angularA.Z };
-            angularJacobianB = new Matrix3x3 { M11 = angularB.X, M12 = angularB.Y, M13 = angularB.Z };
-
+            linearJacobianA = new Matrix3x3 {M11 = linearA.X, M12 = linearA.Y, M13 = linearA.Z};
+            linearJacobianB = new Matrix3x3 {M11 = -linearA.X, M12 = -linearA.Y, M13 = -linearA.Z};
+            angularJacobianA = new Matrix3x3 {M11 = angularA.X, M12 = angularA.Y, M13 = angularA.Z};
+            angularJacobianB = new Matrix3x3 {M11 = angularB.X, M12 = angularB.Y, M13 = angularB.Z};
         }
     }
 }

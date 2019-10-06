@@ -1,8 +1,7 @@
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
- 
-using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities;
+using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity
 {
@@ -33,12 +32,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity
         /// </summary>
         public Entity ConnectionA
         {
-            get
-            {
-                //if (myConnectionA == nullSphere)
-                //    return null;
-                return connectionA;
-            }
+            get => connectionA;
             set
             {
                 connectionA = value ?? WorldEntity;
@@ -51,12 +45,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity
         /// </summary>
         public Entity ConnectionB
         {
-            get
-            {
-                //if (myConnectionB == nullSphere)
-                //    return null;
-                return connectionB;
-            }
+            get => connectionB;
             set
             {
                 connectionB = value ?? WorldEntity;
@@ -73,12 +62,14 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
             if (connectionA != null && connectionA != WorldEntity)
+            {
                 outputInvolvedEntities.Add(connectionA);
+            }
 
             if (connectionB != null && connectionB != WorldEntity)
+            {
                 outputInvolvedEntities.Add(connectionB);
+            }
         }
-
-
     }
 }

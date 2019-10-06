@@ -11,6 +11,7 @@ namespace MinorEngine.BEPUutilities
         /// X component of the vector.
         /// </summary>
         public float X;
+
         /// <summary>
         /// Y component of the vector.
         /// </summary>
@@ -23,8 +24,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="y">Y component of the vector.</param>
         public Vector2(float x, float y)
         {
-            this.X = x;
-            this.Y = y;
+            X = x;
+            Y = y;
         }
 
         /// <summary>
@@ -42,7 +43,7 @@ namespace MinorEngine.BEPUutilities
         /// <returns>Length of the vector.</returns>
         public float Length()
         {
-            return (float)System.Math.Sqrt(X * X + Y * Y);
+            return (float) Math.Sqrt(X * X + Y * Y);
         }
 
         /// <summary>
@@ -110,7 +111,7 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Result of the division.</param>
         public static void Divide(ref Vector2 v, float divisor, out Vector2 result)
         {
-            float inverse = 1 / divisor;
+            var inverse = 1 / divisor;
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
         }
@@ -140,29 +141,17 @@ namespace MinorEngine.BEPUutilities
         /// <summary>
         /// Gets the zero vector.
         /// </summary>
-        public static Vector2 Zero
-        {
-            get
-            {
-                return new Vector2();
-            }
-        }
+        public static Vector2 Zero => new Vector2();
 
         /// <summary>
         /// Gets a vector pointing along the X axis.
         /// </summary>
-        public static Vector2 UnitX
-        {
-            get { return new Vector2 { X = 1 }; }
-        }
+        public static Vector2 UnitX => new Vector2 {X = 1};
 
         /// <summary>
         /// Gets a vector pointing along the Y axis.
         /// </summary>
-        public static Vector2 UnitY
-        {
-            get { return new Vector2 { Y = 1 }; }
-        }
+        public static Vector2 UnitY => new Vector2 {Y = 1};
 
 
         /// <summary>
@@ -173,7 +162,7 @@ namespace MinorEngine.BEPUutilities
         public static Vector2 Normalize(Vector2 v)
         {
             Vector2 toReturn;
-            Vector2.Normalize(ref v, out toReturn);
+            Normalize(ref v, out toReturn);
             return toReturn;
         }
 
@@ -184,7 +173,7 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Normalized vector.</param>
         public static void Normalize(ref Vector2 v, out Vector2 result)
         {
-            float inverse = (float)(1 / System.Math.Sqrt(v.X * v.X + v.Y * v.Y));
+            var inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y));
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
         }
@@ -208,13 +197,22 @@ namespace MinorEngine.BEPUutilities
         public static void Abs(ref Vector2 v, out Vector2 result)
         {
             if (v.X < 0)
+            {
                 result.X = -v.X;
+            }
             else
+            {
                 result.X = v.X;
+            }
+
             if (v.Y < 0)
+            {
                 result.Y = -v.Y;
+            }
             else
+            {
                 result.Y = v.Y;
+            }
         }
 
         /// <summary>
@@ -285,7 +283,7 @@ namespace MinorEngine.BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            float inverse = (float)(1 / System.Math.Sqrt(X * X + Y * Y));
+            var inverse = (float) (1 / Math.Sqrt(X * X + Y * Y));
             X *= inverse;
             Y *= inverse;
         }
@@ -315,6 +313,7 @@ namespace MinorEngine.BEPUutilities
             toReturn.Y = v.Y * f;
             return toReturn;
         }
+
         /// <summary>
         /// Scales a vector.
         /// </summary>
@@ -407,6 +406,7 @@ namespace MinorEngine.BEPUutilities
         {
             return a.X == b.X && a.Y == b.Y;
         }
+
         /// <summary>
         /// Tests two vectors for componentwise inequivalence.
         /// </summary>
@@ -441,8 +441,9 @@ namespace MinorEngine.BEPUutilities
         {
             if (obj is Vector2)
             {
-                return Equals((Vector2)obj);
+                return Equals((Vector2) obj);
             }
+
             return false;
         }
 
@@ -457,7 +458,5 @@ namespace MinorEngine.BEPUutilities
         {
             return X.GetHashCode() + Y.GetHashCode();
         }
-
-
     }
 }

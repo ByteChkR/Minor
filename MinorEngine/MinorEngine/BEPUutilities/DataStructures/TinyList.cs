@@ -25,10 +25,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <summary>
         /// Gets the current number of elements in the list.
         /// </summary>
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count => count;
 
         /// <summary>
         /// Gets the item at the specified index.
@@ -42,8 +39,9 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 //Get
                 if (index > count - 1 || index < 0)
                 {
-                    return default(T);
+                    return default;
                 }
+
                 switch (index)
                 {
                     case 0:
@@ -64,7 +62,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                         return entry8;
                     default:
                         //Curious!
-                        return default(T);
+                        return default;
                 }
             }
             set
@@ -74,6 +72,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 {
                     return;
                 }
+
                 switch (index)
                 {
                     case 0:
@@ -110,7 +109,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <returns>String representation of the list.</returns>
         public override string ToString()
         {
-            return "TinyList<" + typeof (T) + ">, Count: " + count;
+            return "TinyList<" + typeof(T) + ">, Count: " + count;
         }
 
         /// <summary>
@@ -150,6 +149,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 default:
                     return false;
             }
+
             count++;
             return true;
         }
@@ -162,14 +162,14 @@ namespace MinorEngine.BEPUutilities.DataStructures
             //Things aren't guaranteed to be structs in this list.
             //It would be bad if we kept a reference around, hidden.
             count = 0;
-            entry1 = default(T);
-            entry2 = default(T);
-            entry3 = default(T);
-            entry4 = default(T);
-            entry5 = default(T);
-            entry6 = default(T);
-            entry7 = default(T);
-            entry8 = default(T);
+            entry1 = default;
+            entry2 = default;
+            entry3 = default;
+            entry4 = default;
+            entry5 = default;
+            entry6 = default;
+            entry7 = default;
+            entry8 = default;
         }
 
         /// <summary>
@@ -181,21 +181,45 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             //This isn't a super fast operation.
             if (entry1.Equals(item))
+            {
                 return 0;
-            else if (entry2.Equals(item))
+            }
+
+            if (entry2.Equals(item))
+            {
                 return 1;
-            else if (entry3.Equals(item))
+            }
+
+            if (entry3.Equals(item))
+            {
                 return 2;
-            else if (entry4.Equals(item))
+            }
+
+            if (entry4.Equals(item))
+            {
                 return 3;
-            else if (entry5.Equals(item))
+            }
+
+            if (entry5.Equals(item))
+            {
                 return 4;
-            else if (entry6.Equals(item))
+            }
+
+            if (entry6.Equals(item))
+            {
                 return 5;
-            else if (entry7.Equals(item))
+            }
+
+            if (entry7.Equals(item))
+            {
                 return 6;
-            else if (entry8.Equals(item))
+            }
+
+            if (entry8.Equals(item))
+            {
                 return 7;
+            }
+
             return -1;
         }
 
@@ -207,12 +231,13 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool Remove(T item)
         {
             //Identity-based removes aren't a super high priority feature, so can be a little slower.
-            int index = IndexOf(item);
+            var index = IndexOf(item);
             if (index != -1)
             {
                 RemoveAt(index);
                 return true;
             }
+
             return false;
         }
 
@@ -225,7 +250,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public bool RemoveAt(int index)
         {
             if (index > count - 1 || index < 0)
+            {
                 return false;
+            }
+
             switch (index)
             {
                 case 0:
@@ -271,6 +299,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
                     entry7 = entry8;
                     break;
             }
+
             count--;
             return true;
         }

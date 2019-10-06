@@ -27,14 +27,28 @@ namespace Demo.scenes
 
         private string cmd_ChangeCameraPos(string[] args)
         {
-            if (args.Length != 3) return "Invalid Arguments";
+            if (args.Length != 3)
+            {
+                return "Invalid Arguments";
+            }
 
             float x, y, z;
-            if (!float.TryParse(args[0], out x)) return "Invalid Arguments";
-            if (!float.TryParse(args[1], out y)) return "Invalid Arguments";
-            if (!float.TryParse(args[2], out z)) return "Invalid Arguments";
+            if (!float.TryParse(args[0], out x))
+            {
+                return "Invalid Arguments";
+            }
 
-            Vector3 pos = new Vector3(x, y, z);
+            if (!float.TryParse(args[1], out y))
+            {
+                return "Invalid Arguments";
+            }
+
+            if (!float.TryParse(args[2], out z))
+            {
+                return "Invalid Arguments";
+            }
+
+            var pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Translate(pos);
             pos = GameEngine.Instance.World.Camera.GetLocalPosition();
             return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
@@ -42,14 +56,33 @@ namespace Demo.scenes
 
         private string cmd_ChangeCameraRot(string[] args)
         {
-            if (args.Length != 4) return "Invalid Arguments";
-            float x, y, z, angle;
-            if (!float.TryParse(args[0], out x)) return "Invalid Arguments";
-            if (!float.TryParse(args[1], out y)) return "Invalid Arguments";
-            if (!float.TryParse(args[2], out z)) return "Invalid Arguments";
-            if (!float.TryParse(args[3], out angle)) return "Invalid Arguments";
+            if (args.Length != 4)
+            {
+                return "Invalid Arguments";
+            }
 
-            Vector3 pos = new Vector3(x, y, z);
+            float x, y, z, angle;
+            if (!float.TryParse(args[0], out x))
+            {
+                return "Invalid Arguments";
+            }
+
+            if (!float.TryParse(args[1], out y))
+            {
+                return "Invalid Arguments";
+            }
+
+            if (!float.TryParse(args[2], out z))
+            {
+                return "Invalid Arguments";
+            }
+
+            if (!float.TryParse(args[3], out angle))
+            {
+                return "Invalid Arguments";
+            }
+
+            var pos = new Vector3(x, y, z);
             GameEngine.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
 
             return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
@@ -58,34 +91,34 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-            GameMesh sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
-            GameMesh plane = ResourceManager.MeshIO.FileToMesh("models/plane.obj");
-            GameMesh bgBox = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
+            var sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
+            var plane = ResourceManager.MeshIO.FileToMesh("models/plane.obj");
+            var bgBox = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
 
-            bgBox.SetTextureBuffer( new[] { ResourceManager.TextureIO.FileToTexture("textures/ground4k.png")});
+            bgBox.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/ground4k.png")});
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
-            }, out ShaderProgram textShader);
+            }, out var textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/texture.fs"},
                 {ShaderType.VertexShader, "shader/texture.vs"}
-            }, out ShaderProgram shader);
+            }, out var shader);
 
-            GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
+            var objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
             objSphere.AddComponent(new MeshRendererComponent(shader, sphere, 1));
             objSphere.AddComponent(new RotatingComponent());
 
-            GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
+            var objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
             objQuad.AddComponent(new MeshRendererComponent(shader, plane, 1));
             objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(90));
 
-            GameObject uiText = new GameObject(new Vector3(0), "UIText");
+            var uiText = new GameObject(new Vector3(0), "UIText");
             uiText.AddComponent(new FLGeneratorComponent(new List<MeshRendererComponent>
                     {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()},
                 512,
@@ -93,7 +126,7 @@ namespace Demo.scenes
 
 
             GameEngine.Instance.World.Add(uiText);
-            DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
+            var dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
@@ -102,13 +135,13 @@ namespace Demo.scenes
             GameEngine.Instance.World.Add(objSphere);
             GameEngine.Instance.World.Add(objQuad);
 
-            GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
-            bgObj.Scale=new Vector3(25, 1, 25);
+            var bgObj = new GameObject(Vector3.UnitY * -3, "BG");
+            bgObj.Scale = new Vector3(25, 1, 25);
             bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
             GameEngine.Instance.World.Add(bgObj);
 
 
-            Camera mainCamera =
+            var mainCamera =
                 new Camera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                         GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
@@ -117,18 +150,18 @@ namespace Demo.scenes
             GameEngine.Instance.World.Add(mainCamera);
             GameEngine.Instance.World.SetCamera(mainCamera);
 
-            GameObject camContainer = new GameObject("CamContainer");
+            var camContainer = new GameObject("CamContainer");
 
-            Camera inPicCam =
+            var inPicCam =
                 new Camera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                         GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             inPicCam.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(0));
             inPicCam.Translate(new Vector3(0, 2, 4));
             inPicCam.AddComponent(new RotateAroundComponent());
-            GameObject zeroPoint = new GameObject("Zero");
+            var zeroPoint = new GameObject("Zero");
             GameEngine.Instance.World.Add(zeroPoint);
-            LookAtComponent comp = new LookAtComponent();
+            var comp = new LookAtComponent();
             comp.SetTarget(zeroPoint);
             inPicCam.AddComponent(comp);
             GameEngine.Instance.World.Add(inPicCam);

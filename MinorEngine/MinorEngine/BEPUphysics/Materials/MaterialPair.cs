@@ -1,19 +1,22 @@
 ﻿using System;
+
 namespace MinorEngine.BEPUphysics.Materials
 {
     ///<summary>
     /// A pair of materials.
     ///</summary>
-    public struct MaterialPair :IEquatable<MaterialPair>
+    public struct MaterialPair : IEquatable<MaterialPair>
     {
         ///<summary>
         /// First material in the pair.
         ///</summary>
         public Material MaterialA;
+
         ///<summary>
         /// Second material in the pair.
         ///</summary>
         public Material MaterialB;
+
         ///<summary>
         /// Constructs a new material pair.
         ///</summary>
@@ -45,7 +48,8 @@ namespace MinorEngine.BEPUphysics.Materials
         /// <returns>Whether or not the two pairs have the same materials.</returns>
         public bool Equals(MaterialPair other)
         {
-            return (other.MaterialA == MaterialA && other.MaterialB == MaterialB) || (other.MaterialA == MaterialB && other.MaterialB == MaterialA);
+            return other.MaterialA == MaterialA && other.MaterialB == MaterialB ||
+                   other.MaterialA == MaterialB && other.MaterialB == MaterialA;
         }
     }
 }

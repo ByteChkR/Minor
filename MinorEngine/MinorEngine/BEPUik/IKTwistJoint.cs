@@ -13,6 +13,7 @@ namespace MinorEngine.BEPUik
         /// Must be unit length and perpendicular to LocalMeasurementAxisA.
         /// </summary>
         public Vector3 LocalAxisA;
+
         /// <summary>
         /// Gets or sets the axis attached to ConnectionB in its local space.
         /// Must be unit length and perpendicular to LocalMeasurementAxisB.
@@ -24,6 +25,7 @@ namespace MinorEngine.BEPUik
         /// Must be unit length and perpendicular to LocalAxisA.
         /// </summary>
         public Vector3 LocalMeasurementAxisA;
+
         /// <summary>
         /// Gets or sets the measurement axis attached to connection B.
         /// Must be unit length and perpendicular to LocalAxisB.
@@ -36,8 +38,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AxisA
         {
-            get { return Quaternion.Transform(LocalAxisA, ConnectionA.Orientation); }
-            set { LocalAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(LocalAxisA, ConnectionA.Orientation);
+            set => LocalAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -46,8 +48,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 AxisB
         {
-            get { return Quaternion.Transform(LocalAxisB, ConnectionB.Orientation); }
-            set { LocalAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => Quaternion.Transform(LocalAxisB, ConnectionB.Orientation);
+            set => LocalAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         /// <summary>
@@ -57,8 +59,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 MeasurementAxisA
         {
-            get { return Quaternion.Transform(LocalMeasurementAxisA, ConnectionA.Orientation); }
-            set { LocalMeasurementAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation)); }
+            get => Quaternion.Transform(LocalMeasurementAxisA, ConnectionA.Orientation);
+            set => LocalMeasurementAxisA = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionA.Orientation));
         }
 
         /// <summary>
@@ -68,8 +70,8 @@ namespace MinorEngine.BEPUik
         /// </summary>
         public Vector3 MeasurementAxisB
         {
-            get { return Quaternion.Transform(LocalMeasurementAxisB, ConnectionB.Orientation); }
-            set { LocalMeasurementAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation)); }
+            get => Quaternion.Transform(LocalMeasurementAxisB, ConnectionB.Orientation);
+            set => LocalMeasurementAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
         /// <summary>
@@ -84,10 +86,10 @@ namespace MinorEngine.BEPUik
             //Pick an axis perpendicular to axisA to use as the measurement axis.
             Vector3 worldMeasurementAxisA;
             Vector3.Cross(ref Toolbox.UpVector, ref axisA, out worldMeasurementAxisA);
-            float lengthSquared = worldMeasurementAxisA.LengthSquared();
+            var lengthSquared = worldMeasurementAxisA.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
-                Vector3.Divide(ref worldMeasurementAxisA, (float)Math.Sqrt(lengthSquared), out worldMeasurementAxisA);
+                Vector3.Divide(ref worldMeasurementAxisA, (float) Math.Sqrt(lengthSquared), out worldMeasurementAxisA);
             }
             else
             {
@@ -95,6 +97,7 @@ namespace MinorEngine.BEPUik
                 Vector3.Cross(ref Toolbox.RightVector, ref axisA, out worldMeasurementAxisA);
                 worldMeasurementAxisA.Normalize();
             }
+
             //Attach the measurement axis to entity B.
             //'Push' A's axis onto B by taking into account the swing transform.
             Quaternion alignmentRotation;
@@ -104,7 +107,6 @@ namespace MinorEngine.BEPUik
             //Plop them on!
             MeasurementAxisA = worldMeasurementAxisA;
             MeasurementAxisB = worldMeasurementAxisB;
-
         }
 
 
@@ -126,7 +128,6 @@ namespace MinorEngine.BEPUik
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {
-
             //This constraint doesn't consider linear motion.
             linearJacobianA = linearJacobianB = new Matrix3x3();
 
@@ -149,13 +150,15 @@ namespace MinorEngine.BEPUik
             //We can now compare the angle between the twist axes.
             float error;
             Vector3.Dot(ref twistMeasureAxisA, ref twistMeasureAxisB, out error);
-            error = (float)Math.Acos(MathHelper.Clamp(error, -1, 1));
+            error = (float) Math.Acos(MathHelper.Clamp(error, -1, 1));
             Vector3 cross;
             Vector3.Cross(ref twistMeasureAxisA, ref twistMeasureAxisB, out cross);
             float dot;
             Vector3.Dot(ref cross, ref axisA, out dot);
             if (dot < 0)
+            {
                 error = -error;
+            }
 
             //Compute the bias based upon the error.
             velocityBias = new Vector3(errorCorrectionFactor * error, 0, 0);
@@ -163,23 +166,19 @@ namespace MinorEngine.BEPUik
             //We can't just use the axes directly as jacobians. Consider 'cranking' one object around the other.
             Vector3 jacobian;
             Vector3.Add(ref axisA, ref axisB, out jacobian);
-            float lengthSquared = jacobian.LengthSquared();
+            var lengthSquared = jacobian.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
-                Vector3.Divide(ref jacobian, (float)Math.Sqrt(lengthSquared), out jacobian);
+                Vector3.Divide(ref jacobian, (float) Math.Sqrt(lengthSquared), out jacobian);
             }
             else
-            {
                 //The constraint is in an invalid configuration. Just ignore it.
+            {
                 jacobian = new Vector3();
             }
 
-            angularJacobianA = new Matrix3x3 { M11 = jacobian.X, M12 = jacobian.Y, M13 = jacobian.Z };
-            angularJacobianB = new Matrix3x3 { M11 = -jacobian.X, M12 = -jacobian.Y, M13 = -jacobian.Z };
-
-
-
-
+            angularJacobianA = new Matrix3x3 {M11 = jacobian.X, M12 = jacobian.Y, M13 = jacobian.Z};
+            angularJacobianB = new Matrix3x3 {M11 = -jacobian.X, M12 = -jacobian.Y, M13 = -jacobian.Z};
         }
     }
 }

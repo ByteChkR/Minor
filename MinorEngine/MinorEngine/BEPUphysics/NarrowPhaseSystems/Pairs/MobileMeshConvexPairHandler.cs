@@ -7,14 +7,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class MobileMeshConvexPairHandler : MobileMeshPairHandler
     {
-        MobileMeshConvexContactManifold contactManifold = new MobileMeshConvexContactManifold();
-        protected internal override MobileMeshContactManifold MeshManifold
-        {
-            get { return contactManifold; }
-        }
+        private MobileMeshConvexContactManifold contactManifold = new MobileMeshConvexContactManifold();
 
-
-
+        protected internal override MobileMeshContactManifold MeshManifold => contactManifold;
     }
-
 }

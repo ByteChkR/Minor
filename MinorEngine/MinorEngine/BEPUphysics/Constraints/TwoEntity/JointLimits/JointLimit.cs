@@ -1,7 +1,6 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
 {
@@ -32,8 +31,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float BounceVelocityThreshold
         {
-            get { return bounceVelocityThreshold; }
-            set { bounceVelocityThreshold = Math.Max(0, value); }
+            get => bounceVelocityThreshold;
+            set => bounceVelocityThreshold = Math.Max(0, value);
         }
 
         /// <summary>
@@ -41,26 +40,23 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         public float Bounciness
         {
-            get { return bounciness; }
-            set { bounciness = MathHelper.Clamp(value, 0, 1); }
+            get => bounciness;
+            set => bounciness = MathHelper.Clamp(value, 0, 1);
         }
 
         /// <summary>
         /// Gets whether or not the limit is currently exceeded.  While violated, the constraint will apply impulses in an attempt to stop further violation and to correct any current error.
         /// This is true whenever the limit is touched.
         /// </summary>
-        public bool IsLimitExceeded
-        {
-            get { return isLimitActive; }
-        }
+        public bool IsLimitExceeded => isLimitActive;
 
         /// <summary>
         /// Gets or sets the small area that the constraint can be violated without applying position correction.  Helps avoid jitter.
         /// </summary>
         public float Margin
         {
-            get { return margin; }
-            set { margin = MathHelper.Max(value, 0); }
+            get => margin;
+            set => margin = MathHelper.Max(value, 0);
         }
 
         /// <summary>
@@ -71,9 +67,10 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.JointLimits
         protected float ComputeBounceVelocity(float impactVelocity)
         {
             var lowThreshold = bounceVelocityThreshold * 0.3f;
-            var velocityFraction = MathHelper.Clamp((impactVelocity - lowThreshold) / (bounceVelocityThreshold - lowThreshold + Toolbox.Epsilon), 0, 1);
+            var velocityFraction =
+                MathHelper.Clamp(
+                    (impactVelocity - lowThreshold) / (bounceVelocityThreshold - lowThreshold + Toolbox.Epsilon), 0, 1);
             return velocityFraction * impactVelocity * Bounciness;
         }
-
     }
 }

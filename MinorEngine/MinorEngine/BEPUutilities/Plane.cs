@@ -9,6 +9,7 @@
         /// Normal of the plane.
         /// </summary>
         public Vector3 Normal;
+
         /// <summary>
         /// Negative distance to the plane from the origin along the normal.
         /// </summary>
@@ -37,7 +38,6 @@
         public Plane(Vector3 position, Vector3 normal)
             : this(ref position, ref normal)
         {
-
         }
 
 
@@ -58,8 +58,8 @@
         /// <param name="d">Negative distance to the plane from the origin along the normal.</param>
         public Plane(ref Vector3 normal, float d)
         {
-            this.Normal = normal;
-            this.D = d;
+            Normal = normal;
+            D = d;
         }
 
         /// <summary>

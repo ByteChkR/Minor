@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseSystems
@@ -28,12 +25,12 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         protected override void UpdateSingleThreaded()
         {
             Overlaps.Clear();
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
+            for (var j = i + 1; j < entries.Count; j++)
             {
-                for (int j = i + 1; j < entries.Count; j++)
+                if (entries[i].boundingBox.Intersects(entries[j].boundingBox))
                 {
-                    if (entries[i].boundingBox.Intersects(entries[j].boundingBox))
-                        base.TryToAddOverlap(entries[i], entries[j]);
+                    TryToAddOverlap(entries[i], entries[j]);
                 }
             }
         }

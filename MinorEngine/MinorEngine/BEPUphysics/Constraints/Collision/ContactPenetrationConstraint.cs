@@ -1,8 +1,8 @@
-﻿using MinorEngine.BEPUphysics.Entities;
+﻿using System;
 using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities;
-using System;
 using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.Constraints.Collision
@@ -17,8 +17,10 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///<summary>
         /// Gets the contact associated with this penetration constraint.
         ///</summary>
-        public Contact Contact { get { return contact; } }
+        public Contact Contact => contact;
+
         internal float accumulatedImpulse;
+
         //float linearBX, linearBY, linearBZ;
         internal float angularAX, angularAY, angularAZ;
         internal float angularBX, angularBY, angularBZ;
@@ -27,7 +29,9 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         private float bias;
         private float linearAX, linearAY, linearAZ;
         private Entity entityA, entityB;
+
         private bool entityADynamic, entityBDynamic;
+
         //Inverse effective mass matrix
         internal float velocityToImpulse;
         private ContactManifoldConstraint contactManifoldConstraint;
@@ -56,7 +60,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
 
             entityA = contactManifoldConstraint.EntityA;
             entityB = contactManifoldConstraint.EntityB;
-
         }
 
         ///<summary>
@@ -70,17 +73,12 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             entityA = null;
             entityB = null;
             isActive = false;
-
-
         }
 
         /// <summary>
         /// Gets the total normal impulse applied by this penetration constraint to maintain the separation of the involved entities.
         /// </summary>
-        public float NormalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float NormalImpulse => accumulatedImpulse;
 
         ///<summary>
         /// Gets the relative velocity between the associated entities at the contact point along the contact normal.
@@ -92,19 +90,23 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 float lambda = 0;
                 if (entityA != null)
                 {
-                    lambda = entityA.linearVelocity.X * linearAX + entityA.linearVelocity.Y * linearAY + entityA.linearVelocity.Z * linearAZ +
-                             entityA.angularVelocity.X * angularAX + entityA.angularVelocity.Y * angularAY + entityA.angularVelocity.Z * angularAZ;
+                    lambda = entityA.linearVelocity.X * linearAX + entityA.linearVelocity.Y * linearAY +
+                             entityA.linearVelocity.Z * linearAZ +
+                             entityA.angularVelocity.X * angularAX + entityA.angularVelocity.Y * angularAY +
+                             entityA.angularVelocity.Z * angularAZ;
                 }
+
                 if (entityB != null)
                 {
-                    lambda += -entityB.linearVelocity.X * linearAX - entityB.linearVelocity.Y * linearAY - entityB.linearVelocity.Z * linearAZ +
-                              entityB.angularVelocity.X * angularBX + entityB.angularVelocity.Y * angularBY + entityB.angularVelocity.Z * angularBZ;
+                    lambda += -entityB.linearVelocity.X * linearAX - entityB.linearVelocity.Y * linearAY -
+                              entityB.linearVelocity.Z * linearAZ +
+                              entityB.angularVelocity.X * angularBX + entityB.angularVelocity.Y * angularBY +
+                              entityB.angularVelocity.Z * angularBZ;
                 }
+
                 return lambda;
             }
         }
-
-
 
 
         ///<summary>
@@ -113,7 +115,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public override void Update(float dt)
         {
-
             entityADynamic = entityA != null && entityA.isDynamic;
             entityBDynamic = entityB != null && entityB.isDynamic;
 
@@ -126,14 +127,13 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             //linearBZ = -linearAZ;
 
 
-
             //angular A = Ra x N
             if (entityA != null)
             {
                 Vector3.Subtract(ref contact.Position, ref entityA.position, out ra);
-                angularAX = (ra.Y * linearAZ) - (ra.Z * linearAY);
-                angularAY = (ra.Z * linearAX) - (ra.X * linearAZ);
-                angularAZ = (ra.X * linearAY) - (ra.Y * linearAX);
+                angularAX = ra.Y * linearAZ - ra.Z * linearAY;
+                angularAY = ra.Z * linearAX - ra.X * linearAZ;
+                angularAZ = ra.X * linearAY - ra.Y * linearAX;
             }
 
 
@@ -141,9 +141,9 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             if (entityB != null)
             {
                 Vector3.Subtract(ref contact.Position, ref entityB.position, out rb);
-                angularBX = (linearAY * rb.Z) - (linearAZ * rb.Y);
-                angularBY = (linearAZ * rb.X) - (linearAX * rb.Z);
-                angularBZ = (linearAX * rb.Y) - (linearAY * rb.X);
+                angularBX = linearAY * rb.Z - linearAZ * rb.Y;
+                angularBY = linearAZ * rb.X - linearAX * rb.Z;
+                angularBZ = linearAX * rb.Y - linearAY * rb.X;
             }
 
 
@@ -154,23 +154,33 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             float tX, tY, tZ;
             if (entityADynamic)
             {
-                tX = angularAX * entityA.inertiaTensorInverse.M11 + angularAY * entityA.inertiaTensorInverse.M21 + angularAZ * entityA.inertiaTensorInverse.M31;
-                tY = angularAX * entityA.inertiaTensorInverse.M12 + angularAY * entityA.inertiaTensorInverse.M22 + angularAZ * entityA.inertiaTensorInverse.M32;
-                tZ = angularAX * entityA.inertiaTensorInverse.M13 + angularAY * entityA.inertiaTensorInverse.M23 + angularAZ * entityA.inertiaTensorInverse.M33;
+                tX = angularAX * entityA.inertiaTensorInverse.M11 + angularAY * entityA.inertiaTensorInverse.M21 +
+                     angularAZ * entityA.inertiaTensorInverse.M31;
+                tY = angularAX * entityA.inertiaTensorInverse.M12 + angularAY * entityA.inertiaTensorInverse.M22 +
+                     angularAZ * entityA.inertiaTensorInverse.M32;
+                tZ = angularAX * entityA.inertiaTensorInverse.M13 + angularAY * entityA.inertiaTensorInverse.M23 +
+                     angularAZ * entityA.inertiaTensorInverse.M33;
                 entryA = tX * angularAX + tY * angularAY + tZ * angularAZ + entityA.inverseMass;
             }
             else
+            {
                 entryA = 0;
+            }
 
             if (entityBDynamic)
             {
-                tX = angularBX * entityB.inertiaTensorInverse.M11 + angularBY * entityB.inertiaTensorInverse.M21 + angularBZ * entityB.inertiaTensorInverse.M31;
-                tY = angularBX * entityB.inertiaTensorInverse.M12 + angularBY * entityB.inertiaTensorInverse.M22 + angularBZ * entityB.inertiaTensorInverse.M32;
-                tZ = angularBX * entityB.inertiaTensorInverse.M13 + angularBY * entityB.inertiaTensorInverse.M23 + angularBZ * entityB.inertiaTensorInverse.M33;
+                tX = angularBX * entityB.inertiaTensorInverse.M11 + angularBY * entityB.inertiaTensorInverse.M21 +
+                     angularBZ * entityB.inertiaTensorInverse.M31;
+                tY = angularBX * entityB.inertiaTensorInverse.M12 + angularBY * entityB.inertiaTensorInverse.M22 +
+                     angularBZ * entityB.inertiaTensorInverse.M32;
+                tZ = angularBX * entityB.inertiaTensorInverse.M13 + angularBY * entityB.inertiaTensorInverse.M23 +
+                     angularBZ * entityB.inertiaTensorInverse.M33;
                 entryB = tX * angularBX + tY * angularBY + tZ * angularBZ + entityB.inverseMass;
             }
             else
+            {
                 entryB = 0;
+            }
 
             //If we used a single fixed softness value, then heavier objects will tend to 'squish' more than light objects.
             //In the extreme case, very heavy objects could simply fall through the ground by force of gravity.
@@ -181,8 +191,8 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             //Larger effective masses should correspond to smaller softnesses so that the spring has the same positional behavior.
             //Fortunately, we're already computing the necessary values: the raw, unsoftened effective mass inverse shall be used to compute the softness.
 
-            float effectiveMassInverse = entryA + entryB;
-            float updateRate = 1 / dt;
+            var effectiveMassInverse = entryA + entryB;
+            var updateRate = 1 / dt;
             softness = CollisionResponseSettings.Softness * effectiveMassInverse * updateRate;
             velocityToImpulse = -1 / (softness + effectiveMassInverse);
 
@@ -198,12 +208,17 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 if (contactManifoldConstraint.materialInteraction.Bounciness > 0)
                 {
                     //Target a velocity which includes a portion of the incident velocity.
-                    float bounceVelocity = -RelativeVelocity;
+                    var bounceVelocity = -RelativeVelocity;
                     if (bounceVelocity > 0)
                     {
                         var lowThreshold = CollisionResponseSettings.BouncinessVelocityThreshold * 0.3f;
-                        var velocityFraction = MathHelper.Clamp((bounceVelocity - lowThreshold) / (CollisionResponseSettings.BouncinessVelocityThreshold - lowThreshold + Toolbox.Epsilon), 0, 1);
-                        var bouncinessVelocity = velocityFraction * bounceVelocity * contactManifoldConstraint.materialInteraction.Bounciness;
+                        var velocityFraction =
+                            MathHelper.Clamp(
+                                (bounceVelocity - lowThreshold) /
+                                (CollisionResponseSettings.BouncinessVelocityThreshold - lowThreshold +
+                                 Toolbox.Epsilon), 0, 1);
+                        var bouncinessVelocity = velocityFraction * bounceVelocity *
+                                                 contactManifoldConstraint.materialInteraction.Bounciness;
                         bias = MathHelper.Max(bouncinessVelocity, bias);
                     }
                 }
@@ -228,8 +243,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 //        bias = relativeVelocity * contactManifoldConstraint.materialInteraction.Bounciness + bias;
                 //}
             }
-
-
         }
 
         /// <summary>
@@ -241,8 +254,8 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         {
             //Warm starting
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -257,6 +270,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 entityA.ApplyLinearImpulse(ref linear);
                 entityA.ApplyAngularImpulse(ref angular);
             }
+
             if (entityBDynamic)
             {
                 linear.X = -linear.X;
@@ -277,20 +291,19 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// <returns>Impulse applied.</returns>
         public override float SolveIteration()
         {
-
             //Compute relative velocity
-            float lambda = (RelativeVelocity - bias + softness * accumulatedImpulse) * velocityToImpulse;
+            var lambda = (RelativeVelocity - bias + softness * accumulatedImpulse) * velocityToImpulse;
 
             //Clamp accumulated impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Max(0, accumulatedImpulse + lambda);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
 
             //Apply the impulse
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -305,6 +318,7 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 entityA.ApplyLinearImpulse(ref linear);
                 entityA.ApplyAngularImpulse(ref angular);
             }
+
             if (entityBDynamic)
             {
                 linear.X = -linear.X;
@@ -324,10 +338,14 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         {
             //This should never really have to be called.
             if (entityA != null)
+            {
                 outputInvolvedEntities.Add(entityA);
-            if (entityB != null)
-                outputInvolvedEntities.Add(entityB);
-        }
+            }
 
+            if (entityB != null)
+            {
+                outputInvolvedEntities.Add(entityB);
+            }
+        }
     }
 }

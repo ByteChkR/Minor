@@ -1,5 +1,4 @@
 ﻿using MinorEngine.BEPUphysics.Entities;
-
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
@@ -9,7 +8,6 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
     /// </summary>
     public class PointOnPlaneJoint : Joint, I1DImpulseConstraintWithError, I1DJacobianConstraint
     {
-        private float accumulatedImpulse;
         private float biasVelocity;
         private float error;
 
@@ -45,7 +43,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// <param name="planeAnchor">A point on the plane.</param>
         /// <param name="normal">Direction, attached to the first connected entity, defining the plane's normal</param>
         /// <param name="pointAnchor">The point to constrain to the plane, attached to the second connected object.</param>
-        public PointOnPlaneJoint(Entity connectionA, Entity connectionB, Vector3 planeAnchor, Vector3 normal, Vector3 pointAnchor)
+        public PointOnPlaneJoint(Entity connectionA, Entity connectionB, Vector3 planeAnchor, Vector3 normal,
+            Vector3 pointAnchor)
         {
             ConnectionA = connectionA;
             ConnectionB = connectionB;
@@ -60,7 +59,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalPlaneAnchor
         {
-            get { return localPlaneAnchor; }
+            get => localPlaneAnchor;
             set
             {
                 localPlaneAnchor = value;
@@ -74,7 +73,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalPlaneNormal
         {
-            get { return localPlaneNormal; }
+            get => localPlaneNormal;
             set
             {
                 localPlaneNormal = Vector3.Normalize(value);
@@ -87,7 +86,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 LocalPointAnchor
         {
-            get { return localPointAnchor; }
+            get => localPointAnchor;
             set
             {
                 localPointAnchor = value;
@@ -99,31 +98,25 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the offset from A to the connection point between the entities.
         /// </summary>
-        public Vector3 OffsetA
-        {
-            get { return rA; }
-        }
+        public Vector3 OffsetA => rA;
 
         /// <summary>
         /// Gets the offset from B to the connection point between the entities.
         /// </summary>
-        public Vector3 OffsetB
-        {
-            get { return rB; }
-        }
+        public Vector3 OffsetB => rB;
 
         /// <summary>
         /// Gets or sets the plane anchor in world space.
         /// </summary>
         public Vector3 PlaneAnchor
         {
-            get { return worldPlaneAnchor; }
+            get => worldPlaneAnchor;
             set
             {
                 worldPlaneAnchor = value;
                 localPlaneAnchor = value - connectionA.position;
-                Matrix3x3.TransformTranspose(ref localPlaneAnchor, ref connectionA.orientationMatrix, out localPlaneAnchor);
-
+                Matrix3x3.TransformTranspose(ref localPlaneAnchor, ref connectionA.orientationMatrix,
+                    out localPlaneAnchor);
             }
         }
 
@@ -132,11 +125,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 PlaneNormal
         {
-            get { return worldPlaneNormal; }
+            get => worldPlaneNormal;
             set
             {
                 worldPlaneNormal = Vector3.Normalize(value);
-                Matrix3x3.TransformTranspose(ref worldPlaneNormal, ref connectionA.orientationMatrix, out localPlaneNormal);
+                Matrix3x3.TransformTranspose(ref worldPlaneNormal, ref connectionA.orientationMatrix,
+                    out localPlaneNormal);
             }
         }
 
@@ -145,13 +139,13 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public Vector3 PointAnchor
         {
-            get { return worldPointAnchor; }
+            get => worldPointAnchor;
             set
             {
                 worldPointAnchor = value;
                 localPointAnchor = value - connectionB.position;
-                Matrix3x3.TransformTranspose(ref localPointAnchor, ref connectionB.orientationMatrix, out localPointAnchor);
-
+                Matrix3x3.TransformTranspose(ref localPointAnchor, ref connectionB.orientationMatrix,
+                    out localPointAnchor);
             }
         }
 
@@ -181,18 +175,12 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// <summary>
         /// Gets the total impulse applied by this constraint.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse { get; private set; }
 
         /// <summary>
         /// Gets the current constraint error.
         /// </summary>
-        public float Error
-        {
-            get { return error; }
-        }
+        public float Error => error;
 
         #endregion
 
@@ -268,8 +256,8 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             //if(velocityDifference > 0)
             //    Debug.WriteLine("Velocity difference: " + velocityDifference);
             //Debug.WriteLine("softness velocity: " + softness * accumulatedImpulse);
-            float lambda = negativeEffectiveMass * (velocityDifference + biasVelocity + softness * accumulatedImpulse);
-            accumulatedImpulse += lambda;
+            var lambda = negativeEffectiveMass * (velocityDifference + biasVelocity + softness * TotalImpulse);
+            TotalImpulse += lambda;
 
             Vector3 impulse;
             Vector3 torque;
@@ -280,6 +268,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
                 connectionA.ApplyLinearImpulse(ref impulse);
                 connectionA.ApplyAngularImpulse(ref torque);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Negate(ref impulse, out impulse);
@@ -309,7 +298,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             float pointDistance, planeDistance;
             Vector3.Dot(ref worldPointAnchor, ref worldPlaneNormal, out pointDistance);
             Vector3.Dot(ref worldPlaneAnchor, ref worldPlaneNormal, out planeDistance);
-            float distanceChange = planeDistance - pointDistance;
+            var distanceChange = planeDistance - pointDistance;
             Vector3 closestPointOnPlane;
             Vector3.Multiply(ref worldPlaneNormal, distanceChange, out closestPointOnPlane);
             Vector3.Add(ref closestPointOnPlane, ref worldPointAnchor, out closestPointOnPlane);
@@ -357,9 +346,9 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
                 negativeEffectiveMass = -1 / (negativeEffectiveMass + softness);
             }
             else
+            {
                 negativeEffectiveMass = 0;
-
-
+            }
         }
 
         /// <summary>
@@ -372,17 +361,18 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
             //Warm Starting
             Vector3 impulse;
             Vector3 torque;
-            Vector3.Multiply(ref worldPlaneNormal, accumulatedImpulse, out impulse);
+            Vector3.Multiply(ref worldPlaneNormal, TotalImpulse, out impulse);
             if (connectionA.isDynamic)
             {
-                Vector3.Multiply(ref rAcrossN, accumulatedImpulse, out torque);
+                Vector3.Multiply(ref rAcrossN, TotalImpulse, out torque);
                 connectionA.ApplyLinearImpulse(ref impulse);
                 connectionA.ApplyAngularImpulse(ref torque);
             }
+
             if (connectionB.isDynamic)
             {
                 Vector3.Negate(ref impulse, out impulse);
-                Vector3.Multiply(ref rBcrossN, accumulatedImpulse, out torque);
+                Vector3.Multiply(ref rBcrossN, TotalImpulse, out torque);
                 connectionB.ApplyLinearImpulse(ref impulse);
                 connectionB.ApplyAngularImpulse(ref torque);
             }

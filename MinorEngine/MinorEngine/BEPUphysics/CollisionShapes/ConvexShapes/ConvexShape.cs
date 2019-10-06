@@ -1,7 +1,7 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUphysics.Settings;
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 {
@@ -10,7 +10,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public abstract class ConvexShape : EntityShape
     {
-
         protected void UpdateConvexShapeInfo(ConvexShapeDescription description)
         {
             UpdateEntityShapeVolume(description.EntityShapeVolume);
@@ -20,8 +19,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         }
 
 
-
         protected internal float collisionMargin = CollisionDetectionSettings.DefaultMargin;
+
         ///<summary>
         /// Collision margin of the convex shape.  The margin is a small spherical expansion around
         /// entities which allows specialized collision detection algorithms to be used.
@@ -29,14 +28,14 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///</summary>
         public float CollisionMargin
         {
-            get
-            {
-                return collisionMargin;
-            }
+            get => collisionMargin;
             set
             {
                 if (value < 0)
+                {
                     throw new ArgumentException("Collision margin must be nonnegative..");
+                }
+
                 collisionMargin = value;
                 OnShapeChanged();
             }
@@ -68,7 +67,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="direction">Direction to find the extreme point in.</param>
         /// <param name="shapeTransform">Transform to use for the shape.</param>
         ///<param name="extremePoint">Extreme point on the shape.</param>
-        public void GetExtremePointWithoutMargin(Vector3 direction, ref RigidTransform shapeTransform, out Vector3 extremePoint)
+        public void GetExtremePointWithoutMargin(Vector3 direction, ref RigidTransform shapeTransform,
+            out Vector3 extremePoint)
         {
             Quaternion conjugate;
             Quaternion.Conjugate(ref shapeTransform.Orientation, out conjugate);
@@ -89,13 +89,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             GetExtremePointWithoutMargin(direction, ref shapeTransform, out extremePoint);
 
-            float directionLength = direction.LengthSquared();
+            var directionLength = direction.LengthSquared();
             if (directionLength > Toolbox.Epsilon)
             {
-                Vector3.Multiply(ref direction, collisionMargin / (float)Math.Sqrt(directionLength), out direction);
+                Vector3.Multiply(ref direction, collisionMargin / (float) Math.Sqrt(directionLength), out direction);
                 Vector3.Add(ref extremePoint, ref direction, out extremePoint);
             }
-
         }
 
         ///<summary>
@@ -107,14 +106,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             GetLocalExtremePointWithoutMargin(ref direction, out extremePoint);
 
-            float directionLength = direction.LengthSquared();
+            var directionLength = direction.LengthSquared();
             if (directionLength > Toolbox.Epsilon)
             {
-                Vector3.Multiply(ref direction, collisionMargin / (float)Math.Sqrt(directionLength), out direction);
+                Vector3.Multiply(ref direction, collisionMargin / (float) Math.Sqrt(directionLength), out direction);
                 Vector3.Add(ref extremePoint, ref direction, out extremePoint);
             }
         }
-
 
 
         /// <summary>
@@ -169,7 +167,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             boundingBox.Min.X = shapeTransform.Position.X + negative.X - collisionMargin;
             boundingBox.Min.Y = shapeTransform.Position.Y + negative.Y - collisionMargin;
             boundingBox.Min.Z = shapeTransform.Position.Z + negative.Z - collisionMargin;
-
         }
 
         /// <summary>
@@ -195,7 +192,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             GetBoundingBox(ref transform, out boundingBox);
             Toolbox.ExpandBoundingBox(ref boundingBox, ref sweep);
-
         }
 
         /// <summary>
@@ -206,7 +202,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// In effect, the shape is transformed by the inverse of the space transform to compute its bounding box in local space.</param>
         /// <param name="sweep">Vector to expand the bounding box with in local space.</param>
         /// <param name="boundingBox">Bounding box in the local space.</param>
-        public void GetSweptLocalBoundingBox(ref RigidTransform shapeTransform, ref AffineTransform spaceTransform, ref Vector3 sweep, out BoundingBox boundingBox)
+        public void GetSweptLocalBoundingBox(ref RigidTransform shapeTransform, ref AffineTransform spaceTransform,
+            ref Vector3 sweep, out BoundingBox boundingBox)
         {
             GetLocalBoundingBox(ref shapeTransform, ref spaceTransform, out boundingBox);
             Vector3 expansion;
@@ -222,7 +219,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="spaceTransform">Used as the frame of reference to compute the bounding box.
         /// In effect, the shape is transformed by the inverse of the space transform to compute its bounding box in local space.</param>
         /// <param name="boundingBox">Bounding box in the local space.</param>
-        public void GetLocalBoundingBox(ref RigidTransform shapeTransform, ref AffineTransform spaceTransform, out BoundingBox boundingBox)
+        public void GetLocalBoundingBox(ref RigidTransform shapeTransform, ref AffineTransform spaceTransform,
+            out BoundingBox boundingBox)
         {
 #if !WINDOWS
             boundingBox = new BoundingBox();
@@ -241,27 +239,33 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             //Sample the local directions from the orientation matrix, implicitly transposed.
 
             Vector3 right;
-            var direction = new Vector3(transform.LinearTransform.M11, transform.LinearTransform.M21, transform.LinearTransform.M31);
+            var direction = new Vector3(transform.LinearTransform.M11, transform.LinearTransform.M21,
+                transform.LinearTransform.M31);
             GetLocalExtremePoint(direction, out right);
 
             Vector3 left;
-            direction = new Vector3(-transform.LinearTransform.M11, -transform.LinearTransform.M21, -transform.LinearTransform.M31);
+            direction = new Vector3(-transform.LinearTransform.M11, -transform.LinearTransform.M21,
+                -transform.LinearTransform.M31);
             GetLocalExtremePoint(direction, out left);
 
             Vector3 up;
-            direction = new Vector3(transform.LinearTransform.M12, transform.LinearTransform.M22, transform.LinearTransform.M32);
+            direction = new Vector3(transform.LinearTransform.M12, transform.LinearTransform.M22,
+                transform.LinearTransform.M32);
             GetLocalExtremePoint(direction, out up);
 
             Vector3 down;
-            direction = new Vector3(-transform.LinearTransform.M12, -transform.LinearTransform.M22, -transform.LinearTransform.M32);
+            direction = new Vector3(-transform.LinearTransform.M12, -transform.LinearTransform.M22,
+                -transform.LinearTransform.M32);
             GetLocalExtremePoint(direction, out down);
 
             Vector3 backward;
-            direction = new Vector3(transform.LinearTransform.M13, transform.LinearTransform.M23, transform.LinearTransform.M33);
+            direction = new Vector3(transform.LinearTransform.M13, transform.LinearTransform.M23,
+                transform.LinearTransform.M33);
             GetLocalExtremePoint(direction, out backward);
 
             Vector3 forward;
-            direction = new Vector3(-transform.LinearTransform.M13, -transform.LinearTransform.M23, -transform.LinearTransform.M33);
+            direction = new Vector3(-transform.LinearTransform.M13, -transform.LinearTransform.M23,
+                -transform.LinearTransform.M33);
             GetLocalExtremePoint(direction, out forward);
 
             //Rather than transforming each axis independently (and doing three times as many operations as required), just get the 6 required values directly.
@@ -278,7 +282,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             boundingBox.Min.Y = transform.Translation.Y + negative.Y;
             boundingBox.Min.Z = transform.Translation.Z + negative.Z;
         }
-
-
     }
 }

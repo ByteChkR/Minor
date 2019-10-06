@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.Entities;
-using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
 {
@@ -10,6 +9,7 @@ namespace MinorEngine.BEPUphysics.UpdateableSystems.ForceFields
     public class InfiniteForceFieldShape : ForceFieldShape
     {
         private IList<Entity> boxedList;
+
         /// <summary>
         /// Determines the possibly involved entities.
         /// </summary>

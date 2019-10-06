@@ -13,38 +13,27 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
     {
         //This system could be expanded to allow non-entity simulation island members.
         //However, there are no such objects on the near horizon, and it is unlikely that anyone will be interested in developing custom simulation island members.
-        Entity owner;
-        float previousVelocity;
+        private float previousVelocity;
         internal float velocityTimeBelowLimit;
         internal bool isSlowing;
 
         /// <summary>
         /// Gets the entity that owns this simulation island member.
         /// </summary>
-        public Entity Owner
-        {
-            get
-            {
-                return owner;
-            }
-        }
+        public Entity Owner { get; }
 
         internal SimulationIslandMember(Entity owner)
         {
-            this.owner = owner;
+            Owner = owner;
         }
 
         internal RawList<SimulationIslandConnection> connections = new RawList<SimulationIslandConnection>(16);
+
         ///<summary>
         /// Gets the connections associated with this member.
         ///</summary>
-        public ReadOnlyList<SimulationIslandConnection> Connections
-        {
-            get
-            {
-                return new ReadOnlyList<SimulationIslandConnection>(connections);
-            }
-        }
+        public ReadOnlyList<SimulationIslandConnection> Connections =>
+            new ReadOnlyList<SimulationIslandConnection>(connections);
 
         ///<summary>
         /// Updates the member's deactivation state.
@@ -53,21 +42,24 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         public void UpdateDeactivationCandidacy(float dt)
         {
             //Get total velocity, and see if the entity is losing energy.
-            float velocity = owner.linearVelocity.LengthSquared() + owner.angularVelocity.LengthSquared();
+            var velocity = Owner.linearVelocity.LengthSquared() + Owner.angularVelocity.LengthSquared();
 
-            bool isActive = IsActive;
+            var isActive = IsActive;
             if (isActive)
             {
                 TryToCompressIslandHierarchy();
                 isSlowing = velocity <= previousVelocity;
                 if (IsDynamic)
                 {
-
                     //Update time entity's been under the low-velocity limit, or reset if it's not
                     if (velocity < DeactivationManager.velocityLowerLimitSquared)
+                    {
                         velocityTimeBelowLimit += dt;
+                    }
                     else
+                    {
                         velocityTimeBelowLimit = 0;
+                    }
 
                     if (!IsAlwaysActive)
                     {
@@ -88,13 +80,11 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                                 IsDeactivationCandidate = false;
                             }
                         }
-
-
                     }
                     else
+                    {
                         IsDeactivationCandidate = false;
-
-
+                    }
                 }
                 else
                 {
@@ -109,9 +99,13 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                         //This means that in here, if it is < 0, we set it to zero.  It will still update for the rest of the frame.
                         //Then, next frame, when its == 0, set it to 1.  It will be considered inactive unless it was activated manually again.
                         if (velocityTimeBelowLimit == 0)
+                        {
                             velocityTimeBelowLimit = 1;
+                        }
                         else if (velocityTimeBelowLimit < 0)
+                        {
                             velocityTimeBelowLimit = 0;
+                        }
                     }
                     else
                     {
@@ -120,17 +114,17 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                     }
 
                     if (velocityTimeBelowLimit <= 0)
-                    {
                         //There's a single oddity we need to worry about in this case.
                         //An active kinematic object has no simulation island.  Without intervention,
                         //an active kinematic object will not keep an island awake.
                         //To solve this, when we encounter active kinematic objects,
                         //tell simulation islands associated with connected objects that they aren't allowed to deactivate.
 
-                        for (int i = 0; i < connections.Count; i++)
+                    {
+                        for (var i = 0; i < connections.Count; i++)
                         {
                             var connectedMembers = connections.Elements[i].entries;
-                            for (int j = connectedMembers.Count - 1; j >= 0; j--)
+                            for (var j = connectedMembers.Count - 1; j >= 0; j--)
                             {
                                 //The change locker must be obtained before attempting to access the SimulationIsland.
                                 //Path compression can force the simulation island to evaluate to null briefly.
@@ -147,30 +141,37 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                                     island.IsActive = true;
                                     island.allowDeactivation = false;
                                 }
+
                                 connectedMembers.Elements[j].Member.simulationIslandChangeLocker.Exit();
                             }
                         }
                     }
-
                 }
             }
+
             previousVelocity = velocity;
 
             //These will be 'eventually right.'
             if (previouslyActive && !isActive)
+            {
                 OnDeactivated();
+            }
             else if (!previouslyActive && isActive)
+            {
                 OnActivated();
+            }
+
             previouslyActive = isActive;
         }
 
-        bool isDeactivationCandidate;
+        private bool isDeactivationCandidate;
+
         ///<summary>
         /// Gets or sets whether or not the object is a deactivation candidate.
         ///</summary>
         public bool IsDeactivationCandidate
         {
-            get { return isDeactivationCandidate; }
+            get => isDeactivationCandidate;
             private set
             {
                 if (value && !isDeactivationCandidate)
@@ -183,6 +184,7 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                     isDeactivationCandidate = false;
                     OnBecameNonDeactivationCandidate();
                 }
+
                 if (!value)
                 {
                     velocityTimeBelowLimit = 0;
@@ -190,10 +192,10 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             }
         }
 
-        internal BEPUutilities.SpinLock simulationIslandChangeLocker = new BEPUutilities.SpinLock();
-        void TryToCompressIslandHierarchy()
-        {
+        internal SpinLock simulationIslandChangeLocker = new SpinLock();
 
+        private void TryToCompressIslandHierarchy()
+        {
             var currentSimulationIsland = simulationIsland;
             if (currentSimulationIsland != null)
             {
@@ -204,11 +206,17 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                     //from attempting to evaluate the SimulationIsland while we are reorganizing things.
                     simulationIslandChangeLocker.Enter();
                     lock (currentSimulationIsland)
+                    {
                         currentSimulationIsland.Remove(this);
+                    }
+
                     currentSimulationIsland = currentSimulationIsland.Parent;
                     //Add ourselves to the new owner.
                     lock (currentSimulationIsland)
+                    {
                         currentSimulationIsland.Add(this);
+                    }
+
                     simulationIslandChangeLocker.Exit();
                     //TODO: Should it activate the new island?  This might avoid a possible corner case.
                     //It could interfere with the activated event meaningfulness, since that is triggered
@@ -218,7 +226,8 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             }
         }
 
-        bool previouslyActive = true;
+        private bool previouslyActive = true;
+
         ///<summary>
         /// Gets whether or not the member is active.
         ///</summary>
@@ -231,23 +240,9 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
                 {
                     return currentSimulationIsland.isActive;
                 }
-                else
-                {
-                    //If the simulation island is null,
-                    //then this member has either not been added to a deactivation manager,
-                    //or it is a kinematic entity.
-                    //In either case, using the previous velocity is a reasonable approach.
-                    //This previous velocity is represented here by a flagging system that uses the velocityTimeBelowLimit.
 
-                    //-A kinematic entity with a velocityTimeBelowLimit of -1 was found to be active during the last deactivation candidacy analysis due to its velocity,
-                    //or it was recently activated, or IsAlwaysActive is set to true.
-                    //-A kinematic entity with a velocityTimeBelowLimit of 0 did not have its activity refreshed during the deactivation candidacy, 
-                    //but we still consider it active so that a full frame can complete.
-                    //-A kinematic entity with a velocityTimeBelowLimit of 1 did not have its activity refreshed in the last two frames so we can consider it inactive.
-                    return velocityTimeBelowLimit <= 0;
-                }
+                return velocityTimeBelowLimit <= 0;
             }
-
         }
 
         /// <summary>
@@ -259,61 +254,52 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             IsDeactivationCandidate = false;
             var currentSimulationIsland = SimulationIsland;
             if (currentSimulationIsland != null)
-            {
                 //We can force-activate an island.
                 //Note that this does nothing for objects not in a space
                 //or kinematic objects that don't have an island.
                 //"Activating" a kinematic object is meaningless- their activity state
                 //is entirely defined by their velocity.
+            {
                 currentSimulationIsland.IsActive = true;
-
             }
             else
-            {
                 //"Wake up" the kinematic entity.
                 //The time is used as a flag.  If time <= 0, that means the object will be considered active until the subsequent update.
+            {
                 velocityTimeBelowLimit = -1;
             }
-
         }
 
-        bool isAlwaysActive;
+        private bool isAlwaysActive;
+
         /// <summary>
         /// Gets or sets whether or not this member is always active.
         /// </summary>
         public bool IsAlwaysActive
         {
-            get
-            {
-                return isAlwaysActive;
-            }
+            get => isAlwaysActive;
             set
             {
                 isAlwaysActive = value;
                 if (isAlwaysActive)
+                {
                     Activate();
+                }
             }
         }
 
 
-
         internal bool allowStabilization = true;
+
         /// <summary>
         /// Gets or sets whether or not the entity can be stabilized by the deactivation system.  This allows systems of objects to go to sleep faster.
         /// Defaults to true.
         /// </summary>
         public bool AllowStabilization
         {
-            get
-            {
-                return allowStabilization;
-            }
-            set
-            {
-                allowStabilization = value;
-            }
+            get => allowStabilization;
+            set => allowStabilization = value;
         }
-
 
 
         //simulationisland should hook into the activated event.  If it is fired and the simulation island is inactive, the simulation island should activate.
@@ -322,14 +308,17 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         /// Fired when the object activates.
         ///</summary>
         public event Action<SimulationIslandMember> Activated;
+
         ///<summary>
         /// Fired when the object becomes a deactivation candidate.
         ///</summary>
         public event Action<SimulationIslandMember> BecameDeactivationCandidate; //semi-horrible name
+
         ///<summary>
         /// Fired when the object is no longer a deactivation candidate.
         ///</summary>
         public event Action<SimulationIslandMember> BecameNonDeactivationCandidate; //horrible name
+
         ///<summary>
         /// Fired when the object deactivates.
         ///</summary>
@@ -338,42 +327,45 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         protected internal void OnActivated()
         {
             if (Activated != null)
+            {
                 Activated(this);
+            }
         }
 
         protected internal void OnBecameDeactivationCandidate()
         {
             if (BecameDeactivationCandidate != null)
+            {
                 BecameDeactivationCandidate(this);
+            }
         }
 
         protected internal void OnBecameNonDeactivationCandidate()
         {
             if (BecameNonDeactivationCandidate != null)
+            {
                 BecameNonDeactivationCandidate(this);
+            }
         }
 
         protected internal void OnDeactivated()
         {
             if (Deactivated != null)
+            {
                 Deactivated(this);
+            }
         }
 
 
         internal SimulationIsland simulationIsland;
+
         ///<summary>
         /// Gets the simulation island that owns this member.
         ///</summary>
         public SimulationIsland SimulationIsland
         {
-            get
-            {
-                return simulationIsland != null ? simulationIsland.Parent : null;
-            }
-            internal set
-            {
-                simulationIsland = value;
-            }
+            get => simulationIsland != null ? simulationIsland.Parent : null;
+            internal set => simulationIsland = value;
         }
 
         /// <summary>
@@ -386,13 +378,7 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         /// Gets whether or not the object is dynamic.
         /// Non-dynamic members act as dead-ends in connection graphs.
         ///</summary>
-        public bool IsDynamic
-        {
-            get
-            {
-                return owner.isDynamic;
-            }
-        }
+        public bool IsDynamic => Owner.isDynamic;
 
         ///<summary>
         /// Gets or sets the current search state of the simulation island member.  This is used by the simulation island system
@@ -411,7 +397,9 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             {
                 connections.FastRemoveAt(index);
                 if (connections.Count > index)
+                {
                     connections.Elements[index].SetListIndex(this, index);
+                }
             }
         }
 
@@ -425,8 +413,6 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             connections.Add(connection);
             return connections.Count - 1;
         }
-
-
     }
 
 

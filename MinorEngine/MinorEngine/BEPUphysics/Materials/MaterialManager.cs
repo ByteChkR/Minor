@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace MinorEngine.BEPUphysics.Materials
 {
@@ -27,11 +26,13 @@ namespace MinorEngine.BEPUphysics.Materials
         /// Defaults to 0.8.
         ///</summary>
         public static float DefaultKineticFriction = .8f;
+
         ///<summary>
         /// Default coefficient of static friction.
         /// Defaults to 1.
         ///</summary>
         public static float DefaultStaticFriction = 1f;
+
         ///<summary>
         /// Default coefficient of restitution.
         /// Defaults to 0.
@@ -49,16 +50,19 @@ namespace MinorEngine.BEPUphysics.Materials
         ///<param name="materialA">First material of the pair.</param>
         ///<param name="materialB">Second material of the pair.</param>
         ///<param name="properties">Interaction properties between two materials.</param>
-        public static void GetInteractionProperties(Material materialA, Material materialB, out InteractionProperties properties)
+        public static void GetInteractionProperties(Material materialA, Material materialB,
+            out InteractionProperties properties)
         {
             MaterialBlender specialBlender;
             if (MaterialInteractions.TryGetValue(new MaterialPair(materialA, materialB), out specialBlender))
+            {
                 specialBlender(materialA, materialB, out properties);
+            }
             else
+            {
                 MaterialBlender(materialA, materialB, out properties);
-
+            }
         }
-
 
 
         ///<summary>
@@ -83,7 +87,5 @@ namespace MinorEngine.BEPUphysics.Materials
                 StaticFriction = a.staticFriction * b.staticFriction
             };
         }
-
-
     }
 }

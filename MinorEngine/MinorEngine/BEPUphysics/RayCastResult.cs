@@ -12,6 +12,7 @@ namespace MinorEngine.BEPUphysics
         /// Position, normal, and t paramater of the hit.
         ///</summary>
         public RayHit HitData;
+
         /// <summary>
         /// Object hit by the ray.
         /// </summary>

@@ -8,13 +8,15 @@ namespace MinorEngine.engine.components.ui
     public class UIImageRendererComponent : UIElement
     {
         private UIImageRenderContext _context;
+
         public override RenderContext Context
         {
             get
             {
                 if (_context == null)
                 {
-                    _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture, WorldSpace, Alpha, Shader, RenderQueue);
+                    _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture,
+                        WorldSpace, Alpha, Shader, RenderQueue);
                 }
                 else
                 {
@@ -33,8 +35,10 @@ namespace MinorEngine.engine.components.ui
         public GameTexture Texture { get; set; }
 
 
-        public UIImageRendererComponent(int width, int height, bool worldSpace, float alpha, ShaderProgram shader) : this(
-            ResourceManager.TextureIO.ParameterToTexture(width, height, "UIRendererDefaultTexture"), worldSpace, alpha, shader)
+        public UIImageRendererComponent(int width, int height, bool worldSpace, float alpha, ShaderProgram shader) :
+            this(
+                ResourceManager.TextureIO.ParameterToTexture(width, height, "UIRendererDefaultTexture"), worldSpace,
+                alpha, shader)
         {
         }
 
@@ -43,7 +47,8 @@ namespace MinorEngine.engine.components.ui
             Texture?.Dispose();
         }
 
-        public UIImageRendererComponent(GameTexture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(shader, worldSpace, alpha)
+        public UIImageRendererComponent(GameTexture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
+            shader, worldSpace, alpha)
         {
             Texture = texture;
         }

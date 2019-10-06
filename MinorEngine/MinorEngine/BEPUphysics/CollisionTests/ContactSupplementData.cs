@@ -1,6 +1,5 @@
-﻿
+﻿using MinorEngine.BEPUutilities;
 
-using MinorEngine.BEPUutilities;
 namespace MinorEngine.BEPUphysics.CollisionTests
 {
     ///<summary>
@@ -17,6 +16,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests
         /// Offset from the center of the second object to the contact point in the object's local space.
         /// </summary>
         public Vector3 LocalOffsetB;
+
         /// <summary>
         /// Original penetration depth computed at the associatd contact.
         /// </summary>

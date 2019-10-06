@@ -11,14 +11,17 @@ namespace MinorEngine.BEPUutilities
         /// X component of the vector.
         /// </summary>
         public float X;
+
         /// <summary>
         /// Y component of the vector.
         /// </summary>
         public float Y;
+
         /// <summary>
         /// Z component of the vector.
         /// </summary>
         public float Z;
+
         /// <summary>
         /// W component of the vector.
         /// </summary>
@@ -33,10 +36,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="w">W component of the vector.</param>
         public Vector4(float x, float y, float z, float w)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = z;
-            this.W = w;
+            X = x;
+            Y = y;
+            Z = z;
+            W = w;
         }
 
         /// <summary>
@@ -46,10 +49,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="w">W component of the vector.</param>
         public Vector4(Vector3 xyz, float w)
         {
-            this.X = xyz.X;
-            this.Y = xyz.Y;
-            this.Z = xyz.Z;
-            this.W = w;
+            X = xyz.X;
+            Y = xyz.Y;
+            Z = xyz.Z;
+            W = w;
         }
 
 
@@ -60,10 +63,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="yzw">Y, Z, and W components of the vector.</param>
         public Vector4(float x, Vector3 yzw)
         {
-            this.X = x;
-            this.Y = yzw.X;
-            this.Z = yzw.Y;
-            this.W = yzw.Z;
+            X = x;
+            Y = yzw.X;
+            Z = yzw.Y;
+            W = yzw.Z;
         }
 
         /// <summary>
@@ -74,10 +77,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="w">W component of the vector.</param>
         public Vector4(Vector2 xy, float z, float w)
         {
-            this.X = xy.X;
-            this.Y = xy.Y;
-            this.Z = z;
-            this.W = w;
+            X = xy.X;
+            Y = xy.Y;
+            Z = z;
+            W = w;
         }
 
         /// <summary>
@@ -88,10 +91,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="w">W component of the vector.</param>
         public Vector4(float x, Vector2 yz, float w)
         {
-            this.X = x;
-            this.Y = yz.X;
-            this.Z = yz.Y;
-            this.W = w;
+            X = x;
+            Y = yz.X;
+            Z = yz.Y;
+            W = w;
         }
 
         /// <summary>
@@ -102,10 +105,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="zw">W component of the vector.</param>
         public Vector4(float x, float y, Vector2 zw)
         {
-            this.X = x;
-            this.Y = y;
-            this.Z = zw.X;
-            this.W = zw.Y;
+            X = x;
+            Y = y;
+            Z = zw.X;
+            W = zw.Y;
         }
 
         /// <summary>
@@ -115,10 +118,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="zw">Z and W components of the vector.</param>
         public Vector4(Vector2 xy, Vector2 zw)
         {
-            this.X = xy.X;
-            this.Y = xy.Y;
-            this.Z = zw.X;
-            this.W = zw.Y;
+            X = xy.X;
+            Y = xy.Y;
+            Z = zw.X;
+            W = zw.Y;
         }
 
 
@@ -137,7 +140,7 @@ namespace MinorEngine.BEPUutilities
         /// <returns>Length of the vector.</returns>
         public float Length()
         {
-            return (float)System.Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
+            return (float) Math.Sqrt(X * X + Y * Y + Z * Z + W * W);
         }
 
         /// <summary>
@@ -145,7 +148,7 @@ namespace MinorEngine.BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            float inverse = (float)(1 / System.Math.Sqrt(X * X + Y * Y + Z * Z + W * W));
+            var inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z + W * W));
             X *= inverse;
             Y *= inverse;
             Z *= inverse;
@@ -182,6 +185,7 @@ namespace MinorEngine.BEPUutilities
         {
             product = a.X * b.X + a.Y * b.Y + a.Z * b.Z + a.W * b.W;
         }
+
         /// <summary>
         /// Adds two vectors together.
         /// </summary>
@@ -195,6 +199,7 @@ namespace MinorEngine.BEPUutilities
             sum.Z = a.Z + b.Z;
             sum.W = a.W + b.W;
         }
+
         /// <summary>
         /// Subtracts two vectors.
         /// </summary>
@@ -208,6 +213,7 @@ namespace MinorEngine.BEPUutilities
             difference.Z = a.Z - b.Z;
             difference.W = a.W - b.W;
         }
+
         /// <summary>
         /// Scales a vector.
         /// </summary>
@@ -246,12 +252,13 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Result of the division.</param>
         public static void Divide(ref Vector4 v, float divisor, out Vector4 result)
         {
-            float inverse = 1 / divisor;
+            var inverse = 1 / divisor;
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
             result.W = v.W * inverse;
         }
+
         /// <summary>
         /// Scales a vector.
         /// </summary>
@@ -267,6 +274,7 @@ namespace MinorEngine.BEPUutilities
             toReturn.W = v.W * f;
             return toReturn;
         }
+
         /// <summary>
         /// Scales a vector.
         /// </summary>
@@ -314,6 +322,7 @@ namespace MinorEngine.BEPUutilities
             toReturn.W = v.W * f;
             return toReturn;
         }
+
         /// <summary>
         /// Subtracts two vectors.
         /// </summary>
@@ -329,6 +338,7 @@ namespace MinorEngine.BEPUutilities
             v.W = a.W - b.W;
             return v;
         }
+
         /// <summary>
         /// Adds two vectors together.
         /// </summary>
@@ -381,6 +391,7 @@ namespace MinorEngine.BEPUutilities
         {
             return a.X == b.X && a.Y == b.Y && a.Z == b.Z && a.W == b.W;
         }
+
         /// <summary>
         /// Tests two vectors for componentwise inequivalence.
         /// </summary>
@@ -415,8 +426,9 @@ namespace MinorEngine.BEPUutilities
         {
             if (obj is Vector4)
             {
-                return Equals((Vector4)obj);
+                return Equals((Vector4) obj);
             }
+
             return false;
         }
 
@@ -440,10 +452,10 @@ namespace MinorEngine.BEPUutilities
         /// <param name="distanceSquared">Squared distance between the two vectors.</param>
         public static void DistanceSquared(ref Vector4 a, ref Vector4 b, out float distanceSquared)
         {
-            float x = a.X - b.X;
-            float y = a.Y - b.Y;
-            float z = a.Z - b.Z;
-            float w = a.W - b.W;
+            var x = a.X - b.X;
+            var y = a.Y - b.Y;
+            var z = a.Z - b.Z;
+            var w = a.W - b.W;
             distanceSquared = x * x + y * y + z * z + w * w;
         }
 
@@ -455,12 +467,13 @@ namespace MinorEngine.BEPUutilities
         /// <param name="distance">Distance between the two vectors.</param>
         public static void Distance(ref Vector4 a, ref Vector4 b, out float distance)
         {
-            float x = a.X - b.X;
-            float y = a.Y - b.Y;
-            float z = a.Z - b.Z;
-            float w = a.W - b.W;
-            distance = (float)System.Math.Sqrt(x * x + y * y + z * z + w * w);
+            var x = a.X - b.X;
+            var y = a.Y - b.Y;
+            var z = a.Z - b.Z;
+            var w = a.W - b.W;
+            distance = (float) Math.Sqrt(x * x + y * y + z * z + w * w);
         }
+
         /// <summary>
         /// Computes the distance between two two vectors.
         /// </summary>
@@ -477,45 +490,27 @@ namespace MinorEngine.BEPUutilities
         /// <summary>
         /// Gets the zero vector.
         /// </summary>
-        public static Vector4 Zero
-        {
-            get
-            {
-                return new Vector4();
-            }
-        }
+        public static Vector4 Zero => new Vector4();
 
         /// <summary>
         /// Gets a vector pointing along the X axis.
         /// </summary>
-        public static Vector4 UnitX
-        {
-            get { return new Vector4 { X = 1 }; }
-        }
+        public static Vector4 UnitX => new Vector4 {X = 1};
 
         /// <summary>
         /// Gets a vector pointing along the Y axis.
         /// </summary>
-        public static Vector4 UnitY
-        {
-            get { return new Vector4 { Y = 1 }; }
-        }
+        public static Vector4 UnitY => new Vector4 {Y = 1};
 
         /// <summary>
         /// Gets a vector pointing along the Z axis.
         /// </summary>
-        public static Vector4 UnitZ
-        {
-            get { return new Vector4 { Z = 1 }; }
-        }
+        public static Vector4 UnitZ => new Vector4 {Z = 1};
 
         /// <summary>
         /// Gets a vector pointing along the W axis.
         /// </summary>
-        public static Vector4 UnitW
-        {
-            get { return new Vector4 { W = 1 }; }
-        }
+        public static Vector4 UnitW => new Vector4 {W = 1};
 
         /// <summary>
         /// Normalizes the given vector.
@@ -525,7 +520,7 @@ namespace MinorEngine.BEPUutilities
         public static Vector4 Normalize(Vector4 v)
         {
             Vector4 toReturn;
-            Vector4.Normalize(ref v, out toReturn);
+            Normalize(ref v, out toReturn);
             return toReturn;
         }
 
@@ -536,7 +531,7 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Normalized vector.</param>
         public static void Normalize(ref Vector4 v, out Vector4 result)
         {
-            float inverse = (float)(1 / System.Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z + v.W * v.W));
+            var inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z + v.W * v.W));
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
@@ -565,21 +560,40 @@ namespace MinorEngine.BEPUutilities
         public static void Abs(ref Vector4 v, out Vector4 result)
         {
             if (v.X < 0)
+            {
                 result.X = -v.X;
+            }
             else
+            {
                 result.X = v.X;
+            }
+
             if (v.Y < 0)
+            {
                 result.Y = -v.Y;
+            }
             else
+            {
                 result.Y = v.Y;
+            }
+
             if (v.Z < 0)
+            {
                 result.Z = -v.Z;
+            }
             else
+            {
                 result.Z = v.Z;
+            }
+
             if (v.W < 0)
+            {
                 result.W = -v.W;
+            }
             else
+            {
                 result.W = v.W;
+            }
         }
 
         /// <summary>
@@ -662,6 +676,7 @@ namespace MinorEngine.BEPUutilities
             Lerp(ref start, ref end, interpolationAmount, out toReturn);
             return toReturn;
         }
+
         /// <summary>
         /// Computes an interpolated state between two vectors.
         /// </summary>
@@ -671,7 +686,7 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Interpolated intermediate state.</param>
         public static void Lerp(ref Vector4 start, ref Vector4 end, float interpolationAmount, out Vector4 result)
         {
-            float startAmount = 1 - interpolationAmount;
+            var startAmount = 1 - interpolationAmount;
             result.X = start.X * startAmount + end.X * interpolationAmount;
             result.Y = start.Y * startAmount + end.Y * interpolationAmount;
             result.Z = start.Z * startAmount + end.Z * interpolationAmount;
@@ -687,19 +702,25 @@ namespace MinorEngine.BEPUutilities
         /// <param name="tangent2">Tangent associated with the second position.</param>
         /// <param name="interpolationAmount">Amount of the second point to use.</param>
         /// <param name="result">Interpolated intermediate state.</param>
-        public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2, float interpolationAmount, out Vector4 result)
+        public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2,
+            float interpolationAmount, out Vector4 result)
         {
-            float weightSquared = interpolationAmount * interpolationAmount;
-            float weightCubed = interpolationAmount * weightSquared;
-            float value1Blend = 2 * weightCubed - 3 * weightSquared + 1;
-            float tangent1Blend = weightCubed - 2 * weightSquared + interpolationAmount;
-            float value2Blend = -2 * weightCubed + 3 * weightSquared;
-            float tangent2Blend = weightCubed - weightSquared;
-            result.X = value1.X * value1Blend + value2.X * value2Blend + tangent1.X * tangent1Blend + tangent2.X * tangent2Blend;
-            result.Y = value1.Y * value1Blend + value2.Y * value2Blend + tangent1.Y * tangent1Blend + tangent2.Y * tangent2Blend;
-            result.Z = value1.Z * value1Blend + value2.Z * value2Blend + tangent1.Z * tangent1Blend + tangent2.Z * tangent2Blend;
-            result.W = value1.W * value1Blend + value2.W * value2Blend + tangent1.W * tangent1Blend + tangent2.W * tangent2Blend;
+            var weightSquared = interpolationAmount * interpolationAmount;
+            var weightCubed = interpolationAmount * weightSquared;
+            var value1Blend = 2 * weightCubed - 3 * weightSquared + 1;
+            var tangent1Blend = weightCubed - 2 * weightSquared + interpolationAmount;
+            var value2Blend = -2 * weightCubed + 3 * weightSquared;
+            var tangent2Blend = weightCubed - weightSquared;
+            result.X = value1.X * value1Blend + value2.X * value2Blend + tangent1.X * tangent1Blend +
+                       tangent2.X * tangent2Blend;
+            result.Y = value1.Y * value1Blend + value2.Y * value2Blend + tangent1.Y * tangent1Blend +
+                       tangent2.Y * tangent2Blend;
+            result.Z = value1.Z * value1Blend + value2.Z * value2Blend + tangent1.Z * tangent1Blend +
+                       tangent2.Z * tangent2Blend;
+            result.W = value1.W * value1Blend + value2.W * value2Blend + tangent1.W * tangent1Blend +
+                       tangent2.W * tangent2Blend;
         }
+
         /// <summary>
         /// Computes an intermediate location using hermite interpolation.
         /// </summary>
@@ -709,7 +730,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="tangent2">Tangent associated with the second position.</param>
         /// <param name="interpolationAmount">Amount of the second point to use.</param>
         /// <returns>Interpolated intermediate state.</returns>
-        public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2, float interpolationAmount)
+        public static Vector4 Hermite(Vector4 value1, Vector4 tangent1, Vector4 value2, Vector4 tangent2,
+            float interpolationAmount)
         {
             Vector4 toReturn;
             Hermite(ref value1, ref tangent1, ref value2, ref tangent2, interpolationAmount, out toReturn);

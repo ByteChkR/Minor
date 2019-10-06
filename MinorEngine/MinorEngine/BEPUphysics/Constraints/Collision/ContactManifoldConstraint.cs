@@ -1,11 +1,10 @@
-﻿using System;
-using MinorEngine.BEPUphysics.Constraints.SolverGroups;
-using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUphysics.Entities;
+﻿using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionTests;
-using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
-using MinorEngine.BEPUphysics.CollisionRuleManagement;
+using MinorEngine.BEPUphysics.Constraints.SolverGroups;
+using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUphysics.Materials;
+using MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs;
+using MinorEngine.BEPUutilities.DataStructures;
 
 namespace MinorEngine.BEPUphysics.Constraints.Collision
 {
@@ -14,51 +13,41 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
     ///</summary>
     public abstract class ContactManifoldConstraint : SolverGroup
     {
-
         internal InteractionProperties materialInteraction;
+
         ///<summary>
         /// Gets or sets the material-blended properties used by this constraint.
         ///</summary>
         public InteractionProperties MaterialInteraction
         {
-            get
-            {
-                return materialInteraction;
-            }
-            set
-            {
-                materialInteraction = value;
-            }
+            get => materialInteraction;
+            set => materialInteraction = value;
         }
 
         protected Entity entityA;
+
         ///<summary>
         /// Gets the first entity associated with the manifold.
         ///</summary>
-        public Entity EntityA { get { return entityA; } }
+        public Entity EntityA => entityA;
+
         protected Entity entityB;
+
         ///<summary>
         /// Gets the second entity associated with the manifold.
         ///</summary>
-        public Entity EntityB { get { return entityB; } }
+        public Entity EntityB => entityB;
 
         protected internal CollidablePairHandler pair;
 
         ///<summary>
         /// Gets the pair handler owning this constraint.
         ///</summary>
-        public CollidablePairHandler Pair
-        {
-            get
-            {
-                return pair;
-            }
-
-        }
+        public CollidablePairHandler Pair => pair;
 
         protected ContactManifoldConstraint(CollidablePairHandler pairHandler)
         {
-            this.pair = pairHandler;
+            pair = pairHandler;
         }
 
 
@@ -71,14 +60,20 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
             //It doesn't even need to notify the parent solvergroup.
             CollectInvolvedEntities();
         }
+
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
             //The default implementation for solver groups looks at every single subconstraint.
             //That's not necessary for these special constraints.
             if (entityA != null)
+            {
                 outputInvolvedEntities.Add(entityA);
+            }
+
             if (entityB != null)
+            {
                 outputInvolvedEntities.Add(entityB);
+            }
         }
 
         ///<summary>
@@ -119,7 +114,6 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         }
 
 
-
         /// <summary>
         /// Sets the activity state of the constraint based on the activity state of its connections.
         /// Called automatically by the space owning a constaint.  If a constraint is a sub-constraint that hasn't been directly added to the space,
@@ -127,21 +121,23 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         /// </summary>
         public override void UpdateSolverActivity()
         {
-
             if (isActive)
             {
                 isActiveInSolver = pair.BroadPhaseOverlap.collisionRule < CollisionRule.NoSolver &&
-                                   ((entityA != null && entityA.isDynamic && entityA.activityInformation.IsActive) || //At least one of the objects must be an active dynamic entity.
-                                   (entityB != null && entityB.isDynamic && entityB.activityInformation.IsActive));
-                for (int i = 0; i < solverUpdateables.Count; i++)
+                                   (entityA != null && entityA.isDynamic &&
+                                    entityA.activityInformation
+                                        .IsActive || //At least one of the objects must be an active dynamic entity.
+                                    entityB != null && entityB.isDynamic && entityB.activityInformation.IsActive);
+                for (var i = 0; i < solverUpdateables.Count; i++)
                 {
-                    solverUpdateables.Elements[i].isActiveInSolver = solverUpdateables.Elements[i].isActive && isActiveInSolver;
+                    solverUpdateables.Elements[i].isActiveInSolver =
+                        solverUpdateables.Elements[i].isActive && isActiveInSolver;
                 }
             }
             else
+            {
                 isActiveInSolver = false;
-
-
+            }
         }
 
         ///<summary>
@@ -152,7 +148,9 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
         public void UpdateMaterialProperties(Material materialA, Material materialB)
         {
             if (materialA != null && materialB != null)
+            {
                 MaterialManager.GetInteractionProperties(materialA, materialB, out materialInteraction);
+            }
             else if (materialA == null && materialB != null)
             {
                 materialInteraction.KineticFriction = materialB.kineticFriction;
@@ -172,8 +170,5 @@ namespace MinorEngine.BEPUphysics.Constraints.Collision
                 materialInteraction.Bounciness = 0;
             }
         }
-
-
-
     }
 }

@@ -16,10 +16,13 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_CreateBuffer()
         {
-            byte[] b = new byte[255];
-            for (int i = 0; i < b.Length; i++) b[i] = (byte) i;
+            var b = new byte[255];
+            for (var i = 0; i < b.Length; i++)
+            {
+                b[i] = (byte) i;
+            }
 
-            MemoryBuffer buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            var buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
@@ -28,12 +31,15 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_ReadBuffer()
         {
-            float[] b = new float[255];
-            for (int i = 0; i < b.Length; i++) b[i] = i;
+            var b = new float[255];
+            for (var i = 0; i < b.Length; i++)
+            {
+                b[i] = i;
+            }
 
-            MemoryBuffer buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            var buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
-            float[] c = CL.ReadBuffer<float>(buffer, b.Length);
+            var c = CL.ReadBuffer<float>(buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -42,15 +48,18 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_WriteBuffer()
         {
-            float[] b = new float[255];
-            for (int i = 0; i < b.Length; i++) b[i] = i;
+            var b = new float[255];
+            for (var i = 0; i < b.Length; i++)
+            {
+                b[i] = i;
+            }
 
-            MemoryBuffer buffer = CL.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            var buffer = CL.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
 
             CL.WriteToBuffer(buffer, b);
 
-            float[] c = CL.ReadBuffer<float>(buffer, b.Length);
+            var c = CL.ReadBuffer<float>(buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -58,10 +67,14 @@ namespace MinorEngine.Tests
 
         private static bool CheckValues(float[] values, float[] reference)
         {
-            bool working = true;
-            for (int i = 0; i < values.Length; i++)
+            var working = true;
+            for (var i = 0; i < values.Length; i++)
+            {
                 if (Math.Abs(values[i] - reference[i]) > 0.01f)
+                {
                     working = false;
+                }
+            }
 
             return working;
         }
@@ -71,22 +84,25 @@ namespace MinorEngine.Tests
         public void FLInterpreterTest()
         {
             DebugHelper.SeverityFilter = 10;
-            string oldPath = Directory.GetCurrentDirectory();
-            string path = Path.GetFullPath("../../../resources");
-            string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
+            var oldPath = Directory.GetCurrentDirectory();
+            var path = Path.GetFullPath("../../../resources");
+            var files = Directory.GetFiles(path + "/filter/tests", "*.fl");
 
             Directory.SetCurrentDirectory(path);
-            KernelDatabase db = new KernelDatabase(path + "/kernel", DataTypes.UCHAR1);
+            var db = new KernelDatabase(path + "/kernel", DataTypes.UCHAR1);
 
-            foreach (string file in files)
+            foreach (var file in files)
             {
-                Interpreter P = new Interpreter(file,
+                var P = new Interpreter(file,
                     CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
                     4, db);
-                while (!P.Terminated) P.Step();
+                while (!P.Terminated)
+                {
+                    P.Step();
+                }
             }
-            Directory.SetCurrentDirectory(oldPath);
 
+            Directory.SetCurrentDirectory(oldPath);
         }
 
 
@@ -94,10 +110,10 @@ namespace MinorEngine.Tests
         public void CL_KernelSignatureAnalysis()
         {
             DebugHelper.SeverityFilter = 10;
-            string path = Path.GetFullPath("../../../resources");
-            KernelDatabase kdb = new KernelDatabase(path, DataTypes.UCHAR1);
+            var path = Path.GetFullPath("../../../resources");
+            var kdb = new KernelDatabase(path, DataTypes.UCHAR1);
 
-            Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel));
+            Assert.True(kdb.TryGetCLKernel("addval", out var kernel));
 
             Assert.True(kernel.Parameter.Count == 5);
 

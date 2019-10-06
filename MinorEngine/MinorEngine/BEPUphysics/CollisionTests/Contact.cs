@@ -1,6 +1,4 @@
-﻿using System;
-using MinorEngine.BEPUutilities;
- 
+﻿using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionTests
 {
@@ -30,8 +28,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests
         /// </summary>
         public Vector3 Position;
 
- 
-
 
         ///<summary>
         /// Sets up the contact with new information.
@@ -54,8 +50,5 @@ namespace MinorEngine.BEPUphysics.CollisionTests
         {
             return "Position: " + Position + " Normal: " + Normal + " Depth: " + PenetrationDepth;
         }
-
-
-
     }
 }

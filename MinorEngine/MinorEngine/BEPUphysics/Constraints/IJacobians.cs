@@ -1,5 +1,4 @@
 ﻿using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints
 {

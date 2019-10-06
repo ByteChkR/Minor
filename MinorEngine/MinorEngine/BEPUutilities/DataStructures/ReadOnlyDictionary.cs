@@ -26,44 +26,29 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <summary>
         /// Gets the number of elements in the dictionary.
         /// </summary>
-        public int Count
-        {
-            get { return dictionary.Count; }
-        }
+        public int Count => dictionary.Count;
 
         /// <summary>
         /// Gets whether or not this dictionary is read-only.
         /// </summary>
-        public bool IsReadOnly
-        {
-            get { return true; }
-        }
+        public bool IsReadOnly => true;
 
         /// <summary>
         /// Gets the value associated with the key in the dictionary.
         /// </summary>
         /// <param name="key">Key to look for in the dictionary.</param>
         /// <returns>Value associated with the key.</returns>
-        public TValue this[TKey key]
-        {
-            get { return dictionary[key]; }
-        }
+        public TValue this[TKey key] => dictionary[key];
 
         /// <summary>
         /// Gets an enumerable set of keys in the dictionary.
         /// </summary>
-        public IEnumerable<TKey> Keys
-        {
-            get { return new ReadOnlyEnumerable<TKey>(dictionary.Keys); }
-        }
+        public IEnumerable<TKey> Keys => new ReadOnlyEnumerable<TKey>(dictionary.Keys);
 
         /// <summary>
         /// Gets an enumerable set of values in the dictionary.
         /// </summary>
-        public IEnumerable<TValue> Values
-        {
-            get { return new ReadOnlyEnumerable<TValue>(dictionary.Values); }
-        }
+        public IEnumerable<TValue> Values => new ReadOnlyEnumerable<TValue>(dictionary.Values);
 
         #region IEnumerable<KeyValuePair<TKey,TValue>> Members
 

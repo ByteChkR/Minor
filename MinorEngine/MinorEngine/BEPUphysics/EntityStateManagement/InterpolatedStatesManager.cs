@@ -18,10 +18,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///<exception cref="InvalidOperationException">Thrown when enabling the interpolated manager without having the read buffers active.</exception>
         public override bool Enabled
         {
-            get
-            {
-                return base.Enabled;
-            }
+            get => base.Enabled;
             set
             {
                 if (base.Enabled && !value)
@@ -32,7 +29,11 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 else if (!base.Enabled && value)
                 {
                     if (!manager.ReadBuffers.Enabled)
-                        throw new InvalidOperationException("Cannot enable interpolated states unless the read buffers are enabled.");
+                    {
+                        throw new InvalidOperationException(
+                            "Cannot enable interpolated states unless the read buffers are enabled.");
+                    }
+
                     Enable();
                     base.Enabled = true;
                 }
@@ -44,18 +45,18 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
             //Turn everything on.
             lock (FlipLocker)
             {
-                int initialCount = Math.Max(manager.entities.Count, 64);
+                var initialCount = Math.Max(manager.entities.Count, 64);
                 backBuffer = new RigidTransform[initialCount];
                 states = new RigidTransform[initialCount];
-                for (int i = 0; i < manager.entities.Count; i++)
+                for (var i = 0; i < manager.entities.Count; i++)
                 {
-                    Entity entity = manager.entities[i];
+                    var entity = manager.entities[i];
                     backBuffer[i].Position = entity.position;
                     backBuffer[i].Orientation = entity.orientation;
                 }
+
                 Array.Copy(backBuffer, states, backBuffer.Length);
             }
-
         }
 
         internal void Disable()
@@ -67,16 +68,18 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 states = null;
             }
         }
+
         private BufferedStatesManager manager;
+
         ///<summary>
         /// Gets the synchronization object locked prior to flipping the internal buffers.
         /// Acquiring a lock on this object will prevent the internal buffers from flipping for the duration
         /// of the lock.
         ///</summary>
-        public object FlipLocker { get; private set; }
+        public object FlipLocker { get; }
 
-        RigidTransform[] backBuffer;
-        RigidTransform[] states = new RigidTransform[64];
+        private RigidTransform[] backBuffer;
+        private RigidTransform[] states = new RigidTransform[64];
 
         ///<summary>
         /// Constructs a new interpolated states manager.
@@ -104,7 +107,8 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         }
 
 
-        float blendAmount;
+        private float blendAmount;
+
         ///<summary>
         /// Gets or sets the blending amount to use.
         /// This is set automatically when the space is using internal timestepping
@@ -115,28 +119,24 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         ///</summary>
         public float BlendAmount
         {
-            get
-            {
-                return blendAmount;
-            }
-            set
-            {
-                blendAmount = MathHelper.Clamp(value, 0, 1);
-            }
+            get => blendAmount;
+            set => blendAmount = MathHelper.Clamp(value, 0, 1);
         }
 
-        Action<int> multithreadedWithReadBuffersDelegate;
-        void UpdateIndex(int i)
+        private Action<int> multithreadedWithReadBuffersDelegate;
+
+        private void UpdateIndex(int i)
         {
-            Entity entity = manager.entities[i];
+            var entity = manager.entities[i];
             //Blend between previous and current states.
             //Interpolated updates occur after proper updates complete.
             //That means that the internal positions and the front buffer positions are equivalent.
             //However, the backbuffer is uncontested and contains the previous frame's data.
-            Vector3.Lerp(ref manager.ReadBuffers.backBuffer[i].Position, ref entity.position, blendAmount, out backBuffer[i].Position);
-            Quaternion.Slerp(ref manager.ReadBuffers.backBuffer[i].Orientation, ref entity.orientation, blendAmount, out backBuffer[i].Orientation);
+            Vector3.Lerp(ref manager.ReadBuffers.backBuffer[i].Position, ref entity.position, blendAmount,
+                out backBuffer[i].Position);
+            Quaternion.Slerp(ref manager.ReadBuffers.backBuffer[i].Orientation, ref entity.orientation, blendAmount,
+                out backBuffer[i].Orientation);
         }
-
 
 
         protected override void UpdateMultithreaded()
@@ -147,10 +147,11 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
 
         protected override void UpdateSingleThreaded()
         {
-            for (int i = 0; i < manager.entities.Count; i++)
+            for (var i = 0; i < manager.entities.Count; i++)
             {
                 UpdateIndex(i);
             }
+
             FlipBuffers();
         }
 
@@ -161,7 +162,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         {
             lock (FlipLocker)
             {
-                RigidTransform[] formerFrontBuffer = states;
+                var formerFrontBuffer = states;
                 states = backBuffer;
                 backBuffer = formerFrontBuffer;
             }
@@ -191,6 +192,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 {
                     throw new ArgumentException("Array is not large enough to hold the buffer.", "states");
                 }
+
                 Array.Copy(this.states, states, manager.entities.Count);
             }
         }
@@ -204,6 +206,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 states.CopyTo(newStates, 0);
                 states = newStates;
             }
+
             states[e.BufferedStates.motionStateIndex].Position = e.position;
             states[e.BufferedStates.motionStateIndex].Orientation = e.orientation;
 
@@ -213,6 +216,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 backBuffer.CopyTo(newStates, 0);
                 backBuffer = newStates;
             }
+
             backBuffer[e.BufferedStates.motionStateIndex].Position = e.position;
             backBuffer[e.BufferedStates.motionStateIndex].Orientation = e.orientation;
         }

@@ -20,7 +20,7 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <summary>
         /// Gets the list of control points in the curve.
         /// </summary>
-        public CurveControlPointList<TValue> ControlPoints { get; private set; }
+        public CurveControlPointList<TValue> ControlPoints { get; }
 
         /// <summary>
         /// Defines how the curve is sampled when the evaluation time exceeds the final control point.
@@ -42,15 +42,16 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="preLoop">Looping behavior of the curve before the first endpoint's time.</param>
         /// <param name="postLoop">Looping behavior of the curve after the last endpoint's time.</param>
         /// <returns>Time within the curve's interval.</returns>
-        public static double ModifyTime(double time, double intervalBegin, double intervalEnd, CurveEndpointBehavior preLoop, CurveEndpointBehavior postLoop)
+        public static double ModifyTime(double time, double intervalBegin, double intervalEnd,
+            CurveEndpointBehavior preLoop, CurveEndpointBehavior postLoop)
         {
             if (time < intervalBegin)
             {
                 switch (preLoop)
                 {
                     case CurveEndpointBehavior.Wrap:
-                        double modifiedTime = time - intervalBegin;
-                        double intervalLength = intervalEnd - intervalBegin;
+                        var modifiedTime = time - intervalBegin;
+                        var intervalLength = intervalEnd - intervalBegin;
                         modifiedTime %= intervalLength;
                         return intervalEnd + modifiedTime;
                     case CurveEndpointBehavior.Clamp:
@@ -60,7 +61,10 @@ namespace MinorEngine.BEPUphysics.Paths
                         intervalLength = intervalEnd - intervalBegin;
                         var numFlips = (int) (modifiedTime / intervalLength);
                         if (numFlips % 2 == 0)
+                        {
                             return intervalBegin - modifiedTime % intervalLength;
+                        }
+
                         return intervalEnd + modifiedTime % intervalLength;
                 }
             }
@@ -69,8 +73,8 @@ namespace MinorEngine.BEPUphysics.Paths
                 switch (postLoop)
                 {
                     case CurveEndpointBehavior.Wrap:
-                        double modifiedTime = time - intervalEnd;
-                        double intervalLength = intervalEnd - intervalBegin;
+                        var modifiedTime = time - intervalEnd;
+                        var intervalLength = intervalEnd - intervalBegin;
                         modifiedTime %= intervalLength;
                         return intervalBegin + modifiedTime;
                     case CurveEndpointBehavior.Clamp:
@@ -80,10 +84,14 @@ namespace MinorEngine.BEPUphysics.Paths
                         intervalLength = intervalEnd - intervalBegin;
                         var numFlips = (int) (modifiedTime / intervalLength);
                         if (numFlips % 2 == 0)
+                        {
                             return intervalEnd - modifiedTime % intervalLength;
+                        }
+
                         return intervalBegin + modifiedTime % intervalLength;
                 }
             }
+
             return time;
         }
 
@@ -116,9 +124,10 @@ namespace MinorEngine.BEPUphysics.Paths
             if (minIndex < 0 || maxIndex < 0)
             {
                 //Invalid bounds, quit with default
-                value = default(TValue);
+                value = default;
                 return;
             }
+
             if (minIndex == maxIndex)
             {
                 //1-length curve; asking the system to evaluate
@@ -127,9 +136,10 @@ namespace MinorEngine.BEPUphysics.Paths
                 value = ControlPoints[minIndex].Value;
                 return;
             }
+
             time = ModifyTime(time, firstTime, lastTime, PreLoop, PostLoop);
 
-            int index = GetPreviousIndex(time);
+            var index = GetPreviousIndex(time);
             if (index == maxIndex)
             {
                 //Somehow the index is the very last index, so next index would be invalid.
@@ -143,9 +153,13 @@ namespace MinorEngine.BEPUphysics.Paths
 
                 float intervalTime;
                 if (denominator < Toolbox.Epsilon)
+                {
                     intervalTime = 0;
+                }
                 else
+                {
                     intervalTime = (float) ((time - ControlPoints[index].Time) / denominator);
+                }
 
 
                 Evaluate(index, intervalTime, out value);
@@ -172,7 +186,8 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="lastIndexTime">Time of the last index.</param>
         /// <param name="minIndex">First index in the reachable curve.</param>
         /// <param name="maxIndex">Last index in the reachable curve.</param>
-        public void GetCurveBoundsInformation(out double firstIndexTime, out double lastIndexTime, out int minIndex, out int maxIndex)
+        public void GetCurveBoundsInformation(out double firstIndexTime, out double lastIndexTime, out int minIndex,
+            out int maxIndex)
         {
             GetCurveIndexBoundsInformation(out minIndex, out maxIndex);
             if (minIndex >= 0 && maxIndex < ControlPoints.Count && minIndex <= maxIndex)
@@ -196,14 +211,17 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <returns>Index prior to or equal to the given time.</returns>
         public int GetPreviousIndex(double time)
         {
-            int indexMin = 0;
-            int indexMax = ControlPoints.Count;
+            var indexMin = 0;
+            var indexMax = ControlPoints.Count;
             if (indexMax == 0)
+            {
                 return -1;
+            }
+
             //If time < controlpoints.mintime, should be... 0 or -1?
             while (indexMax - indexMin > 1) //if time belongs to min
             {
-                int midIndex = (indexMin + indexMax) / 2;
+                var midIndex = (indexMin + indexMax) / 2;
                 if (time > ControlPoints[midIndex].Time)
                 {
                     indexMin = midIndex;
@@ -212,17 +230,17 @@ namespace MinorEngine.BEPUphysics.Paths
                 {
                     indexMax = midIndex;
                 }
-
             }
+
             return indexMin;
         }
 
 
         internal void InternalControlPointTimeChanged(CurveControlPoint<TValue> controlPoint)
         {
-            int oldIndex = ControlPoints.list.IndexOf(controlPoint);
+            var oldIndex = ControlPoints.list.IndexOf(controlPoint);
             ControlPoints.list.RemoveAt(oldIndex);
-            int index = GetPreviousIndex(controlPoint.Time) + 1;
+            var index = GetPreviousIndex(controlPoint.Time) + 1;
             ControlPoints.list.Insert(index, controlPoint);
             ControlPointTimeChanged(controlPoint, oldIndex, index);
         }
@@ -248,7 +266,8 @@ namespace MinorEngine.BEPUphysics.Paths
         /// <param name="curveControlPoint">Changed control point.</param>
         /// <param name="oldIndex">Old index of the control point.</param>
         /// <param name="newIndex">New index of the control point.</param>
-        protected internal abstract void ControlPointTimeChanged(CurveControlPoint<TValue> curveControlPoint, int oldIndex, int newIndex);
+        protected internal abstract void ControlPointTimeChanged(CurveControlPoint<TValue> curveControlPoint,
+            int oldIndex, int newIndex);
 
         /// <summary>
         /// Called when a control point belonging to the curve has its value changed.

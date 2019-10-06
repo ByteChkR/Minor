@@ -17,10 +17,9 @@ namespace MinorEngine.BEPUphysics.CollisionShapes
         protected virtual void OnShapeChanged()
         {
             if (ShapeChanged != null)
+            {
                 ShapeChanged(this);
+            }
         }
-
-
-
     }
 }

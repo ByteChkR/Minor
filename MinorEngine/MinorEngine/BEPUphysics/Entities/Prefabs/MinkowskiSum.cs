@@ -1,8 +1,7 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -23,7 +22,7 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         public Entity EntityB;
 
         private MinkowskiSum(OrientedConvexShapeEntry a, OrientedConvexShapeEntry b, float m)
-            :base(new ConvexCollidable<MinkowskiSumShape>(new MinkowskiSumShape(a, b)), m)
+            : base(new ConvexCollidable<MinkowskiSumShape>(new MinkowskiSumShape(a, b)), m)
         {
             Position = -CollisionInformation.Shape.LocalOffset;
         }
@@ -106,8 +105,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
-
-
     }
 }

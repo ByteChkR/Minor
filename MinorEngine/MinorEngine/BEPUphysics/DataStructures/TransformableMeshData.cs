@@ -1,5 +1,4 @@
 ﻿using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.DataStructures
 {
@@ -40,14 +39,8 @@ namespace MinorEngine.BEPUphysics.DataStructures
         ///</summary>
         public AffineTransform WorldTransform
         {
-            get
-            {
-                return worldTransform;
-            }
-            set
-            {
-                worldTransform = value;
-            }
+            get => worldTransform;
+            set => worldTransform = value;
         }
 
         ///<summary>
@@ -73,7 +66,5 @@ namespace MinorEngine.BEPUphysics.DataStructures
         {
             AffineTransform.Transform(ref vertices[i], ref worldTransform, out vertex);
         }
-
-
     }
 }

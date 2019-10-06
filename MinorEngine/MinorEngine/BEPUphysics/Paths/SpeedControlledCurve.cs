@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Paths
 {
@@ -28,7 +26,8 @@ namespace MinorEngine.BEPUphysics.Paths
     /// </remarks>
     public abstract class SpeedControlledCurve<TValue> : Path<TValue>
     {
-        private readonly List<SpeedControlledCurveSample> samples = new List<SpeedControlledCurveSample>(); //  X is wrapped view, Y is associated curve view
+        private readonly List<SpeedControlledCurveSample>
+            samples = new List<SpeedControlledCurveSample>(); //  X is wrapped view, Y is associated curve view
 
         private Curve<TValue> curve;
         private int samplesPerInterval;
@@ -68,12 +67,14 @@ namespace MinorEngine.BEPUphysics.Paths
         /// </summary>
         public Curve<TValue> Curve
         {
-            get { return curve; }
+            get => curve;
             set
             {
                 curve = value;
                 if (Curve != null)
+                {
                     ResampleCurve();
+                }
             }
         }
 
@@ -92,12 +93,14 @@ namespace MinorEngine.BEPUphysics.Paths
         /// </summary>
         public int SamplesPerInterval
         {
-            get { return samplesPerInterval; }
+            get => samplesPerInterval;
             set
             {
                 samplesPerInterval = value;
                 if (Curve != null)
+                {
                     ResampleCurve();
+                }
             }
         }
 
@@ -116,18 +119,22 @@ namespace MinorEngine.BEPUphysics.Paths
         public double GetInnerTime(double time)
         {
             if (Curve == null)
-                throw new InvalidOperationException("SpeedControlledCurve's internal curve is null; ensure that its curve property is set prior to evaluation.");
+            {
+                throw new InvalidOperationException(
+                    "SpeedControlledCurve's internal curve is null; ensure that its curve property is set prior to evaluation.");
+            }
+
             double firstTime, lastTime;
             GetPathBoundsInformation(out firstTime, out lastTime);
             time = Curve<TValue>.ModifyTime(time, firstTime, lastTime, Curve.PreLoop, Curve.PostLoop);
 
-            int indexMin = 0;
-            int indexMax = samples.Count;
+            var indexMin = 0;
+            var indexMax = samples.Count;
             if (indexMax == 1)
-            {
                 //1-length curve; asking the system to evaluate
                 //this will be a waste of time AND
                 //crash since +1 will be outside scope
+            {
                 return samples[0].SpeedControlled;
             }
 
@@ -135,10 +142,11 @@ namespace MinorEngine.BEPUphysics.Paths
             {
                 return 0;
             }
+
             //If time < controlpoints.mintime, should be... 0 or -1?
             while (indexMax - indexMin > 1) //if time belongs to min
             {
-                int midIndex = (indexMin + indexMax) / 2;
+                var midIndex = (indexMin + indexMax) / 2;
                 if (time > samples[midIndex].Wrapped)
                 {
                     indexMin = midIndex;
@@ -150,8 +158,10 @@ namespace MinorEngine.BEPUphysics.Paths
             }
 
 
-            double curveTime = (time - samples[indexMin].Wrapped) / (samples[indexMin + 1].Wrapped - samples[indexMin].Wrapped);
-            return (1 - curveTime) * samples[indexMin].SpeedControlled + (curveTime) * samples[indexMin + 1].SpeedControlled;
+            var curveTime = (time - samples[indexMin].Wrapped) /
+                            (samples[indexMin + 1].Wrapped - samples[indexMin].Wrapped);
+            return (1 - curveTime) * samples[indexMin].SpeedControlled +
+                   curveTime * samples[indexMin + 1].SpeedControlled;
         }
 
         /// <summary>
@@ -210,49 +220,59 @@ namespace MinorEngine.BEPUphysics.Paths
 
             //Curve isn't valid.
             if (minIndex < 0 || maxIndex < 0)
+            {
                 return;
+            }
 
             float timeElapsed = 0;
             //TODO: useless calculation due to this
-            TValue currentValue = Curve.ControlPoints[minIndex].Value;
-            TValue previousValue = currentValue;
+            var currentValue = Curve.ControlPoints[minIndex].Value;
+            var previousValue = currentValue;
 
-            float inverseSampleCount = 1f / (SamplesPerInterval + 1);
+            var inverseSampleCount = 1f / (SamplesPerInterval + 1);
 
-            float speed = GetSpeedAtCurveTime(Curve.ControlPoints[minIndex].Time);
-            float previousSpeed = speed;
-            for (int i = minIndex; i < maxIndex; i++)
+            var speed = GetSpeedAtCurveTime(Curve.ControlPoints[minIndex].Time);
+            var previousSpeed = speed;
+            for (var i = minIndex; i < maxIndex; i++)
             {
                 previousValue = currentValue;
                 currentValue = Curve.ControlPoints[i].Value;
 
                 if (speed != 0)
+                {
                     timeElapsed += GetDistance(previousValue, currentValue) / speed;
+                }
+
                 previousSpeed = speed;
                 speed = GetSpeedAtCurveTime(Curve.ControlPoints[i].Time);
 
-                samples.Add(new SpeedControlledCurveSample { Wrapped = timeElapsed, SpeedControlled = Curve.ControlPoints[i].Time });
+                samples.Add(new SpeedControlledCurveSample
+                    {Wrapped = timeElapsed, SpeedControlled = Curve.ControlPoints[i].Time});
 
                 var curveTime = Curve.ControlPoints[i].Time;
                 var intervalLength = Curve.ControlPoints[i + 1].Time - curveTime;
                 var curveTimePerSample = intervalLength / (SamplesPerInterval + 1);
-                for (int j = 1; j <= SamplesPerInterval; j++)
+                for (var j = 1; j <= SamplesPerInterval; j++)
                 {
                     previousValue = currentValue;
                     Curve.Evaluate(i, j * inverseSampleCount, out currentValue);
 
                     curveTime += curveTimePerSample;
                     if (speed != 0)
+                    {
                         timeElapsed += GetDistance(previousValue, currentValue) / speed;
+                    }
 
                     previousSpeed = speed;
                     speed = GetSpeedAtCurveTime(curveTime);
 
-                    samples.Add(new SpeedControlledCurveSample { Wrapped = timeElapsed, SpeedControlled = curveTime });
+                    samples.Add(new SpeedControlledCurveSample {Wrapped = timeElapsed, SpeedControlled = curveTime});
                 }
             }
+
             timeElapsed += GetDistance(previousValue, currentValue) / previousSpeed;
-            samples.Add(new SpeedControlledCurveSample { Wrapped = timeElapsed, SpeedControlled = Curve.ControlPoints[maxIndex].Time });
+            samples.Add(new SpeedControlledCurveSample
+                {Wrapped = timeElapsed, SpeedControlled = Curve.ControlPoints[maxIndex].Time});
         }
 
         /// <summary>

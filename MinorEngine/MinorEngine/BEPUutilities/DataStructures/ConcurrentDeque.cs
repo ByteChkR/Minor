@@ -11,7 +11,6 @@ namespace MinorEngine.BEPUutilities.DataStructures
         private readonly SpinLock locker = new SpinLock();
         internal T[] array;
 
-        private int count;
         internal int firstIndex;
         internal int lastIndex = -1;
 
@@ -28,14 +27,11 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <summary>
         /// Number of elements in the deque.
         /// </summary>
-        public int Count
-        {
-            get { return count; }
-        }
+        public int Count { get; private set; }
 
         public override string ToString()
         {
-            return "Count: " + count;
+            return "Count: " + Count;
         }
 
         //TODO:  SPEED UP THESE ENQUEUES!
@@ -55,26 +51,29 @@ namespace MinorEngine.BEPUutilities.DataStructures
                 //Enqueues go to the tail only; it's like a queue.
                 //head ----> tail
 
-                if (count == array.Length)
+                if (Count == array.Length)
                 {
                     //Resize
                     //TODO: Better shift-resize
-                    T[] oldArray = array;
+                    var oldArray = array;
                     array = new T[Math.Max(4, oldArray.Length * 2)];
                     //Copy the old first-end to the first part of the new array.
                     Array.Copy(oldArray, firstIndex, array, 0, oldArray.Length - firstIndex);
                     //Copy the old begin-first to the second part of the new array.
                     Array.Copy(oldArray, 0, array, oldArray.Length - firstIndex, firstIndex);
                     firstIndex = 0;
-                    lastIndex = count - 1;
+                    lastIndex = Count - 1;
                 }
 
 
                 lastIndex++;
                 if (lastIndex == array.Length)
+                {
                     lastIndex = 0;
+                }
+
                 array[lastIndex] = item;
-                count++;
+                Count++;
             }
             finally
             {
@@ -95,17 +94,21 @@ namespace MinorEngine.BEPUutilities.DataStructures
 
             try
             {
-                if (count > 0)
+                if (Count > 0)
                 {
                     item = array[firstIndex];
-                    array[firstIndex] = default(T);
+                    array[firstIndex] = default;
                     firstIndex++;
                     if (firstIndex == array.Length)
+                    {
                         firstIndex = 0;
-                    count--;
+                    }
+
+                    Count--;
                     return true;
                 }
-                item = default(T);
+
+                item = default;
                 return false;
             }
             finally
@@ -128,17 +131,21 @@ namespace MinorEngine.BEPUutilities.DataStructures
 
             try
             {
-                if (count > 0)
+                if (Count > 0)
                 {
                     item = array[lastIndex];
-                    array[lastIndex] = default(T);
+                    array[lastIndex] = default;
                     lastIndex--;
                     if (lastIndex < 0)
+                    {
                         lastIndex += array.Length;
-                    count--;
+                    }
+
+                    Count--;
                     return true;
                 }
-                item = default(T);
+
+                item = default;
                 return false;
             }
             finally
@@ -155,17 +162,21 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <returns>True if an element could be dequeued, false otherwise.</returns>
         public bool TryUnsafeDequeueFirst(out T item)
         {
-            if (count > 0)
+            if (Count > 0)
             {
                 item = array[firstIndex];
-                array[firstIndex] = default(T);
+                array[firstIndex] = default;
                 firstIndex++;
                 if (firstIndex == array.Length)
+                {
                     firstIndex = 0;
-                count--;
+                }
+
+                Count--;
                 return true;
             }
-            item = default(T);
+
+            item = default;
             return false;
         }
 
@@ -176,17 +187,21 @@ namespace MinorEngine.BEPUutilities.DataStructures
         /// <returns>True if an element could be dequeued, false otherwise.</returns>
         public bool TryUnsafeDequeueLast(out T item)
         {
-            if (count > 0)
+            if (Count > 0)
             {
                 item = array[lastIndex];
-                array[lastIndex] = default(T);
+                array[lastIndex] = default;
                 lastIndex--;
                 if (lastIndex < 0)
+                {
                     lastIndex += array.Length;
-                count--;
+                }
+
+                Count--;
                 return true;
             }
-            item = default(T);
+
+            item = default;
             return false;
         }
 
@@ -199,26 +214,29 @@ namespace MinorEngine.BEPUutilities.DataStructures
             //Enqueues go to the tail only; it's like a queue.
             //head ----> tail
 
-            if (count == array.Length)
+            if (Count == array.Length)
             {
                 //TODO: if it's always powers of 2, then resizing is quicker.
                 //Resize
-                T[] oldArray = array;
+                var oldArray = array;
                 array = new T[oldArray.Length * 2];
                 //Copy the old first-end to the first part of the new array.
                 Array.Copy(oldArray, firstIndex, array, 0, oldArray.Length - firstIndex);
                 //Copy the old begin-first to the second part of the new array.
                 Array.Copy(oldArray, 0, array, oldArray.Length - firstIndex, firstIndex);
                 firstIndex = 0;
-                lastIndex = count - 1;
+                lastIndex = Count - 1;
             }
 
 
             lastIndex++;
             if (lastIndex == array.Length)
+            {
                 lastIndex = 0;
+            }
+
             array[lastIndex] = item;
-            count++;
+            Count++;
         }
     }
 }

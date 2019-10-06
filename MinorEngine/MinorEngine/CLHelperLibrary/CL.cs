@@ -12,7 +12,7 @@ using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 using OpenCl.DotNetCore.Platforms;
 using OpenCl.DotNetCore.Programs;
-using MinorEngine.debug;
+
 namespace MinorEngine.CLHelperLibrary
 {
     /// <summary>
@@ -56,12 +56,12 @@ namespace MinorEngine.CLHelperLibrary
 #if TRAVIS_TEST
             Logger.Log("Starting in TRAVIS_TEST Mode", DebugChannel.Warning);
 #else
-            IEnumerable<Platform> platforms = Platform.GetPlatforms();
+            var platforms = Platform.GetPlatforms();
 
-            Device chosenDevice = platforms.FirstOrDefault().GetDevices(DeviceType.All).FirstOrDefault();
+            var chosenDevice = platforms.FirstOrDefault().GetDevices(DeviceType.All).FirstOrDefault();
 
             _context = Context.CreateContext(chosenDevice);
-            Device CLDevice = chosenDevice;
+            var CLDevice = chosenDevice;
             _commandQueue = CommandQueue.CreateCommandQueue(_context, CLDevice);
 #endif
         }
@@ -121,7 +121,7 @@ namespace MinorEngine.CLHelperLibrary
         /// <returns></returns>
         public static MemoryBuffer CreateEmpty<T>(int size, MemoryFlag flags) where T : struct
         {
-            T[] arr = new T[size];
+            var arr = new T[size];
             return CreateBuffer(arr, flags);
         }
 
@@ -134,7 +134,7 @@ namespace MinorEngine.CLHelperLibrary
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer<T>(T[] data, MemoryFlag flags) where T : struct
         {
-            object[] arr = Array.ConvertAll(data, x => (object)x);
+            var arr = Array.ConvertAll(data, x => (object) x);
             return CreateBuffer(arr, typeof(T), flags);
         }
 
@@ -151,7 +151,7 @@ namespace MinorEngine.CLHelperLibrary
             Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
             return null;
 #else
-            MemoryBuffer mb = Instance._context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
+            var mb = Instance._context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
             return mb;
 #endif
         }
@@ -166,16 +166,16 @@ namespace MinorEngine.CLHelperLibrary
         {
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
-            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb);
-            byte[] buffer = new byte[bmp.Width * bmp.Height * 4];
+            var buffer = new byte[bmp.Width * bmp.Height * 4];
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
 #if TRAVIS_TEST
             Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
 #else
-            MemoryBuffer mb = CreateBuffer(buffer, flags);
+            var mb = CreateBuffer(buffer, flags);
             return mb;
 #endif
         }
@@ -200,7 +200,7 @@ namespace MinorEngine.CLHelperLibrary
         public static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform)
             where T : struct
         {
-            T[] buffer = new T[size];
+            var buffer = new T[size];
             WriteRandom(buffer, channelEnableState, rnd, uniform);
             return buffer;
         }
@@ -230,12 +230,19 @@ namespace MinorEngine.CLHelperLibrary
         public static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd,
             bool uniform) where T : struct
         {
-            T val = rnd.Invoke();
-            for (int i = 0; i < buffer.Length; i++)
+            var val = rnd.Invoke();
+            for (var i = 0; i < buffer.Length; i++)
             {
-                int channel = i % channelEnableState.Length;
-                if (channel == 0 || !uniform) val = rnd.Invoke();
-                if (channelEnableState[channel] == 1) buffer[i] = val;
+                var channel = i % channelEnableState.Length;
+                if (channel == 0 || !uniform)
+                {
+                    val = rnd.Invoke();
+                }
+
+                if (channelEnableState[channel] == 1)
+                {
+                    buffer[i] = val;
+                }
             }
         }
 
@@ -265,7 +272,7 @@ namespace MinorEngine.CLHelperLibrary
 #if TRAVIS_TEST
             T[] data = new T[1];
 #else
-            T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int)buf.Size);
+            var data = Instance._commandQueue.EnqueueReadBuffer<T>(buf, (int) buf.Size);
 #endif
 
             WriteRandom(data, enabledChannels, rnd, uniform);

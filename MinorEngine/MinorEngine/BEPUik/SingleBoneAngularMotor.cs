@@ -26,7 +26,5 @@ namespace MinorEngine.BEPUik
             //This is equivalent to projecting the error onto the angular jacobian. The angular jacobian just happens to be the identity matrix!
             Vector3.Multiply(ref angularError, errorCorrectionFactor, out velocityBias);
         }
-
-
     }
 }

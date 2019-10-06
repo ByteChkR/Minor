@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace MinorEngine.BEPUutilities.ResourceManagement
 {
@@ -13,17 +10,14 @@ namespace MinorEngine.BEPUutilities.ResourceManagement
     {
         /// <summary>
         /// Gets a buffer pool for this type which provides thread safe resource acquisition and return.</summary>
-        public static LockingBufferPool<T> Locking { get; private set; }
+        public static LockingBufferPool<T> Locking { get; }
 
-        [ThreadStatic]
-        private static BufferPool<T> threadPool;
+        [ThreadStatic] private static BufferPool<T> threadPool;
+
         /// <summary>
         /// Gets the pool associated with this thread.
         /// </summary>
-        public static BufferPool<T> Thread
-        {
-            get { return threadPool ?? (threadPool = new BufferPool<T>()); }
-        }
+        public static BufferPool<T> Thread => threadPool ?? (threadPool = new BufferPool<T>());
 
         static BufferPools()
         {

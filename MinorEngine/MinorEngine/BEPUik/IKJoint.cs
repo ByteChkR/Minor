@@ -11,25 +11,27 @@ namespace MinorEngine.BEPUik
         /// <summary>
         /// Gets the first bone connected by this joint.
         /// </summary>
-        public Bone ConnectionA { get; private set; }
+        public Bone ConnectionA { get; }
+
         /// <summary>
         /// Gets the second bone connected by this joint.
         /// </summary>
-        public Bone ConnectionB { get; private set; }
+        public Bone ConnectionB { get; }
 
         /// <summary>
         /// Gets whether or not the joint is a member of the active set as determined by the last IK solver execution.
         /// </summary>
         public bool IsActive { get; internal set; }
 
-        bool enabled;
+        private bool enabled;
+
         /// <summary>
         /// Gets or sets whether or not this joint is enabled. If set to true, this joint will be a part of
         /// the joint graph and will undergo solving. If set to false, this joint will be removed from the connected bones and will no longer be traversable.
         /// </summary>
         public bool Enabled
         {
-            get { return enabled; }
+            get => enabled;
             set
             {
                 //The bones must know which joints they are associated with so that the bone-joint graph can be traversed.
@@ -43,6 +45,7 @@ namespace MinorEngine.BEPUik
                     ConnectionA.joints.Add(this);
                     ConnectionB.joints.Add(this);
                 }
+
                 enabled = value;
             }
         }
@@ -55,7 +58,6 @@ namespace MinorEngine.BEPUik
         }
 
 
-
         internal Vector3 velocityBias;
         internal Matrix3x3 linearJacobianA;
         internal Matrix3x3 angularJacobianA;
@@ -64,9 +66,6 @@ namespace MinorEngine.BEPUik
         internal Matrix3x3 effectiveMass;
 
         internal Vector3 accumulatedImpulse;
-
-
-
 
 
         protected internal override void ComputeEffectiveMass()
@@ -80,11 +79,15 @@ namespace MinorEngine.BEPUik
             if (!ConnectionA.Pinned)
             {
                 Matrix3x3.CreateScale(ConnectionA.inverseMass, out linearW);
-                Matrix3x3.Multiply(ref linearJacobianA, ref linearW, out linearA); //Compute J * M^-1 for linear component
-                Matrix3x3.MultiplyByTransposed(ref linearA, ref linearJacobianA, out linearA); //Compute (J * M^-1) * JT for linear component
+                Matrix3x3.Multiply(ref linearJacobianA, ref linearW,
+                    out linearA); //Compute J * M^-1 for linear component
+                Matrix3x3.MultiplyByTransposed(ref linearA, ref linearJacobianA,
+                    out linearA); //Compute (J * M^-1) * JT for linear component
 
-                Matrix3x3.Multiply(ref angularJacobianA, ref ConnectionA.inertiaTensorInverse, out angularA); //Compute J * M^-1 for angular component
-                Matrix3x3.MultiplyByTransposed(ref angularA, ref angularJacobianA, out angularA); //Compute (J * M^-1) * JT for angular component
+                Matrix3x3.Multiply(ref angularJacobianA, ref ConnectionA.inertiaTensorInverse,
+                    out angularA); //Compute J * M^-1 for angular component
+                Matrix3x3.MultiplyByTransposed(ref angularA, ref angularJacobianA,
+                    out angularA); //Compute (J * M^-1) * JT for angular component
             }
             else
             {
@@ -96,11 +99,15 @@ namespace MinorEngine.BEPUik
             if (!ConnectionB.Pinned)
             {
                 Matrix3x3.CreateScale(ConnectionB.inverseMass, out linearW);
-                Matrix3x3.Multiply(ref linearJacobianB, ref linearW, out linearB); //Compute J * M^-1 for linear component
-                Matrix3x3.MultiplyByTransposed(ref linearB, ref linearJacobianB, out linearB); //Compute (J * M^-1) * JT for linear component
+                Matrix3x3.Multiply(ref linearJacobianB, ref linearW,
+                    out linearB); //Compute J * M^-1 for linear component
+                Matrix3x3.MultiplyByTransposed(ref linearB, ref linearJacobianB,
+                    out linearB); //Compute (J * M^-1) * JT for linear component
 
-                Matrix3x3.Multiply(ref angularJacobianB, ref ConnectionB.inertiaTensorInverse, out angularB); //Compute J * M^-1 for angular component
-                Matrix3x3.MultiplyByTransposed(ref angularB, ref angularJacobianB, out angularB); //Compute (J * M^-1) * JT for angular component
+                Matrix3x3.Multiply(ref angularJacobianB, ref ConnectionB.inertiaTensorInverse,
+                    out angularB); //Compute J * M^-1 for angular component
+                Matrix3x3.MultiplyByTransposed(ref angularB, ref angularJacobianB,
+                    out angularB); //Compute (J * M^-1) * JT for angular component
             }
             else
             {
@@ -117,15 +124,22 @@ namespace MinorEngine.BEPUik
             //Incorporate the constraint softness into the effective mass denominator. This pushes the matrix away from singularity.
             //Softness will also be incorporated into the velocity solve iterations to complete the implementation.
             if (effectiveMass.M11 != 0)
+            {
                 effectiveMass.M11 += softness;
+            }
+
             if (effectiveMass.M22 != 0)
+            {
                 effectiveMass.M22 += softness;
+            }
+
             if (effectiveMass.M33 != 0)
+            {
                 effectiveMass.M33 += softness;
+            }
 
             //Invert! Takes us from J * M^-1 * JT to 1 / (J * M^-1 * JT).
             Matrix3x3.AdaptiveInvert(ref effectiveMass, out effectiveMass);
-
         }
 
         protected internal override void WarmStart()
@@ -165,11 +179,13 @@ namespace MinorEngine.BEPUik
             Vector3 linearContributionA;
             Matrix3x3.TransformTranspose(ref ConnectionA.linearVelocity, ref linearJacobianA, out linearContributionA);
             Vector3 angularContributionA;
-            Matrix3x3.TransformTranspose(ref ConnectionA.angularVelocity, ref angularJacobianA, out angularContributionA);
+            Matrix3x3.TransformTranspose(ref ConnectionA.angularVelocity, ref angularJacobianA,
+                out angularContributionA);
             Vector3 linearContributionB;
             Matrix3x3.TransformTranspose(ref ConnectionB.linearVelocity, ref linearJacobianB, out linearContributionB);
             Vector3 angularContributionB;
-            Matrix3x3.TransformTranspose(ref ConnectionB.angularVelocity, ref angularJacobianB, out angularContributionB);
+            Matrix3x3.TransformTranspose(ref ConnectionB.angularVelocity, ref angularJacobianB,
+                out angularContributionB);
 
             //The constraint velocity error will be the velocity we try to remove.
             Vector3 constraintVelocityError;
@@ -192,21 +208,22 @@ namespace MinorEngine.BEPUik
             Vector3.Negate(ref constraintSpaceImpulse, out constraintSpaceImpulse);
 
             //Add the constraint space impulse to the accumulated impulse so that warm starting and softness work properly.
-            Vector3 preadd = accumulatedImpulse;
+            var preadd = accumulatedImpulse;
             Vector3.Add(ref constraintSpaceImpulse, ref accumulatedImpulse, out accumulatedImpulse);
             //But wait! The accumulated impulse may exceed this constraint's capacity! Check to make sure!
-            float impulseSquared = accumulatedImpulse.LengthSquared();
+            var impulseSquared = accumulatedImpulse.LengthSquared();
             if (impulseSquared > maximumImpulseSquared)
             {
                 //Oops! Clamp that down.
-                Vector3.Multiply(ref accumulatedImpulse, maximumImpulse / (float)Math.Sqrt(impulseSquared), out accumulatedImpulse);
+                Vector3.Multiply(ref accumulatedImpulse, maximumImpulse / (float) Math.Sqrt(impulseSquared),
+                    out accumulatedImpulse);
                 //Update the impulse based upon the clamped accumulated impulse and the original, pre-add accumulated impulse.
                 Vector3.Subtract(ref accumulatedImpulse, ref preadd, out constraintSpaceImpulse);
             }
 
             //The constraint space impulse now represents the impulse we want to apply to the bone... but in constraint space.
             //Bring it out to world space using the transposed jacobian.
-            if (!ConnectionA.Pinned)//Treat pinned elements as if they have infinite inertia.
+            if (!ConnectionA.Pinned) //Treat pinned elements as if they have infinite inertia.
             {
                 Vector3 linearImpulseA;
                 Matrix3x3.Transform(ref constraintSpaceImpulse, ref linearJacobianA, out linearImpulseA);
@@ -217,7 +234,8 @@ namespace MinorEngine.BEPUik
                 ConnectionA.ApplyLinearImpulse(ref linearImpulseA);
                 ConnectionA.ApplyAngularImpulse(ref angularImpulseA);
             }
-            if (!ConnectionB.Pinned)//Treat pinned elements as if they have infinite inertia.
+
+            if (!ConnectionB.Pinned) //Treat pinned elements as if they have infinite inertia.
             {
                 Vector3 linearImpulseB;
                 Matrix3x3.Transform(ref constraintSpaceImpulse, ref linearJacobianB, out linearImpulseB);
@@ -228,7 +246,6 @@ namespace MinorEngine.BEPUik
                 ConnectionB.ApplyLinearImpulse(ref linearImpulseB);
                 ConnectionB.ApplyAngularImpulse(ref angularImpulseB);
             }
-
         }
 
         protected internal override void ClearAccumulatedImpulses()

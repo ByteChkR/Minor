@@ -171,8 +171,9 @@ namespace MinorEngine.BEPUutilities
         {
             b.Center.Validate();
             if (IsInvalid(b.Radius))
+            {
                 throw new NotFiniteNumberException("Invalid value.");
+            }
         }
-
     }
 }

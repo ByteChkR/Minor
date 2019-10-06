@@ -12,23 +12,28 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
         //Another option: Some other parallel-enumerable set, possibly with tricky hashing.
 
         internal RawList<GridCell2D> cells = new RawList<GridCell2D>();
-        UnsafeResourcePool<GridCell2D> cellPool = new UnsafeResourcePool<GridCell2D>();
+        private UnsafeResourcePool<GridCell2D> cellPool = new UnsafeResourcePool<GridCell2D>();
 
         internal int count;
 
         internal bool TryGetIndex(ref Int2 cellIndex, out int index, out int sortingHash)
         {
             sortingHash = cellIndex.GetSortingHash();
-            int minIndex = 0; //inclusive
-            int maxIndex = count; //exclusive
+            var minIndex = 0; //inclusive
+            var maxIndex = count; //exclusive
             index = 0;
-            while (maxIndex - minIndex > 0) //If the testing interval has a length of zero, we've done as much as we can.
+            while (maxIndex - minIndex > 0
+            ) //If the testing interval has a length of zero, we've done as much as we can.
             {
                 index = (maxIndex + minIndex) / 2;
                 if (cells.Elements[index].sortingHash > sortingHash)
+                {
                     maxIndex = index;
+                }
                 else if (cells.Elements[index].sortingHash < sortingHash)
+                {
                     minIndex = ++index;
+                }
                 else
                 {
                     //Found an equal sorting hash!
@@ -36,14 +41,16 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
                     //an incorrect index.  It would break the 'cell responsibility' 
                     //used by the cell update process to avoid duplicate overlaps.
                     //So, check if the index we found is ACTUALLY correct.
-                    if (cells.Elements[index].cellIndex.Y == cellIndex.Y && cells.Elements[index].cellIndex.Z == cellIndex.Z)
+                    if (cells.Elements[index].cellIndex.Y == cellIndex.Y &&
+                        cells.Elements[index].cellIndex.Z == cellIndex.Z)
                     {
                         return true;
                     }
+
                     //If it was not the correct index, let it continue searching.
                 }
-
             }
+
             return false;
         }
 
@@ -56,6 +63,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 cell = cells.Elements[index];
                 return true;
             }
+
             cell = null;
             return false;
         }
@@ -69,6 +77,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 cells.Elements[cellIndex].Add(entry);
                 return;
             }
+
             var cell = cellPool.Take();
             cell.Initialize(ref index, sortingHash);
             cell.Add(entry);
@@ -111,7 +120,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
             //cell.Add(entry);
             //cells.Insert(i, cell);
             //count++;
-
         }
 
         internal void Remove(ref Int2 index, Grid2DEntry entry)
@@ -172,10 +180,6 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
             //}
             ////Getting here should be impossible.
-
         }
-
-
-
     }
 }

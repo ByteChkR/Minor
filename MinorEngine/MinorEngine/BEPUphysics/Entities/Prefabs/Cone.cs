@@ -1,7 +1,6 @@
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Entities.Prefabs
@@ -16,14 +15,8 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Height
         {
-            get
-            {
-                return CollisionInformation.Shape.Height;
-            }
-            set
-            {
-                CollisionInformation.Shape.Height = value;
-            }
+            get => CollisionInformation.Shape.Height;
+            set => CollisionInformation.Shape.Height = value;
         }
 
         /// <summary>
@@ -31,27 +24,20 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         /// </summary>
         public float Radius
         {
-            get
-            {
-                return CollisionInformation.Shape.Radius;
-            }
-            set
-            {
-                CollisionInformation.Shape.Radius = value;
-            }
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
         }
 
 
         private Cone(float high, float rad)
-            :base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)))
+            : base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)))
         {
         }
 
         private Cone(float high, float rad, float mass)
-            :base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)), mass)
+            : base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)), mass)
         {
         }
-
 
 
         /// <summary>
@@ -103,9 +89,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
- 
-
-
     }
 }

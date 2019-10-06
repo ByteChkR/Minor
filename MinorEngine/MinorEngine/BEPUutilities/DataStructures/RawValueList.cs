@@ -32,6 +32,7 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Elements = new T[4];
         }
+
         ///<summary>
         /// Constructs an empty list.
         ///</summary>
@@ -40,7 +41,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         public RawValueList(int initialCapacity)
         {
             if (initialCapacity <= 0)
+            {
                 throw new ArgumentException("Initial capacity must be positive.");
+            }
+
             Elements = new T[initialCapacity];
         }
 
@@ -56,12 +60,12 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
                 throw new ArgumentOutOfRangeException("index");
             }
+
             Count--;
             if (index < Count)
             {
                 Elements[index] = Elements[Count];
             }
-
         }
 
         ///<summary>
@@ -69,13 +73,10 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///</summary>
         public int Capacity
         {
-            get
-            {
-                return Elements.Length;
-            }
+            get => Elements.Length;
             set
             {
-                T[] newArray = new T[value];
+                var newArray = new T[value];
                 Array.Copy(Elements, newArray, Count);
                 Elements = newArray;
             }
@@ -91,8 +92,8 @@ namespace MinorEngine.BEPUutilities.DataStructures
             {
                 Capacity = Elements.Length * 2;
             }
-            Elements[Count++] = item;
 
+            Elements[Count++] = item;
         }
 
         ///<summary>
@@ -110,9 +111,12 @@ namespace MinorEngine.BEPUutilities.DataStructures
         ///<returns>Whether or not the item was present in the list.</returns>
         public bool Remove(ref T item)
         {
-            int index = IndexOf(ref item);
+            var index = IndexOf(ref item);
             if (index == -1)
+            {
                 return false;
+            }
+
             RemoveAt(index);
             return true;
         }
@@ -126,6 +130,5 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             return Array.IndexOf(Elements, item);
         }
-
     }
 }

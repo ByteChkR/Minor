@@ -9,7 +9,7 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
     /// </summary>
     public struct SimulationIslandMemberList : IList<SimulationIslandMember>
     {
-        RawList<SimulationIslandConnection.Entry> entries;
+        private RawList<SimulationIslandConnection.Entry> entries;
 
         internal SimulationIslandMemberList(RawList<SimulationIslandConnection.Entry> entries)
         {
@@ -47,14 +47,8 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         /// <param name="index">The zero-based index of the element to get or set.</param><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="index"/> is not a valid index in the <see cref="T:System.Collections.Generic.IList`1"/>.</exception><exception cref="T:System.NotSupportedException">The property is set and the <see cref="T:System.Collections.Generic.IList`1"/> is read-only.</exception>
         public SimulationIslandMember this[int index]
         {
-            get
-            {
-                return entries.Elements[index].Member;
-            }
-            set
-            {
-                throw new NotSupportedException("The list is read-only.");
-            }
+            get => entries.Elements[index].Member;
+            set => throw new NotSupportedException("The list is read-only.");
         }
 
         void ICollection<SimulationIslandMember>.Add(SimulationIslandMember item)
@@ -86,7 +80,7 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         /// <param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param>
         public void CopyTo(SimulationIslandMember[] array, int arrayIndex)
         {
-            for (int i = 0; i < entries.Count; i++)
+            for (var i = 0; i < entries.Count; i++)
             {
                 array[i + arrayIndex] = entries.Elements[i].Member;
             }
@@ -98,15 +92,9 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
         /// <returns>
         /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
         /// </returns>
-        public int Count
-        {
-            get { return entries.Count; }
-        }
+        public int Count => entries.Count;
 
-        bool ICollection<SimulationIslandMember>.IsReadOnly
-        {
-            get { return true; }
-        }
+        bool ICollection<SimulationIslandMember>.IsReadOnly => true;
 
         bool ICollection<SimulationIslandMember>.Remove(SimulationIslandMember item)
         {
@@ -143,10 +131,7 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             /// <returns>
             /// The element in the collection at the current position of the enumerator.
             /// </returns>
-            public SimulationIslandMember Current
-            {
-                get { return entries.Elements[index].Member; }
-            }
+            public SimulationIslandMember Current => entries.Elements[index].Member;
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -163,10 +148,7 @@ namespace MinorEngine.BEPUphysics.DeactivationManagement
             /// The current element in the collection.
             /// </returns>
             /// <exception cref="T:System.InvalidOperationException">The enumerator is positioned before the first element of the collection or after the last element.</exception><filterpriority>2</filterpriority>
-            object System.Collections.IEnumerator.Current
-            {
-                get { return Current; }
-            }
+            object System.Collections.IEnumerator.Current => Current;
 
             /// <summary>
             /// Advances the enumerator to the next element of the collection.

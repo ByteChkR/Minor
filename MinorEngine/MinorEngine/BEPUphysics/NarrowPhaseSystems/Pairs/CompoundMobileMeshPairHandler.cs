@@ -9,18 +9,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class CompoundMobileMeshPairHandler : CompoundGroupPairHandler
     {
+        private MobileMeshCollidable mesh;
 
-        MobileMeshCollidable mesh;
+        public override Collidable CollidableB => mesh;
 
-        public override Collidable CollidableB
-        {
-            get { return mesh; }
-        }
-
-        public override Entities.Entity EntityB
-        {
-            get { return mesh.entity; }
-        }
+        public override Entities.Entity EntityB => mesh.entity;
 
 
         ///<summary>
@@ -56,10 +49,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
-
-    
-
-
         protected override void UpdateContainedPairs()
         {
             //Could go other way; get triangles in mesh that overlap the compound.
@@ -67,14 +56,13 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             var overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
-                TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh, overlappedElements.Elements[i].Material);
+                TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh,
+                    overlappedElements.Elements[i].Material);
             }
 
             PhysicsResources.GiveBack(overlappedElements);
-
         }
-
     }
 }

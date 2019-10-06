@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
 {
@@ -13,7 +12,6 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
     /// </summary>
     public class PrismaticJoint : SolverGroup
     {
-
         /// <summary>
         /// Constructs a new constraint which restricts two degrees of linear freedom and all three degrees of angular freedom.
         /// This constructs the internal constraints, but does not configure them.  Before using a constraint constructed in this manner,
@@ -42,12 +40,19 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <param name="lineAnchor">Location of the anchor for the line to be attached to connectionA in world space.</param>
         /// <param name="lineDirection">Axis in world space to be attached to connectionA along which connectionB can move.</param>
         /// <param name="pointAnchor">Location of the anchor for the point to be attached to connectionB in world space.</param>
-        public PrismaticJoint(Entity connectionA, Entity connectionB, Vector3 lineAnchor, Vector3 lineDirection, Vector3 pointAnchor)
+        public PrismaticJoint(Entity connectionA, Entity connectionB, Vector3 lineAnchor, Vector3 lineDirection,
+            Vector3 pointAnchor)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             PointOnLineJoint = new PointOnLineJoint(connectionA, connectionB, lineAnchor, lineDirection, pointAnchor);
             AngularJoint = new NoRotationJoint(connectionA, connectionB);
             Limit = new LinearAxisLimit(connectionA, connectionB, lineAnchor, pointAnchor, lineDirection, 0, 0);
@@ -63,21 +68,21 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the angular joint which removes three degrees of freedom.
         /// </summary>
-        public NoRotationJoint AngularJoint { get; private set; }
+        public NoRotationJoint AngularJoint { get; }
 
         /// <summary>
         /// Gets the distance limits for the slider.
         /// </summary>
-        public LinearAxisLimit Limit { get; private set; }
+        public LinearAxisLimit Limit { get; }
 
         /// <summary>
         /// Gets the slider motor.
         /// </summary>
-        public LinearAxisMotor Motor { get; private set; }
+        public LinearAxisMotor Motor { get; }
 
         /// <summary>
         /// Gets the line joint that restricts two linear degrees of freedom.
         /// </summary>
-        public PointOnLineJoint PointOnLineJoint { get; private set; }
+        public PointOnLineJoint PointOnLineJoint { get; }
     }
 }

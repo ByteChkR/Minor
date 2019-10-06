@@ -11,18 +11,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class CompoundPairHandler : CompoundGroupPairHandler
     {
+        private CompoundCollidable compoundInfoB;
 
-        CompoundCollidable compoundInfoB;
+        public override Collidable CollidableB => compoundInfoB;
 
-        public override Collidable CollidableB
-        {
-            get { return compoundInfoB; }
-        }
-
-        public override Entities.Entity EntityB
-        {
-            get { return compoundInfoB.entity; }
-        }
+        public override Entities.Entity EntityB => compoundInfoB.entity;
 
 
         ///<summary>
@@ -47,28 +40,26 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             base.CleanUp();
             compoundInfoB = null;
-
-
         }
 
         //Some danger of unintuitive-to-address allocations here.  If these lists get huge, the user will see some RawList<<>> goofiness in the profiler.
         //They can still address it by clearing out the cached pair factories though.
-        RawList<TreeOverlapPair<CompoundChild, CompoundChild>> overlappedElements = new RawList<TreeOverlapPair<CompoundChild, CompoundChild>>();
+        private RawList<TreeOverlapPair<CompoundChild, CompoundChild>> overlappedElements =
+            new RawList<TreeOverlapPair<CompoundChild, CompoundChild>>();
+
         protected override void UpdateContainedPairs()
         {
             compoundInfo.hierarchy.Tree.GetOverlaps(compoundInfoB.hierarchy.Tree, overlappedElements);
-            for (int i = 0; i < overlappedElements.Count; i++)
+            for (var i = 0; i < overlappedElements.Count; i++)
             {
                 var element = overlappedElements.Elements[i];
                 TryToAdd(element.OverlapA.CollisionInformation, element.OverlapB.CollisionInformation,
-                         element.OverlapA.Material, element.OverlapB.Material);
+                    element.OverlapA.Material, element.OverlapB.Material);
             }
+
             overlappedElements.Clear();
         }
-
-
     }
 }

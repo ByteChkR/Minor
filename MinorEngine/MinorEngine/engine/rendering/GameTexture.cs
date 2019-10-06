@@ -1,30 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Resources;
-using System.Runtime.InteropServices;
 using Assimp;
-using MinorEngine.CLHelperLibrary;
-using Common;
 using MinorEngine.debug;
-using MinorEngine.engine.core;
-using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
-using ResourceManager = MinorEngine.engine.core.ResourceManager;
 using TKPixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using SYSPixelFormat = System.Drawing.Imaging.PixelFormat;
-using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace MinorEngine.engine.rendering
 {
     public class GameTexture : IDisposable
     {
         public int TextureId { get; }
-        private bool _disposed = false;
+        private bool _disposed;
         public string TextureDescriptor { get; }
         public TextureType TexType { get; set; }
         public string Path { get; set; }
+
         public float Width
         {
             get
@@ -69,10 +59,10 @@ namespace MinorEngine.engine.rendering
             {
                 return;
             }
+
             _disposed = true;
             Logger.Log("Deleting Texture: " + TextureDescriptor + "(ID: " + TextureId + ")..", DebugChannel.Log);
             GL.DeleteTexture(TextureId);
-
         }
     }
 }

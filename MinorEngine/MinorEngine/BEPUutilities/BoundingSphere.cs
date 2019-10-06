@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace MinorEngine.BEPUutilities
-{    
+﻿namespace MinorEngine.BEPUutilities
+{
     /// <summary>
     /// Provides XNA-like bounding sphere functionality.
     /// </summary>
@@ -14,6 +9,7 @@ namespace MinorEngine.BEPUutilities
         /// Radius of the sphere.
         /// </summary>
         public float Radius;
+
         /// <summary>
         /// Location of the center of the sphere.
         /// </summary>
@@ -26,8 +22,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="radius">Radius of the sphere.</param>
         public BoundingSphere(Vector3 center, float radius)
         {
-            this.Center = center;
-            this.Radius = radius;
+            Center = center;
+            Radius = radius;
         }
     }
 }

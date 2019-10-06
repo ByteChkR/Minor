@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using ADL;
 using ADL.Configs;
@@ -22,7 +21,7 @@ namespace Common
             Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
 
-            Debug.PrefixLookupMode = (PrefixLookupSettings)settings.PrefixLookupFlags;
+            Debug.PrefixLookupMode = (PrefixLookupSettings) settings.PrefixLookupFlags;
 
 
             Debug.AdlEnabled = settings.Enabled;
@@ -44,7 +43,7 @@ namespace Common
             }
 
 
-            CrashConfig cconf = new CrashConfig();
+            var cconf = new CrashConfig();
             cconf.CrashMask = -1;
             cconf.CheckForUpdates = settings.SearchForUpdates;
             CrashHandler.Initialize(cconf);
@@ -57,18 +56,20 @@ namespace Common
 
         private static LogStream OpenFileStream(ILogStreamSettings settings)
         {
-            return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask, (MatchType)settings.MatchMode, settings.Timestamp);
+            return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask,
+                (MatchType) settings.MatchMode, settings.Timestamp);
         }
 
         private static LogStream OpenConsoleStream(ILogStreamSettings settings)
         {
-            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType)settings.MatchMode, settings.Timestamp);
+            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType) settings.MatchMode,
+                settings.Timestamp);
         }
 
         private static LogStream OpenNetworkStream(ILogStreamSettings settings)
         {
-            NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
-                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType)settings.MatchMode,
+            var nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
+                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType) settings.MatchMode,
                 settings.Timestamp);
             return nls;
         }
@@ -79,36 +80,37 @@ namespace Common
             {
                 return OpenNetworkStream(settings);
             }
-            else if (settings.StreamType == 1) //File
+
+            if (settings.StreamType == 1) //File
             {
                 return OpenFileStream(settings);
             }
-            else //Console or anything else
-            {
-                return OpenConsoleStream(settings);
-            }
+
+            return OpenConsoleStream(settings);
         }
-        
+
 
         public static void Crash(Exception ex, bool recoverable)
         {
-
             CrashHandler.Log(ex, 0);
 
             if (!recoverable || ThrowOnAllExceptions)
             {
                 throw ex;
             }
-
         }
 
         public static void Log(string message, int channel, int severity = 0)
         {
-            if (severity < SeverityFilter) return;
+            if (severity < SeverityFilter)
+            {
+                return;
+            }
+
             switch (channel)
             {
                 case 1:
-                    message = "[Log " +severity+"]" + message;
+                    message = "[Log " + severity + "]" + message;
                     break;
                 case 2:
                     message = "[Warning " + severity + "]" + message;
@@ -120,7 +122,5 @@ namespace Common
 
             Debug.Log(Stage, message);
         }
-
-
     }
 }

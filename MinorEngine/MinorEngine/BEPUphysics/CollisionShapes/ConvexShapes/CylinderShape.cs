@@ -1,6 +1,5 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
- 
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
@@ -11,16 +10,34 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
     public class CylinderShape : ConvexShape
     {
         private float radius;
+
         ///<summary>
         /// Gets or sets the radius of the cylinder.
         ///</summary>
-        public float Radius { get { return radius; } set { radius = value; OnShapeChanged(); } }
+        public float Radius
+        {
+            get => radius;
+            set
+            {
+                radius = value;
+                OnShapeChanged();
+            }
+        }
 
         private float halfHeight;
+
         ///<summary>
         /// Gets or sets the height of the cylinder.
         ///</summary>
-        public float Height { get { return halfHeight * 2; } set { halfHeight = value * 0.5f; OnShapeChanged(); } }
+        public float Height
+        {
+            get => halfHeight * 2;
+            set
+            {
+                halfHeight = value * 0.5f;
+                OnShapeChanged();
+            }
+        }
 
         ///<summary>
         /// Constructs a new cylinder shape.
@@ -52,6 +69,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             UpdateConvexShapeInfo(ComputeDescription(Height, radius, collisionMargin));
             base.OnShapeChanged();
         }
+
         /// <summary>
         /// Computes a convex shape description for a CylinderShape.
         /// </summary>
@@ -65,14 +83,14 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             description.EntityShapeVolume.Volume = MathHelper.Pi * radius * radius * height;
 
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            float diagValue = (.0833333333f * height * height + .25f * radius * radius);
+            var diagValue = .0833333333f * height * height + .25f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = .5f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;
 
-            float halfHeight = height * 0.5f;
+            var halfHeight = height * 0.5f;
             description.MinimumRadius = Math.Min(radius, halfHeight);
-            description.MaximumRadius = (float)Math.Sqrt(radius * radius + halfHeight * halfHeight);
+            description.MaximumRadius = (float) Math.Sqrt(radius * radius + halfHeight * halfHeight);
             description.CollisionMargin = collisionMargin;
             return description;
         }
@@ -128,20 +146,20 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="extremePoint">Extreme point on the shape.</param>
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
-            float horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
+            var horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
             if (horizontalLengthSquared > Toolbox.Epsilon)
             {
-                float multiplier = (radius - collisionMargin) / (float)Math.Sqrt(horizontalLengthSquared);
-                extremePoint = new Vector3(direction.X * multiplier, Math.Sign(direction.Y) * (halfHeight - collisionMargin), direction.Z * multiplier);
+                var multiplier = (radius - collisionMargin) / (float) Math.Sqrt(horizontalLengthSquared);
+                extremePoint = new Vector3(direction.X * multiplier,
+                    Math.Sign(direction.Y) * (halfHeight - collisionMargin), direction.Z * multiplier);
             }
             else
             {
                 extremePoint = new Vector3(0, Math.Sign(direction.Y) * (halfHeight - collisionMargin), 0);
             }
-
         }
 
-        
+
         /// <summary>
         /// Retrieves an instance of an EntityCollidable that uses this EntityShape.  Mainly used by compound bodies.
         /// </summary>
@@ -170,17 +188,24 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             Quaternion.Transform(ref ray.Direction, ref conjugate, out localRay.Direction);
 
             //Check for containment.
-            if (localRay.Position.Y >= -halfHeight && localRay.Position.Y <= halfHeight && localRay.Position.X * localRay.Position.X + localRay.Position.Z * localRay.Position.Z <= radius * radius)
+            if (localRay.Position.Y >= -halfHeight && localRay.Position.Y <= halfHeight &&
+                localRay.Position.X * localRay.Position.X + localRay.Position.Z * localRay.Position.Z <=
+                radius * radius)
             {
                 //It's inside!
                 hit.T = 0;
                 hit.Location = localRay.Position;
                 hit.Normal = new Vector3(hit.Location.X, 0, hit.Location.Z);
-                float normalLengthSquared = hit.Normal.LengthSquared();
+                var normalLengthSquared = hit.Normal.LengthSquared();
                 if (normalLengthSquared > 1e-9f)
-                    Vector3.Divide(ref hit.Normal, (float)Math.Sqrt(normalLengthSquared), out hit.Normal);
+                {
+                    Vector3.Divide(ref hit.Normal, (float) Math.Sqrt(normalLengthSquared), out hit.Normal);
+                }
                 else
+                {
                     hit.Normal = new Vector3();
+                }
+
                 //Pull the hit into world space.
                 Quaternion.Transform(ref hit.Normal, ref transform.Orientation, out hit.Normal);
                 RigidTransform.Transform(ref hit.Location, ref transform, out hit.Location);
@@ -190,8 +215,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             //Project the ray direction onto the plane where the cylinder is a circle.
             //The projected ray is then tested against the circle to compute the time of impact.
             //That time of impact is used to compute the 3d hit location.
-            Vector2 planeDirection = new Vector2(localRay.Direction.X, localRay.Direction.Z);
-            float planeDirectionLengthSquared = planeDirection.LengthSquared();
+            var planeDirection = new Vector2(localRay.Direction.X, localRay.Direction.Z);
+            var planeDirectionLengthSquared = planeDirection.LengthSquared();
 
             if (planeDirectionLengthSquared < Toolbox.Epsilon)
             {
@@ -199,25 +224,30 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 //Skip the cylinder-sides test.  We're either inside the cylinder and won't hit the sides, or we're outside
                 //and won't hit the sides.  
                 if (localRay.Position.Y > halfHeight)
+                {
                     goto upperTest;
+                }
+
                 if (localRay.Position.Y < -halfHeight)
+                {
                     goto lowerTest;
+                }
 
 
                 hit = new RayHit();
                 return false;
-
             }
-            Vector2 planeOrigin = new Vector2(localRay.Position.X, localRay.Position.Z);
+
+            var planeOrigin = new Vector2(localRay.Position.X, localRay.Position.Z);
             float dot;
             Vector2.Dot(ref planeDirection, ref planeOrigin, out dot);
-            float closestToCenterT = -dot / planeDirectionLengthSquared;
+            var closestToCenterT = -dot / planeDirectionLengthSquared;
 
             Vector2 closestPoint;
             Vector2.Multiply(ref planeDirection, closestToCenterT, out closestPoint);
             Vector2.Add(ref planeOrigin, ref closestPoint, out closestPoint);
             //How close does the ray come to the circle?
-            float squaredDistance = closestPoint.LengthSquared();
+            var squaredDistance = closestPoint.LengthSquared();
             if (squaredDistance > radius * radius)
             {
                 //It's too far!  The ray cannot possibly hit the capsule.
@@ -226,10 +256,9 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             }
 
 
-
             //With the squared distance, compute the distance backward along the ray from the closest point on the ray to the axis.
-            float backwardsDistance = radius * (float)Math.Sqrt(1 - squaredDistance / (radius * radius));
-            float tOffset = backwardsDistance / (float)Math.Sqrt(planeDirectionLengthSquared);
+            var backwardsDistance = radius * (float) Math.Sqrt(1 - squaredDistance / (radius * radius));
+            var tOffset = backwardsDistance / (float) Math.Sqrt(planeDirectionLengthSquared);
 
             hit.T = closestToCenterT - tOffset;
 
@@ -242,11 +271,16 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             {
                 //Yup!
                 hit.Normal = new Vector3(hit.Location.X, 0, hit.Location.Z);
-                float normalLengthSquared = hit.Normal.LengthSquared();
+                var normalLengthSquared = hit.Normal.LengthSquared();
                 if (normalLengthSquared > 1e-9f)
-                    Vector3.Divide(ref hit.Normal, (float)Math.Sqrt(normalLengthSquared), out hit.Normal);
+                {
+                    Vector3.Divide(ref hit.Normal, (float) Math.Sqrt(normalLengthSquared), out hit.Normal);
+                }
                 else
+                {
                     hit.Normal = new Vector3();
+                }
+
                 //Pull the hit into world space.
                 Quaternion.Transform(ref hit.Normal, ref transform.Orientation, out hit.Normal);
                 RigidTransform.Transform(ref hit.Location, ref transform, out hit.Location);
@@ -254,8 +288,11 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             }
 
             if (hit.Location.Y < halfHeight)
+            {
                 goto lowerTest;
-        upperTest:
+            }
+
+            upperTest:
             //Nope! It may be intersecting the ends of the cylinder though.
             //We're above the cylinder, so cast a ray against the upper cap.
             if (localRay.Direction.Y > -1e-9)
@@ -264,11 +301,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 hit = new RayHit();
                 return false;
             }
-            float t = (halfHeight - localRay.Position.Y) / localRay.Direction.Y;
+
+            var t = (halfHeight - localRay.Position.Y) / localRay.Direction.Y;
             Vector3 planeIntersection;
             Vector3.Multiply(ref localRay.Direction, t, out planeIntersection);
             Vector3.Add(ref localRay.Position, ref planeIntersection, out planeIntersection);
-            if(planeIntersection.X * planeIntersection.X + planeIntersection.Z * planeIntersection.Z < radius * radius + 1e-9 && t < maximumLength)
+            if (planeIntersection.X * planeIntersection.X + planeIntersection.Z * planeIntersection.Z <
+                radius * radius + 1e-9 && t < maximumLength)
             {
                 //Pull the hit into world space.
                 Quaternion.Transform(ref Toolbox.UpVector, ref transform.Orientation, out hit.Normal);
@@ -276,11 +315,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 hit.T = t;
                 return true;
             }
+
             //No intersection! We can't be hitting the other sphere, so it's over!
             hit = new RayHit();
             return false;
 
-        lowerTest:
+            lowerTest:
             //Is it intersecting the bottom cap?
             if (localRay.Direction.Y < 1e-9)
             {
@@ -288,10 +328,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 hit = new RayHit();
                 return false;
             }
+
             t = (-halfHeight - localRay.Position.Y) / localRay.Direction.Y;
             Vector3.Multiply(ref localRay.Direction, t, out planeIntersection);
             Vector3.Add(ref localRay.Position, ref planeIntersection, out planeIntersection);
-            if (planeIntersection.X * planeIntersection.X + planeIntersection.Z * planeIntersection.Z < radius * radius + 1e-9 && t < maximumLength)
+            if (planeIntersection.X * planeIntersection.X + planeIntersection.Z * planeIntersection.Z <
+                radius * radius + 1e-9 && t < maximumLength)
             {
                 //Pull the hit into world space.
                 Quaternion.Transform(ref Toolbox.DownVector, ref transform.Orientation, out hit.Normal);
@@ -299,12 +341,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 hit.T = t;
                 return true;
             }
+
             //No intersection! We can't be hitting the other sphere, so it's over!
             hit = new RayHit();
             return false;
-
         }
-
-
     }
 }

@@ -20,11 +20,13 @@ namespace MinorEngine.BEPUik
             Vector3 linearContributionA;
             Matrix3x3.TransformTranspose(ref ConnectionA.linearVelocity, ref linearJacobianA, out linearContributionA);
             Vector3 angularContributionA;
-            Matrix3x3.TransformTranspose(ref ConnectionA.angularVelocity, ref angularJacobianA, out angularContributionA);
+            Matrix3x3.TransformTranspose(ref ConnectionA.angularVelocity, ref angularJacobianA,
+                out angularContributionA);
             Vector3 linearContributionB;
             Matrix3x3.TransformTranspose(ref ConnectionB.linearVelocity, ref linearJacobianB, out linearContributionB);
             Vector3 angularContributionB;
-            Matrix3x3.TransformTranspose(ref ConnectionB.angularVelocity, ref angularJacobianB, out angularContributionB);
+            Matrix3x3.TransformTranspose(ref ConnectionB.angularVelocity, ref angularJacobianB,
+                out angularContributionB);
 
             //The constraint velocity error will be the velocity we try to remove.
             Vector3 constraintVelocityError;
@@ -47,23 +49,25 @@ namespace MinorEngine.BEPUik
             Vector3.Negate(ref constraintSpaceImpulse, out constraintSpaceImpulse);
 
             //Add the constraint space impulse to the accumulated impulse so that warm starting and softness work properly.
-            Vector3 preadd = accumulatedImpulse;
+            var preadd = accumulatedImpulse;
             Vector3.Add(ref constraintSpaceImpulse, ref accumulatedImpulse, out accumulatedImpulse);
             //Limits can only apply positive impulses.
             Vector3.Max(ref Toolbox.ZeroVector, ref accumulatedImpulse, out accumulatedImpulse);
             //But wait! The accumulated impulse may exceed this constraint's capacity! Check to make sure!
-            float impulseSquared = accumulatedImpulse.LengthSquared();
+            var impulseSquared = accumulatedImpulse.LengthSquared();
             if (impulseSquared > maximumImpulseSquared)
-            {
                 //Oops! Clamp that down.
-                Vector3.Multiply(ref accumulatedImpulse, maximumImpulse / (float)Math.Sqrt(impulseSquared), out accumulatedImpulse);
+            {
+                Vector3.Multiply(ref accumulatedImpulse, maximumImpulse / (float) Math.Sqrt(impulseSquared),
+                    out accumulatedImpulse);
             }
+
             //Update the impulse based upon the clamped accumulated impulse and the original, pre-add accumulated impulse.
             Vector3.Subtract(ref accumulatedImpulse, ref preadd, out constraintSpaceImpulse);
 
             //The constraint space impulse now represents the impulse we want to apply to the bone... but in constraint space.
             //Bring it out to world space using the transposed jacobian.
-            if (!ConnectionA.Pinned)//Treat pinned elements as if they have infinite inertia.
+            if (!ConnectionA.Pinned) //Treat pinned elements as if they have infinite inertia.
             {
                 Vector3 linearImpulseA;
                 Matrix3x3.Transform(ref constraintSpaceImpulse, ref linearJacobianA, out linearImpulseA);
@@ -74,7 +78,8 @@ namespace MinorEngine.BEPUik
                 ConnectionA.ApplyLinearImpulse(ref linearImpulseA);
                 ConnectionA.ApplyAngularImpulse(ref angularImpulseA);
             }
-            if (!ConnectionB.Pinned)//Treat pinned elements as if they have infinite inertia.
+
+            if (!ConnectionB.Pinned) //Treat pinned elements as if they have infinite inertia.
             {
                 Vector3 linearImpulseB;
                 Matrix3x3.Transform(ref constraintSpaceImpulse, ref linearJacobianB, out linearImpulseB);
@@ -85,8 +90,6 @@ namespace MinorEngine.BEPUik
                 ConnectionB.ApplyLinearImpulse(ref linearImpulseB);
                 ConnectionB.ApplyAngularImpulse(ref angularImpulseB);
             }
-
         }
-
     }
 }

@@ -25,9 +25,9 @@ namespace MinorEngine.debug
             LogEncoding = Encoding.Default,
             StageNames = Enum.GetNames(typeof(DebugStage)).Select(x => "[" + x + "]").ToArray(),
             PrefixLookupFlags = 1 | 2 | 8,
-            Streams = new[] { new LogStreamSettings() { Mask = -1, PrefixMode = 1, Timestamp = true } }.Cast<ILogStreamSettings>().ToArray()
+            Streams = new[] {new LogStreamSettings {Mask = -1, PrefixMode = 1, Timestamp = true}}
+                .Cast<ILogStreamSettings>().ToArray()
         };
-
     }
 
     //Noprefix = 0,

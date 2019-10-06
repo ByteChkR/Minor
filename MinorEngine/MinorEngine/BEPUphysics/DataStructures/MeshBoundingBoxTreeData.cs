@@ -1,6 +1,5 @@
-﻿
+﻿using MinorEngine.BEPUutilities;
 
-using MinorEngine.BEPUutilities;
 namespace MinorEngine.BEPUphysics.DataStructures
 {
     ///<summary>
@@ -9,35 +8,25 @@ namespace MinorEngine.BEPUphysics.DataStructures
     public abstract class MeshBoundingBoxTreeData
     {
         internal int[] indices;
+
         ///<summary>
         /// Gets or sets the indices of the triangle mesh.
         ///</summary>
         public int[] Indices
         {
-            get
-            {
-                return indices;
-            }
-            set
-            {
-                indices = value;
-            }
+            get => indices;
+            set => indices = value;
         }
 
         internal Vector3[] vertices;
+
         ///<summary>
         /// Gets or sets the vertices of the triangle mesh.
         ///</summary>
         public Vector3[] Vertices
         {
-            get
-            {
-                return vertices;
-            }
-            set
-            {
-                vertices = value;
-            }
+            get => vertices;
+            set => vertices = value;
         }
 
         /// <summary>
@@ -53,8 +42,8 @@ namespace MinorEngine.BEPUphysics.DataStructures
             Vector3.Min(ref boundingBox.Min, ref v3, out boundingBox.Min);
             Vector3.Max(ref v1, ref v2, out boundingBox.Max);
             Vector3.Max(ref boundingBox.Max, ref v3, out boundingBox.Max);
-
         }
+
         ///<summary>
         /// Gets the triangle vertex positions at a given index.
         ///</summary>
@@ -63,6 +52,7 @@ namespace MinorEngine.BEPUphysics.DataStructures
         ///<param name="v2">Second vertex of the triangle.</param>
         ///<param name="v3">Third vertex of the triangle.</param>
         public abstract void GetTriangle(int triangleIndex, out Vector3 v1, out Vector3 v2, out Vector3 v3);
+
         ///<summary>
         /// Gets the position of a vertex in the data.
         ///</summary>

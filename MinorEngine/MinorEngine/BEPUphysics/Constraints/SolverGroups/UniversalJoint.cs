@@ -4,7 +4,6 @@ using MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints;
 using MinorEngine.BEPUphysics.Constraints.TwoEntity.Motors;
 using MinorEngine.BEPUphysics.Entities;
 using MinorEngine.BEPUutilities;
- 
 
 namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
 {
@@ -42,9 +41,15 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         public UniversalJoint(Entity connectionA, Entity connectionB, Vector3 anchor)
         {
             if (connectionA == null)
+            {
                 connectionA = TwoEntityConstraint.WorldEntity;
+            }
+
             if (connectionB == null)
+            {
                 connectionB = TwoEntityConstraint.WorldEntity;
+            }
+
             BallSocketJoint = new BallSocketJoint(connectionA, connectionB, anchor);
             TwistJoint = new TwistJoint(connectionA, connectionB, BallSocketJoint.OffsetA, -BallSocketJoint.OffsetB);
             Limit = new TwistLimit(connectionA, connectionB, BallSocketJoint.OffsetA, -BallSocketJoint.OffsetB, 0, 0);
@@ -60,25 +65,25 @@ namespace MinorEngine.BEPUphysics.Constraints.SolverGroups
         /// <summary>
         /// Gets the ball socket joint that restricts linear degrees of freedom.
         /// </summary>
-        public BallSocketJoint BallSocketJoint { get; private set; }
+        public BallSocketJoint BallSocketJoint { get; }
 
         /// <summary>
         /// Gets the rotational limit of the universal joint.
         /// This constraint overlaps with the twistJoint; if the limit is activated,
         /// the twistJoint should be generally deactivated and vice versa.
         /// </summary>
-        public TwistLimit Limit { get; private set; }
+        public TwistLimit Limit { get; }
 
         /// <summary>
         /// Gets the motor of the universal joint.
         /// This constraint overlaps with the twistJoint; if the motor is activated,
         /// the twistJoint should generally be deactivated and vice versa.
         /// </summary>
-        public TwistMotor Motor { get; private set; }
+        public TwistMotor Motor { get; }
 
         /// <summary>
         /// Gets the angular joint which removes one twisting degree of freedom.
         /// </summary>
-        public TwistJoint TwistJoint { get; private set; }
+        public TwistJoint TwistJoint { get; }
     }
 }

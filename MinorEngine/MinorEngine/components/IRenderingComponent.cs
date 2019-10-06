@@ -1,6 +1,4 @@
-﻿using MinorEngine.engine.rendering;
-using MinorEngine.engine.rendering.contexts;
-using OpenTK;
+﻿using MinorEngine.engine.rendering.contexts;
 
 namespace MinorEngine.components
 {

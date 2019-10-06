@@ -13,8 +13,6 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public abstract class StaticMeshContactManifold : TriangleMeshConvexContactManifold
     {
-
-
         protected StaticMesh mesh;
 
         internal RawList<int> overlappedTriangles = new RawList<int>(4);
@@ -22,13 +20,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the static mesh associated with this pair.
         ///</summary>
-        public StaticMesh Mesh
-        {
-            get
-            {
-                return mesh;
-            }
-        }
+        public StaticMesh Mesh => mesh;
 
         protected internal override int FindOverlappingTriangles(float dt)
         {
@@ -41,16 +33,19 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         /// </summary>
         /// <param name="convexInverseWorldTransform">Inverse of the world transform of the convex shape.</param>
         /// <param name="fromMeshLocalToConvexLocal">Transform to apply to native local triangles to bring them into the local space of the convex.</param>
-        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform, out AffineTransform fromMeshLocalToConvexLocal)
+        protected override void PrecomputeTriangleTransform(ref AffineTransform convexInverseWorldTransform,
+            out AffineTransform fromMeshLocalToConvexLocal)
         {
             //StaticMeshes only have transformable mesh data.
-            var data = ((TransformableMeshData) mesh.Mesh.Data);
-            AffineTransform.Multiply(ref data.worldTransform, ref convexInverseWorldTransform, out fromMeshLocalToConvexLocal);
+            var data = (TransformableMeshData) mesh.Mesh.Data;
+            AffineTransform.Multiply(ref data.worldTransform, ref convexInverseWorldTransform,
+                out fromMeshLocalToConvexLocal);
         }
 
-        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape, out TriangleIndices indices)
+        protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
+            out TriangleIndices indices)
         {
-            int triangleIndex = overlappedTriangles.Elements[i];
+            var triangleIndex = overlappedTriangles.Elements[i];
             var data = mesh.Mesh.Data;
             localTriangleShape.vA = data.vertices[data.indices[triangleIndex]];
             localTriangleShape.vB = data.vertices[data.indices[triangleIndex + 1]];
@@ -59,11 +54,11 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             localTriangleShape.sidedness = IsQuery ? TriangleSidedness.DoubleSided : mesh.sidedness;
             localTriangleShape.collisionMargin = 0;
             indices = new TriangleIndices
-                          {
-                              A = data.indices[triangleIndex],
-                              B = data.indices[triangleIndex + 1],
-                              C = data.indices[triangleIndex + 2]
-                          };
+            {
+                A = data.indices[triangleIndex],
+                B = data.indices[triangleIndex + 1],
+                C = data.indices[triangleIndex + 2]
+            };
             return true;
         }
 
@@ -72,10 +67,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             overlappedTriangles.Clear();
         }
 
-        protected override bool UseImprovedBoundaryHandling
-        {
-            get { return mesh.improveBoundaryBehavior; }
-        }
+        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
 
 
         ///<summary>
@@ -104,11 +96,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                 convex = newCollidableB as ConvexCollidable;
                 mesh = newCollidableA as StaticMesh;
                 if (convex == null || mesh == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize contact manifold.");
+                }
             }
-
         }
-
-
     }
 }

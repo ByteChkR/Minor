@@ -1,6 +1,4 @@
-﻿ 
-
-namespace MinorEngine.BEPUutilities
+﻿namespace MinorEngine.BEPUutilities
 {
     ///<summary>
     /// Transform composed of a rotation and translation.
@@ -11,6 +9,7 @@ namespace MinorEngine.BEPUutilities
         /// Translation component of the transform.
         ///</summary>
         public Vector3 Position;
+
         ///<summary>
         /// Rotation component of the transform.
         ///</summary>
@@ -59,6 +58,7 @@ namespace MinorEngine.BEPUutilities
                 return toReturn;
             }
         }
+
         ///<summary>
         /// Gets the 4x4 matrix created from the rigid transform.
         ///</summary>
@@ -73,7 +73,6 @@ namespace MinorEngine.BEPUutilities
             }
         }
 
-      
 
         ///<summary>
         /// Gets the identity rigid transform.
@@ -111,7 +110,6 @@ namespace MinorEngine.BEPUutilities
             Quaternion.Transform(ref a.Position, ref b.Orientation, out intermediate);
             Vector3.Add(ref intermediate, ref b.Position, out combined.Position);
             Quaternion.Concatenate(ref a.Orientation, ref b.Orientation, out combined.Orientation);
-
         }
 
         ///<summary>
@@ -120,7 +118,8 @@ namespace MinorEngine.BEPUutilities
         ///<param name="a">The first rigid transform.</param>
         ///<param name="b">The second rigid transform whose inverse will be concatenated to the first.</param>
         ///<param name="combinedTransform">Combined rigid transform.</param>
-        public static void MultiplyByInverse(ref RigidTransform a, ref RigidTransform b, out RigidTransform combinedTransform)
+        public static void MultiplyByInverse(ref RigidTransform a, ref RigidTransform b,
+            out RigidTransform combinedTransform)
         {
             Invert(ref b, out combinedTransform);
             Multiply(ref a, ref combinedTransform, out combinedTransform);
@@ -154,7 +153,5 @@ namespace MinorEngine.BEPUutilities
             Quaternion.Conjugate(ref transform.Orientation, out orientation);
             Quaternion.Transform(ref intermediate, ref orientation, out result);
         }
-
-
     }
 }

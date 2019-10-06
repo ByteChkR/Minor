@@ -11,12 +11,12 @@ namespace Common
 
     public interface ILogStreamSettings
     {
-        int StreamType{ get; set; }
-        string Destination{ get; set; }
-        int Mask{ get; set; }
-        int PrefixMode{ get; set; }
-        int MatchMode{ get; set; }
-        bool Timestamp{ get; set; }
+        int StreamType { get; set; }
+        string Destination { get; set; }
+        int Mask { get; set; }
+        int PrefixMode { get; set; }
+        int MatchMode { get; set; }
+        bool Timestamp { get; set; }
 
         //NetworkSpecific:
         int NetworkPort { get; set; }

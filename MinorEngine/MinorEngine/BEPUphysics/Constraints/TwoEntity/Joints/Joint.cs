@@ -29,7 +29,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public float MaxCorrectiveVelocity
         {
-            get { return maxCorrectiveVelocity; }
+            get => maxCorrectiveVelocity;
             set
             {
                 maxCorrectiveVelocity = Math.Max(0, value);
@@ -50,10 +50,7 @@ namespace MinorEngine.BEPUphysics.Constraints.TwoEntity.Joints
         /// Gets the spring settings used by the constraint.
         /// Spring settings define how a constraint responds to velocity and position error.
         /// </summary>
-        public SpringSettings SpringSettings
-        {
-            get { return springSettings; }
-        }
+        public SpringSettings SpringSettings => springSettings;
 
         #endregion
     }

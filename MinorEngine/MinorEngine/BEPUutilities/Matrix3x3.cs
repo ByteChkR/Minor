@@ -1,6 +1,4 @@
 ﻿using System;
- 
-
 
 namespace MinorEngine.BEPUutilities
 {
@@ -66,7 +64,8 @@ namespace MinorEngine.BEPUutilities
         /// <param name="m31">Value at row 3, column 1 of the matrix.</param>
         /// <param name="m32">Value at row 3, column 2 of the matrix.</param>
         /// <param name="m33">Value at row 3, column 3 of the matrix.</param>
-        public Matrix3x3(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32, float m33)
+        public Matrix3x3(float m11, float m12, float m13, float m21, float m22, float m23, float m31, float m32,
+            float m33)
         {
             M11 = m11;
             M12 = m12;
@@ -82,10 +81,7 @@ namespace MinorEngine.BEPUutilities
         /// <summary>
         /// Gets the 3x3 identity matrix.
         /// </summary>
-        public static Matrix3x3 Identity
-        {
-            get { return new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1); }
-        }
+        public static Matrix3x3 Identity => new Matrix3x3(1, 0, 0, 0, 1, 0, 0, 0, 1);
 
 
         /// <summary>
@@ -96,7 +92,7 @@ namespace MinorEngine.BEPUutilities
             get
             {
 #if !WINDOWS
-                Vector3 vector = new Vector3();
+                var vector = new Vector3();
 #else
                 Vector3 vector;
 #endif
@@ -121,7 +117,7 @@ namespace MinorEngine.BEPUutilities
             get
             {
 #if !WINDOWS
-                Vector3 vector = new Vector3();
+                var vector = new Vector3();
 #else
                 Vector3 vector;
 #endif
@@ -146,7 +142,7 @@ namespace MinorEngine.BEPUutilities
             get
             {
 #if !WINDOWS
-                Vector3 vector = new Vector3();
+                var vector = new Vector3();
 #else
                 Vector3 vector;
 #endif
@@ -171,7 +167,7 @@ namespace MinorEngine.BEPUutilities
             get
             {
 #if !WINDOWS
-                Vector3 vector = new Vector3();
+                var vector = new Vector3();
 #else
                 Vector3 vector;
 #endif
@@ -196,7 +192,7 @@ namespace MinorEngine.BEPUutilities
             get
             {
 #if !WINDOWS
-                Vector3 vector = new Vector3();
+                var vector = new Vector3();
 #else
                 Vector3 vector;
 #endif
@@ -221,7 +217,7 @@ namespace MinorEngine.BEPUutilities
             get
             {
 #if !WINDOWS
-                Vector3 vector = new Vector3();
+                var vector = new Vector3();
 #else
                 Vector3 vector;
 #endif
@@ -246,17 +242,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix3x3 a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            float m11 = a.M11 + b.M11;
-            float m12 = a.M12 + b.M12;
-            float m13 = a.M13 + b.M13;
+            var m11 = a.M11 + b.M11;
+            var m12 = a.M12 + b.M12;
+            var m13 = a.M13 + b.M13;
 
-            float m21 = a.M21 + b.M21;
-            float m22 = a.M22 + b.M22;
-            float m23 = a.M23 + b.M23;
+            var m21 = a.M21 + b.M21;
+            var m22 = a.M22 + b.M22;
+            var m23 = a.M23 + b.M23;
 
-            float m31 = a.M31 + b.M31;
-            float m32 = a.M32 + b.M32;
-            float m33 = a.M33 + b.M33;
+            var m31 = a.M31 + b.M31;
+            var m32 = a.M32 + b.M32;
+            var m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -279,17 +275,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            float m11 = a.M11 + b.M11;
-            float m12 = a.M12 + b.M12;
-            float m13 = a.M13 + b.M13;
+            var m11 = a.M11 + b.M11;
+            var m12 = a.M12 + b.M12;
+            var m13 = a.M13 + b.M13;
 
-            float m21 = a.M21 + b.M21;
-            float m22 = a.M22 + b.M22;
-            float m23 = a.M23 + b.M23;
+            var m21 = a.M21 + b.M21;
+            var m22 = a.M22 + b.M22;
+            var m23 = a.M23 + b.M23;
 
-            float m31 = a.M31 + b.M31;
-            float m32 = a.M32 + b.M32;
-            float m33 = a.M33 + b.M33;
+            var m31 = a.M31 + b.M31;
+            var m32 = a.M32 + b.M32;
+            var m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -312,17 +308,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix3x3 a, ref Matrix b, out Matrix3x3 result)
         {
-            float m11 = a.M11 + b.M11;
-            float m12 = a.M12 + b.M12;
-            float m13 = a.M13 + b.M13;
+            var m11 = a.M11 + b.M11;
+            var m12 = a.M12 + b.M12;
+            var m13 = a.M13 + b.M13;
 
-            float m21 = a.M21 + b.M21;
-            float m22 = a.M22 + b.M22;
-            float m23 = a.M23 + b.M23;
+            var m21 = a.M21 + b.M21;
+            var m22 = a.M22 + b.M22;
+            var m23 = a.M23 + b.M23;
 
-            float m31 = a.M31 + b.M31;
-            float m32 = a.M32 + b.M32;
-            float m33 = a.M33 + b.M33;
+            var m31 = a.M31 + b.M31;
+            var m32 = a.M32 + b.M32;
+            var m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -345,17 +341,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix a, ref Matrix b, out Matrix3x3 result)
         {
-            float m11 = a.M11 + b.M11;
-            float m12 = a.M12 + b.M12;
-            float m13 = a.M13 + b.M13;
+            var m11 = a.M11 + b.M11;
+            var m12 = a.M12 + b.M12;
+            var m13 = a.M13 + b.M13;
 
-            float m21 = a.M21 + b.M21;
-            float m22 = a.M22 + b.M22;
-            float m23 = a.M23 + b.M23;
+            var m21 = a.M21 + b.M21;
+            var m22 = a.M22 + b.M22;
+            var m23 = a.M23 + b.M23;
 
-            float m31 = a.M31 + b.M31;
-            float m32 = a.M32 + b.M32;
-            float m33 = a.M33 + b.M33;
+            var m31 = a.M31 + b.M31;
+            var m32 = a.M32 + b.M32;
+            var m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -407,6 +403,7 @@ namespace MinorEngine.BEPUutilities
             matrix3X3.M32 = matrix4X4.M32;
             matrix3X3.M33 = matrix4X4.M33;
         }
+
         /// <summary>
         /// Creates a 3x3 matrix from an XNA 4x4 matrix.
         /// </summary>
@@ -504,18 +501,18 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Inverted matrix.</param>
         public static void Invert(ref Matrix3x3 matrix, out Matrix3x3 result)
         {
-            float determinantInverse = 1 / matrix.Determinant();
-            float m11 = (matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32) * determinantInverse;
-            float m12 = (matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12) * determinantInverse;
-            float m13 = (matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13) * determinantInverse;
+            var determinantInverse = 1 / matrix.Determinant();
+            var m11 = (matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32) * determinantInverse;
+            var m12 = (matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12) * determinantInverse;
+            var m13 = (matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13) * determinantInverse;
 
-            float m21 = (matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33) * determinantInverse;
-            float m22 = (matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31) * determinantInverse;
-            float m23 = (matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23) * determinantInverse;
+            var m21 = (matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33) * determinantInverse;
+            var m22 = (matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31) * determinantInverse;
+            var m23 = (matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23) * determinantInverse;
 
-            float m31 = (matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31) * determinantInverse;
-            float m32 = (matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32) * determinantInverse;
-            float m33 = (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21) * determinantInverse;
+            var m31 = (matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31) * determinantInverse;
+            var m32 = (matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32) * determinantInverse;
+            var m33 = (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21) * determinantInverse;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -550,7 +547,7 @@ namespace MinorEngine.BEPUutilities
         public static void AdaptiveInvert(ref Matrix3x3 matrix, out Matrix3x3 result)
         {
             int submatrix;
-            float determinantInverse = 1 / matrix.AdaptiveDeterminant(out submatrix);
+            var determinantInverse = 1 / matrix.AdaptiveDeterminant(out submatrix);
             float m11, m12, m13, m21, m22, m23, m31, m32, m33;
             switch (submatrix)
             {
@@ -646,7 +643,15 @@ namespace MinorEngine.BEPUutilities
                     m33 = 1 / matrix.M33;
                     break;
                 default: //Completely singular.
-                    m11 = 0; m12 = 0; m13 = 0; m21 = 0; m22 = 0; m23 = 0; m31 = 0; m32 = 0; m33 = 0;
+                    m11 = 0;
+                    m12 = 0;
+                    m13 = 0;
+                    m21 = 0;
+                    m22 = 0;
+                    m23 = 0;
+                    m31 = 0;
+                    m32 = 0;
+                    m33 = 0;
                     break;
             }
 
@@ -678,17 +683,17 @@ namespace MinorEngine.BEPUutilities
             //2) det(M) == det(transpose(M))
             //This organization makes it clearer that the invert's usual division by determinant drops out.
 
-            float m11 = (matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32);
-            float m12 = (matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12);
-            float m13 = (matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13);
+            var m11 = matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32;
+            var m12 = matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12;
+            var m13 = matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13;
 
-            float m21 = (matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33);
-            float m22 = (matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31);
-            float m23 = (matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23);
+            var m21 = matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33;
+            var m22 = matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31;
+            var m23 = matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23;
 
-            float m31 = (matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31);
-            float m32 = (matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32);
-            float m33 = (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21);
+            var m31 = matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31;
+            var m32 = matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32;
+            var m33 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
 
             //Note transposition.
             result.M11 = m11;
@@ -727,9 +732,9 @@ namespace MinorEngine.BEPUutilities
         public static Matrix3x3 operator *(Matrix3x3 a, Matrix3x3 b)
         {
             Matrix3x3 result;
-            Matrix3x3.Multiply(ref a, ref b, out result);
+            Multiply(ref a, ref b, out result);
             return result;
-        }        
+        }
 
         /// <summary>
         /// Scales all components of the matrix by the given value.
@@ -765,17 +770,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix3x3 a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
-            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
+            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
 
-            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
-            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
+            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
 
-            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
-            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
+            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -798,17 +803,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix3x3 a, ref Matrix b, out Matrix3x3 result)
         {
-            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
-            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
+            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
 
-            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
-            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
+            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
 
-            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
-            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
+            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -831,17 +836,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
-            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
+            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
 
-            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
-            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
+            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
 
-            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
-            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
+            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -865,17 +870,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void MultiplyTransposed(ref Matrix3x3 transpose, ref Matrix3x3 matrix, out Matrix3x3 result)
         {
-            float resultM11 = transpose.M11 * matrix.M11 + transpose.M21 * matrix.M21 + transpose.M31 * matrix.M31;
-            float resultM12 = transpose.M11 * matrix.M12 + transpose.M21 * matrix.M22 + transpose.M31 * matrix.M32;
-            float resultM13 = transpose.M11 * matrix.M13 + transpose.M21 * matrix.M23 + transpose.M31 * matrix.M33;
+            var resultM11 = transpose.M11 * matrix.M11 + transpose.M21 * matrix.M21 + transpose.M31 * matrix.M31;
+            var resultM12 = transpose.M11 * matrix.M12 + transpose.M21 * matrix.M22 + transpose.M31 * matrix.M32;
+            var resultM13 = transpose.M11 * matrix.M13 + transpose.M21 * matrix.M23 + transpose.M31 * matrix.M33;
 
-            float resultM21 = transpose.M12 * matrix.M11 + transpose.M22 * matrix.M21 + transpose.M32 * matrix.M31;
-            float resultM22 = transpose.M12 * matrix.M12 + transpose.M22 * matrix.M22 + transpose.M32 * matrix.M32;
-            float resultM23 = transpose.M12 * matrix.M13 + transpose.M22 * matrix.M23 + transpose.M32 * matrix.M33;
+            var resultM21 = transpose.M12 * matrix.M11 + transpose.M22 * matrix.M21 + transpose.M32 * matrix.M31;
+            var resultM22 = transpose.M12 * matrix.M12 + transpose.M22 * matrix.M22 + transpose.M32 * matrix.M32;
+            var resultM23 = transpose.M12 * matrix.M13 + transpose.M22 * matrix.M23 + transpose.M32 * matrix.M33;
 
-            float resultM31 = transpose.M13 * matrix.M11 + transpose.M23 * matrix.M21 + transpose.M33 * matrix.M31;
-            float resultM32 = transpose.M13 * matrix.M12 + transpose.M23 * matrix.M22 + transpose.M33 * matrix.M32;
-            float resultM33 = transpose.M13 * matrix.M13 + transpose.M23 * matrix.M23 + transpose.M33 * matrix.M33;
+            var resultM31 = transpose.M13 * matrix.M11 + transpose.M23 * matrix.M21 + transpose.M33 * matrix.M31;
+            var resultM32 = transpose.M13 * matrix.M12 + transpose.M23 * matrix.M22 + transpose.M33 * matrix.M32;
+            var resultM33 = transpose.M13 * matrix.M13 + transpose.M23 * matrix.M23 + transpose.M33 * matrix.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -898,17 +903,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void MultiplyByTransposed(ref Matrix3x3 matrix, ref Matrix3x3 transpose, out Matrix3x3 result)
         {
-            float resultM11 = matrix.M11 * transpose.M11 + matrix.M12 * transpose.M12 + matrix.M13 * transpose.M13;
-            float resultM12 = matrix.M11 * transpose.M21 + matrix.M12 * transpose.M22 + matrix.M13 * transpose.M23;
-            float resultM13 = matrix.M11 * transpose.M31 + matrix.M12 * transpose.M32 + matrix.M13 * transpose.M33;
+            var resultM11 = matrix.M11 * transpose.M11 + matrix.M12 * transpose.M12 + matrix.M13 * transpose.M13;
+            var resultM12 = matrix.M11 * transpose.M21 + matrix.M12 * transpose.M22 + matrix.M13 * transpose.M23;
+            var resultM13 = matrix.M11 * transpose.M31 + matrix.M12 * transpose.M32 + matrix.M13 * transpose.M33;
 
-            float resultM21 = matrix.M21 * transpose.M11 + matrix.M22 * transpose.M12 + matrix.M23 * transpose.M13;
-            float resultM22 = matrix.M21 * transpose.M21 + matrix.M22 * transpose.M22 + matrix.M23 * transpose.M23;
-            float resultM23 = matrix.M21 * transpose.M31 + matrix.M22 * transpose.M32 + matrix.M23 * transpose.M33;
+            var resultM21 = matrix.M21 * transpose.M11 + matrix.M22 * transpose.M12 + matrix.M23 * transpose.M13;
+            var resultM22 = matrix.M21 * transpose.M21 + matrix.M22 * transpose.M22 + matrix.M23 * transpose.M23;
+            var resultM23 = matrix.M21 * transpose.M31 + matrix.M22 * transpose.M32 + matrix.M23 * transpose.M33;
 
-            float resultM31 = matrix.M31 * transpose.M11 + matrix.M32 * transpose.M12 + matrix.M33 * transpose.M13;
-            float resultM32 = matrix.M31 * transpose.M21 + matrix.M32 * transpose.M22 + matrix.M33 * transpose.M23;
-            float resultM33 = matrix.M31 * transpose.M31 + matrix.M32 * transpose.M32 + matrix.M33 * transpose.M33;
+            var resultM31 = matrix.M31 * transpose.M11 + matrix.M32 * transpose.M12 + matrix.M33 * transpose.M13;
+            var resultM32 = matrix.M31 * transpose.M21 + matrix.M32 * transpose.M22 + matrix.M33 * transpose.M23;
+            var resultM33 = matrix.M31 * transpose.M31 + matrix.M32 * transpose.M32 + matrix.M33 * transpose.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -972,17 +977,17 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Difference of the two matrices.</param>
         public static void Subtract(ref Matrix3x3 a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            float m11 = a.M11 - b.M11;
-            float m12 = a.M12 - b.M12;
-            float m13 = a.M13 - b.M13;
+            var m11 = a.M11 - b.M11;
+            var m12 = a.M12 - b.M12;
+            var m13 = a.M13 - b.M13;
 
-            float m21 = a.M21 - b.M21;
-            float m22 = a.M22 - b.M22;
-            float m23 = a.M23 - b.M23;
+            var m21 = a.M21 - b.M21;
+            var m22 = a.M22 - b.M22;
+            var m23 = a.M23 - b.M23;
 
-            float m31 = a.M31 - b.M31;
-            float m32 = a.M32 - b.M32;
-            float m33 = a.M33 - b.M33;
+            var m31 = a.M31 - b.M31;
+            var m32 = a.M32 - b.M32;
+            var m33 = a.M33 - b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -1036,7 +1041,7 @@ namespace MinorEngine.BEPUutilities
         public static Matrix ToMatrix4X4(Matrix3x3 a)
         {
 #if !WINDOWS
-            Matrix b = new Matrix();
+            var b = new Matrix();
 #else
             Matrix b;
 #endif
@@ -1061,7 +1066,7 @@ namespace MinorEngine.BEPUutilities
             b.M43 = 0;
             return b;
         }
-        
+
         /// <summary>
         /// Transforms the vector by the matrix.
         /// </summary>
@@ -1070,9 +1075,9 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the transformation.</param>
         public static void Transform(ref Vector3 v, ref Matrix3x3 matrix, out Vector3 result)
         {
-            float vX = v.X;
-            float vY = v.Y;
-            float vZ = v.Z;
+            var vX = v.X;
+            var vY = v.Y;
+            var vZ = v.Z;
 #if !WINDOWS
             result = new Vector3();
 #endif
@@ -1094,9 +1099,9 @@ namespace MinorEngine.BEPUutilities
 #if !WINDOWS
             result = new Vector3();
 #endif
-            float vX = v.X;
-            float vY = v.Y;
-            float vZ = v.Z;
+            var vX = v.X;
+            var vY = v.Y;
+            var vZ = v.Z;
 
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32;
@@ -1112,9 +1117,9 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Product of the transformation.</param>
         public static void TransformTranspose(ref Vector3 v, ref Matrix3x3 matrix, out Vector3 result)
         {
-            float vX = v.X;
-            float vY = v.Y;
-            float vZ = v.Z;
+            var vX = v.X;
+            var vY = v.Y;
+            var vZ = v.Z;
 #if !WINDOWS
             result = new Vector3();
 #endif
@@ -1131,9 +1136,9 @@ namespace MinorEngine.BEPUutilities
         /// <returns>Product of the transformation.</returns>
         public static Vector3 TransformTranspose(Vector3 v, Matrix3x3 matrix)
         {
-            float vX = v.X;
-            float vY = v.Y;
-            float vZ = v.Z;
+            var vX = v.X;
+            var vY = v.Y;
+            var vZ = v.Z;
             Vector3 result;
 #if !WINDOWS
             result = new Vector3();
@@ -1151,12 +1156,12 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Transposed matrix.</param>
         public static void Transpose(ref Matrix3x3 matrix, out Matrix3x3 result)
         {
-            float m21 = matrix.M12;
-            float m31 = matrix.M13;
-            float m12 = matrix.M21;
-            float m32 = matrix.M23;
-            float m13 = matrix.M31;
-            float m23 = matrix.M32;
+            var m21 = matrix.M12;
+            var m31 = matrix.M13;
+            var m12 = matrix.M21;
+            var m32 = matrix.M23;
+            var m13 = matrix.M31;
+            var m23 = matrix.M32;
 
             result.M11 = matrix.M11;
             result.M12 = m12;
@@ -1176,12 +1181,12 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Transposed matrix.</param>
         public static void Transpose(ref Matrix matrix, out Matrix3x3 result)
         {
-            float m21 = matrix.M12;
-            float m31 = matrix.M13;
-            float m12 = matrix.M21;
-            float m32 = matrix.M23;
-            float m13 = matrix.M31;
-            float m23 = matrix.M32;
+            var m21 = matrix.M12;
+            var m31 = matrix.M13;
+            var m12 = matrix.M21;
+            var m32 = matrix.M23;
+            var m13 = matrix.M31;
+            var m23 = matrix.M32;
 
             result.M11 = matrix.M11;
             result.M12 = m12;
@@ -1193,13 +1198,13 @@ namespace MinorEngine.BEPUutilities
             result.M32 = m32;
             result.M33 = matrix.M33;
         }
-       
+
         /// <summary>
         /// Transposes the matrix in-place.
         /// </summary>
         public void Transpose()
         {
-            float intermediate = M12;
+            var intermediate = M12;
             M12 = M21;
             M21 = intermediate;
 
@@ -1244,13 +1249,15 @@ namespace MinorEngine.BEPUutilities
         internal float AdaptiveDeterminant(out int subMatrixCode)
         {
             //Try the full matrix first.
-            float determinant = M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 -
-                                M31 * M22 * M13 - M32 * M23 * M11 - M33 * M21 * M12;
-            if (determinant != 0) //This could be a little numerically flimsy.  Fortunately, the way this method is used, that doesn't matter!
+            var determinant = M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 -
+                              M31 * M22 * M13 - M32 * M23 * M11 - M33 * M21 * M12;
+            if (determinant != 0
+            ) //This could be a little numerically flimsy.  Fortunately, the way this method is used, that doesn't matter!
             {
                 subMatrixCode = 0;
                 return determinant;
             }
+
             //Try m11, m12, m21, m22.
             determinant = M11 * M22 - M12 * M21;
             if (determinant != 0)
@@ -1258,6 +1265,7 @@ namespace MinorEngine.BEPUutilities
                 subMatrixCode = 1;
                 return determinant;
             }
+
             //Try m22, m23, m32, m33.
             determinant = M22 * M33 - M23 * M32;
             if (determinant != 0)
@@ -1265,6 +1273,7 @@ namespace MinorEngine.BEPUutilities
                 subMatrixCode = 2;
                 return determinant;
             }
+
             //Try m11, m13, m31, m33.
             determinant = M11 * M33 - M13 * M12;
             if (determinant != 0)
@@ -1272,29 +1281,33 @@ namespace MinorEngine.BEPUutilities
                 subMatrixCode = 3;
                 return determinant;
             }
+
             //Try m11.
             if (M11 != 0)
             {
                 subMatrixCode = 4;
                 return M11;
             }
+
             //Try m22.
             if (M22 != 0)
             {
                 subMatrixCode = 5;
                 return M22;
             }
+
             //Try m33.
             if (M33 != 0)
             {
                 subMatrixCode = 6;
                 return M33;
             }
+
             //It's completely singular!
             subMatrixCode = -1;
             return 0;
         }
-        
+
         /// <summary>
         /// Creates a 3x3 matrix representing the orientation stored in the quaternion.
         /// </summary>
@@ -1302,18 +1315,18 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Matrix representing the quaternion's orientation.</param>
         public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix3x3 result)
         {
-            float qX2 = quaternion.X + quaternion.X;
-            float qY2 = quaternion.Y + quaternion.Y;
-            float qZ2 = quaternion.Z + quaternion.Z;
-            float XX = qX2 * quaternion.X;
-            float YY = qY2 * quaternion.Y;
-            float ZZ = qZ2 * quaternion.Z;
-            float XY = qX2 * quaternion.Y;
-            float XZ = qX2 * quaternion.Z;
-            float XW = qX2 * quaternion.W;
-            float YZ = qY2 * quaternion.Z;
-            float YW = qY2 * quaternion.W;
-            float ZW = qZ2 * quaternion.W;
+            var qX2 = quaternion.X + quaternion.X;
+            var qY2 = quaternion.Y + quaternion.Y;
+            var qZ2 = quaternion.Z + quaternion.Z;
+            var XX = qX2 * quaternion.X;
+            var YY = qY2 * quaternion.Y;
+            var ZZ = qZ2 * quaternion.Z;
+            var XY = qX2 * quaternion.Y;
+            var XZ = qX2 * quaternion.Z;
+            var XW = qX2 * quaternion.W;
+            var YZ = qY2 * quaternion.Z;
+            var YW = qY2 * quaternion.W;
+            var ZW = qZ2 * quaternion.W;
 
             result.M11 = 1 - YY - ZZ;
             result.M21 = XY - ZW;
@@ -1382,15 +1395,15 @@ namespace MinorEngine.BEPUutilities
         /// <param name="result">Matrix representing the rotation.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Matrix3x3 result)
         {
-            float xx = axis.X * axis.X;
-            float yy = axis.Y * axis.Y;
-            float zz = axis.Z * axis.Z;
-            float xy = axis.X * axis.Y;
-            float xz = axis.X * axis.Z;
-            float yz = axis.Y * axis.Z;
+            var xx = axis.X * axis.X;
+            var yy = axis.Y * axis.Y;
+            var zz = axis.Z * axis.Z;
+            var xy = axis.X * axis.Y;
+            var xz = axis.X * axis.Z;
+            var yz = axis.Y * axis.Z;
 
-            float sinAngle = (float)System.Math.Sin(angle);
-            float oneMinusCosAngle = 1 - (float)System.Math.Cos(angle);
+            var sinAngle = (float) Math.Sin(angle);
+            var oneMinusCosAngle = 1 - (float) Math.Cos(angle);
 
             result.M11 = 1 + oneMinusCosAngle * (xx - 1);
             result.M21 = -axis.Z * sinAngle + oneMinusCosAngle * xy;
@@ -1404,11 +1417,5 @@ namespace MinorEngine.BEPUutilities
             result.M23 = axis.X * sinAngle + oneMinusCosAngle * yz;
             result.M33 = 1 + oneMinusCosAngle * (zz - 1);
         }
-
-
-
-
-
-
     }
 }

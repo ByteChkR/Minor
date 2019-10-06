@@ -27,13 +27,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the contacts in the manifold.
         ///</summary>
-        public ReadOnlyList<Contact> Contacts
-        {
-            get
-            {
-                return new ReadOnlyList<Contact>(contacts);
-            }
-        }
+        public ReadOnlyList<Contact> Contacts => new ReadOnlyList<Contact>(contacts);
 
         protected UnsafeResourcePool<Contact> unusedContacts;
 
@@ -41,16 +35,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         protected void RemoveQueuedContacts()
         {
             //TOREMOVE MUST BE SORTED LEAST TO GREATEST INDEX.
-            for (int i = contactIndicesToRemove.Count - 1; i >= 0; i--)
+            for (var i = contactIndicesToRemove.Count - 1; i >= 0; i--)
             {
                 Remove(contactIndicesToRemove.Elements[i]);
             }
+
             contactIndicesToRemove.Clear();
         }
 
         protected virtual void Remove(int contactIndex)
         {
-            Contact removing = contacts.Elements[contactIndex];
+            var removing = contacts.Elements[contactIndex];
             contacts.FastRemoveAt(contactIndex);
             OnRemoved(removing);
             unusedContacts.GiveBack(removing);
@@ -58,7 +53,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 
         protected virtual void Add(ref ContactData contactCandidate)
         {
-            Contact adding = unusedContacts.Take();
+            var adding = unusedContacts.Take();
             adding.Setup(ref contactCandidate);
             contacts.Add(adding);
             OnAdded(adding);
@@ -69,6 +64,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         /// Fires when a contact is added.
         ///</summary>
         public event Action<Contact> ContactAdded;
+
         ///<summary>
         /// Fires when a contact is removed.
         ///</summary>
@@ -77,13 +73,17 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         protected void OnAdded(Contact contact)
         {
             if (ContactAdded != null)
+            {
                 ContactAdded(contact);
+            }
         }
 
         protected void OnRemoved(Contact contact)
         {
             if (ContactRemoved != null)
+            {
                 ContactRemoved(contact);
+            }
         }
 
         ///<summary>
@@ -99,7 +99,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///</summary>
         public virtual void CleanUp()
         {
-            for (int i = contacts.Count - 1; i >= 0; --i)
+            for (var i = contacts.Count - 1; i >= 0; --i)
             {
                 unusedContacts.GiveBack(contacts.Elements[i]);
                 contacts.FastRemoveAt(i);
@@ -117,12 +117,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         /// </summary>
         public virtual void ClearContacts()
         {
-            for (int i = contacts.Count - 1; i >= 0; i--)
+            for (var i = contacts.Count - 1; i >= 0; i--)
             {
                 Remove(i);
             }
         }
-
     }
-
 }

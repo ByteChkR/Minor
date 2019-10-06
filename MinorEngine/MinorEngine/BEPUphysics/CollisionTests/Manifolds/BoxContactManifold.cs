@@ -1,11 +1,11 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
-using MinorEngine.BEPUutilities.ResourceManagement;
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
+using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 {
@@ -19,24 +19,12 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<summary>
         /// Gets the first collidable in the pair.
         ///</summary>
-        public ConvexCollidable<BoxShape> CollidableA
-        {
-            get
-            {
-                return boxA;
-            }
-        }
+        public ConvexCollidable<BoxShape> CollidableA => boxA;
 
         /// <summary>
         /// Gets the second collidable in the pair.
         /// </summary>
-        public ConvexCollidable<BoxShape> CollidableB
-        {
-            get
-            {
-                return boxB;
-            }
-        }
+        public ConvexCollidable<BoxShape> CollidableB => boxB;
 
         ///<summary>
         /// Constructs a new manifold.
@@ -124,20 +112,20 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 #else
         public override void Update(float dt)
         {
-
             //Now, generate a contact between the two shapes.
             float distance;
             Vector3 axis;
             var manifold = new TinyStructList<BoxContactData>();
-            if (BoxBoxCollider.AreBoxesColliding(boxA.Shape, boxB.Shape, ref boxA.worldTransform, ref boxB.worldTransform, out distance, out axis, out manifold))
+            if (BoxBoxCollider.AreBoxesColliding(boxA.Shape, boxB.Shape, ref boxA.worldTransform,
+                ref boxB.worldTransform, out distance, out axis, out manifold))
             {
                 Vector3.Negate(ref axis, out axis);
-                TinyList<int> toRemove = new TinyList<int>();
+                var toRemove = new TinyList<int>();
                 BoxContactData data;
-                for (int i = 0; i < contacts.Count; i++)
+                for (var i = 0; i < contacts.Count; i++)
                 {
-                    bool found = false;
-                    for (int j = manifold.Count - 1; j >= 0; j--)
+                    var found = false;
+                    for (var j = manifold.Count - 1; j >= 0; j--)
                     {
                         manifold.Get(j, out data);
                         if (contacts.Elements[i].Id == data.Id)
@@ -153,8 +141,10 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
                             break;
                         }
                     }
+
                     if (!found)
-                    {//No match found
+                        //No match found
+                    {
                         toRemove.Add(i);
                     }
                 }
@@ -179,14 +169,16 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
 
                 //Alright, we ran out of contacts to replace (if, in fact, toRemove isn't empty now).  Just remove the remainder.
                 //toRemove is sorted by increasing index.  Go backwards along it so that the indices are valid all the way through.
-                for (int i = toRemove.Count - 1; i >= 0; i--)
+                for (var i = toRemove.Count - 1; i >= 0; i--)
+                {
                     Remove(toRemove[i]);
+                }
 
                 //Add new contacts.
-                for (int i = 0; i < manifold.Count; i++)
+                for (var i = 0; i < manifold.Count; i++)
                 {
                     manifold.Get(i, out data);
-                    ContactData newContact = new ContactData();
+                    var newContact = new ContactData();
                     newContact.Position = data.Position;
                     newContact.PenetrationDepth = -data.Depth;
                     newContact.Normal = axis;
@@ -198,7 +190,7 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
             else
             {
                 //Not colliding, so get rid of it.
-                for (int i = contacts.Count - 1; i >= 0; i--)
+                for (var i = contacts.Count - 1; i >= 0; i--)
                 {
                     Remove(i);
                 }
@@ -215,8 +207,8 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///<exception cref="Exception">Thrown when the collidables being used are not of the proper type.</exception>
         public override void Initialize(Collidable newCollidableA, Collidable newCollidableB)
         {
-            boxA = (ConvexCollidable<BoxShape>)newCollidableA;
-            boxB = (ConvexCollidable<BoxShape>)newCollidableB;
+            boxA = (ConvexCollidable<BoxShape>) newCollidableA;
+            boxB = (ConvexCollidable<BoxShape>) newCollidableB;
 
 
             if (boxA == null || boxB == null)
@@ -230,12 +222,9 @@ namespace MinorEngine.BEPUphysics.CollisionTests.Manifolds
         ///</summary>
         public override void CleanUp()
         {
-
             boxA = null;
             boxB = null;
             base.CleanUp();
         }
-
-
     }
 }

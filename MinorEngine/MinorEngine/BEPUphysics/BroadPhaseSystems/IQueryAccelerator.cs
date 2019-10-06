@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
- 
+using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.BroadPhaseSystems
 {
@@ -14,6 +13,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         /// Gets the broad phase associated with this query accelerator, if any.
         /// </summary>
         BroadPhase BroadPhase { get; }
+
         ///<summary>
         /// Gets the broad phase entries overlapping the ray.
         ///</summary>
@@ -21,6 +21,7 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         ///<param name="outputIntersections">Overlapped entries.</param>
         ///<returns>Whether or not the ray hit anything.</returns>
         bool RayCast(Ray ray, IList<BroadPhaseEntry> outputIntersections);
+
         ///<summary>
         /// Gets the broad phase entries overlapping the ray.
         ///</summary>
@@ -41,12 +42,14 @@ namespace MinorEngine.BEPUphysics.BroadPhaseSystems
         /// <param name="boundingShape">Bounding shape to test.</param>
         /// <param name="overlaps">Overlapped entries.</param>
         void GetEntries(BoundingBox boundingShape, IList<BroadPhaseEntry> overlaps);
+
         /// <summary>
         /// Gets the entries with bounding boxes which overlap the bounding shape.
         /// </summary>
         /// <param name="boundingShape">Bounding shape to test.</param>
         /// <param name="overlaps">Overlapped entries.</param>
         void GetEntries(BoundingSphere boundingShape, IList<BroadPhaseEntry> overlaps);
+
         ///// <summary>
         ///// Gets the entries with bounding boxes which overlap the bounding shape.
         ///// </summary>

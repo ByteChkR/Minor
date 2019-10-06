@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.EntityStateManagement;
- 
 using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
+using MinorEngine.BEPUphysics.EntityStateManagement;
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 
@@ -17,13 +16,7 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///<summary>
         /// Gets the list of shapes in the wrapped body.
         ///</summary>
-        public ObservableList<ConvexShapeEntry> Shapes
-        {
-            get
-            {
-                return CollisionInformation.Shape.Shapes;
-            }
-        }
+        public ObservableList<ConvexShapeEntry> Shapes => CollisionInformation.Shape.Shapes;
 
         /// <exception cref="ArgumentException">Thrown when the subbodies list contains zero entities.</exception>
         private WrappedBody(IList<ConvexShapeEntry> subShapes, float mass)
@@ -88,8 +81,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
-
-
-      
     }
 }

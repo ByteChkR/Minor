@@ -1,5 +1,4 @@
-﻿ 
-using System;
+﻿using System;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.EntityStateManagement
@@ -13,10 +12,12 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
         /// Position of an entity.
         ///</summary>
         public Vector3 Position;
+
         ///<summary>
         /// Orientation of an entity.
         ///</summary>
         public Quaternion Orientation;
+
         ///<summary>
         /// Orientation matrix of an entity.
         ///</summary>
@@ -29,6 +30,7 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 return toReturn;
             }
         }
+
         ///<summary>
         /// World transform of an entity.
         ///</summary>
@@ -42,10 +44,12 @@ namespace MinorEngine.BEPUphysics.EntityStateManagement
                 return toReturn;
             }
         }
+
         ///<summary>
         /// Linear velocity of an entity.
         ///</summary>
         public Vector3 LinearVelocity;
+
         ///<summary>
         /// Angular velocity of an entity.
         ///</summary>

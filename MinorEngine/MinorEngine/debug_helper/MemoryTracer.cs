@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using OpenTK.Platform.Windows;
 
 namespace MinorEngine.debug
 {
@@ -39,19 +37,18 @@ namespace MinorEngine.debug
 #endif
             Timer.Stop();
             TimeSpentInStage = Timer.Elapsed;
-
         }
 
         public static string ToConsoleText(StepMemoryInformation info, int depth)
         {
-            string ind = "\t";
-            for (int i = 0; i < depth; i++)
+            var ind = "\t";
+            for (var i = 0; i < depth; i++)
             {
                 ind += "\t";
             }
 
 
-            string ret = info.Name + "\n";
+            var ret = info.Name + "\n";
             ret += ind + "KB Used Before: " + info.Before + "\n";
             ret += ind + "KB Used After: " + info.After + "\n";
             ret += ind + "KB Used After(post GC): " + info.AfterGarbageCollection + "\n";
@@ -76,7 +73,6 @@ namespace MinorEngine.debug
 
     public static class MemoryTracer
     {
-
         private static List<StepMemoryInformation> _informationCollection = new List<StepMemoryInformation>();
         private static StepMemoryInformation _current;
         public static int MaxTraceCount = 10;
@@ -84,7 +80,6 @@ namespace MinorEngine.debug
 
         public static string cmdListMemoryInfo(string[] args)
         {
-
 #if LEAK_TRACE
             string ret = "";
             foreach (var stepMemoryInformation in _informationCollection)
@@ -96,7 +91,6 @@ namespace MinorEngine.debug
             return ret;
 #endif
             return "Engine Was compiled without MemoryTracer enabled.";
-
         }
 
         public static string cmdListLastMemoryInfo(string[] args)
@@ -107,8 +101,6 @@ namespace MinorEngine.debug
 #endif
             return "Engine Was compiled without MemoryTracer enabled.";
         }
-
-
 
 
         /// <summary>
@@ -136,7 +128,6 @@ namespace MinorEngine.debug
         public static void AddSubStep(string step)
         {
 #if LEAK_TRACE
-
             StepMemoryInformation current = _current; //Store the current step or substep
             ChangeStep(step, false);
             _current.Parent = current; //Set it up to be the substep on one level deeper
@@ -183,16 +174,17 @@ namespace MinorEngine.debug
             }
 #endif
         }
+
         private static StepMemoryInformation ChangeStep(string name, bool finalize)
         {
-            StepMemoryInformation old = _current;
-            if (finalize) old?.Finalize();
+            var old = _current;
+            if (finalize)
+            {
+                old?.Finalize();
+            }
+
             _current = new StepMemoryInformation(name);
             return old;
         }
-
-
-
-
     }
 }

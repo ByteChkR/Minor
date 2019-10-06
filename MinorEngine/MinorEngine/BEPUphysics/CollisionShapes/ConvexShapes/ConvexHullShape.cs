@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-
 using MinorEngine.BEPUutilities;
 using MinorEngine.BEPUutilities.DataStructures;
 using MinorEngine.BEPUutilities.ResourceManagement;
@@ -17,14 +15,9 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///<summary>
         /// Gets the point set of the convex hull.
         ///</summary>
-        public ReadOnlyList<Vector3> Vertices
-        {
-            get
-            {
-                return new ReadOnlyList<Vector3>(vertices);
-            }
-        }
-        Vector3[] vertices;
+        public ReadOnlyList<Vector3> Vertices => new ReadOnlyList<Vector3>(vertices);
+
+        private Vector3[] vertices;
 
         private readonly float unexpandedMinimumRadius;
         private readonly float unexpandedMaximumRadius;
@@ -39,13 +32,16 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public ConvexHullShape(IList<Vector3> vertices)
         {
             if (vertices.Count == 0)
+            {
                 throw new ArgumentException("Vertices list used to create a ConvexHullShape cannot be empty.");
+            }
 
             var surfaceVertices = CommonResources.GetVectorList();
             var hullTriangleIndices = CommonResources.GetIntList();
 
             Vector3 center;
-            UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, hullTriangleIndices, surfaceVertices));
+            UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, hullTriangleIndices,
+                surfaceVertices));
             this.vertices = surfaceVertices.ToArray();
 
 
@@ -66,12 +62,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public ConvexHullShape(IList<Vector3> vertices, out Vector3 center)
         {
             if (vertices.Count == 0)
+            {
                 throw new ArgumentException("Vertices list used to create a ConvexHullShape cannot be empty.");
+            }
 
             var surfaceVertices = CommonResources.GetVectorList();
             var hullTriangleIndices = CommonResources.GetIntList();
 
-            UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, hullTriangleIndices, surfaceVertices));
+            UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, hullTriangleIndices,
+                surfaceVertices));
             this.vertices = surfaceVertices.ToArray();
 
             CommonResources.GiveBack(hullTriangleIndices);
@@ -79,7 +78,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 
             unexpandedMaximumRadius = MaximumRadius - collisionMargin;
             unexpandedMinimumRadius = MinimumRadius - collisionMargin;
-
         }
 
         ///<summary>
@@ -91,18 +89,21 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="outputHullTriangleIndices">Triangle indices computed on the surface of the point set.</param>
         /// <param name="outputUniqueSurfaceVertices">Unique vertices on the surface of the convex hull.</param>
         ///<exception cref="ArgumentException">Thrown when the point set is empty.</exception>
-        public ConvexHullShape(IList<Vector3> vertices, out Vector3 center, IList<int> outputHullTriangleIndices, IList<Vector3> outputUniqueSurfaceVertices)
+        public ConvexHullShape(IList<Vector3> vertices, out Vector3 center, IList<int> outputHullTriangleIndices,
+            IList<Vector3> outputUniqueSurfaceVertices)
         {
             if (vertices.Count == 0)
+            {
                 throw new ArgumentException("Vertices list used to create a ConvexHullShape cannot be empty.");
+            }
 
-            UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, outputHullTriangleIndices, outputUniqueSurfaceVertices));
+            UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, outputHullTriangleIndices,
+                outputUniqueSurfaceVertices));
             this.vertices = new Vector3[outputUniqueSurfaceVertices.Count];
             outputUniqueSurfaceVertices.CopyTo(this.vertices, 0);
 
             unexpandedMaximumRadius = MaximumRadius - collisionMargin;
             unexpandedMinimumRadius = MinimumRadius - collisionMargin;
-
         }
 
 
@@ -114,14 +115,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public ConvexHullShape(IList<Vector3> localSurfaceVertices, ConvexShapeDescription description)
         {
             if (localSurfaceVertices.Count == 0)
+            {
                 throw new ArgumentException("Vertices list used to create a ConvexHullShape cannot be empty.");
+            }
 
             unexpandedMaximumRadius = description.MaximumRadius - collisionMargin;
             unexpandedMinimumRadius = description.MinimumRadius - collisionMargin;
             vertices = new Vector3[localSurfaceVertices.Count];
             localSurfaceVertices.CopyTo(vertices, 0);
             UpdateConvexShapeInfo(description);
-
         }
 
         protected override void OnShapeChanged()
@@ -133,7 +135,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             //The (immutable) unexpanded radii are cached, so all that needs to be done is to add the new margin.
             UpdateConvexShapeInfo(new ConvexShapeDescription
             {
-                EntityShapeVolume = new EntityShapeVolumeDescription { Volume = Volume, VolumeDistribution = VolumeDistribution },
+                EntityShapeVolume = new EntityShapeVolumeDescription
+                    {Volume = Volume, VolumeDistribution = VolumeDistribution},
                 MinimumRadius = unexpandedMinimumRadius + collisionMargin,
                 MaximumRadius = unexpandedMaximumRadius + collisionMargin,
                 CollisionMargin = collisionMargin
@@ -151,23 +154,28 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// Each group of 3 indices represents a triangle on the surface of the hull.</param>
         /// <param name="outputUniqueSurfaceVertices">Computed nonredundant list of vertices composing the outer shell of the input point set. Recentered on the local origin.</param>
         /// <returns>Description required to define a convex shape.</returns>
-        public static ConvexShapeDescription ComputeDescription(IList<Vector3> vertices, float collisionMargin, out Vector3 center, IList<int> outputHullTriangleIndices, IList<Vector3> outputUniqueSurfaceVertices)
+        public static ConvexShapeDescription ComputeDescription(IList<Vector3> vertices, float collisionMargin,
+            out Vector3 center, IList<int> outputHullTriangleIndices, IList<Vector3> outputUniqueSurfaceVertices)
         {
             if (outputHullTriangleIndices.Count != 0 || outputUniqueSurfaceVertices.Count != 0)
+            {
                 throw new ArgumentException("Output lists must start empty.");
+            }
 
 
             ConvexShapeDescription description;
             ConvexHullHelper.GetConvexHull(vertices, outputHullTriangleIndices, outputUniqueSurfaceVertices);
 
-            InertiaHelper.ComputeShapeDistribution(vertices, outputHullTriangleIndices, out center, out description.EntityShapeVolume.Volume, out description.EntityShapeVolume.VolumeDistribution);
+            InertiaHelper.ComputeShapeDistribution(vertices, outputHullTriangleIndices, out center,
+                out description.EntityShapeVolume.Volume, out description.EntityShapeVolume.VolumeDistribution);
             //Recenter the surface vertices.
-            for (int i = 0; i < outputUniqueSurfaceVertices.Count; ++i)
+            for (var i = 0; i < outputUniqueSurfaceVertices.Count; ++i)
             {
                 outputUniqueSurfaceVertices[i] -= center;
             }
 
-            description.MinimumRadius = InertiaHelper.ComputeMinimumRadius(vertices, outputHullTriangleIndices, ref center) + collisionMargin;
+            description.MinimumRadius =
+                InertiaHelper.ComputeMinimumRadius(vertices, outputHullTriangleIndices, ref center) + collisionMargin;
             description.MaximumRadius = ComputeMaximumRadius(outputUniqueSurfaceVertices, collisionMargin);
 
             description.CollisionMargin = collisionMargin;
@@ -184,18 +192,17 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public static float ComputeMaximumRadius(IList<Vector3> localSurfaceVertices, float collisionMargin)
         {
             float longestLengthSquared = 0;
-            for (int i = 0; i < localSurfaceVertices.Count; ++i)
+            for (var i = 0; i < localSurfaceVertices.Count; ++i)
             {
-                float lengthCandidate = localSurfaceVertices[i].LengthSquared();
+                var lengthCandidate = localSurfaceVertices[i].LengthSquared();
                 if (lengthCandidate > longestLengthSquared)
                 {
                     longestLengthSquared = lengthCandidate;
                 }
             }
-            return (float)Math.Sqrt(longestLengthSquared) + collisionMargin;
+
+            return (float) Math.Sqrt(longestLengthSquared) + collisionMargin;
         }
-
-
 
 
         /// <summary>
@@ -224,13 +231,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             minY = maxY;
             Vector3.Dot(ref vertices[0], ref backward, out maxZ);
             minZ = maxZ;
-            int minXIndex = 0;
-            int maxXIndex = 0;
-            int minYIndex = 0;
-            int maxYIndex = 0;
-            int minZIndex = 0;
-            int maxZIndex = 0;
-            for (int i = 1; i < vertices.Length; ++i)
+            var minXIndex = 0;
+            var maxXIndex = 0;
+            var minYIndex = 0;
+            var maxYIndex = 0;
+            var minZIndex = 0;
+            var maxZIndex = 0;
+            for (var i = 1; i < vertices.Length; ++i)
             {
                 float dot;
                 Vector3.Dot(ref vertices[i], ref right, out dot);
@@ -272,8 +279,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 
             //Rather than transforming each axis independently (and doing three times as many operations as required), just get the 6 required values directly.
             Vector3 positive, negative;
-            TransformLocalExtremePoints(ref vertices[maxXIndex], ref vertices[maxYIndex], ref vertices[maxZIndex], ref o, out positive);
-            TransformLocalExtremePoints(ref vertices[minXIndex], ref vertices[minYIndex], ref vertices[minZIndex], ref o, out negative);
+            TransformLocalExtremePoints(ref vertices[maxXIndex], ref vertices[maxYIndex], ref vertices[maxZIndex],
+                ref o, out positive);
+            TransformLocalExtremePoints(ref vertices[minXIndex], ref vertices[minYIndex], ref vertices[minZIndex],
+                ref o, out negative);
 
             //The positive and negative vectors represent the X, Y and Z coordinates of the extreme points in world space along the world space axes.
             boundingBox.Max.X = shapeTransform.Position.X + positive.X + collisionMargin;
@@ -290,8 +299,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             float max;
             Vector3.Dot(ref vertices[0], ref direction, out max);
-            int maxIndex = 0;
-            for (int i = 1; i < vertices.Length; i++)
+            var maxIndex = 0;
+            for (var i = 1; i < vertices.Length; i++)
             {
                 float dot;
                 Vector3.Dot(ref vertices[i], ref direction, out dot);
@@ -301,9 +310,9 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                     maxIndex = i;
                 }
             }
+
             extremePoint = vertices[maxIndex];
         }
-
 
 
         /// <summary>
@@ -314,7 +323,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             return new ConvexCollidable<ConvexHullShape>(this);
         }
-
-
     }
 }

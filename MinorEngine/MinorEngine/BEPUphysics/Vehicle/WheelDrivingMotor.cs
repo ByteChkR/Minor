@@ -1,7 +1,5 @@
 ﻿using MinorEngine.BEPUphysics.Constraints;
 using MinorEngine.BEPUphysics.Entities;
- 
-using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.Vehicle
@@ -31,7 +29,8 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// <param name="usingKineticFriction">True if the friction coefficients passed into the blender are kinetic coefficients, false otherwise.</param>
         /// <param name="wheel">Wheel being blended.</param>
         /// <returns>Blended friction coefficient.</returns>
-        public static float BlendFriction(float wheelFriction, float materialFriction, bool usingKineticFriction, Wheel wheel)
+        public static float BlendFriction(float wheelFriction, float materialFriction, bool usingKineticFriction,
+            Wheel wheel)
         {
             return wheelFriction * materialFriction;
         }
@@ -45,16 +44,10 @@ namespace MinorEngine.BEPUphysics.Vehicle
         internal float angularBX, angularBY, angularBZ;
         internal bool isActive = true;
         internal float linearAX, linearAY, linearAZ;
-        private float currentFrictionCoefficient;
         internal Vector3 forceAxis;
         private float gripFriction;
-        private WheelFrictionBlender gripFrictionBlender = DefaultGripFrictionBlender;
         private float maxMotorForceDt;
-        private float maximumBackwardForce = float.MaxValue;
-        private float maximumForwardForce = float.MaxValue;
         internal SolverSettings solverSettings = new SolverSettings();
-        private float targetSpeed;
-        private Wheel wheel;
         internal int numIterationsAtZeroImpulse;
         private Entity vehicleEntity, supportEntity;
 
@@ -84,18 +77,12 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// Gets the coefficient of grip friction between the wheel and support.
         /// This coefficient is the blended result of the supporting entity's friction and the wheel's friction.
         /// </summary>
-        public float BlendedCoefficient
-        {
-            get { return currentFrictionCoefficient; }
-        }
+        public float BlendedCoefficient { get; private set; }
 
         /// <summary>
         /// Gets the axis along which the driving forces are applied.
         /// </summary>
-        public Vector3 ForceAxis
-        {
-            get { return forceAxis; }
-        }
+        public Vector3 ForceAxis => forceAxis;
 
         /// <summary>
         /// Gets or sets the coefficient of forward-backward gripping friction for this wheel.
@@ -104,72 +91,46 @@ namespace MinorEngine.BEPUphysics.Vehicle
         /// </summary>
         public float GripFriction
         {
-            get { return gripFriction; }
-            set { gripFriction = MathHelper.Max(value, 0); }
+            get => gripFriction;
+            set => gripFriction = MathHelper.Max(value, 0);
         }
 
         /// <summary>
         /// Gets or sets the function used to blend the supporting entity's friction and the wheel's friction.
         /// </summary>
-        public WheelFrictionBlender GripFrictionBlender
-        {
-            get { return gripFrictionBlender; }
-            set { gripFrictionBlender = value; }
-        }
+        public WheelFrictionBlender GripFrictionBlender { get; set; } = DefaultGripFrictionBlender;
 
         /// <summary>
         /// Gets or sets the maximum force that the wheel motor can apply when driving backward (a target speed less than zero).
         /// </summary>
-        public float MaximumBackwardForce
-        {
-            get { return maximumBackwardForce; }
-            set { maximumBackwardForce = value; }
-        }
+        public float MaximumBackwardForce { get; set; } = float.MaxValue;
 
         /// <summary>
         /// Gets or sets the maximum force that the wheel motor can apply when driving forward (a target speed greater than zero).
         /// </summary>
-        public float MaximumForwardForce
-        {
-            get { return maximumForwardForce; }
-            set { maximumForwardForce = value; }
-        }
+        public float MaximumForwardForce { get; set; } = float.MaxValue;
 
         /// <summary>
         /// Gets or sets the target speed of this wheel.
         /// </summary>
-        public float TargetSpeed
-        {
-            get { return targetSpeed; }
-            set { targetSpeed = value; }
-        }
+        public float TargetSpeed { get; set; }
 
         /// <summary>
         /// Gets the force this wheel's motor is applying.
         /// </summary>
-        public float TotalImpulse
-        {
-            get { return accumulatedImpulse; }
-        }
+        public float TotalImpulse => accumulatedImpulse;
 
         /// <summary>
         /// Gets the wheel that this motor applies to.
         /// </summary>
-        public Wheel Wheel
-        {
-            get { return wheel; }
-            internal set { wheel = value; }
-        }
+        public Wheel Wheel { get; internal set; }
 
         #region ISolverSettings Members
 
         /// <summary>
         /// Gets the solver settings used by this wheel constraint.
         /// </summary>
-        public SolverSettings SolverSettings
-        {
-            get { return solverSettings; }
-        }
+        public SolverSettings SolverSettings => solverSettings;
 
         #endregion
 
@@ -183,11 +144,23 @@ namespace MinorEngine.BEPUphysics.Vehicle
             {
                 float velocity = 0;
                 if (vehicleEntity != null)
-                    velocity += vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY + vehicleEntity.linearVelocity.Z * linearAZ +
-                                  vehicleEntity.angularVelocity.X * angularAX + vehicleEntity.angularVelocity.Y * angularAY + vehicleEntity.angularVelocity.Z * angularAZ;
+                {
+                    velocity += vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY +
+                                vehicleEntity.linearVelocity.Z * linearAZ +
+                                vehicleEntity.angularVelocity.X * angularAX +
+                                vehicleEntity.angularVelocity.Y * angularAY +
+                                vehicleEntity.angularVelocity.Z * angularAZ;
+                }
+
                 if (supportEntity != null)
-                    velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY - supportEntity.linearVelocity.Z * linearAZ +
-                                supportEntity.angularVelocity.X * angularBX + supportEntity.angularVelocity.Y * angularBY + supportEntity.angularVelocity.Z * angularBZ;
+                {
+                    velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY -
+                                supportEntity.linearVelocity.Z * linearAZ +
+                                supportEntity.angularVelocity.X * angularBX +
+                                supportEntity.angularVelocity.Y * angularBY +
+                                supportEntity.angularVelocity.Z * angularBZ;
+                }
+
                 return velocity;
             }
         }
@@ -195,31 +168,42 @@ namespace MinorEngine.BEPUphysics.Vehicle
         internal float ApplyImpulse()
         {
             //Compute relative velocity
-            float lambda = (RelativeVelocity
-                            - targetSpeed) //Add in the extra goal speed
-                           * velocityToImpulse; //convert to impulse
+            var lambda = (RelativeVelocity
+                          - TargetSpeed) //Add in the extra goal speed
+                         * velocityToImpulse; //convert to impulse
 
 
             //Clamp accumulated impulse
-            float previousAccumulatedImpulse = accumulatedImpulse;
+            var previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse += lambda;
             //Don't brake, and take into account the motor's maximum force.
-            if (targetSpeed > 0)
-                accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse, 0, maxMotorForceDt); //MathHelper.Min(MathHelper.Max(accumulatedImpulse, 0), myMaxMotorForceDt);
-            else if (targetSpeed < 0)
-                accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse, maxMotorForceDt, 0); //MathHelper.Max(MathHelper.Min(accumulatedImpulse, 0), myMaxMotorForceDt);
+            if (TargetSpeed > 0)
+            {
+                accumulatedImpulse =
+                    MathHelper.Clamp(accumulatedImpulse, 0,
+                        maxMotorForceDt); //MathHelper.Min(MathHelper.Max(accumulatedImpulse, 0), myMaxMotorForceDt);
+            }
+            else if (TargetSpeed < 0)
+            {
+                accumulatedImpulse =
+                    MathHelper.Clamp(accumulatedImpulse, maxMotorForceDt,
+                        0); //MathHelper.Max(MathHelper.Min(accumulatedImpulse, 0), myMaxMotorForceDt);
+            }
             else
+            {
                 accumulatedImpulse = 0;
+            }
+
             //Friction
-            float maxForce = currentFrictionCoefficient * wheel.suspension.accumulatedImpulse;
+            var maxForce = BlendedCoefficient * Wheel.suspension.accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse, maxForce, -maxForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
 
             //Apply the impulse
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -234,6 +218,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 vehicleEntity.ApplyLinearImpulse(ref linear);
                 vehicleEntity.ApplyAngularImpulse(ref angular);
             }
+
             if (supportIsDynamic)
             {
                 linear.X = -linear.X;
@@ -251,11 +236,11 @@ namespace MinorEngine.BEPUphysics.Vehicle
 
         internal void PreStep(float dt)
         {
-            vehicleEntity = wheel.Vehicle.Body;
-            supportEntity = wheel.SupportingEntity;
+            vehicleEntity = Wheel.Vehicle.Body;
+            supportEntity = Wheel.SupportingEntity;
             supportIsDynamic = supportEntity != null && supportEntity.isDynamic;
 
-            Vector3.Cross(ref wheel.normal, ref wheel.slidingFriction.slidingFrictionAxis, out forceAxis);
+            Vector3.Cross(ref Wheel.normal, ref Wheel.slidingFriction.slidingFrictionAxis, out forceAxis);
             forceAxis.Normalize();
             //Do not need to check for normalize safety because normal and sliding friction axis must be perpendicular.
 
@@ -264,14 +249,14 @@ namespace MinorEngine.BEPUphysics.Vehicle
             linearAZ = forceAxis.Z;
 
             //angular A = Ra x N
-            angularAX = (wheel.ra.Y * linearAZ) - (wheel.ra.Z * linearAY);
-            angularAY = (wheel.ra.Z * linearAX) - (wheel.ra.X * linearAZ);
-            angularAZ = (wheel.ra.X * linearAY) - (wheel.ra.Y * linearAX);
+            angularAX = Wheel.ra.Y * linearAZ - Wheel.ra.Z * linearAY;
+            angularAY = Wheel.ra.Z * linearAX - Wheel.ra.X * linearAZ;
+            angularAZ = Wheel.ra.X * linearAY - Wheel.ra.Y * linearAX;
 
             //Angular B = N x Rb
-            angularBX = (linearAY * wheel.rb.Z) - (linearAZ * wheel.rb.Y);
-            angularBY = (linearAZ * wheel.rb.X) - (linearAX * wheel.rb.Z);
-            angularBZ = (linearAX * wheel.rb.Y) - (linearAY * wheel.rb.X);
+            angularBX = linearAY * Wheel.rb.Z - linearAZ * Wheel.rb.Y;
+            angularBY = linearAZ * Wheel.rb.X - linearAX * Wheel.rb.Z;
+            angularBZ = linearAX * Wheel.rb.Y - linearAY * Wheel.rb.X;
 
             //Compute inverse effective mass matrix
             float entryA, entryB;
@@ -280,45 +265,62 @@ namespace MinorEngine.BEPUphysics.Vehicle
             float tX, tY, tZ;
             if (vehicleEntity.isDynamic)
             {
-                tX = angularAX * vehicleEntity.inertiaTensorInverse.M11 + angularAY * vehicleEntity.inertiaTensorInverse.M21 + angularAZ * vehicleEntity.inertiaTensorInverse.M31;
-                tY = angularAX * vehicleEntity.inertiaTensorInverse.M12 + angularAY * vehicleEntity.inertiaTensorInverse.M22 + angularAZ * vehicleEntity.inertiaTensorInverse.M32;
-                tZ = angularAX * vehicleEntity.inertiaTensorInverse.M13 + angularAY * vehicleEntity.inertiaTensorInverse.M23 + angularAZ * vehicleEntity.inertiaTensorInverse.M33;
+                tX = angularAX * vehicleEntity.inertiaTensorInverse.M11 +
+                     angularAY * vehicleEntity.inertiaTensorInverse.M21 +
+                     angularAZ * vehicleEntity.inertiaTensorInverse.M31;
+                tY = angularAX * vehicleEntity.inertiaTensorInverse.M12 +
+                     angularAY * vehicleEntity.inertiaTensorInverse.M22 +
+                     angularAZ * vehicleEntity.inertiaTensorInverse.M32;
+                tZ = angularAX * vehicleEntity.inertiaTensorInverse.M13 +
+                     angularAY * vehicleEntity.inertiaTensorInverse.M23 +
+                     angularAZ * vehicleEntity.inertiaTensorInverse.M33;
                 entryA = tX * angularAX + tY * angularAY + tZ * angularAZ + vehicleEntity.inverseMass;
             }
             else
+            {
                 entryA = 0;
+            }
 
             if (supportIsDynamic)
             {
-                tX = angularBX * supportEntity.inertiaTensorInverse.M11 + angularBY * supportEntity.inertiaTensorInverse.M21 + angularBZ * supportEntity.inertiaTensorInverse.M31;
-                tY = angularBX * supportEntity.inertiaTensorInverse.M12 + angularBY * supportEntity.inertiaTensorInverse.M22 + angularBZ * supportEntity.inertiaTensorInverse.M32;
-                tZ = angularBX * supportEntity.inertiaTensorInverse.M13 + angularBY * supportEntity.inertiaTensorInverse.M23 + angularBZ * supportEntity.inertiaTensorInverse.M33;
+                tX = angularBX * supportEntity.inertiaTensorInverse.M11 +
+                     angularBY * supportEntity.inertiaTensorInverse.M21 +
+                     angularBZ * supportEntity.inertiaTensorInverse.M31;
+                tY = angularBX * supportEntity.inertiaTensorInverse.M12 +
+                     angularBY * supportEntity.inertiaTensorInverse.M22 +
+                     angularBZ * supportEntity.inertiaTensorInverse.M32;
+                tZ = angularBX * supportEntity.inertiaTensorInverse.M13 +
+                     angularBY * supportEntity.inertiaTensorInverse.M23 +
+                     angularBZ * supportEntity.inertiaTensorInverse.M33;
                 entryB = tX * angularBX + tY * angularBY + tZ * angularBZ + supportEntity.inverseMass;
             }
             else
+            {
                 entryB = 0;
+            }
 
             velocityToImpulse = -1 / (entryA + entryB); //Softness?
 
-            currentFrictionCoefficient = gripFrictionBlender(gripFriction, wheel.supportMaterial.kineticFriction, true, wheel);
+            BlendedCoefficient =
+                GripFrictionBlender(gripFriction, Wheel.supportMaterial.kineticFriction, true, Wheel);
 
             //Compute the maximum force
-            if (targetSpeed > 0)
-                maxMotorForceDt = maximumForwardForce * dt;
+            if (TargetSpeed > 0)
+            {
+                maxMotorForceDt = MaximumForwardForce * dt;
+            }
             else
-                maxMotorForceDt = -maximumBackwardForce * dt;
-
-
-
-
+            {
+                maxMotorForceDt = -MaximumBackwardForce * dt;
+            }
         }
 
         internal void ExclusiveUpdate()
         {
             //Warm starting
 #if !WINDOWS
-            Vector3 linear = new Vector3();
-            Vector3 angular = new Vector3();
+            var linear = new Vector3();
+            var angular = new Vector3();
 #else
             Vector3 linear, angular;
 #endif
@@ -333,6 +335,7 @@ namespace MinorEngine.BEPUphysics.Vehicle
                 vehicleEntity.ApplyLinearImpulse(ref linear);
                 vehicleEntity.ApplyAngularImpulse(ref angular);
             }
+
             if (supportIsDynamic)
             {
                 linear.X = -linear.X;

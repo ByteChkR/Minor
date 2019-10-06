@@ -15,13 +15,7 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///<summary>
         /// Gets the list of shapes in the compound.
         ///</summary>
-        public ReadOnlyList<CompoundShapeEntry> Shapes
-        {
-            get
-            {
-                return CollisionInformation.Shape.Shapes;
-            }
-        }
+        public ReadOnlyList<CompoundShapeEntry> Shapes => CollisionInformation.Shape.Shapes;
 
 
         /// <summary>
@@ -59,7 +53,6 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
         ///<param name="children">Children data to construct the compound from.</param>
         public CompoundBody(IList<CompoundChildData> children)
         {
-
             Vector3 center;
             var collidable = new CompoundCollidable(children, out center);
             Initialize(collidable);
@@ -78,10 +71,5 @@ namespace MinorEngine.BEPUphysics.Entities.Prefabs
             Initialize(collidable, mass);
             Position = center;
         }
-
-
-
     }
-
-
 }

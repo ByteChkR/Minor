@@ -11,7 +11,7 @@ namespace MinorEngine.BEPUutilities.Threading
         internal int finalIndex;
 
         internal AutoResetEvent getToWork;
-        
+
         internal int iterationsPerSteal;
         private Thread thread;
         private Action threadStart;
@@ -23,12 +23,9 @@ namespace MinorEngine.BEPUutilities.Threading
 
             getToWork = new AutoResetEvent(false);
 
-            thread = new Thread(Work) { IsBackground = true };
+            thread = new Thread(Work) {IsBackground = true};
             thread.Start();
         }
-
-
-
 
 
         internal void Work()
@@ -37,6 +34,7 @@ namespace MinorEngine.BEPUutilities.Threading
             {
                 threadStart();
             }
+
             threadStart = null;
 
             while (true)
@@ -53,13 +51,13 @@ namespace MinorEngine.BEPUutilities.Threading
                 while (manager.jobIndex <= manager.maxJobIndex)
                 {
                     //Claim a piece of job.
-                    int jobIndex = Interlocked.Increment(ref manager.jobIndex);
+                    var jobIndex = Interlocked.Increment(ref manager.jobIndex);
                     //The job interval.
-                    int endIndex = jobIndex * iterationsPerSteal;
-                    int beginIndex = endIndex - iterationsPerSteal;
+                    var endIndex = jobIndex * iterationsPerSteal;
+                    var beginIndex = endIndex - iterationsPerSteal;
 
                     //Do the job piece.  Make sure you don't do more than exists in the list itself.
-                    for (int i = beginIndex; i < endIndex && i < finalIndex; i++)
+                    for (var i = beginIndex; i < endIndex && i < finalIndex; i++)
                     {
                         manager.currentLoopBody(i);
                     }
@@ -68,7 +66,6 @@ namespace MinorEngine.BEPUutilities.Threading
                 manager.OnWorkerFinish();
             }
         }
-
 
 
         /// <summary>

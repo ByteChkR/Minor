@@ -5,13 +5,13 @@ using OpenTK.Graphics;
 
 namespace Demo
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            GraphicsMode gm = new GraphicsMode(ColorFormat.Empty, 8, 0, 16);
+            var gm = new GraphicsMode(ColorFormat.Empty, 8, 0, 16);
 
-            EngineSettings es = new EngineSettings
+            var es = new EngineSettings
             {
                 WindowFlags = GameWindowFlags.Default,
                 Mode = gm,
@@ -28,7 +28,7 @@ namespace Demo
 #endif
             };
 
-            MinorEngine.engine.core.GameEngine engine = new MinorEngine.engine.core.GameEngine(es);
+            var engine = new MinorEngine.engine.core.GameEngine(es);
             engine.Initialize();
             engine.InitializeScene<PhysicsDemoScene>();
             engine.Run();

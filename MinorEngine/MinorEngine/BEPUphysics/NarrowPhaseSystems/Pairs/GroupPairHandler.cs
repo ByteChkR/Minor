@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.Constraints;
-using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.CollisionRuleManagement;
 using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.Constraints;
+using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.Materials;
 using MinorEngine.BEPUphysics.Settings;
 using MinorEngine.BEPUutilities.DataStructures;
@@ -16,24 +16,20 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class GroupPairHandler : CollidablePairHandler, IPairHandlerParent
     {
-        ContactManifoldConstraintGroup manifoldConstraintGroup;
+        private ContactManifoldConstraintGroup manifoldConstraintGroup;
 
-        Dictionary<CollidablePair, CollidablePairHandler> subPairs = new Dictionary<CollidablePair, CollidablePairHandler>();
-        HashSet<CollidablePair> containedPairs = new HashSet<CollidablePair>();
-        RawList<CollidablePair> pairsToRemove = new RawList<CollidablePair>();
+        private Dictionary<CollidablePair, CollidablePairHandler> subPairs =
+            new Dictionary<CollidablePair, CollidablePairHandler>();
+
+        private HashSet<CollidablePair> containedPairs = new HashSet<CollidablePair>();
+        private RawList<CollidablePair> pairsToRemove = new RawList<CollidablePair>();
 
 
         ///<summary>
         /// Gets a list of the pairs associated with children.
         ///</summary>
-        public ReadOnlyDictionary<CollidablePair, CollidablePairHandler> ChildPairs
-        {
-            get
-            {
-                return new ReadOnlyDictionary<CollidablePair, CollidablePairHandler>(subPairs);
-            }
-        }
-
+        public ReadOnlyDictionary<CollidablePair, CollidablePairHandler> ChildPairs =>
+            new ReadOnlyDictionary<CollidablePair, CollidablePairHandler>(subPairs);
 
 
         ///<summary>
@@ -43,8 +39,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             manifoldConstraintGroup = new ContactManifoldConstraintGroup();
         }
-
-
 
 
         ///<summary>
@@ -79,7 +73,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
             //Child initialization is responsible for setting up the entries.
             //Child initialization is responsible for setting up the manifold, if any.
             manifoldConstraintGroup.Initialize(EntityA, EntityB);
@@ -92,7 +85,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-
             //The pair handler cleanup will get rid of contacts.
             foreach (var pairHandler in subPairs.Values)
             {
@@ -101,6 +93,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 //There'd be a lot of leaks otherwise.
                 pairHandler.Factory.GiveBack(pairHandler);
             }
+
             subPairs.Clear();
             //don't need to remove constraints directly from our group, since cleaning up our children should get rid of them.
 
@@ -132,18 +125,22 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 //Clamp the rule to the parent's rule.  Always use the more restrictive option.
                 //Don't have to test for NoNarrowPhasePair rule on the parent's rule because then the parent wouldn't exist!
                 if (rule < CollisionRule)
+                {
                     rule = CollisionRule;
+                }
+
                 var pair = new CollidablePair(a, b);
                 if (!subPairs.ContainsKey(pair))
                 {
                     var newPair = NarrowPhaseHelper.GetPairHandler(ref pair, rule);
                     if (newPair != null)
                     {
-                        newPair.UpdateMaterialProperties(materialA, materialB);  //Override the materials, if necessary.
+                        newPair.UpdateMaterialProperties(materialA, materialB); //Override the materials, if necessary.
                         newPair.Parent = this;
                         subPairs.Add(pair, newPair);
                     }
                 }
+
                 containedPairs.Add(pair);
             }
         }
@@ -157,32 +154,35 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         protected virtual void UpdateContacts(float dt)
         {
-
             UpdateContainedPairs();
             //Eliminate old pairs.
-            foreach (CollidablePair pair in subPairs.Keys)
+            foreach (var pair in subPairs.Keys)
             {
                 if (!containedPairs.Contains(pair))
+                {
                     pairsToRemove.Add(pair);
+                }
             }
-            for (int i = 0; i < pairsToRemove.Count; i++)
+
+            for (var i = 0; i < pairsToRemove.Count; i++)
             {
-                CollidablePairHandler toReturn = subPairs[pairsToRemove.Elements[i]];
+                var toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);
                 toReturn.CleanUp();
                 toReturn.Factory.GiveBack(toReturn);
-
             }
+
             containedPairs.Clear();
             pairsToRemove.Clear();
 
-            foreach (CollidablePairHandler pair in subPairs.Values)
+            foreach (var pair in subPairs.Values)
             {
-                if (pair.BroadPhaseOverlap.collisionRule < CollisionRule.NoNarrowPhaseUpdate) //Don't test if the collision rules say don't.
+                if (pair.BroadPhaseOverlap.collisionRule < CollisionRule.NoNarrowPhaseUpdate
+                ) //Don't test if the collision rules say don't.
+                {
                     pair.UpdateCollision(dt);
+                }
             }
-
-
         }
 
 
@@ -192,7 +192,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateCollision(float dt)
         {
-
             if (!suppressEvents)
             {
                 CollidableA.EventTriggerer.OnPairUpdated(CollidableB, this);
@@ -227,8 +226,8 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
                 //No solver updateable removal in this method since it's handled by the "RemoveSolverUpdateable" method.
             }
-            previousContactCount = contactCount;
 
+            previousContactCount = contactCount;
         }
 
         ///<summary>
@@ -239,18 +238,25 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
             timeOfImpact = 1;
-            foreach (CollidablePairHandler pair in subPairs.Values)
-            {
+            foreach (var pair in subPairs.Values)
                 //The system uses the identity of the requester to determine if it needs to do handle the TOI calculation.
                 //Use the child pair's own entries as a proxy.
+            {
                 if (MotionSettings.CCDFilter(pair))
                 {
                     if (BroadPhaseOverlap.entryA == requester)
+                    {
                         pair.UpdateTimeOfImpact((Collidable) pair.BroadPhaseOverlap.entryA, dt);
+                    }
                     else
+                    {
                         pair.UpdateTimeOfImpact((Collidable) pair.BroadPhaseOverlap.entryB, dt);
+                    }
+
                     if (pair.timeOfImpact < timeOfImpact)
+                    {
                         timeOfImpact = pair.timeOfImpact;
+                    }
                 }
             }
         }
@@ -258,51 +264,55 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected internal override void GetContactInformation(int index, out ContactInformation info)
         {
-            foreach (CollidablePairHandler pair in subPairs.Values)
+            foreach (var pair in subPairs.Values)
             {
-                int count = pair.Contacts.Count;
+                var count = pair.Contacts.Count;
                 if (index - count < 0)
                 {
                     pair.GetContactInformation(index, out info);
                     return;
                 }
+
                 index -= count;
             }
-            throw new IndexOutOfRangeException("Contact index is not present in the pair.");
 
+            throw new IndexOutOfRangeException("Contact index is not present in the pair.");
         }
 
 
         void IPairHandlerParent.AddSolverUpdateable(SolverUpdateable addedItem)
         {
-
             manifoldConstraintGroup.Add(addedItem);
             //If this is the first child solver item to be added, we need to add ourselves to our parent too.
             if (manifoldConstraintGroup.SolverUpdateables.Count == 1)
             {
                 if (Parent != null)
+                {
                     Parent.AddSolverUpdateable(manifoldConstraintGroup);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableAdded(manifoldConstraintGroup);
+                }
             }
-
         }
 
         void IPairHandlerParent.RemoveSolverUpdateable(SolverUpdateable removedItem)
         {
-
             manifoldConstraintGroup.Remove(removedItem);
 
             //If this is the last child solver item, we need to remove ourselves from our parent too.
             if (manifoldConstraintGroup.SolverUpdateables.Count == 0)
             {
                 if (Parent != null)
+                {
                     Parent.RemoveSolverUpdateable(manifoldConstraintGroup);
+                }
                 else if (NarrowPhase != null)
+                {
                     NarrowPhase.NotifyUpdateableRemoved(manifoldConstraintGroup);
+                }
             }
-
-
         }
 
 
@@ -319,16 +329,12 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
 
+        private int contactCount;
 
-
-        int contactCount;
         /// <summary>
         /// Gets the number of contacts in the pair.
         /// </summary>
-        protected internal override int ContactCount
-        {
-            get { return contactCount; }
-        }
+        protected internal override int ContactCount => contactCount;
 
         /// <summary>
         /// Clears the pair's contacts.
@@ -339,6 +345,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             {
                 pair.ClearContacts();
             }
+
             base.ClearContacts();
         }
     }

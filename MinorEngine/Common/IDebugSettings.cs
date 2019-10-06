@@ -12,6 +12,5 @@ namespace Common
         string[] StageNames { get; set; }
         Encoding LogEncoding { get; set; }
         ILogStreamSettings[] Streams { get; set; }
-
     }
 }

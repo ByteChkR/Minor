@@ -11,14 +11,15 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
     ///</summary>
     public class BoundingBoxUpdater : MultithreadedProcessingStage
     {
-
         //TODO: should the Entries field be publicly accessible since there's not any custom add/remove logic?
-        RawList<MobileCollidable> entries = new RawList<MobileCollidable>();
-        TimeStepSettings timeStepSettings;
+        private RawList<MobileCollidable> entries = new RawList<MobileCollidable>();
+        private TimeStepSettings timeStepSettings;
+
         ///<summary>
         /// Gets or sets the time step settings used by the updater.
         ///</summary>
         public TimeStepSettings TimeStepSettings { get; set; }
+
         ///<summary>
         /// Constructs the bounding box updater.
         ///</summary>
@@ -29,6 +30,7 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             Enabled = true;
             this.timeStepSettings = timeStepSettings;
         }
+
         ///<summary>
         /// Constructs the bounding box updater.
         ///</summary>
@@ -39,10 +41,11 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
         {
             ParallelLooper = parallelLooper;
             AllowMultithreading = true;
-
         }
-        Action<int> multithreadedLoopBodyDelegate;
-        void LoopBody(int i)
+
+        private Action<int> multithreadedLoopBodyDelegate;
+
+        private void LoopBody(int i)
         {
             var entry = entries.Elements[i];
             if (entry.IsActive)
@@ -50,7 +53,6 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
                 entry.UpdateBoundingBox(timeStepSettings.TimeStepDuration);
                 entry.boundingBox.Validate();
             }
-
         }
 
         ///<summary>
@@ -62,6 +64,7 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
             //TODO: Contains check?
             entries.Add(entry);
         }
+
         ///<summary>
         /// Removes an entry from the updater.
         ///</summary>
@@ -70,6 +73,7 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
         {
             entries.Remove(entry);
         }
+
         protected override void UpdateMultithreaded()
         {
             ParallelLooper.ForLoop(0, entries.Count, multithreadedLoopBodyDelegate);
@@ -77,7 +81,7 @@ namespace MinorEngine.BEPUphysics.OtherSpaceStages
 
         protected override void UpdateSingleThreaded()
         {
-            for (int i = 0; i < entries.Count; ++i)
+            for (var i = 0; i < entries.Count; ++i)
             {
                 LoopBody(i);
             }

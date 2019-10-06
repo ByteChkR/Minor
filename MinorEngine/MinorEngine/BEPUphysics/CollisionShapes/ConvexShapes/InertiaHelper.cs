@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
 using MinorEngine.BEPUutilities;
-using MinorEngine.BEPUutilities.DataStructures;
-using MinorEngine.BEPUutilities.ResourceManagement;
 
 namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 {
@@ -25,7 +23,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         public static int NumberOfSamplesPerDimension = 10;
 
 
-
         ///<summary>
         /// Computes the volume contribution of a point.
         ///</summary>
@@ -33,12 +30,13 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="center">Location to use as the center for the purposes of computing the contribution.</param>
         ///<param name="point">Point to compute the contribution of.</param>
         ///<param name="contribution">Contribution of the point.</param>
-        public static void GetPointContribution(float pointWeight, ref Vector3 center, ref Vector3 point, out Matrix3x3 contribution)
+        public static void GetPointContribution(float pointWeight, ref Vector3 center, ref Vector3 point,
+            out Matrix3x3 contribution)
         {
             Vector3.Subtract(ref point, ref center, out point);
-            float xx = pointWeight * point.X * point.X;
-            float yy = pointWeight * point.Y * point.Y;
-            float zz = pointWeight * point.Z * point.Z;
+            var xx = pointWeight * point.X * point.X;
+            var yy = pointWeight * point.Y * point.Y;
+            var zz = pointWeight * point.Z * point.Z;
             contribution.M11 = yy + zz;
             contribution.M22 = xx + zz;
             contribution.M33 = xx + yy;
@@ -49,8 +47,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             contribution.M31 = contribution.M13;
             contribution.M32 = contribution.M23;
         }
-
-
 
 
         /// <summary>
@@ -78,12 +74,11 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="triangles">Index buffer of the sphere. Each group of three integers represents one triangle.</param>
         public static void GenerateSphere(int subdivisionCount, out Vector3[] vertices, out int[] triangles)
         {
-
             //int finalSize = 3 * (4 << (subdivisionCount << 1));
             //int secondToLastSize = finalSize >> 2;
 
-            int finalSize = 3 * (20 << (subdivisionCount * 2));
-            int secondToLastSize = finalSize >> 2;
+            var finalSize = 3 * (20 << (subdivisionCount * 2));
+            var secondToLastSize = finalSize >> 2;
 
 
             triangles = new int[finalSize];
@@ -142,10 +137,10 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 
             //Create the regular icosahedron vertices.
             //Vector3[] vertices = new Vector3[12];
-            var goldenRatio = (1 + (float)Math.Sqrt(5)) / 2;
-            float length = (float)Math.Sqrt(1 + goldenRatio * goldenRatio);
-            float x = 1 / length;
-            float y = goldenRatio / length;
+            var goldenRatio = (1 + (float) Math.Sqrt(5)) / 2;
+            var length = (float) Math.Sqrt(1 + goldenRatio * goldenRatio);
+            var x = 1 / length;
+            var y = goldenRatio / length;
             vertices[0] = new Vector3(0, x, y);
             vertices[1] = new Vector3(0, -x, y);
             vertices[2] = new Vector3(0, x, -y);
@@ -162,7 +157,7 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             vertices[11] = new Vector3(-y, 0, -x);
 
             //Just treat this array as a list.
-            int vertexCount = 12;
+            var vertexCount = 12;
 
             //The winding matters. They should be consistent so that the end result is consistent.
             //[This was generated using GetConvexHull on the above vertices, so it's known to be consistent with GetConvexHull!]
@@ -227,15 +222,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             currentTriangles[58] = 3;
             currentTriangles[59] = 7;
 
-            int currentTriangleIndexCount = 60;
-            int nextTriangleIndexCount = 0;
+            var currentTriangleIndexCount = 60;
+            var nextTriangleIndexCount = 0;
 
 
             var edges = new Dictionary<TriangleMeshConvexContactManifold.Edge, int>();
 
-            for (int i = 0; i < subdivisionCount; ++i)
+            for (var i = 0; i < subdivisionCount; ++i)
             {
-                for (int triangleIndex = 0; triangleIndex < currentTriangleIndexCount; triangleIndex += 3)
+                for (var triangleIndex = 0; triangleIndex < currentTriangleIndexCount; triangleIndex += 3)
                 {
                     //For each edge of this triangle, insert a new vertex if the edge hasn't already been taken care of.
                     var aIndex = currentTriangles[triangleIndex];
@@ -307,7 +302,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                     nextTriangles.Add(acMidIndex, ref nextTriangleIndexCount);
                     nextTriangles.Add(bcMidIndex, ref nextTriangleIndexCount);
                     nextTriangles.Add(cIndex, ref nextTriangleIndexCount);
-
                 }
 
                 //Clear out the edges collection. It will get reused when we iterate through the next deeper set of triangles.
@@ -319,15 +313,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 var swap = currentTriangles;
                 currentTriangles = nextTriangles;
                 nextTriangles = swap;
-
             }
 
             //RawList<int> indices = new RawList<int>(SampleTriangleIndices.Length);
             //RawList<Vector3> surfacePoints = new RawList<Vector3>();
             //ConvexHullHelper.GetConvexHull(vertices, indices, surfacePoints);
             //indices.CopyTo(SampleTriangleIndices, 0);
-
-
         }
 
         private static int GetExpectedVertexCount(int subdivisionCount)
@@ -343,7 +334,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="triangleIndices">Groups of 3 indices into the vertices array which represent the triangles of the mesh.</param>
         /// <param name="volume">Volume of the shape.</param>
         /// <param name="volumeDistribution">Distribution of the volume as measured from the computed center.</param>
-        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices, out float volume, out Matrix3x3 volumeDistribution)
+        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices,
+            out float volume, out Matrix3x3 volumeDistribution)
         {
             //TODO: Whole bunch of repeat code here. If you ever need to change this, refactor the two methods to share.
             //Explanation for the tetrahedral integration bits: Explicit Exact Formulas for the 3-D Tetrahedron Inertia Tensor in Terms of its Vertex Coordinates
@@ -356,33 +348,46 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             float a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
 
             float scaledVolume = 0;
-            for (int i = 0; i < triangleIndices.Count; i += 3)
+            for (var i = 0; i < triangleIndices.Count; i += 3)
             {
-                Vector3 v2 = vertices[triangleIndices[i]];
-                Vector3 v3 = vertices[triangleIndices[i + 1]];
-                Vector3 v4 = vertices[triangleIndices[i + 2]];
+                var v2 = vertices[triangleIndices[i]];
+                var v3 = vertices[triangleIndices[i + 1]];
+                var v4 = vertices[triangleIndices[i + 2]];
 
                 //Determinant is 6 * volume.  It's signed, though; the mesh isn't necessarily convex and the origin isn't necessarily in the mesh even if it is convex.
-                float scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
-                                                v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
-                                                v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
+                var scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
+                                              v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
+                                              v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
 
                 scaledVolume += scaledTetrahedronVolume;
 
-                a += scaledTetrahedronVolume * (v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y + v4.Y * v4.Y +
-                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z + v4.Z * v4.Z);
-                b += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X + v4.X * v4.X +
-                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z + v4.Z * v4.Z);
-                c += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X + v4.X * v4.X +
-                                                v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y + v4.Y * v4.Y);
-                ao += scaledTetrahedronVolume * (2 * v2.Y * v2.Z + v3.Y * v2.Z + v4.Y * v2.Z + v2.Y * v3.Z + 2 * v3.Y * v3.Z + v4.Y * v3.Z + v2.Y * v4.Z + v3.Y * v4.Z + 2 * v4.Y * v4.Z);
-                bo += scaledTetrahedronVolume * (2 * v2.X * v2.Z + v3.X * v2.Z + v4.X * v2.Z + v2.X * v3.Z + 2 * v3.X * v3.Z + v4.X * v3.Z + v2.X * v4.Z + v3.X * v4.Z + 2 * v4.X * v4.Z);
-                co += scaledTetrahedronVolume * (2 * v2.X * v2.Y + v3.X * v2.Y + v4.X * v2.Y + v2.X * v3.Y + 2 * v3.X * v3.Y + v4.X * v3.Y + v2.X * v4.Y + v3.X * v4.Y + 2 * v4.X * v4.Y);
+                a += scaledTetrahedronVolume * (v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y +
+                                                v4.Y * v4.Y +
+                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z +
+                                                v4.Z * v4.Z);
+                b += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X +
+                                                v4.X * v4.X +
+                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z +
+                                                v4.Z * v4.Z);
+                c += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X +
+                                                v4.X * v4.X +
+                                                v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y +
+                                                v4.Y * v4.Y);
+                ao += scaledTetrahedronVolume * (2 * v2.Y * v2.Z + v3.Y * v2.Z + v4.Y * v2.Z + v2.Y * v3.Z +
+                                                 2 * v3.Y * v3.Z + v4.Y * v3.Z + v2.Y * v4.Z + v3.Y * v4.Z +
+                                                 2 * v4.Y * v4.Z);
+                bo += scaledTetrahedronVolume * (2 * v2.X * v2.Z + v3.X * v2.Z + v4.X * v2.Z + v2.X * v3.Z +
+                                                 2 * v3.X * v3.Z + v4.X * v3.Z + v2.X * v4.Z + v3.X * v4.Z +
+                                                 2 * v4.X * v4.Z);
+                co += scaledTetrahedronVolume * (2 * v2.X * v2.Y + v3.X * v2.Y + v4.X * v2.Y + v2.X * v3.Y +
+                                                 2 * v3.X * v3.Y + v4.X * v3.Y + v2.X * v4.Y + v3.X * v4.Y +
+                                                 2 * v4.X * v4.Y);
             }
+
             volume = scaledVolume / 6;
-            float scaledDensity = 1 / volume;
-            float diagonalFactor = scaledDensity / 60;
-            float offFactor = -scaledDensity / 120;
+            var scaledDensity = 1 / volume;
+            var diagonalFactor = scaledDensity / 60;
+            var offFactor = -scaledDensity / 120;
             a *= diagonalFactor;
             b *= diagonalFactor;
             c *= diagonalFactor;
@@ -390,10 +395,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             bo *= offFactor;
             co *= offFactor;
             volumeDistribution = new Matrix3x3(a, bo, co,
-                                               bo, b, ao,
-                                               co, ao, c);
-
-
+                bo, b, ao,
+                co, ao, c);
         }
 
         /// <summary>
@@ -404,7 +407,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="center">Computed center of the shape's volume.</param>
         /// <param name="volume">Volume of the shape.</param>
         /// <param name="volumeDistribution">Distribution of the volume as measured from the computed center.</param>
-        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices, out Vector3 center, out float volume, out Matrix3x3 volumeDistribution)
+        public static void ComputeShapeDistribution(IList<Vector3> vertices, IList<int> triangleIndices,
+            out Vector3 center, out float volume, out Matrix3x3 volumeDistribution)
         {
             //Explanation for the tetrahedral integration bits: Explicit Exact Formulas for the 3-D Tetrahedron Inertia Tensor in Terms of its Vertex Coordinates
             //http://www.scipub.org/fulltext/jms2/jms2118-11.pdf
@@ -415,18 +419,18 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             // [ -c' -a'  c  ]
             float a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
 
-            Vector3 summedCenter = new Vector3();
+            var summedCenter = new Vector3();
             float scaledVolume = 0;
-            for (int i = 0; i < triangleIndices.Count; i += 3)
+            for (var i = 0; i < triangleIndices.Count; i += 3)
             {
-                Vector3 v2 = vertices[triangleIndices[i]];
-                Vector3 v3 = vertices[triangleIndices[i + 1]];
-                Vector3 v4 = vertices[triangleIndices[i + 2]];
+                var v2 = vertices[triangleIndices[i]];
+                var v3 = vertices[triangleIndices[i + 1]];
+                var v4 = vertices[triangleIndices[i + 2]];
 
                 //Determinant is 6 * volume.  It's signed, though; the mesh isn't necessarily convex and the origin isn't necessarily in the mesh even if it is convex.
-                float scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
-                                                v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
-                                                v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
+                var scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
+                                              v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
+                                              v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
 
                 scaledVolume += scaledTetrahedronVolume;
 
@@ -436,16 +440,29 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 Vector3.Multiply(ref tetrahedronCentroid, scaledTetrahedronVolume, out tetrahedronCentroid);
                 Vector3.Add(ref tetrahedronCentroid, ref summedCenter, out summedCenter);
 
-                a += scaledTetrahedronVolume * (v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y + v4.Y * v4.Y +
-                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z + v4.Z * v4.Z);
-                b += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X + v4.X * v4.X +
-                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z + v4.Z * v4.Z);
-                c += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X + v4.X * v4.X +
-                                                v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y + v4.Y * v4.Y);
-                ao += scaledTetrahedronVolume * (2 * v2.Y * v2.Z + v3.Y * v2.Z + v4.Y * v2.Z + v2.Y * v3.Z + 2 * v3.Y * v3.Z + v4.Y * v3.Z + v2.Y * v4.Z + v3.Y * v4.Z + 2 * v4.Y * v4.Z);
-                bo += scaledTetrahedronVolume * (2 * v2.X * v2.Z + v3.X * v2.Z + v4.X * v2.Z + v2.X * v3.Z + 2 * v3.X * v3.Z + v4.X * v3.Z + v2.X * v4.Z + v3.X * v4.Z + 2 * v4.X * v4.Z);
-                co += scaledTetrahedronVolume * (2 * v2.X * v2.Y + v3.X * v2.Y + v4.X * v2.Y + v2.X * v3.Y + 2 * v3.X * v3.Y + v4.X * v3.Y + v2.X * v4.Y + v3.X * v4.Y + 2 * v4.X * v4.Y);
+                a += scaledTetrahedronVolume * (v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y +
+                                                v4.Y * v4.Y +
+                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z +
+                                                v4.Z * v4.Z);
+                b += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X +
+                                                v4.X * v4.X +
+                                                v2.Z * v2.Z + v2.Z * v3.Z + v3.Z * v3.Z + v2.Z * v4.Z + v3.Z * v4.Z +
+                                                v4.Z * v4.Z);
+                c += scaledTetrahedronVolume * (v2.X * v2.X + v2.X * v3.X + v3.X * v3.X + v2.X * v4.X + v3.X * v4.X +
+                                                v4.X * v4.X +
+                                                v2.Y * v2.Y + v2.Y * v3.Y + v3.Y * v3.Y + v2.Y * v4.Y + v3.Y * v4.Y +
+                                                v4.Y * v4.Y);
+                ao += scaledTetrahedronVolume * (2 * v2.Y * v2.Z + v3.Y * v2.Z + v4.Y * v2.Z + v2.Y * v3.Z +
+                                                 2 * v3.Y * v3.Z + v4.Y * v3.Z + v2.Y * v4.Z + v3.Y * v4.Z +
+                                                 2 * v4.Y * v4.Z);
+                bo += scaledTetrahedronVolume * (2 * v2.X * v2.Z + v3.X * v2.Z + v4.X * v2.Z + v2.X * v3.Z +
+                                                 2 * v3.X * v3.Z + v4.X * v3.Z + v2.X * v4.Z + v3.X * v4.Z +
+                                                 2 * v4.X * v4.Z);
+                co += scaledTetrahedronVolume * (2 * v2.X * v2.Y + v3.X * v2.Y + v4.X * v2.Y + v2.X * v3.Y +
+                                                 2 * v3.X * v3.Y + v4.X * v3.Y + v2.X * v4.Y + v3.X * v4.Y +
+                                                 2 * v4.X * v4.Y);
             }
+
             if (scaledVolume < Toolbox.Epsilon)
             {
                 //This function works on the assumption that there is volume.
@@ -461,9 +478,9 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
             {
                 Vector3.Multiply(ref summedCenter, 0.25f / scaledVolume, out center);
                 volume = scaledVolume / 6;
-                float scaledDensity = 1 / volume;
-                float diagonalFactor = scaledDensity / 60;
-                float offFactor = -scaledDensity / 120;
+                var scaledDensity = 1 / volume;
+                var diagonalFactor = scaledDensity / 60;
+                var offFactor = -scaledDensity / 120;
                 a *= diagonalFactor;
                 b *= diagonalFactor;
                 c *= diagonalFactor;
@@ -474,8 +491,8 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 //                                   bo, b, ao,
                 //                                   co, ao, c);
                 volumeDistribution = new Matrix3x3(a, co, bo,
-                                                   co, b, ao,
-                                                   bo, ao, c);
+                    co, b, ao,
+                    bo, ao, c);
 
                 //The volume distribution, as computed, is currently offset from the origin.
                 //There's a operation that moves a local inertia tensor to a displaced position.
@@ -499,7 +516,6 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 //(uniform density assumed)
                 //With a little more massaging, the constant c terms can be fully separated into an additive term on each matrix element.
             }
-
         }
 
         //public static void GetInertiaOffset(Vector3 offset, float mass, out Matrix3x3 additionalInertia)
@@ -516,17 +532,18 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         //    additionalInertia.M32 = -mass * offset.Z * offset.Y;
         //    additionalInertia.M33 = mass * (offset.X * offset.X + offset.Y * offset.Y);
 
-     
+
         //}
 
-        
+
         /// <summary>
         /// Computes a minimum radius estimate of a shape based on a convex mesh representation.
         /// </summary>
         /// <param name="vertices">Vertices of the convex mesh.</param>
         /// <param name="triangleIndices">Groups of 3 indices into the vertices array which represent the triangles of the convex mesh.</param>
         /// <param name="center">Center of the convex shape.</param>
-        public static float ComputeMinimumRadius(IList<Vector3> vertices, IList<int> triangleIndices, ref Vector3 center)
+        public static float ComputeMinimumRadius(IList<Vector3> vertices, IList<int> triangleIndices,
+            ref Vector3 center)
         {
             //Walk through all of the triangles. Treat them as a bunch of planes which bound the shape.
             //The closest distance on any of those planes to the center is the radius of the largest sphere,
@@ -534,12 +551,12 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
 
             //While this shares a lot of math with the volume distribution computation (volume of a parallelepiped),
             //it requires that a center be available. So, it's a separate calculation.
-            float minimumDistance = float.MaxValue;
-            for (int i = 0; i < triangleIndices.Count; i += 3)
+            var minimumDistance = float.MaxValue;
+            for (var i = 0; i < triangleIndices.Count; i += 3)
             {
-                Vector3 v2 = vertices[triangleIndices[i]];
-                Vector3 v3 = vertices[triangleIndices[i + 1]];
-                Vector3 v4 = vertices[triangleIndices[i + 2]];
+                var v2 = vertices[triangleIndices[i]];
+                var v3 = vertices[triangleIndices[i + 1]];
+                var v4 = vertices[triangleIndices[i + 2]];
 
 
                 //This normal calculation creates a dependency on winding.
@@ -551,11 +568,15 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 Vector3.Cross(ref v2v4, ref v2v3, out normal);
 
                 //Watch out: this could very easily be a degenerate triangle; the sampling approach tends to create them.
-                float lengthSquared = normal.LengthSquared();
+                var lengthSquared = normal.LengthSquared();
                 if (lengthSquared > 1e-10f)
-                    Vector3.Divide(ref normal, (float)Math.Sqrt(lengthSquared), out normal);
+                {
+                    Vector3.Divide(ref normal, (float) Math.Sqrt(lengthSquared), out normal);
+                }
                 else
+                {
                     continue;
+                }
 
                 Vector3 fromCenterToPlane;
                 Vector3.Subtract(ref v2, ref center, out fromCenterToPlane);
@@ -563,17 +584,22 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
                 float distance;
                 Vector3.Dot(ref normal, ref fromCenterToPlane, out distance);
                 if (distance < 0)
-                    throw new ArgumentException("Invalid distance. Ensure the mesh is convex, has consistent winding, and contains the passed-in center.");
+                {
+                    throw new ArgumentException(
+                        "Invalid distance. Ensure the mesh is convex, has consistent winding, and contains the passed-in center.");
+                }
 
                 if (distance < minimumDistance)
+                {
                     minimumDistance = distance;
+                }
             }
+
             return minimumDistance;
 
             //Technically, we could also compute a maximum radius estimate... 
             //but that amounts to finding the furthest distance contained by the set of planes defined by the sampled extreme points and their associated sample directions.
             //That's a trickier thing to compute quickly, and it's not all that important to make the estimate ultra tight.
-
         }
 
         //TODO: These will be replaced when a better resource pooling system is implemented.
@@ -603,8 +629,5 @@ namespace MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes
         {
             array[count++] = item;
         }
-
-
-
     }
 }

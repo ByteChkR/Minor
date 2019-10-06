@@ -9,10 +9,12 @@
         /// Kinetic friction between the pair of objects.
         ///</summary>
         public float KineticFriction;
+
         ///<summary>
         /// Static friction between the pair of objects.
         ///</summary>
         public float StaticFriction;
+
         ///<summary>
         /// Bounciness between the pair of objects.
         ///</summary>

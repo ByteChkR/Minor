@@ -1,15 +1,11 @@
 ﻿using System;
 using MinorEngine.BEPUphysics.BroadPhaseEntries;
-using MinorEngine.BEPUphysics.BroadPhaseSystems;
 using MinorEngine.BEPUphysics.BroadPhaseEntries.MobileCollidables;
-using MinorEngine.BEPUphysics.CollisionTests;
+using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using MinorEngine.BEPUphysics.CollisionTests.Manifolds;
-using MinorEngine.BEPUphysics.Constraints.Collision;
 using MinorEngine.BEPUphysics.PositionUpdating;
 using MinorEngine.BEPUphysics.Settings;
- 
-using MinorEngine.BEPUphysics.CollisionShapes.ConvexShapes;
 using MinorEngine.BEPUutilities;
 
 namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -19,36 +15,23 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class TriangleConvexPairHandler : ConvexConstraintPairHandler
     {
-        ConvexCollidable<TriangleShape> triangle;
-        ConvexCollidable convex;
+        private ConvexCollidable<TriangleShape> triangle;
+        private ConvexCollidable convex;
 
-        TriangleConvexContactManifold contactManifold = new TriangleConvexContactManifold();
+        private TriangleConvexContactManifold contactManifold = new TriangleConvexContactManifold();
 
-        public override Collidable CollidableA
-        {
-            get { return convex; }
-        }
-        public override Collidable CollidableB
-        {
-            get { return triangle; }
-        }
+        public override Collidable CollidableA => convex;
 
-        public override Entities.Entity EntityA
-        {
-            get { return convex.entity; }
-        }
-        public override Entities.Entity EntityB
-        {
-            get { return triangle.entity; }
-        }
+        public override Collidable CollidableB => triangle;
+
+        public override Entities.Entity EntityA => convex.entity;
+
+        public override Entities.Entity EntityB => triangle.entity;
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
-        public override ContactManifold ContactManifold
-        {
-            get { return contactManifold; }
-        }
-
+        public override ContactManifold ContactManifold => contactManifold;
 
 
         ///<summary>
@@ -58,7 +41,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="entryB">Second entry in the pair.</param>
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-
             triangle = entryA as ConvexCollidable<TriangleShape>;
             convex = entryB as ConvexCollidable;
 
@@ -68,7 +50,9 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 convex = entryA as ConvexCollidable;
 
                 if (triangle == null || convex == null)
+                {
                     throw new ArgumentException("Inappropriate types used to initialize pair.");
+                }
             }
 
             //Contact normal goes from A to B.
@@ -76,7 +60,6 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
             broadPhaseOverlap.entryB = triangle;
 
             base.Initialize(entryA, entryB);
-
         }
 
         ///<summary>
@@ -88,10 +71,7 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
 
             triangle = null;
             convex = null;
-
         }
-
-
 
 
         ///<summary>
@@ -102,44 +82,42 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
             var overlap = BroadPhaseOverlap;
-            var triangleMode = triangle.entity == null ? PositionUpdateMode.Discrete : triangle.entity.PositionUpdateMode;
+            var triangleMode = triangle.entity == null
+                ? PositionUpdateMode.Discrete
+                : triangle.entity.PositionUpdateMode;
             var convexMode = convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
             if (
-                    (overlap.entryA.IsActive || overlap.entryB.IsActive) && //At least one has to be active.
-                    (
-                        (
-                            convexMode == PositionUpdateMode.Continuous &&   //If both are continuous, only do the process for A.
-                            triangleMode == PositionUpdateMode.Continuous &&
-                            overlap.entryA == requester
-                        ) ||
-                        (
-                            convexMode == PositionUpdateMode.Continuous ^   //If only one is continuous, then we must do it.
-                            triangleMode == PositionUpdateMode.Continuous
-                        )
-                    )
+                (overlap.entryA.IsActive || overlap.entryB.IsActive) && //At least one has to be active.
+                (
+                    convexMode == PositionUpdateMode.Continuous && //If both are continuous, only do the process for A.
+                    triangleMode == PositionUpdateMode.Continuous &&
+                    overlap.entryA == requester ||
+                    (convexMode == PositionUpdateMode.Continuous) ^ //If only one is continuous, then we must do it.
+                    (triangleMode == PositionUpdateMode.Continuous)
                 )
+            )
             {
-
-
                 //Only perform the test if the minimum radii are small enough relative to the size of the velocity.
                 Vector3 velocity;
                 if (convexMode == PositionUpdateMode.Discrete)
-                {
                     //Triangle is static for the purposes of this continuous test.
+                {
                     velocity = triangle.entity.linearVelocity;
                 }
                 else if (triangleMode == PositionUpdateMode.Discrete)
-                {
                     //Convex is static for the purposes of this continuous test.
+                {
                     Vector3.Negate(ref convex.entity.linearVelocity, out velocity);
                 }
                 else
-                {
                     //Both objects are moving.
-                    Vector3.Subtract(ref triangle.entity.linearVelocity, ref convex.entity.linearVelocity, out velocity);
+                {
+                    Vector3.Subtract(ref triangle.entity.linearVelocity, ref convex.entity.linearVelocity,
+                        out velocity);
                 }
+
                 Vector3.Multiply(ref velocity, dt, out velocity);
-                float velocitySquared = velocity.LengthSquared();
+                var velocitySquared = velocity.LengthSquared();
 
                 var minimumRadiusA = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
@@ -147,10 +125,11 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 {
                     //Spherecast A against B.
                     RayHit rayHit;
-                    if (GJKToolbox.CCDSphereCast(new Ray(convex.worldTransform.Position, -velocity), minimumRadiusA, triangle.Shape, ref triangle.worldTransform, timeOfImpact, out rayHit))
+                    if (GJKToolbox.CCDSphereCast(new Ray(convex.worldTransform.Position, -velocity), minimumRadiusA,
+                        triangle.Shape, ref triangle.worldTransform, timeOfImpact, out rayHit))
                     {
                         if (triangle.Shape.sidedness != TriangleSidedness.DoubleSided)
-                        {                
+                        {
                             //Only perform sweep if the object is in danger of hitting the object.
                             //Triangles can be one sided, so check the impact normal against the triangle normal.
                             Vector3 AB, AC;
@@ -206,12 +185,10 @@ namespace MinorEngine.BEPUphysics.NarrowPhaseSystems.Pairs
                 //to deal with interpenetrating velocity.  Sometimes that contact isn't sufficient,
                 //but it's good enough.
                 if (timeOfImpact == 0)
+                {
                     timeOfImpact = 1;
+                }
             }
-
         }
-
-
     }
-
 }

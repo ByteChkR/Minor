@@ -1,15 +1,13 @@
-﻿using System;
-using Common;
+﻿using Common;
 using MinorEngine.exceptions;
 
 namespace MinorEngine.debug
 {
     public static class Logger
     {
-
         internal static void SetDebugStage(DebugStage stage)
         {
-            DebugHelper.SetStage((int)stage);
+            DebugHelper.SetStage((int) stage);
         }
 
         /// <summary>
@@ -20,7 +18,7 @@ namespace MinorEngine.debug
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
         public static void Log(string message, DebugChannel channel, int importance = 0)
         {
-            DebugHelper.Log(message, (int)channel, importance);
+            DebugHelper.Log(message, (int) channel, importance);
         }
 
 
