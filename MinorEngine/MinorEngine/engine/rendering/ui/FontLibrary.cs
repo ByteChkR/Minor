@@ -4,12 +4,11 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using MinorEngine.engine.core;
-using MinorEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
-namespace MinorEngine.engine.ui
+namespace MinorEngine.engine.rendering.ui
 {
     public class FontLibrary
     {
@@ -34,7 +33,7 @@ namespace MinorEngine.engine.ui
 
             if (_fonts.ContainsKey(ff.FullName)) return;
 
-            Dictionary<char, Character> fontAtlas = new Dictionary<char, Character>();
+            Dictionary<char, TextCharacter> fontAtlas = new Dictionary<char, TextCharacter>();
 
             for (int i = 0; i < ushort.MaxValue; i++)
             {
@@ -98,7 +97,7 @@ namespace MinorEngine.engine.ui
                     glTex = null;
                 }
 
-                Character c = new Character
+                TextCharacter c = new TextCharacter
                 {
                     GlTexture = glTex,
                     Width = s.Width,

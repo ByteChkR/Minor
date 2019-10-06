@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using MinorEngine.engine.rendering;
 using OpenTK.Graphics.OpenGL;
 
-namespace MinorEngine.engine.ui
+namespace MinorEngine.engine.rendering.ui
 {
     public class UIHelper
     {

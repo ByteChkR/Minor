@@ -28,8 +28,8 @@ namespace MinorEngine.engine.rendering
 
         private static bool _init;
         private static int _screenVAO;
-        private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, Color.Black);
-        private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, Color.Black);
+        private static RenderTarget _screenTarget0 = new RenderTarget(new UICamera(), int.MaxValue, new Color(0, 0, 0, 0));
+        private static RenderTarget _screenTarget1 = new RenderTarget(new UICamera(), int.MaxValue, new Color(0, 0, 0, 0));
         private static ShaderProgram _screenShader;
         private static Dictionary<MergeType, ShaderProgram> _mergeTypes = new Dictionary<MergeType, ShaderProgram>();
 
@@ -41,7 +41,7 @@ namespace MinorEngine.engine.rendering
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -143,7 +143,7 @@ namespace MinorEngine.engine.rendering
 
             //GL.Disable(EnableCap.ScissorTest);
 
-            GL.ClearColor(Color.Black);
+            GL.ClearColor(new Color(168, 143, 50, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 

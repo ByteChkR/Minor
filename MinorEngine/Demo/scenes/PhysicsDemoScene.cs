@@ -2,10 +2,10 @@
 using Demo.components;
 using MinorEngine.BEPUphysics.Entities.Prefabs;
 using MinorEngine.components;
+using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.physics;
 using MinorEngine.engine.rendering;
-using MinorEngine.engine.ui.utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

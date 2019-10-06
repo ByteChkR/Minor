@@ -70,7 +70,7 @@ namespace MinorEngine.Tests
         [Fact]
         public void FLInterpreterTest()
         {
-            DebugHelper.ListeningMask = -1;
+            DebugHelper.SeverityFilter = 10;
             string oldPath = Directory.GetCurrentDirectory();
             string path = Path.GetFullPath("../../../resources");
             string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
@@ -93,7 +93,7 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_KernelSignatureAnalysis()
         {
-            DebugHelper.ListeningMask = -1;
+            DebugHelper.SeverityFilter = 10;
             string path = Path.GetFullPath("../../../resources");
             KernelDatabase kdb = new KernelDatabase(path, DataTypes.UCHAR1);
 

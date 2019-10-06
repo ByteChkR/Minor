@@ -5,7 +5,7 @@ using OpenTK.Graphics.OpenGL;
 
 namespace MinorEngine.engine.rendering
 {
-    public class RenderTarget : IComparable<RenderTarget>, IDestroyable
+    public class RenderTarget : IComparable<RenderTarget>, IDisposable
     {
         public ScreenRenderer.MergeType MergeType { get; set; } = ScreenRenderer.MergeType.Additive;
         public int PassMask { get; set; }
@@ -64,7 +64,7 @@ namespace MinorEngine.engine.rendering
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
 
-        public void Destroy()
+        public void Dispose()
         {
             GL.DeleteFramebuffer(FrameBuffer);
             GL.DeleteTexture(RenderedTexture);

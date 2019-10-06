@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using MinorEngine.engine.components;
+using MinorEngine.engine.components.ui;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 
-namespace MinorEngine.engine.ui.utils
+namespace MinorEngine.engine.components
 {
     public class DebugConsoleComponent : AbstractComponent
     {
@@ -19,6 +19,9 @@ namespace MinorEngine.engine.ui.utils
         private UITextRendererComponent _title;
         private UITextRendererComponent _consoleInput;
         private UITextRendererComponent _consoleOutput;
+        private UIImageRendererComponent _consoleOutputImage;
+        private UITextRendererComponent _hintText;
+        private UIImageRendererComponent _bgImage;
         private StringBuilder _sb;
         private StringBuilder _outSB;
 
@@ -38,48 +41,104 @@ namespace MinorEngine.engine.ui.utils
         private bool _showConsole;
         private bool _invalidate;
 
+        private static RenderTarget rt, rt2;
+
+        protected override void OnDestroy()
+        {
+            GameEngine.Instance.RemoveRenderTarget(rt);
+            rt.Dispose();
+            GameEngine.Instance.RemoveRenderTarget(rt2);
+            rt2.Dispose();
+        }
 
         public static GameObject CreateConsole()
         {
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"}
+                {ShaderType.VertexShader, "shader/UITextRender.vs"}
             }, out ShaderProgram textShader);
+
+            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "shader/UIRender.fs"},
+                {ShaderType.VertexShader, "shader/UIRender.vs"}
+            }, out ShaderProgram uiShader);
 
             GameObject obj = new GameObject("Console");
             GameObject _in = new GameObject("ConsoleInput");
             GameObject _out = new GameObject("ConsoleOutput");
             GameObject _titleObj = new GameObject("Title");
+            GameObject _bgObj = new GameObject("BackgroundImage");
+            GameObject _bgOutObj = new GameObject("BackgroundOutputImage");
+            GameObject _hint = new GameObject("HintText");
 
             obj.Add(_in);
             obj.Add(_out);
             obj.Add(_titleObj);
+            obj.Add(_bgObj);
+            obj.Add(_hint);
+            obj.Add(_bgOutObj);
 
-            UITextRendererComponent _tText = new UITextRendererComponent("Arial", textShader)
+            rt = new RenderTarget(null, 1 << 29, new Color(0, 0, 0, 0));
+            GameEngine.Instance.AddRenderTarget(rt);
+
+            rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
+            GameEngine.Instance.AddRenderTarget(rt2);
+
+            UIImageRendererComponent _bgImage = new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false, 0.65f, uiShader);
+            _bgImage.RenderMask = 1 << 29;
+
+            UIImageRendererComponent _bgOutImage = new UIImageRendererComponent(ResourceManager.TextureIO.FileToTexture("textures/black.png"), false, 0.4f, uiShader);
+            _bgOutImage.RenderMask = 1 << 28;
+
+            
+
+            UITextRendererComponent _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
-                Position = new Vector2(-0.46f, 0.46f),
-                Scale = new Vector2(2f, 2f),
+                Text = "GameEngine Console:"
+            };
+            UITextRendererComponent _tHint = new UITextRendererComponent("Arial", false, 1f, textShader)
+            {
                 Text = "GameEngine Console:"
             };
 
-            UITextRendererComponent _tIn = new UITextRendererComponent("Arial", textShader)
+            UITextRendererComponent _tIn = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
-                Position = new Vector2(-0.46f, -0.46f),
-                Scale = new Vector2(1.5f, 1.5f),
                 Text = ""
             };
 
-            UITextRendererComponent _tOut = new UITextRendererComponent("Arial", textShader)
+            UITextRendererComponent _tOut = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
-                Position = new Vector2(-0.4f, 0.4f),
-                Scale = new Vector2(1.5f, 1.5f),
                 Text = "Console Initialized.."
             };
-            obj.AddComponent(new DebugConsoleComponent());
+
+
+            _bgObj.AddComponent(_bgImage);
             _in.AddComponent(_tIn);
             _out.AddComponent(_tOut);
             _titleObj.AddComponent(_tText);
+            _hint.AddComponent(_tHint);
+            _bgOutObj.AddComponent(_bgOutImage);
+
+            _tText.Position = new Vector2(-0.39f, 0.353f);
+            _tText.Scale = new Vector2(2f, 2f);
+
+            _tOut.Position = new Vector2(-0.33f, 0.31f);
+            _tOut.Scale = new Vector2(0.8f, 0.8f);
+
+            _tIn.Position = new Vector2(-0.39f, -0.39f);
+            _tIn.Scale = new Vector2(1.5f, 1.5f);
+
+
+            _tHint.Position = new Vector2(-0.46f, -0.46f);
+            _tHint.Scale = new Vector2(1.5f, 1.5f);
+
+
+            _bgImage.Scale = new Vector2(0.8f);
+            _bgOutImage.Scale = new Vector2(0.7f);
+
+            obj.AddComponent(new DebugConsoleComponent());
             return obj;
         }
 
@@ -108,6 +167,10 @@ namespace MinorEngine.engine.ui.utils
             _title = Owner.GetChildWithName("Title").GetComponent<UITextRendererComponent>();
             _consoleInput = Owner.GetChildWithName("ConsoleInput").GetComponent<UITextRendererComponent>();
             _consoleOutput = Owner.GetChildWithName("ConsoleOutput").GetComponent<UITextRendererComponent>();
+            _bgImage = Owner.GetChildWithName("BackgroundImage").GetComponent<UIImageRendererComponent>();
+            _hintText = Owner.GetChildWithName("HintText").GetComponent<UITextRendererComponent>();
+            _consoleOutputImage =
+                Owner.GetChildWithName("BackgroundOutputImage").GetComponent<UIImageRendererComponent>();
             _sb = new StringBuilder();
             _outSB = new StringBuilder();
             AddCommand("help", cmd_ListCmds);
@@ -115,7 +178,7 @@ namespace MinorEngine.engine.ui.utils
             AddCommand("q", cmd_Exit);
             AddCommand("exit", cmd_Exit);
             AddCommand("quit", cmd_Exit);
-            AddCommand("clr", cmd_Clear);
+            AddCommand("cls", cmd_Clear);
             AddCommand("clear", cmd_Clear);
             ResourceManager.AddConsoleCommands(this);
         }
@@ -137,9 +200,15 @@ namespace MinorEngine.engine.ui.utils
         {
             _sb.Clear();
             _sb.Append("Commands:");
+            int col = 10;
+            int count = 0;
             foreach (var consoleCommand in _commands)
             {
-                _sb.Append("\n ");
+                count++;
+                if (count % col == 0)
+                    _sb.Append("\n ");
+                else
+                    _sb.Append("   ");
                 _sb.Append(consoleCommand.Key);
             }
 
@@ -318,7 +387,12 @@ namespace MinorEngine.engine.ui.utils
                 _consoleInput.Text = ">>> " + input;
             }
 
-            _title.Text = _showConsole ? ConsoleTitle : HelpText;
+            _bgImage.Alpha = _showConsole ? 0.65f : 0;
+            _consoleOutputImage.Alpha = _showConsole ? 0.75f : 0;
+
+            _hintText.Text = _showConsole ? "" : HelpText;
+
+            _title.Text = _showConsole ? ConsoleTitle : "";
 
             _consoleOutput.Text = _showConsole ? ToConsoleText() : "";
         }

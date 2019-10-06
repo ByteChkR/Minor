@@ -22,7 +22,6 @@ namespace Demo
                 VSync = VSyncMode.Off,
 
 #if LOG_NETWORK
-                DebugNetwork = true,
                 NetworkMask = -1,
                 ProgramID = 1,
                 ProgramVersion = null, //We Want the debug system to take the engine assembly

@@ -6,7 +6,6 @@ using MinorEngine.FilterLanguage;
 using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
-using MinorEngine.engine.ui.utils;
 using OpenCl.DotNetCore.Memory;
 using ResourceManager = MinorEngine.engine.core.ResourceManager;
 

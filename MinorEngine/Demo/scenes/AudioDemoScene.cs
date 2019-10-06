@@ -4,9 +4,9 @@ using Demo.components;
 using MinorEngine.components;
 using MinorEngine.engine.audio;
 using MinorEngine.engine.audio.sources;
+using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.rendering;
-using MinorEngine.engine.ui.utils;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

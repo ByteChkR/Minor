@@ -7,7 +7,6 @@ using MinorEngine.engine.components;
 using MinorEngine.engine.core;
 using MinorEngine.engine.physics;
 using MinorEngine.engine.rendering;
-using MinorEngine.engine.ui.utils;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using Vector3 = OpenTK.Vector3;
