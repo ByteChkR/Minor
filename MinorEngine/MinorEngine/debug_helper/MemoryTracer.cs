@@ -77,7 +77,6 @@ namespace MinorEngine.debug
     public static class MemoryTracer
     {
 
-#if LEAK_TRACE
         private static List<StepMemoryInformation> _informationCollection = new List<StepMemoryInformation>();
         private static StepMemoryInformation _current;
         public static int MaxTraceCount = 10;
@@ -86,6 +85,7 @@ namespace MinorEngine.debug
         public static string cmdListMemoryInfo(string[] args)
         {
 
+#if LEAK_TRACE
             string ret = "";
             foreach (var stepMemoryInformation in _informationCollection)
             {
@@ -94,18 +94,22 @@ namespace MinorEngine.debug
             }
 
             return ret;
+#endif
+            return "Engine Was compiled without MemoryTracer enabled.";
 
         }
 
         public static string cmdListLastMemoryInfo(string[] args)
         {
+#if LEAK_TRACE
             if (_informationCollection.Count < 2) return ""; //We nee one frame to be finished, otherwise part of the data is not correct
             return _informationCollection[_informationCollection.Count - 2].ToString();
+#endif
+            return "Engine Was compiled without MemoryTracer enabled.";
         }
 
 
 
-#endif
 
         /// <summary>
         /// Returns to the next higher parent step(does nothing when in root)
@@ -153,13 +157,13 @@ namespace MinorEngine.debug
 #endif
         }
 
+
         /// <summary>
         /// Creates a new step information on the same level as before
         /// </summary>
         /// <param name="step"></param>
         public static void NextStep(string step)
         {
-
 #if LEAK_TRACE
             StepMemoryInformation parent = _current?.Parent;
             ChangeStep(step, true); //Change out the step
@@ -179,19 +183,15 @@ namespace MinorEngine.debug
             }
 #endif
         }
-
         private static StepMemoryInformation ChangeStep(string name, bool finalize)
         {
-
-#if LEAK_TRACE
-
-
             StepMemoryInformation old = _current;
             if (finalize) old?.Finalize();
             _current = new StepMemoryInformation(name);
             return old;
-#endif
         }
+
+
 
 
     }
