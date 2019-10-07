@@ -198,6 +198,33 @@ namespace MinorEngine.engine.core
         #endregion
 
 
+
+        #region Prefabs
+
+
+        public static class Prefabs
+        {
+
+            private static GameMesh _cube = null;
+            public static GameMesh Cube
+            {
+                get
+                {
+
+                    if (_cube == null)
+                    {
+                        _cube = MeshIO.FileToMesh("models/cube_flat.obj");
+                    }
+
+                    return new GameMesh(_cube);
+                }
+            }
+        }
+
+
+        #endregion
+
+
         #region MeshIO
 
         public static class MeshIO

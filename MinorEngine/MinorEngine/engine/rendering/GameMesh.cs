@@ -38,7 +38,10 @@ namespace MinorEngine.engine.rendering
         private GameTexture[] Textures { get; set; }
 
         public bool DisposeTexturesOnDestroy { get; set; } = true;
-        public int DrawCount;
+        public readonly int DrawCount;
+
+
+        private bool DestroyMeshBufferOnDispose { get; } = true;
 
         public int Vao => _vao;
 
@@ -46,6 +49,17 @@ namespace MinorEngine.engine.rendering
         public int Ebo => _ebo;
 
         public int Vbo => _vbo;
+
+        internal GameMesh(GameMesh baseMesh)
+        {
+            _ebo = baseMesh._ebo;
+            _vao = baseMesh._vao;
+            _vbo = baseMesh._vbo;
+            Textures = new GameTexture[0];
+            _debugName = baseMesh._debugName + "(Copy)";
+            DrawCount = baseMesh.DrawCount;
+            DestroyMeshBufferOnDispose = false;
+        }
 
         internal GameMesh(List<GameVertex> vertices, List<uint> indices, List<GameTexture> textures, string DebugName)
         {
@@ -135,13 +149,13 @@ namespace MinorEngine.engine.rendering
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, Vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * GameVertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, Ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers
@@ -181,10 +195,12 @@ namespace MinorEngine.engine.rendering
 
             _disposed = true;
 
-
-            GL.DeleteBuffer(Ebo);
-            GL.DeleteBuffer(Vbo);
-            GL.DeleteVertexArray(Vao);
+            if (DestroyMeshBufferOnDispose)
+            {
+                GL.DeleteBuffer(Ebo);
+                GL.DeleteBuffer(Vbo);
+                GL.DeleteVertexArray(Vao);
+            }
 
             if (DisposeTexturesOnDestroy)
             {

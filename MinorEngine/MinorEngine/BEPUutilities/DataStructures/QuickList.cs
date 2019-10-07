@@ -477,9 +477,6 @@ namespace MinorEngine.BEPUutilities.DataStructures
         {
             Clear();
             Pool.GiveBack(Elements, poolIndex);
-#if DEBUG
-            pool = null;
-#endif
         }
 
         [Conditional("DEBUG")]
