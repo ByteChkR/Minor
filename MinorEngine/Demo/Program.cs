@@ -30,7 +30,7 @@ namespace Demo
 
             var engine = new MinorEngine.engine.core.GameEngine(es);
             engine.Initialize();
-            engine.InitializeScene<PhysicsDemoScene>();
+            engine.InitializeScene<FLDemoScene>();
             engine.Run();
         }
     }
