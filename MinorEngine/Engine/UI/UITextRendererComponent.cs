@@ -9,15 +9,15 @@ namespace Engine.UI
     public class UITextRendererComponent : UIElement
     {
         private TextRenderContext _context;
-
+        private bool _contextInvalid = true;
         public override RenderContext Context
         {
             get
             {
-                if (_context == null)
+                if (_context == null||_contextInvalid)
                 {
                     _context = new TextRenderContext(Shader, Position, Scale, Owner._worldTransformCache, WorldSpace,
-                        Alpha, font, _cachedText, RenderQueue);
+                        Alpha, font, _text, RenderQueue);
                 }
                 else
                 {
@@ -25,7 +25,7 @@ namespace Engine.UI
                     _context.Alpha = Alpha;
                     _context.Position = Position;
                     _context.Scale = Scale;
-                    _context.DisplayText = _cachedText;
+                    _context.DisplayText = _text;
                     _context.WorldSpace = WorldSpace;
                 }
 
@@ -35,7 +35,6 @@ namespace Engine.UI
 
         private readonly GameFont font;
         private string _text = "HELLO";
-        private string _cachedText;
         private static StringBuilder sb = new StringBuilder();
 
         public string Text
@@ -45,23 +44,8 @@ namespace Engine.UI
             {
                 if (!string.Equals(_text, value))
                 {
-                    _cachedText = value;
-                    ////_cachedText = _text.Replace("\t", "   "); //Replace Tab character with spaces
-                    //int charcount = 0;
-                    //for (int i = 0; i < value.Length; i++)
-                    //{
-                    //    char c = value[i];
-                    //    if (c == '\n')
-                    //    {
-                    //        sb.Append('\n');
-                    //        charcount = 0;
-                    //        continue;
-                    //    }
-
-                    //}
-
-                    //_cachedText = sb.ToString();
-                    //sb.Clear();
+                    _contextInvalid = true;
+                    _text = value;
                 }
             }
         }

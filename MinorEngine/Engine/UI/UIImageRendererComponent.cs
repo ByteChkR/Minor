@@ -9,12 +9,13 @@ namespace Engine.UI
     public class UIImageRendererComponent : UIElement
     {
         private UIImageRenderContext _context;
+        private bool _contextInvalid = true;
 
         public override RenderContext Context
         {
             get
             {
-                if (_context == null)
+                if (_context == null || _contextInvalid)
                 {
                     _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture,
                         WorldSpace, Alpha, Shader, RenderQueue);
@@ -34,7 +35,22 @@ namespace Engine.UI
             }
         }
 
-        public Texture Texture { get; set; }
+        private Texture _texture;
+
+        public Texture Texture
+        {
+            get => _texture;
+            set
+            {
+                if (_texture != value)
+                {
+                    _texture = value;
+                    _contextInvalid = true;
+                }
+            }
+        }
+
+        
 
 
         public UIImageRendererComponent(int width, int height, bool worldSpace, float alpha, ShaderProgram shader) :

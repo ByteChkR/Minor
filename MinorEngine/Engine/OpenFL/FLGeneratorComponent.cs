@@ -87,7 +87,8 @@ namespace Engine.OpenFL
                 interpreter.Step();
             } while (!interpreter.Terminated);
 
-            TextureLoader.Update(Tex, interpreter.GetResult<byte>(), (int)Tex.Width, (int)Tex.Height);
+            byte[] retbuf = interpreter.GetResult<byte>();
+            TextureLoader.Update(Tex, retbuf, (int)Tex.Width, (int)Tex.Height);
         }
 
         private string cmd_FLStop(string[] args)

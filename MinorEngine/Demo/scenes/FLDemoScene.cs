@@ -113,11 +113,11 @@ namespace Demo.scenes
             }, out var shader);
 
             var objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
-            objSphere.AddComponent(new MeshRendererComponent(shader, sphere, null, 1));
+            objSphere.AddComponent(new MeshRendererComponent(shader, sphere, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             objSphere.AddComponent(new RotatingComponent());
 
             var objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
-            objQuad.AddComponent(new MeshRendererComponent(shader, plane, null, 1));
+            objQuad.AddComponent(new MeshRendererComponent(shader, plane, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(90));
 
             var uiText = new GameObject(new Vector3(0), "UIText");
