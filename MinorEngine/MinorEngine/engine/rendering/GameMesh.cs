@@ -50,7 +50,7 @@ namespace MinorEngine.engine.rendering
 
         public int Vbo => _vbo;
 
-        internal GameMesh(GameMesh baseMesh)
+        public GameMesh(GameMesh baseMesh)
         {
             _ebo = baseMesh._ebo;
             _vao = baseMesh._vao;

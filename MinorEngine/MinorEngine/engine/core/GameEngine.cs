@@ -155,55 +155,55 @@ namespace MinorEngine.engine.core
             FrameCounter++;
             Logger.SetDebugStage(DebugStage.Update);
 
-            MemoryTracer.NextStep("Update Frame: " + FrameCounter);
+            MemoryTracer.NextStage("Update Frame: " + FrameCounter);
 
-            MemoryTracer.AddSubStep("Scene Update");
+            MemoryTracer.AddSubStage("Scene Update");
             currentScene?.Update((float) e.Time);
-            MemoryTracer.NextStep("World Update");
+            MemoryTracer.NextStage("World Update");
             World?.Update((float) e.Time);
 
             Logger.SetDebugStage(DebugStage.Physics);
-            MemoryTracer.NextStep("Physics Update");
+            MemoryTracer.NextStage("Physics Update");
             Physics.Update((float) e.Time);
 
             if (_changeScene)
             {
                 Logger.SetDebugStage(DebugStage.SceneInit);
-                MemoryTracer.NextStep("Scene Intialization");
+                MemoryTracer.NextStage("Scene Intialization");
                 _changeScene = false;
 
 
-                MemoryTracer.AddSubStep("Unload World");
+                MemoryTracer.AddSubStage("Unload World");
 
                 World?.Unload();
 
-                MemoryTracer.NextStep("Removing World");
+                MemoryTracer.NextStage("Removing World");
 
                 World?.RemoveDestroyedObjects();
 
 
-                MemoryTracer.NextStep("Removing Old Scene");
+                MemoryTracer.NextStage("Removing Old Scene");
 
                 currentScene?.Destroy();
 
-                MemoryTracer.NextStep("Create New Scene");
+                MemoryTracer.NextStage("Create New Scene");
 
                 currentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
                 World = new World();
 
-                MemoryTracer.NextStep("Initialize New Scene");
+                MemoryTracer.NextStage("Initialize New Scene");
 
                 currentScene._initializeScene(World);
 
-                MemoryTracer.ReturnFromSubStep();
+                MemoryTracer.ReturnFromSubStage();
             }
 
 
             Logger.SetDebugStage(DebugStage.CleanUp);
             //Cleanup
-            MemoryTracer.NextStep("Clean up Destroyed Objects");
+            MemoryTracer.NextStage("Clean up Destroyed Objects");
             World?.RemoveDestroyedObjects();
-            MemoryTracer.ReturnFromSubStep(); //Returning to root.
+            MemoryTracer.ReturnFromSubStage(); //Returning to root.
             //ResourceManager.ProcessDeleteQueue();
         }
 
@@ -220,17 +220,17 @@ namespace MinorEngine.engine.core
             Logger.SetDebugStage(DebugStage.Render);
 
 
-            MemoryTracer.NextStep("Render Frame: " + RenderFrameCounter);
+            MemoryTracer.NextStage("Render Frame: " + RenderFrameCounter);
 
-            MemoryTracer.AddSubStep("Rendering Render Targets");
+            MemoryTracer.AddSubStage("Rendering Render Targets");
 
             Renderer.RenderAllTargets(World);
 
-            MemoryTracer.NextStep("Swapping Window Buffers");
+            MemoryTracer.NextStage("Swapping Window Buffers");
 
             Window.SwapBuffers();
 
-            MemoryTracer.ReturnFromSubStep();
+            MemoryTracer.ReturnFromSubStage();
         }
     }
 }

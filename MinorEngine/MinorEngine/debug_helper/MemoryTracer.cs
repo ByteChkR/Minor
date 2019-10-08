@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace MinorEngine.debug
 {
-    public class StepMemoryInformation
+    public class EngineStageInformation
     {
         public string Name;
         public bool Finalized { get; private set; }
@@ -13,22 +13,22 @@ namespace MinorEngine.debug
         public long AfterGarbageCollection;
         public TimeSpan TimeSpentInStage;
 
-        public StepMemoryInformation Parent;
-        public List<StepMemoryInformation> SubSteps;
+        public EngineStageInformation Parent;
+        public List<EngineStageInformation> SubStages;
         public Stopwatch Timer;
 
-        public StepMemoryInformation(string name)
+        public EngineStageInformation(string name)
         {
             Name = name;
 #if !TRACE_TIME_ONLY
             Before = GC.GetTotalMemory(false) / 1024;
 #endif
-            SubSteps = new List<StepMemoryInformation>();
+            SubStages = new List<EngineStageInformation>();
             Timer = new Stopwatch();
             Timer.Start();
         }
 
-        public void Finalize()
+        public void FinalizeStage()
         {
             Finalized = true;
 #if !TRACE_TIME_ONLY
@@ -39,7 +39,7 @@ namespace MinorEngine.debug
             TimeSpentInStage = Timer.Elapsed;
         }
 
-        public static string ToConsoleText(StepMemoryInformation info, int depth)
+        public static string ToConsoleText(EngineStageInformation info, int depth)
         {
             var ind = "\t";
             for (var i = 0; i < depth; i++)
@@ -53,11 +53,11 @@ namespace MinorEngine.debug
             ret += ind + "KB Used After: " + info.After + "\n";
             ret += ind + "KB Used After(post GC): " + info.AfterGarbageCollection + "\n";
             ret += ind + "Elapsed Time(MS): " + info.TimeSpentInStage.TotalMilliseconds + "\n";
-            ret += ind + "Substep Count: " + info.SubSteps.Count + "\n";
+            ret += ind + "Substep Count: " + info.SubStages.Count + "\n";
             ret += ind + "Substeps: \n";
 
 
-            foreach (var stepMemoryInformation in info.SubSteps)
+            foreach (var stepMemoryInformation in info.SubStages)
             {
                 ret += ToConsoleText(stepMemoryInformation, depth + 1);
             }
@@ -73,8 +73,8 @@ namespace MinorEngine.debug
 
     public static class MemoryTracer
     {
-        private static List<StepMemoryInformation> _informationCollection = new List<StepMemoryInformation>();
-        private static StepMemoryInformation _current;
+        private static List<EngineStageInformation> _informationCollection = new List<EngineStageInformation>();
+        private static EngineStageInformation _current;
         public static int MaxTraceCount = 10;
 
 
@@ -106,12 +106,12 @@ namespace MinorEngine.debug
         /// <summary>
         /// Returns to the next higher parent step(does nothing when in root)
         /// </summary>
-        public static void ReturnFromSubStep()
+        public static void ReturnFromSubStage()
         {
 #if LEAK_TRACE
             if (_current != null)
             {
-                _current.Finalize();
+                _current.FinalizeStage();
                 if (_current.Parent != null)
                 {
                     _current = _current.Parent;
@@ -125,11 +125,11 @@ namespace MinorEngine.debug
         /// Creates a new step information on one level deeper as before
         /// </summary>
         /// <param name="step"></param>
-        public static void AddSubStep(string step)
+        public static void AddSubStage(string step)
         {
 #if LEAK_TRACE
-            StepMemoryInformation current = _current; //Store the current step or substep
-            ChangeStep(step, false);
+            EngineStageInformation current = _current; //Store the current step or substep
+            ChangeStage(step, false);
             _current.Parent = current; //Set it up to be the substep on one level deeper
             if (current == null)
             {
@@ -143,7 +143,7 @@ namespace MinorEngine.debug
             }
             else
             {
-                current.SubSteps.Add(_current);  //If not null then we add it to the parent list of substeps
+                current.SubStages.Add(_current);  //If not null then we add it to the parent list of substeps
             }
 #endif
         }
@@ -153,11 +153,11 @@ namespace MinorEngine.debug
         /// Creates a new step information on the same level as before
         /// </summary>
         /// <param name="step"></param>
-        public static void NextStep(string step)
+        public static void NextStage(string step)
         {
 #if LEAK_TRACE
-            StepMemoryInformation parent = _current?.Parent;
-            ChangeStep(step, true); //Change out the step
+            EngineStageInformation parent = _current?.Parent;
+            ChangeStage(step, true); //Change out the step
             _current.Parent = parent; //Set it up to be the substep on the same level
             if (parent == null)
             {
@@ -170,20 +170,20 @@ namespace MinorEngine.debug
             }
             else
             {
-                parent.SubSteps.Add(_current); //If not null then we add it to the parent list of substeps
+                parent.SubStages.Add(_current); //If not null then we add it to the parent list of substeps
             }
 #endif
         }
 
-        private static StepMemoryInformation ChangeStep(string name, bool finalize)
+        private static EngineStageInformation ChangeStage(string name, bool finalize)
         {
             var old = _current;
             if (finalize)
             {
-                old?.Finalize();
+                old?.FinalizeStage();
             }
 
-            _current = new StepMemoryInformation(name);
+            _current = new EngineStageInformation(name);
             return old;
         }
     }
