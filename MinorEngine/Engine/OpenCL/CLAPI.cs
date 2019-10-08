@@ -4,6 +4,7 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Engine.DataTypes;
+using Engine.OpenCL.TypeEnums;
 using OpenCl.DotNetCore.CommandQueues;
 using OpenCl.DotNetCore.Contexts;
 using OpenCl.DotNetCore.DataTypes;
@@ -119,7 +120,7 @@ namespace Engine.OpenCL
         /// <param name="size">The size of the buffer(Total size in bytes: size*sizeof(T)</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateEmpty<T>(int size, MemoryFlag flags) where T : struct
+        public static CLBuffer CreateEmpty<T>(int size, CLMemoryFlag flags) where T : struct
         {
             var arr = new T[size];
             return CreateBuffer(arr, flags);
@@ -132,7 +133,7 @@ namespace Engine.OpenCL
         /// <param name="data">The array of T</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateBuffer<T>(T[] data, MemoryFlag flags) where T : struct
+        public static CLBuffer CreateBuffer<T>(T[] data, CLMemoryFlag flags) where T : struct
         {
             var arr = Array.ConvertAll(data, x => (object)x);
             return CreateBuffer(arr, typeof(T), flags);
@@ -145,13 +146,13 @@ namespace Engine.OpenCL
         /// <param name="t">type of the objects in the data array</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateBuffer(object[] data, Type t, MemoryFlag flags)
+        public static CLBuffer CreateBuffer(object[] data, Type t, CLMemoryFlag flags)
         {
 #if TRAVIS_TEST
             Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
             return null;
 #else
-            var mb = Instance._context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
+            var mb = Instance._context.CreateBuffer((MemoryFlag)(flags | CLMemoryFlag.CopyHostPointer), t, data);
 
             return BufferAbstraction.MakeHandle(mb);
 #endif
@@ -163,7 +164,7 @@ namespace Engine.OpenCL
         /// <param name="bmp">The image that holds the data</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateFromImage(Bitmap bmp, MemoryFlag flags)
+        public static CLBuffer CreateFromImage(Bitmap bmp, CLMemoryFlag flags)
         {
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 

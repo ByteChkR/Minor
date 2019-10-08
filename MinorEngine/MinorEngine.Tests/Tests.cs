@@ -2,15 +2,14 @@ using System;
 using System.IO;
 using System.Linq;
 using Common;
-using MinorEngine.CLHelperLibrary;
-using MinorEngine.CLHelperLibrary.cltypes;
-using MinorEngine.FilterLanguage;
-using OpenCl.DotNetCore.Memory;
+using Engine.OpenCL;
+using Engine.OpenCL.TypeEnums;
+using Engine.OpenFL;
 using Xunit;
 
 namespace MinorEngine.Tests
 {
-    public class CLTests
+    public class Tests
     {
 #if !TRAVIS_TEST
         [Fact]
@@ -22,7 +21,7 @@ namespace MinorEngine.Tests
                 b[i] = (byte) i;
             }
 
-            var buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            var buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
@@ -37,9 +36,9 @@ namespace MinorEngine.Tests
                 b[i] = i;
             }
 
-            var buffer = CL.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            var buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
-            var c = CL.ReadBuffer<float>(buffer, b.Length);
+            var c = CLAPI.ReadBuffer<float>(buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -54,12 +53,12 @@ namespace MinorEngine.Tests
                 b[i] = i;
             }
 
-            var buffer = CL.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            var buffer = CLAPI.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
 
-            CL.WriteToBuffer(buffer, b);
+            CLAPI.WriteToBuffer(buffer, b);
 
-            var c = CL.ReadBuffer<float>(buffer, b.Length);
+            var c = CLAPI.ReadBuffer<float>(buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -94,7 +93,7 @@ namespace MinorEngine.Tests
             foreach (var file in files)
             {
                 var P = new Interpreter(file,
-                    CL.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
+                    CLAPI.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
                     4, db);
                 while (!P.Terminated)
                 {
