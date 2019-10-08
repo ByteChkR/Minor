@@ -9,6 +9,7 @@ namespace Engine.DataTypes
         public readonly int _vbo;
         public readonly int _vao;
         private bool _disposed;
+        private bool _dontDispose;
         public readonly int DrawCount;
 
         internal Mesh(int ebo, int vbo, int vao, int drawCount)
@@ -19,9 +20,17 @@ namespace Engine.DataTypes
             DrawCount = drawCount;
         }
 
+        public Mesh Copy()
+        {
+            return new Mesh(_ebo, _vbo, _vao, DrawCount)
+            {
+                _dontDispose = true
+            };
+        }
+
         public void Dispose()
         {
-            if (_disposed)
+            if (_disposed || _dontDispose)
             {
                 return;
             }

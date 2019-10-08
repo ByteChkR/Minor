@@ -17,6 +17,28 @@ namespace Engine.IO
 {
     public class MeshLoader
     {
+
+        public static class Prefabs
+        {
+
+            private static Mesh _cube = null;
+            public static Mesh Cube
+            {
+                get
+                {
+
+                    if (_cube == null)
+                    {
+                        _cube = FileToMesh("models/cube_flat.obj");
+                    }
+
+                    return _cube.Copy();
+                }
+            }
+        }
+
+
+
         //Todo: Create Dummy texture that will be returned when not found
         public static Mesh FileToMesh(string filename)
         {
