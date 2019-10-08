@@ -1,4 +1,4 @@
-﻿using MinorEngine.engine.components;
+﻿using Engine.Core;
 
 namespace Demo.components
 {

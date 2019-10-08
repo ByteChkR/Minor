@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using MinorEngine.BEPUutilities;
-using MinorEngine.components;
-using MinorEngine.engine.components;
-using MinorEngine.engine.core;
-using MinorEngine.engine.physics;
+using Engine.Core;
+using Engine.Physics;
+using Engine.Physics.BEPUutilities;
 using OpenTK.Input;
 using Vector3 = OpenTK.Vector3;
 
@@ -28,7 +26,7 @@ namespace Demo.components
         protected override void Update(float deltaTime)
         {
             var r = ConstructRayFromMousePosition();
-            var ret = Physics.RayCastFirst(r, 1000, cast,
+            var ret = PhysicsEngine.RayCastFirst(r, 1000, cast,
                 out var arr);
             if (ret)
             {
@@ -44,7 +42,7 @@ namespace Demo.components
             if (e.Key == Key.B)
             {
                 var r = ConstructRayFromMousePosition();
-                var ret = Physics.RayCastFirst(r, 1000, cast,
+                var ret = PhysicsEngine.RayCastFirst(r, 1000, cast,
                     out var arr);
                 if (ret)
                 {

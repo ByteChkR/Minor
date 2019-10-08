@@ -1,0 +1,132 @@
+﻿using System.Collections.Generic;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
+using System.Runtime.InteropServices;
+using Engine.DataTypes;
+using Engine.IO;
+using OpenTK.Graphics.OpenGL;
+using SharpFont;
+using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
+
+namespace Engine.UI
+{
+    public class FontLibrary
+    {
+        private readonly Dictionary<string, GameFont> _fonts;
+
+
+        public FontLibrary(string folderPath)
+        {
+            _fonts = new Dictionary<string, GameFont>();
+            var files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
+            foreach (var file in files)
+            {
+                LoadFont(file);
+            }
+        }
+
+        public void LoadFont(string filename)
+        {
+            LoadFont(filename, 32);
+        }
+
+        public void LoadFont(string filename, int pixelSize)
+        {
+            var ff = new FontFace(File.OpenRead(filename));
+
+            if (_fonts.ContainsKey(ff.FullName))
+            {
+                return;
+            }
+
+            var fontAtlas = new Dictionary<char, TextCharacter>();
+
+            for (var i = 0; i < ushort.MaxValue; i++)
+            {
+                var g = ff.GetGlyph(new CodePoint(i), pixelSize);
+                if (g == null)
+                {
+                    continue;
+                }
+
+                var buf = new byte[g.RenderWidth * g.RenderHeight];
+                var handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
+                var s = new Surface
+                {
+                    Bits = handle.AddrOfPinnedObject(),
+                    Width = g.RenderWidth,
+                    Height = g.RenderHeight,
+                    Pitch = g.RenderWidth
+                };
+
+                g.RenderTo(s);
+                Texture glTex;
+                if (g.RenderWidth != 0 && g.RenderHeight != 0)
+                {
+                    var bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
+                    var data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
+                        ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                    var iimgBuf = new byte[buf.Length * 4];
+                    for (var j = 0; j < buf.Length; j++)
+                    {
+                        iimgBuf[j * 4 + 3] = 255;
+                        iimgBuf[j * 4 + 1] = buf[j];
+                        iimgBuf[j * 4 + 2] = buf[j];
+                        iimgBuf[j * 4] = buf[j];
+                    }
+
+                    Marshal.Copy(iimgBuf, 0, data.Scan0, iimgBuf.Length);
+
+                    bmp.UnlockBits(data);
+
+                    bmp.RotateFlip(RotateFlipType.RotateNoneFlipY); //Rotating hack
+
+                    data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
+                        ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+                    var tex = TextureLoader.ParameterToTexture(bmp.Width, bmp.Height);
+                    glTex = tex;
+                    GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
+
+                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, g.RenderWidth, g.RenderHeight,
+                        0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapS,
+                        (int) TextureWrapMode.ClampToEdge);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapT,
+                        (int) TextureWrapMode.ClampToEdge);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMinFilter,
+                        (int) TextureMinFilter.Linear);
+                    GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMagFilter,
+                        (int) TextureMagFilter.Linear);
+
+                    bmp.UnlockBits(data);
+                }
+                else
+                {
+                    glTex = null;
+                }
+
+                var c = new TextCharacter
+                {
+                    GlTexture = glTex,
+                    Width = s.Width,
+                    Height = s.Height,
+                    Advance = g.HorizontalMetrics.Advance,
+                    BearingX = g.HorizontalMetrics.Bearing.X,
+                    BearingY = g.HorizontalMetrics.Bearing.Y
+                };
+                fontAtlas.Add((char) i, c);
+            }
+
+            var font = new GameFont(ff, pixelSize, fontAtlas);
+            _fonts.Add(ff.FullName, font);
+        }
+
+
+        public GameFont GetFont(string name)
+        {
+            return _fonts[name];
+        }
+    }
+}

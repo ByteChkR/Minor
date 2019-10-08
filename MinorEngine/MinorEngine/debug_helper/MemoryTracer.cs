@@ -89,8 +89,11 @@ namespace MinorEngine.debug
             }
 
             return ret;
-#endif
+#else
+            
             return "Engine Was compiled without MemoryTracer enabled.";
+
+#endif
         }
 
         public static string cmdListLastMemoryInfo(string[] args)
@@ -98,8 +101,11 @@ namespace MinorEngine.debug
 #if LEAK_TRACE
             if (_informationCollection.Count < 2) return ""; //We nee one frame to be finished, otherwise part of the data is not correct
             return _informationCollection[_informationCollection.Count - 2].ToString();
-#endif
+#else
+            
             return "Engine Was compiled without MemoryTracer enabled.";
+
+#endif
         }
 
 

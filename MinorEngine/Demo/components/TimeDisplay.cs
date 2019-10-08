@@ -1,6 +1,6 @@
 ﻿using System;
-using MinorEngine.engine.components;
-using MinorEngine.engine.components.ui;
+using Engine.Core;
+using Engine.UI;
 
 namespace Demo.components
 {

@@ -1,5 +1,5 @@
 ﻿using Demo.scenes;
-using MinorEngine.engine;
+using Engine.Core;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -28,7 +28,7 @@ namespace Demo
 #endif
             };
 
-            var engine = new MinorEngine.engine.core.GameEngine(es);
+            var engine = new GameEngine(es);
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();
