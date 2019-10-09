@@ -1,5 +1,10 @@
-﻿using Demo.scenes;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Common;
+using Demo.scenes;
 using Engine.Core;
+using Engine.Debug;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -7,23 +12,20 @@ namespace Demo
 {
     internal class Program
     {
+        private static bool AskForDebugLogSending()
+        {
+            Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
+            if (Console.ReadLine().ToLower() == "y") return true;
+            return false;
+        }
+
         private static void Main(string[] args)
         {
             var gm = new GraphicsMode(ColorFormat.Empty, 8, 0, 16);
 
-            var es = new EngineSettings
-            {
-                WindowFlags = GameWindowFlags.Default,
-                Mode = gm,
-                InitWidth = 1280,
-                InitHeight = 720,
-                Title = "Test",
-                PhysicsThreadCount = 4,
-                VSync = VSyncMode.Off
-            };
+            DebugSettings dbgSettings = DebugSettings.Default;
 
 #if COLLECT_LOGS
-            
             if (AskForDebugLogSending())
             {
                 List<ILogStreamSettings> streams = new List<ILogStreamSettings>(dbgSettings.Streams);
@@ -42,9 +44,20 @@ namespace Demo
                 };
                 streams.Add(network);
             }
-
 #endif
 
+            EngineSettings es = new EngineSettings
+            {
+                WindowFlags = GameWindowFlags.Default,
+                Mode = gm,
+                InitWidth = 1280,
+                InitHeight = 720,
+                Title = "Test",
+                PhysicsThreadCount = 4,
+                VSync = VSyncMode.Off,
+                DebugSettings = dbgSettings,
+
+            };
 
 
             var engine = new GameEngine(es);
