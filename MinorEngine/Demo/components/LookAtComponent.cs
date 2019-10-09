@@ -1,6 +1,4 @@
-﻿using MinorEngine.engine.components;
-using MinorEngine.engine.core;
-
+﻿using Engine.Core;
 namespace Demo.components
 {
     public class LookAtComponent : AbstractComponent

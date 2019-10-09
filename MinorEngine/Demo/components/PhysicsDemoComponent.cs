@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using MinorEngine.BEPUphysics.Entities.Prefabs;
-using MinorEngine.components;
-using MinorEngine.engine.components;
-using MinorEngine.engine.core;
-using MinorEngine.engine.physics;
-using MinorEngine.engine.rendering;
+using System.Resources;
+using Engine.Core;
+using Engine.DataTypes;
+using Engine.Debug;
+using Engine.IO;
+using Engine.Physics;
+using Engine.Physics.BEPUphysics.Entities.Prefabs;
+using Engine.Rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -21,15 +23,15 @@ namespace Demo.components
             game = LayerManager.NameToLayer("physics");
         }
 
-        private GameMesh Box = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
-        private GameMesh Sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
+        private Mesh Box = MeshLoader.FileToMesh("models/cube_flat.obj");
+        private Mesh Sphere = MeshLoader.FileToMesh("models/sphere_smooth.obj");
 
         protected override void Awake()
         {
             //Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
             base.Awake();
-            var comp = Owner.World.GetChildWithName("Console")
+            var comp = Owner.Scene.GetChildWithName("Console")
                 .GetComponent<DebugConsoleComponent>();
 
 
@@ -116,10 +118,9 @@ namespace Demo.components
                 obj.Scale = new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
-                    Box.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/TEST.png")});
 
 
-                    obj.AddComponent(new MeshRendererComponent(_objShader, Box, 1));
+                    obj.AddComponent(new MeshRendererComponent(_objShader, Box, TextureLoader.FileToTexture("textures/TEST.png"), 1));
 
 
                     var coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
@@ -129,9 +130,8 @@ namespace Demo.components
                     obj.AddComponent(coll);
                 }
                 else
-                {
-                    Sphere.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/TEST.png")});
-                    obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, 1));
+                { 
+                    obj.AddComponent(new MeshRendererComponent(_objShader, Sphere, TextureLoader.FileToTexture("textures/TEST.png"), 1));
                     var coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
                     var c = coll.ColliderConstraints;
                     //c.RotationConstraints = FreezeConstraints.X;
@@ -140,7 +140,7 @@ namespace Demo.components
                 }
 
                 Collider.Add(obj);
-                Owner.World.Add(obj);
+                Owner.Scene.Add(obj);
             }
 
 

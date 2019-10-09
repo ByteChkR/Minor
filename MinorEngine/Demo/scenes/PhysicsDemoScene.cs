@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
+using System.Resources;
+using Assimp;
 using Demo.components;
-using MinorEngine.BEPUphysics.Entities.Prefabs;
-using MinorEngine.components;
-using MinorEngine.engine.components;
-using MinorEngine.engine.core;
-using MinorEngine.engine.physics;
-using MinorEngine.engine.rendering;
+using Engine.Core;
+using Engine.Debug;
+using Engine.IO;
+using Engine.Physics;
+using Engine.Physics.BEPUphysics.Entities.Prefabs;
+using Engine.Rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -49,8 +51,8 @@ namespace Demo.scenes
             }
 
             var pos = new Vector3(x, y, z);
-            GameEngine.Instance.World.Camera.Translate(pos);
-            pos = GameEngine.Instance.World.Camera.GetLocalPosition();
+            GameEngine.Instance.CurrentScene.Camera.Translate(pos);
+            pos = GameEngine.Instance.CurrentScene.Camera.GetLocalPosition();
             return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
@@ -83,7 +85,7 @@ namespace Demo.scenes
             }
 
             var pos = new Vector3(x, y, z);
-            GameEngine.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
+            GameEngine.Instance.CurrentScene.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
 
             return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
@@ -91,7 +93,7 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-            var test = ResourceManager.TextureIO.FileToTexture("textures/ground4k.png");
+            var test = TextureLoader.FileToTexture("textures/ground4k.png");
 
 
             var rayLayer = LayerManager.RegisterLayer("raycast", new Layer(1, 2));
@@ -99,12 +101,10 @@ namespace Demo.scenes
             var physicsLayer = LayerManager.RegisterLayer("physics", new Layer(1, 1));
             LayerManager.DisableCollisions(rayLayer, physicsLayer);
 
-            var bgBox = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
-            var box = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
-            var sphere = ResourceManager.MeshIO.FileToMesh("models/sphere_smooth.obj");
-
-            bgBox.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/ground4k.png")});
-            box.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/ground4k.png")});
+            var bgBox = MeshLoader.FileToMesh("models/cube_flat.obj");
+            var box = MeshLoader.FileToMesh("models/cube_flat.obj");
+            var sphere = MeshLoader.FileToMesh("models/sphere_smooth.obj");
+            
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -121,7 +121,7 @@ namespace Demo.scenes
 
             var phys = new PhysicsDemoComponent();
 
-            GameEngine.Instance.World.AddComponent(phys); //Adding Physics Component to world.
+            GameEngine.Instance.CurrentScene.AddComponent(phys); //Adding Physics Component to world.
 
 
             var dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
@@ -129,37 +129,37 @@ namespace Demo.scenes
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
-            GameEngine.Instance.World.Add(dbg.Owner);
+            GameEngine.Instance.CurrentScene.Add(dbg.Owner);
 
             var bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(250, 1, 250);
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
+            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             var groundCol = new Collider(new Box(Vector3.Zero, 500, 1, 500), hybLayer);
             bgObj.AddComponent(groundCol);
-            GameEngine.Instance.World.Add(bgObj);
+            GameEngine.Instance.CurrentScene.Add(bgObj);
 
             var boxO = new GameObject(Vector3.UnitY * 3, "Box");
-            boxO.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
+            boxO.AddComponent(new MeshRendererComponent(shader, bgBox, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             boxO.AddComponent(new Collider(new Box(Vector3.Zero, 1, 1, 1), physicsLayer));
             boxO.Translate(new Vector3(55, 0, 35));
-            GameEngine.Instance.World.Add(boxO);
+            GameEngine.Instance.CurrentScene.Add(boxO);
 
 
             var mouseTarget = new GameObject(Vector3.UnitY * -3, "BG");
             mouseTarget.Scale = new Vector3(1, 1, 1);
-            mouseTarget.AddComponent(new MeshRendererComponent(shader, sphere, 1));
+            mouseTarget.AddComponent(new MeshRendererComponent(shader, sphere, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
 
-            GameEngine.Instance.World.Add(mouseTarget);
+            GameEngine.Instance.CurrentScene.Add(mouseTarget);
 
 
-            var c = new Camera(
+            var c = new BasicCamera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(55, 10, 45));
             c.AddComponent(new CameraRaycaster(mouseTarget, 3, boxO));
-            GameEngine.Instance.World.Add(c);
-            GameEngine.Instance.World.SetCamera(c);
+            GameEngine.Instance.CurrentScene.Add(c);
+            GameEngine.Instance.CurrentScene.SetCamera(c);
         }
     }
 }

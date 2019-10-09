@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Configurations>Debug;Release;TravisTest;Debug_FullTrace;Release_CollectLogs</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TravisTest|AnyCPU'">
+    <DefineConstants>TRACE;TRAVIS_TEST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_CollectLogs|AnyCPU'">
+    <DefineConstants>TRACE;COLLECT_LOGS;FORCEINLINE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;LEAK_TRACE;TRACE_TIME_ONLY</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_FullTrace|AnyCPU'">
+    <DefineConstants>TRACE;LEAK_TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AssimpNet" Version="4.1.0" />
+    <PackageReference Include="OpenTK.NetStandard" Version="1.0.4" />
+    <PackageReference Include="SharpFontCore" Version="0.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="OpenCl.DotNetCore">
+      <HintPath>..\..\opencl-dotnet\OpenCl.DotNetCore\bin\Release\netstandard2.0\OpenCl.DotNetCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

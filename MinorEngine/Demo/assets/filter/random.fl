@@ -1,0 +1,6 @@
+Main:
+  setvalf 0
+  setactive 3
+	setvalf 1
+  setactive 0 1 2
+  random

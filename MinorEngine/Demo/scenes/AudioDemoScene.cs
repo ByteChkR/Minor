@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Resources;
 using Demo.components;
-using MinorEngine.components;
-using MinorEngine.engine.audio;
-using MinorEngine.engine.audio.sources;
-using MinorEngine.engine.components;
-using MinorEngine.engine.core;
-using MinorEngine.engine.rendering;
+using Engine.Audio;
+using Engine.Core;
+using Engine.Debug;
+using Engine.IO;
+using Engine.Rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -68,8 +68,8 @@ namespace Demo.scenes
             }
 
             var pos = new Vector3(x, y, z);
-            GameEngine.Instance.World.Camera.Translate(pos);
-            pos = GameEngine.Instance.World.Camera.GetLocalPosition();
+            GameEngine.Instance.CurrentScene.Camera.Translate(pos);
+            pos = GameEngine.Instance.CurrentScene.Camera.GetLocalPosition();
             return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
@@ -102,7 +102,7 @@ namespace Demo.scenes
             }
 
             var pos = new Vector3(x, y, z);
-            GameEngine.Instance.World.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
+            GameEngine.Instance.CurrentScene.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
 
             return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
@@ -110,10 +110,8 @@ namespace Demo.scenes
 
         protected override void InitializeScene()
         {
-            var bgBox = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
-
-            bgBox.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/ground4k.png")});
-
+            var bgBox = MeshLoader.FileToMesh("models/cube_flat.obj");
+            
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
@@ -133,14 +131,14 @@ namespace Demo.scenes
             dbg.AddCommand("reload", cmd_ReLoadScene);
             dbg.AddCommand("next", cmd_NextScene);
             dbg.AddCommand("lookat", cmd_LookAtAudioSource);
-            GameEngine.Instance.World.Add(dbg.Owner);
+            GameEngine.Instance.CurrentScene.Add(dbg.Owner);
 
             var bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(25, 1, 25);
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, 1));
-            GameEngine.Instance.World.Add(bgObj);
+            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+            GameEngine.Instance.CurrentScene.Add(bgObj);
 
-            var c = new Camera(
+            var c = new BasicCamera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
@@ -151,13 +149,12 @@ namespace Demo.scenes
 
             _sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
 
-            var sourceCube = ResourceManager.MeshIO.FileToMesh("models/cube_flat.obj");
-            sourceCube.SetTextureBuffer(new[] {ResourceManager.TextureIO.FileToTexture("textures/ground4k.png")});
+            var sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
             var source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
             _sourceCube.AddComponent(new RotateAroundComponent());
-            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube, 1));
-            if (!AudioManager.TryLoad("sounds/test_mono_16.wav", out var clip))
+            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+            if (!AudioLoader.TryLoad("sounds/test_mono_16.wav", out var clip))
             {
                 Console.ReadLine();
             }
@@ -165,12 +162,12 @@ namespace Demo.scenes
             source.SetClip(clip);
             source.Looping = true;
             //source.Play();
-            GameEngine.Instance.World.Add(_sourceCube);
+            GameEngine.Instance.CurrentScene.Add(_sourceCube);
 
             var listener = new AudioListener();
             c.AddComponent(listener);
-            GameEngine.Instance.World.Add(c);
-            GameEngine.Instance.World.SetCamera(c);
+            GameEngine.Instance.CurrentScene.Add(c);
+            GameEngine.Instance.CurrentScene.SetCamera(c);
         }
     }
 }

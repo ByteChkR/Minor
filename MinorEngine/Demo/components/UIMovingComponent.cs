@@ -1,13 +1,14 @@
 ﻿using System;
-using MinorEngine.engine.components.ui;
-using MinorEngine.engine.rendering;
+using Engine.DataTypes;
+using Engine.Rendering;
+using Engine.UI;
 using OpenTK;
 
 namespace Demo.components
 {
     public class UIMovingComponent : UIImageRendererComponent
     {
-        public UIMovingComponent(GameTexture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
+        public UIMovingComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
             texture, worldSpace, alpha, shader)
         {
         }
