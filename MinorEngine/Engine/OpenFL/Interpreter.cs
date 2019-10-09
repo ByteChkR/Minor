@@ -9,10 +9,10 @@ using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
+using Engine.OpenCL.DotNetCore.DataTypes;
+using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
 using Engine.WFC;
-using OpenCl.DotNetCore.DataTypes;
-using OpenCl.DotNetCore.Memory;
 using Image = System.Drawing.Image;
 
 namespace Engine.OpenFL
@@ -23,12 +23,18 @@ namespace Engine.OpenFL
     public class Interpreter
     {
         /// <summary>
-        /// The key to look for when parsing defines
+        /// The key to look for when parsing defined textures
         /// </summary>
         private const string DefineKey = "--define texture ";
 
+        /// <summary>
+        /// The key to look for when parsing defined scripts
+        /// </summary>
         private const string ScriptDefineKey = "--define script ";
 
+        /// <summary>
+        /// FL header Count(the offset from 0 where the "user" parameter start)
+        /// </summary>
         private const int FLHeaderArgCount = 5;
 
         /// <summary>
@@ -72,10 +78,19 @@ namespace Engine.OpenFL
         /// </summary>
         private delegate void FlFunction();
 
+
+        /// <summary>
+        /// Delegate that is used to import defines
+        /// </summary>
+        /// <param name="arg">The Line of the definition</param>
         private delegate void DefineHandler(string[] arg);
 
         #region Define Handler
 
+        /// <summary>
+        /// Define handler that loads defined scripts
+        /// </summary>
+        /// <param name="arg">The Line of the definition</param>
         private void DefineScript(string[] arg)
         {
             if (arg.Length < 2)
@@ -102,7 +117,7 @@ namespace Engine.OpenFL
                 Logger.Log("Loading SubScript...", DebugChannel.Log);
 
                 var buf =
-                    CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite);
+                    CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
                 var interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
                     _depth, _channelCount, _kernelDb, true);
 
@@ -120,10 +135,13 @@ namespace Engine.OpenFL
                     true);
                 Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
 
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
             }
         }
-
+        /// <summary>
+        /// Define handler that loads defined textures
+        /// </summary>
+        /// <param name="arg">The Line of the definition</param>
         private void DefineTexture(string[] arg)
         {
             if (arg.Length < 2)
@@ -141,19 +159,19 @@ namespace Engine.OpenFL
                 _definedBuffers.Remove(varname);
             }
 
-            var flags = CLMemoryFlag.ReadWrite;
+            var flags = MemoryFlag.ReadWrite;
             var flagTest = varname.Split(' ');
             if (flagTest.Length > 1)
             {
                 varname = flagTest[1];
                 if (flagTest[0] == "r")
                 {
-                    flags = CLMemoryFlag.ReadOnly;
+                    flags = MemoryFlag.ReadOnly;
                 }
 
                 else if (flagTest[0] == "w")
                 {
-                    flags = CLMemoryFlag.WriteOnly;
+                    flags = MemoryFlag.WriteOnly;
                 }
             }
 
@@ -168,17 +186,17 @@ namespace Engine.OpenFL
                 var bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
                 _definedBuffers.Add(varname,
                     CLAPI.CreateFromImage(bmp,
-                        CLMemoryFlag.CopyHostPointer | flags));
+                        MemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "random")
             {
-                var buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | CLMemoryFlag.CopyHostPointer);
+                var buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
                 CLAPI.WriteRandom(buf, randombytesource, _activeChannels);
                 _definedBuffers.Add(varname, buf);
             }
             else if (filename == "empty")
             {
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.CopyHostPointer | flags));
+                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "wfc")
             {
@@ -186,35 +204,35 @@ namespace Engine.OpenFL
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[2], out var n))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[3], out var width))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[4], out var height))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!bool.TryParse(args[5], out var periodicInput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!bool.TryParse(args[6], out var periodicOutput))
@@ -227,21 +245,21 @@ namespace Engine.OpenFL
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[8], out var ground))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[9], out var limit))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
                 WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width,
@@ -252,13 +270,13 @@ namespace Engine.OpenFL
                 var bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                 _definedBuffers.Add(varname,
                     CLAPI.CreateFromImage(bmp,
-                        CLMemoryFlag.CopyHostPointer | flags));
+                        MemoryFlag.CopyHostPointer | flags));
             }
             else
             {
                 Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Define statement."), true);
                 Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
+                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
             }
         }
 
@@ -289,15 +307,24 @@ namespace Engine.OpenFL
             /// </summary>
             public bool TriggeredDebug { get; set; }
 
-
+            /// <summary>
+            /// The CPU Side verison of the active channels
+            /// </summary>
             public byte[] ActiveChannels { get; set; }
-            public Dictionary<string, CLBuffer> DefinedBuffers { get; set; }
+
+            /// <summary>
+            /// The list of Memory buffer that were defined. Matched by key
+            /// </summary>
+            public Dictionary<string, MemoryBuffer> DefinedBuffers { get; set; }
 
             /// <summary>
             /// The Currently active buffer.
             /// </summary>
-            public CLBuffer DebugBuffer { get; set; }
+            public MemoryBuffer DebugBuffer { get; set; }
 
+            /// <summary>
+            /// The Current line the interpreter is operating on
+            /// </summary>
             public string SourceLine { get; set; }
 
             /// <summary>
@@ -310,8 +337,15 @@ namespace Engine.OpenFL
                 return false;
             }
 
+            /// <summary>
+            /// String builder instance that is used when doing some more heaview string operations
+            /// </summary>
             private static StringBuilder _sb = new StringBuilder();
 
+            /// <summary>
+            /// ToString Implementation
+            /// </summary>
+            /// <returns>Returns Current Processor State</returns>
             public override string ToString()
             {
                 _sb.Clear();
@@ -367,7 +401,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// The active buffer
         /// </summary>
-        private CLBuffer _currentBuffer;
+        private MemoryBuffer _currentBuffer;
 
         /// <summary>
         /// The jump stack containing all the previous jumps
@@ -408,12 +442,12 @@ namespace Engine.OpenFL
         /// The memory buffer containing the active channels
         /// The buffer gets updated as soon the channel configuration changes
         /// </summary>
-        private CLBuffer _activeChannelBuffer;
+        private MemoryBuffer _activeChannelBuffer;
 
         /// <summary>
         /// The buffers indexed by name that were defined with the DefineKey
         /// </summary>
-        private readonly Dictionary<string, CLBuffer> _definedBuffers = new Dictionary<string, CLBuffer>();
+        private readonly Dictionary<string, MemoryBuffer> _definedBuffers = new Dictionary<string, MemoryBuffer>();
 
         /// <summary>
         /// A list of possible jump locations
@@ -435,6 +469,11 @@ namespace Engine.OpenFL
         /// </summary>
         private InterpreterStepResult _stepResult;
 
+
+        /// <summary>
+        /// The Entry point of the fl script
+        /// Throws a FLInvalidEntryPointException if no main function is found
+        /// </summary>
         private int EntryIndex
         {
             get
@@ -492,7 +531,7 @@ namespace Engine.OpenFL
             }
 
             if (_currentArgStack.Peek() == null ||
-                !(_currentArgStack.Peek() is CLBuffer) && !(_currentArgStack.Peek() is decimal))
+                !(_currentArgStack.Peek() is MemoryBuffer) && !(_currentArgStack.Peek() is decimal))
             {
                 Logger.Crash(new FLInvalidFunctionUseException("setactive", "Specify the buffer you want to activate"),
                     true);
@@ -506,7 +545,7 @@ namespace Engine.OpenFL
             }
             else
             {
-                _currentBuffer = (CLBuffer) _currentArgStack.Pop();
+                _currentBuffer = (MemoryBuffer) _currentArgStack.Pop();
             }
 
             var needCopy = false;
@@ -549,7 +588,7 @@ namespace Engine.OpenFL
             while (_currentArgStack.Count != 0)
             {
                 var obj = _currentArgStack.Pop();
-                if (!(obj is CLBuffer))
+                if (!(obj is MemoryBuffer))
                 {
                     Logger.Crash(
                         new FLInvalidArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"),
@@ -557,7 +596,7 @@ namespace Engine.OpenFL
                     continue;
                 }
 
-                CLAPI.WriteRandom(obj as CLBuffer, randombytesource, _activeChannels);
+                CLAPI.WriteRandom(obj as MemoryBuffer, randombytesource, _activeChannels);
             }
         }
 
@@ -587,7 +626,7 @@ namespace Engine.OpenFL
             else if (_currentArgStack.Count == 1)
             {
                 var obj = _currentArgStack.Pop();
-                if (!(obj is CLBuffer))
+                if (!(obj is MemoryBuffer))
                 {
                     Logger.Crash(
                         new FLInvalidArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"),
@@ -595,7 +634,7 @@ namespace Engine.OpenFL
                     return;
                 }
 
-                _stepResult.DebugBuffer = obj as CLBuffer;
+                _stepResult.DebugBuffer = obj as MemoryBuffer;
             }
             else
             {
@@ -617,7 +656,7 @@ namespace Engine.OpenFL
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(string file, CLBuffer input, int width, int height, int depth, int channelCount,
+        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
             KernelDatabase kernelDB,
             bool ignoreDebug)
         {
@@ -640,13 +679,15 @@ namespace Engine.OpenFL
         /// A public constructor
         /// </summary>
         /// <param name="file">The file containing the source</param>
+        /// <param name="genType">The Type of the data the interpreter is operating on</param>
         /// <param name="input">The input buffer</param>
         /// <param name="width">Width of the input buffer</param>
         /// <param name="height">Height of the input buffer</param>
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
+        /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, CLBuffer input, int width, int height, int depth,
+        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height, int depth,
             int channelCount, string kernelDBFolder,
             bool ignoreDebug) : this(file, input, width, height, depth, channelCount,
             new KernelDatabase(kernelDBFolder, genType), ignoreDebug)
@@ -657,12 +698,14 @@ namespace Engine.OpenFL
         /// A public constructor
         /// </summary>
         /// <param name="file">The file containing the source</param>
+        /// <param name="genType">The Type of the data the interpreter is operating on</param>
         /// <param name="input">The input buffer</param>
         /// <param name="width">Width of the input buffer</param>
         /// <param name="height">Height of the input buffer</param>
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
-        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, CLBuffer input, int width, int height, int depth,
+        /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
+        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height, int depth,
             int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount,
             new KernelDatabase(kernelDBFolder, genType), false)
         {
@@ -678,7 +721,7 @@ namespace Engine.OpenFL
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
-        public Interpreter(string file, CLBuffer input, int width, int height, int depth, int channelCount,
+        public Interpreter(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
             KernelDatabase kernelDB) : this(file, input, width, height, depth, channelCount, kernelDB, false)
         {
         }
@@ -693,7 +736,7 @@ namespace Engine.OpenFL
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
-        public void Reset(string file, CLBuffer input, int width, int height, int depth, int channelCount,
+        public void Reset(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
             KernelDatabase kernelDB)
         {
             Reset(file, input, width, height, depth, channelCount, kernelDB, false);
@@ -710,7 +753,7 @@ namespace Engine.OpenFL
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public void Reset(string file, CLBuffer input, int width, int height, int depth, int channelCount,
+        public void Reset(string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
             KernelDatabase kernelDB, bool ignoreDebug)
         {
             _currentBuffer = input;
@@ -726,7 +769,7 @@ namespace Engine.OpenFL
                 _activeChannels[i] = 1;
             }
 
-            _activeChannelBuffer = CLAPI.CreateBuffer(_activeChannels, CLMemoryFlag.ReadOnly | CLMemoryFlag.CopyHostPointer);
+            _activeChannelBuffer = CLAPI.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
 
             _currentArgStack = new Stack<object>();
             foreach (var memoryBuffer in _definedBuffers)
@@ -754,7 +797,7 @@ namespace Engine.OpenFL
         /// Returns the currently active buffer
         /// </summary>
         /// <returns>The active buffer</returns>
-        public CLBuffer GetResultBuffer()
+        public MemoryBuffer GetResultBuffer()
         {
             return _currentBuffer;
         }
@@ -1034,7 +1077,7 @@ namespace Engine.OpenFL
             var size = (int) _currentBuffer.Size;
             if (!keepBuffer)
             {
-                _currentBuffer = CLAPI.CreateEmpty<byte>(size, CLMemoryFlag.ReadWrite | CLMemoryFlag.CopyHostPointer);
+                _currentBuffer = CLAPI.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
             }
 
             _currentIndex = index;

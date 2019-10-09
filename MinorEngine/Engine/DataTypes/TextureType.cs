@@ -1,5 +1,9 @@
 ﻿namespace Engine.DataTypes
 {
+
+    /// <summary>
+    /// A Copy of Assimp.TextureType to be able to specify TextureTypes without referencing assimp
+    /// </summary>
     public enum TextureType
     {
         /// <summary>

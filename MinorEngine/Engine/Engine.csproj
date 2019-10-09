@@ -33,9 +33,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="OpenCl.DotNetCore">
-      <HintPath>..\..\opencl-dotnet\OpenCl.DotNetCore\bin\Release\netstandard2.0\OpenCl.DotNetCore.dll</HintPath>
-    </Reference>
+    <Folder Include="OpenCL\DotNetCore\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="OpenCL\DotNetCore\DataTypes\VectorTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>VectorTypes.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="OpenCL\DotNetCore\DataTypes\VectorTypes.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>VectorTypes.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

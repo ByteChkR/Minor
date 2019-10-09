@@ -1,14 +1,19 @@
 ﻿using System;
 using Engine.DataTypes;
 using Engine.Rendering;
-using OpenCl.DotNetCore.Programs;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.UI
 {
+    /// <summary>
+    /// Implements Image Rendering in Screen Space
+    /// </summary>
     public class UIImageRenderContext : UIRenderContext
     {
+        /// <summary>
+        /// Screen space quad
+        /// </summary>
         private static float[] _screenQuadVertexData =
         {
             // positions   // texCoords
@@ -21,12 +26,29 @@ namespace Engine.UI
             1.0f, 1.0f, 1.0f, 1.0f
         };
 
+        /// <summary>
+        /// The image that will be drawn to the screen
+        /// </summary>
         public Texture Texture { get; set; }
 
 
+        /// <summary>
+        /// Private flag if the Screen Space Quad has been loaded
+        /// </summary>
         private bool _init;
         private int _vao;
 
+        /// <summary>
+        /// public constructor
+        /// </summary>
+        /// <param name="position">Position in screen space</param>
+        /// <param name="scale">The Scale of the Image</param>
+        /// <param name="modelMatrix">Model matrix</param>
+        /// <param name="tex">The texture to draw</param>
+        /// <param name="worldSpace">Is the Object in world space</param>
+        /// <param name="alpha">Alpha value of the image</param>
+        /// <param name="program">The shader to be used</param>
+        /// <param name="renderQueue">The Render queue</param>
         public UIImageRenderContext(Vector2 position, Vector2 scale, Matrix4 modelMatrix, Texture tex,
             bool worldSpace, float alpha, ShaderProgram program, int renderQueue) : base(position, scale, modelMatrix,
             worldSpace, alpha, program, renderQueue)
@@ -34,6 +56,9 @@ namespace Engine.UI
             Texture = tex;
         }
 
+        /// <summary>
+        /// Sets up the Screen Space Quad
+        /// </summary>
         private void SetUpGLBuffers()
         {
             _init = true;
@@ -50,6 +75,11 @@ namespace Engine.UI
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
         }
 
+        /// <summary>
+        /// renders the image on the screen
+        /// </summary>
+        /// <param name="viewMat"></param>
+        /// <param name="projMat"></param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
             if (!_init)

@@ -7,24 +7,56 @@ using Vector3 = OpenTK.Vector3;
 
 namespace Engine.Physics
 {
+
+    /// <summary>
+    /// Collider Component that is used to Connect the physics engine to the game systems
+    /// </summary>
     public class Collider : AbstractComponent
     {
+        /// <summary>
+        /// The Physics System collider
+        /// </summary>
         public Entity PhysicsCollider { get; }
+
+        /// <summary>
+        /// The constraints of the collider
+        /// </summary>
         public ColliderConstraints ColliderConstraints { get; set; }
+        /// <summary>
+        /// The Collision layer
+        /// </summary>
         public int CollisionLayer { get; set; }
+        /// <summary>
+        /// Private flag if the collider has been removed from the physics engine
+        /// </summary>
         private bool _colliderRemoved;
 
-        public bool isTrigger
+        /// <summary>
+        /// Property to get/set the collider state
+        /// IsTrigger = true -> No Collision solving.
+        /// IsTrigger = false -> Collision Solving
+        /// </summary>
+        public bool IsTrigger
         {
             get => PhysicsCollider.CollisionInformation.CollisionRules.Personal == CollisionRule.NoSolver;
             set => PhysicsCollider.CollisionInformation.CollisionRules.Personal =
                 value ? CollisionRule.NoSolver : CollisionRule.Normal;
         }
 
+        /// <summary>
+        /// Constructor for creating a Collider Component
+        /// </summary>
+        /// <param name="shape">The Physics Engine Shape</param>
+        /// <param name="layerName">The layer of the collider</param>
         public Collider(Entity shape, string layerName) : this(shape, LayerManager.NameToLayer(layerName))
         {
         }
 
+        /// <summary>
+        /// Constructor for creating a Collider Component
+        /// </summary>
+        /// <param name="shape">The Physics Engine Shape</param>
+        /// <param name="layerID">The layer of the collider</param>
         public Collider(Entity shape, int layerID)
         {
             PhysicsCollider = shape;
@@ -33,6 +65,10 @@ namespace Engine.Physics
             CollisionLayer = layerID;
         }
 
+
+        /// <summary>
+        /// Destructor that will log a crash when the collider was not removed when the object is being garbage collected
+        /// </summary>
         ~Collider()
         {
             if (!_colliderRemoved)
@@ -41,7 +77,9 @@ namespace Engine.Physics
             }
         }
 
-
+        /// <summary>
+        /// Awake override that initially sets the physicsshape to the position of the gameobject
+        /// </summary>
         protected override void Awake()
         {
             PhysicsCollider.Position = Owner.GetLocalPosition();
@@ -49,6 +87,9 @@ namespace Engine.Physics
             PhysicsEngine.AddEntity(PhysicsCollider);
         }
 
+        /// <summary>
+        /// Removes the Physics Collider from the Physics Engine
+        /// </summary>
         protected override void OnDestroy()
         {
             PhysicsCollider.CollisionInformation.Tag = null;
@@ -56,16 +97,27 @@ namespace Engine.Physics
             _colliderRemoved = true;
         }
 
+        /// <summary>
+        /// Sets the Linear velocity to a specified amount
+        /// </summary>
+        /// <param name="vel">The velocity of the body</param>
         public void SetVelocityLinear(Vector3 vel)
         {
             PhysicsCollider.LinearVelocity = vel;
         }
 
+        /// <summary>
+        /// Sets the Angular velocity to a specified amount
+        /// </summary>
+        /// <param name="vel">The velocity of the body</param>
         public void SetVelocityAngular(Vector3 vel)
         {
             PhysicsCollider.AngularVelocity = vel;
         }
 
+        /// <summary>
+        /// Function that will modify the linear velocity to satisfy the constraints
+        /// </summary>
         private void enforceTranslationConstraints()
         {
             Vector3 veel = PhysicsCollider.LinearVelocity;
@@ -87,6 +139,10 @@ namespace Engine.Physics
             PhysicsCollider.LinearVelocity = veel;
         }
 
+        /// <summary>
+        /// Function that will modify the angular velocity(indirectly) to satisfy the constraints
+        /// by setting the InertiaTensorInverse to 0 on the specified axes(effectively having infinite rotational friction)
+        /// </summary>
         private void enforceRotationConstraints()
         {
             var veel = PhysicsCollider.LocalInertiaTensorInverse;
@@ -109,6 +165,11 @@ namespace Engine.Physics
             PhysicsCollider.LocalInertiaTensorInverse = veel;
         }
 
+
+        /// <summary>
+        /// Update function that will keep the Collider in the physics engine in sync with the Game World
+        /// </summary>
+        /// <param name="deltaTime"></param>
         protected override void Update(float deltaTime)
         {
             if (PhysicsCollider.IsDynamic)

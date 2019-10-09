@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.OpenCL.DotNetCore.DataTypes;
+using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
-using OpenCl.DotNetCore.DataTypes;
-using OpenCl.DotNetCore.Memory;
 
 namespace Engine.OpenCL
 {
@@ -168,7 +168,7 @@ namespace Engine.OpenCL
                 var data = (object[]) value;
 
                 return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
-                    Converters[(int) DataType], CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadOnly);
+                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
             }
 
             return CastToType(Converters[(int) DataType], value);
@@ -222,7 +222,7 @@ namespace Engine.OpenCL
         /// returns the Correct DataType string for the equivalent in the CL Library
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>The keyword for OpenCL as string</returns>
         public static string GetDataString(TypeEnums.DataTypes type)
         {
             foreach (var dataTypePair in DataTypePairs)
@@ -236,6 +236,12 @@ namespace Engine.OpenCL
             return "UNKNOWN";
         }
 
+
+        /// <summary>
+        /// returns the Correct DataType max value for the equivalent in the CL Library
+        /// </summary>
+        /// <param name="type">the cl type that is used</param>
+        /// <returns>max value of the data type</returns>
         public static float GetDataMaxSize(string genType)
         {
             foreach (var dataTypePair in DataTypePairs)
@@ -253,7 +259,7 @@ namespace Engine.OpenCL
         /// returns the Correct DataType enum for the equivalent in OpenCL C99
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>The data type</returns>
         public static TypeEnums.DataTypes GetDataType(string str)
         {
             foreach (var dataTypePair in DataTypePairs)

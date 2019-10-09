@@ -15,13 +15,26 @@ using AssimpTextureType = Assimp.TextureType;
 using TextureType = Engine.DataTypes.TextureType;
 namespace Engine.IO
 {
+
+    /// <summary>
+    /// Static class responsible to load Meshes from Disk
+    /// </summary>
     public class MeshLoader
     {
 
+        /// <summary>
+        /// static Class providing frequently used objects
+        /// </summary>
         public static class Prefabs
         {
-
+            /// <summary>
+            /// Backing field of the Public Property Cube
+            /// </summary>
             private static Mesh _cube = null;
+
+            /// <summary>
+            /// Returns an instance of a Cube
+            /// </summary>
             public static Mesh Cube
             {
                 get
@@ -38,8 +51,11 @@ namespace Engine.IO
         }
 
 
-
-        //Todo: Create Dummy texture that will be returned when not found
+        /// <summary>
+        /// Loads a Mesh From File
+        /// </summary>
+        /// <param name="filename">The path to the file</param>
+        /// <returns>The loaded Mesh</returns>
         public static Mesh FileToMesh(string filename)
         {
             var meshes = LoadModel(filename);
@@ -51,11 +67,21 @@ namespace Engine.IO
             return null;
         }
 
+        /// <summary>
+        /// Loads Meshes From File
+        /// </summary>
+        /// <param name="filename">The path to the file</param>
+        /// <returns>The loaded Meshes</returns>
         public static Mesh[] FileToMeshes(string filename)
         {
             return LoadModel(filename).ToArray();
         }
 
+        /// <summary>
+        /// Loads a Assimp Model From File
+        /// </summary>
+        /// <param name="filename">The path to the file</param>
+        /// <returns>The loaded AssimpModel</returns>
         private static List<Mesh> LoadModel(string path)
         {
             var context = new AssimpContext();
@@ -81,11 +107,19 @@ namespace Engine.IO
 
             var ret = new List<Mesh>();
 
-            processNode(s.RootNode, s, ret, directory, path);
+            processNode(s.RootNode, s, ret, directory);
             return ret;
         }
 
-        private static void processNode(Node node, Scene s, List<Mesh> meshes, string dir, string DebugName)
+
+        /// <summary>
+        /// Processes a node in an Assimp Scene
+        /// </summary>
+        /// <param name="node">The Current node to process</param>
+        /// <param name="s">The root scene</param>
+        /// <param name="meshes">The mesh list that will be filled</param>
+        /// <param name="dir">The Relative directory of the Mesh File</param>
+        private static void processNode(Node node, Scene s, List<Mesh> meshes, string dir)
         {
             Logger.Log("Processing Node: " + node.Name, DebugChannel.Log);
             if (node.HasMeshes)
@@ -93,7 +127,7 @@ namespace Engine.IO
                 Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
                 for (var i = 0; i < node.MeshCount; i++)
                 {
-                    meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir, DebugName));
+                    meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir));
                 }
             }
 
@@ -101,12 +135,20 @@ namespace Engine.IO
             {
                 for (var i = 0; i < node.Children.Count; i++)
                 {
-                    processNode(node.Children[i], s, meshes, dir, DebugName);
+                    processNode(node.Children[i], s, meshes, dir);
                 }
             }
         }
 
-        private static Mesh processMesh(AssimpMesh mesh, Scene s, string dir, string debugName)
+
+        /// <summary>
+        /// Processes a Mesh in an Assimp Scene
+        /// </summary>
+        /// <param name="mesh">The Current mesh to process</param>
+        /// <param name="s">The root scene</param>
+        /// <param name="dir">The Relative directory of the Mesh File</param>
+        /// <returns>The mesh loaded.</returns>
+        private static Mesh processMesh(AssimpMesh mesh, Scene s, string dir)
         {
             var vertices = new List<Vertex>();
             var indices = new List<uint>();
@@ -167,13 +209,25 @@ namespace Engine.IO
             return new Mesh(ebo, vbo, vao, indices.Count);
         }
 
-
+        /// <summary>
+        /// Little helper function that is the equivalent for C++ : offsetof keyword
+        /// </summary>
+        /// <param name="name">Name of the Field</param>
+        /// <returns>The offset relative to the beginning of vertex the struct</returns>
         private static IntPtr offsetOf(string name)
         {
             var off = Marshal.OffsetOf(typeof(Vertex), name);
             return off;
         }
 
+        /// <summary>
+        /// Code that is setting up the mesh in OpenGL
+        /// </summary>
+        /// <param name="indices">Indices to Draw</param>
+        /// <param name="vertices">Vertex Data</param>
+        /// <param name="vao">vertex array object</param>
+        /// <param name="vbo">vertex buffer object</param>
+        /// <param name="ebo">element buffer object</param>
         private static void setupMesh(uint[] indices, Vertex[] vertices, out int vao,out int vbo, out int ebo)
         {
             GL.GenVertexArrays(1, out vao);
@@ -220,6 +274,13 @@ namespace Engine.IO
         }
 
 
+        /// <summary>
+        /// Loads Textures from AssimpMaterials
+        /// </summary>
+        /// <param name="m">Assimp Material</param>
+        /// <param name="texType">Type of texture</param>
+        /// <param name="dir">The directory of the file that references this material</param>
+        /// <returns>A list of textures that were attached to the material</returns>
         private static List<Texture> loadMaterialTextures(Material m, TextureType texType, string dir)
         {
             var ret = new List<Texture>();

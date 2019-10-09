@@ -6,11 +6,26 @@ using Engine.Rendering.Contexts;
 
 namespace Engine.UI
 {
+
+    /// <summary>
+    /// A Component that is rendering an image in camera space
+    /// </summary>
     public class UIImageRendererComponent : UIElement
     {
+
+        /// <summary>
+        /// The backing field of the context
+        /// </summary>
         private UIImageRenderContext _context;
+
+        /// <summary>
+        /// Flag if the context has changed and needs an update
+        /// </summary>
         private bool _contextInvalid = true;
 
+        /// <summary>
+        /// the context property for IRenderingComponent
+        /// </summary>
         public override RenderContext Context
         {
             get
@@ -35,8 +50,14 @@ namespace Engine.UI
             }
         }
 
+        /// <summary>
+        /// Backing field for the texture
+        /// </summary>
         private Texture _texture;
 
+        /// <summary>
+        /// Property that represents the Texture used to draw the screen quad
+        /// </summary>
         public Texture Texture
         {
             get => _texture;
@@ -52,7 +73,14 @@ namespace Engine.UI
 
         
 
-
+        /// <summary>
+        /// public contstructor
+        /// </summary>
+        /// <param name="width">Width of the image</param>
+        /// <param name="height">Height of the image</param>
+        /// <param name="worldSpace">Is the image in world space</param>
+        /// <param name="alpha">The alpha value of the image</param>
+        /// <param name="shader">The shader that is used to draw</param>
         public UIImageRendererComponent(int width, int height, bool worldSpace, float alpha, ShaderProgram shader) :
             this(
                 TextureLoader.ParameterToTexture(width, height), worldSpace,
@@ -60,39 +88,25 @@ namespace Engine.UI
         {
         }
 
-        protected override void OnDestroy()
-        {
-            Texture?.Dispose();
-        }
-
+        /// <summary>
+        /// public constructor
+        /// </summary>
+        /// <param name="texture">The texture that is used to draw</param>
+        /// <param name="worldSpace">Is the image in world space</param>
+        /// <param name="alpha">The alpha value of the image</param>
+        /// <param name="shader">The shader that is used to draw</param>
         public UIImageRendererComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {
             Texture = texture;
         }
 
-
-        //public virtual void Render(Matrix4 modelMat, Matrix4 viewMat, Matrix4 projMat)
-        //{
-        //    if (Shader != null)
-        //    {
-        //        Shader.Use();
-        //        Matrix4 m;
-        //        if (WorldSpace)
-        //            m = modelMat * viewMat * projMat;
-        //        else
-        //            m = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
-
-        //        GL.UniformMatrix4(Shader.GetUniformLocation("transform"), false, ref m);
-
-        //        GL.ActiveTexture(TextureUnit.Texture0);
-        //        GL.BindTexture(TextureTarget.Texture2D, Texture.TextureId);
-
-        //        GL.Uniform1(Shader.GetUniformLocation("texture"), 0);
-        //        GL.BindVertexArray(UIHelper.Instance.quadVAO);
-        //        GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-        //        GL.BindVertexArray(0);
-        //    }
-        //}
+        /// <summary>
+        /// Disposes th Texture used by the context
+        /// </summary>
+        protected override void OnDestroy()
+        {
+            Texture?.Dispose();
+        }
     }
 }

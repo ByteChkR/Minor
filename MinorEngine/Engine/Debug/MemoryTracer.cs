@@ -4,80 +4,35 @@ using System.Diagnostics;
 
 namespace Engine.Debug
 {
-    public class EngineStageInformation
-    {
-        public string Name;
-        public bool Finalized { get; private set; }
-        public long Before;
-        public long After;
-        public long AfterGarbageCollection;
-        public TimeSpan TimeSpentInStage;
-
-        public EngineStageInformation Parent;
-        public List<EngineStageInformation> SubStages;
-        public Stopwatch Timer;
-
-        public EngineStageInformation(string name)
-        {
-            Name = name;
-#if !TRACE_TIME_ONLY
-            Before = GC.GetTotalMemory(false) / 1024;
-#endif
-            SubStages = new List<EngineStageInformation>();
-            Timer = new Stopwatch();
-            Timer.Start();
-        }
-
-        public void FinalizeStage()
-        {
-            Finalized = true;
-#if !TRACE_TIME_ONLY
-            After = GC.GetTotalMemory(false) / 1024;
-            AfterGarbageCollection = GC.GetTotalMemory(true) / 1024;
-#endif
-            Timer.Stop();
-            TimeSpentInStage = Timer.Elapsed;
-        }
-
-        public static string ToConsoleText(EngineStageInformation info, int depth)
-        {
-            var ind = "\t";
-            for (var i = 0; i < depth; i++)
-            {
-                ind += "\t";
-            }
-
-
-            var ret = info.Name + "\n";
-            ret += ind + "KB Used Before: " + info.Before + "\n";
-            ret += ind + "KB Used After: " + info.After + "\n";
-            ret += ind + "KB Used After(post GC): " + info.AfterGarbageCollection + "\n";
-            ret += ind + "Elapsed Time(MS): " + info.TimeSpentInStage.TotalMilliseconds + "\n";
-            ret += ind + "Substep Count: " + info.SubStages.Count + "\n";
-            ret += ind + "Substeps: \n";
-
-
-            foreach (var stepMemoryInformation in info.SubStages)
-            {
-                ret += ToConsoleText(stepMemoryInformation, depth + 1);
-            }
-
-            return ret;
-        }
-
-        public override string ToString()
-        {
-            return ToConsoleText(this, 0);
-        }
-    }
-
+    
+    /// <summary>
+    /// Class used to Raise Statistics about the engines different stages
+    /// </summary>
     public static class MemoryTracer
     {
+
+
+        /// <summary>
+        /// List of the last frames informations
+        /// </summary>
         private static List<EngineStageInformation> _informationCollection = new List<EngineStageInformation>();
+
+        /// <summary>
+        /// Current active stage
+        /// </summary>
         private static EngineStageInformation _current;
+
+        /// <summary>
+        /// The maximum history of informations that is kept
+        /// </summary>
         public static int MaxTraceCount = 10;
 
 
+        /// <summary>
+        /// Command for the Debug Console to list the current History of the Engine Stages
+        /// </summary>
+        /// <param name="args">Parameters provided by the user(0)</param>
+        /// <returns>Command Result</returns>
         public static string cmdListMemoryInfo(string[] args)
         {
 #if LEAK_TRACE
@@ -94,7 +49,11 @@ namespace Engine.Debug
             return "Engine Was compiled without MemoryTracer enabled.";
 #endif
         }
-
+        /// <summary>
+        /// Command for the Debug Console to list the last complete Stage info of the Engine Stages
+        /// </summary>
+        /// <param name="args">Parameters provided by the user(0)</param>
+        /// <returns>Command Result</returns>
         public static string cmdListLastMemoryInfo(string[] args)
         {
 #if LEAK_TRACE
@@ -179,6 +138,12 @@ namespace Engine.Debug
 #endif
         }
 
+        /// <summary>
+        /// Changes the Stage to the next stage/ or a substage
+        /// </summary>
+        /// <param name="name">Name of the next stage</param>
+        /// <param name="finalize">If true it will end the last stage(e.g. its not a substage)</param>
+        /// <returns></returns>
         private static EngineStageInformation ChangeStage(string name, bool finalize)
         {
             var old = _current;

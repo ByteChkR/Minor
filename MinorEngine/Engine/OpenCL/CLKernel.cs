@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Engine.DataTypes;
-using OpenCl.DotNetCore.CommandQueues;
-using OpenCl.DotNetCore.DataTypes;
-using OpenCl.DotNetCore.Kernels;
-using OpenCl.DotNetCore.Memory;
+using Engine.OpenCL.DotNetCore.CommandQueues;
+using Engine.OpenCL.DotNetCore.DataTypes;
+using Engine.OpenCL.DotNetCore.Kernels;
+using Engine.OpenCL.DotNetCore.Memory;
 
 #if TRAVIS_TEST
 
@@ -95,12 +95,6 @@ namespace Engine.OpenCL
                 
                 return;
             }
-            if (value is CLBuffer bufferRef)
-            {
-                SetBuffer(index, BufferAbstraction.ResolveAbstraction(bufferRef));
-
-                return;
-            }
 
 
 #if TRAVIS_TEST
@@ -131,8 +125,21 @@ namespace Engine.OpenCL
             SetArg(2, channelCount);
             SetArg(3, genTypeMaxVal);
             SetArg(4, enabledChannels);
-            cq.EnqueueNDRangeKernel(Kernel, 1, size);
+            Run(cq, 1 , size);
 #endif
+        }
+
+
+        /// <summary>
+        /// runs the Kernel with a command queue
+        /// This function requires setting ALL parameters manually
+        /// </summary>
+        /// <param name="cq">Command Queue to use</param>
+        /// <param name="workdim">The working dimension(usually 1)</param>
+        /// <param name="groupsize">The group size(usually buffer.size)</param>
+        public void Run(CommandQueue cq, int workdim, int groupsize)
+        {
+            cq.EnqueueNDRangeKernel(Kernel, workdim, groupsize);
         }
     }
 }

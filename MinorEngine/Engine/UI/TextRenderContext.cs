@@ -9,19 +9,53 @@ using SharpFont;
 
 namespace Engine.UI
 {
+    /// <summary>
+    /// Implements a text rendering context
+    /// </summary>
     public class TextRenderContext : UIRenderContext
     {
+        /// <summary>
+        /// The Text to display
+        /// </summary>
         public string DisplayText { get; set; }
+
+        /// <summary>
+        /// The font that is used
+        /// </summary>
         public GameFont FontFace { get; set; }
 
-
+        /// <summary>
+        /// The VBO of the Quad used to draw each character
+        /// </summary>
         protected static int _vbo;
+        /// <summary>
+        /// The VAO of the Quad used to draw each character
+        /// </summary>
         protected static int _vao;
+
+        /// <summary>
+        /// Initialization flag
+        /// </summary>
         protected static bool _init;
 
+
+        /// <summary>
+        /// The Length of a single \t in UV coordinates
+        /// </summary>
         private static float TabToSpaceCount = 0.1f;
 
-
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="program">The Program to be used</param>
+        /// <param name="position">Position of the Text in Screen Space</param>
+        /// <param name="scale">The Scale of the Text</param>
+        /// <param name="modelMatrix">The Model Matrix</param>
+        /// <param name="worldSpace">A flag if the Text is positioned in world space</param>
+        /// <param name="alpha">Alpha value of the text</param>
+        /// <param name="fontFace">The Font That is used</param>
+        /// <param name="displayText">The Initial Display Text</param>
+        /// <param name="renderQueue">The Render queue</param>
         public TextRenderContext(ShaderProgram program, Vector2 position, Vector2 scale, Matrix4 modelMatrix,
             bool worldSpace, float alpha, GameFont fontFace, string displayText, int renderQueue) : base(position,
             scale, modelMatrix, worldSpace, alpha, program, renderQueue)
@@ -30,6 +64,9 @@ namespace Engine.UI
             DisplayText = displayText;
         }
 
+        /// <summary>
+        /// Initialization Method that sets up the Screen Quad buffers
+        /// </summary>
         private static void SetUpTextResources()
         {
             _init = true;
@@ -48,6 +85,11 @@ namespace Engine.UI
             GL.BindVertexArray(0);
         }
 
+        /// <summary>
+        /// Renders the Text in Display Text to the screen
+        /// </summary>
+        /// <param name="viewMat">View matrix of the camera(unused)</param>
+        /// <param name="projMat">View matrix of the camera(unused)</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
             if (!_init)

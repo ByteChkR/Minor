@@ -3,8 +3,16 @@ using Engine.Exceptions;
 
 namespace Engine.Debug
 {
+
+    /// <summary>
+    /// Logging Class that binds the ADL Debugging framework and is used for all Console Output/Crashes.
+    /// </summary>
     public static class Logger
     {
+        /// <summary>
+        /// Internal Helper method to set the Debug Stage
+        /// </summary>
+        /// <param name="stage"></param>
         internal static void SetDebugStage(DebugStage stage)
         {
             DebugHelper.SetStage((int)stage);

@@ -13,38 +13,135 @@ using OpenTK.Input;
 
 namespace Engine.Debug
 {
+
+    /// <summary>
+    /// A Convenient Debug Console that is quite versatile
+    /// </summary>
     public class DebugConsoleComponent : AbstractComponent
     {
+        /// <summary>
+        /// The Maximum Amount of console lines that is *roughly* working for the usecase
+        /// </summary>
         private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 20;
+        /// <summary>
+        /// The Text to be displayed when the Console is Closed.
+        /// </summary>
         private const string HelpText = "Press C to Open the FL Console";
+
+        /// <summary>
+        /// The Text to be displayed in the title bar when the Console is Opened.
+        /// </summary>
         private const string ConsoleTitle = "GameEngine Console:";
+
+        /// <summary>
+        /// Reference to the Title Renderer Component
+        /// </summary>
         private UITextRendererComponent _title;
+
+        /// <summary>
+        /// Reference to the Console Input Renderer Component
+        /// </summary>
         private UITextRendererComponent _consoleInput;
+
+        /// <summary>
+        /// Reference to the Console Output Renderer Component
+        /// </summary>
         private UITextRendererComponent _consoleOutput;
+
+        /// <summary>
+        /// Reference to the Console output background Renderer Component
+        /// </summary>
         private UIImageRendererComponent _consoleOutputImage;
+
+        /// <summary>
+        /// Reference to the Hint Text Renderer Component
+        /// </summary>
         private UITextRendererComponent _hintText;
+
+        /// <summary>
+        /// Reference to the Background Image Renderer Component
+        /// </summary>
         private UIImageRendererComponent _bgImage;
+
+        /// <summary>
+        /// String builder used for inputs from the used
+        /// </summary>
         private StringBuilder _sb;
+
+        /// <summary>
+        /// String builder used for outputs to the console.
+        /// </summary>
         private StringBuilder _outSB;
 
+        /// <summary>
+        /// Delegate representing a command.
+        /// </summary>
+        /// <param name="args">The commands that were provided by the user input</param>
+        /// <returns></returns>
         public delegate string ConsoleCommand(string[] args);
 
+        /// <summary>
+        /// Internal List of Commands
+        /// </summary>
         private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
+
+        /// <summary>
+        /// Queue that is storing the Log Text
+        /// </summary>
         private Queue<string> _consoleOutBuffer;
+
+        /// <summary>
+        /// A list used to store previous inputs from the user
+        /// To provide a more "console~ish" feel
+        /// </summary>
         private readonly List<string> _commandHistory = new List<string>();
+
+        /// <summary>
+        /// The current Index in the command history
+        /// </summary>
         private int _currentId;
 
+        /// <summary>
+        /// The current position in the input(the position of characters)
+        /// </summary>
         private int inputIndex;
 
+        /// <summary>
+        /// If the Text Cursor will be shown
+        /// </summary>
         private bool _blinkActive;
+
+
+        /// <summary>
+        /// The maximum time the cursor stays idle before changing its visible state.
+        /// </summary>
         private readonly float _blinkMaxTime = 0.5f;
+
+        /// <summary>
+        /// The current time for the blinking
+        /// </summary>
         private float _blinkTime;
 
+        /// <summary>
+        /// Flag to show/disable the console
+        /// Also disables character input
+        /// </summary>
         private bool _showConsole;
+
+        /// <summary>
+        /// Flag used to indicate that the console window has changed and we need to redraw it
+        /// </summary>
         private bool _invalidate;
 
+        /// <summary>
+        /// Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues)
+        /// I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0
+        /// </summary>
         private static RenderTarget rt, rt2;
 
+        /// <summary>
+        /// OnDestroy Implementation that will remove the two render targets from the system
+        /// </summary>
         protected override void OnDestroy()
         {
             GameEngine.Instance.RemoveRenderTarget(rt);
@@ -53,6 +150,10 @@ namespace Engine.Debug
             rt2.Dispose();
         }
 
+        /// <summary>
+        /// Static function that will assemble the Console
+        /// </summary>
+        /// <returns>A gameobject ready to be added to the game</returns>
         public static GameObject CreateConsole()
         {
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -148,6 +249,10 @@ namespace Engine.Debug
         }
 
 
+        /// <summary>
+        /// Writes the Specified text to the console. and removes the oldest messages when reaching message limit.
+        /// </summary>
+        /// <param name="text"></param>
         public void WriteToConsole(string text)
         {
             var arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
@@ -163,6 +268,10 @@ namespace Engine.Debug
         }
 
 
+        /// <summary>
+        /// Constructs the Console Output
+        /// </summary>
+        /// <returns></returns>
         private string ToConsoleText()
         {
             _outSB.Clear();
@@ -175,6 +284,9 @@ namespace Engine.Debug
             return _outSB.ToString();
         }
 
+        /// <summary>
+        /// Awake function getting all the references in need and also adding a few basic commands
+        /// </summary>
         protected override void Awake()
         {
             _consoleOutBuffer = new Queue<string>();
@@ -200,19 +312,37 @@ namespace Engine.Debug
             AddCommand("cmd", cmdExOnConsole);
         }
 
+        /// <summary>
+        /// Command in Console: q/exit/quit
+        /// Exits the console
+        /// </summary>
+        /// <param name="args">The arguments provided(0)</param>
+        /// <returns>Result of Command</returns>
         private string cmd_Exit(string[] args)
         {
             ToggleConsole(false);
             return "Exited.";
         }
 
-
+        /// <summary>
+        /// Command in Console: clear/cls
+        /// Clears the console output
+        /// </summary>
+        /// <param name="args">The arguments provided(0)</param>
+        /// <returns>Result of Command</returns>
         private string cmd_Clear(string[] args)
         {
             _consoleOutBuffer.Clear();
             return "Cleared Output";
         }
 
+
+        /// <summary>
+        /// Command in Console: clear/cls
+        /// Lists all Console Commands
+        /// </summary>
+        /// <param name="args">The arguments provided(0)</param>
+        /// <returns>Result of Command</returns>
         private string cmd_ListCmds(string[] args)
         {
             _sb.Clear();
@@ -237,6 +367,11 @@ namespace Engine.Debug
             return _sb.ToString();
         }
 
+        /// <summary>
+        /// A function allowing for addition of commands
+        /// </summary>
+        /// <param name="name">The name for the command</param>
+        /// <param name="command">The Command associated with the Name</param>
         public void AddCommand(string name, ConsoleCommand command)
         {
             if (!_commands.ContainsKey(name))
@@ -245,6 +380,11 @@ namespace Engine.Debug
             }
         }
 
+        /// <summary>
+        /// Overridden OnKeyPress function
+        /// </summary>
+        /// <param name="sender">Basic Event handler stuff</param>
+        /// <param name="e">Contains info about the KeyPress that has been occured</param>
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
             if (_showConsole)
@@ -266,6 +406,13 @@ namespace Engine.Debug
             }
         }
 
+
+        /// <summary>
+        /// Command in Console: clear/cls
+        /// Writes the Command Output to the Actual CMD Console
+        /// </summary>
+        /// <param name="args">argument to redirect & parameters passed to the argument</param>
+        /// <returns>Result of Command</returns>
         private string cmdExOnConsole(string[] args)
         {
             if (args.Length == 0)
@@ -299,6 +446,12 @@ namespace Engine.Debug
             return "Success";
         }
 
+
+        /// <summary>
+        /// Overridden OnKeyUp function
+        /// </summary>
+        /// <param name="sender">Basic Event handler stuff</param>
+        /// <param name="e">Contains info about the Key Event that has been raised</param>
         protected override void OnKeyUp(object sender, KeyboardKeyEventArgs e)
         {
             if (_showConsole)
@@ -402,6 +555,10 @@ namespace Engine.Debug
             }
         }
 
+        /// <summary>
+        /// Update Function
+        /// </summary>
+        /// <param name="deltaTime">Delta Time in Seconds</param>
         protected override void Update(float deltaTime)
         {
             _blinkTime += deltaTime;
@@ -419,6 +576,11 @@ namespace Engine.Debug
             }
         }
 
+
+        /// <summary>
+        /// Function that changes the console state from visible to invisible
+        /// </summary>
+        /// <param name="state"></param>
         private void ToggleConsole(bool state)
         {
             if (_showConsole == state)
@@ -437,7 +599,9 @@ namespace Engine.Debug
             _showConsole = state;
         }
 
-
+        /// <summary>
+        /// When called it will update the console graphics
+        /// </summary>
         private void Invalidate()
         {
             _invalidate = false;

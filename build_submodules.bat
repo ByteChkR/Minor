@@ -23,7 +23,3 @@ dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c Release
 echo Building ext-pp Project:
 
 dotnet build ext-pp/ext_pp.sln -c Release
-
-echo Building opencl-dotnet Project:
-
-dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c Release

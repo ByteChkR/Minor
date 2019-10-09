@@ -4,8 +4,21 @@ using Engine.Exceptions;
 
 namespace Engine.IO.audioformats
 {
+
+    /// <summary>
+    /// Provides the Loading Code for WAV/RIFF Files.
+    /// </summary>
     public class WAVLoader : IAudioFormatLoader
     {
+        /// <summary>
+        /// Tries to load the specified file and pass the loaded data through the out parameters
+        /// </summary>
+        /// <param name="file">Input File</param>
+        /// <param name="data">Data that has been loaded</param>
+        /// <param name="channel">The channel count of the file</param>
+        /// <param name="bits">The bits per sample(or the BitDepth)</param>
+        /// <param name="bitRate">The bitrate of the Audio File</param>
+        /// <returns></returns>
         public bool TryLoadFile(string file, out byte[] data, out int channel, out int bits, out int bitRate)
         {
             Stream s = File.Open(file, FileMode.Open);
@@ -15,7 +28,15 @@ namespace Engine.IO.audioformats
             return ret;
         }
 
-
+        /// <summary>
+        /// Tries to load the specified file and pass the loaded data through the out parameters
+        /// </summary>
+        /// <param name="fileStream">Input File Stream</param>
+        /// <param name="data">Data that has been loaded</param>
+        /// <param name="channel">The channel count of the file</param>
+        /// <param name="bits">The bits per sample(or the BitDepth)</param>
+        /// <param name="bitRate">The bitrate of the Audio File</param>
+        /// <returns></returns>
         public bool TryLoadFile(Stream fileStream, out byte[] data, out int channel, out int bits, out int bitRate)
         {
             if (fileStream == null)

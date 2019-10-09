@@ -111,7 +111,7 @@ namespace Demo.scenes
         protected override void InitializeScene()
         {
             var bgBox = MeshLoader.FileToMesh("models/cube_flat.obj");
-            
+
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
@@ -140,7 +140,7 @@ namespace Demo.scenes
 
             var c = new BasicCamera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                    GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                    GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
             c.Translate(new Vector3(0, 20, 50));
             _camLookCommandComponent = new LookAtComponent();
@@ -159,7 +159,7 @@ namespace Demo.scenes
                 Console.ReadLine();
             }
 
-            source.SetClip(clip);
+            source.Clip = clip;
             source.Looping = true;
             //source.Play();
             GameEngine.Instance.CurrentScene.Add(_sourceCube);
