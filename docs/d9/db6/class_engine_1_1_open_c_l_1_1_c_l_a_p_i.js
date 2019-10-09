@@ -1,0 +1,27 @@
+var class_engine_1_1_open_c_l_1_1_c_l_a_p_i =
+[
+    [ "CLAPI", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a89dbcf9564da78b0a68130abf0b1ec3d", null ],
+    [ "CreateBuffer", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a27257999f502e227d8ea3f46fdabca76", null ],
+    [ "CreateBuffer< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a91b14023249472097e34d99d5da2302b", null ],
+    [ "CreateCLProgramFromSource", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a57ab6eab016238bc2a40d850f0fe5451", null ],
+    [ "CreateCLProgramFromSource", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a3927a53d90a806d93c17aae7ce6aa3f7", null ],
+    [ "CreateEmpty< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a45927a20d5dd63fcef3544428851a451", null ],
+    [ "CreateFromImage", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a0b855d8cdecb830e6041bea45e38d6ba", null ],
+    [ "CreateKernelFromName", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#aeebb7fc381f7b4c98609219fa9a2d77e", null ],
+    [ "CreateRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#adbdd9ef0b1b230a9d67f18b54fa1ab8d", null ],
+    [ "CreateRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#ac5593ab72973d0b2d491e44037e66050", null ],
+    [ "GetQueue", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a433878a223fdd0db53a40356bd91867b", null ],
+    [ "InitializeOpenCL", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#ae3e4025cf9a9be19262822a7237e0678", null ],
+    [ "RandomFunc< out T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#af3f0c6aa99e6219af6139ee552baa844", null ],
+    [ "ReadBuffer< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a43c4defa3c689c57e54a1a174555fd7c", null ],
+    [ "Run", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#ae000ecf0e973b3ab5d08c208fbeb2251", null ],
+    [ "WriteRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a9e623bbadab782faf4723b4382db59c3", null ],
+    [ "WriteRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a23446281ddb49475a9e4761f4ceace10", null ],
+    [ "WriteRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a62b8302f9c21101ee050a1b8945cc7b1", null ],
+    [ "WriteRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a827bce1d6b71a4715c05bcb6904bf2c6", null ],
+    [ "WriteToBuffer< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#ab2d89c21e70fa65ae038711937338638", null ],
+    [ "_commandQueue", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a9cd8d4e3d74a82ddacda8fb88b0a14d2", null ],
+    [ "_context", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#aa6350901720960d7711c6861d0747a2d", null ],
+    [ "_instance", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#af3cd45246dc0980d7450a692223ac02f", null ],
+    [ "Instance", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#acffeee4416b54e8850bac49d2fb1b911", null ]
+];

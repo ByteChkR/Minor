@@ -1,0 +1,4 @@
+var namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_platforms =
+[
+    [ "PlatformsNativeApi", "d0/d6f/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_platforms_1_1_platforms_native_api.html", "d0/d6f/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_platforms_1_1_platforms_native_api" ]
+];

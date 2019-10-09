@@ -1,0 +1,26 @@
+var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d =
+[
+    [ "ComputeWorldSpaceAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a828d0be997f7823c0b82b0340b042938", null ],
+    [ "SetLocalAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a1ddff9bc10e3b10fa35f46ecb8cae2cd", null ],
+    [ "SetLocalAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a59c75d82c911f64e75c5e9a0de79b5fa", null ],
+    [ "SetLocalAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#abf11579906629053815ce83474cc1c36", null ],
+    [ "SetWorldAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a6c23dc16ee2034c101f7e09d22a4ae1f", null ],
+    [ "SetWorldAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a4bd1b12fb33e0b1fda95c9a7ea9ff344", null ],
+    [ "SetWorldAxes", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a6f930a1011168ba9aacb1fa20c215626", null ],
+    [ "localPrimaryAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#acfca5aaf269b6e6fd828aca2b36605b7", null ],
+    [ "LocalPrimaryAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a164822e97f759f0cce528de69858869a", null ],
+    [ "localXAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a00603d238c775b07caa739009403cdb8", null ],
+    [ "LocalXAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a0b9173e5e31896f2bc77f661128e62d8", null ],
+    [ "localYAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a20576a06c3ddf4abf9c2ca9acccacfe9", null ],
+    [ "LocalYAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#ade76ab36024d811960e576d050151571", null ],
+    [ "primaryAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#af60bb3ca255f0f1616561dce5b613b30", null ],
+    [ "PrimaryAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a5b946a5f13c9beded0ea12525a1b27b6", null ],
+    [ "rotationMatrix", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a5c76f744a0e6f8822335bf6232b73eeb", null ],
+    [ "xAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a105be861b6bd48712736959146e5e9e9", null ],
+    [ "XAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a5c0f125470895ff64c39260a9b19b561", null ],
+    [ "yAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a2f0fb91724cfb3beb4a7ca148b627a20", null ],
+    [ "YAxis", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a416a3ef642c8624cb3d726b97f454f1e", null ],
+    [ "LocalTransform", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a6df8b8bdab819715c6cdd9bbe7624d85", null ],
+    [ "RotationMatrix", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a09b43f60f45338d14687ebdfc2e7721b", null ],
+    [ "WorldTransform", "d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a9e8dd35b49ee3efa0ea953f4ab8773b8", null ]
+];

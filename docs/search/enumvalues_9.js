@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['kernel',['Kernel',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#a2ae729a631c311064b08273335919c31a6ff9f4444ac481652f4412b5e1623846',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],
+  ['kernelnames',['KernelNames',['../da/db3/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_programs.html#a12161e9d1e89c9ee8d958846f74081baa1021d8d747667f4fd69b641665fae28d',1,'Engine::OpenCL::DotNetCore::Interop::Programs']]],
+  ['kernelreadandwrite',['KernelReadAndWrite',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#aafecc92ed9df0dbbb0460a9fb690b52ca09dc1ade2670fb89533d280dce278e00',1,'Engine.OpenCL.DotNetCore.Interop.Memory.KernelReadAndWrite()'],['../d0/d7e/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_svm_allocations.html#a853b11a38983da75d689958bcedfb4b8a09dc1ade2670fb89533d280dce278e00',1,'Engine.OpenCL.DotNetCore.Interop.SvmAllocations.KernelReadAndWrite()'],['../de/db2/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory.html#a6b93466a08fdb021295631e72699533ba09dc1ade2670fb89533d280dce278e00',1,'Engine.OpenCL.DotNetCore.Memory.KernelReadAndWrite()']]]
+];

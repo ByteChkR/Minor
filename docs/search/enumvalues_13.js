@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['unknown',['Unknown',['../d2/df0/namespace_engine_1_1_data_types.html#aaf0c48e251c4afa5d02fbee1f816fc39a88183b946cc5f0e8c96b2e66e1c74a7e',1,'Engine::DataTypes']]],
+  ['unsignedinteger16',['UnsignedInteger16',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a16a161d5d8d440f3b3e89da39ce8158aaa3505f6a83206539daef6303e3825ee2',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
+  ['unsignedinteger32',['UnsignedInteger32',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a16a161d5d8d440f3b3e89da39ce8158aa75cdc8bf74b762f16ff064382fc7755c',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
+  ['unsignedinteger8',['UnsignedInteger8',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a16a161d5d8d440f3b3e89da39ce8158aa79d3a6231a05e48c880689d47a0f9a70',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
+  ['update',['Update',['../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a06933067aafd48425d67bcb01bba5cb6',1,'Engine::Debug']]],
+  ['usehostpointer',['UseHostPointer',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#aafecc92ed9df0dbbb0460a9fb690b52ca6c1e31f12f2bb6ba98a1368ea45ad748',1,'Engine.OpenCL.DotNetCore.Interop.Memory.UseHostPointer()'],['../d0/d7e/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_svm_allocations.html#a853b11a38983da75d689958bcedfb4b8a6c1e31f12f2bb6ba98a1368ea45ad748',1,'Engine.OpenCL.DotNetCore.Interop.SvmAllocations.UseHostPointer()'],['../de/db2/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory.html#a6b93466a08fdb021295631e72699533ba6c1e31f12f2bb6ba98a1368ea45ad748',1,'Engine.OpenCL.DotNetCore.Memory.UseHostPointer()']]],
+  ['usessvmpointer',['UsesSvmPointer',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#aab3df57a8adbe19cca771d07e5742281a1af1836546f7fa760f75b2a31450b008',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]]
+];

@@ -1,0 +1,4 @@
+var namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_extensions =
+[
+    [ "ExtensionsNativeApi", "d3/d9a/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_extensions_1_1_extensions_native_api.html", "d3/d9a/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_extensions_1_1_extensions_native_api" ]
+];
