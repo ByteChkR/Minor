@@ -27,4 +27,6 @@ comment:
 
 ignore:
   - "MinorEngine/Engine/OpenCL/DotNetCore"  # ignore folders and all its contents
-  - "MinorEngine/Engine/Physics/BEPU*"  # ignore folders and all its contents
+  - "MinorEngine/Engine/Physics/BEPUphysics"  # ignore folders and all its contents
+  - "MinorEngine/Engine/Physics/BEPUik"  # ignore folders and all its contents
+  - "MinorEngine/Engine/Physics/BEPUutilities"  # ignore folders and all its contents
