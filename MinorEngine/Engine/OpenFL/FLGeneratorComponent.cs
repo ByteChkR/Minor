@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.Resources;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.IO;
 using Engine.OpenCL;
+using Engine.OpenCL.DotNetCore.Memory;
 using Engine.Rendering;
-using OpenCl.DotNetCore.Memory;
 
 namespace Engine.OpenFL
 {
@@ -69,7 +68,7 @@ namespace Engine.OpenFL
             _previews.Clear();
         }
 
-        private CLBuffer GetRendererTextureBuffer()
+        private MemoryBuffer GetRendererTextureBuffer()
         {
             return TextureLoader.TextureToMemoryBuffer(Tex);
         }

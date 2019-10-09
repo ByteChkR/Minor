@@ -4,15 +4,16 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Engine.DataTypes;
+using Engine.OpenCL.DotNetCore.CommandQueues;
+using Engine.OpenCL.DotNetCore.Contexts;
+using Engine.OpenCL.DotNetCore.DataTypes;
+using Engine.OpenCL.DotNetCore.Devices;
+using Engine.OpenCL.DotNetCore.Kernels;
+using Engine.OpenCL.DotNetCore.Memory;
+using Engine.OpenCL.DotNetCore.Platforms;
+using Engine.OpenCL.DotNetCore.Programs;
 using Engine.OpenCL.TypeEnums;
-using OpenCl.DotNetCore.CommandQueues;
-using OpenCl.DotNetCore.Contexts;
-using OpenCl.DotNetCore.DataTypes;
-using OpenCl.DotNetCore.Devices;
-using OpenCl.DotNetCore.Kernels;
-using OpenCl.DotNetCore.Memory;
-using OpenCl.DotNetCore.Platforms;
-using OpenCl.DotNetCore.Programs;
+using OpenTK.Platform.Windows;
 
 
 #if TRAVIS_TEST
@@ -47,6 +48,11 @@ namespace Engine.OpenCL
         /// The Command queue that the wrapper is using
         /// </summary>
         private CommandQueue _commandQueue;
+
+        internal static CommandQueue GetQueue()
+        {
+            return Instance._commandQueue;
+        }
 
         /// <summary>
         /// Private constructor
@@ -127,7 +133,7 @@ namespace Engine.OpenCL
         /// <param name="size">The size of the buffer(Total size in bytes: size*sizeof(T)</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateEmpty<T>(int size, CLMemoryFlag flags) where T : struct
+        public static MemoryBuffer CreateEmpty<T>(int size, MemoryFlag flags) where T : struct
         {
             var arr = new T[size];
             return CreateBuffer(arr, flags);
@@ -140,7 +146,7 @@ namespace Engine.OpenCL
         /// <param name="data">The array of T</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateBuffer<T>(T[] data, CLMemoryFlag flags) where T : struct
+        public static MemoryBuffer CreateBuffer<T>(T[] data, MemoryFlag flags) where T : struct
         {
             var arr = Array.ConvertAll(data, x => (object)x);
             return CreateBuffer(arr, typeof(T), flags);
@@ -153,15 +159,17 @@ namespace Engine.OpenCL
         /// <param name="t">type of the objects in the data array</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateBuffer(object[] data, Type t, CLMemoryFlag flags)
+        public static MemoryBuffer CreateBuffer(object[] data, Type t, MemoryFlag flags)
         {
 #if TRAVIS_TEST
             Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
             return null;
 #else
-            var mb = Instance._context.CreateBuffer((MemoryFlag)(flags | CLMemoryFlag.CopyHostPointer), t, data);
 
-            return BufferAbstraction.MakeHandle(mb);
+
+            var mb = Instance._context.CreateBuffer((MemoryFlag)(flags | MemoryFlag.CopyHostPointer), t, data);
+
+            return mb;
 #endif
         }
 
@@ -171,7 +179,7 @@ namespace Engine.OpenCL
         /// <param name="bmp">The image that holds the data</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static CLBuffer CreateFromImage(Bitmap bmp, CLMemoryFlag flags)
+        public static MemoryBuffer CreateFromImage(Bitmap bmp, MemoryFlag flags)
         {
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
@@ -275,14 +283,14 @@ namespace Engine.OpenCL
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
         /// <param name="uniform">Should every channel receive the same value on the same pixel?</param>
-        public static void WriteRandom<T>(CLBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform)
+        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform)
             where T : struct
         {
 #if TRAVIS_TEST
             T[] data = new T[1];
 #else
 
-            MemoryBuffer buffer = BufferAbstraction.ResolveAbstraction(buf);
+            MemoryBuffer buffer = buf;
 
             var data = Instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int)buffer.Size);
 #endif
@@ -303,7 +311,7 @@ namespace Engine.OpenCL
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
-        public static void WriteRandom<T>(CLBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels)
+        public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels)
             where T : struct
         {
             WriteRandom(buf, rnd, enabledChannels, true);
@@ -316,12 +324,12 @@ namespace Engine.OpenCL
         /// <typeparam name="T">Type of the values</typeparam>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="values">The values to be written to the buffer</param>
-        public static void WriteToBuffer<T>(CLBuffer buf, T[] values) where T : struct
+        public static void WriteToBuffer<T>(MemoryBuffer buf, T[] values) where T : struct
         {
 #if TRAVIS_TEST
             Logger.Log("Writing To Buffer..", DebugChannel.Warning);
 #else
-            Instance._commandQueue.EnqueueWriteBuffer(BufferAbstraction.ResolveAbstraction(buf), values);
+            Instance._commandQueue.EnqueueWriteBuffer(buf, values);
 #endif
         }
 
@@ -332,13 +340,13 @@ namespace Engine.OpenCL
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="size">The count of structs to be read from the buffer</param>
         /// <returns>The content of the buffer</returns>
-        public static T[] ReadBuffer<T>(CLBuffer buf, int size) where T : struct
+        public static T[] ReadBuffer<T>(MemoryBuffer buf, int size) where T : struct
         {
 #if TRAVIS_TEST
             Logger.Log("Reading From Buffer..", DebugChannel.Warning);
             return new T[size];
 #else
-            return Instance._commandQueue.EnqueueReadBuffer<T>(BufferAbstraction.ResolveAbstraction(buf), size);
+            return Instance._commandQueue.EnqueueReadBuffer<T>(buf, size);
 #endif
         }
 
@@ -350,14 +358,14 @@ namespace Engine.OpenCL
         /// <param name="dimensions">The dimensions of the input buffer</param>
         /// <param name="enabledChannels">The enabled channels for the kernel</param>
         /// <param name="channelCount">The amount of active channels.</param>
-        public static void Run(CLKernel kernel, CLBuffer image, int3 dimensions, float genTypeMaxVal,
-            CLBuffer enabledChannels,
+        public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,
+            MemoryBuffer enabledChannels,
             int channelCount)
         {
 #if TRAVIS_TEST
             Logger.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
 #else
-            kernel.Run(Instance._commandQueue, BufferAbstraction.ResolveAbstraction(image), dimensions, genTypeMaxVal, BufferAbstraction.ResolveAbstraction(enabledChannels), channelCount);
+            kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
 #endif
         }
     }

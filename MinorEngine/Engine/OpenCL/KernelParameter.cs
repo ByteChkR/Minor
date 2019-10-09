@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.OpenCL.DotNetCore.DataTypes;
+using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
-using OpenCl.DotNetCore.DataTypes;
-using OpenCl.DotNetCore.Memory;
 
 namespace Engine.OpenCL
 {
@@ -168,7 +168,7 @@ namespace Engine.OpenCL
                 var data = (object[]) value;
 
                 return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
-                    Converters[(int) DataType], CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadOnly);
+                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
             }
 
             return CastToType(Converters[(int) DataType], value);

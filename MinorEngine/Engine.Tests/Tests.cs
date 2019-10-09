@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using Common;
 using Engine.OpenCL;
+using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
 using Engine.OpenFL;
 using Xunit;
@@ -21,7 +22,7 @@ namespace MinorEngine.Tests
                 b[i] = (byte) i;
             }
 
-            var buffer = CLAPI.CreateBuffer(b, CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadWrite);
+            var buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
@@ -36,7 +37,7 @@ namespace MinorEngine.Tests
                 b[i] = i;
             }
 
-            var buffer = CLAPI.CreateBuffer(b, CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadWrite);
+            var buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             var c = CLAPI.ReadBuffer<float>(buffer, b.Length);
 
@@ -53,7 +54,7 @@ namespace MinorEngine.Tests
                 b[i] = i;
             }
 
-            var buffer = CLAPI.CreateEmpty<float>(b.Length, CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadWrite);
+            var buffer = CLAPI.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
 
             CLAPI.WriteToBuffer(buffer, b);
@@ -93,7 +94,7 @@ namespace MinorEngine.Tests
             foreach (var file in files)
             {
                 var P = new Interpreter(file,
-                    CLAPI.CreateEmpty<byte>(512 * 512 * 4, CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadWrite), 512, 512, 1,
+                    CLAPI.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
                     4, db);
                 while (!P.Terminated)
                 {

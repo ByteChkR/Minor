@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Engine.DataTypes;
-using OpenCl.DotNetCore.Memory;
+using Engine.OpenCL.DotNetCore.Memory;
 
 namespace Engine.OpenFL
 {
@@ -18,7 +18,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// The active buffer
         /// </summary>
-        public CLBuffer ActiveBuffer { get; }
+        public MemoryBuffer ActiveBuffer { get; }
 
         /// <summary>
         /// The unfinished argument stack
@@ -31,7 +31,7 @@ namespace Engine.OpenFL
         /// <param name="line">The line where the interpreter is</param>
         /// <param name="activeBuffer">The active buffer</param>
         /// <param name="argumentStack">The unfinished argument stack</param>
-        internal InterpreterState(int line, CLBuffer activeBuffer, Stack<object> argumentStack)
+        internal InterpreterState(int line, MemoryBuffer activeBuffer, Stack<object> argumentStack)
         {
             Line = line;
             ActiveBuffer = activeBuffer;

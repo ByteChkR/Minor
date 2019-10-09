@@ -1,7 +1,6 @@
 ﻿using System;
 using Engine.DataTypes;
 using Engine.Rendering;
-using OpenCl.DotNetCore.Programs;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 

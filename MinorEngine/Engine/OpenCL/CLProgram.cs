@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common;
 using Engine.OpenCL;
-using OpenCl.DotNetCore.Programs;
+using Engine.OpenCL.DotNetCore.Programs;
 
 namespace Engine.OpenCL
 {

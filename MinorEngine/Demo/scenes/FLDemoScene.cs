@@ -3,8 +3,11 @@ using System.Resources;
 using Assimp;
 using Demo.components;
 using Engine.Core;
+using Engine.DataTypes;
 using Engine.Debug;
 using Engine.IO;
+using Engine.OpenCL;
+using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Engine.Rendering;
 using OpenTK;
@@ -100,6 +103,10 @@ namespace Demo.scenes
 
 
 
+
+
+
+
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
@@ -139,7 +146,14 @@ namespace Demo.scenes
 
             var bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(25, 1, 25);
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+
+            Texture bgTex = TextureLoader.FileToTexture("textures/ground4k.png");
+            MemoryBuffer buf = TextureLoader.TextureToMemoryBuffer(bgTex);
+            //BufferOperations.GetRegion<byte>(buf, new int3(), )
+            
+
+
+            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, bgTex, 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
 
