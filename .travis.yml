@@ -16,7 +16,6 @@ install:
   #Restore Projects
   - dotnet restore ADL/ADL/
   - dotnet restore ext-pp/
-  - dotnet restore opencl-dotnet/
   - dotnet restore MinorEngine/ #<-- The Project
 
 
@@ -30,7 +29,6 @@ script:
   - dotnet build ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c $BUILDCONFIG
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
-  - dotnet build opencl-dotnet/OpenCl.DotNetCore.sln -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
 
 #Testing all included projects.
