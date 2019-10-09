@@ -6,6 +6,12 @@ using OpenCl.DotNetCore.DataTypes;
 using OpenCl.DotNetCore.Kernels;
 using OpenCl.DotNetCore.Memory;
 
+#if TRAVIS_TEST
+
+using Engine.Debug;
+
+#endif
+
 namespace Engine.OpenCL
 {
     /// <summary>

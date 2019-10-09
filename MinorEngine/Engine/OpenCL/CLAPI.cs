@@ -14,6 +14,13 @@ using OpenCl.DotNetCore.Memory;
 using OpenCl.DotNetCore.Platforms;
 using OpenCl.DotNetCore.Programs;
 
+
+#if TRAVIS_TEST
+
+using Engine.Debug;
+
+#endif
+
 namespace Engine.OpenCL
 {
     /// <summary>
