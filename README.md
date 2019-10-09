@@ -71,20 +71,26 @@ C opens the console.
 	clr/clear -> clears the console output
 	ltex -> Lists all textures that were loaded from disk(also lists the reference count)
 
-## Feature List
-- OpenGL 3 Rendering
-- [OpenCL](https://github.com/ByteChkR/opencl-dotnet)
-- [BepuPhysics Engine 2](https://github.com/bepu/bepuphysics2)
-- OpenAL 3D Audio
-- Render Targets
-- Custom YAML interpreter language called OpenFL to use OpenCL Filters(ShaderGraph text based)
-- [Fast Debugging Framework](https://github.com/ByteChkR/adl)
-- [Preprocessing on GL/CL/FL Scripts](https://github.com/ByteChkR/ext-pp)
-- Layer Systems
-- UI System
-- Font Rendering
-- all major image formats
-- all major mesh formats(and partly embedded textures)
-- wave file loading
-- Debugging Console
-by Tim Akermann
+## Features of Version 0.1
+* OpenGL Rendering (OpenTK)
+* OpenAL 3D Audio (OpenTK)
+* An *almost* complete OpenCL Wrapper for .NET Core
+* Physics with BepuPhysics v1
+* Procedural generation capabilities
+* Loading Objects with Assimp.Net
+* Different Render Targets
+* A UI System
+* A integrated debugging console that is extensible
+* An assembly like language called OpenFL that is used to chain different CL kernels together to push the creation of procedural content to a more abstract level so that it gets more accessible in game development
+* Custom Text Preprocessing for GL Shaders / CL Kernels and FL Scripts
+* A fast Mask based Debugging Framework that is able to send logs almost everywhere
+* Currently Rather basic IO Loading capabilities
+	- Obj/Fbx
+	- All major image formats
+	- Wave/RIFF audio loading
+* A bunch of noise implementations
+	- Perlin
+	- Smooth
+	- Worley
+	- ...
+* The WaveCollapse Function
