@@ -168,7 +168,7 @@ namespace Engine.OpenCL
                 var data = (object[]) value;
 
                 return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
-                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
+                    Converters[(int) DataType], CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadOnly);
             }
 
             return CastToType(Converters[(int) DataType], value);

@@ -132,12 +132,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 Vector3 velocity;
                 Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
-
-#if !WINDOWS
+                
                 var lambda = new Vector2();
-#else
-                Vector2 lambda;
-#endif
                 Vector3.Dot(ref worldConstrainedAxis1, ref velocity, out lambda.X);
                 Vector3.Dot(ref worldConstrainedAxis2, ref velocity, out lambda.Y);
                 return lambda;
@@ -292,11 +288,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         public override void ExclusiveUpdate()
         {
             //Warm Starting
-#if !WINDOWS
             var impulse = new Vector3();
-#else
-            Vector3 impulse;
-#endif
             impulse.X = worldConstrainedAxis1.X * accumulatedImpulse.X + worldConstrainedAxis2.X * accumulatedImpulse.Y;
             impulse.Y = worldConstrainedAxis1.Y * accumulatedImpulse.X + worldConstrainedAxis2.Y * accumulatedImpulse.Y;
             impulse.Z = worldConstrainedAxis1.Z * accumulatedImpulse.X + worldConstrainedAxis2.Z * accumulatedImpulse.Y;
@@ -323,12 +315,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             // P = JT * lambda
             Vector3 velocity;
             Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
-
-#if !WINDOWS
+            
             var lambda = new Vector2();
-#else
-            Vector2 lambda;
-#endif
             Vector3.Dot(ref worldConstrainedAxis1, ref velocity, out lambda.X);
             Vector3.Dot(ref worldConstrainedAxis2, ref velocity, out lambda.Y);
             Vector2.Add(ref lambda, ref biasVelocity, out lambda);
@@ -337,13 +325,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             Vector2.Add(ref lambda, ref softnessImpulse, out lambda);
             Matrix2x2.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
             Vector2.Add(ref accumulatedImpulse, ref lambda, out accumulatedImpulse);
-
-
-#if !WINDOWS
+            
             var impulse = new Vector3();
-#else
-            Vector3 impulse;
-#endif
             impulse.X = worldConstrainedAxis1.X * lambda.X + worldConstrainedAxis2.X * lambda.Y;
             impulse.Y = worldConstrainedAxis1.Y * lambda.X + worldConstrainedAxis2.Y * lambda.Y;
             impulse.Z = worldConstrainedAxis1.Z * lambda.X + worldConstrainedAxis2.Z * lambda.Y;

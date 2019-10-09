@@ -105,12 +105,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
                 //float dvz = entityA.linearVelocity.Z + (entityA.angularVelocity.X * ra.Y) - (entityA.angularVelocity.Y * ra.X)
                 //            - entityB.linearVelocity.Z - (entityB.angularVelocity.X * rb.Y) + (entityB.angularVelocity.Y * rb.X);
-
-#if !WINDOWS
+                
                 var lambda = new Vector2();
-#else
-                Vector2 lambda;
-#endif
                 lambda.X = dvx * linearA.M11 + dvy * linearA.M12 + dvz * linearA.M13;
                 lambda.Y = dvx * linearA.M21 + dvy * linearA.M22 + dvz * linearA.M23;
                 return lambda;
@@ -189,12 +185,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             //lambda.Y = accumulatedImpulse.Y - previousAccumulatedImpulse;
 
             //Apply impulse
-#if !WINDOWS
             var linear = new Vector3();
             var angular = new Vector3();
-#else
-            Vector3 linear, angular;
-#endif
             //Matrix2x3.Transform(ref lambda, ref linearA, out linear);
             linear.X = lambda.X * linearA.M11 + lambda.Y * linearA.M21;
             linear.Y = lambda.X * linearA.M12 + lambda.Y * linearA.M22;
@@ -445,12 +437,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void ExclusiveUpdate()
         {
             //Warm starting
-#if !WINDOWS
             var linear = new Vector3();
             var angular = new Vector3();
-#else
-            Vector3 linear, angular;
-#endif
             //Matrix2x3.Transform(ref lambda, ref linearA, out linear);
             linear.X = accumulatedImpulse.X * linearA.M11 + accumulatedImpulse.Y * linearA.M21;
             linear.Y = accumulatedImpulse.X * linearA.M12 + accumulatedImpulse.Y * linearA.M22;

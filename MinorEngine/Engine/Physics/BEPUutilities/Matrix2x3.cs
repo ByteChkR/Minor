@@ -189,9 +189,7 @@
         /// <param name="result">Row vector product of the transformation.</param>
         public static void Transform(ref Vector2 v, ref Matrix2x3 matrix, out Vector3 result)
         {
-#if !WINDOWS
             result = new Vector3();
-#endif
             result.X = v.X * matrix.M11 + v.Y * matrix.M21;
             result.Y = v.X * matrix.M12 + v.Y * matrix.M22;
             result.Z = v.X * matrix.M13 + v.Y * matrix.M23;
@@ -205,9 +203,7 @@
         /// <param name="result">Column vector product of the transformation.</param>
         public static void Transform(ref Vector3 v, ref Matrix2x3 matrix, out Vector2 result)
         {
-#if !WINDOWS
             result = new Vector2();
-#endif
             result.X = matrix.M11 * v.X + matrix.M12 * v.Y + matrix.M13 * v.Z;
             result.Y = matrix.M21 * v.X + matrix.M22 * v.Y + matrix.M23 * v.Z;
         }

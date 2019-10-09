@@ -296,9 +296,7 @@
         {
             var vX = v.X;
             var vY = v.Y;
-#if !WINDOWS
             result = new Vector2();
-#endif
             result.X = vX * matrix.M11 + vY * matrix.M21;
             result.Y = vX * matrix.M12 + vY * matrix.M22;
         }

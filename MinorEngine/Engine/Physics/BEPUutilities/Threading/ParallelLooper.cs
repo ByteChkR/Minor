@@ -30,12 +30,7 @@ namespace Engine.Physics.BEPUutilities.Threading
         /// per individual task.
         /// </summary>
         public int MaximumIterationsPerTask { get; set; } = 80;
-
-#if WINDOWS
-        private int minimumTasksPerThread = 3;
-        private int maximumIterationsPerTask = 80;
-#else
-#endif
+        
         internal int jobIndex;
         internal int maxJobIndex;
 

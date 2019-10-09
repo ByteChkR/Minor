@@ -320,11 +320,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
             if (Settings.mode == MotorMode.Servomechanism)
             {
                 //Compute error
-#if !WINDOWS
                 var separation = new Vector3();
-#else
-                Vector3 separation;
-#endif
                 separation.X = worldAnchorB.X - worldAnchorA.X;
                 separation.Y = worldAnchorB.Y - worldAnchorA.Y;
                 separation.Z = worldAnchorB.Z - worldAnchorA.Z;

@@ -159,11 +159,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = M31;
                 vector.Y = M32;
                 vector.Z = M33;
@@ -184,11 +180,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = -M21;
                 vector.Y = -M22;
                 vector.Z = -M23;
@@ -209,11 +201,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = -M31;
                 vector.Y = -M32;
                 vector.Z = -M33;
@@ -234,11 +222,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = -M11;
                 vector.Y = -M12;
                 vector.Z = -M13;
@@ -259,11 +243,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = M11;
                 vector.Y = M12;
                 vector.Z = M13;
@@ -284,11 +264,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = M21;
                 vector.Y = M22;
                 vector.Z = M23;

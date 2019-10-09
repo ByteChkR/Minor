@@ -26,11 +26,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3 localPosition;
             RigidTransform.TransformByInverse(ref spherePosition, ref boxTransform, out localPosition);
-#if !WINDOWS
             var localClosestPoint = new Vector3();
-#else
-            Vector3 localClosestPoint;
-#endif
             localClosestPoint.X = MathHelper.Clamp(localPosition.X, -box.halfWidth, box.halfWidth);
             localClosestPoint.Y = MathHelper.Clamp(localPosition.Y, -box.halfHeight, box.halfHeight);
             localClosestPoint.Z = MathHelper.Clamp(localPosition.Z, -box.halfLength, box.halfLength);

@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Assimp;
 using Engine.DataTypes;
 using Engine.OpenCL;
+using Engine.OpenCL.TypeEnums;
 using OpenCl.DotNetCore.Memory;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
@@ -59,7 +60,7 @@ namespace Engine.IO
         public static CLBuffer TextureToMemoryBuffer(Texture tex)
         {
             var buffer = TextureToByteArray(tex);
-            return CLAPI.CreateBuffer(buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            return CLAPI.CreateBuffer(buffer, CLMemoryFlag.CopyHostPointer | CLMemoryFlag.ReadWrite);
         }
 
         public static void Update(Texture tex, byte[] data, int width, int height)

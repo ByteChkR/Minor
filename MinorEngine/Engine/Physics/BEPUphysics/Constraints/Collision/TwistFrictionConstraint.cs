@@ -91,11 +91,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
 
             //Apply the impulse
-#if !WINDOWS
             var angular = new Vector3();
-#else
-            Vector3 angular;
-#endif
             angular.X = lambda * angularX;
             angular.Y = lambda * angularY;
             angular.Z = lambda * angularZ;
@@ -200,11 +196,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void ExclusiveUpdate()
         {
             //Apply the warmstarting impulse.
-#if !WINDOWS
             var angular = new Vector3();
-#else
-            Vector3 angular;
-#endif
             angular.X = accumulatedImpulse * angularX;
             angular.Y = accumulatedImpulse * angularY;
             angular.Z = accumulatedImpulse * angularZ;

@@ -148,11 +148,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public override float SolveIteration()
         {
-#if !WINDOWS
             var lambda = new Vector3();
-#else
-            Vector3 lambda;
-#endif
             var aVel = connectionA.angularVelocity;
             var bVel = connectionB.angularVelocity;
             lambda.X = bVel.X - aVel.X - biasVelocity.X - usedSoftness * accumulatedImpulse.X;

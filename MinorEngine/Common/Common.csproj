@@ -2,11 +2,27 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Configurations>Debug;Release;Release_CollectLogs;Release_TravisTest;Release_Trace;Debug_Trace</Configurations>
+    <Configurations>Debug;Release;Release_CollectLogs;Release_TravisTest;Release_Trace;Debug_Trace;TravisTest;Debug_FullTrace</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_TravisTest|AnyCPU'">
     <DefineConstants>TRACE;TRAVIS_TEST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TravisTest|AnyCPU'">
+    <DefineConstants>TRACE;TRAVIS_TEST</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;LEAK_TRACE;TRACE_TIME_ONLY</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_FullTrace|AnyCPU'">
+    <DefineConstants>TRACE;LEAK_TRACE</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;FORCEINLINE</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

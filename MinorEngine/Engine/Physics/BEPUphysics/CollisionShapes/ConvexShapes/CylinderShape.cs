@@ -103,9 +103,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="boundingBox">Bounding box of the transformed shape.</param>
         public override void GetBoundingBox(ref RigidTransform shapeTransform, out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
 
 
             Matrix3x3 o;

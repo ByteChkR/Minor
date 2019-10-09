@@ -205,12 +205,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
-#if !WINDOWS
             var linear = new Vector3();
             var angular = new Vector3();
-#else
-            Vector3 linear, angular;
-#endif
             linear.X = lambda * linearAX;
             linear.Y = lambda * linearAY;
             linear.Z = lambda * linearAZ;
@@ -282,12 +278,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         internal void ExclusiveUpdate()
         {
             //Warm starting
-#if !WINDOWS
             var linear = new Vector3();
             var angular = new Vector3();
-#else
-            Vector3 linear, angular;
-#endif
             linear.X = accumulatedImpulse * linearAX;
             linear.Y = accumulatedImpulse * linearAY;
             linear.Z = accumulatedImpulse * linearAZ;

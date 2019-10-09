@@ -102,7 +102,7 @@ namespace Engine.OpenFL
                 Logger.Log("Loading SubScript...", DebugChannel.Log);
 
                 var buf =
-                    CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
+                    CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite);
                 var interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
                     _depth, _channelCount, _kernelDb, true);
 
@@ -120,7 +120,7 @@ namespace Engine.OpenFL
                     true);
                 Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
 
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
             }
         }
 
@@ -141,19 +141,19 @@ namespace Engine.OpenFL
                 _definedBuffers.Remove(varname);
             }
 
-            var flags = MemoryFlag.ReadWrite;
+            var flags = CLMemoryFlag.ReadWrite;
             var flagTest = varname.Split(' ');
             if (flagTest.Length > 1)
             {
                 varname = flagTest[1];
                 if (flagTest[0] == "r")
                 {
-                    flags = MemoryFlag.ReadOnly;
+                    flags = CLMemoryFlag.ReadOnly;
                 }
 
                 else if (flagTest[0] == "w")
                 {
-                    flags = MemoryFlag.WriteOnly;
+                    flags = CLMemoryFlag.WriteOnly;
                 }
             }
 
@@ -168,17 +168,17 @@ namespace Engine.OpenFL
                 var bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
                 _definedBuffers.Add(varname,
                     CLAPI.CreateFromImage(bmp,
-                        MemoryFlag.CopyHostPointer | flags));
+                        CLMemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "random")
             {
-                var buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                var buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | CLMemoryFlag.CopyHostPointer);
                 CLAPI.WriteRandom(buf, randombytesource, _activeChannels);
                 _definedBuffers.Add(varname, buf);
             }
             else if (filename == "empty")
             {
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.CopyHostPointer | flags));
+                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "wfc")
             {
@@ -186,35 +186,35 @@ namespace Engine.OpenFL
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[2], out var n))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[3], out var width))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[4], out var height))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!bool.TryParse(args[5], out var periodicInput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!bool.TryParse(args[6], out var periodicOutput))
@@ -227,21 +227,21 @@ namespace Engine.OpenFL
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[8], out var ground))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 if (!int.TryParse(args[9], out var limit))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
                 }
 
                 WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width,
@@ -252,13 +252,13 @@ namespace Engine.OpenFL
                 var bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                 _definedBuffers.Add(varname,
                     CLAPI.CreateFromImage(bmp,
-                        MemoryFlag.CopyHostPointer | flags));
+                        CLMemoryFlag.CopyHostPointer | flags));
             }
             else
             {
                 Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Define statement."), true);
                 Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, CLMemoryFlag.ReadWrite));
             }
         }
 
@@ -726,7 +726,7 @@ namespace Engine.OpenFL
                 _activeChannels[i] = 1;
             }
 
-            _activeChannelBuffer = CLAPI.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
+            _activeChannelBuffer = CLAPI.CreateBuffer(_activeChannels, CLMemoryFlag.ReadOnly | CLMemoryFlag.CopyHostPointer);
 
             _currentArgStack = new Stack<object>();
             foreach (var memoryBuffer in _definedBuffers)
@@ -1034,7 +1034,7 @@ namespace Engine.OpenFL
             var size = (int) _currentBuffer.Size;
             if (!keepBuffer)
             {
-                _currentBuffer = CLAPI.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
+                _currentBuffer = CLAPI.CreateEmpty<byte>(size, CLMemoryFlag.ReadWrite | CLMemoryFlag.CopyHostPointer);
             }
 
             _currentIndex = index;

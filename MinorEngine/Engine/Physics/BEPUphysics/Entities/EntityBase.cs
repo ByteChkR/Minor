@@ -679,11 +679,7 @@ namespace Engine.Physics.BEPUphysics.Entities
         public void ApplyImpulseWithoutActivating(ref Vector3 location, ref Vector3 impulse)
         {
             ApplyLinearImpulse(ref impulse);
-#if WINDOWS
-            Vector3 positionDifference;
-#else
             var positionDifference = new Vector3();
-#endif
             positionDifference.X = location.X - position.X;
             positionDifference.Y = location.Y - position.Y;
             positionDifference.Z = location.Z - position.Z;
@@ -1186,20 +1182,12 @@ namespace Engine.Physics.BEPUphysics.Entities
             return base.ToString() + ", " + Tag;
         }
 
-
-#if WINDOWS_PHONE
-        static int idCounter;
-        /// <summary>
-        /// Gets the entity's unique instance id.
-        /// </summary>
-        public int InstanceId { get; private set; }
-#else
+        
         private static long idCounter;
         /// <summary>
         /// Gets the entity's unique instance id.
         /// </summary>
         public long InstanceId { get; private set; }
-#endif
         private void InitializeId()
         {
             InstanceId = System.Threading.Interlocked.Increment(ref idCounter);

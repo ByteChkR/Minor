@@ -201,13 +201,8 @@ namespace Engine.Physics.BEPUphysics.Character
         public override void ExclusiveUpdate()
         {
             //Warm start the constraint using the previous impulses and the new jacobians!
-#if !WINDOWS
             var impulse = new Vector3();
             var torque = new Vector3();
-#else
-            Vector3 impulse;
-            Vector3 torque;
-#endif
             Vector3.Multiply(ref linearJacobianA, accumulatedImpulse, out impulse);
 
             characterBody.ApplyLinearImpulse(ref impulse);
@@ -243,14 +238,9 @@ namespace Engine.Physics.BEPUphysics.Character
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, 0, maximumForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
             //Use the jacobians to put the impulse into world space.
-
-#if !WINDOWS
+            
             var impulse = new Vector3();
             var torque = new Vector3();
-#else
-            Vector3 impulse;
-            Vector3 torque;
-#endif
             Vector3.Multiply(ref linearJacobianA, lambda, out impulse);
 
             characterBody.ApplyLinearImpulse(ref impulse);

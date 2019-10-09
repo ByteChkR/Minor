@@ -2467,8 +2467,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Matrix3x3.TransformTranspose(ref negatedMtd, ref orientationA, out mtdA);
             Matrix3x3.TransformTranspose(ref mtd, ref orientationB, out mtdB);
 
-
-#if !WINDOWS
+            
             Vector3 edgeAStart1 = new Vector3(),
                 edgeAEnd1 = new Vector3(),
                 edgeAStart2 = new Vector3(),
@@ -2477,10 +2476,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 edgeBEnd1 = new Vector3(),
                 edgeBStart2 = new Vector3(),
                 edgeBEnd2 = new Vector3();
-#else
-            Vector3 edgeAStart1, edgeAEnd1, edgeAStart2, edgeAEnd2;
-            Vector3 edgeBStart1, edgeBEnd1, edgeBStart2, edgeBEnd2;
-#endif
             var aHalfWidth = a.halfWidth;
             var aHalfHeight = a.halfHeight;
             var aHalfLength = a.halfLength;
@@ -2761,11 +2756,9 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //0: plane with normal X
             //1: plane with normal Y
             //2: plane with normal Z
-
-#if !WINDOWS
+            
             edgeStart = new Vector3();
             edgeEnd = new Vector3();
-#endif
 
             switch (index + axis * 4)
             {

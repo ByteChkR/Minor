@@ -82,10 +82,7 @@ namespace Engine.Physics.BEPUik
             var currentDistance = separation.Length();
 
             //Compute jacobians
-            Vector3 linearA;
-#if !WINDOWS
-            linearA = new Vector3();
-#endif
+            Vector3 linearA = new Vector3();
             if (currentDistance > Toolbox.Epsilon)
             {
                 linearA.X = separation.X / currentDistance;

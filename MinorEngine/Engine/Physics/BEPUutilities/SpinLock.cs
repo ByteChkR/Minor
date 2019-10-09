@@ -54,11 +54,7 @@ namespace Engine.Physics.BEPUutilities
         {
             if (attempt == SleepInterval)
             {
-#if WINDOWS
-                Thread.Yield();
-#else
                 Thread.Sleep(0);
-#endif
                 //TODO: Thread.Yield on windows?
                 //Check multithreaded bookmarks performance conscious
                 //and .netspinlock

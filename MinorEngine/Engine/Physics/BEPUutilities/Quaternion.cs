@@ -142,9 +142,7 @@ namespace Engine.Physics.BEPUutilities
         public static void CreateFromRotationMatrix(ref Matrix3x3 r, out Quaternion q)
         {
             var trace = r.M11 + r.M22 + r.M33;
-#if !WINDOWS
             q = new Quaternion();
-#endif
             if (trace >= 0)
             {
                 var S = (float) Math.Sqrt(trace + 1.0) * 2; // S=4*qw 
@@ -754,9 +752,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="angle">Angle around the axis represented by the quaternion.</param>
         public static void GetAxisAngleFromQuaternion(ref Quaternion q, out Vector3 axis, out float angle)
         {
-#if !WINDOWS
             axis = new Vector3();
-#endif
             var qw = q.W;
             if (qw > 0)
             {

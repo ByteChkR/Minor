@@ -497,13 +497,10 @@ namespace Engine.Physics.BEPUphysics.Character
         public override void ExclusiveUpdate()
         {
             //Warm start the constraint using the previous impulses and the new jacobians!
-#if !WINDOWS
+
             var impulse = new Vector3();
             var torque = new Vector3();
-#else
-            Vector3 impulse;
-            Vector3 torque;
-#endif
+
             var x = accumulatedImpulse.X;
             var y = accumulatedImpulse.Y;
             impulse.X = linearJacobianA1.X * x + linearJacobianA2.X * y;
@@ -576,14 +573,9 @@ namespace Engine.Physics.BEPUphysics.Character
 
 
             //Use the jacobians to put the impulse into world space.
-
-#if !WINDOWS
+            
             var impulse = new Vector3();
             var torque = new Vector3();
-#else
-            Vector3 impulse;
-            Vector3 torque;
-#endif
             var x = lambda.X;
             var y = lambda.Y;
             impulse.X = linearJacobianA1.X * x + linearJacobianA2.X * y;
@@ -621,11 +613,7 @@ namespace Engine.Physics.BEPUphysics.Character
             {
                 //The relative velocity's x component is in the movement direction.
                 //y is the perpendicular direction.
-#if !WINDOWS
                 var relativeVelocity = new Vector2();
-#else
-                Vector2 relativeVelocity;
-#endif
 
                 Vector3.Dot(ref linearJacobianA1, ref characterBody.linearVelocity, out relativeVelocity.X);
                 Vector3.Dot(ref linearJacobianA2, ref characterBody.linearVelocity, out relativeVelocity.Y);

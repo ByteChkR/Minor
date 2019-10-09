@@ -1,0 +1,20 @@
+TRAVIS_TEST
+	Disables parts of the code that require calls to the OpenCL API
+COLLECT_LOGS
+	If set it will pass the lines to the engine to enable sending debug logs
+FORCEINLINE
+	Forceinlines the methods in the physics engine
+	The difference should be minimal
+DEBUG
+	Used for debugging the internal parts of the engine
+TRACE_TIME_ONLY
+	If set it will trace only the delta time and will not call garbage collector methods
+	If LEAK_TRACE is not set this flag has no effect.
+LEAK_TRACE
+	Collects frame data and garbage collector statistics when set
+PROFILE
+	Adds a few new properties to the physics engine that enables measuring the performance
+ALLOWUNSAFE
+	Makes certain regions in the physics engine compile as unsave code
+CONSERVE
+	If set the physics engine will conserve the momentum

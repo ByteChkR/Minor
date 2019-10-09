@@ -44,9 +44,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         ///<param name="boundingBox">Bounding box containing the transformed mesh shape.</param>
         public void ComputeBoundingBox(ref AffineTransform transform, out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
             var minX = float.MaxValue;
             var minY = float.MaxValue;
             var minZ = float.MaxValue;

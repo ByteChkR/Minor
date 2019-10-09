@@ -27,7 +27,6 @@ script:
   - dotnet build ADL/ADL/ADL/ADL.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.Crash/ADL.Crash.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.Network.Client/ADL.Network.Client.csproj -c $BUILDCONFIG
-  - dotnet build ADL/ADL/ADL.Network.Server/ADL.Network.Server.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c $BUILDCONFIG
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG

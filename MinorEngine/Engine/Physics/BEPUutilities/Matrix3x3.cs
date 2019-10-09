@@ -91,11 +91,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = M31;
                 vector.Y = M32;
                 vector.Z = M33;
@@ -116,11 +112,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = -M21;
                 vector.Y = -M22;
                 vector.Z = -M23;
@@ -141,11 +133,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = -M31;
                 vector.Y = -M32;
                 vector.Z = -M33;
@@ -166,11 +154,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = -M11;
                 vector.Y = -M12;
                 vector.Z = -M13;
@@ -191,11 +175,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = M11;
                 vector.Y = M12;
                 vector.Z = M13;
@@ -216,11 +196,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-#if !WINDOWS
                 var vector = new Vector3();
-#else
-                Vector3 vector;
-#endif
                 vector.X = M21;
                 vector.Y = M22;
                 vector.Z = M23;
@@ -1009,9 +985,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="b">Created 4x4 matrix.</param>
         public static void ToMatrix4X4(ref Matrix3x3 a, out Matrix b)
         {
-#if !WINDOWS
             b = new Matrix();
-#endif
             b.M11 = a.M11;
             b.M12 = a.M12;
             b.M13 = a.M13;
@@ -1040,11 +1014,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Created 4x4 matrix.</returns>
         public static Matrix ToMatrix4X4(Matrix3x3 a)
         {
-#if !WINDOWS
             var b = new Matrix();
-#else
-            Matrix b;
-#endif
             b.M11 = a.M11;
             b.M12 = a.M12;
             b.M13 = a.M13;
@@ -1078,9 +1048,7 @@ namespace Engine.Physics.BEPUutilities
             var vX = v.X;
             var vY = v.Y;
             var vZ = v.Z;
-#if !WINDOWS
             result = new Vector3();
-#endif
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32;
             result.Z = vX * matrix.M13 + vY * matrix.M23 + vZ * matrix.M33;
@@ -1096,9 +1064,7 @@ namespace Engine.Physics.BEPUutilities
         public static Vector3 Transform(Vector3 v, Matrix3x3 matrix)
         {
             Vector3 result;
-#if !WINDOWS
             result = new Vector3();
-#endif
             var vX = v.X;
             var vY = v.Y;
             var vZ = v.Z;
@@ -1120,9 +1086,7 @@ namespace Engine.Physics.BEPUutilities
             var vX = v.X;
             var vY = v.Y;
             var vZ = v.Z;
-#if !WINDOWS
             result = new Vector3();
-#endif
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13;
             result.Y = vX * matrix.M21 + vY * matrix.M22 + vZ * matrix.M23;
             result.Z = vX * matrix.M31 + vY * matrix.M32 + vZ * matrix.M33;
@@ -1140,9 +1104,7 @@ namespace Engine.Physics.BEPUutilities
             var vY = v.Y;
             var vZ = v.Z;
             Vector3 result;
-#if !WINDOWS
             result = new Vector3();
-#endif
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13;
             result.Y = vX * matrix.M21 + vY * matrix.M22 + vZ * matrix.M23;
             result.Z = vX * matrix.M31 + vY * matrix.M32 + vZ * matrix.M33;

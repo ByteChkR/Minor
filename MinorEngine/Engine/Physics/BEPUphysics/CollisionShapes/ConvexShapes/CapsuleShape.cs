@@ -95,9 +95,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
 
         public override void GetBoundingBox(ref RigidTransform shapeTransform, out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
             Vector3 upExtreme;
             Quaternion.TransformY(halfLength, ref shapeTransform.Orientation, out upExtreme);
 

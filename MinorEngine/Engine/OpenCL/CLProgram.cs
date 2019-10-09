@@ -86,40 +86,17 @@ namespace Engine.OpenCL
         /// </summary>
         private void Initialize()
         {
-#if PP_CompileCheck
-            string[] dt = Enum.GetNames(typeof(DataTypes));
 
-            string[] kernelNames = new string[0];
-            string source = "";
-            for (int i = 0; i < dt.Length; i++)
-            {
-                string dtStr = KernelParameter.GetDataString(Enum.Parse<DataTypes>(dt[i]));
-                if (dtStr == "UNKNOWN") continue;
-                string s = (_filePath + "." + dt[i] + ".cl").Replace("kernel", "kernel_cache");
-                int vnum = GetVectorNum(dtStr);
-                string[] lines =
-                TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, dtStr, vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
-                Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
-                source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
-                kernelNames = FindKernelNames(source);
-                File.WriteAllText(s, source);
-
-                ClProgramHandle = CLAPI.CreateCLProgramFromSource(source);
-            }
-            Console.WriteLine("Finished file.");
-
-
-#else
 
             var vnum = GetVectorNum(_genType);
             var lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
                 vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
-            var defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
+            var defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
             var source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
             var kernelNames = FindKernelNames(source);
 
             ClProgramHandle = CLAPI.CreateCLProgramFromSource(source);
-#endif
+
 
 
             foreach (var kernelName in kernelNames)

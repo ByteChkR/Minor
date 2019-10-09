@@ -171,11 +171,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         {
             get
             {
-#if !WINDOWS
                 var lambda = new Vector2();
-#else
-                Vector2 lambda;
-#endif
                 Vector3 dv;
                 Vector3 aVel, bVel;
                 Vector3.Cross(ref connectionA.angularVelocity, ref rA, out aVel);
@@ -302,12 +298,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             //P = JT * lambda
 
             #endregion
-
-#if !WINDOWS
+            
             var lambda = new Vector2();
-#else
-            Vector2 lambda;
-#endif
             //float va1, va2, wa1, wa2, vb1, vb2, wb1, wb2;
             //Vector3.Dot(ref worldAxis1, ref myParentA.myInternalLinearVelocity, out va1);
             //Vector3.Dot(ref worldAxis2, ref myParentA.myInternalLinearVelocity, out va2);
@@ -343,13 +335,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             var x = lambda.X;
             var y = lambda.Y;
             //Apply impulse
-#if !WINDOWS
             var impulse = new Vector3();
             var torque = new Vector3();
-#else
-            Vector3 impulse;
-            Vector3 torque;
-#endif
             impulse.X = worldRestrictedAxis1.X * x + worldRestrictedAxis2.X * y;
             impulse.Y = worldRestrictedAxis1.Y * x + worldRestrictedAxis2.Y * y;
             impulse.Z = worldRestrictedAxis1.Z * x + worldRestrictedAxis2.Z * y;
@@ -488,13 +475,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         public override void ExclusiveUpdate()
         {
             //Warm starting
-#if !WINDOWS
             var impulse = new Vector3();
             var torque = new Vector3();
-#else
-            Vector3 impulse;
-            Vector3 torque;
-#endif
             var x = accumulatedImpulse.X;
             var y = accumulatedImpulse.Y;
             impulse.X = worldRestrictedAxis1.X * x + worldRestrictedAxis2.X * y;

@@ -528,9 +528,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
         private void GetBoundingBox(ref Matrix3x3 o, out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
             //Sample the local directions from the matrix, implicitly transposed.
             var rightDirection = new Vector3(o.M11, o.M21, o.M31);
             var upDirection = new Vector3(o.M12, o.M22, o.M32);
@@ -642,9 +640,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         public void GetLocalBoundingBox(ref RigidTransform shapeTransform, ref AffineTransform spaceTransform,
             out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
             //TODO: This method peforms quite a few sqrts because the collision margin can get scaled, and so cannot be applied as a final step.
             //There should be a better way to do this.
             //Additionally, this bounding box is not consistent in all cases with the post-add version.  Adding the collision margin at the end can

@@ -1625,9 +1625,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="aabb">Bounding box of the triangle.</param>
         public static void GetTriangleBoundingBox(ref Vector3 a, ref Vector3 b, ref Vector3 c, out BoundingBox aabb)
         {
-#if !WINDOWS
             aabb = new BoundingBox();
-#endif
             //X axis
             if (a.X > b.X && a.X > c.X)
             {

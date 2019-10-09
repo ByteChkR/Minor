@@ -122,9 +122,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         /// <param name="boundingBox">Bounding box of the transformed shape.</param>
         public override void GetBoundingBox(ref RigidTransform shapeTransform, out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
             Matrix3x3 o;
             Matrix3x3.CreateFromQuaternion(ref shapeTransform.Orientation, out o);
             //Sample the local directions from the orientation matrix, implicitly transposed.
@@ -222,9 +220,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public void GetLocalBoundingBox(ref RigidTransform shapeTransform, ref AffineTransform spaceTransform,
             out BoundingBox boundingBox)
         {
-#if !WINDOWS
             boundingBox = new BoundingBox();
-#endif
             //TODO: This method peforms quite a few sqrts because the collision margin can get scaled, and so cannot be applied as a final step.
             //There should be a better way to do this. At the very least, it should be possible to avoid the 6 square roots involved currently.
             //If this shows a a bottleneck, it might be best to virtualize this function and implement a per-shape variant.
