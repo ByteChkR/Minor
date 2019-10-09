@@ -222,7 +222,7 @@ namespace Engine.OpenCL
         /// returns the Correct DataType string for the equivalent in the CL Library
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>The keyword for OpenCL as string</returns>
         public static string GetDataString(TypeEnums.DataTypes type)
         {
             foreach (var dataTypePair in DataTypePairs)
@@ -236,6 +236,12 @@ namespace Engine.OpenCL
             return "UNKNOWN";
         }
 
+
+        /// <summary>
+        /// returns the Correct DataType max value for the equivalent in the CL Library
+        /// </summary>
+        /// <param name="type">the cl type that is used</param>
+        /// <returns>max value of the data type</returns>
         public static float GetDataMaxSize(string genType)
         {
             foreach (var dataTypePair in DataTypePairs)
@@ -253,7 +259,7 @@ namespace Engine.OpenCL
         /// returns the Correct DataType enum for the equivalent in OpenCL C99
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
+        /// <returns>The data type</returns>
         public static TypeEnums.DataTypes GetDataType(string str)
         {
             foreach (var dataTypePair in DataTypePairs)

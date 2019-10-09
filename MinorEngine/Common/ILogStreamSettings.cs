@@ -14,7 +14,6 @@ namespace Common
         int StreamType { get; set; }
         string Destination { get; set; }
         int Mask { get; set; }
-        int PrefixMode { get; set; }
         int MatchMode { get; set; }
         bool Timestamp { get; set; }
 

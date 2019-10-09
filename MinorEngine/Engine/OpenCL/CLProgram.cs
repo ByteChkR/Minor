@@ -46,6 +46,11 @@ namespace Engine.OpenCL
             Initialize();
         }
 
+        /// <summary>
+        /// Returns the N of the VectorN types
+        /// </summary>
+        /// <param name="dtStr">the cl type in use</param>
+        /// <returns>the amount of dimensions in the vector type</returns>
         private static int GetVectorNum(string dtStr)
         {
             if (!char.IsNumber(dtStr.Last()))

@@ -6,10 +6,25 @@ using Engine.Rendering.Contexts;
 
 namespace Engine.UI
 {
+
+    /// <summary>
+    /// Implements A Text Renderer Component
+    /// </summary>
     public class UITextRendererComponent : UIElement
     {
+        /// <summary>
+        /// The backing field of the Context
+        /// </summary>
         private TextRenderContext _context;
+
+        /// <summary>
+        /// Flag that indicates if the context is invalid
+        /// </summary>
         private bool _contextInvalid = true;
+
+        /// <summary>
+        /// The Context used to draw
+        /// </summary>
         public override RenderContext Context
         {
             get
@@ -33,10 +48,19 @@ namespace Engine.UI
             }
         }
 
+        /// <summary>
+        /// the Font that is used to draw
+        /// </summary>
         private readonly GameFont font;
-        private string _text = "HELLO";
-        private static StringBuilder sb = new StringBuilder();
 
+        /// <summary>
+        /// the backing field for Text
+        /// </summary>
+        private string _text = "HELLO";
+
+        /// <summary>
+        /// The text that is drawn
+        /// </summary>
         public string Text
         {
             get => _text;
@@ -50,6 +74,13 @@ namespace Engine.UI
             }
         }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="fontName">The name of the Font</param>
+        /// <param name="worldSpace">Is the Object in world space</param>
+        /// <param name="alpha">Alpha value of the image</param>
+        /// <param name="shader">The shader to be used</param>
         public UITextRendererComponent(string fontName, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {

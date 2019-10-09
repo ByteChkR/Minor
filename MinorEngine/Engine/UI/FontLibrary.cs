@@ -11,11 +11,21 @@ using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace Engine.UI
 {
+
+    /// <summary>
+    /// Font Library. Is Used to store the loaded game Fonts
+    /// </summary>
     public class FontLibrary
     {
+        /// <summary>
+        /// Table of game fonts
+        /// </summary>
         private readonly Dictionary<string, GameFont> _fonts;
 
-
+        /// <summary>
+        /// Public constructor that is loading every font in the specified folder
+        /// </summary>
+        /// <param name="folderPath">the specified folder</param>
         public FontLibrary(string folderPath)
         {
             _fonts = new Dictionary<string, GameFont>();
@@ -26,11 +36,20 @@ namespace Engine.UI
             }
         }
 
+        /// <summary>
+        /// Manually loads a font by filename with default pixel size 32
+        /// </summary>
+        /// <param name="filename">the file name</param>
         public void LoadFont(string filename)
         {
             LoadFont(filename, 32);
         }
 
+        /// <summary>
+        /// Loads a font by filename and pixel size
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="pixelSize">The size of the font in pixels</param>
         public void LoadFont(string filename, int pixelSize)
         {
             var ff = new FontFace(File.OpenRead(filename));
@@ -123,7 +142,11 @@ namespace Engine.UI
             _fonts.Add(ff.FullName, font);
         }
 
-
+        /// <summary>
+        /// returns a font by name
+        /// </summary>
+        /// <param name="name">The name of the font</param>
+        /// <returns>The font with the specified name</returns>
         public GameFont GetFont(string name)
         {
             return _fonts[name];

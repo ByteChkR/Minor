@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Common;
 using Engine.Core;
@@ -7,15 +8,30 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
-    public class ShaderProgram : IDestroyable
+    /// <summary>
+    /// Implements a Wrapper for Loading Building and compiling OpenGL Shaders
+    /// </summary>
+    public class ShaderProgram : IDisposable
     {
+        /// <summary>
+        /// The program id of the shader
+        /// </summary>
         private readonly int _prgId;
 
+        /// <summary>
+        /// Private constructor
+        /// </summary>
         private ShaderProgram()
         {
             _prgId = GL.CreateProgram();
         }
 
+        /// <summary>
+        /// Tries to Create a Shader from source
+        /// </summary>
+        /// <param name="subshaders">The source paths of the sub shader</param>
+        /// <param name="program">The Program that will be created</param>
+        /// <returns></returns>
         public static bool TryCreate(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
         {
             var ret = true;
@@ -54,29 +70,50 @@ namespace Engine.Rendering
             return ret;
         }
 
-        public void Destroy()
+        /// <summary>
+        /// Disposable Implementation that frees the GL Shader memory once the shader is not longer in use
+        /// </summary>
+        public void Dispose()
         {
             GL.DeleteProgram(_prgId);
         }
 
+        /// <summary>
+        /// Sets the This Program as active
+        /// </summary>
         public void Use()
         {
             GL.UseProgram(_prgId);
         }
 
+        /// <summary>
+        /// Returns the Attribute location by name
+        /// </summary>
+        /// <param name="name">Name of the attribute</param>
+        /// <returns>Attribute Location</returns>
         public int GetAttribLocation(string name)
         {
             var loc = GL.GetAttribLocation(_prgId, name);
             return loc;
         }
-
+        /// <summary>
+        /// Returns the Uniform location by name
+        /// </summary>
+        /// <param name="name">Name of the Uniform</param>
+        /// <returns>Uniform Location</returns>
         public int GetUniformLocation(string name)
         {
             var loc = GL.GetUniformLocation(_prgId, name);
             return loc;
         }
 
-
+        /// <summary>
+        /// Tries to compile a Shader from source
+        /// </summary>
+        /// <param name="type">The shader type</param>
+        /// <param name="source">The source</param>
+        /// <param name="shaderID">the Returned shader Handle</param>
+        /// <returns>False if there were compile errors</returns>
         private static bool TryCompileShader(ShaderType type, string source, out int shaderID)
         {
             shaderID = GL.CreateShader(type);

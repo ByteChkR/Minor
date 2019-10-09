@@ -23,12 +23,18 @@ namespace Engine.OpenFL
     public class Interpreter
     {
         /// <summary>
-        /// The key to look for when parsing defines
+        /// The key to look for when parsing defined textures
         /// </summary>
         private const string DefineKey = "--define texture ";
 
+        /// <summary>
+        /// The key to look for when parsing defined scripts
+        /// </summary>
         private const string ScriptDefineKey = "--define script ";
 
+        /// <summary>
+        /// FL header Count(the offset from 0 where the "user" parameter start)
+        /// </summary>
         private const int FLHeaderArgCount = 5;
 
         /// <summary>
@@ -72,10 +78,19 @@ namespace Engine.OpenFL
         /// </summary>
         private delegate void FlFunction();
 
+
+        /// <summary>
+        /// Delegate that is used to import defines
+        /// </summary>
+        /// <param name="arg">The Line of the definition</param>
         private delegate void DefineHandler(string[] arg);
 
         #region Define Handler
 
+        /// <summary>
+        /// Define handler that loads defined scripts
+        /// </summary>
+        /// <param name="arg">The Line of the definition</param>
         private void DefineScript(string[] arg)
         {
             if (arg.Length < 2)
@@ -123,7 +138,10 @@ namespace Engine.OpenFL
                 _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
             }
         }
-
+        /// <summary>
+        /// Define handler that loads defined textures
+        /// </summary>
+        /// <param name="arg">The Line of the definition</param>
         private void DefineTexture(string[] arg)
         {
             if (arg.Length < 2)
@@ -289,8 +307,14 @@ namespace Engine.OpenFL
             /// </summary>
             public bool TriggeredDebug { get; set; }
 
-
+            /// <summary>
+            /// The CPU Side verison of the active channels
+            /// </summary>
             public byte[] ActiveChannels { get; set; }
+
+            /// <summary>
+            /// The list of Memory buffer that were defined. Matched by key
+            /// </summary>
             public Dictionary<string, MemoryBuffer> DefinedBuffers { get; set; }
 
             /// <summary>
@@ -298,6 +322,9 @@ namespace Engine.OpenFL
             /// </summary>
             public MemoryBuffer DebugBuffer { get; set; }
 
+            /// <summary>
+            /// The Current line the interpreter is operating on
+            /// </summary>
             public string SourceLine { get; set; }
 
             /// <summary>
@@ -310,8 +337,15 @@ namespace Engine.OpenFL
                 return false;
             }
 
+            /// <summary>
+            /// String builder instance that is used when doing some more heaview string operations
+            /// </summary>
             private static StringBuilder _sb = new StringBuilder();
 
+            /// <summary>
+            /// ToString Implementation
+            /// </summary>
+            /// <returns>Returns Current Processor State</returns>
             public override string ToString()
             {
                 _sb.Clear();
@@ -435,6 +469,11 @@ namespace Engine.OpenFL
         /// </summary>
         private InterpreterStepResult _stepResult;
 
+
+        /// <summary>
+        /// The Entry point of the fl script
+        /// Throws a FLInvalidEntryPointException if no main function is found
+        /// </summary>
         private int EntryIndex
         {
             get
@@ -640,11 +679,13 @@ namespace Engine.OpenFL
         /// A public constructor
         /// </summary>
         /// <param name="file">The file containing the source</param>
+        /// <param name="genType">The Type of the data the interpreter is operating on</param>
         /// <param name="input">The input buffer</param>
         /// <param name="width">Width of the input buffer</param>
         /// <param name="height">Height of the input buffer</param>
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
+        /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
         public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height, int depth,
             int channelCount, string kernelDBFolder,
@@ -657,11 +698,13 @@ namespace Engine.OpenFL
         /// A public constructor
         /// </summary>
         /// <param name="file">The file containing the source</param>
+        /// <param name="genType">The Type of the data the interpreter is operating on</param>
         /// <param name="input">The input buffer</param>
         /// <param name="width">Width of the input buffer</param>
         /// <param name="height">Height of the input buffer</param>
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
+        /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
         public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height, int depth,
             int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount,
             new KernelDatabase(kernelDBFolder, genType), false)

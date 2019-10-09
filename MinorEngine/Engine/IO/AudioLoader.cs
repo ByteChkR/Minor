@@ -8,13 +8,26 @@ using OpenTK.Audio.OpenAL;
 
 namespace Engine.IO
 {
+
+    /// <summary>
+    /// Static class responsible to load Audio Files from Disk
+    /// </summary>
     public static class AudioLoader
     {
+        /// <summary>
+        /// List of supported audio formats
+        /// </summary>
         private static Dictionary<string, Type> _formats = new Dictionary<string, Type>
         {
             {".wav", typeof(WAVLoader)}
         };
 
+        /// <summary>
+        /// Tries to load the specified file type provider
+        /// </summary>
+        /// <param name="filename">Input File</param>
+        /// <param name="formatProvider">The provider loaded</param>
+        /// <returns>True if the loading succeeded</returns>
         private static bool TryGetFormatProvider(string filename, out IAudioFormatLoader formatProvider)
         {
             foreach (var format in _formats)
@@ -32,6 +45,12 @@ namespace Engine.IO
             return false;
         }
 
+        /// <summary>
+        /// Returns the AL Format by Channel and bits
+        /// </summary>
+        /// <param name="channels"></param>
+        /// <param name="bits"></param>
+        /// <returns></returns>
         private static ALFormat GetSoundFormat(int channels, int bits)
         {
             switch (channels)
@@ -44,6 +63,12 @@ namespace Engine.IO
             }
         }
 
+
+        /// <summary>
+        /// Tries to load the specified file and pass the loaded data through the out parameters
+        /// </summary>
+        /// <param name="filename">Input File</param>
+        /// <param name="clip">Data that has been loaded</param>
         public static bool TryLoad(string filename, out AudioFile clip)
         {
             var ret = TryGetFormatProvider(filename, out var formatProvider);

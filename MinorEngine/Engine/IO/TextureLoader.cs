@@ -16,6 +16,14 @@ namespace Engine.IO
 {
     public class TextureLoader
     {
+
+        /// <summary>
+        /// Creates a 4 Channel Texture from a pointer and width/height
+        /// </summary>
+        /// <param name="ptr">IntPtr of the array to copy</param>
+        /// <param name="width">width of the array</param>
+        /// <param name="height">height of the array</param>
+        /// <returns>The texture</returns>
         public static Texture BytesToTexture(IntPtr ptr, int width, int height)
         {
             int texID = GL.GenTexture();
@@ -30,6 +38,13 @@ namespace Engine.IO
             return new Texture(texID); ;
         }
 
+        /// <summary>
+        /// Creates a 4 Channel Texture from a byte array and width/height
+        /// </summary>
+        /// <param name="buffer">IntPtr of the array to copy</param>
+        /// <param name="width">width of the array</param>
+        /// <param name="height">height of the array</param>
+        /// <returns>The texture</returns>
         public static Texture BytesToTexture(byte[] buffer, int width, int height)
         {
             var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
@@ -39,11 +54,24 @@ namespace Engine.IO
             return ret;
         }
 
+
+        /// <summary>
+        /// Creates a 4 Channel Texture from width and height
+        /// </summary>
+        /// <param name="width">width of the array</param>
+        /// <param name="height">height of the array</param>
+        /// <returns>The texture</returns>
         public static Texture ParameterToTexture(int width, int height)
         {
             return BytesToTexture(IntPtr.Zero, width, height);
         }
 
+
+        /// <summary>
+        /// Reads Texture Data from GPU into CPU Memory
+        /// </summary>
+        /// <param name="tex"></param>
+        /// <returns></returns>
         private static byte[] TextureToByteArray(Texture tex)
         {
             var buffer = new byte[(int)(tex.Width * tex.Height * 4)];
@@ -57,12 +85,25 @@ namespace Engine.IO
             return buffer;
         }
 
+
+        /// <summary>
+        /// Reads Texture Data from CL into CPU Memory and passes it into the CL implementation
+        /// </summary>
+        /// <param name="tex">Input Texture</param>
+        /// <returns>CL Buffer Object containing the image data</returns>
         public static MemoryBuffer TextureToMemoryBuffer(Texture tex)
         {
             var buffer = TextureToByteArray(tex);
             return CLAPI.CreateBuffer(buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tex"></param>
+        /// <param name="data">Array With the new data</param>
+        /// <param name="width">width of the array</param>
+        /// <param name="height">height of the array</param>
         public static void Update(Texture tex, byte[] data, int width, int height)
         {
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
@@ -71,6 +112,11 @@ namespace Engine.IO
             GL.BindTexture(TextureTarget.Texture2D, 0);
         }
 
+        /// <summary>
+        /// Turns a bitmap into a GL Texture
+        /// </summary>
+        /// <param name="bmp">Bitmap to Load</param>
+        /// <returns>The GL Texture</returns>
         public static Texture BitmapToTexture(Bitmap bmp)
         {
             var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
@@ -83,6 +129,11 @@ namespace Engine.IO
         }
 
 
+        /// <summary>
+        /// Loads all textures from a specified Assimp Scene.
+        /// </summary>
+        /// <param name="scene">The Assimp Scene</param>
+        /// <returns>An array of all textures contained in the scene</returns>
         private static Texture[] AssimpSceneToTextures(Scene scene)
         {
             if (!scene.HasTextures)
@@ -99,6 +150,11 @@ namespace Engine.IO
             return list.ToArray();
         }
 
+        /// <summary>
+        /// Creates a flat byte array out of a list of Texels from assimp
+        /// </summary>
+        /// <param name="imageData">The texels to convert</param>
+        /// <returns>Flat byte array containing the data</returns>
         private static byte[] flattenImageData(Texel[] imageData)
         {
             var ret = new byte[imageData.Length * 4];
@@ -110,6 +166,12 @@ namespace Engine.IO
             return ret;
         }
 
+        /// <summary>
+        /// Creates a flat byte array sequence out of a texel
+        /// </summary>
+        /// <param name="txl">The texel to convert</param>
+        /// <param name="arr">the output array</param>
+        /// <param name="startidx">The index to start inserting the texel data</param>
         private static void TexelToByteSequence(int startidx, byte[] arr, Texel txl)
         {
             arr[startidx] = txl.R;
@@ -119,17 +181,30 @@ namespace Engine.IO
         }
 
         //Maybe create key for textures loaded with assimp and then use them as cache name
+        /// <summary>
+        /// Converts an Assimp Texture into a Engine/OpenGL Texture
+        /// </summary>
+        /// <param name="tex">Assimp texture</param>
+        /// <returns>GL Texure</returns>
         public static Texture AssimpEmbeddedToTexture(EmbeddedTexture tex)
         {
             return BytesToTexture(flattenImageData(tex.NonCompressedData), tex.Width, tex.Height);
         }
 
+        /// <summary>
+        /// Texture a file from disk
+        /// </summary>
+        /// <param name="file">The file to load</param>
+        /// <returns>The GL Texture</returns>
         public static Texture FileToTexture(string file)
         {
             //if (IsContained(file)) return KeyToTexture(file);
             return BitmapToTexture(new Bitmap(file));
         }
 
+        /// <summary>
+        /// Applies the Default texParameters to the loaded objects
+        /// </summary>
         private static void DefaultTexParameter()
         {
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
@@ -142,6 +217,11 @@ namespace Engine.IO
                 (int)TextureWrapMode.Repeat);
         }
 
+        /// <summary>
+        /// Copies a Texture by copying the byte arrays
+        /// </summary>
+        /// <param name="other">The texture to copy</param>
+        /// <returns>A copy of Other</returns>
         private static Texture Copy(Texture other)
         {
             return BytesToTexture(TextureToByteArray(other), (int)other.Width, (int)other.Height);

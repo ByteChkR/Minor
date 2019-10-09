@@ -356,6 +356,7 @@ namespace Engine.OpenCL
         /// <param name="kernel">The CLKernel to be executed</param>
         /// <param name="image">The image buffer that serves as input</param>
         /// <param name="dimensions">The dimensions of the input buffer</param>
+        /// <param name="genTypeMaxVal">The max valuee of the generic type that is used.(byte = 255)</param>
         /// <param name="enabledChannels">The enabled channels for the kernel</param>
         /// <param name="channelCount">The amount of active channels.</param>
         public static void Run(CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,

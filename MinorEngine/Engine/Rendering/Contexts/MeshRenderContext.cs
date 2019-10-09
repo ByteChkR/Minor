@@ -6,11 +6,30 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering.Contexts
 {
+
+    /// <summary>
+    /// Class that implements rendering meshes
+    /// </summary>
     public class MeshRenderContext : RenderContext
     {
+        /// <summary>
+        /// The meshes that are drawn to the screen
+        /// </summary>
         public Mesh[] Meshes { get; }
+
+        /// <summary>
+        /// The Textures that are used to draw the meshes
+        /// </summary>
         public Texture[] Textures { get; }
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="program">The Shader to be used</param>
+        /// <param name="modelMatrix">The model matrix</param>
+        /// <param name="meshes">The meshes to be drawn</param>
+        /// <param name="textures">Textures to be drawn</param>
+        /// <param name="renderType">The render type of the context</param>
         public MeshRenderContext(ShaderProgram program, Matrix4 modelMatrix, Mesh[] meshes, Texture[] textures,
             Renderer.RenderType renderType) : base(program, modelMatrix, true, renderType, 0)
         {
@@ -18,6 +37,11 @@ namespace Engine.Rendering.Contexts
             Meshes = meshes;
         }
 
+        /// <summary>
+        /// The Code for rendering a Mesh
+        /// </summary>
+        /// <param name="viewMat">View Matrix</param>
+        /// <param name="projMat">Projection Matrix</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
             Program.Use();

@@ -129,6 +129,14 @@ namespace Engine.OpenCL
 #endif
         }
 
+
+        /// <summary>
+        /// runs the Kernel with a command queue
+        /// This function requires setting ALL parameters manually
+        /// </summary>
+        /// <param name="cq">Command Queue to use</param>
+        /// <param name="workdim">The working dimension(usually 1)</param>
+        /// <param name="groupsize">The group size(usually buffer.size)</param>
         public void Run(CommandQueue cq, int workdim, int groupsize)
         {
             cq.EnqueueNDRangeKernel(Kernel, workdim, groupsize);

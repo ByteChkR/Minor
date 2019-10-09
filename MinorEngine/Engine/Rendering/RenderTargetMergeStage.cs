@@ -5,9 +5,14 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
+    /// <summary>
+    /// Implements the Merging of Framebuffers
+    /// </summary>
     public static class RenderTargetMergeStage
     {
-
+        /// <summary>
+        /// Static Float Array that is used to create a screen space quad
+        /// </summary>
         private static float[] _screenQuadVertexData =
         {
             // positions   // texCoords
@@ -20,18 +25,41 @@ namespace Engine.Rendering
             1.0f, 1.0f, 1.0f, 1.0f
         };
 
+        /// <summary>
+        /// flag to indicate if the MergeStage has been initialized
+        /// </summary>
         private static bool _init;
+
+        /// <summary>
+        /// The VAO of the Screen quad
+        /// </summary>
         private static int _screenVAO;
 
+        /// <summary>
+        /// Render target 0 for the pingpong rendering
+        /// </summary>
         private static RenderTarget _screenTarget0 =
             new RenderTarget(new ScreenCamera(), int.MaxValue, new Color(0, 0, 0, 0));
 
+        /// <summary>
+        /// Render target 1 for the pingpong rendering
+        /// </summary>
         private static RenderTarget _screenTarget1 =
             new RenderTarget(new ScreenCamera(), int.MaxValue, new Color(0, 0, 0, 0));
 
+        /// <summary>
+        /// The Shader used to directly draw to the back buffer of the OpenGL window
+        /// </summary>
         private static ShaderProgram _screenShader;
+
+        /// <summary>
+        /// The shaders used for the different merge types
+        /// </summary>
         private static Dictionary<RenderTargetMergeType, ShaderProgram> _mergeTypes = new Dictionary<RenderTargetMergeType, ShaderProgram>();
 
+        /// <summary>
+        /// Initialization method
+        /// </summary>
         private static void Init()
         {
             _init = true;
@@ -79,23 +107,41 @@ namespace Engine.Rendering
             }
         }
 
+        /// <summary>
+        /// Flag that indicates what is the next input buffer and what is the next output buffer
+        /// </summary>
         private static bool _isOne;
 
+        /// <summary>
+        /// Flips input and output of GetTarget() and GetSource()
+        /// </summary>
         private static void Ping()
         {
             _isOne = !_isOne;
         }
 
+        /// <summary>
+        /// Returns the Current Target that will be drawn onto
+        /// </summary>
+        /// <returns></returns>
         private static RenderTarget GetTarget()
         {
             return _isOne ? _screenTarget1 : _screenTarget0;
         }
 
+        /// <summary>
+        /// Returns the current Source that will be sampled
+        /// </summary>
+        /// <returns></returns>
         private static RenderTarget GetSource()
         {
             return _isOne ? _screenTarget0 : _screenTarget1;
         }
 
+        /// <summary>
+        /// merges the targets and draws the results on the back buffer of the OpenGL Window
+        /// </summary>
+        /// <param name="targets"></param>
         public static void MergeAndDisplayTargets(List<RenderTarget> targets)
         {
             if (!_init)

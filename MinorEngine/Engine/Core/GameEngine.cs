@@ -9,22 +9,72 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Core
 {
+
+    /// <summary>
+    /// Central class that is the "heart" of the Engine
+    /// </summary>
     public class GameEngine
     {
+        /// <summary>
+        /// The Window used to render
+        /// </summary>
         private GameWindow Window;
+
+        /// <summary>
+        /// Renderer Instance
+        /// </summary>
         protected Renderer Renderer;
+
+        /// <summary>
+        /// The Settings the engine has been started with
+        /// </summary>
         public EngineSettings Settings { get; }
+        /// <summary>
+        /// Static Singleton Instance
+        /// </summary>
         public static GameEngine Instance { get; private set; }
+
+        /// <summary>
+        /// The current scene
+        /// </summary>
         public AbstractScene CurrentScene { get; private set; }
+
+        /// <summary>
+        /// Window Width
+        /// </summary>
         public int Width => Window.Width;
+        /// <summary>
+        /// Window Height
+        /// </summary>
         public int Height => Window.Height;
+        /// <summary>
+        /// Private flag if the there is a scene change in progress
+        /// </summary>
         private bool _changeScene;
+
+        /// <summary>
+        /// The Next scene to be initialized
+        /// </summary>
         private Type _nextScene;
+
+        /// <summary>
+        /// An internal update frame counter
+        /// </summary>
         private int FrameCounter;
+        /// <summary>
+        /// An internal render frame counter
+        /// </summary>
         private int RenderFrameCounter;
 
+        /// <summary>
+        /// Default Settings
+        /// </summary>
         private DebugSettings EngineDefault => DebugSettings.Default;
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="settings">Settings to be used</param>
         public GameEngine(EngineSettings settings)
         {
             Logger.SetDebugStage(DebugStage.Startup);
@@ -35,6 +85,9 @@ namespace Engine.Core
             DebugHelper.ApplySettings(settings.DebugSettings ?? EngineDefault);
         }
 
+        /// <summary>
+        /// Initializes the Game Systems
+        /// </summary>
         public void Initialize()
         {
             Logger.SetDebugStage(DebugStage.Init);
@@ -48,6 +101,10 @@ namespace Engine.Core
             PhysicsEngine.Initialize();
         }
 
+
+        /// <summary>
+        /// Initializes the OpenGL Window and registers some handles
+        /// </summary>
         private void initializeWindow()
         {
             Logger.Log("Initializing Window..", DebugChannel.Log);
@@ -69,6 +126,9 @@ namespace Engine.Core
         }
 
 
+        /// <summary>
+        /// Initializes the renderer
+        /// </summary>
         private void initializeRenderer()
         {
             //TODO
@@ -79,11 +139,20 @@ namespace Engine.Core
             Window.MouseMove += Window_MouseMove;
         }
 
+        /// <summary>
+        /// Wrapper to update the mouse position property
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_MouseMove(object sender, OpenTK.Input.MouseMoveEventArgs e)
         {
             MousePosition = new Vector2(e.X, e.Y);
         }
 
+        /// <summary>
+        /// Function used to Load a new scene
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public void InitializeScene<T>() where T : AbstractScene
         {
             _changeScene = true;
@@ -91,18 +160,27 @@ namespace Engine.Core
             Logger.Log("Initializing Scene..", DebugChannel.Log);
         }
 
-
+        /// <summary>
+        /// Adds a Render Target to the Renderer
+        /// </summary>
+        /// <param name="target">Target to add</param>
         public void AddRenderTarget(RenderTarget target)
         {
             Renderer.AddRenderTarget(target);
         }
 
+        /// <summary>
+        /// Removes a Render Target from the Renderer
+        /// </summary>
+        /// <param name="target">Target to remove</param>
         public void RemoveRenderTarget(RenderTarget target)
         {
             Renderer.RemoveRenderTarget(target);
         }
 
-
+        /// <summary>
+        /// Runs the Engine
+        /// </summary>
         public void Run()
         {
             Logger.SetDebugStage(DebugStage.General);
@@ -111,8 +189,17 @@ namespace Engine.Core
             Window.Run(0, 0);
         }
 
+        /// <summary>
+        /// Mouse Position in pixels
+        /// </summary>
         public Vector2 MousePosition { get; private set; }
 
+        /// <summary>
+        /// Converts the Current Screen position to world space coordinates
+        /// </summary>
+        /// <param name="x">x in pixels</param>
+        /// <param name="y">y in pixels</param>
+        /// <returns></returns>
         public Vector3 ConvertScreenToWorldCoords(int x, int y)
         {
             Vector2 mouse;
@@ -124,6 +211,14 @@ namespace Engine.Core
             return coords;
         }
 
+        /// <summary>
+        /// Unprojects a 2D vector with the specified Projection matrix
+        /// </summary>
+        /// <param name="projection">Projection to be unprojected</param>
+        /// <param name="view">View</param>
+        /// <param name="viewport">Viewport(Width/Height of the screen)</param>
+        /// <param name="mouse">The mouse position in pixels</param>
+        /// <returns></returns>
         private static Vector4 UnProject(ref Matrix4 projection, Matrix4 view, Size viewport, Vector2 mouse)
         {
             Vector4 vec;
@@ -149,6 +244,11 @@ namespace Engine.Core
             return vec;
         }
 
+        /// <summary>
+        /// Gets called from OpenTK whenever it is time for an update
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected virtual void Update(object sender, FrameEventArgs e)
         {
             FrameCounter++;
@@ -205,13 +305,21 @@ namespace Engine.Core
             //ResourceManager.ProcessDeleteQueue();
         }
 
-
+        /// <summary>
+        /// Event handler that changes the viewport of the Engine when it gets resitzed
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
         private void OnResize(object o, EventArgs e)
         {
             GL.Viewport(0, 0, Window.Width, Window.Height);
         }
 
-
+        /// <summary>
+        /// Gets called by opentk when it is time for a render update
+        /// </summary>
+        /// <param name="o"></param>
+        /// <param name="e"></param>
         private void OnRender(object o, EventArgs e)
         {
             RenderFrameCounter++;

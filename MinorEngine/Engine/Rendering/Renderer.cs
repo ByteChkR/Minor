@@ -7,23 +7,51 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
+    /// <summary>
+    /// Renderer that does all the drawing
+    /// </summary>
     public class Renderer
     {
+        /// <summary>
+        ///  A list of render targets
+        /// </summary>
         private readonly List<RenderTarget> Targets = new List<RenderTarget>();
+        /// <summary>
+        /// Current target id
+        /// </summary>
         private int CurrentTarget { get; set; }
+
+        /// <summary>
+        /// The Clear color of the two standard Render targets(World/UI)
+        /// </summary>
         private Color _clearColor = new Color(0, 0, 0, 0);
 
+        /// <summary>
+        /// The Clear color of the two standard Render targets(World/UI)
+        /// </summary>
         public Color ClearColor
         {
             set
             {
                 _clearColor = value;
-                GL.ClearColor(_clearColor);
+                rt1.ClearColor = rt.ClearColor = _clearColor;
             }
             get => _clearColor;
         }
 
-        public Renderer()
+        /// <summary>
+        /// Default Render Target(Game World)
+        /// </summary>
+        private RenderTarget rt;
+        /// <summary>
+        /// Default Render Target(UI)
+        /// </summary>
+        private RenderTarget rt1;
+
+        /// <summary>
+        /// Internal Constructor
+        /// </summary>
+        internal Renderer()
         {
             GL.FrontFace(FrontFaceDirection.Ccw);
             GL.Enable(EnableCap.CullFace);
@@ -32,20 +60,28 @@ namespace Engine.Rendering
             GL.Enable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            var rt = new RenderTarget(null, 1, _clearColor);
+            rt = new RenderTarget(null, 1, _clearColor);
             rt.MergeType = RenderTargetMergeType.Additive;
             AddRenderTarget(rt);
-            var rt1 = new RenderTarget(new ScreenCamera(), 1 << 30, _clearColor);
+            rt1 = new RenderTarget(new ScreenCamera(), 1 << 30, _clearColor);
             rt1.MergeType = RenderTargetMergeType.Additive;
             AddRenderTarget(rt1);
         }
 
+        /// <summary>
+        /// Adds a render target to the Render Target List
+        /// </summary>
+        /// <param name="target">The Target to Add</param>
         public void AddRenderTarget(RenderTarget target)
         {
             Targets.Add(target);
             Targets.Sort();
         }
 
+        /// <summary>
+        /// Removes a render target from the Render Target List
+        /// </summary>
+        /// <param name="target">The Target to Remove</param>
         public void RemoveRenderTarget(RenderTarget target)
         {
             for (var i = Targets.Count - 1; i >= 0; i--)
@@ -58,6 +94,14 @@ namespace Engine.Rendering
             }
         }
 
+
+        /// <summary>
+        /// Creates a Render Queue that is ordered and is only containing objects of the specified types
+        /// </summary>
+        /// <param name="renderTarget">The Render Target ID</param>
+        /// <param name="view">The View Matrix of the Camera Associated with the Render Target</param>
+        /// <param name="type">The Render Type</param>
+        /// <returns>A sorted list of renderer contexts</returns>
         private static List<RenderContext> CreateRenderQueue(int renderTarget, Matrix4 view, RenderType type)
         {
             var Contexts = new List<RenderContext>();
@@ -76,6 +120,10 @@ namespace Engine.Rendering
             return Contexts;
         }
 
+        /// <summary>
+        /// Renders all targets and merges them into a single frame buffer
+        /// </summary>
+        /// <param name="scene">The Scene to be drawn</param>
         public void RenderAllTargets(AbstractScene scene)
         {
             scene.ComputeWorldTransformCache(Matrix4.Identity); //Compute all the World transforms and cache them
@@ -123,6 +171,11 @@ namespace Engine.Rendering
             //To Merge i need a vertex and fragment shader that can iterate over variable amounts of samplers(Can start out with 2)
         }
 
+        /// <summary>
+        /// Renders the Render Queue
+        /// </summary>
+        /// <param name="contexts">The Queue of Render Contexts</param>
+        /// <param name="cam">The ICamera</param>
         public static void Render(List<RenderContext> contexts, ICamera cam)
         {
             foreach (var renderContext in contexts)
@@ -130,31 +183,7 @@ namespace Engine.Rendering
                 renderContext.Render(cam.ViewMatrix, cam.Projection);
             }
         }
-
-        public static void Render(int PassMask, ICamera cam)
-        {
-            foreach (var renderer in GameObject.ObjsWithAttachedRenderers)
-            {
-                if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderMask, PassMask, false))
-                {
-                    RenderObject(renderer.RenderingComponent, renderer._worldTransformCache, cam.ViewMatrix,
-                        cam.Projection);
-                }
-            }
-        }
-
-
-        public static void RenderObject(IRenderingComponent model, Matrix4 modelMat, Matrix4 viewMat,
-            Matrix4 projMat)
-        {
-            model.Context.Render(viewMat, projMat);
-
-            //RenderContext context = model.Context;
-            //DrawObject(model.Context, modelMat, viewMat, projMat);
-            //TODO: HERE GOES THE PASS MASK EVALUATION SO STUFF IGNORES IT(REQUIRES EVERY GAMEOBJECT TO HAVE A MASK AS WELL)
-            //model?.RenderObject(modelMat, viewMat, projMat);
-        }
-
+        
         public enum RenderType
         {
             Opaque,

@@ -1,14 +1,36 @@
-﻿namespace Engine.DataTypes
+﻿using System;
+using OpenTK.Audio.OpenAL;
+
+namespace Engine.DataTypes
 {
-    public class AudioFile
+
+    /// <summary>
+    /// A Data Type that is containing the information that is needed to reference a OpenAL Audio file.
+    /// </summary>
+    public class AudioFile : IDisposable
     {
         public int Buffer { get; }
         public int BufferSize { get; }
 
+        /// <summary>
+        /// Internal Constructor to create a Audio file Data object.
+        /// </summary>
+        /// <param name="buffer"></param>
+        /// <param name="bufferSize"></param>
         internal AudioFile(int buffer, int bufferSize)
         {
             BufferSize = bufferSize;
             Buffer = buffer;
+        }
+
+
+
+        /// <summary>
+        /// Disposable implementation to free the Buffer once it is no longer needed.
+        /// </summary>
+        public void Dispose()
+        {
+            AL.DeleteBuffer(Buffer);
         }
 
     }
