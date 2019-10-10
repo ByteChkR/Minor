@@ -86,3 +86,4 @@ Visual Studio:
 	lmem -> Lists the statistics of the different stages of all collected frames
 	llmem -> Lists the last complete stage(Update or Render)
 	cmd <command> -> Writes the Output of the specified command(including arguments) to the Engine Debug System.
+	tg/togglegraph -> shows/hides the delta time graph

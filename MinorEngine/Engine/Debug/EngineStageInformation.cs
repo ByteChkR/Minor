@@ -79,8 +79,10 @@ namespace Engine.Debug
             After = GC.GetTotalMemory(false) / 1024;
             AfterGarbageCollection = GC.GetTotalMemory(true) / 1024;
 #endif
+
             Timer.Stop();
             TimeSpentInStage = Timer.Elapsed;
+            
         }
 
         /// <summary>

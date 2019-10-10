@@ -14,6 +14,13 @@ namespace Engine.Debug
         /// </summary>
         private static List<EngineStageInformation> _informationCollection = new List<EngineStageInformation>();
 
+        private static DebugConsoleComponent _console;
+
+        public static void SetDebugComponent(DebugConsoleComponent component)
+        {
+            _console = component;
+        }
+
         /// <summary>
         /// Current active stage
         /// </summary>
@@ -121,11 +128,18 @@ namespace Engine.Debug
         {
 #if LEAK_TRACE
             EngineStageInformation parent = _current?.Parent;
+
+            EngineStageInformation cur = _current;
+
             ChangeStage(step, true); //Change out the step
             _current.Parent = parent; //Set it up to be the substep on the same level
             if (parent == null)
             {
                 _informationCollection.Add(_current);
+
+                if (cur != null)
+                    _console?.AddGraphValue((float)cur.TimeSpentInStage.TotalMilliseconds);
+
 
                 while (_informationCollection.Count >= MaxTraceCount)
                 {

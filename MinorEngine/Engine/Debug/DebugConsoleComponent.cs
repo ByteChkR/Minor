@@ -18,6 +18,10 @@ namespace Engine.Debug
     /// </summary>
     public class DebugConsoleComponent : AbstractComponent
     {
+        private Queue<float> _graphData;
+        private bool GraphEnabled = false;
+        private int _maxGraphCount = 1600;
+
         /// <summary>
         /// The Maximum Amount of console lines that is *roughly* working for the usecase
         /// </summary>
@@ -62,6 +66,8 @@ namespace Engine.Debug
         /// Reference to the Background Image Renderer Component
         /// </summary>
         private UIImageRendererComponent _bgImage;
+
+        private GraphDrawingComponent _graph;
 
         /// <summary>
         /// String builder used for inputs from the used
@@ -168,6 +174,12 @@ namespace Engine.Debug
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
             }, out ShaderProgram uiShader);
 
+            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "shader/graph.fs"},
+                {ShaderType.VertexShader, "shader/graph.vs"}
+            }, out ShaderProgram graphShader);
+
             GameObject obj = new GameObject("Console");
             GameObject _in = new GameObject("ConsoleInput");
             GameObject _out = new GameObject("ConsoleOutput");
@@ -175,6 +187,7 @@ namespace Engine.Debug
             GameObject _bgObj = new GameObject("BackgroundImage");
             GameObject _bgOutObj = new GameObject("BackgroundOutputImage");
             GameObject _hint = new GameObject("HintText");
+            GameObject _graph = new GameObject("Graph");
 
             obj.Add(_in);
             obj.Add(_out);
@@ -182,6 +195,7 @@ namespace Engine.Debug
             obj.Add(_bgObj);
             obj.Add(_hint);
             obj.Add(_bgOutObj);
+            obj.Add(_graph);
 
             rt = new RenderTarget(null, 1 << 29, new Color(0, 0, 0, 0));
             GameEngine.Instance.AddRenderTarget(rt);
@@ -219,13 +233,23 @@ namespace Engine.Debug
                 Text = "Console Initialized.."
             };
 
+            GraphDrawingComponent _gDraw = new GraphDrawingComponent(graphShader, false, 1f);
 
+            _graph.AddComponent(_gDraw);
             _bgObj.AddComponent(_bgImage);
             _in.AddComponent(_tIn);
             _out.AddComponent(_tOut);
             _titleObj.AddComponent(_tText);
             _hint.AddComponent(_tHint);
             _bgOutObj.AddComponent(_bgOutImage);
+
+            _gDraw.Scale = new Vector2(0.5f, 0.5f);
+            _gDraw.Position = new Vector2(0.5f);
+            _gDraw.Points = new[]
+            {
+                new Vector2(0f,0f),
+                new Vector2(1f,1f),
+            };
 
             _tText.Position = new Vector2(-0.39f, 0.353f);
             _tText.Scale = new Vector2(2f, 2f);
@@ -248,6 +272,30 @@ namespace Engine.Debug
             return obj;
         }
 
+
+        private void UpdateGraph()
+        {
+            Vector2[] pts = new Vector2[_graphData.Count];
+            float[] _pts = _graphData.ToArray();
+            float xInc = 1f / pts.Length;
+            for (int i = 0; i < pts.Length; i++)
+            {
+
+                pts[i] = new Vector2(xInc * i, _pts[i]);
+            }
+
+            _graph.Points = pts;
+        }
+
+        public void AddGraphValue(float yValue)
+        {
+            _graphData.Enqueue(yValue);
+            while (_graphData.Count >= _maxGraphCount)
+            {
+                _graphData.Dequeue();
+            }
+            UpdateGraph();
+        }
 
         /// <summary>
         /// Writes the Specified text to the console. and removes the oldest messages when reaching message limit.
@@ -289,6 +337,8 @@ namespace Engine.Debug
         /// </summary>
         protected override void Awake()
         {
+            _graphData = new Queue<float>();
+            MemoryTracer.SetDebugComponent(this);
             _consoleOutBuffer = new Queue<string>();
             _consoleOutBuffer.Enqueue("Console Initialized..");
             _title = Owner.GetChildWithName("Title").GetComponent<UITextRendererComponent>();
@@ -296,6 +346,8 @@ namespace Engine.Debug
             _consoleOutput = Owner.GetChildWithName("ConsoleOutput").GetComponent<UITextRendererComponent>();
             _bgImage = Owner.GetChildWithName("BackgroundImage").GetComponent<UIImageRendererComponent>();
             _hintText = Owner.GetChildWithName("HintText").GetComponent<UITextRendererComponent>();
+            _graph = Owner.GetChildWithName("Graph").GetComponent<GraphDrawingComponent>();
+            (_graph.Context as GraphDrawingContext).Enabled = false;
             _consoleOutputImage =
                 Owner.GetChildWithName("BackgroundOutputImage").GetComponent<UIImageRendererComponent>();
             _sb = new StringBuilder();
@@ -310,6 +362,8 @@ namespace Engine.Debug
             AddCommand("lmem", MemoryTracer.cmdListMemoryInfo);
             AddCommand("llmem", MemoryTracer.cmdListLastMemoryInfo);
             AddCommand("cmd", cmdExOnConsole);
+            AddCommand("tg", cmd_ToggleGraph);
+            AddCommand("togglegraph", cmd_ToggleGraph);
         }
 
         /// <summary>
@@ -318,9 +372,22 @@ namespace Engine.Debug
         /// </summary>
         /// <param name="args">The arguments provided(0)</param>
         /// <returns>Result of Command</returns>
+        private string cmd_ToggleGraph(string[] args)
+        {
+            GraphDrawingContext c = _graph.Context as GraphDrawingContext;
+            c.Enabled = !c.Enabled;
+            return "Enabled Graph: " + c.Enabled;
+        }
+
+        /// <summary>
+        /// Command in Console: tg/togglegraph
+        /// Shows/Hides the Graph
+        /// </summary>
+        /// <param name="args">The arguments provided(0)</param>
+        /// <returns>Result of Command</returns>
         private string cmd_Exit(string[] args)
         {
-            ToggleConsole(false);
+
             return "Exited.";
         }
 
@@ -642,6 +709,8 @@ namespace Engine.Debug
 
             _bgImage.Alpha = _showConsole ? 0.65f : 0;
             _consoleOutputImage.Alpha = _showConsole ? 0.75f : 0;
+
+
 
             _hintText.Text = _showConsole ? "" : HelpText;
 
