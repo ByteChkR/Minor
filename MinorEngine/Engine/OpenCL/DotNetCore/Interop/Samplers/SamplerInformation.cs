@@ -1,4 +1,3 @@
-
 namespace Engine.OpenCL.DotNetCore.Interop.Samplers
 {
     /// <summary>
@@ -15,32 +14,32 @@ namespace Engine.OpenCL.DotNetCore.Interop.Samplers
         /// Retrieves the context specified when the sampler is created.
         /// </summary>
         Context = 0x1151,
-        
+
         /// <summary>
         /// Retrieves the normalized coordinates value associated with the sampler.
         /// </summary>
         NormalizedCoordinates = 0x1152,
-        
+
         /// <summary>
         /// Retrieves the addressing mode value associated with the sampler.
         /// </summary>
         AddressingMode = 0x1153,
-        
+
         /// <summary>
         /// Retrieves the filter mode value associated with the sampler.
         /// </summary>
         FilterMode = 0x1154,
-        
+
         /// <summary>
         /// Retrievess the MIP filter mode.
         /// </summary>
         MipFilterMode = 0x1155,
-        
+
         /// <summary>
         /// Retrieves the LOD minimum.
         /// </summary>
         LodMinimum = 0x1156,
-        
+
         /// <summary>
         /// Retrieves the LOD maximum.
         /// </summary>

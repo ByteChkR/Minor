@@ -76,7 +76,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             get => Elements.Length;
             set
             {
-                var newArray = new T[value];
+                T[] newArray = new T[value];
                 Array.Copy(Elements, newArray, Count);
                 Elements = newArray;
             }
@@ -111,7 +111,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         ///<returns>Whether or not the item was present in the list.</returns>
         public bool Remove(ref T item)
         {
-            var index = IndexOf(ref item);
+            int index = IndexOf(ref item);
             if (index == -1)
             {
                 return false;

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
+using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.Entities;
+using Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs;
 using Engine.Physics.BEPUutilities.DataStructures;
 
 namespace Engine.Physics.BEPUphysics.Character
@@ -32,13 +34,13 @@ namespace Engine.Physics.BEPUphysics.Character
             //changing the same collision pair handlers.  Rather than infect every character system with micro-locks,
             //we lock the entirety of a character update.
 
-            foreach (var pair in characterBody.CollisionInformation.Pairs)
+            foreach (CollidablePairHandler pair in characterBody.CollisionInformation.Pairs)
             {
                 //Is this a pair with another character?
-                var other = pair.BroadPhaseOverlap.EntryA == characterBody.CollisionInformation
+                BroadPhaseEntry other = pair.BroadPhaseOverlap.EntryA == characterBody.CollisionInformation
                     ? pair.BroadPhaseOverlap.EntryB
                     : pair.BroadPhaseOverlap.EntryA;
-                var otherCharacter = other.Tag as ICharacterTag;
+                ICharacterTag otherCharacter = other.Tag as ICharacterTag;
                 if (otherCharacter != null)
                 {
                     involvedCharacters.Add(otherCharacter);
@@ -53,7 +55,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 //However, the characters cannot be locked willy-nilly.  There needs to be some defined order in which pairs are locked to avoid deadlocking.
                 involvedCharacters.Sort(comparer);
 
-                for (var i = 0; i < involvedCharacters.Count; ++i)
+                for (int i = 0; i < involvedCharacters.Count; ++i)
                 {
                     Monitor.Enter(involvedCharacters[i]);
                 }
@@ -86,7 +88,7 @@ namespace Engine.Physics.BEPUphysics.Character
         public void UnlockCharacterPairs()
         {
             //Unlock the pairs, LIFO.
-            for (var i = involvedCharacters.Count - 1; i >= 0; i--)
+            for (int i = involvedCharacters.Count - 1; i >= 0; i--)
             {
                 Monitor.Exit(involvedCharacters[i]);
             }

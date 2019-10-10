@@ -68,7 +68,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
             TwistMotor.IsActive = false;
 
             //Ensure that the base and test direction is perpendicular to the free axis.
-            var baseAxis = anchor - connectionA.position;
+            Vector3 baseAxis = anchor - connectionA.position;
             if (baseAxis.LengthSquared() < Toolbox.BigEpsilon
             ) //anchor and connection a in same spot, so try the other way.
             {

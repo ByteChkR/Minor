@@ -26,7 +26,7 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
         /// </summary>
         public BufferPool()
         {
-            for (var i = 0; i < pools.Length; ++i)
+            for (int i = 0; i < pools.Length; ++i)
             {
                 pools[i] = new Stack<T[]>();
             }
@@ -44,7 +44,7 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
             //We want the buffer which would fully contain the count, so it should be effectively Ceiling(Log(count)).
             //Doubling the value (and subtracting one, to avoid the already-a-power-of-two case) takes care of this.
             count = ((count > 0 ? count : 1) << 1) - 1;
-            var log = 0;
+            int log = 0;
             if ((count & 0xFFFF0000) > 0)
             {
                 count >>= 16;
@@ -120,12 +120,14 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
         public virtual void GiveBack(T[] buffer, int poolIndex)
         {
 #if DEBUG
-            System.Diagnostics.Debug.Assert(outstandingResources.Remove(buffer), "The buffer being returned must come from this pool, and buffers should only be returned once.");
+            System.Diagnostics.Debug.Assert(outstandingResources.Remove(buffer),
+                "The buffer being returned must come from this pool, and buffers should only be returned once.");
             if (CheckIfReturnedBuffersAreClean)
             {
                 for (int i = 0; i < buffer.Length; ++i)
                 {
-                    System.Diagnostics.Debug.Assert(EqualityComparer<T>.Default.Equals(buffer[i], default(T)), "Buffers being returned to the pool should be clean. Every index should hold default(T).");
+                    System.Diagnostics.Debug.Assert(EqualityComparer<T>.Default.Equals(buffer[i], default(T)),
+                        "Buffers being returned to the pool should be clean. Every index should hold default(T).");
                 }
             }
 #endif
@@ -159,7 +161,7 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
         /// </summary>
         public void Clear()
         {
-            for (var i = 0; i <= MaximumPoolIndex; ++i)
+            for (int i = 0; i <= MaximumPoolIndex; ++i)
             {
                 pools[i].Clear();
             }

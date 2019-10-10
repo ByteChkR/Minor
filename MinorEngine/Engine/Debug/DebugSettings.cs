@@ -5,13 +5,11 @@ using Common;
 
 namespace Engine.Debug
 {
-
     /// <summary>
     /// Debug Settings used to Configure The debugging system
     /// </summary>
     public class DebugSettings : IDebugSettings
     {
-
         /// <summary>
         /// Should we send logs in the first place?
         /// </summary>

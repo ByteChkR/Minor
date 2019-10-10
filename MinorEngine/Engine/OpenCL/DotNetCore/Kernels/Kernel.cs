@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -43,9 +42,12 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.functionName))
-                    this.functionName = this.GetKernelInformation<string>(KernelInformation.FunctionName);
-                return this.functionName;
+                if (string.IsNullOrWhiteSpace(functionName))
+                {
+                    functionName = GetKernelInformation<string>(KernelInformation.FunctionName);
+                }
+
+                return functionName;
             }
         }
 
@@ -61,14 +63,17 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         {
             get
             {
-                if (!this.numberOfArguments.HasValue)
-                    this.numberOfArguments = (int)this.GetKernelInformation<uint>(KernelInformation.NumberOfArguments);
-                return this.numberOfArguments.Value;
+                if (!numberOfArguments.HasValue)
+                {
+                    numberOfArguments = (int) GetKernelInformation<uint>(KernelInformation.NumberOfArguments);
+                }
+
+                return numberOfArguments.Value;
             }
         }
 
         #endregion
-        
+
         #region Private Methods
 
         /// <summary>
@@ -82,15 +87,22 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         {
             // Retrieves the size of the return value in bytes, this is used to later get the full information
             UIntPtr returnValueSize;
-            Result result = KernelsNativeApi.GetKernelInformation(this.Handle, kernelInformation, UIntPtr.Zero, null, out returnValueSize);
+            Result result =
+                KernelsNativeApi.GetKernelInformation(Handle, kernelInformation, UIntPtr.Zero, null,
+                    out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The kernel information could not be retrieved.", result);
-            
+            }
+
             // Allocates enough memory for the return value and retrieves it
             byte[] output = new byte[returnValueSize.ToUInt32()];
-            result = KernelsNativeApi.GetKernelInformation(this.Handle, kernelInformation, new UIntPtr((uint)output.Length), output, out returnValueSize);
+            result = KernelsNativeApi.GetKernelInformation(Handle, kernelInformation, new UIntPtr((uint) output.Length),
+                output, out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The kernel information could not be retrieved.", result);
+            }
 
             // Returns the output
             return InteropConverter.To<T>(output);
@@ -109,16 +121,23 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         {
             // Checks if the index is positive, if not, then an exception is thrown
             if (index < 0)
-                throw new IndexOutOfRangeException($"The specified index {index} is invalid. The index of the argument must always be greater or equal to 0.");
+            {
+                throw new IndexOutOfRangeException(
+                    $"The specified index {index} is invalid. The index of the argument must always be greater or equal to 0.");
+            }
 
             // The set kernel argument method needs a pointer to the pointer, therefore the pointer is pinned, so that the garbage collector can not move it in memory
             GCHandle garbageCollectorHandle = GCHandle.Alloc(memoryObject.Handle, GCHandleType.Pinned);
             try
             {
                 // Sets the kernel argument and checks if it was successful, if not, then an exception is thrown
-                Result result = KernelsNativeApi.SetKernelArgument(this.Handle, (uint)index, new UIntPtr((uint)Marshal.SizeOf(memoryObject.Handle)), garbageCollectorHandle.AddrOfPinnedObject());
+                Result result = KernelsNativeApi.SetKernelArgument(Handle, (uint) index,
+                    new UIntPtr((uint) Marshal.SizeOf(memoryObject.Handle)),
+                    garbageCollectorHandle.AddrOfPinnedObject());
                 if (result != Result.Success)
+                {
                     throw new OpenClException($"The kernel argument with the index {index} could not be set.", result);
+                }
             }
             finally
             {
@@ -130,16 +149,22 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         {
             // Checks if the index is positive, if not, then an exception is thrown
             if (index < 0)
-                throw new IndexOutOfRangeException($"The specified index {index} is invalid. The index of the argument must always be greater or equal to 0.");
+            {
+                throw new IndexOutOfRangeException(
+                    $"The specified index {index} is invalid. The index of the argument must always be greater or equal to 0.");
+            }
 
             // The set kernel argument method needs a pointer to the pointer, therefore the pointer is pinned, so that the garbage collector can not move it in memory
             GCHandle garbageCollectorHandle = GCHandle.Alloc(value, GCHandleType.Pinned);
             try
             {
                 // Sets the kernel argument and checks if it was successful, if not, then an exception is thrown
-                Result result = KernelsNativeApi.SetKernelArgument(this.Handle, (uint)index, new UIntPtr((uint)Marshal.SizeOf(value)), garbageCollectorHandle.AddrOfPinnedObject());
+                Result result = KernelsNativeApi.SetKernelArgument(Handle, (uint) index,
+                    new UIntPtr((uint) Marshal.SizeOf(value)), garbageCollectorHandle.AddrOfPinnedObject());
                 if (result != Result.Success)
+                {
                     throw new OpenClException($"The kernel argument with the index {index} could not be set.", result);
+                }
             }
             finally
             {
@@ -152,11 +177,10 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         /// </summary>
         /// <param name="index">The index of the parameter.</param>
         /// <param name="value">The memory object that contains the value to which the kernel argument is to be set.</param>
-        public void SetKernelArgumentGen<T>(int index, T value) where T: struct
+        public void SetKernelArgumentGen<T>(int index, T value) where T : struct
         {
             SetKernelArgumentVal(index, value);
             return;
-            
         }
 
         #endregion
@@ -170,8 +194,10 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         protected override void Dispose(bool disposing)
         {
             // Checks if the kernel has already been disposed of, if not, then it is disposed of
-            if (!this.IsDisposed)
-                KernelsNativeApi.ReleaseKernel(this.Handle);
+            if (!IsDisposed)
+            {
+                KernelsNativeApi.ReleaseKernel(Handle);
+            }
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);

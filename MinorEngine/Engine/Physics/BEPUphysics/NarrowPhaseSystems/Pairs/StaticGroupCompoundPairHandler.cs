@@ -56,10 +56,10 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         protected override void UpdateContainedPairs()
         {
             staticGroup.Shape.CollidableTree.GetOverlaps(compoundInfo.hierarchy.Tree, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
-                var element = overlappedElements.Elements[i];
-                var staticCollidable = element.OverlapA as StaticCollidable;
+                TreeOverlapPair<Collidable, CompoundChild> element = overlappedElements.Elements[i];
+                StaticCollidable staticCollidable = element.OverlapA as StaticCollidable;
                 TryToAdd(element.OverlapA, element.OverlapB.CollisionInformation,
                     staticCollidable != null ? staticCollidable.Material : staticGroup.Material,
                     element.OverlapB.Material);

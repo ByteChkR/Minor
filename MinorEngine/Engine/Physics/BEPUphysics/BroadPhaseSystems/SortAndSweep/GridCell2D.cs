@@ -16,9 +16,9 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
         internal int GetIndex(float x)
         {
-            var minIndex = 0; //inclusive
-            var maxIndex = entries.Count; //exclusive
-            var index = 0;
+            int minIndex = 0; //inclusive
+            int maxIndex = entries.Count; //exclusive
+            int index = 0;
             while (maxIndex - minIndex > 0)
             {
                 index = (maxIndex + minIndex) / 2;
@@ -53,10 +53,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
         internal void UpdateOverlaps(Grid2DSortAndSweep owner)
         {
             //Sort along x axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (var i = 1; i < entries.Count; i++)
+            for (int i = 1; i < entries.Count; i++)
             {
-                var entry = entries.Elements[i];
-                for (var j = i - 1; j >= 0; j--)
+                Grid2DEntry entry = entries.Elements[i];
+                for (int j = i - 1; j >= 0; j--)
                 {
                     if (entry.item.boundingBox.Min.X < entries.Elements[j].item.boundingBox.Min.X)
                     {
@@ -71,12 +71,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             }
 
             //Sweep the list looking for overlaps.
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
-                var a = entries.Elements[i];
+                Grid2DEntry a = entries.Elements[i];
                 Grid2DEntry b;
                 //TODO: Microoptimize
-                for (var j = i + 1;
+                for (int j = i + 1;
                     j < entries.Count && a.item.boundingBox.Max.X >= (b = entries.Elements[j]).item.boundingBox.Min.X;
                     j++)
                 {
@@ -93,7 +93,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                         //A simple rule for determining the cell which is responsible is to choose the cell which is the 
                         //smallest index in the shared cells.  So first, compute that cell's index.
 
-                        var minimumSharedIndex = a.previousMin;
+                        Int2 minimumSharedIndex = a.previousMin;
 
                         if (minimumSharedIndex.Y < b.previousMin.Y)
                         {

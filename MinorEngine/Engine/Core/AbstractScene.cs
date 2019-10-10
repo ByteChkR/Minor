@@ -7,7 +7,6 @@ namespace Engine.Core
     /// </summary>
     public abstract class AbstractScene : GameObject
     {
-
         /// <summary>
         /// The Camera that is associated with the Game World
         /// </summary>

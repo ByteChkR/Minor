@@ -34,7 +34,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
         ///<param name="c">Third vertex in the triangle. </param>
         public void Initialize(ref Vector3 a, ref Vector3 b, ref Vector3 c)
         {
-            var shape = Shape;
+            TriangleShape shape = Shape;
             shape.collisionMargin = 0;
             shape.sidedness = TriangleSidedness.DoubleSided;
             shape.vA = a;

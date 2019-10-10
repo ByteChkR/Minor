@@ -62,9 +62,9 @@ namespace Engine.Physics.BEPUik
         /// <param name="updateRate">Inverse time step duration.</param>
         protected internal void Preupdate(float dt, float updateRate)
         {
-            var stiffness = StiffnessOverDamping * rigidity;
-            var damping = rigidity;
-            var multiplier = 1 / (dt * stiffness + damping);
+            float stiffness = StiffnessOverDamping * rigidity;
+            float damping = rigidity;
+            float multiplier = 1 / (dt * stiffness + damping);
             errorCorrectionFactor = stiffness * multiplier;
             softness = updateRate * multiplier;
             maximumImpulse = maximumForce * dt;

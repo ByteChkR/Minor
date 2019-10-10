@@ -3,7 +3,6 @@ using Engine.Exceptions;
 
 namespace Engine.Debug
 {
-
     /// <summary>
     /// Logging Class that binds the ADL Debugging framework and is used for all Console Output/Crashes.
     /// </summary>
@@ -15,7 +14,7 @@ namespace Engine.Debug
         /// <param name="stage"></param>
         internal static void SetDebugStage(DebugStage stage)
         {
-            DebugHelper.SetStage((int)stage);
+            DebugHelper.SetStage((int) stage);
         }
 
         /// <summary>
@@ -26,7 +25,7 @@ namespace Engine.Debug
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
         public static void Log(string message, DebugChannel channel, int importance = 0)
         {
-            DebugHelper.Log(message, (int)channel, importance);
+            DebugHelper.Log(message, (int) channel, importance);
         }
 
 

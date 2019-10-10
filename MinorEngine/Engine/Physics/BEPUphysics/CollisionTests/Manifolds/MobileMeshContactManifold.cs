@@ -33,7 +33,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         protected internal override int FindOverlappingTriangles(float dt)
         {
             BoundingBox boundingBox;
-            var transform =
+            AffineTransform transform =
                 new AffineTransform(mesh.worldTransform.Orientation, mesh.worldTransform.Position);
             convex.Shape.GetLocalBoundingBox(ref convex.worldTransform, ref transform, out boundingBox);
             Vector3 transformedVelocity;
@@ -100,7 +100,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             out AffineTransform fromMeshLocalToConvexLocal)
         {
             //MobileMeshes only have TransformableMeshData sources.
-            var data = (TransformableMeshData) mesh.Shape.TriangleMesh.Data;
+            TransformableMeshData data = (TransformableMeshData) mesh.Shape.TriangleMesh.Data;
             //The mobile mesh has a shape-based transform followed by the rigid body transform.
             AffineTransform mobileMeshWorldTransform;
             AffineTransform.CreateFromRigidTransform(ref mesh.worldTransform, out mobileMeshWorldTransform);
@@ -114,8 +114,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
             out TriangleIndices indices)
         {
-            var data = mesh.Shape.TriangleMesh.Data;
-            var triangleIndex = overlappedTriangles.Elements[i];
+            MeshBoundingBoxTreeData data = mesh.Shape.TriangleMesh.Data;
+            int triangleIndex = overlappedTriangles.Elements[i];
 
             TriangleSidedness sidedness;
             //TODO: Note superhack; don't do this in v2.
@@ -190,7 +190,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
 
                 //Cast from the current position back to the previous position.
                 Vector3.Subtract(ref lastValidConvexPosition, ref ray.Position, out ray.Direction);
-                var rayDirectionLength = ray.Direction.LengthSquared();
+                float rayDirectionLength = ray.Direction.LengthSquared();
                 if (rayDirectionLength < Toolbox.Epsilon)
                 {
                     //The object may not have moved enough to normalize properly.  If so, choose something arbitrary.
@@ -211,7 +211,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 RayHit hit;
                 if (mesh.Shape.IsLocalRayOriginInMesh(ref ray, out hit))
                 {
-                    var newContact = new ContactData {Id = 2};
+                    ContactData newContact = new ContactData {Id = 2};
                     //Give it a special id so that we know that it came from the inside.
                     Matrix3x3.Transform(ref ray.Position, ref orientation, out newContact.Position);
                     Vector3.Add(ref newContact.Position, ref mesh.worldTransform.Position, out newContact.Position);
@@ -228,8 +228,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                     newContact.Validate();
 
                     //Do not yet create a new contact.  Check to see if an 'inner contact' with id == 2 already exists.
-                    var addContact = true;
-                    for (var i = 0; i < contacts.Count; i++)
+                    bool addContact = true;
+                    for (int i = 0; i < contacts.Count; i++)
                     {
                         if (contacts.Elements[i].Id == 2)
                         {

@@ -257,9 +257,9 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         /// <returns>Collision rule governing the interaction between the pair.</returns>
         public static CollisionRule GetCollisionRuleDefault(ICollisionRulesOwner aOwner, ICollisionRulesOwner bOwner)
         {
-            var a = aOwner.CollisionRules;
-            var b = bOwner.CollisionRules;
-            var pairRule = GetSpecificCollisionRuleDefault(a, b);
+            CollisionRules a = aOwner.CollisionRules;
+            CollisionRules b = bOwner.CollisionRules;
+            CollisionRule pairRule = GetSpecificCollisionRuleDefault(a, b);
             if (pairRule == CollisionRule.Defer)
             {
                 pairRule = GetPersonalCollisionRuleDefault(a, b);

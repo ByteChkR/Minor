@@ -4,7 +4,6 @@ using Engine.Exceptions;
 
 namespace Engine.IO.audioformats
 {
-
     /// <summary>
     /// Provides the Loading Code for WAV/RIFF Files.
     /// </summary>
@@ -23,7 +22,7 @@ namespace Engine.IO.audioformats
         {
             Stream s = File.Open(file, FileMode.Open);
 
-            var ret = TryLoadFile(s, out data, out channel, out bits, out bitRate);
+            bool ret = TryLoadFile(s, out data, out channel, out bits, out bitRate);
             s.Close();
             return ret;
         }
@@ -47,10 +46,10 @@ namespace Engine.IO.audioformats
                 return false;
             }
 
-            using (var reader = new BinaryReader(fileStream))
+            using (BinaryReader reader = new BinaryReader(fileStream))
             {
                 // RIFF header
-                var signature = new string(reader.ReadChars(4));
+                string signature = new string(reader.ReadChars(4));
                 if (signature != "RIFF")
                 {
                     Logger.Crash(new AudioFileInvalidException("Specified stream is not a wave file."), false);
@@ -59,14 +58,14 @@ namespace Engine.IO.audioformats
                 /*int riff_chunck_size = */
                 reader.ReadInt32();
 
-                var format = new string(reader.ReadChars(4));
+                string format = new string(reader.ReadChars(4));
                 if (format != "WAVE")
                 {
                     Logger.Crash(new AudioFileInvalidException("Specified stream is not a wave file."), false);
                 }
 
                 // WAVE header
-                var format_signature = new string(reader.ReadChars(4));
+                string format_signature = new string(reader.ReadChars(4));
                 if (format_signature != "fmt ")
                 {
                     Logger.Crash(new AudioFileInvalidException("Specified wave file is not supported."), false);
@@ -77,14 +76,14 @@ namespace Engine.IO.audioformats
                 /*int audio_format = */
                 reader.ReadInt16();
                 int num_channels = reader.ReadInt16();
-                var sample_rate = reader.ReadInt32();
+                int sample_rate = reader.ReadInt32();
                 /*int byte_rate = */
                 reader.ReadInt32();
                 /*int block_align = */
                 reader.ReadInt16();
                 int bits_per_sample = reader.ReadInt16();
 
-                var data_signature = new string(reader.ReadChars(4));
+                string data_signature = new string(reader.ReadChars(4));
                 if (data_signature != "data")
                 {
                     Logger.Crash(new AudioFileInvalidException("Specified wave file is not supported."), false);
@@ -96,7 +95,7 @@ namespace Engine.IO.audioformats
                 channel = num_channels;
                 bits = bits_per_sample;
                 bitRate = sample_rate;
-                data = reader.ReadBytes((int)reader.BaseStream.Length);
+                data = reader.ReadBytes((int) reader.BaseStream.Length);
                 return true;
             }
         }

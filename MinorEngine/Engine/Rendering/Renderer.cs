@@ -16,6 +16,7 @@ namespace Engine.Rendering
         ///  A list of render targets
         /// </summary>
         private readonly List<RenderTarget> Targets = new List<RenderTarget>();
+
         /// <summary>
         /// Current target id
         /// </summary>
@@ -43,6 +44,7 @@ namespace Engine.Rendering
         /// Default Render Target(Game World)
         /// </summary>
         private RenderTarget rt;
+
         /// <summary>
         /// Default Render Target(UI)
         /// </summary>
@@ -84,9 +86,9 @@ namespace Engine.Rendering
         /// <param name="target">The Target to Remove</param>
         public void RemoveRenderTarget(RenderTarget target)
         {
-            for (var i = Targets.Count - 1; i >= 0; i--)
+            for (int i = Targets.Count - 1; i >= 0; i--)
             {
-                var renderTarget = Targets[i];
+                RenderTarget renderTarget = Targets[i];
                 if (renderTarget.FrameBuffer == target.FrameBuffer)
                 {
                     Targets.RemoveAt(i);
@@ -104,10 +106,10 @@ namespace Engine.Rendering
         /// <returns>A sorted list of renderer contexts</returns>
         private static List<RenderContext> CreateRenderQueue(int renderTarget, Matrix4 view, RenderType type)
         {
-            var Contexts = new List<RenderContext>();
-            foreach (var renderer in GameObject.ObjsWithAttachedRenderers)
+            List<RenderContext> Contexts = new List<RenderContext>();
+            foreach (GameObject renderer in GameObject.ObjsWithAttachedRenderers)
             {
-                var context = renderer.RenderingComponent.Context;
+                RenderContext context = renderer.RenderingComponent.Context;
                 if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderMask, renderTarget, false) &&
                     context.RenderType == type)
                 {
@@ -130,12 +132,12 @@ namespace Engine.Rendering
 
 
             //GL.Enable(EnableCap.ScissorTest);
-            for (var i = 0; i < Targets.Count; i++)
+            for (int i = 0; i < Targets.Count; i++)
             {
                 CurrentTarget = i;
-                var target = Targets[i];
+                RenderTarget target = Targets[i];
 
-                var c = target.PassCamera ?? scene.Camera;
+                ICamera c = target.PassCamera ?? scene.Camera;
 
                 if (c != null)
                 {
@@ -148,9 +150,9 @@ namespace Engine.Rendering
                     GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 
-                    var _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
+                    List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
                     Render(_opaque, c);
-                    var _transparent =
+                    List<RenderContext> _transparent =
                         CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Transparent);
                     Render(_transparent, c);
 
@@ -178,12 +180,12 @@ namespace Engine.Rendering
         /// <param name="cam">The ICamera</param>
         public static void Render(List<RenderContext> contexts, ICamera cam)
         {
-            foreach (var renderContext in contexts)
+            foreach (RenderContext renderContext in contexts)
             {
                 renderContext.Render(cam.ViewMatrix, cam.Projection);
             }
         }
-        
+
         public enum RenderType
         {
             Opaque,

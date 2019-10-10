@@ -1,7 +1,7 @@
 var class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform =
 [
     [ "Platform", "d6/dd2/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform.html#ab34230225513211f7c99a731437370dc", null ],
-    [ "GetDevices", "d6/dd2/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform.html#a51ac842b5d3ef771645c47a891466f27", null ],
+    [ "GetDevices", "d6/dd2/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform.html#a74dacfcf43dd6e8c912473630782bb8a", null ],
     [ "GetPlatformInformation< T >", "d6/dd2/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform.html#adc00a4a605362aa5bd49611196ab3959", null ],
     [ "GetPlatforms", "d6/dd2/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform.html#ae5d0512558a407c7ea9ec79afc8bd71a", null ],
     [ "extensions", "d6/dd2/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_platform.html#a24726869bff3c041fe2bba2393b209aa", null ],

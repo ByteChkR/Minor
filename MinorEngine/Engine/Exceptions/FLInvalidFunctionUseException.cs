@@ -7,7 +7,6 @@ namespace Engine.Exceptions
     /// </summary>
     public class FLInvalidFunctionUseException : EngineException
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

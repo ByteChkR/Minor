@@ -72,7 +72,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         {
             if (updateable.Managers.Contains(this))
             {
-                var u = updateable as T;
+                T u = updateable as T;
                 if (updateable.IsUpdatedSequentially)
                 {
                     if (simultaneouslyUpdatedUpdateables.Remove(u))
@@ -148,7 +148,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
 
         protected override void UpdateMultithreaded()
         {
-            for (var i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
+            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
             {
                 SequentialUpdate(i);
             }
@@ -158,12 +158,12 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
 
         protected override void UpdateSingleThreaded()
         {
-            for (var i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
+            for (int i = 0; i < sequentiallyUpdatedUpdateables.Count; i++)
             {
                 SequentialUpdate(i);
             }
 
-            for (var i = 0; i < simultaneouslyUpdatedUpdateables.Count; i++)
+            for (int i = 0; i < simultaneouslyUpdatedUpdateables.Count; i++)
             {
                 MultithreadedUpdate(i);
             }

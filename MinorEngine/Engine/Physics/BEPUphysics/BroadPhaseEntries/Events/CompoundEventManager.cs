@@ -16,12 +16,13 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.Events
         {
             //Go through all children and dispatch events.
             //They won't be touched by the primary event manager otherwise.
-            var compound = owner as CompoundCollidable;
+            CompoundCollidable compound = owner as CompoundCollidable;
             if (compound != null)
             {
-                foreach (var child in compound.children)
+                foreach (CompoundChild child in compound.children)
                 {
-                    var deferredEventCreator = child.CollisionInformation.events as IDeferredEventCreator;
+                    IDeferredEventCreator deferredEventCreator =
+                        child.CollisionInformation.events as IDeferredEventCreator;
                     if (deferredEventCreator.IsActive)
                     {
                         deferredEventCreator.DispatchEvents();

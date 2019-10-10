@@ -97,7 +97,7 @@ namespace Engine.Physics.BEPUik
             //Pick an axis perpendicular to axisA to use as the measurement axis.
             Vector3 worldMeasurementAxisA;
             Vector3.Cross(ref Toolbox.UpVector, ref axisA, out worldMeasurementAxisA);
-            var lengthSquared = worldMeasurementAxisA.LengthSquared();
+            float lengthSquared = worldMeasurementAxisA.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
                 Vector3.Divide(ref worldMeasurementAxisA, (float) Math.Sqrt(lengthSquared), out worldMeasurementAxisA);
@@ -178,7 +178,7 @@ namespace Engine.Physics.BEPUik
             //We can't just use the axes directly as jacobians. Consider 'cranking' one object around the other.
             Vector3 jacobian;
             Vector3.Add(ref axisA, ref axisB, out jacobian);
-            var lengthSquared = jacobian.LengthSquared();
+            float lengthSquared = jacobian.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
                 Vector3.Divide(ref jacobian, (float) Math.Sqrt(lengthSquared), out jacobian);

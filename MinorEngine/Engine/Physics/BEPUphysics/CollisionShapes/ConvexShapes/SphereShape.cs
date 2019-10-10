@@ -55,7 +55,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             ConvexShapeDescription description;
             description.EntityShapeVolume.Volume = 1.333333f * MathHelper.Pi * radius * radius * radius;
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            var diagValue = 2f / 5f * radius * radius;
+            float diagValue = 2f / 5f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;

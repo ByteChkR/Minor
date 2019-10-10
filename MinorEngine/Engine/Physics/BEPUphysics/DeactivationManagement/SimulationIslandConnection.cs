@@ -44,7 +44,7 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         public void AddReferencesToConnectedMembers()
         {
             //Add back the references to this to entities
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
                 entries.Elements[i].Index = entries.Elements[i].Member.AddConnectionReference(this);
             }
@@ -56,7 +56,7 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         public void RemoveReferencesFromConnectedMembers()
         {
             //Clean out the references entities may have had to this solver updateable.
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
                 entries.Elements[i].Member.RemoveConnectionReference(this, entries.Elements[i].Index);
             }
@@ -69,7 +69,7 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         /// <param name="index">New index of this connection in the member's connections list.</param>
         internal void SetListIndex(SimulationIslandMember member, int index)
         {
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
                 if (member == entries.Elements[i].Member)
                 {

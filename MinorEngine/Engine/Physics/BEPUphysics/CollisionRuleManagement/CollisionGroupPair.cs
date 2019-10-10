@@ -42,7 +42,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
             B = groupB;
             const ulong prime = 0xd8163841;
             //Note that the order of the pair is irrelevant- this is required
-            var hash = ((ulong) groupA.GetHashCode() + (ulong) groupB.GetHashCode()) * prime;
+            ulong hash = ((ulong) groupA.GetHashCode() + (ulong) groupB.GetHashCode()) * prime;
             hashCode = (int) hash; // % (int.MaxValue - 1));
         }
 
@@ -64,7 +64,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         public override bool Equals(object obj)
         {
             //This method requires boxing, so make sure any attempt to call it is caught.
-            var other = (CollisionGroupPair) obj;
+            CollisionGroupPair other = (CollisionGroupPair) obj;
             return other.A == A && other.B == B || other.B == A && other.A == B;
         }
 

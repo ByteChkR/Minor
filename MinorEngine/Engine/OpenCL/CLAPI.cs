@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -17,7 +18,6 @@ using OpenTK.Platform.Windows;
 
 
 #if TRAVIS_TEST
-
 using Engine.Debug;
 
 #endif
@@ -70,12 +70,12 @@ namespace Engine.OpenCL
 #if TRAVIS_TEST
             Logger.Log("Starting in TRAVIS_TEST Mode", DebugChannel.Warning);
 #else
-            var platforms = Platform.GetPlatforms();
+            IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
-            var chosenDevice = platforms.FirstOrDefault()?.GetDevices(DeviceType.All).FirstOrDefault();
+            Device chosenDevice = platforms.FirstOrDefault()?.GetDevices(DeviceType.All).FirstOrDefault();
 
             _context = Context.CreateContext(chosenDevice);
-            var CLDevice = chosenDevice;
+            Device CLDevice = chosenDevice;
             _commandQueue = CommandQueue.CreateCommandQueue(_context, CLDevice);
 #endif
         }
@@ -135,7 +135,7 @@ namespace Engine.OpenCL
         /// <returns></returns>
         public static MemoryBuffer CreateEmpty<T>(int size, MemoryFlag flags) where T : struct
         {
-            var arr = new T[size];
+            T[] arr = new T[size];
             return CreateBuffer(arr, flags);
         }
 
@@ -148,7 +148,7 @@ namespace Engine.OpenCL
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer<T>(T[] data, MemoryFlag flags) where T : struct
         {
-            var arr = Array.ConvertAll(data, x => (object)x);
+            object[] arr = Array.ConvertAll(data, x => (object) x);
             return CreateBuffer(arr, typeof(T), flags);
         }
 
@@ -167,7 +167,8 @@ namespace Engine.OpenCL
 #else
 
 
-            var mb = Instance._context.CreateBuffer((MemoryFlag)(flags | MemoryFlag.CopyHostPointer), t, data);
+            MemoryBuffer mb =
+                Instance._context.CreateBuffer((MemoryFlag) (flags | MemoryFlag.CopyHostPointer), t, data);
 
             return mb;
 #endif
@@ -183,16 +184,16 @@ namespace Engine.OpenCL
         {
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
-            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb);
-            var buffer = new byte[bmp.Width * bmp.Height * 4];
+            byte[] buffer = new byte[bmp.Width * bmp.Height * 4];
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
 #if TRAVIS_TEST
             Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
 #else
-            var mb = CreateBuffer(buffer, flags);
+            MemoryBuffer mb = CreateBuffer(buffer, flags);
             return mb;
 #endif
         }
@@ -217,7 +218,7 @@ namespace Engine.OpenCL
         public static T[] CreateRandom<T>(int size, byte[] channelEnableState, RandomFunc<T> rnd, bool uniform)
             where T : struct
         {
-            var buffer = new T[size];
+            T[] buffer = new T[size];
             WriteRandom(buffer, channelEnableState, rnd, uniform);
             return buffer;
         }
@@ -247,10 +248,10 @@ namespace Engine.OpenCL
         public static void WriteRandom<T>(T[] buffer, byte[] channelEnableState, RandomFunc<T> rnd,
             bool uniform) where T : struct
         {
-            var val = rnd.Invoke();
-            for (var i = 0; i < buffer.Length; i++)
+            T val = rnd.Invoke();
+            for (int i = 0; i < buffer.Length; i++)
             {
-                var channel = i % channelEnableState.Length;
+                int channel = i % channelEnableState.Length;
                 if (channel == 0 || !uniform)
                 {
                     val = rnd.Invoke();
@@ -292,7 +293,7 @@ namespace Engine.OpenCL
 
             MemoryBuffer buffer = buf;
 
-            var data = Instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int)buffer.Size);
+            T[] data = Instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int) buffer.Size);
 #endif
 
             WriteRandom(data, enabledChannels, rnd, uniform);

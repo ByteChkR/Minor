@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -38,7 +37,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Platforms
         [DllImport("OpenCL", EntryPoint = "clGetPlatformIDs")]
         public static extern Result GetPlatformIds(
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEntries,
-            [Out] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] platforms,
+            [Out] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] platforms,
             [Out] [MarshalAs(UnmanagedType.U4)] out uint numberOfPlatforms
         );
 

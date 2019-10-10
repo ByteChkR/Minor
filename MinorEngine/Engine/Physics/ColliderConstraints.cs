@@ -9,6 +9,7 @@
         /// The constraints of linear velocity along the axes
         /// </summary>
         public FreezeConstraints PositionConstraints;
+
         /// <summary>
         /// The constraints of angular velocity along the axes
         /// </summary>

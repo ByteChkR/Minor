@@ -123,18 +123,18 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override float SolveIteration()
         {
             //Compute relative velocity and convert to impulse
-            var lambda = RelativeVelocity * velocityToImpulse;
+            float lambda = RelativeVelocity * velocityToImpulse;
 
 
             //Clamp accumulated impulse
-            var previousAccumulatedImpulse = accumulatedImpulse;
-            var maxForce = friction * PenetrationConstraint.accumulatedImpulse;
+            float previousAccumulatedImpulse = accumulatedImpulse;
+            float maxForce = friction * PenetrationConstraint.accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maxForce, maxForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
             //Apply the impulse
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = lambda * linearAX;
             linear.Y = lambda * linearAY;
             linear.Z = lambda * linearAZ;
@@ -191,15 +191,15 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             Vector3.Subtract(ref velocityA, ref velocityB, out relativeVelocity);
 
             //Get rid of the normal velocity.
-            var normal = PenetrationConstraint.contact.Normal;
-            var normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y +
-                                       normal.Z * relativeVelocity.Z;
+            Vector3 normal = PenetrationConstraint.contact.Normal;
+            float normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y +
+                                         normal.Z * relativeVelocity.Z;
             relativeVelocity.X -= normalVelocityScalar * normal.X;
             relativeVelocity.Y -= normalVelocityScalar * normal.Y;
             relativeVelocity.Z -= normalVelocityScalar * normal.Z;
 
             //Create the jacobian entry and decide the friction coefficient.
-            var length = relativeVelocity.LengthSquared();
+            float length = relativeVelocity.LengthSquared();
             if (length > Toolbox.Epsilon)
             {
                 length = (float) Math.Sqrt(length);
@@ -291,8 +291,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void ExclusiveUpdate()
         {
             //Warm starting
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = accumulatedImpulse * linearAX;
             linear.Y = accumulatedImpulse * linearAY;
             linear.Z = accumulatedImpulse * linearAZ;

@@ -9,7 +9,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Core
 {
-
     /// <summary>
     /// Central class that is the "heart" of the Engine
     /// </summary>
@@ -29,6 +28,7 @@ namespace Engine.Core
         /// The Settings the engine has been started with
         /// </summary>
         public EngineSettings Settings { get; }
+
         /// <summary>
         /// Static Singleton Instance
         /// </summary>
@@ -43,10 +43,12 @@ namespace Engine.Core
         /// Window Width
         /// </summary>
         public int Width => Window.Width;
+
         /// <summary>
         /// Window Height
         /// </summary>
         public int Height => Window.Height;
+
         /// <summary>
         /// Private flag if the there is a scene change in progress
         /// </summary>
@@ -61,6 +63,7 @@ namespace Engine.Core
         /// An internal update frame counter
         /// </summary>
         private int FrameCounter;
+
         /// <summary>
         /// An internal render frame counter
         /// </summary>
@@ -205,9 +208,9 @@ namespace Engine.Core
             Vector2 mouse;
             mouse.X = x;
             mouse.Y = y;
-            var proj = CurrentScene.Camera.Projection;
-            var vector = UnProject(ref proj, CurrentScene.Camera.ViewMatrix, new Size(Width, Height), mouse);
-            var coords = new Vector3(vector);
+            Matrix4 proj = CurrentScene.Camera.Projection;
+            Vector4 vector = UnProject(ref proj, CurrentScene.Camera.ViewMatrix, new Size(Width, Height), mouse);
+            Vector3 coords = new Vector3(vector);
             return coords;
         }
 
@@ -228,8 +231,8 @@ namespace Engine.Core
             vec.Z = 0;
             vec.W = 1.0f;
 
-            var viewInv = Matrix4.Invert(view);
-            var projInv = Matrix4.Invert(projection);
+            Matrix4 viewInv = Matrix4.Invert(view);
+            Matrix4 projInv = Matrix4.Invert(projection);
 
             Vector4.Transform(ref vec, ref projInv, out vec);
             Vector4.Transform(ref vec, ref viewInv, out vec);

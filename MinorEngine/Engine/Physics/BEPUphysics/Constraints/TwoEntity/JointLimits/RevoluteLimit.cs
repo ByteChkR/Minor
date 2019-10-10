@@ -175,7 +175,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
                 if (isLimitActive)
                 {
                     float velocityA, velocityB;
-                    var toReturn = Vector2.Zero;
+                    Vector2 toReturn = Vector2.Zero;
                     if (minIsActive)
                     {
                         Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMinA, out velocityA);
@@ -385,7 +385,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             Vector3.Dot(ref maxPlaneNormal, ref worldTestAxis, out planePositionMax);
 
 
-            var span = GetDistanceFromMinimum(maximumAngle);
+            float span = GetDistanceFromMinimum(maximumAngle);
 
             //Early out and compute the determine the plane normal.
             if (span >= MathHelper.Pi)
@@ -624,7 +624,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Apply accumulated impulse
             if (connectionA.isDynamic)
             {
-                var impulse = new Vector3();
+                Vector3 impulse = new Vector3();
                 if (minIsActive)
                 {
                     Vector3.Multiply(ref jacobianMinA, accumulatedImpulse.X, out impulse);
@@ -642,7 +642,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
 
             if (connectionB.isDynamic)
             {
-                var impulse = new Vector3();
+                Vector3 impulse = new Vector3();
                 if (minIsActive)
                 {
                     Vector3.Multiply(ref jacobianMinB, accumulatedImpulse.X, out impulse);

@@ -104,7 +104,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 Matrix3x3 toReturn;
                 if (IsReadBufferAccessible())
                 {
-                    var o = bufferedStates.BufferedStatesManager.ReadBuffers
+                    Quaternion o = bufferedStates.BufferedStatesManager.ReadBuffers
                         .GetState(bufferedStates.motionStateIndex).Orientation;
                     Matrix3x3.CreateFromQuaternion(ref o, out toReturn);
                 }
@@ -119,7 +119,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             {
                 if (IsWriteBufferAccessible())
                 {
-                    var toSet = Quaternion.Normalize(Quaternion.CreateFromRotationMatrix(value));
+                    Quaternion toSet = Quaternion.Normalize(Quaternion.CreateFromRotationMatrix(value));
                     WriteBuffer.EnqueueOrientation(bufferedStates.Entity, ref toSet);
                 }
                 else
@@ -205,7 +205,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             {
                 if (IsWriteBufferAccessible())
                 {
-                    var translation = value.Translation;
+                    Vector3 translation = value.Translation;
                     Quaternion orientation;
                     Quaternion.CreateFromRotationMatrix(ref value, out orientation);
                     orientation.Normalize();

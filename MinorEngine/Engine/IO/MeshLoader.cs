@@ -13,15 +13,14 @@ using Mesh = Engine.DataTypes.Mesh;
 using AssimpMesh = Assimp.Mesh;
 using AssimpTextureType = Assimp.TextureType;
 using TextureType = Engine.DataTypes.TextureType;
+
 namespace Engine.IO
 {
-
     /// <summary>
     /// Static class responsible to load Meshes from Disk
     /// </summary>
     public class MeshLoader
     {
-
         /// <summary>
         /// static Class providing frequently used objects
         /// </summary>
@@ -39,7 +38,6 @@ namespace Engine.IO
             {
                 get
                 {
-
                     if (_cube == null)
                     {
                         _cube = FileToMesh("models/cube_flat.obj");
@@ -58,7 +56,7 @@ namespace Engine.IO
         /// <returns>The loaded Mesh</returns>
         public static Mesh FileToMesh(string filename)
         {
-            var meshes = LoadModel(filename);
+            List<Mesh> meshes = LoadModel(filename);
             if (meshes.Count > 0)
             {
                 return meshes[0];
@@ -84,9 +82,9 @@ namespace Engine.IO
         /// <returns>The loaded AssimpModel</returns>
         private static List<Mesh> LoadModel(string path)
         {
-            var context = new AssimpContext();
+            AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
-            var s = context.ImportFile(path);
+            Scene s = context.ImportFile(path);
 
             if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
             {
@@ -94,7 +92,7 @@ namespace Engine.IO
                 return new List<Mesh>();
             }
 
-            var directory = Path.GetDirectoryName(path);
+            string directory = Path.GetDirectoryName(path);
             if (directory == string.Empty)
             {
                 directory = ".";
@@ -105,7 +103,7 @@ namespace Engine.IO
 
             Logger.Log("Processing Nodes...", DebugChannel.Log);
 
-            var ret = new List<Mesh>();
+            List<Mesh> ret = new List<Mesh>();
 
             processNode(s.RootNode, s, ret, directory);
             return ret;
@@ -125,7 +123,7 @@ namespace Engine.IO
             if (node.HasMeshes)
             {
                 Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
-                for (var i = 0; i < node.MeshCount; i++)
+                for (int i = 0; i < node.MeshCount; i++)
                 {
                     meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir));
                 }
@@ -133,7 +131,7 @@ namespace Engine.IO
 
             if (node.HasChildren)
             {
-                for (var i = 0; i < node.Children.Count; i++)
+                for (int i = 0; i < node.Children.Count; i++)
                 {
                     processNode(node.Children[i], s, meshes, dir);
                 }
@@ -150,24 +148,24 @@ namespace Engine.IO
         /// <returns>The mesh loaded.</returns>
         private static Mesh processMesh(AssimpMesh mesh, Scene s, string dir)
         {
-            var vertices = new List<Vertex>();
-            var indices = new List<uint>();
-            var textures = new List<Texture>();
+            List<Vertex> vertices = new List<Vertex>();
+            List<uint> indices = new List<uint>();
+            List<Texture> textures = new List<Texture>();
 
 
             Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log);
 
 
             Logger.Log("Copying Vertex Data...", DebugChannel.Log);
-            for (var i = 0; i < mesh.VertexCount; i++)
+            for (int i = 0; i < mesh.VertexCount; i++)
             {
-                var vert = mesh.Vertices[i];
-                var norm = mesh.Normals[i];
-                var tan = mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0);
-                var bit = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0);
-                var uv = mesh.HasTextureCoords(0) ? mesh.TextureCoordinateChannels[0][i] : new Vector3D(0);
+                Vector3D vert = mesh.Vertices[i];
+                Vector3D norm = mesh.Normals[i];
+                Vector3D tan = mesh.HasTangentBasis ? mesh.Tangents[i] : new Vector3D(0);
+                Vector3D bit = mesh.HasTangentBasis ? mesh.BiTangents[i] : new Vector3D(0);
+                Vector3D uv = mesh.HasTextureCoords(0) ? mesh.TextureCoordinateChannels[0][i] : new Vector3D(0);
 
-                var v = new Vertex
+                Vertex v = new Vertex
                 {
                     Position = new Vector3(vert.X, vert.Y, vert.Z),
                     Normal = new Vector3(norm.X, norm.Y, norm.Z),
@@ -182,28 +180,24 @@ namespace Engine.IO
 
             Logger.Log("Calculating Indices...", DebugChannel.Log);
 
-            for (var i = 0; i < mesh.FaceCount; i++)
+            for (int i = 0; i < mesh.FaceCount; i++)
             {
-                var f = mesh.Faces[i];
-                indices.AddRange(f.Indices.Select(x => (uint)x));
+                Face f = mesh.Faces[i];
+                indices.AddRange(f.Indices.Select(x => (uint) x));
             }
 
 
-            var m = s.Materials[mesh.MaterialIndex];
+            Material m = s.Materials[mesh.MaterialIndex];
 
             Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log);
 
-            textures.AddRange(loadMaterialTextures(m, TextureType.Diffuse, dir));
-            textures.AddRange(loadMaterialTextures(m, TextureType.Specular, dir));
-            textures.AddRange(loadMaterialTextures(m, TextureType.Normals, dir));
-            textures.AddRange(loadMaterialTextures(m, TextureType.Height, dir));
-
-
-
+            textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Diffuse, dir));
+            textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Specular, dir));
+            textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Normals, dir));
+            textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Height, dir));
 
 
             setupMesh(indices.ToArray(), vertices.ToArray(), out int vao, out int vbo, out int ebo);
-
 
 
             return new Mesh(ebo, vbo, vao, indices.Count);
@@ -216,7 +210,7 @@ namespace Engine.IO
         /// <returns>The offset relative to the beginning of vertex the struct</returns>
         private static IntPtr offsetOf(string name)
         {
-            var off = Marshal.OffsetOf(typeof(Vertex), name);
+            IntPtr off = Marshal.OffsetOf(typeof(Vertex), name);
             return off;
         }
 
@@ -228,7 +222,7 @@ namespace Engine.IO
         /// <param name="vao">vertex array object</param>
         /// <param name="vbo">vertex buffer object</param>
         /// <param name="ebo">element buffer object</param>
-        private static void setupMesh(uint[] indices, Vertex[] vertices, out int vao,out int vbo, out int ebo)
+        private static void setupMesh(uint[] indices, Vertex[] vertices, out int vao, out int vbo, out int ebo)
         {
             GL.GenVertexArrays(1, out vao);
             GL.GenBuffers(1, out vbo);
@@ -239,13 +233,13 @@ namespace Engine.IO
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * Vertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers
@@ -271,32 +265,6 @@ namespace Engine.IO
 
 
             GL.BindVertexArray(0);
-        }
-
-
-        /// <summary>
-        /// Loads Textures from AssimpMaterials
-        /// </summary>
-        /// <param name="m">Assimp Material</param>
-        /// <param name="texType">Type of texture</param>
-        /// <param name="dir">The directory of the file that references this material</param>
-        /// <returns>A list of textures that were attached to the material</returns>
-        private static List<Texture> loadMaterialTextures(Material m, TextureType texType, string dir)
-        {
-            var ret = new List<Texture>();
-
-            Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
-                DebugChannel.Log);
-            for (var i = 0; i < m.GetMaterialTextureCount((AssimpTextureType)texType); i++)
-            {
-                TextureSlot s;
-                m.GetMaterialTexture((AssimpTextureType)texType, i, out s);
-                var tx = TextureLoader.FileToTexture(dir + s.FilePath);
-                tx.TexType = texType;
-                ret.Add(tx);
-            }
-
-            return ret;
         }
     }
 }

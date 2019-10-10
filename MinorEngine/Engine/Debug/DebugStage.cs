@@ -1,6 +1,5 @@
 ﻿namespace Engine.Debug
 {
-
     /// <summary>
     /// The List of DebugStages used to Divide the Debug Logs and Data Statistics by.
     /// </summary>
@@ -10,14 +9,17 @@
         /// Is used when the engine is starting up(before any user code has been executed.
         /// </summary>
         Startup = 1,
+
         /// <summary>
         /// Is used when the engine is initializing itself(e.g. Audio/Physics/Rendering/etc..)
         /// </summary>
         Init = 2,
+
         /// <summary>
         /// Is used when loading a Scene
         /// </summary>
         SceneInit = 4,
+
         /// <summary>
         /// Used Between the Init Stage and the Scene Init Stage
         /// </summary>

@@ -19,7 +19,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Enter()
         {
-            var count = 0;
+            int count = 0;
             while (Interlocked.CompareExchange(ref owner, 0, -1) != -1)
             {
                 //Lock is owned by someone else.

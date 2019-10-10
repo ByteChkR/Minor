@@ -6,6 +6,7 @@ using Engine.Physics.BEPUphysics.BroadPhaseSystems;
 using Engine.Physics.BEPUphysics.CollisionRuleManagement;
 using Engine.Physics.BEPUphysics.Entities;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 using Engine.Physics.BEPUutilities.Threading;
 
@@ -98,7 +99,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             get => flowDirection;
             set
             {
-                var length = value.Length();
+                float length = value.Length();
                 if (length > 0)
                 {
                     flowDirection = value / length;
@@ -184,8 +185,8 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         /// </summary>
         public void RecalculateBoundingBox()
         {
-            var points = CommonResources.GetVectorList();
-            foreach (var tri in SurfaceTriangles)
+            RawList<Vector3> points = CommonResources.GetVectorList();
+            foreach (Vector3[] tri in SurfaceTriangles)
             {
                 points.Add(tri[0]);
                 points.Add(tri[1]);
@@ -229,7 +230,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             }
             else
             {
-                for (var i = 0; i < broadPhaseEntries.Count; i++)
+                for (int i = 0; i < broadPhaseEntries.Count; i++)
                 {
                     AnalyzeEntry(i);
                 }
@@ -243,12 +244,12 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
 
         private void AnalyzeEntry(int i)
         {
-            var entityCollidable = broadPhaseEntries[i] as EntityCollidable;
+            EntityCollidable entityCollidable = broadPhaseEntries[i] as EntityCollidable;
             if (entityCollidable != null && entityCollidable.IsActive && entityCollidable.entity.isDynamic &&
                 CollisionRules.collisionRuleCalculator(this, entityCollidable) <= CollisionRule.Normal)
             {
-                var keepGoing = false;
-                foreach (var tri in surfaceTriangles)
+                bool keepGoing = false;
+                foreach (Vector3[] tri in surfaceTriangles)
                     //Don't need to do anything if the entity is outside of the water.
                 {
                     if (Toolbox.IsPointInsideTriangle(ref tri[0], ref tri[1], ref tri[2],
@@ -272,7 +273,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
                 if (submergedVolume > 0)
                 {
                     //The approximation can sometimes output a volume greater than the shape itself. Don't let that error seep into usage.
-                    var fractionSubmerged = Math.Min(1,
+                    float fractionSubmerged = Math.Min(1,
                         submergedVolume / entityCollidable.entity.CollisionInformation.Shape.Volume);
 
                     //Divide the volume by the density multiplier if present.
@@ -289,7 +290,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
                     //Flow
                     if (FlowForce != 0)
                     {
-                        var dot = Math.Max(Vector3.Dot(entityCollidable.entity.linearVelocity, flowDirection), 0);
+                        float dot = Math.Max(Vector3.Dot(entityCollidable.entity.linearVelocity, flowDirection), 0);
                         if (dot < MaxFlowSpeed)
                         {
                             force = Math.Min(FlowForce, (MaxFlowSpeed - dot) * entityCollidable.entity.mass) * dt *
@@ -332,19 +333,19 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             float perColumnArea;
             GetSamplingOrigin(ref entityBoundingBox, out xSpacing, out zSpacing, out perColumnArea, out origin);
 
-            var boundingBoxHeight = entityBoundingBox.Max.Y - entityBoundingBox.Min.Y;
-            var maxLength = -entityBoundingBox.Min.Y;
+            float boundingBoxHeight = entityBoundingBox.Max.Y - entityBoundingBox.Min.Y;
+            float maxLength = -entityBoundingBox.Min.Y;
             submergedCenter = new Vector3();
             submergedVolume = 0;
-            for (var i = 0; i < SamplePointsPerDimension; i++)
-            for (var j = 0; j < SamplePointsPerDimension; j++)
+            for (int i = 0; i < SamplePointsPerDimension; i++)
+            for (int j = 0; j < SamplePointsPerDimension; j++)
             {
                 Vector3 columnVolumeCenter;
                 float submergedHeight;
                 if ((submergedHeight = GetSubmergedHeight(collidable, maxLength, boundingBoxHeight, ref origin,
                         ref xSpacing, ref zSpacing, i, j, out columnVolumeCenter)) > 0)
                 {
-                    var columnVolume = submergedHeight * perColumnArea;
+                    float columnVolume = submergedHeight * perColumnArea;
                     Vector3.Multiply(ref columnVolumeCenter, columnVolume, out columnVolumeCenter);
                     Vector3.Add(ref columnVolumeCenter, ref submergedCenter, out submergedCenter);
                     submergedVolume += columnVolume;
@@ -360,8 +361,8 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             out float perColumnArea, out Vector3 origin)
         {
             //Compute spacing and increment informaiton.
-            var widthIncrement = (entityBoundingBox.Max.X - entityBoundingBox.Min.X) / SamplePointsPerDimension;
-            var lengthIncrement = (entityBoundingBox.Max.Z - entityBoundingBox.Min.Z) / SamplePointsPerDimension;
+            float widthIncrement = (entityBoundingBox.Max.X - entityBoundingBox.Min.X) / SamplePointsPerDimension;
+            float lengthIncrement = (entityBoundingBox.Max.Z - entityBoundingBox.Min.Z) / SamplePointsPerDimension;
             xSpacing = new Vector3(widthIncrement, 0, 0);
             zSpacing = new Vector3(0, 0, lengthIncrement);
             Quaternion.Transform(ref xSpacing, ref surfaceTransform.Orientation, out xSpacing);
@@ -447,9 +448,9 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
 
                 //Transform the hit into local space.
                 RigidTransform.TransformByInverse(ref rayHit.Location, ref surfaceTransform, out rayHit.Location);
-                var bottomY = rayHit.Location.Y;
-                var bottom = rayHit.T;
-                var bottomPosition = rayHit.Location;
+                float bottomY = rayHit.Location.Y;
+                float bottom = rayHit.T;
+                Vector3 bottomPosition = rayHit.Location;
                 if (collidable.RayCast(ray, boundingBoxHeight - rayHit.T, out rayHit))
                 {
                     //Transform the hit into local space.

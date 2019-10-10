@@ -25,8 +25,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems
         protected override void UpdateSingleThreaded()
         {
             Overlaps.Clear();
-            for (var i = 0; i < entries.Count; i++)
-            for (var j = i + 1; j < entries.Count; j++)
+            for (int i = 0; i < entries.Count; i++)
+            for (int j = i + 1; j < entries.Count; j++)
             {
                 if (entries[i].boundingBox.Intersects(entries[j].boundingBox))
                 {

@@ -89,7 +89,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         {
             GetExtremePointWithoutMargin(direction, ref shapeTransform, out extremePoint);
 
-            var directionLength = direction.LengthSquared();
+            float directionLength = direction.LengthSquared();
             if (directionLength > Toolbox.Epsilon)
             {
                 Vector3.Multiply(ref direction, collisionMargin / (float) Math.Sqrt(directionLength), out direction);
@@ -106,7 +106,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         {
             GetLocalExtremePointWithoutMargin(ref direction, out extremePoint);
 
-            var directionLength = direction.LengthSquared();
+            float directionLength = direction.LengthSquared();
             if (directionLength > Toolbox.Epsilon)
             {
                 Vector3.Multiply(ref direction, collisionMargin / (float) Math.Sqrt(directionLength), out direction);
@@ -128,7 +128,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //Sample the local directions from the orientation matrix, implicitly transposed.
 
             Vector3 right;
-            var direction = new Vector3(o.M11, o.M21, o.M31);
+            Vector3 direction = new Vector3(o.M11, o.M21, o.M31);
             GetLocalExtremePointWithoutMargin(ref direction, out right);
 
             Vector3 left;
@@ -235,7 +235,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //Sample the local directions from the orientation matrix, implicitly transposed.
 
             Vector3 right;
-            var direction = new Vector3(transform.LinearTransform.M11, transform.LinearTransform.M21,
+            Vector3 direction = new Vector3(transform.LinearTransform.M11, transform.LinearTransform.M21,
                 transform.LinearTransform.M31);
             GetLocalExtremePoint(direction, out right);
 

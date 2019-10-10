@@ -4,14 +4,11 @@ using System.Diagnostics;
 
 namespace Engine.Debug
 {
-    
     /// <summary>
     /// Class used to Raise Statistics about the engines different stages
     /// </summary>
     public static class MemoryTracer
     {
-
-
         /// <summary>
         /// List of the last frames informations
         /// </summary>
@@ -37,18 +34,20 @@ namespace Engine.Debug
         {
 #if LEAK_TRACE
             string ret = "";
-            foreach (var stepMemoryInformation in _informationCollection)
+            foreach (EngineStageInformation stepMemoryInformation in _informationCollection)
             {
                 if (stepMemoryInformation.Finalized)
+                {
                     ret += stepMemoryInformation.ToString();
+                }
             }
 
             return ret;
 #else
-
             return "Engine Was compiled without MemoryTracer enabled.";
 #endif
         }
+
         /// <summary>
         /// Command for the Debug Console to list the last complete Stage info of the Engine Stages
         /// </summary>
@@ -57,10 +56,13 @@ namespace Engine.Debug
         public static string cmdListLastMemoryInfo(string[] args)
         {
 #if LEAK_TRACE
-            if (_informationCollection.Count < 2) return ""; //We nee one frame to be finished, otherwise part of the data is not correct
+            if (_informationCollection.Count < 2)
+            {
+                return ""; //We nee one frame to be finished, otherwise part of the data is not correct
+            }
+
             return _informationCollection[_informationCollection.Count - 2].ToString();
 #else
-
             return "Engine Was compiled without MemoryTracer enabled.";
 #endif
         }
@@ -102,11 +104,10 @@ namespace Engine.Debug
                 {
                     _informationCollection.RemoveAt(0);
                 }
-
             }
             else
             {
-                current.SubStages.Add(_current);  //If not null then we add it to the parent list of substeps
+                current.SubStages.Add(_current); //If not null then we add it to the parent list of substeps
             }
 #endif
         }
@@ -146,7 +147,7 @@ namespace Engine.Debug
         /// <returns></returns>
         private static EngineStageInformation ChangeStage(string name, bool finalize)
         {
-            var old = _current;
+            EngineStageInformation old = _current;
             if (finalize)
             {
                 old?.FinalizeStage();

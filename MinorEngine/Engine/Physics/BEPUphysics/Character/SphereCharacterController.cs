@@ -58,7 +58,7 @@ namespace Engine.Physics.BEPUphysics.Character
             get => down;
             set
             {
-                var lengthSquared = value.LengthSquared();
+                float lengthSquared = value.LengthSquared();
                 if (lengthSquared < Toolbox.Epsilon)
                 {
                     return; //Silently fail. Assuming here that a dynamic process is setting this property; don't need to make a stink about it.
@@ -337,7 +337,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
         private void RemoveFriction(EntityCollidable sender, BroadPhaseEntry other, NarrowPhasePair pair)
         {
-            var collidablePair = pair as CollidablePairHandler;
+            CollidablePairHandler collidablePair = pair as CollidablePairHandler;
             if (collidablePair != null)
                 //The default values for InteractionProperties is all zeroes- zero friction, zero bounciness.
                 //That's exactly how we want the character to behave when hitting objects.
@@ -352,8 +352,8 @@ namespace Engine.Physics.BEPUphysics.Character
             {
                 //This runs after the bounding box updater is run, but before the broad phase.
                 //The expansion allows the downward pointing raycast to collect hit points.
-                var expansion = SupportFinder.MaximumAssistedDownStepHeight * down;
-                var box = Body.CollisionInformation.BoundingBox;
+                Vector3 expansion = SupportFinder.MaximumAssistedDownStepHeight * down;
+                BoundingBox box = Body.CollisionInformation.BoundingBox;
                 if (down.X < 0)
                 {
                     box.Min.X += expansion.X;
@@ -400,7 +400,7 @@ namespace Engine.Physics.BEPUphysics.Character
             PairLocker.LockCharacterPairs();
             try
             {
-                var hadSupport = SupportFinder.HasSupport;
+                bool hadSupport = SupportFinder.HasSupport;
 
                 SupportFinder.UpdateSupports(ref HorizontalMotionConstraint.movementDirection3d);
                 supportData = SupportFinder.SupportData;
@@ -408,7 +408,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 //Compute the initial velocities relative to the support.
                 Vector3 relativeVelocity;
                 ComputeRelativeVelocity(ref supportData, out relativeVelocity);
-                var verticalVelocity = Vector3.Dot(supportData.Normal, relativeVelocity);
+                float verticalVelocity = Vector3.Dot(supportData.Normal, relativeVelocity);
 
 
                 //Don't attempt to use an object as support if we are flying away from it (and we were never standing on it to begin with).
@@ -431,12 +431,12 @@ namespace Engine.Physics.BEPUphysics.Character
                         float currentDownVelocity;
                         Vector3.Dot(ref down, ref relativeVelocity, out currentDownVelocity);
                         //Target velocity is JumpSpeed.
-                        var velocityChange = Math.Max(jumpSpeed + currentDownVelocity, 0);
+                        float velocityChange = Math.Max(jumpSpeed + currentDownVelocity, 0);
                         ApplyJumpVelocity(ref supportData, down * -velocityChange, ref relativeVelocity);
 
 
                         //Prevent any old contacts from hanging around and coming back with a negative depth.
-                        foreach (var pair in Body.CollisionInformation.Pairs)
+                        foreach (CollidablePairHandler pair in Body.CollisionInformation.Pairs)
                         {
                             pair.ClearContacts();
                         }
@@ -447,13 +447,13 @@ namespace Engine.Physics.BEPUphysics.Character
                     else if (SupportFinder.HasSupport)
                     {
                         //The character does not have traction, so jump along the surface normal instead.
-                        var currentNormalVelocity = Vector3.Dot(supportData.Normal, relativeVelocity);
+                        float currentNormalVelocity = Vector3.Dot(supportData.Normal, relativeVelocity);
                         //Target velocity is JumpSpeed.
-                        var velocityChange = Math.Max(slidingJumpSpeed - currentNormalVelocity, 0);
+                        float velocityChange = Math.Max(slidingJumpSpeed - currentNormalVelocity, 0);
                         ApplyJumpVelocity(ref supportData, supportData.Normal * -velocityChange, ref relativeVelocity);
 
                         //Prevent any old contacts from hanging around and coming back with a negative depth.
-                        foreach (var pair in Body.CollisionInformation.Pairs)
+                        foreach (CollidablePairHandler pair in Body.CollisionInformation.Pairs)
                         {
                             pair.ClearContacts();
                         }
@@ -510,7 +510,7 @@ namespace Engine.Physics.BEPUphysics.Character
             if (SupportFinder.HasSupport)
             {
                 //Only entities have velocity.
-                var entityCollidable = supportData.SupportObject as EntityCollidable;
+                EntityCollidable entityCollidable = supportData.SupportObject as EntityCollidable;
                 if (entityCollidable != null)
                 {
                     //It's possible for the support's velocity to change due to another character jumping if the support is dynamic.
@@ -551,12 +551,12 @@ namespace Engine.Physics.BEPUphysics.Character
             ref Vector3 relativeVelocity)
         {
             Body.LinearVelocity += velocityChange;
-            var entityCollidable = supportData.SupportObject as EntityCollidable;
+            EntityCollidable entityCollidable = supportData.SupportObject as EntityCollidable;
             if (entityCollidable != null)
             {
                 if (entityCollidable.Entity.IsDynamic)
                 {
-                    var change = velocityChange * jumpForceFactor;
+                    Vector3 change = velocityChange * jumpForceFactor;
                     //Multiple characters cannot attempt to modify another entity's velocity at the same time.
                     entityCollidable.Entity.Locker.Enter();
                     try

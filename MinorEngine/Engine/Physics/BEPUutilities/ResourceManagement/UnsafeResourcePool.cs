@@ -73,7 +73,7 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
 
             if (InstanceInitializer != null)
             {
-                foreach (var t in stack)
+                foreach (T t in stack)
                 {
                     InstanceInitializer(t);
                 }

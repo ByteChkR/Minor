@@ -89,7 +89,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
                     "Cannot request additional resources from this factory; it is exhausted.  Consider specifying a greater number of initial resources or setting AllowOnDemandConstruction to true.");
             }
 
-            var pair = pool.Take();
+            T pair = pool.Take();
             pair.NeedsUpdate = true;
             return pair;
         }

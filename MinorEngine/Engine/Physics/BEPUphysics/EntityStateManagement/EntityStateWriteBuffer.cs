@@ -27,6 +27,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             internal TargetField targetField;
             internal Entity target;
         }
+
         private ConcurrentDeque<EntityStateChange> stateChanges = new ConcurrentDeque<EntityStateChange>();
 
         ///<summary>
@@ -89,7 +90,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             EntityStateChange item;
             while (stateChanges.TryDequeueFirst(out item))
             {
-                var target = item.target;
+                Entity target = item.target;
                 switch (item.targetField)
                 {
                     case TargetField.Position:

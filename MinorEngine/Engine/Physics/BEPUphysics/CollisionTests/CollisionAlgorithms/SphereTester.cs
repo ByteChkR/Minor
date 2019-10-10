@@ -24,10 +24,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         {
             contact = new ContactData();
 
-            var radiusSum = a.collisionMargin + b.collisionMargin;
+            float radiusSum = a.collisionMargin + b.collisionMargin;
             Vector3 centerDifference;
             Vector3.Subtract(ref positionB, ref positionA, out centerDifference);
-            var centerDistance = centerDifference.LengthSquared();
+            float centerDistance = centerDifference.LengthSquared();
 
             if (centerDistance < (radiusSum + CollisionDetectionSettings.maximumContactDistance) *
                 (radiusSum + CollisionDetectionSettings.maximumContactDistance))

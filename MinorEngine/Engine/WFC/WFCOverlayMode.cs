@@ -28,18 +28,18 @@ namespace Engine.WFC
             _n = N;
             Periodic = periodicOutput;
 
-            var bitmap = new Bitmap(filename);
+            Bitmap bitmap = new Bitmap(filename);
             int SMX = bitmap.Width, SMY = bitmap.Height;
-            var sample = new byte[SMX, SMY];
+            byte[,] sample = new byte[SMX, SMY];
             _colors = new List<Color>();
 
-            for (var y = 0; y < SMY; y++)
-            for (var x = 0; x < SMX; x++)
+            for (int y = 0; y < SMY; y++)
+            for (int x = 0; x < SMX; x++)
             {
-                var color = bitmap.GetPixel(x, y);
+                Color color = bitmap.GetPixel(x, y);
 
-                var i = 0;
-                foreach (var c in _colors)
+                int i = 0;
+                foreach (Color c in _colors)
                 {
                     if (c == color)
                     {
@@ -58,14 +58,14 @@ namespace Engine.WFC
             }
 
             Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log);
-            var C = _colors.Count;
-            var W = WaveCollapseUtils.Power(C, N * N);
+            int C = _colors.Count;
+            long W = WaveCollapseUtils.Power(C, N * N);
 
             byte[] pattern(Func<int, int, byte> f)
             {
-                var result = new byte[N * N];
-                for (var y = 0; y < N; y++)
-                for (var x = 0; x < N; x++)
+                byte[] result = new byte[N * N];
+                for (int y = 0; y < N; y++)
+                for (int x = 0; x < N; x++)
                 {
                     result[x + y * N] = f(x, y);
                 }
@@ -91,7 +91,7 @@ namespace Engine.WFC
             long index(byte[] p)
             {
                 long result = 0, power = 1;
-                for (var i = 0; i < p.Length; i++)
+                for (int i = 0; i < p.Length; i++)
                 {
                     result += p[p.Length - 1 - i] * power;
                     power *= C;
@@ -103,12 +103,12 @@ namespace Engine.WFC
             byte[] patternFromIndex(long ind)
             {
                 long residue = ind, power = W;
-                var result = new byte[N * N];
+                byte[] result = new byte[N * N];
 
-                for (var i = 0; i < result.Length; i++)
+                for (int i = 0; i < result.Length; i++)
                 {
                     power /= C;
-                    var count = 0;
+                    int count = 0;
 
                     if (power == 0)
                     {
@@ -127,13 +127,13 @@ namespace Engine.WFC
                 return result;
             }
 
-            var weights = new Dictionary<long, int>();
-            var ordering = new List<long>();
+            Dictionary<long, int> weights = new Dictionary<long, int>();
+            List<long> ordering = new List<long>();
 
-            for (var y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
-            for (var x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
+            for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
+            for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
             {
-                var ps = new byte[8][];
+                byte[][] ps = new byte[8][];
 
                 ps[0] = patternFromSample(x, y);
                 ps[1] = reflect(ps[0]);
@@ -144,9 +144,9 @@ namespace Engine.WFC
                 ps[6] = rotate(ps[4]);
                 ps[7] = reflect(ps[6]);
 
-                for (var k = 0; k < symmetry; k++)
+                for (int k = 0; k < symmetry; k++)
                 {
-                    var ind = index(ps[k]);
+                    long ind = index(ps[k]);
                     if (weights.ContainsKey(ind))
                     {
                         weights[ind]++;
@@ -164,8 +164,8 @@ namespace Engine.WFC
             _patterns = new byte[T][];
             Weights = new double[T];
 
-            var counter = 0;
-            foreach (var w in ordering)
+            int counter = 0;
+            foreach (long w in ordering)
             {
                 _patterns[counter] = patternFromIndex(w);
                 Weights[counter] = weights[w];
@@ -178,8 +178,8 @@ namespace Engine.WFC
                     xmax = dx < 0 ? dx + N : N,
                     ymin = dy < 0 ? 0 : dy,
                     ymax = dy < 0 ? dy + N : N;
-                for (var y = ymin; y < ymax; y++)
-                for (var x = xmin; x < xmax; x++)
+                for (int y = ymin; y < ymax; y++)
+                for (int x = xmin; x < xmax; x++)
                 {
                     if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
                     {
@@ -191,13 +191,13 @@ namespace Engine.WFC
             }
 
             Propagator = new int[4][][];
-            for (var d = 0; d < 4; d++)
+            for (int d = 0; d < 4; d++)
             {
                 Propagator[d] = new int[T][];
-                for (var t = 0; t < T; t++)
+                for (int t = 0; t < T; t++)
                 {
-                    var list = new List<int>();
-                    for (var t2 = 0; t2 < T; t2++)
+                    List<int> list = new List<int>();
+                    for (int t2 = 0; t2 < T; t2++)
                     {
                         if (agrees(_patterns[t], _patterns[t2], Dx[d], Dy[d]))
                         {
@@ -206,7 +206,7 @@ namespace Engine.WFC
                     }
 
                     Propagator[d][t] = new int[list.Count];
-                    for (var c = 0; c < list.Count; c++)
+                    for (int c = 0; c < list.Count; c++)
                     {
                         Propagator[d][t][c] = list[c];
                     }
@@ -221,56 +221,56 @@ namespace Engine.WFC
 
         public override Bitmap Graphics()
         {
-            var result = new Bitmap(Fmx, Fmy);
-            var bitmapData = new int[result.Height * result.Width];
+            Bitmap result = new Bitmap(Fmx, Fmy);
+            int[] bitmapData = new int[result.Height * result.Width];
 
             if (Observed != null)
             {
-                for (var y = 0; y < Fmy; y++)
+                for (int y = 0; y < Fmy; y++)
                 {
-                    var dy = y < Fmy - _n + 1 ? 0 : _n - 1;
-                    for (var x = 0; x < Fmx; x++)
+                    int dy = y < Fmy - _n + 1 ? 0 : _n - 1;
+                    for (int x = 0; x < Fmx; x++)
                     {
-                        var dx = x < Fmx - _n + 1 ? 0 : _n - 1;
-                        var c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
+                        int dx = x < Fmx - _n + 1 ? 0 : _n - 1;
+                        Color c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
                         bitmapData[x + y * Fmx] = unchecked((int) 0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
                     }
                 }
             }
             else
             {
-                for (var i = 0; i < Wave.Length; i++)
+                for (int i = 0; i < Wave.Length; i++)
                 {
                     int contributors = 0, r = 0, g = 0, b = 0;
                     int x = i % Fmx, y = i / Fmx;
 
-                    for (var dy = 0; dy < _n; dy++)
-                    for (var dx = 0; dx < _n; dx++)
+                    for (int dy = 0; dy < _n; dy++)
+                    for (int dx = 0; dx < _n; dx++)
                     {
-                        var sx = x - dx;
+                        int sx = x - dx;
                         if (sx < 0)
                         {
                             sx += Fmx;
                         }
 
-                        var sy = y - dy;
+                        int sy = y - dy;
                         if (sy < 0)
                         {
                             sy += Fmy;
                         }
 
-                        var s = sx + sy * Fmx;
+                        int s = sx + sy * Fmx;
                         if (OnBoundary(sx, sy))
                         {
                             continue;
                         }
 
-                        for (var t = 0; t < T; t++)
+                        for (int t = 0; t < T; t++)
                         {
                             if (Wave[s][t])
                             {
                                 contributors++;
-                                var color = _colors[_patterns[t][dx + dy * _n]];
+                                Color color = _colors[_patterns[t][dx + dy * _n]];
                                 r += color.R;
                                 g += color.G;
                                 b += color.B;
@@ -289,7 +289,7 @@ namespace Engine.WFC
                 }
             }
 
-            var bits = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly,
+            BitmapData bits = result.LockBits(new Rectangle(0, 0, result.Width, result.Height), ImageLockMode.WriteOnly,
                 PixelFormat.Format32bppArgb);
             System.Runtime.InteropServices.Marshal.Copy(bitmapData, 0, bits.Scan0, bitmapData.Length);
             result.UnlockBits(bits);
@@ -303,9 +303,9 @@ namespace Engine.WFC
 
             if (_ground != 0)
             {
-                for (var x = 0; x < Fmx; x++)
+                for (int x = 0; x < Fmx; x++)
                 {
-                    for (var t = 0; t < T; t++)
+                    for (int t = 0; t < T; t++)
                     {
                         if (t != _ground)
                         {
@@ -313,7 +313,7 @@ namespace Engine.WFC
                         }
                     }
 
-                    for (var y = 0; y < Fmy - 1; y++)
+                    for (int y = 0; y < Fmy - 1; y++)
                     {
                         Ban(x + y * Fmx, _ground);
                     }

@@ -37,9 +37,9 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
         {
             affectedEntities.Clear();
             ForceField.QueryAccelerator.GetEntries(BoundingSphere, affectedEntries);
-            for (var i = 0; i < affectedEntries.Count; i++)
+            for (int i = 0; i < affectedEntries.Count; i++)
             {
-                var EntityCollidable = affectedEntries[i] as EntityCollidable;
+                EntityCollidable EntityCollidable = affectedEntries[i] as EntityCollidable;
                 if (EntityCollidable != null)
                 {
                     affectedEntities.Add(EntityCollidable.Entity);

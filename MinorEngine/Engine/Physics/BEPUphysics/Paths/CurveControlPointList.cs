@@ -62,7 +62,7 @@ namespace Engine.Physics.BEPUphysics.Paths
         /// <param name="point">New control point to add to the curve.</param>
         public void Add(CurveControlPoint<TValue> point)
         {
-            var index = Curve.GetPreviousIndex(point.Time) + 1;
+            int index = Curve.GetPreviousIndex(point.Time) + 1;
             //TODO: Test for time-wise duplicate?
             //IndexA would be the one that's possibly duplicated.
             //Even with duplicate, this is still technically sorted.
@@ -78,7 +78,7 @@ namespace Engine.Physics.BEPUphysics.Paths
         /// <returns>Newly created control point.</returns>
         public CurveControlPoint<TValue> Add(float time, TValue value)
         {
-            var toAdd = new CurveControlPoint<TValue>(time, value, Curve);
+            CurveControlPoint<TValue> toAdd = new CurveControlPoint<TValue>(time, value, Curve);
             Add(toAdd);
             return toAdd;
         }
@@ -98,7 +98,7 @@ namespace Engine.Physics.BEPUphysics.Paths
         /// <param name="index">Index to remove at.</param>
         public void RemoveAt(int index)
         {
-            var removed = list[index];
+            CurveControlPoint<TValue> removed = list[index];
             list.RemoveAt(index);
             Curve.ControlPointRemoved(removed, index);
         }

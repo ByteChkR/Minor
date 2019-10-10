@@ -1,7 +1,9 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 
 namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -22,8 +24,8 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         protected override TriangleCollidable GetOpposingCollidable(int index)
         {
             //Construct a TriangleCollidable from the static mesh.
-            var toReturn = PhysicsResources.GetTriangleCollidable();
-            var shape = toReturn.Shape;
+            TriangleCollidable toReturn = PhysicsResources.GetTriangleCollidable();
+            TriangleShape shape = toReturn.Shape;
             mesh.Shape.TriangleMesh.Data.GetTriangle(index, out shape.vA, out shape.vB, out shape.vC);
             Matrix3x3.Transform(ref shape.vA, ref mesh.worldTransform.LinearTransform, out shape.vA);
             Matrix3x3.Transform(ref shape.vB, ref mesh.worldTransform.LinearTransform, out shape.vB);
@@ -84,7 +86,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void UpdateContainedPairs(float dt)
         {
-            var overlappedElements = CommonResources.GetIntList();
+            RawList<int> overlappedElements = CommonResources.GetIntList();
             BoundingBox localBoundingBox;
 
             Vector3 sweep;
@@ -92,7 +94,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref mesh.worldTransform, ref sweep,
                 out localBoundingBox);
             mesh.Shape.TriangleMesh.Tree.GetOverlaps(localBoundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }

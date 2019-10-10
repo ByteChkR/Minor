@@ -191,8 +191,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             //Larger effective masses should correspond to smaller softnesses so that the spring has the same positional behavior.
             //Fortunately, we're already computing the necessary values: the raw, unsoftened effective mass inverse shall be used to compute the softness.
 
-            var effectiveMassInverse = entryA + entryB;
-            var updateRate = 1 / dt;
+            float effectiveMassInverse = entryA + entryB;
+            float updateRate = 1 / dt;
             softness = CollisionResponseSettings.Softness * effectiveMassInverse * updateRate;
             velocityToImpulse = -1 / (softness + effectiveMassInverse);
 
@@ -208,17 +208,17 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
                 if (contactManifoldConstraint.materialInteraction.Bounciness > 0)
                 {
                     //Target a velocity which includes a portion of the incident velocity.
-                    var bounceVelocity = -RelativeVelocity;
+                    float bounceVelocity = -RelativeVelocity;
                     if (bounceVelocity > 0)
                     {
-                        var lowThreshold = CollisionResponseSettings.BouncinessVelocityThreshold * 0.3f;
-                        var velocityFraction =
+                        float lowThreshold = CollisionResponseSettings.BouncinessVelocityThreshold * 0.3f;
+                        float velocityFraction =
                             MathHelper.Clamp(
                                 (bounceVelocity - lowThreshold) /
                                 (CollisionResponseSettings.BouncinessVelocityThreshold - lowThreshold +
                                  Toolbox.Epsilon), 0, 1);
-                        var bouncinessVelocity = velocityFraction * bounceVelocity *
-                                                 contactManifoldConstraint.materialInteraction.Bounciness;
+                        float bouncinessVelocity = velocityFraction * bounceVelocity *
+                                                   contactManifoldConstraint.materialInteraction.Bounciness;
                         bias = MathHelper.Max(bouncinessVelocity, bias);
                     }
                 }
@@ -253,8 +253,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void ExclusiveUpdate()
         {
             //Warm starting
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = accumulatedImpulse * linearAX;
             linear.Y = accumulatedImpulse * linearAY;
             linear.Z = accumulatedImpulse * linearAZ;
@@ -288,17 +288,17 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override float SolveIteration()
         {
             //Compute relative velocity
-            var lambda = (RelativeVelocity - bias + softness * accumulatedImpulse) * velocityToImpulse;
+            float lambda = (RelativeVelocity - bias + softness * accumulatedImpulse) * velocityToImpulse;
 
             //Clamp accumulated impulse
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            float previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Max(0, accumulatedImpulse + lambda);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
 
             //Apply the impulse
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = lambda * linearAX;
             linear.Y = lambda * linearAY;
             linear.Z = lambda * linearAZ;

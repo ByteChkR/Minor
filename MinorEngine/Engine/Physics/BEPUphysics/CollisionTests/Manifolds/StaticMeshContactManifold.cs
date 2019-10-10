@@ -37,7 +37,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             out AffineTransform fromMeshLocalToConvexLocal)
         {
             //StaticMeshes only have transformable mesh data.
-            var data = (TransformableMeshData) mesh.Mesh.Data;
+            TransformableMeshData data = (TransformableMeshData) mesh.Mesh.Data;
             AffineTransform.Multiply(ref data.worldTransform, ref convexInverseWorldTransform,
                 out fromMeshLocalToConvexLocal);
         }
@@ -45,8 +45,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
             out TriangleIndices indices)
         {
-            var triangleIndex = overlappedTriangles.Elements[i];
-            var data = mesh.Mesh.Data;
+            int triangleIndex = overlappedTriangles.Elements[i];
+            MeshBoundingBoxTreeData data = mesh.Mesh.Data;
             localTriangleShape.vA = data.vertices[data.indices[triangleIndex]];
             localTriangleShape.vB = data.vertices[data.indices[triangleIndex + 1]];
             localTriangleShape.vC = data.vertices[data.indices[triangleIndex + 2]];

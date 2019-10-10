@@ -486,7 +486,7 @@ namespace Engine.Physics.BEPUphysics.Entities
 
         private void OnMaterialChanged(Material newMaterial)
         {
-            for (var i = 0; i < collisionInformation.pairs.Count; i++)
+            for (int i = 0; i < collisionInformation.pairs.Count; i++)
             {
                 collisionInformation.pairs[i].UpdateMaterialProperties();
             }
@@ -679,7 +679,7 @@ namespace Engine.Physics.BEPUphysics.Entities
         public void ApplyImpulseWithoutActivating(ref Vector3 location, ref Vector3 impulse)
         {
             ApplyLinearImpulse(ref impulse);
-            var positionDifference = new Vector3();
+            Vector3 positionDifference = new Vector3();
             positionDifference.X = location.X - position.X;
             positionDifference.Y = location.Y - position.Y;
             positionDifference.Z = location.Z - position.Z;
@@ -772,7 +772,7 @@ namespace Engine.Physics.BEPUphysics.Entities
         ///</summary>
         public void BecomeKinematic()
         {
-            var previousState = isDynamic;
+            bool previousState = isDynamic;
             isDynamic = false;
             LocalInertiaTensorInverse = new Matrix3x3();
             mass = 0;
@@ -830,7 +830,7 @@ namespace Engine.Physics.BEPUphysics.Entities
                                                     " for a dynamic entity.  Consider using a kinematic entity instead.");
             }
 
-            var previousState = isDynamic;
+            bool previousState = isDynamic;
             isDynamic = true;
             LocalInertiaTensor = localInertiaTensor;
             this.mass = mass;
@@ -885,18 +885,18 @@ namespace Engine.Physics.BEPUphysics.Entities
                 (activityInformation.isSlowing || activityInformation.velocityTimeBelowLimit >
                  activityInformation.DeactivationManager.lowVelocityTimeMinimum))
             {
-                var energy = linearVelocity.LengthSquared() + angularVelocity.LengthSquared();
+                float energy = linearVelocity.LengthSquared() + angularVelocity.LengthSquared();
                 if (energy < activityInformation.DeactivationManager.velocityLowerLimitSquared)
                 {
-                    var boost = 1 - (float) (Math.Sqrt(energy) /
-                                             (2f * activityInformation.DeactivationManager.velocityLowerLimit));
+                    float boost = 1 - (float) (Math.Sqrt(energy) /
+                                               (2f * activityInformation.DeactivationManager.velocityLowerLimit));
                     ModifyAngularDamping(boost);
                     ModifyLinearDamping(boost);
                 }
             }
 
             //Damping
-            var linear = LinearDamping + linearDampingBoost;
+            float linear = LinearDamping + linearDampingBoost;
             if (linear > 0)
             {
                 Vector3.Multiply(ref linearVelocity, (float) Math.Pow(MathHelper.Clamp(1 - linear, 0, 1), dt),
@@ -904,7 +904,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             }
 
             //When applying angular damping, the momentum or velocity is damped depending on the conservation setting.
-            var angular = AngularDamping + angularDampingBoost;
+            float angular = AngularDamping + angularDampingBoost;
             if (angular > 0)
             {
 #if CONSERVE
@@ -993,7 +993,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             get => positionUpdateMode;
             set
             {
-                var previous = positionUpdateMode;
+                PositionUpdateMode previous = positionUpdateMode;
                 positionUpdateMode = value;
                 //Notify our owner of the change, if needed.
                 if (positionUpdateMode != previous &&
@@ -1012,7 +1012,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             //I must order the pairs to compute a time of impact.
 
             //The pair method works in such a way that, when this method is run asynchronously, there will be no race conditions.
-            for (var i = 0; i < collisionInformation.pairs.Count; i++)
+            for (int i = 0; i < collisionInformation.pairs.Count; i++)
                 //Only perform CCD if we're either supposed to test against no solver pairs or if this isn't a no solver pair.
             {
                 if (MotionSettings.CCDFilter(collisionInformation.pairs.Elements[i]))
@@ -1025,7 +1025,7 @@ namespace Engine.Physics.BEPUphysics.Entities
         void ICCDPositionUpdateable.ResetTimesOfImpact()
         {
             //Reset all of the times of impact to 1, allowing the entity to move all the way through its velocity-defined motion.
-            for (var i = 0; i < collisionInformation.pairs.Count; i++)
+            for (int i = 0; i < collisionInformation.pairs.Count; i++)
             {
                 collisionInformation.pairs.Elements[i].timeOfImpact = 1;
             }
@@ -1034,7 +1034,7 @@ namespace Engine.Physics.BEPUphysics.Entities
         void ICCDPositionUpdateable.UpdatePositionContinuously(float dt)
         {
             float minimumToi = 1;
-            for (var i = 0; i < collisionInformation.pairs.Count; i++)
+            for (int i = 0; i < collisionInformation.pairs.Count; i++)
             {
                 if (collisionInformation.pairs.Elements[i].timeOfImpact < minimumToi)
                 {
@@ -1071,7 +1071,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             Vector3 increment;
 
             Vector3.Multiply(ref angularVelocity, dt * .5f, out increment);
-            var multiplier = new Quaternion(increment.X, increment.Y, increment.Z, 0);
+            Quaternion multiplier = new Quaternion(increment.X, increment.Y, increment.Z, 0);
             Quaternion.Multiply(ref multiplier, ref orientation, out multiplier);
             Quaternion.Add(ref orientation, ref multiplier, out orientation);
             orientation.Normalize();
@@ -1138,8 +1138,8 @@ namespace Engine.Physics.BEPUphysics.Entities
         /// <param name="damping">Damping to add.</param>
         public void ModifyLinearDamping(float damping)
         {
-            var totalDamping = LinearDamping + linearDampingBoost;
-            var remainder = 1 - totalDamping;
+            float totalDamping = LinearDamping + linearDampingBoost;
+            float remainder = 1 - totalDamping;
             linearDampingBoost += damping * remainder;
         }
 
@@ -1150,8 +1150,8 @@ namespace Engine.Physics.BEPUphysics.Entities
         /// <param name="damping">Damping to add.</param>
         public void ModifyAngularDamping(float damping)
         {
-            var totalDamping = AngularDamping + angularDampingBoost;
-            var remainder = 1 - totalDamping;
+            float totalDamping = AngularDamping + angularDampingBoost;
+            float remainder = 1 - totalDamping;
             angularDampingBoost += damping * remainder;
         }
 
@@ -1182,12 +1182,14 @@ namespace Engine.Physics.BEPUphysics.Entities
             return base.ToString() + ", " + Tag;
         }
 
-        
+
         private static long idCounter;
+
         /// <summary>
         /// Gets the entity's unique instance id.
         /// </summary>
         public long InstanceId { get; private set; }
+
         private void InitializeId()
         {
             InstanceId = System.Threading.Interlocked.Increment(ref idCounter);

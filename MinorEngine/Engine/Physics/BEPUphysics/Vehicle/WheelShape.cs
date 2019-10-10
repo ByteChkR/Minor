@@ -206,7 +206,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             else if (!wheel.HasSupport && wheel.drivingMotor.TargetSpeed != 0)
             {
                 //Airborne and accelerating, increase spin velocity.
-                var maxSpeed = Math.Abs(wheel.drivingMotor.TargetSpeed) / Radius;
+                float maxSpeed = Math.Abs(wheel.drivingMotor.TargetSpeed) / Radius;
                 spinVelocity =
                     MathHelper.Clamp(
                         spinVelocity + Math.Sign(wheel.drivingMotor.TargetSpeed) * airborneWheelAcceleration * dt,

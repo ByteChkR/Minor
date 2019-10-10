@@ -75,7 +75,7 @@ namespace Engine.Core
         {
             get
             {
-                var mat = Matrix4.Identity;
+                Matrix4 mat = Matrix4.Identity;
                 mat *= Matrix4.CreateScale(Scale);
                 mat *= Matrix4.CreateFromQuaternion(Rotation);
                 mat *= Matrix4.CreateTranslation(LocalPosition);
@@ -167,7 +167,7 @@ namespace Engine.Core
         public void Destroy()
         {
             _destructionPending = true;
-            foreach (var gameObject in _children)
+            foreach (GameObject gameObject in _children)
             {
                 gameObject.Destroy();
             }
@@ -187,18 +187,18 @@ namespace Engine.Core
             }
 
             //this.Log("Destroying GameObject: " + Name, DebugChannel.Log);
-            var objs = new List<GameObject>(_children).ToArray();
+            GameObject[] objs = new List<GameObject>(_children).ToArray();
 
-            foreach (var gameObject in objs)
+            foreach (GameObject gameObject in objs)
             {
                 gameObject._Destroy();
             }
 
 
-            var comps =
+            KeyValuePair<Type, AbstractComponent>[] comps =
                 new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
 
-            foreach (var abstractComponent in comps)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in comps)
             {
                 if (abstractComponent.Value is Collider collider)
                 {
@@ -264,7 +264,7 @@ namespace Engine.Core
         /// <param name="component">the component to add</param>
         public void AddComponent(AbstractComponent component)
         {
-            var t = component.GetType();
+            Type t = component.GetType();
             if (!_components.ContainsKey(t))
             {
                 if (typeof(IRenderingComponent).IsAssignableFrom(t))
@@ -295,10 +295,10 @@ namespace Engine.Core
             }
             else //Or check every component if it needs removal
             {
-                var comps =
+                KeyValuePair<Type, AbstractComponent>[] comps =
                     new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
 
-                foreach (var abstractComponent in comps)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in comps)
                 {
                     if (abstractComponent.Value._destructionPending)
                     {
@@ -312,9 +312,9 @@ namespace Engine.Core
                     }
                 }
 
-                var go = new List<GameObject>(_children);
+                List<GameObject> go = new List<GameObject>(_children);
 
-                foreach (var gameObject in go)
+                foreach (GameObject gameObject in go)
                 {
                     gameObject.RemoveDestroyedObjects();
                 }
@@ -337,7 +337,7 @@ namespace Engine.Core
         /// <param name="componentType">the type to remove</param>
         public void RemoveComponent(Type componentType)
         {
-            var t = componentType;
+            Type t = componentType;
             if (_components.ContainsKey(t))
             {
                 if (typeof(IRenderingComponent).IsAssignableFrom(t))
@@ -347,7 +347,7 @@ namespace Engine.Core
                     RenderingComponent = null;
                 }
 
-                var component = _components[t];
+                AbstractComponent component = _components[t];
 
                 if (component is Collider collider)
                 {
@@ -378,7 +378,7 @@ namespace Engine.Core
         /// <returns>The component; if not found it returns null</returns>
         public T GetComponentIterative<T>() where T : AbstractComponent
         {
-            foreach (var abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
             {
                 if (typeof(T).IsAssignableFrom(abstractComponent.Key))
                 {
@@ -412,7 +412,7 @@ namespace Engine.Core
         public void ComputeWorldTransformCache(Matrix4 parentTransform)
         {
             _worldTransformCache = Transform * parentTransform;
-            foreach (var gameObject in _children)
+            foreach (GameObject gameObject in _children)
             {
                 if (gameObject._hasRendererInHierarchy) //We only need to update the worldspace cache when we need to
                 {
@@ -428,7 +428,7 @@ namespace Engine.Core
         /// <param name="child">The child to remove</param>
         private void innerRemove(GameObject child)
         {
-            for (var i = _children.Count - 1; i >= 0; i--)
+            for (int i = _children.Count - 1; i >= 0; i--)
             {
                 if (_children[i] == child)
                 {
@@ -471,8 +471,8 @@ namespace Engine.Core
             else if (!hasRenderer && _hasRendererInHierarchy
             ) //A child removed a renderer and now we need to check if we can set the flag to false(if all the childs dont have renderers)
             {
-                var childhaveRenderers = false;
-                foreach (var gameObject in _children)
+                bool childhaveRenderers = false;
+                foreach (GameObject gameObject in _children)
                 {
                     if (gameObject._hasRendererInHierarchy)
                     {
@@ -577,9 +577,9 @@ namespace Engine.Core
         private void Events_InitialCollisionDetected(EntityCollidable sender, Collidable other,
             CollidablePairHandler pair)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out var otherCol))
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (var abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
                 {
                     abstractComponent.Value.onInitialCollisionDetected(otherCol, pair);
                 }
@@ -594,9 +594,9 @@ namespace Engine.Core
         /// <param name="pair">The Pair Handler</param>
         private void Events_CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out var otherCol))
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (var abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
                 {
                     abstractComponent.Value.onCollisionEnded(otherCol, pair);
                 }
@@ -613,9 +613,9 @@ namespace Engine.Core
         private void Events_ContactRemoved(EntityCollidable sender, Collidable other, CollidablePairHandler pair,
             ContactData contact)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out var otherCol))
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (var abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
                 {
                     abstractComponent.Value.onContactRemoved(otherCol, pair, contact);
                 }
@@ -633,9 +633,9 @@ namespace Engine.Core
         private void Events_ContactCreated(EntityCollidable sender, Collidable other, CollidablePairHandler pair,
             ContactData contact)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out var otherCol))
+            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (var abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
                 {
                     abstractComponent.Value.onContactCreated(otherCol, pair, contact);
                 }
@@ -649,12 +649,12 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            foreach (var abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
             {
                 abstractComponent.Value.onPress(sender, e);
             }
 
-            for (var i = 0; i < _children.Count; i++)
+            for (int i = 0; i < _children.Count; i++)
             {
                 _children[i].OnKeyPress(sender, e);
             }
@@ -667,12 +667,12 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnKeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            foreach (var abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
             {
                 abstractComponent.Value.onKeyUp(sender, e);
             }
 
-            for (var i = 0; i < _children.Count; i++)
+            for (int i = 0; i < _children.Count; i++)
             {
                 _children[i].OnKeyUp(sender, e);
             }
@@ -686,12 +686,12 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            foreach (var abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
             {
                 abstractComponent.Value.onKeyDown(sender, e);
             }
 
-            for (var i = 0; i < _children.Count; i++)
+            for (int i = 0; i < _children.Count; i++)
             {
                 _children[i].OnKeyDown(sender, e);
             }
@@ -703,12 +703,12 @@ namespace Engine.Core
         /// <param name="deltaTime">Delta Time in Seconds</param>
         public void Update(float deltaTime)
         {
-            foreach (var abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
             {
                 abstractComponent.Value.updateObject(deltaTime);
             }
 
-            for (var i = 0; i < _children.Count; i++)
+            for (int i = 0; i < _children.Count; i++)
             {
                 _children[i].Update(deltaTime);
             }
@@ -722,7 +722,7 @@ namespace Engine.Core
         {
             Scene = newScene;
 
-            for (var i = 0; i < _children.Count; i++)
+            for (int i = 0; i < _children.Count; i++)
             {
                 _children[i].setSceneRecursively(newScene);
             }
@@ -756,9 +756,9 @@ namespace Engine.Core
                 return this;
             }
 
-            foreach (var gameObject in _children)
+            foreach (GameObject gameObject in _children)
             {
-                var ret = gameObject.GetChildWithName(name);
+                GameObject ret = gameObject.GetChildWithName(name);
                 if (ret != null)
                 {
                     return ret;
@@ -823,7 +823,7 @@ namespace Engine.Core
         /// <returns></returns>
         public Vector3 TransformToWorld(Vector3 vec, bool translate = true)
         {
-            var v = translate ? new Vector4(vec, 1) : new Vector4(vec, 0);
+            Vector4 v = translate ? new Vector4(vec, 1) : new Vector4(vec, 0);
             return new Vector3(v * GetWorldTransform());
         }
 
@@ -882,7 +882,7 @@ namespace Engine.Core
         /// <param name="other">The target Game Object</param>
         public void LookAt(GameObject other)
         {
-            var target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * other.GetWorldTransform());
+            Vector3 target = new Vector3(new Vector4(other.GetLocalPosition(), 0) * other.GetWorldTransform());
             LookAt(target);
         }
 
@@ -892,9 +892,9 @@ namespace Engine.Core
         /// <param name="worldPos">Position in world space</param>
         public void LookAt(Vector3 worldPos)
         {
-            var position = GetLocalPosition();
+            Vector3 position = GetLocalPosition();
 
-            var t = worldPos - position;
+            Vector3 t = worldPos - position;
 
 
             if (t == Vector3.Zero)
@@ -902,16 +902,15 @@ namespace Engine.Core
                 return;
             }
 
-            var newForward = Vector3.Normalize(t);
+            Vector3 newForward = Vector3.Normalize(t);
 
             //New Right Vector
-            var newRight = Vector3.Cross(Vector3.UnitY, newForward);
-            var newUp = Vector3.Cross(newForward, newRight);
+            Vector3 newRight = Vector3.Cross(Vector3.UnitY, newForward);
+            Vector3 newUp = Vector3.Cross(newForward, newRight);
 
 
-            var newMat = new Matrix3(new Vector3(-newRight), new Vector3(newUp), new Vector3(-newForward));
+            Matrix3 newMat = new Matrix3(new Vector3(-newRight), new Vector3(newUp), new Vector3(-newForward));
             Rotation = newMat.ExtractRotation();
         }
-        
     }
 }

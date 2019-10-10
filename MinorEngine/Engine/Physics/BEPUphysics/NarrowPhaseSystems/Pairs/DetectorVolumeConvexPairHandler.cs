@@ -52,9 +52,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             WasTouching = Touching;
 
 
-            var transform = new RigidTransform {Orientation = Quaternion.Identity};
+            RigidTransform transform = new RigidTransform {Orientation = Quaternion.Identity};
             DetectorVolume.TriangleMesh.Tree.GetOverlaps(convex.boundingBox, overlaps);
-            for (var i = 0; i < overlaps.Count; i++)
+            for (int i = 0; i < overlaps.Count; i++)
             {
                 DetectorVolume.TriangleMesh.Data.GetTriangle(overlaps.Elements[i], out triangle.vA, out triangle.vB,
                     out triangle.vC);

@@ -5,6 +5,7 @@ using Engine.Physics.BEPUphysics.CollisionRuleManagement;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.CollisionTests;
 using Engine.Physics.BEPUphysics.Entities;
+using Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs;
 using Engine.Physics.BEPUphysics.Settings;
 using Engine.Physics.BEPUutilities;
 using Engine.Physics.BEPUutilities.DataStructures;
@@ -90,7 +91,7 @@ namespace Engine.Physics.BEPUphysics.Character
             supportData.Position = contacts.Elements[0].Contact.Position;
             supportData.Normal = contacts.Elements[0].Contact.Normal;
 
-            for (var i = 1; i < contacts.Count; i++)
+            for (int i = 1; i < contacts.Count; i++)
             {
                 Vector3.Add(ref supportData.Position, ref contacts.Elements[i].Contact.Position,
                     out supportData.Position);
@@ -100,7 +101,7 @@ namespace Engine.Physics.BEPUphysics.Character
             if (contacts.Count > 1)
             {
                 Vector3.Divide(ref supportData.Position, contacts.Count, out supportData.Position);
-                var length = supportData.Normal.LengthSquared();
+                float length = supportData.Normal.LengthSquared();
                 if (length < Toolbox.Epsilon)
                     //It's possible that the normals have cancelled each other out- that would be bad!
                     //Just use an arbitrary support's normal in that case.
@@ -115,9 +116,9 @@ namespace Engine.Physics.BEPUphysics.Character
 
             //Now that we have the normal, cycle through all the contacts again and find the deepest projected depth.
             //Use that object as our support too.
-            var depth = -float.MaxValue;
+            float depth = -float.MaxValue;
             Collidable supportObject = null;
-            for (var i = 0; i < contacts.Count; i++)
+            for (int i = 0; i < contacts.Count; i++)
             {
                 float dot;
                 Vector3.Dot(ref contacts.Elements[i].Contact.Normal, ref supportData.Normal, out dot);
@@ -154,9 +155,9 @@ namespace Engine.Physics.BEPUphysics.Character
                 if (tractionContacts.Count > 0)
                 {
                     //Find the traction-providing contact which is furthest in the direction of the movement direction.
-                    var greatestIndex = -1;
-                    var greatestDot = -float.MaxValue;
-                    for (var i = 0; i < tractionContacts.Count; i++)
+                    int greatestIndex = -1;
+                    float greatestDot = -float.MaxValue;
+                    for (int i = 0; i < tractionContacts.Count; i++)
                     {
                         float dot;
                         Vector3.Dot(ref movementDirection, ref tractionContacts.Elements[i].Contact.Normal, out dot);
@@ -173,8 +174,8 @@ namespace Engine.Physics.BEPUphysics.Character
 
                     //Project all other contact depths onto the chosen normal, keeping the largest one.
                     //This lets the vertical motion constraint relax when objects are penetrating deeply.
-                    var depth = -float.MaxValue;
-                    for (var i = 0; i < tractionContacts.Count; i++)
+                    float depth = -float.MaxValue;
+                    for (int i = 0; i < tractionContacts.Count; i++)
                     {
                         float dot;
                         Vector3.Dot(ref tractionContacts.Elements[i].Contact.Normal, ref verticalSupportData.Normal,
@@ -272,19 +273,19 @@ namespace Engine.Physics.BEPUphysics.Character
         /// </summary>
         public void UpdateSupports(ref Vector3 movementDirection)
         {
-            var hadTraction = HasTraction;
+            bool hadTraction = HasTraction;
 
             //Reset traction/support.
             HasTraction = false;
             HasSupport = false;
 
-            var downDirection = characterBody.orientationMatrix.Down;
-            var bodyPosition = characterBody.position;
+            Vector3 downDirection = characterBody.orientationMatrix.Down;
+            Vector3 bodyPosition = characterBody.position;
 
             //Compute the character's radius, minus a little margin. We want the rays to originate safely within the character's body.
             //Assume vertical rotational invariance. Spheres, cylinders, and capsules don't have varying horizontal radii.
             Vector3 extremePoint;
-            var convexShape = characterBody.CollisionInformation.Shape as ConvexShape;
+            ConvexShape convexShape = characterBody.CollisionInformation.Shape as ConvexShape;
             System.Diagnostics.Debug.Assert(convexShape != null, "Character bodies must be convex.");
 
             //Find the lowest point on the collision shape.
@@ -292,7 +293,7 @@ namespace Engine.Physics.BEPUphysics.Character
             BottomDistance = -extremePoint.Y + convexShape.collisionMargin;
 
             convexShape.GetLocalExtremePointWithoutMargin(ref Toolbox.RightVector, out extremePoint);
-            var rayCastInnerRadius = Math.Max((extremePoint.X + convexShape.collisionMargin) * 0.8f, extremePoint.X);
+            float rayCastInnerRadius = Math.Max((extremePoint.X + convexShape.collisionMargin) * 0.8f, extremePoint.X);
 
             //Vertically, the rays will start at the same height as the character's center.
             //While they could be started lower on a cylinder, that wouldn't always work for a sphere or capsule: the origin might end up outside of the shape!
@@ -302,7 +303,7 @@ namespace Engine.Physics.BEPUphysics.Character
             sideContacts.Clear();
             headContacts.Clear();
 
-            foreach (var pair in characterBody.CollisionInformation.Pairs)
+            foreach (CollidablePairHandler pair in characterBody.CollisionInformation.Pairs)
             {
                 //Don't stand on things that aren't really colliding fully.
                 if (pair.CollisionRule != CollisionRule.Normal)
@@ -327,13 +328,13 @@ namespace Engine.Physics.BEPUphysics.Character
             //the ray test won't recover traction. This situation just isn't very common.)
             if (!HasSupport && hadTraction)
             {
-                var supportRayLength = maximumAssistedDownStepHeight + BottomDistance;
+                float supportRayLength = maximumAssistedDownStepHeight + BottomDistance;
                 SupportRayData = null;
                 //If the contacts aren't available to support the character, raycast down to find the ground.
                 if (!HasTraction)
                 {
                     //TODO: could also require that the character has a nonzero movement direction in order to use a ray cast.  Questionable- would complicate the behavior on edges.
-                    var ray = new Ray(bodyPosition, downDirection);
+                    Ray ray = new Ray(bodyPosition, downDirection);
 
                     bool hasTraction;
                     SupportRayData data;
@@ -346,10 +347,10 @@ namespace Engine.Physics.BEPUphysics.Character
                 }
 
                 //If contacts and the center ray cast failed, try a ray offset in the movement direction.
-                var tryingToMove = movementDirection.LengthSquared() > 0;
+                bool tryingToMove = movementDirection.LengthSquared() > 0;
                 if (!HasTraction && tryingToMove)
                 {
-                    var ray = new Ray(
+                    Ray ray = new Ray(
                         characterBody.Position +
                         movementDirection * rayCastInnerRadius, downDirection);
 
@@ -391,7 +392,7 @@ namespace Engine.Physics.BEPUphysics.Character
                     Vector3 horizontalOffset;
                     Vector3.Cross(ref movementDirection, ref downDirection, out horizontalOffset);
                     Vector3.Multiply(ref horizontalOffset, rayCastInnerRadius, out horizontalOffset);
-                    var ray = new Ray(bodyPosition + horizontalOffset, downDirection);
+                    Ray ray = new Ray(bodyPosition + horizontalOffset, downDirection);
 
                     //Have to test to make sure the ray doesn't get obstructed.  This could happen if the character is deeply embedded in a wall; we wouldn't want it detecting things inside the wall as a support!
                     Ray obstructionRay;
@@ -431,7 +432,7 @@ namespace Engine.Physics.BEPUphysics.Character
                     Vector3 horizontalOffset;
                     Vector3.Cross(ref downDirection, ref movementDirection, out horizontalOffset);
                     Vector3.Multiply(ref horizontalOffset, rayCastInnerRadius, out horizontalOffset);
-                    var ray = new Ray(bodyPosition + horizontalOffset, downDirection);
+                    Ray ray = new Ray(bodyPosition + horizontalOffset, downDirection);
 
                     //Have to test to make sure the ray doesn't get obstructed.  This could happen if the character is deeply embedded in a wall; we wouldn't want it detecting things inside the wall as a support!
                     Ray obstructionRay;
@@ -477,7 +478,7 @@ namespace Engine.Physics.BEPUphysics.Character
             hasTraction = false;
             if (QueryManager.RayCast(ray, length, out earliestHit, out earliestHitObject))
             {
-                var lengthSquared = earliestHit.Normal.LengthSquared();
+                float lengthSquared = earliestHit.Normal.LengthSquared();
                 if (lengthSquared < Toolbox.Epsilon)
                     //Don't try to continue if the support ray is stuck in something.
                 {
@@ -532,11 +533,11 @@ namespace Engine.Physics.BEPUphysics.Character
 
             //If there is already a contact that is deeper than the new contact, then allow it. It won't make things worse.
             //Adding this extra permission avoids situations where the character can't stand up because it's just slightly pushed up against a wall.
-            foreach (var c in SideContacts)
+            foreach (CharacterContact c in SideContacts)
             {
                 //An existing contact is considered 'deeper' if its normal-adjusted depth is greater than the new contact.
-                var dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
-                var depth = dot * c.Contact.PenetrationDepth + Toolbox.BigEpsilon;
+                float dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
+                float depth = dot * c.Contact.PenetrationDepth + Toolbox.BigEpsilon;
                 if (depth >= contact.PenetrationDepth)
                 {
                     return false;

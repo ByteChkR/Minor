@@ -17,6 +17,7 @@ namespace Engine.DataTypes
         /// The Buffer used to store the actual vertex data
         /// </summary>
         public readonly int _vbo;
+
         /// <summary>
         /// The Buffer used to connect _ebo, _vbo.
         /// In Theory you only need this buffer, but it is convenient to have the others sticking around as well.
@@ -74,11 +75,11 @@ namespace Engine.DataTypes
             {
                 return;
             }
+
             _disposed = true;
             GL.DeleteBuffer(_ebo);
             GL.DeleteBuffer(_vbo);
             GL.DeleteVertexArray(_vao);
-
         }
     }
 }

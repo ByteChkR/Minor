@@ -234,7 +234,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             get
             {
-                foreach (var contact in Contacts)
+                foreach (ContactInformation contact in Contacts)
                 {
                     if (contact.Contact.PenetrationDepth >= 0)
                     {

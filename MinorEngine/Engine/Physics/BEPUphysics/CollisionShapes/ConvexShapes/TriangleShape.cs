@@ -84,7 +84,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public TriangleShape(Vector3 vA, Vector3 vB, Vector3 vC)
         {
             //Recenter.  Convexes should contain the origin.
-            var center = (vA + vB + vC) / 3;
+            Vector3 center = (vA + vB + vC) / 3;
             this.vA = vA - center;
             this.vB = vB - center;
             this.vC = vC - center;
@@ -119,7 +119,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public TriangleShape(Vector3 vA, Vector3 vB, Vector3 vC, ConvexShapeDescription description)
         {
             //Recenter.  Convexes should contain the origin.
-            var center = (vA + vB + vC) / 3;
+            Vector3 center = (vA + vB + vC) / 3;
             this.vA = vA - center;
             this.vB = vB - center;
             this.vC = vC - center;
@@ -141,15 +141,15 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             ConvexShapeDescription description;
             // A triangle by itself technically has no volume, but shapes try to include the collision margin in the volume when feasible (e.g. BoxShape).
             //Plus, it's convenient to have a nonzero volume for buoyancy.
-            var doubleArea = Vector3.Cross(vB - vA, vC - vA).Length();
+            float doubleArea = Vector3.Cross(vB - vA, vC - vA).Length();
             description.EntityShapeVolume.Volume = doubleArea * collisionMargin;
 
             //Compute the inertia tensor.
-            var v = new Matrix3x3(
+            Matrix3x3 v = new Matrix3x3(
                 vA.X, vA.Y, vA.Z,
                 vB.X, vB.Y, vB.Z,
                 vC.X, vC.Y, vC.Z);
-            var s = new Matrix3x3(
+            Matrix3x3 s = new Matrix3x3(
                 2, 1, 1,
                 1, 2, 1,
                 1, 1, 2);
@@ -157,12 +157,12 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             Matrix3x3.MultiplyTransposed(ref v, ref s, out description.EntityShapeVolume.VolumeDistribution);
             Matrix3x3.Multiply(ref description.EntityShapeVolume.VolumeDistribution, ref v,
                 out description.EntityShapeVolume.VolumeDistribution);
-            var scaling = doubleArea / 24f;
+            float scaling = doubleArea / 24f;
             Matrix3x3.Multiply(ref description.EntityShapeVolume.VolumeDistribution, -scaling,
                 out description.EntityShapeVolume.VolumeDistribution);
 
             //The square-of-sum term is ignored since the parameters should already be localized (and so would sum to zero).
-            var sums = scaling * (vA.LengthSquared() + vB.LengthSquared() + vC.LengthSquared());
+            float sums = scaling * (vA.LengthSquared() + vB.LengthSquared() + vC.LengthSquared());
             description.EntityShapeVolume.VolumeDistribution.M11 += sums;
             description.EntityShapeVolume.VolumeDistribution.M22 += sums;
             description.EntityShapeVolume.VolumeDistribution.M33 += sums;
@@ -239,7 +239,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         /// <returns>Volume distribution of the shape.</returns>
         public static Matrix3x3 ComputeVolumeDistribution(Vector3 vA, Vector3 vB, Vector3 vC)
         {
-            var center = (vA + vB + vC) * (1 / 3f);
+            Vector3 center = (vA + vB + vC) * (1 / 3f);
 
             //Calculate distribution of mass.
 
@@ -250,11 +250,11 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //I = I + [ (-j * j)  (j * j + z * z)  (-j * z) ]
             //	      [ (-j * z)  (-j * z)  (j * j + j * j) ]
 
-            var i = vA.X - center.X;
-            var j = vA.Y - center.Y;
-            var k = vA.Z - center.Z;
+            float i = vA.X - center.X;
+            float j = vA.Y - center.Y;
+            float k = vA.Z - center.Z;
             //localInertiaTensor += new Matrix(j * j + k * k, -j * j, -j * k, 0, -j * j, j * j + k * k, -j * k, 0, -j * k, -j * k, j * j + j * j, 0, 0, 0, 0, 0); //No mass per point.
-            var volumeDistribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
+            Matrix3x3 volumeDistribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
                 massPerPoint * (-i * k),
                 massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
                 massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
@@ -262,7 +262,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             i = vB.X - center.X;
             j = vB.Y - center.Y;
             k = vB.Z - center.Z;
-            var pointContribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
+            Matrix3x3 pointContribution = new Matrix3x3(massPerPoint * (j * j + k * k), massPerPoint * (-i * j),
                 massPerPoint * (-i * k),
                 massPerPoint * (-i * j), massPerPoint * (i * i + k * k), massPerPoint * (-j * k),
                 massPerPoint * (-i * k), massPerPoint * (-j * k), massPerPoint * (i * i + j * j));
@@ -302,7 +302,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         /// <returns>Normal of the triangle in world space.</returns>
         public Vector3 GetNormal(RigidTransform transform)
         {
-            var normal = GetLocalNormal();
+            Vector3 normal = GetLocalNormal();
             Quaternion.Transform(ref normal, ref transform.Orientation, out normal);
             return normal;
         }
@@ -326,7 +326,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             Vector3.Subtract(ref ray.Position, ref transform.Position, out localRay.Position);
             Quaternion.Transform(ref localRay.Position, ref conjugate, out localRay.Position);
 
-            var toReturn = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref vA, ref vB,
+            bool toReturn = Toolbox.FindRayTriangleIntersection(ref localRay, maximumLength, sidedness, ref vA, ref vB,
                 ref vC, out hit);
             //Move the hit back into world space.
             Vector3.Multiply(ref ray.Direction, hit.T, out hit.Location);

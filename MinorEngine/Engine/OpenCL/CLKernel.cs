@@ -7,7 +7,6 @@ using Engine.OpenCL.DotNetCore.Kernels;
 using Engine.OpenCL.DotNetCore.Memory;
 
 #if TRAVIS_TEST
-
 using Engine.Debug;
 
 #endif
@@ -92,7 +91,7 @@ namespace Engine.OpenCL
             if (value is MemoryBuffer buffer)
             {
                 SetBuffer(index, buffer);
-                
+
                 return;
             }
 
@@ -102,7 +101,6 @@ namespace Engine.OpenCL
 #else
             Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
 #endif
-
         }
 
         /// <summary>
@@ -117,15 +115,15 @@ namespace Engine.OpenCL
             MemoryBuffer enabledChannels, int channelCount)
         {
 #if !TRAVIS_TEST
-            var size = dimensions.x * dimensions.y * dimensions.z * channelCount;
+            int size = dimensions.x * dimensions.y * dimensions.z * channelCount;
 
-            
+
             SetArg(0, image);
             SetArg(1, dimensions);
             SetArg(2, channelCount);
             SetArg(3, genTypeMaxVal);
             SetArg(4, enabledChannels);
-            Run(cq, 1 , size);
+            Run(cq, 1, size);
 #endif
         }
 

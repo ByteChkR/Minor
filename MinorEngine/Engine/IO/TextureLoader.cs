@@ -5,18 +5,19 @@ using System.Drawing.Imaging;
 using System.Runtime.InteropServices;
 using Assimp;
 using Engine.DataTypes;
+using Engine.Debug;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
+using TextureType = Engine.DataTypes.TextureType;
 using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace Engine.IO
 {
     public class TextureLoader
     {
-
         /// <summary>
         /// Creates a 4 Channel Texture from a pointer and width/height
         /// </summary>
@@ -35,7 +36,8 @@ namespace Engine.IO
 
             DefaultTexParameter();
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            return new Texture(texID); ;
+            return new Texture(texID);
+            ;
         }
 
         /// <summary>
@@ -47,8 +49,8 @@ namespace Engine.IO
         /// <returns>The texture</returns>
         public static Texture BytesToTexture(byte[] buffer, int width, int height)
         {
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
-            var ret = BytesToTexture(handle.AddrOfPinnedObject(), width, height);
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            Texture ret = BytesToTexture(handle.AddrOfPinnedObject(), width, height);
 
             handle.Free();
             return ret;
@@ -74,11 +76,11 @@ namespace Engine.IO
         /// <returns></returns>
         private static byte[] TextureToByteArray(Texture tex)
         {
-            var buffer = new byte[(int)(tex.Width * tex.Height * 4)];
-            var handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
+            byte[] buffer = new byte[(int) (tex.Width * tex.Height * 4)];
+            GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
-            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int)tex.Width, (int)tex.Height, 1, PixelFormat.Bgra,
+            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int) tex.Width, (int) tex.Height, 1, PixelFormat.Bgra,
                 PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
 
             handle.Free();
@@ -93,7 +95,7 @@ namespace Engine.IO
         /// <returns>CL Buffer Object containing the image data</returns>
         public static MemoryBuffer TextureToMemoryBuffer(Texture tex)
         {
-            var buffer = TextureToByteArray(tex);
+            byte[] buffer = TextureToByteArray(tex);
             return CLAPI.CreateBuffer(buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
         }
 
@@ -119,10 +121,10 @@ namespace Engine.IO
         /// <returns>The GL Texture</returns>
         public static Texture BitmapToTexture(Bitmap bmp)
         {
-            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+            BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
                 System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-            var tex = BytesToTexture(data.Scan0, bmp.Width, bmp.Height);
+            Texture tex = BytesToTexture(data.Scan0, bmp.Width, bmp.Height);
 
             bmp.UnlockBits(data);
             return tex;
@@ -141,8 +143,8 @@ namespace Engine.IO
                 return new Texture[0];
             }
 
-            var list = new List<Texture>();
-            foreach (var x in scene.Textures)
+            List<Texture> list = new List<Texture>();
+            foreach (EmbeddedTexture x in scene.Textures)
             {
                 list.Add(AssimpEmbeddedToTexture(x));
             }
@@ -157,8 +159,8 @@ namespace Engine.IO
         /// <returns>Flat byte array containing the data</returns>
         private static byte[] flattenImageData(Texel[] imageData)
         {
-            var ret = new byte[imageData.Length * 4];
-            for (var i = 0; i < imageData.Length; i++)
+            byte[] ret = new byte[imageData.Length * 4];
+            for (int i = 0; i < imageData.Length; i++)
             {
                 TexelToByteSequence(i * 4, ret, imageData[i]);
             }
@@ -208,13 +210,13 @@ namespace Engine.IO
         private static void DefaultTexParameter()
         {
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int)TextureMinFilter.Linear);
+                (int) TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int)TextureMagFilter.Linear);
+                (int) TextureMagFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
-                (int)TextureWrapMode.Repeat);
+                (int) TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
-                (int)TextureWrapMode.Repeat);
+                (int) TextureWrapMode.Repeat);
         }
 
         /// <summary>
@@ -224,7 +226,32 @@ namespace Engine.IO
         /// <returns>A copy of Other</returns>
         private static Texture Copy(Texture other)
         {
-            return BytesToTexture(TextureToByteArray(other), (int)other.Width, (int)other.Height);
+            return BytesToTexture(TextureToByteArray(other), (int) other.Width, (int) other.Height);
+        }
+
+        /// <summary>
+        /// Loads Textures from AssimpMaterials
+        /// </summary>
+        /// <param name="m">Assimp Material</param>
+        /// <param name="texType">Type of texture</param>
+        /// <param name="dir">The directory of the file that references this material</param>
+        /// <returns>A list of textures that were attached to the material</returns>
+        internal static List<Texture> LoadMaterialTextures(Material m, TextureType texType, string dir)
+        {
+            List<Texture> ret = new List<Texture>();
+
+            Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
+                DebugChannel.Log);
+            for (int i = 0; i < m.GetMaterialTextureCount((Assimp.TextureType) texType); i++)
+            {
+                TextureSlot s;
+                m.GetMaterialTexture((Assimp.TextureType) texType, i, out s);
+                Texture tx = FileToTexture(dir + s.FilePath);
+                tx.TexType = texType;
+                ret.Add(tx);
+            }
+
+            return ret;
         }
     }
 }

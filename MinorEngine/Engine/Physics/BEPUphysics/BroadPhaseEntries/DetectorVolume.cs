@@ -143,8 +143,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         /// <returns>Whether or not the point is contained by the detector volume.</returns>
         public bool IsPointContained(Vector3 point)
         {
-            var triangles = CommonResources.GetIntList();
-            var contained = IsPointContained(ref point, triangles);
+            RawList<int> triangles = CommonResources.GetIntList();
+            bool contained = IsPointContained(ref point, triangles);
             CommonResources.GiveBack(triangles);
             return contained;
         }
@@ -163,13 +163,13 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                 rayDirection = Vector3.Up;
             }
 
-            var ray = new Ray(point, rayDirection);
+            Ray ray = new Ray(point, rayDirection);
             triangleMesh.Tree.GetOverlaps(ray, triangles);
 
-            var minimumT = float.MaxValue;
-            var minimumIsClockwise = false;
+            float minimumT = float.MaxValue;
+            bool minimumIsClockwise = false;
 
-            for (var i = 0; i < triangles.Count; i++)
+            for (int i = 0; i < triangles.Count; i++)
             {
                 Vector3 a, b, c;
                 triangleMesh.Data.GetTriangle(triangles.Elements[i], out a, out b, out c);
@@ -195,7 +195,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
 
         protected override void CollisionRulesUpdated()
         {
-            foreach (var pair in pairs.Values)
+            foreach (DetectorVolumePairHandler pair in pairs.Values)
             {
                 pair.CollisionRule =
                     CollisionRules.CollisionRuleCalculator(pair.BroadPhaseOverlap.entryA,
@@ -219,12 +219,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             hit = new RayHit();
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
-            var tri = PhysicsThreadResources.GetTriangle();
-            var hitElements = CommonResources.GetIntList();
+            TriangleShape tri = PhysicsThreadResources.GetTriangle();
+            RawList<int> hitElements = CommonResources.GetIntList();
             if (triangleMesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (var i = 0; i < hitElements.Count; i++)
+                for (int i = 0; i < hitElements.Count; i++)
                 {
                     triangleMesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     Vector3 center;
@@ -235,7 +235,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                     Vector3.Subtract(ref tri.vB, ref center, out tri.vB);
                     Vector3.Subtract(ref tri.vC, ref center, out tri.vC);
                     tri.MaximumRadius = tri.vA.LengthSquared();
-                    var radius = tri.vB.LengthSquared();
+                    float radius = tri.vB.LengthSquared();
                     if (tri.MaximumRadius < radius)
                     {
                         tri.MaximumRadius = radius;
@@ -249,7 +249,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
 
                     tri.MaximumRadius = (float) Math.Sqrt(tri.MaximumRadius);
                     tri.collisionMargin = 0;
-                    var triangleTransform = new RigidTransform {Orientation = Quaternion.Identity, Position = center};
+                    RigidTransform triangleTransform = new RigidTransform
+                        {Orientation = Quaternion.Identity, Position = center};
                     RayHit tempHit;
                     if (MPRToolbox.Sweep(castShape, tri, ref sweep, ref Toolbox.ZeroVector, ref startingTransform,
                             ref triangleTransform, out tempHit) && tempHit.T < hit.T)
@@ -283,21 +284,21 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         public void Reinitialize()
         {
             //Pick a point that is known to be outside the mesh as the origin.
-            var origin = (triangleMesh.Tree.BoundingBox.Max - triangleMesh.Tree.BoundingBox.Min) * 1.5f +
-                         triangleMesh.Tree.BoundingBox.Min;
+            Vector3 origin = (triangleMesh.Tree.BoundingBox.Max - triangleMesh.Tree.BoundingBox.Min) * 1.5f +
+                             triangleMesh.Tree.BoundingBox.Min;
 
             //Pick a direction which will definitely hit the mesh.
             Vector3 a, b, c;
             triangleMesh.Data.GetTriangle(0, out a, out b, out c);
-            var direction = (a + b + c) / 3 - origin;
+            Vector3 direction = (a + b + c) / 3 - origin;
 
-            var ray = new Ray(origin, direction);
-            var triangles = CommonResources.GetIntList();
+            Ray ray = new Ray(origin, direction);
+            RawList<int> triangles = CommonResources.GetIntList();
             triangleMesh.Tree.GetOverlaps(ray, triangles);
 
-            var minimumT = float.MaxValue;
+            float minimumT = float.MaxValue;
 
-            for (var i = 0; i < triangles.Count; i++)
+            for (int i = 0; i < triangles.Count; i++)
             {
                 triangleMesh.Data.GetTriangle(triangles.Elements[i], out a, out b, out c);
 
@@ -405,7 +406,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         {
             while (containmentChanges.Count > 0)
             {
-                var change = containmentChanges.Dequeue();
+                ContainmentChange change = containmentChanges.Dequeue();
                 switch (change.Change)
                 {
                     case ContainmentChangeType.BeganTouching:

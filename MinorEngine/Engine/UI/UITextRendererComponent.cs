@@ -6,7 +6,6 @@ using Engine.Rendering.Contexts;
 
 namespace Engine.UI
 {
-
     /// <summary>
     /// Implements A Text Renderer Component
     /// </summary>
@@ -29,7 +28,7 @@ namespace Engine.UI
         {
             get
             {
-                if (_context == null||_contextInvalid)
+                if (_context == null || _contextInvalid)
                 {
                     _context = new TextRenderContext(Shader, Position, Scale, Owner._worldTransformCache, WorldSpace,
                         Alpha, font, _text, RenderQueue);

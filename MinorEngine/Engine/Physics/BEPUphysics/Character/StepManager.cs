@@ -93,7 +93,7 @@ namespace Engine.Physics.BEPUphysics.Character
         private bool IsDownStepObstructed(ref QuickList<CharacterContact> sideContacts)
         {
             //A contact is considered obstructive if its projected depth is deeper than any existing contact along the existing contacts' normals.
-            for (var i = 0; i < sideContacts.Count; i++)
+            for (int i = 0; i < sideContacts.Count; i++)
             {
                 if (SupportFinder.IsSideContactObstructive(ref sideContacts.Elements[i].Contact))
                 {
@@ -131,11 +131,11 @@ namespace Engine.Physics.BEPUphysics.Character
 
             //Predict a hit location based on the time of impact and the normal at the intersection.
             //Take into account the radius of the character (don't forget the collision margin!)
-            var normal = SupportFinder.SupportRayData.Value.HitData.Normal;
+            Vector3 normal = SupportFinder.SupportRayData.Value.HitData.Normal;
 
-            var down = characterBody.orientationMatrix.Down;
+            Vector3 down = characterBody.orientationMatrix.Down;
 
-            var transform = characterBody.CollisionInformation.WorldTransform;
+            RigidTransform transform = characterBody.CollisionInformation.WorldTransform;
 
             //We know that the closest point to the plane will be the extreme point in the plane's direction.
             //Use it as the ray origin.
@@ -145,7 +145,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
             //Intersect the ray against the plane defined by the support hit.
             Vector3 intersection;
-            var plane = new Plane(normal, Vector3.Dot(SupportFinder.SupportRayData.Value.HitData.Location, normal));
+            Plane plane = new Plane(normal, Vector3.Dot(SupportFinder.SupportRayData.Value.HitData.Location, normal));
             Vector3 candidatePosition;
 
             //Define the interval bounds to be used later.
@@ -156,15 +156,19 @@ namespace Engine.Physics.BEPUphysics.Character
             //The lowest possible distance is the ray distance plus the collision margin because the ray could theoretically be on the outskirts of the collision margin
             //where the shape would actually have to move more than the bottom distance difference would imply.
             //(Could compute the true lowest bound analytically based on the horizontal position of the ray...)
-            var lowestBound = characterBody.CollisionInformation.Shape.CollisionMargin +
-                              SupportFinder.SupportRayData.Value.HitData.T - SupportFinder.BottomDistance;
-            var currentOffset = lowestBound;
+            float lowestBound = characterBody.CollisionInformation.Shape.CollisionMargin +
+                                SupportFinder.SupportRayData.Value.HitData.T - SupportFinder.BottomDistance;
+            float currentOffset = lowestBound;
             float hintOffset;
 
-            var tractionContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-            var supportContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-            var sideContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-            var headContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> tractionContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> supportContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> sideContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> headContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
             try
             {
                 //This guess may either win immediately, or at least give us a better idea of where to search.
@@ -214,7 +218,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 //testing the ray cast location gives us the second bound we need to do an informed binary search.
 
 
-                var attempts = 0;
+                int attempts = 0;
                 //Don't keep querying indefinitely.  If we fail to reach it in a few informed steps, it's probably not worth continuing.
                 //The bound size check prevents the system from continuing to search a meaninglessly tiny interval.
                 while (attempts++ < 5 && lowestBound - highestBound > Toolbox.BigEpsilon)
@@ -324,14 +328,14 @@ namespace Engine.Physics.BEPUphysics.Character
         public bool TryToStepUp(out Vector3 newPosition)
         {
             //Can't step up if we don't have traction to begin with.
-            var down = characterBody.orientationMatrix.Down;
+            Vector3 down = characterBody.orientationMatrix.Down;
             if (SupportFinder.HasTraction)
             {
                 //Further, we must test to see if the character has a side contact which is suitable for climbing.
                 stepContacts.Clear();
                 FindUpStepCandidates(stepContacts, ref down);
                 //We must test every such contact until we find a step up or we run out of candidates.
-                for (var i = 0; i < stepContacts.Count; i++)
+                for (int i = 0; i < stepContacts.Count; i++)
                 {
                     if (TryToStepUsingContact(ref stepContacts.Elements[i], ref down, out newPosition))
                     {
@@ -350,12 +354,12 @@ namespace Engine.Physics.BEPUphysics.Character
 
         private void FindUpStepCandidates(RawList<ContactData> outputStepCandidates, ref Vector3 down)
         {
-            var movementDirection = HorizontalMotionConstraint.MovementDirection3d;
-            foreach (var c in SupportFinder.SideContacts)
+            Vector3 movementDirection = HorizontalMotionConstraint.MovementDirection3d;
+            foreach (CharacterContact c in SupportFinder.SideContacts)
             {
                 //Check to see if the contact is sufficiently aligned with the movement direction to be considered for stepping.
                 //TODO: This could behave a bit odd when encountering steps or slopes near the base of rounded collision margin.
-                var contact = c.Contact;
+                ContactData contact = c.Contact;
                 float dot;
                 Vector3.Dot(ref contact.Normal, ref movementDirection, out dot);
                 if (dot > 0)
@@ -368,8 +372,8 @@ namespace Engine.Physics.BEPUphysics.Character
                     {
                         //It's a candidate!
                         //But wait, there's more! Do we already have a candidate that covers this direction?
-                        var shouldAdd = true;
-                        for (var i = 0; i < outputStepCandidates.Count; i++)
+                        bool shouldAdd = true;
+                        for (int i = 0; i < outputStepCandidates.Count; i++)
                         {
                             Vector3.Dot(ref outputStepCandidates.Elements[i].Normal, ref contact.Normal, out dot);
                             if (dot > .99f)
@@ -390,11 +394,11 @@ namespace Engine.Physics.BEPUphysics.Character
 
         private bool TryToStepUsingContact(ref ContactData contact, ref Vector3 down, out Vector3 newPosition)
         {
-            var position = characterBody.Position;
+            Vector3 position = characterBody.Position;
             //The normal of the contact may not be facing perfectly out to the side.
             //The detection process allows a bit of slop.
             //Correct it by removing any component of the normal along the local up vector.
-            var normal = contact.Normal;
+            Vector3 normal = contact.Normal;
             float dot;
             Vector3.Dot(ref normal, ref down, out dot);
             Vector3 error;
@@ -406,7 +410,7 @@ namespace Engine.Physics.BEPUphysics.Character
             //Compute the ray origin location.  Fire it out of the top of the character; if we're stepping, this must be a valid location.
             //Putting it as high as possible helps to reject more invalid step geometry.
             Ray ray;
-            var downRayLength = characterBody.Height; // MaximumStepHeight + upStepMargin;
+            float downRayLength = characterBody.Height; // MaximumStepHeight + upStepMargin;
             Vector3.Multiply(ref down, characterBody.Height * .5f - downRayLength, out ray.Position);
             Vector3.Add(ref ray.Position, ref position, out ray.Position);
             ray.Direction = normal;
@@ -415,10 +419,10 @@ namespace Engine.Physics.BEPUphysics.Character
             //That puts it just far enough to have traction on the new surface.
             //In practice, the current contact refreshing approach used for many pair types causes contacts to persist horizontally a bit,
             //which can cause side effects for the character.
-            var horizontalOffsetAmount =
+            float horizontalOffsetAmount =
                 characterBody.CollisionInformation.Shape
                     .CollisionMargin; // (float)((1 - character.SupportFinder.sinMaximumSlope) * character.Body.CollisionInformation.Shape.CollisionMargin + 0);
-            var length = characterBody.Radius + horizontalOffsetAmount; // -contact.PenetrationDepth;
+            float length = characterBody.Radius + horizontalOffsetAmount; // -contact.PenetrationDepth;
 
 
             if (QueryManager.RayCastHitAnything(ray, length))
@@ -474,7 +478,7 @@ namespace Engine.Physics.BEPUphysics.Character
             //Find the earliest hit, if any.
             //RayHit earliestHitUp = new RayHit();
             //earliestHitUp.T = float.MaxValue;
-            var upLength = characterBody.Height - earliestHit.T;
+            float upLength = characterBody.Height - earliestHit.T;
 
             //If the sum of the up and down distances is less than the height, the character can't fit.
             if (QueryManager.RayCastHitAnything(ray, upLength))
@@ -491,7 +495,7 @@ namespace Engine.Physics.BEPUphysics.Character
             //Take into account the radius of the character (don't forget the collision margin!)
 
 
-            var transform = characterBody.CollisionInformation.WorldTransform;
+            RigidTransform transform = characterBody.CollisionInformation.WorldTransform;
             //The transform must be modified to position the query body at the right location.
             //The horizontal offset of the queries ensures that a tractionable part of the character will be put onto the new support.
             Vector3.Multiply(ref normal, horizontalOffsetAmount, out horizontalOffset);
@@ -510,23 +514,27 @@ namespace Engine.Physics.BEPUphysics.Character
             //Intersect the ray against the plane defined by the support hit.
             Vector3 intersection;
             Vector3.Dot(ref earliestHit.Location, ref supportNormal, out dot);
-            var plane = new Plane(supportNormal, dot);
+            Plane plane = new Plane(supportNormal, dot);
             Vector3 candidatePosition;
 
             //Define the interval bounds to be used later.
 
             //The words 'highest' and 'lowest' here refer to the position relative to the character's body.
             //The ray cast points downward relative to the character's body.
-            var highestBound = -maximumStepHeight;
-            var lowestBound = characterBody.CollisionInformation.Shape.CollisionMargin - downRayLength +
-                              earliestHit.T;
-            var currentOffset = lowestBound;
+            float highestBound = -maximumStepHeight;
+            float lowestBound = characterBody.CollisionInformation.Shape.CollisionMargin - downRayLength +
+                                earliestHit.T;
+            float currentOffset = lowestBound;
             float hintOffset;
 
-            var tractionContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-            var supportContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-            var sideContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-            var headContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> tractionContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> supportContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> sideContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+            QuickList<CharacterContact> headContacts =
+                new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
             try
             {
                 //This guess may either win immediately, or at least give us a better idea of where to search.
@@ -599,7 +607,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 //testing the ray cast location gives us the second bound we need to do an informed binary search.
 
 
-                var attempts = 0;
+                int attempts = 0;
                 //Don't keep querying indefinitely.  If we fail to reach it in a few informed steps, it's probably not worth continuing.
                 //The bound size check prevents the system from continuing to search a meaninglessly tiny interval.
                 while (attempts++ < 5 && lowestBound - highestBound > Toolbox.BigEpsilon)
@@ -687,7 +695,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 float dot;
                 Vector3.Dot(ref down, ref headContacts.Elements[0].Contact.Normal, out dot);
                 hintOffset = -dot * headContacts.Elements[0].Contact.PenetrationDepth;
-                for (var i = 1; i < headContacts.Count; i++)
+                for (int i = 1; i < headContacts.Count; i++)
                 {
                     Vector3.Dot(ref down, ref headContacts.Elements[i].Contact.Normal, out dot);
                     dot *= -headContacts.Elements[i].Contact.PenetrationDepth;
@@ -700,7 +708,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 return CharacterContactPositionState.HeadObstructed;
             }
 
-            var obstructed = IsUpStepObstructedBySideContacts(ref sideNormal, ref sideContacts);
+            bool obstructed = IsUpStepObstructedBySideContacts(ref sideNormal, ref sideContacts);
             if (!obstructed && supportContacts.Count > 0)
             {
                 CharacterContactPositionState supportState;
@@ -735,7 +743,7 @@ namespace Engine.Physics.BEPUphysics.Character
                     //Find the down test ray's position.
                     Ray downRay;
                     downRay.Position = supportContact.Contact.Position + sideNormal * .001f;
-                    var verticalOffset = Vector3.Dot(downRay.Position - position, down);
+                    float verticalOffset = Vector3.Dot(downRay.Position - position, down);
                     verticalOffset = characterBody.Height * .5f + verticalOffset;
                     downRay.Position -= verticalOffset * down;
                     downRay.Direction = down;
@@ -819,7 +827,7 @@ namespace Engine.Physics.BEPUphysics.Character
             ref QuickList<CharacterContact> sideContacts)
         {
             //A contact is considered obstructive if its projected depth is deeper than any existing contact along the existing contacts' normals.
-            for (var i = 0; i < sideContacts.Count; i++)
+            for (int i = 0; i < sideContacts.Count; i++)
             {
                 if (IsObstructiveToUpStepping(ref sideNormal, ref sideContacts.Elements[i].Contact))
                 {
@@ -847,10 +855,10 @@ namespace Engine.Physics.BEPUphysics.Character
             //Go through side-facing contact and check to see if the new contact is deeper than any existing contact in the direction of the existing contact.
             //This is equivalent to considering the existing contacts to define planes and then comparing the new contact against those planes.
             //Since we already have the penetration depths, we don't need to use the positions of the contacts.
-            foreach (var c in SupportFinder.SideContacts)
+            foreach (CharacterContact c in SupportFinder.SideContacts)
             {
                 dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
-                var depth = dot * c.Contact.PenetrationDepth;
+                float depth = dot * c.Contact.PenetrationDepth;
                 if (depth > Math.Max(c.Contact.PenetrationDepth, CollisionDetectionSettings.AllowedPenetration))
                 {
                     return true;

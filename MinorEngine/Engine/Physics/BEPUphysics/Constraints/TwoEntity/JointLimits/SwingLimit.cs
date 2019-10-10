@@ -215,7 +215,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             lambda *= velocityToImpulse;
 
             //Clamp accumulated impulse (can't go negative)
-            var previousAccumulatedImpulse = TotalImpulse;
+            float previousAccumulatedImpulse = TotalImpulse;
             TotalImpulse = MathHelper.Max(TotalImpulse + lambda, 0);
             lambda = TotalImpulse - previousAccumulatedImpulse;
 
@@ -265,7 +265,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
 
             //Hinge axis is actually the jacobian entry for angular A (negative angular B).
             Vector3.Cross(ref worldAxisA, ref worldAxisB, out hingeAxis);
-            var lengthSquared = hingeAxis.LengthSquared();
+            float lengthSquared = hingeAxis.LengthSquared();
             if (lengthSquared < Toolbox.Epsilon)
             {
                 //They're parallel; for the sake of continuity, pick some axis which is perpendicular to both that ISN'T the zero vector.

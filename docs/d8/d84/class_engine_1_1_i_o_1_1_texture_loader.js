@@ -9,6 +9,7 @@ var class_engine_1_1_i_o_1_1_texture_loader =
     [ "DefaultTexParameter", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a5b2adaeb9aee841f0b33e9504ba2f26c", null ],
     [ "FileToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#ac018b8c3823425c5f81bf1471bf1c89b", null ],
     [ "flattenImageData", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#acd88857f16daf0c444e56d3d20b87b6c", null ],
+    [ "LoadMaterialTextures", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#afb9663f021398ee18b7aba81fef39e19", null ],
     [ "ParameterToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#abd12ba45b1360ed880c90309d5dc454c", null ],
     [ "TexelToByteSequence", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a118c713c6308699ba8e62bd805176f6a", null ],
     [ "TextureToByteArray", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#ab39b01cbf64ad90aba0d95d0c199c173", null ],

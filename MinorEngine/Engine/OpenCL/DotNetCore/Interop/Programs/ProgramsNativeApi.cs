@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -43,8 +42,10 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
         public static extern IntPtr CreateProgramWithSource(
             [In] IntPtr context,
             [In] [MarshalAs(UnmanagedType.U4)] uint count,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] strings,
-            [In] [MarshalAs(UnmanagedType.LPArray)] uint[] lengths,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] strings,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            uint[] lengths,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
         );
 
@@ -94,8 +95,10 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
         public static extern IntPtr CreateProgramWithBinary(
             [In] IntPtr context,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] deviceList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] lengths,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] deviceList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] lengths,
             [In] IntPtr binaries,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result[] binaryStatus,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
@@ -132,7 +135,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
         public static extern IntPtr CreateProgramWithBuiltInKernels(
             [In] IntPtr context,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] deviceList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] deviceList,
             [In] [MarshalAs(UnmanagedType.LPStr)] string kernelNames,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
         );
@@ -228,7 +232,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
         public static extern Result BuildProgram(
             [In] IntPtr program,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] deviceList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] deviceList,
             [In] [MarshalAs(UnmanagedType.LPStr)] string options,
             [In] IntPtr notificationCallback,
             [In] IntPtr userData
@@ -265,10 +270,12 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
         public static extern Result CompileProgram(
             [In] IntPtr program,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] deviceList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] deviceList,
             [In] [MarshalAs(UnmanagedType.LPStr)] string options,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfInputHeaders,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] inputHeaders,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] inputHeaders,
             [Out] out IntPtr headerIncludeNames,
             [In] IntPtr notificationCallback,
             [In] IntPtr userData
@@ -310,10 +317,12 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
         public static extern IntPtr LinkProgram(
             [In] IntPtr context,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] deviceList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] deviceList,
             [In] [MarshalAs(UnmanagedType.LPStr)] string options,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfInputPrograms,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] inputPrograms,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] inputPrograms,
             [In] IntPtr notificationCallback,
             [In] IntPtr userData,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode

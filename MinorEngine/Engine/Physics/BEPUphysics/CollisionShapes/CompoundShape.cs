@@ -166,7 +166,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
                 this.shapes = new RawList<CompoundShapeEntry>(shapes);
                 //Recenter the shapes.
-                for (var i = 0; i < this.shapes.Count; i++)
+                for (int i = 0; i < this.shapes.Count; i++)
                 {
                     this.shapes.Elements[i].LocalTransform.Position -= center;
                 }
@@ -192,7 +192,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
                 this.shapes = new RawList<CompoundShapeEntry>(shapes);
                 //Recenter the shapes.
-                for (var i = 0; i < this.shapes.Count; i++)
+                for (int i = 0; i < this.shapes.Count; i++)
                 {
                     this.shapes.Elements[i].LocalTransform.Position -= center;
                 }
@@ -228,7 +228,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             center = new Vector3();
             float totalWeight = 0;
             volume = 0;
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
                 center += entries[i].LocalTransform.Position * entries[i].Weight;
                 volume += entries[i].Shape.Volume;
@@ -241,14 +241,14 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                     "Cannot compute distribution; the total weight of a compound shape must be positive.");
             }
 
-            var totalWeightInverse = 1 / totalWeight;
+            float totalWeightInverse = 1 / totalWeight;
             totalWeightInverse.Validate();
             center *= totalWeightInverse;
 
             volumeDistribution = new Matrix3x3();
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
-                var transform = entries[i].LocalTransform;
+                RigidTransform transform = entries[i].LocalTransform;
                 Matrix3x3 contribution;
                 TransformContribution(ref transform, ref center, ref entries[i].Shape.volumeDistribution,
                     entries[i].Weight, out contribution);
@@ -317,7 +317,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             RigidTransform.Multiply(ref shapes.Elements[0].LocalTransform, ref transform, out combinedTransform);
             shapes.Elements[0].Shape.GetBoundingBox(ref combinedTransform, out boundingBox);
 
-            for (var i = 0; i < shapes.Count; i++)
+            for (int i = 0; i < shapes.Count; i++)
             {
                 RigidTransform.Multiply(ref shapes.Elements[i].LocalTransform, ref transform, out combinedTransform);
                 BoundingBox childBoundingBox;

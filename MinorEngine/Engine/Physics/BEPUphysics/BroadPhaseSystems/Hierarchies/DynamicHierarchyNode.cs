@@ -182,8 +182,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                 }
                 else
                 {
-                    var opposingChildA = opposingNode.ChildA;
-                    var opposingChildB = opposingNode.ChildB;
+                    Node opposingChildA = opposingNode.ChildA;
+                    Node opposingChildB = opposingNode.ChildB;
                     //If it's not a leaf, try to go deeper in both hierarchies.
                     childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
@@ -243,7 +243,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                 //merging A produces a better result.
                 if (childA.IsLeaf)
                 {
-                    var newChildA = nodePool.Take();
+                    InternalNode newChildA = nodePool.Take();
                     newChildA.BoundingBox = mergedA;
                     newChildA.childA = childA;
                     newChildA.childB = node;
@@ -255,7 +255,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                 }
 
                 childA.BoundingBox = mergedA;
-                var internalNode = (InternalNode) childA;
+                InternalNode internalNode = (InternalNode) childA;
                 internalNode.currentVolume = mergedAVolume;
                 //internalNode.maximumVolume = internalNode.currentVolume * MaximumVolumeScale;
                 treeNode = childA;
@@ -266,7 +266,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             if (childB.IsLeaf)
             {
                 //Target is a leaf! Return.
-                var newChildB = nodePool.Take();
+                InternalNode newChildB = nodePool.Take();
                 newChildB.BoundingBox = mergedB;
                 newChildB.childA = node;
                 newChildB.childB = childB;
@@ -280,7 +280,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             {
                 childB.BoundingBox = mergedB;
                 treeNode = childB;
-                var internalNode = (InternalNode) childB;
+                InternalNode internalNode = (InternalNode) childB;
                 internalNode.currentVolume = mergedBVolume;
                 //internalNode.maximumVolume = internalNode.currentVolume * MaximumVolumeScale;
                 return false;
@@ -328,14 +328,14 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             //To retrieve the nodes, a depth-first search is used.
 
             //Given that an internal node is being revalidated, it is known that there are at least two children.
-            var oldChildA = childA;
-            var oldChildB = childB;
+            Node oldChildA = childA;
+            Node oldChildB = childB;
             childA = null;
             childB = null;
-            var leafNodes = nodeListPool.Take();
+            RawList<LeafNode> leafNodes = nodeListPool.Take();
             oldChildA.RetrieveNodes(leafNodes);
             oldChildB.RetrieveNodes(leafNodes);
-            for (var i = 0; i < leafNodes.Count; i++)
+            for (int i = 0; i < leafNodes.Count; i++)
             {
                 leafNodes.Elements[i].Refit();
             }
@@ -352,7 +352,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             //this node was the initiator of the revalidation (in which case, it was an internal node with 2+ children).
             BoundingBox.CreateMerged(ref leafNodes.Elements[begin].BoundingBox,
                 ref leafNodes.Elements[begin + 1].BoundingBox, out BoundingBox);
-            for (var i = begin + 2; i < end; i++)
+            for (int i = begin + 2; i < end; i++)
             {
                 BoundingBox.CreateMerged(ref BoundingBox, ref leafNodes.Elements[i].BoundingBox, out BoundingBox);
             }
@@ -380,12 +380,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             }
 
             //Find the median index.
-            var median = (begin + end) / 2;
+            int median = (begin + end) / 2;
 
             if (median - begin >= 2)
             {
                 //There are 2 or more leaf nodes remaining in the first half.  The next childA will be an internal node.
-                var newChildA = nodePool.Take();
+                InternalNode newChildA = nodePool.Take();
                 newChildA.Reconstruct(leafNodes, begin, median);
                 childA = newChildA;
             }
@@ -398,7 +398,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             if (end - median >= 2)
             {
                 //There are 2 or more leaf nodes remaining in the second half.  The next childB will be an internal node.
-                var newChildB = nodePool.Take();
+                InternalNode newChildB = nodePool.Take();
                 newChildB.Reconstruct(leafNodes, median, end);
                 childB = newChildB;
             }
@@ -411,8 +411,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
 
         internal override void RetrieveNodes(RawList<LeafNode> leafNodes)
         {
-            var oldChildA = childA;
-            var oldChildB = childB;
+            Node oldChildA = childA;
+            Node oldChildB = childB;
             childA = null;
             childB = null;
             nodePool.GiveBack(
@@ -515,8 +515,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                     }
                     else
                     {
-                        var opposingChildA = opposingNode.ChildA;
-                        var opposingChildB = opposingNode.ChildB;
+                        Node opposingChildA = opposingNode.ChildA;
+                        Node opposingChildB = opposingNode.ChildB;
                         //If it's not a leaf, try to go deeper in both hierarchies.
                         childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                         if (intersects)
@@ -601,8 +601,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                 }
                 else
                 {
-                    var opposingChildA = opposingNode.ChildA;
-                    var opposingChildB = opposingNode.ChildB;
+                    Node opposingChildA = opposingNode.ChildA;
+                    Node opposingChildB = opposingNode.ChildB;
                     //If it's not a leaf, try to go deeper in both hierarchies.
                     childA.BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                     if (intersects)
@@ -819,8 +819,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             }
             else
             {
-                var opposingChildA = opposingNode.ChildA;
-                var opposingChildB = opposingNode.ChildB;
+                Node opposingChildA = opposingNode.ChildA;
+                Node opposingChildB = opposingNode.ChildB;
                 //If it's not a leaf, try to go deeper in the opposing hierarchy.
                 BoundingBox.Intersects(ref opposingChildA.BoundingBox, out intersects);
                 if (intersects)
@@ -838,7 +838,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
 
         internal override bool TryToInsert(LeafNode node, out Node treeNode)
         {
-            var newTreeNode = InternalNode.nodePool.Take();
+            InternalNode newTreeNode = InternalNode.nodePool.Take();
             BoundingBox.CreateMerged(ref BoundingBox, ref node.BoundingBox, out newTreeNode.BoundingBox);
             Vector3 offset;
             Vector3.Subtract(ref newTreeNode.BoundingBox.Max, ref newTreeNode.BoundingBox.Min, out offset);
@@ -896,8 +896,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             }
             else
             {
-                var opposingChildA = opposingNode.ChildA;
-                var opposingChildB = opposingNode.ChildB;
+                Node opposingChildA = opposingNode.ChildA;
+                Node opposingChildB = opposingNode.ChildB;
                 if (splitDepth == currentDepth)
                 {
                     //Time to add the child overlaps to the multithreading set!

@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -23,26 +22,31 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         public Version(string versionString)
         {
             // Saves the version string for later reference
-            this.VersionString = versionString;
+            VersionString = versionString;
 
             // Creates a new regular expression, which is used to parse the version string
-            Regex versionStringRegularExpression = new Regex("^OpenCL (?<MajorVersion>[0-9]+)\\.(?<MinorVersion>[0-9]+) (?<PlatformSpecificInformation>.*)$");
+            Regex versionStringRegularExpression =
+                new Regex(
+                    "^OpenCL (?<MajorVersion>[0-9]+)\\.(?<MinorVersion>[0-9]+) (?<PlatformSpecificInformation>.*)$");
 
             // Parses the version string and checks if it matched successfully, if not, then an ArgumentException is thrown
-            Match match = versionStringRegularExpression.Match(this.VersionString);
+            Match match = versionStringRegularExpression.Match(VersionString);
             if (!match.Success)
-                throw new ArgumentException($"The version string \"{this.VersionString}\" is not a valid OpenCL platform version string.");
+            {
+                throw new ArgumentException(
+                    $"The version string \"{VersionString}\" is not a valid OpenCL platform version string.");
+            }
 
             // Saves the version information
-            this.MajorVersion = Convert.ToInt32(match.Groups["MajorVersion"].Value);
-            this.MinorVersion = Convert.ToInt32(match.Groups["MinorVersion"].Value);
-            this.PlatformSpecificInformation = match.Groups["PlatformSpecificInformation"].Value;
+            MajorVersion = Convert.ToInt32(match.Groups["MajorVersion"].Value);
+            MinorVersion = Convert.ToInt32(match.Groups["MinorVersion"].Value);
+            PlatformSpecificInformation = match.Groups["PlatformSpecificInformation"].Value;
         }
 
         #endregion
 
         #region Public Properties
-        
+
         /// <summary>
         /// Gets the original version string returned by the OpenCL platform, which is in the format "OpenCL[space][major_version.minor_version][space][platform-specific information]".
         /// </summary>

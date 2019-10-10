@@ -111,7 +111,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Result of the division.</param>
         public static void Divide(ref Vector2 v, float divisor, out Vector2 result)
         {
-            var inverse = 1 / divisor;
+            float inverse = 1 / divisor;
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
         }
@@ -173,7 +173,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Normalized vector.</param>
         public static void Normalize(ref Vector2 v, out Vector2 result)
         {
-            var inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y));
+            float inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y));
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
         }
@@ -283,7 +283,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            var inverse = (float) (1 / Math.Sqrt(X * X + Y * Y));
+            float inverse = (float) (1 / Math.Sqrt(X * X + Y * Y));
             X *= inverse;
             Y *= inverse;
         }

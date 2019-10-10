@@ -386,7 +386,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// <returns>Whether not the wheel is done updating for the frame.</returns>
         internal bool ApplyImpulse()
         {
-            var numActiveConstraints = 0;
+            int numActiveConstraints = 0;
             if (suspension.isActive)
             {
                 if (++suspension.solverSettings.currentIterations <= suspension.solverSettings.maximumIterationCount)
@@ -533,7 +533,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         internal void OnAddedToVehicle(Vehicle vehicle)
         {
             this.vehicle = vehicle;
-            var space = (vehicle as ISpaceUpdateable).Space;
+            Space space = (vehicle as ISpaceUpdateable).Space;
             if (space != null)
             {
                 OnAdditionToSpace(space);
@@ -545,7 +545,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
 
         internal void OnRemovedFromVehicle()
         {
-            var space = (vehicle as ISpaceUpdateable).Space;
+            Space space = (vehicle as ISpaceUpdateable).Space;
             if (space != null)
             {
                 OnRemovalFromSpace(space);

@@ -73,7 +73,7 @@ namespace Engine.Physics.BEPUik
         {
             Vector3 cross;
             Vector3.Cross(ref localLineDirection, ref Toolbox.UpVector, out cross);
-            var lengthSquared = cross.LengthSquared();
+            float lengthSquared = cross.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
                 Vector3.Divide(ref cross, (float) Math.Sqrt(lengthSquared), out localRestrictedAxis1);

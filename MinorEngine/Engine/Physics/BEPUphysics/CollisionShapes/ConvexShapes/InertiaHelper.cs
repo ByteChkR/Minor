@@ -34,9 +34,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             out Matrix3x3 contribution)
         {
             Vector3.Subtract(ref point, ref center, out point);
-            var xx = pointWeight * point.X * point.X;
-            var yy = pointWeight * point.Y * point.Y;
-            var zz = pointWeight * point.Z * point.Z;
+            float xx = pointWeight * point.X * point.X;
+            float yy = pointWeight * point.Y * point.Y;
+            float zz = pointWeight * point.Z * point.Z;
             contribution.M11 = yy + zz;
             contribution.M22 = xx + zz;
             contribution.M33 = xx + yy;
@@ -77,13 +77,13 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //int finalSize = 3 * (4 << (subdivisionCount << 1));
             //int secondToLastSize = finalSize >> 2;
 
-            var finalSize = 3 * (20 << (subdivisionCount * 2));
-            var secondToLastSize = finalSize >> 2;
+            int finalSize = 3 * (20 << (subdivisionCount * 2));
+            int secondToLastSize = finalSize >> 2;
 
 
             triangles = new int[finalSize];
             //Grabbing a RawList<int> for this purpose is a little gross. Really, just an int[] is desired.
-            var swapTriangles = new int[secondToLastSize];
+            int[] swapTriangles = new int[secondToLastSize];
 
             int[] currentTriangles, nextTriangles;
             if ((subdivisionCount & 1) == 0)
@@ -137,10 +137,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
 
             //Create the regular icosahedron vertices.
             //Vector3[] vertices = new Vector3[12];
-            var goldenRatio = (1 + (float) Math.Sqrt(5)) / 2;
-            var length = (float) Math.Sqrt(1 + goldenRatio * goldenRatio);
-            var x = 1 / length;
-            var y = goldenRatio / length;
+            float goldenRatio = (1 + (float) Math.Sqrt(5)) / 2;
+            float length = (float) Math.Sqrt(1 + goldenRatio * goldenRatio);
+            float x = 1 / length;
+            float y = goldenRatio / length;
             vertices[0] = new Vector3(0, x, y);
             vertices[1] = new Vector3(0, -x, y);
             vertices[2] = new Vector3(0, x, -y);
@@ -157,7 +157,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             vertices[11] = new Vector3(-y, 0, -x);
 
             //Just treat this array as a list.
-            var vertexCount = 12;
+            int vertexCount = 12;
 
             //The winding matters. They should be consistent so that the end result is consistent.
             //[This was generated using GetConvexHull on the above vertices, so it's known to be consistent with GetConvexHull!]
@@ -222,25 +222,27 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             currentTriangles[58] = 3;
             currentTriangles[59] = 7;
 
-            var currentTriangleIndexCount = 60;
-            var nextTriangleIndexCount = 0;
+            int currentTriangleIndexCount = 60;
+            int nextTriangleIndexCount = 0;
 
 
-            var edges = new Dictionary<TriangleMeshConvexContactManifold.Edge, int>();
+            Dictionary<TriangleMeshConvexContactManifold.Edge, int> edges =
+                new Dictionary<TriangleMeshConvexContactManifold.Edge, int>();
 
-            for (var i = 0; i < subdivisionCount; ++i)
+            for (int i = 0; i < subdivisionCount; ++i)
             {
-                for (var triangleIndex = 0; triangleIndex < currentTriangleIndexCount; triangleIndex += 3)
+                for (int triangleIndex = 0; triangleIndex < currentTriangleIndexCount; triangleIndex += 3)
                 {
                     //For each edge of this triangle, insert a new vertex if the edge hasn't already been taken care of.
-                    var aIndex = currentTriangles[triangleIndex];
-                    var bIndex = currentTriangles[triangleIndex + 1];
-                    var cIndex = currentTriangles[triangleIndex + 2];
-                    var a = vertices[aIndex];
-                    var b = vertices[bIndex];
-                    var c = vertices[cIndex];
+                    int aIndex = currentTriangles[triangleIndex];
+                    int bIndex = currentTriangles[triangleIndex + 1];
+                    int cIndex = currentTriangles[triangleIndex + 2];
+                    Vector3 a = vertices[aIndex];
+                    Vector3 b = vertices[bIndex];
+                    Vector3 c = vertices[cIndex];
                     int abMidIndex;
-                    var edge = new TriangleMeshConvexContactManifold.Edge(aIndex, bIndex);
+                    TriangleMeshConvexContactManifold.Edge edge =
+                        new TriangleMeshConvexContactManifold.Edge(aIndex, bIndex);
                     if (!edges.TryGetValue(edge, out abMidIndex))
                     {
                         //This edge hasn't yet been handled by another triangle.
@@ -310,7 +312,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 //Swap the triangle buffer references.
                 currentTriangleIndexCount = nextTriangleIndexCount;
                 nextTriangleIndexCount = 0;
-                var swap = currentTriangles;
+                int[] swap = currentTriangles;
                 currentTriangles = nextTriangles;
                 nextTriangles = swap;
             }
@@ -348,16 +350,16 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             float a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
 
             float scaledVolume = 0;
-            for (var i = 0; i < triangleIndices.Count; i += 3)
+            for (int i = 0; i < triangleIndices.Count; i += 3)
             {
-                var v2 = vertices[triangleIndices[i]];
-                var v3 = vertices[triangleIndices[i + 1]];
-                var v4 = vertices[triangleIndices[i + 2]];
+                Vector3 v2 = vertices[triangleIndices[i]];
+                Vector3 v3 = vertices[triangleIndices[i + 1]];
+                Vector3 v4 = vertices[triangleIndices[i + 2]];
 
                 //Determinant is 6 * volume.  It's signed, though; the mesh isn't necessarily convex and the origin isn't necessarily in the mesh even if it is convex.
-                var scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
-                                              v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
-                                              v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
+                float scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
+                                                v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
+                                                v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
 
                 scaledVolume += scaledTetrahedronVolume;
 
@@ -385,9 +387,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             }
 
             volume = scaledVolume / 6;
-            var scaledDensity = 1 / volume;
-            var diagonalFactor = scaledDensity / 60;
-            var offFactor = -scaledDensity / 120;
+            float scaledDensity = 1 / volume;
+            float diagonalFactor = scaledDensity / 60;
+            float offFactor = -scaledDensity / 120;
             a *= diagonalFactor;
             b *= diagonalFactor;
             c *= diagonalFactor;
@@ -419,18 +421,18 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             // [ -c' -a'  c  ]
             float a = 0, b = 0, c = 0, ao = 0, bo = 0, co = 0;
 
-            var summedCenter = new Vector3();
+            Vector3 summedCenter = new Vector3();
             float scaledVolume = 0;
-            for (var i = 0; i < triangleIndices.Count; i += 3)
+            for (int i = 0; i < triangleIndices.Count; i += 3)
             {
-                var v2 = vertices[triangleIndices[i]];
-                var v3 = vertices[triangleIndices[i + 1]];
-                var v4 = vertices[triangleIndices[i + 2]];
+                Vector3 v2 = vertices[triangleIndices[i]];
+                Vector3 v3 = vertices[triangleIndices[i + 1]];
+                Vector3 v4 = vertices[triangleIndices[i + 2]];
 
                 //Determinant is 6 * volume.  It's signed, though; the mesh isn't necessarily convex and the origin isn't necessarily in the mesh even if it is convex.
-                var scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
-                                              v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
-                                              v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
+                float scaledTetrahedronVolume = v2.X * (v3.Z * v4.Y - v3.Y * v4.Z) -
+                                                v3.X * (v2.Z * v4.Y - v2.Y * v4.Z) +
+                                                v4.X * (v2.Z * v3.Y - v2.Y * v3.Z);
 
                 scaledVolume += scaledTetrahedronVolume;
 
@@ -478,9 +480,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             {
                 Vector3.Multiply(ref summedCenter, 0.25f / scaledVolume, out center);
                 volume = scaledVolume / 6;
-                var scaledDensity = 1 / volume;
-                var diagonalFactor = scaledDensity / 60;
-                var offFactor = -scaledDensity / 120;
+                float scaledDensity = 1 / volume;
+                float diagonalFactor = scaledDensity / 60;
+                float offFactor = -scaledDensity / 120;
                 a *= diagonalFactor;
                 b *= diagonalFactor;
                 c *= diagonalFactor;
@@ -551,12 +553,12 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
 
             //While this shares a lot of math with the volume distribution computation (volume of a parallelepiped),
             //it requires that a center be available. So, it's a separate calculation.
-            var minimumDistance = float.MaxValue;
-            for (var i = 0; i < triangleIndices.Count; i += 3)
+            float minimumDistance = float.MaxValue;
+            for (int i = 0; i < triangleIndices.Count; i += 3)
             {
-                var v2 = vertices[triangleIndices[i]];
-                var v3 = vertices[triangleIndices[i + 1]];
-                var v4 = vertices[triangleIndices[i + 2]];
+                Vector3 v2 = vertices[triangleIndices[i]];
+                Vector3 v3 = vertices[triangleIndices[i + 1]];
+                Vector3 v4 = vertices[triangleIndices[i + 2]];
 
 
                 //This normal calculation creates a dependency on winding.
@@ -568,7 +570,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 Vector3.Cross(ref v2v4, ref v2v3, out normal);
 
                 //Watch out: this could very easily be a degenerate triangle; the sampling approach tends to create them.
-                var lengthSquared = normal.LengthSquared();
+                float lengthSquared = normal.LengthSquared();
                 if (lengthSquared > 1e-10f)
                 {
                     Vector3.Divide(ref normal, (float) Math.Sqrt(lengthSquared), out normal);

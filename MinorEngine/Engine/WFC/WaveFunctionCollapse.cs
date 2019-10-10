@@ -45,11 +45,11 @@ namespace Engine.WFC
         {
             Wave = new bool[Fmx * Fmy][];
             _compatible = new int[Wave.Length][][];
-            for (var i = 0; i < Wave.Length; i++)
+            for (int i = 0; i < Wave.Length; i++)
             {
                 Wave[i] = new bool[T];
                 _compatible[i] = new int[T][];
-                for (var t = 0; t < T; t++)
+                for (int t = 0; t < T; t++)
                 {
                     _compatible[i][t] = new int[4];
                 }
@@ -59,7 +59,7 @@ namespace Engine.WFC
             _sumOfWeights = 0;
             _sumOfWeightLogWeights = 0;
 
-            for (var t = 0; t < T; t++)
+            for (int t = 0; t < T; t++)
             {
                 _weightLogWeights[t] = Weights[t] * Math.Log(Weights[t]);
                 _sumOfWeights += Weights[t];
@@ -79,26 +79,26 @@ namespace Engine.WFC
 
         private bool? Observe()
         {
-            var min = 1E+3;
-            var argmin = -1;
+            double min = 1E+3;
+            int argmin = -1;
 
-            for (var i = 0; i < Wave.Length; i++)
+            for (int i = 0; i < Wave.Length; i++)
             {
                 if (OnBoundary(i % Fmx, i / Fmx))
                 {
                     continue;
                 }
 
-                var amount = _sumsOfOnes[i];
+                int amount = _sumsOfOnes[i];
                 if (amount == 0)
                 {
                     return false;
                 }
 
-                var entropy = _entropies[i];
+                double entropy = _entropies[i];
                 if (amount > 1 && entropy <= min)
                 {
-                    var noise = 1E-6 * Random.NextDouble();
+                    double noise = 1E-6 * Random.NextDouble();
                     if (entropy + noise < min)
                     {
                         min = entropy + noise;
@@ -110,8 +110,8 @@ namespace Engine.WFC
             if (argmin == -1)
             {
                 Observed = new int[Fmx * Fmy];
-                for (var i = 0; i < Wave.Length; i++)
-                for (var t = 0; t < T; t++)
+                for (int i = 0; i < Wave.Length; i++)
+                for (int t = 0; t < T; t++)
                 {
                     if (Wave[i][t])
                     {
@@ -123,16 +123,16 @@ namespace Engine.WFC
                 return true;
             }
 
-            var distribution = new double[T];
-            for (var t = 0; t < T; t++)
+            double[] distribution = new double[T];
+            for (int t = 0; t < T; t++)
             {
                 distribution[t] = Wave[argmin][t] ? Weights[t] : 0;
             }
 
-            var r = distribution.Random(Random.NextDouble());
+            int r = distribution.Random(Random.NextDouble());
 
-            var w = Wave[argmin];
-            for (var t = 0; t < T; t++)
+            bool[] w = Wave[argmin];
+            for (int t = 0; t < T; t++)
             {
                 if (w[t] != (t == r))
                 {
@@ -147,13 +147,13 @@ namespace Engine.WFC
         {
             while (_stacksize > 0)
             {
-                var e1 = _stack[_stacksize - 1];
+                (int, int) e1 = _stack[_stacksize - 1];
                 _stacksize--;
 
-                var i1 = e1.Item1;
+                int i1 = e1.Item1;
                 int x1 = i1 % Fmx, y1 = i1 / Fmx;
 
-                for (var d = 0; d < 4; d++)
+                for (int d = 0; d < 4; d++)
                 {
                     int dx = Dx[d], dy = Dy[d];
                     int x2 = x1 + dx, y2 = y1 + dy;
@@ -180,14 +180,14 @@ namespace Engine.WFC
                         y2 -= Fmy;
                     }
 
-                    var i2 = x2 + y2 * Fmx;
-                    var p = Propagator[d][e1.Item2];
-                    var compat = _compatible[i2];
+                    int i2 = x2 + y2 * Fmx;
+                    int[] p = Propagator[d][e1.Item2];
+                    int[][] compat = _compatible[i2];
 
-                    for (var l = 0; l < p.Length; l++)
+                    for (int l = 0; l < p.Length; l++)
                     {
-                        var t2 = p[l];
-                        var comp = compat[t2];
+                        int t2 = p[l];
+                        int[] comp = compat[t2];
 
                         comp[d]--;
                         if (comp[d] == 0)
@@ -215,14 +215,14 @@ namespace Engine.WFC
 
             Clear();
 
-            for (var l = 0; l < limit || limit == 0; l++)
+            for (int l = 0; l < limit || limit == 0; l++)
             {
                 if (l % 250 == 0)
                 {
                     Logger.Log("Starting Iteration: " + l, DebugChannel.Log);
                 }
 
-                var result = Observe();
+                bool? result = Observe();
                 if (result != null)
                 {
                     return (bool) result;
@@ -245,8 +245,8 @@ namespace Engine.WFC
         {
             Wave[i][t] = false;
 
-            var comp = _compatible[i][t];
-            for (var d = 0; d < 4; d++)
+            int[] comp = _compatible[i][t];
+            for (int d = 0; d < 4; d++)
             {
                 comp[d] = 0;
             }
@@ -258,18 +258,18 @@ namespace Engine.WFC
             _sumsOfWeights[i] -= Weights[t];
             _sumsOfWeightLogWeights[i] -= _weightLogWeights[t];
 
-            var sum = _sumsOfWeights[i];
+            double sum = _sumsOfWeights[i];
             _entropies[i] = Math.Log(sum) - _sumsOfWeightLogWeights[i] / sum;
         }
 
         protected virtual void Clear()
         {
-            for (var i = 0; i < Wave.Length; i++)
+            for (int i = 0; i < Wave.Length; i++)
             {
-                for (var t = 0; t < T; t++)
+                for (int t = 0; t < T; t++)
                 {
                     Wave[i][t] = true;
-                    for (var d = 0; d < 4; d++)
+                    for (int d = 0; d < 4; d++)
                     {
                         _compatible[i][t][d] = Propagator[Opposite[d]][t].Length;
                     }

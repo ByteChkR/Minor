@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -41,16 +40,18 @@ namespace Engine.OpenCL.DotNetCore.Programs
         {
             // Allocates enough memory for the return value and retrieves it
             Result result;
-            IntPtr kernelPointer = KernelsNativeApi.CreateKernel(this.Handle, kernelName, out result);
+            IntPtr kernelPointer = KernelsNativeApi.CreateKernel(Handle, kernelName, out result);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The kernel could not be created.", result);
+            }
 
             // Creates a new kernel object from the kernel pointer and returns it
             return new Kernel(kernelPointer);
         }
 
         #endregion
-        
+
         #region IDisposable Implementation
 
         /// <summary>
@@ -60,8 +61,10 @@ namespace Engine.OpenCL.DotNetCore.Programs
         protected override void Dispose(bool disposing)
         {
             // Checks if the program has already been disposed of, if not, then the program is disposed of
-            if (!this.IsDisposed)
-                ProgramsNativeApi.ReleaseProgram(this.Handle);
+            if (!IsDisposed)
+            {
+                ProgramsNativeApi.ReleaseProgram(Handle);
+            }
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);

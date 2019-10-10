@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUutilities.DataStructures;
 
 namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -51,11 +52,11 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void UpdateContainedPairs()
         {
-            var overlappedElements = PhysicsResources.GetCollidableList();
+            RawList<Collidable> overlappedElements = PhysicsResources.GetCollidableList();
             staticGroup.Shape.CollidableTree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
-                var staticCollidable = overlappedElements.Elements[i] as StaticCollidable;
+                StaticCollidable staticCollidable = overlappedElements.Elements[i] as StaticCollidable;
                 TryToAdd(overlappedElements.Elements[i], mesh,
                     staticCollidable != null ? staticCollidable.Material : staticGroup.Material);
             }

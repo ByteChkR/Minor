@@ -159,7 +159,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = M31;
                 vector.Y = M32;
                 vector.Z = M33;
@@ -180,7 +180,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = -M21;
                 vector.Y = -M22;
                 vector.Z = -M23;
@@ -201,7 +201,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = -M31;
                 vector.Y = -M32;
                 vector.Z = -M33;
@@ -222,7 +222,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = -M11;
                 vector.Y = -M12;
                 vector.Z = -M13;
@@ -243,7 +243,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = M11;
                 vector.Y = M12;
                 vector.Z = M13;
@@ -264,7 +264,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = M21;
                 vector.Y = M22;
                 vector.Z = M23;
@@ -286,12 +286,12 @@ namespace Engine.Physics.BEPUutilities
         public float Determinant()
         {
             //Compute the re-used 2x2 determinants.
-            var det1 = M33 * M44 - M34 * M43;
-            var det2 = M32 * M44 - M34 * M42;
-            var det3 = M32 * M43 - M33 * M42;
-            var det4 = M31 * M44 - M34 * M41;
-            var det5 = M31 * M43 - M33 * M41;
-            var det6 = M31 * M42 - M32 * M41;
+            float det1 = M33 * M44 - M34 * M43;
+            float det2 = M32 * M44 - M34 * M42;
+            float det3 = M32 * M43 - M33 * M42;
+            float det4 = M31 * M44 - M34 * M41;
+            float det5 = M31 * M43 - M33 * M41;
+            float det6 = M31 * M42 - M32 * M41;
             return
                 M11 * (M22 * det1 - M23 * det2 + M24 * det3) -
                 M12 * (M21 * det1 - M23 * det4 + M24 * det5) +
@@ -304,7 +304,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Transpose()
         {
-            var intermediate = M12;
+            float intermediate = M12;
             M12 = M21;
             M21 = intermediate;
 
@@ -350,15 +350,15 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Matrix created from the axis and angle.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Matrix result)
         {
-            var xx = axis.X * axis.X;
-            var yy = axis.Y * axis.Y;
-            var zz = axis.Z * axis.Z;
-            var xy = axis.X * axis.Y;
-            var xz = axis.X * axis.Z;
-            var yz = axis.Y * axis.Z;
+            float xx = axis.X * axis.X;
+            float yy = axis.Y * axis.Y;
+            float zz = axis.Z * axis.Z;
+            float xy = axis.X * axis.Y;
+            float xz = axis.X * axis.Z;
+            float yz = axis.Y * axis.Z;
 
-            var sinAngle = (float) Math.Sin(angle);
-            var oneMinusCosAngle = 1 - (float) Math.Cos(angle);
+            float sinAngle = (float) Math.Sin(angle);
+            float oneMinusCosAngle = 1 - (float) Math.Cos(angle);
 
             result.M11 = 1 + oneMinusCosAngle * (xx - 1);
             result.M21 = -axis.Z * sinAngle + oneMinusCosAngle * xy;
@@ -388,18 +388,18 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Rotation matrix created from the quaternion.</param>
         public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix result)
         {
-            var qX2 = quaternion.X + quaternion.X;
-            var qY2 = quaternion.Y + quaternion.Y;
-            var qZ2 = quaternion.Z + quaternion.Z;
-            var XX = qX2 * quaternion.X;
-            var YY = qY2 * quaternion.Y;
-            var ZZ = qZ2 * quaternion.Z;
-            var XY = qX2 * quaternion.Y;
-            var XZ = qX2 * quaternion.Z;
-            var XW = qX2 * quaternion.W;
-            var YZ = qY2 * quaternion.Z;
-            var YW = qY2 * quaternion.W;
-            var ZW = qZ2 * quaternion.W;
+            float qX2 = quaternion.X + quaternion.X;
+            float qY2 = quaternion.Y + quaternion.Y;
+            float qZ2 = quaternion.Z + quaternion.Z;
+            float XX = qX2 * quaternion.X;
+            float YY = qY2 * quaternion.Y;
+            float ZZ = qZ2 * quaternion.Z;
+            float XY = qX2 * quaternion.Y;
+            float XZ = qX2 * quaternion.Z;
+            float XW = qX2 * quaternion.W;
+            float YZ = qY2 * quaternion.Z;
+            float YW = qY2 * quaternion.W;
+            float ZW = qZ2 * quaternion.W;
 
             result.M11 = 1 - YY - ZZ;
             result.M21 = XY - ZW;
@@ -442,25 +442,25 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Combined transformation.</param>
         public static void Multiply(ref Matrix a, ref Matrix b, out Matrix result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31 + a.M14 * b.M41;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32 + a.M14 * b.M42;
-            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33 + a.M14 * b.M43;
-            var resultM14 = a.M11 * b.M14 + a.M12 * b.M24 + a.M13 * b.M34 + a.M14 * b.M44;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31 + a.M14 * b.M41;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32 + a.M14 * b.M42;
+            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33 + a.M14 * b.M43;
+            float resultM14 = a.M11 * b.M14 + a.M12 * b.M24 + a.M13 * b.M34 + a.M14 * b.M44;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31 + a.M24 * b.M41;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32 + a.M24 * b.M42;
-            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33 + a.M24 * b.M43;
-            var resultM24 = a.M21 * b.M14 + a.M22 * b.M24 + a.M23 * b.M34 + a.M24 * b.M44;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31 + a.M24 * b.M41;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32 + a.M24 * b.M42;
+            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33 + a.M24 * b.M43;
+            float resultM24 = a.M21 * b.M14 + a.M22 * b.M24 + a.M23 * b.M34 + a.M24 * b.M44;
 
-            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31 + a.M34 * b.M41;
-            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32 + a.M34 * b.M42;
-            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33 + a.M34 * b.M43;
-            var resultM34 = a.M31 * b.M14 + a.M32 * b.M24 + a.M33 * b.M34 + a.M34 * b.M44;
+            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31 + a.M34 * b.M41;
+            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32 + a.M34 * b.M42;
+            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33 + a.M34 * b.M43;
+            float resultM34 = a.M31 * b.M14 + a.M32 * b.M24 + a.M33 * b.M34 + a.M34 * b.M44;
 
-            var resultM41 = a.M41 * b.M11 + a.M42 * b.M21 + a.M43 * b.M31 + a.M44 * b.M41;
-            var resultM42 = a.M41 * b.M12 + a.M42 * b.M22 + a.M43 * b.M32 + a.M44 * b.M42;
-            var resultM43 = a.M41 * b.M13 + a.M42 * b.M23 + a.M43 * b.M33 + a.M44 * b.M43;
-            var resultM44 = a.M41 * b.M14 + a.M42 * b.M24 + a.M43 * b.M34 + a.M44 * b.M44;
+            float resultM41 = a.M41 * b.M11 + a.M42 * b.M21 + a.M43 * b.M31 + a.M44 * b.M41;
+            float resultM42 = a.M41 * b.M12 + a.M42 * b.M22 + a.M43 * b.M32 + a.M44 * b.M42;
+            float resultM43 = a.M41 * b.M13 + a.M42 * b.M23 + a.M43 * b.M33 + a.M44 * b.M43;
+            float resultM44 = a.M41 * b.M14 + a.M42 * b.M24 + a.M43 * b.M34 + a.M44 * b.M44;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -574,10 +574,10 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transformed vector.</param>
         public static void Transform(ref Vector4 v, ref Matrix matrix, out Vector4 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
-            var vW = v.W;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
+            float vW = v.W;
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31 + vW * matrix.M41;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32 + vW * matrix.M42;
             result.Z = vX * matrix.M13 + vY * matrix.M23 + vZ * matrix.M33 + vW * matrix.M43;
@@ -605,10 +605,10 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transformed vector.</param>
         public static void TransformTranspose(ref Vector4 v, ref Matrix matrix, out Vector4 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
-            var vW = v.W;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
+            float vW = v.W;
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13 + vW * matrix.M14;
             result.Y = vX * matrix.M21 + vY * matrix.M22 + vZ * matrix.M23 + vW * matrix.M24;
             result.Z = vX * matrix.M31 + vY * matrix.M32 + vZ * matrix.M33 + vW * matrix.M34;
@@ -690,9 +690,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transformed vector.</param>
         public static void Transform(ref Vector3 v, ref Matrix matrix, out Vector3 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31 + matrix.M41;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32 + matrix.M42;
             result.Z = vX * matrix.M13 + vY * matrix.M23 + vZ * matrix.M33 + matrix.M43;
@@ -706,9 +706,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transformed vector.</param>
         public static void TransformTranspose(ref Vector3 v, ref Matrix matrix, out Vector3 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13 + matrix.M14;
             result.Y = vX * matrix.M21 + vY * matrix.M22 + vZ * matrix.M23 + matrix.M24;
             result.Z = vX * matrix.M31 + vY * matrix.M32 + vZ * matrix.M33 + matrix.M34;
@@ -722,9 +722,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transformed vector.</param>
         public static void TransformNormal(ref Vector3 v, ref Matrix matrix, out Vector3 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32;
             result.Z = vX * matrix.M13 + vY * matrix.M23 + vZ * matrix.M33;
@@ -751,9 +751,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transformed vector.</param>
         public static void TransformNormalTranspose(ref Vector3 v, ref Matrix matrix, out Vector3 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13;
             result.Y = vX * matrix.M21 + vY * matrix.M22 + vZ * matrix.M23;
             result.Z = vX * matrix.M31 + vY * matrix.M32 + vZ * matrix.M33;
@@ -780,7 +780,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="transposed">Matrix to transpose.</param>
         public static void Transpose(ref Matrix m, out Matrix transposed)
         {
-            var intermediate = m.M12;
+            float intermediate = m.M12;
             transposed.M12 = m.M21;
             transposed.M21 = intermediate;
 
@@ -817,35 +817,35 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="inverted">Inverted version of the matrix.</param>
         public static void Invert(ref Matrix m, out Matrix inverted)
         {
-            var s0 = m.M11 * m.M22 - m.M21 * m.M12;
-            var s1 = m.M11 * m.M23 - m.M21 * m.M13;
-            var s2 = m.M11 * m.M24 - m.M21 * m.M14;
-            var s3 = m.M12 * m.M23 - m.M22 * m.M13;
-            var s4 = m.M12 * m.M24 - m.M22 * m.M14;
-            var s5 = m.M13 * m.M24 - m.M23 * m.M14;
+            float s0 = m.M11 * m.M22 - m.M21 * m.M12;
+            float s1 = m.M11 * m.M23 - m.M21 * m.M13;
+            float s2 = m.M11 * m.M24 - m.M21 * m.M14;
+            float s3 = m.M12 * m.M23 - m.M22 * m.M13;
+            float s4 = m.M12 * m.M24 - m.M22 * m.M14;
+            float s5 = m.M13 * m.M24 - m.M23 * m.M14;
 
-            var c5 = m.M33 * m.M44 - m.M43 * m.M34;
-            var c4 = m.M32 * m.M44 - m.M42 * m.M34;
-            var c3 = m.M32 * m.M43 - m.M42 * m.M33;
-            var c2 = m.M31 * m.M44 - m.M41 * m.M34;
-            var c1 = m.M31 * m.M43 - m.M41 * m.M33;
-            var c0 = m.M31 * m.M42 - m.M41 * m.M32;
+            float c5 = m.M33 * m.M44 - m.M43 * m.M34;
+            float c4 = m.M32 * m.M44 - m.M42 * m.M34;
+            float c3 = m.M32 * m.M43 - m.M42 * m.M33;
+            float c2 = m.M31 * m.M44 - m.M41 * m.M34;
+            float c1 = m.M31 * m.M43 - m.M41 * m.M33;
+            float c0 = m.M31 * m.M42 - m.M41 * m.M32;
 
-            var inverseDeterminant = 1.0f / (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
+            float inverseDeterminant = 1.0f / (s0 * c5 - s1 * c4 + s2 * c3 + s3 * c2 - s4 * c1 + s5 * c0);
 
-            var m11 = m.M11;
-            var m12 = m.M12;
-            var m13 = m.M13;
-            var m14 = m.M14;
-            var m21 = m.M21;
-            var m22 = m.M22;
-            var m23 = m.M23;
-            var m31 = m.M31;
-            var m32 = m.M32;
-            var m33 = m.M33;
+            float m11 = m.M11;
+            float m12 = m.M12;
+            float m13 = m.M13;
+            float m14 = m.M14;
+            float m21 = m.M21;
+            float m22 = m.M22;
+            float m23 = m.M23;
+            float m31 = m.M31;
+            float m32 = m.M32;
+            float m33 = m.M33;
 
-            var m41 = m.M41;
-            var m42 = m.M42;
+            float m41 = m.M41;
+            float m42 = m.M42;
 
             inverted.M11 = (m.M22 * c5 - m.M23 * c4 + m.M24 * c3) * inverseDeterminant;
             inverted.M12 = (-m.M12 * c5 + m.M13 * c4 - m.M14 * c3) * inverseDeterminant;
@@ -891,21 +891,21 @@ namespace Engine.Physics.BEPUutilities
             //Invert the upper left 3x3 linear transform.
 
             //Compute the upper left 3x3 determinant. Some potential for microoptimization here.
-            var determinantInverse = 1 /
-                                     (m.M11 * m.M22 * m.M33 + m.M12 * m.M23 * m.M31 + m.M13 * m.M21 * m.M32 -
-                                      m.M31 * m.M22 * m.M13 - m.M32 * m.M23 * m.M11 - m.M33 * m.M21 * m.M12);
+            float determinantInverse = 1 /
+                                       (m.M11 * m.M22 * m.M33 + m.M12 * m.M23 * m.M31 + m.M13 * m.M21 * m.M32 -
+                                        m.M31 * m.M22 * m.M13 - m.M32 * m.M23 * m.M11 - m.M33 * m.M21 * m.M12);
 
-            var m11 = (m.M22 * m.M33 - m.M23 * m.M32) * determinantInverse;
-            var m12 = (m.M13 * m.M32 - m.M33 * m.M12) * determinantInverse;
-            var m13 = (m.M12 * m.M23 - m.M22 * m.M13) * determinantInverse;
+            float m11 = (m.M22 * m.M33 - m.M23 * m.M32) * determinantInverse;
+            float m12 = (m.M13 * m.M32 - m.M33 * m.M12) * determinantInverse;
+            float m13 = (m.M12 * m.M23 - m.M22 * m.M13) * determinantInverse;
 
-            var m21 = (m.M23 * m.M31 - m.M21 * m.M33) * determinantInverse;
-            var m22 = (m.M11 * m.M33 - m.M13 * m.M31) * determinantInverse;
-            var m23 = (m.M13 * m.M21 - m.M11 * m.M23) * determinantInverse;
+            float m21 = (m.M23 * m.M31 - m.M21 * m.M33) * determinantInverse;
+            float m22 = (m.M11 * m.M33 - m.M13 * m.M31) * determinantInverse;
+            float m23 = (m.M13 * m.M21 - m.M11 * m.M23) * determinantInverse;
 
-            var m31 = (m.M21 * m.M32 - m.M22 * m.M31) * determinantInverse;
-            var m32 = (m.M12 * m.M31 - m.M11 * m.M32) * determinantInverse;
-            var m33 = (m.M11 * m.M22 - m.M12 * m.M21) * determinantInverse;
+            float m31 = (m.M21 * m.M32 - m.M22 * m.M31) * determinantInverse;
+            float m32 = (m.M12 * m.M31 - m.M11 * m.M32) * determinantInverse;
+            float m33 = (m.M11 * m.M22 - m.M12 * m.M21) * determinantInverse;
 
             inverted.M11 = m11;
             inverted.M12 = m12;
@@ -920,9 +920,9 @@ namespace Engine.Physics.BEPUutilities
             inverted.M33 = m33;
 
             //Translation component
-            var vX = m.M41;
-            var vY = m.M42;
-            var vZ = m.M43;
+            float vX = m.M41;
+            float vY = m.M42;
+            float vZ = m.M43;
             inverted.M41 = -(vX * inverted.M11 + vY * inverted.M21 + vZ * inverted.M31);
             inverted.M42 = -(vX * inverted.M12 + vY * inverted.M22 + vZ * inverted.M32);
             inverted.M43 = -(vX * inverted.M13 + vY * inverted.M23 + vZ * inverted.M33);
@@ -955,7 +955,7 @@ namespace Engine.Physics.BEPUutilities
         public static void InvertRigid(ref Matrix m, out Matrix inverted)
         {
             //Invert (transpose) the upper left 3x3 rotation.
-            var intermediate = m.M12;
+            float intermediate = m.M12;
             inverted.M12 = m.M21;
             inverted.M21 = intermediate;
 
@@ -972,9 +972,9 @@ namespace Engine.Physics.BEPUutilities
             inverted.M33 = m.M33;
 
             //Translation component
-            var vX = m.M41;
-            var vY = m.M42;
-            var vZ = m.M43;
+            float vX = m.M41;
+            float vY = m.M42;
+            float vZ = m.M43;
             inverted.M41 = -(vX * inverted.M11 + vY * inverted.M21 + vZ * inverted.M31);
             inverted.M42 = -(vX * inverted.M12 + vY * inverted.M22 + vZ * inverted.M32);
             inverted.M43 = -(vX * inverted.M13 + vY * inverted.M23 + vZ * inverted.M33);
@@ -1042,9 +1042,9 @@ namespace Engine.Physics.BEPUutilities
         public static void CreateOrthographicRH(float left, float right, float bottom, float top, float zNear,
             float zFar, out Matrix projection)
         {
-            var width = right - left;
-            var height = top - bottom;
-            var depth = zFar - zNear;
+            float width = right - left;
+            float height = top - bottom;
+            float depth = zFar - zNear;
             projection.M11 = 2f / width;
             projection.M12 = 0;
             projection.M13 = 0;
@@ -1077,8 +1077,8 @@ namespace Engine.Physics.BEPUutilities
         public static void CreatePerspectiveFieldOfViewRH(float fieldOfView, float aspectRatio, float nearClip,
             float farClip, out Matrix perspective)
         {
-            var h = 1f / (float) Math.Tan(fieldOfView * 0.5f);
-            var w = h / aspectRatio;
+            float h = 1f / (float) Math.Tan(fieldOfView * 0.5f);
+            float w = h / aspectRatio;
             perspective.M11 = w;
             perspective.M12 = 0;
             perspective.M13 = 0;
@@ -1159,7 +1159,7 @@ namespace Engine.Physics.BEPUutilities
             out Matrix viewMatrix)
         {
             Vector3 z;
-            var length = forward.Length();
+            float length = forward.Length();
             Vector3.Divide(ref forward, -length, out z);
             Vector3 x;
             Vector3.Cross(ref upVector, ref z, out x);
@@ -1214,7 +1214,7 @@ namespace Engine.Physics.BEPUutilities
             out Matrix worldMatrix)
         {
             Vector3 z;
-            var length = forward.Length();
+            float length = forward.Length();
             Vector3.Divide(ref forward, -length, out z);
             Vector3 x;
             Vector3.Cross(ref upVector, ref z, out x);

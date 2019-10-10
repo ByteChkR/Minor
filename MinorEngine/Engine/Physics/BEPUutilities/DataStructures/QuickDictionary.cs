@@ -120,10 +120,10 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         private void Resize(int newObjectPoolIndex, int newTablePoolIndex)
         {
             //Just double the size of the set.
-            var oldSet = this;
+            QuickDictionary<TKey, TValue> oldSet = this;
             this = new QuickDictionary<TKey, TValue>(keyPool, valuePool, tablePool, newObjectPoolIndex,
                 newTablePoolIndex - newObjectPoolIndex);
-            for (var i = oldSet.Count - 1; i >= 0; --i)
+            for (int i = oldSet.Count - 1; i >= 0; --i)
             {
                 Add(oldSet.Keys[i], oldSet.Values[i]);
             }
@@ -306,19 +306,19 @@ namespace Engine.Physics.BEPUutilities.DataStructures
                 //Removals seek to fill the gap they create by searching clockwise to find items which can be moved backward.
                 //Search clockwise for an item to fill this slot. The search must continue until a gap is found.
                 int moveCandidateIndex;
-                var gapIndex = tableIndex;
+                int gapIndex = tableIndex;
                 //Search clockwise.
                 while ((moveCandidateIndex = table[tableIndex = (tableIndex + 1) & tableMask]) > 0)
                 {
                     //This slot contains something. What is its actual index?
                     --moveCandidateIndex;
-                    var desiredIndex = Keys[moveCandidateIndex].GetHashCode() & tableMask;
+                    int desiredIndex = Keys[moveCandidateIndex].GetHashCode() & tableMask;
 
                     //Would this element be closer to its actual index if it was moved to the gap?
                     //To find out, compute the clockwise distance from the gap and the clockwise distance from the ideal location.
 
-                    var distanceFromGap = (tableIndex - gapIndex) & tableMask;
-                    var distanceFromIdeal = (tableIndex - desiredIndex) & tableMask;
+                    int distanceFromGap = (tableIndex - gapIndex) & tableMask;
+                    int distanceFromIdeal = (tableIndex - desiredIndex) & tableMask;
                     if (distanceFromGap <= distanceFromIdeal)
                     {
                         //The distance to the gap is less than or equal the distance to the ideal location, so just move to the gap.
@@ -358,7 +358,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public void Compact()
         {
             Validate();
-            var minimumRequiredPoolIndex = BufferPool<TKey>.GetPoolIndex(Count);
+            int minimumRequiredPoolIndex = BufferPool<TKey>.GetPoolIndex(Count);
             if (minimumRequiredPoolIndex != pairPoolIndex)
             {
                 Resize(minimumRequiredPoolIndex, minimumRequiredPoolIndex + (tablePoolIndex - pairPoolIndex));

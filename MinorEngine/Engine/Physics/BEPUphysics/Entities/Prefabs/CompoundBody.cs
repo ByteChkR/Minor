@@ -26,7 +26,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public CompoundBody(IList<CompoundShapeEntry> bodies)
         {
             Vector3 center;
-            var shape = new CompoundShape(bodies, out center);
+            CompoundShape shape = new CompoundShape(bodies, out center);
             Initialize(new CompoundCollidable(shape));
             Position = center;
         }
@@ -41,7 +41,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public CompoundBody(IList<CompoundShapeEntry> bodies, float mass)
         {
             Vector3 center;
-            var shape = new CompoundShape(bodies, out center);
+            CompoundShape shape = new CompoundShape(bodies, out center);
             Initialize(new CompoundCollidable(shape), mass);
             Position = center;
         }
@@ -54,7 +54,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public CompoundBody(IList<CompoundChildData> children)
         {
             Vector3 center;
-            var collidable = new CompoundCollidable(children, out center);
+            CompoundCollidable collidable = new CompoundCollidable(children, out center);
             Initialize(collidable);
             Position = center;
         }
@@ -67,7 +67,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public CompoundBody(IList<CompoundChildData> children, float mass)
         {
             Vector3 center;
-            var collidable = new CompoundCollidable(children, out center);
+            CompoundCollidable collidable = new CompoundCollidable(children, out center);
             Initialize(collidable, mass);
             Position = center;
         }

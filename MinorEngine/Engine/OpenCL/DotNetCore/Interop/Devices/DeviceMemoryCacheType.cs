@@ -1,4 +1,3 @@
-
 namespace Engine.OpenCL.DotNetCore.Interop.Devices
 {
     /// <summary>

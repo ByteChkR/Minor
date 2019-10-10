@@ -171,7 +171,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         {
             get
             {
-                var lambda = new Vector2();
+                Vector2 lambda = new Vector2();
                 Vector3 dv;
                 Vector3 aVel, bVel;
                 Vector3.Cross(ref connectionA.angularVelocity, ref rA, out aVel);
@@ -298,8 +298,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             //P = JT * lambda
 
             #endregion
-            
-            var lambda = new Vector2();
+
+            Vector2 lambda = new Vector2();
             //float va1, va2, wa1, wa2, vb1, vb2, wb1, wb2;
             //Vector3.Dot(ref worldAxis1, ref myParentA.myInternalLinearVelocity, out va1);
             //Vector3.Dot(ref worldAxis2, ref myParentA.myInternalLinearVelocity, out va2);
@@ -332,11 +332,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
 
             Vector2.Add(ref lambda, ref accumulatedImpulse, out accumulatedImpulse);
 
-            var x = lambda.X;
-            var y = lambda.Y;
+            float x = lambda.X;
+            float y = lambda.Y;
             //Apply impulse
-            var impulse = new Vector3();
-            var torque = new Vector3();
+            Vector3 impulse = new Vector3();
+            Vector3 torque = new Vector3();
             impulse.X = worldRestrictedAxis1.X * x + worldRestrictedAxis2.X * y;
             impulse.Y = worldRestrictedAxis1.Y * x + worldRestrictedAxis2.Y * y;
             impulse.Z = worldRestrictedAxis1.Z * x + worldRestrictedAxis2.Z * y;
@@ -404,17 +404,17 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
 
             float errorReduction;
             springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction, out softness);
-            var bias = -errorReduction;
+            float bias = -errorReduction;
 
 
             biasVelocity.X = bias * error.X;
             biasVelocity.Y = bias * error.Y;
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            var length = biasVelocity.LengthSquared();
+            float length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                var multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                float multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
             }
@@ -475,10 +475,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         public override void ExclusiveUpdate()
         {
             //Warm starting
-            var impulse = new Vector3();
-            var torque = new Vector3();
-            var x = accumulatedImpulse.X;
-            var y = accumulatedImpulse.Y;
+            Vector3 impulse = new Vector3();
+            Vector3 torque = new Vector3();
+            float x = accumulatedImpulse.X;
+            float y = accumulatedImpulse.Y;
             impulse.X = worldRestrictedAxis1.X * x + worldRestrictedAxis2.X * y;
             impulse.Y = worldRestrictedAxis1.Y * x + worldRestrictedAxis2.Y * y;
             impulse.Z = worldRestrictedAxis1.Z * x + worldRestrictedAxis2.Z * y;

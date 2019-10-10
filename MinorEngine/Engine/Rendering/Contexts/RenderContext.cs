@@ -3,7 +3,6 @@ using OpenTK;
 
 namespace Engine.Rendering.Contexts
 {
-
     /// <summary>
     /// Defines a Render Context.
     /// </summary>
@@ -46,7 +45,7 @@ namespace Engine.Rendering.Contexts
             {
                 if (WorldSpace && other.WorldSpace)
                 {
-                    var d = MVPosition.LengthSquared - other.MVPosition.LengthSquared;
+                    float d = MVPosition.LengthSquared - other.MVPosition.LengthSquared;
                     if (d > 0)
                     {
                         return 1;
@@ -67,7 +66,7 @@ namespace Engine.Rendering.Contexts
 
                 //If !WorldSpace && !other.WorldSpace
 
-                var ret = RenderQueue.CompareTo(other.RenderQueue);
+                int ret = RenderQueue.CompareTo(other.RenderQueue);
                 return ret;
             }
 
@@ -106,7 +105,7 @@ namespace Engine.Rendering.Contexts
         /// Cached version of the ModelView Matrix(is used for ordered rendering
         /// </summary>
         public Matrix4 MV { get; private set; }
-         
+
         /// <summary>
         /// The position of the Object in ModelView Space
         /// </summary>

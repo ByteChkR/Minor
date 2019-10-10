@@ -28,6 +28,7 @@ namespace Engine.UI
         /// The VBO of the Quad used to draw each character
         /// </summary>
         protected static int _vbo;
+
         /// <summary>
         /// The VAO of the Quad used to draw each character
         /// </summary>
@@ -97,8 +98,8 @@ namespace Engine.UI
                 SetUpTextResources();
             }
 
-            var scrW = GameEngine.Instance.Width;
-            var scrH = GameEngine.Instance.Height;
+            int scrW = GameEngine.Instance.Width;
+            int scrH = GameEngine.Instance.Height;
 
             //GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.Blend);
@@ -106,8 +107,8 @@ namespace Engine.UI
             Program.Use();
 
 
-            var trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
-            var m = trmat;
+            Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
+            Matrix4 m = trmat;
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref m);
 
@@ -116,13 +117,13 @@ namespace Engine.UI
             GL.Uniform1(Program.GetUniformLocation("sourceTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindVertexArray(_vao);
-            var x = Position.X;
-            var y = Position.Y;
-            for (var i = 0; i < DisplayText.Length; i++)
+            float x = Position.X;
+            float y = Position.Y;
+            for (int i = 0; i < DisplayText.Length; i++)
             {
                 if (DisplayText[i] == '\n')
                 {
-                    var fm = FontFace.Metrics;
+                    FaceMetrics fm = FontFace.Metrics;
                     x = Position.X;
                     y -= fm.LineHeight / scrH * Scale.Y;
                     continue;
@@ -131,25 +132,25 @@ namespace Engine.UI
 
                 if (DisplayText[i] == '\t')
                 {
-                    var len = x - Position.X;
-                    var count = TabToSpaceCount - len % TabToSpaceCount;
-                    var val = count;
+                    float len = x - Position.X;
+                    float count = TabToSpaceCount - len % TabToSpaceCount;
+                    float val = count;
                     x += val;
                     continue;
                 }
                 //x-pos.x
 
 
-                if (!FontFace.TryGetCharacter(DisplayText[i], out var chr))
+                if (!FontFace.TryGetCharacter(DisplayText[i], out TextCharacter chr))
                 {
                     FontFace.TryGetCharacter('?', out chr);
                 }
 
-                var xpos = x + chr.BearingX / scrW * Scale.X;
-                var ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
+                float xpos = x + chr.BearingX / scrW * Scale.X;
+                float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                var w = chr.Width / (float) scrW * Scale.X;
-                var h = chr.Height / (float) scrH * Scale.Y;
+                float w = chr.Width / (float) scrW * Scale.X;
+                float h = chr.Height / (float) scrH * Scale.Y;
 
                 //Remove Scale And initial position(start at (x,y) = 0)
                 //Add Translation to Make text be centered at origin(-TotalTextWidth/2,-TotalTextHeight/2)

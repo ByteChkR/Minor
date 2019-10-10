@@ -62,9 +62,9 @@ namespace Engine.Physics.BEPUik
 
         private void ComputeConstrainedAxes()
         {
-            var worldAxisA = WorldFreeAxisA;
-            var error = Vector3.Cross(worldAxisA, WorldFreeAxisB);
-            var lengthSquared = error.LengthSquared();
+            Vector3 worldAxisA = WorldFreeAxisA;
+            Vector3 error = Vector3.Cross(worldAxisA, WorldFreeAxisB);
+            float lengthSquared = error.LengthSquared();
             Vector3 worldConstrainedAxis1, worldConstrainedAxis2;
             //Find the first constrained axis.
             if (lengthSquared > Toolbox.Epsilon)

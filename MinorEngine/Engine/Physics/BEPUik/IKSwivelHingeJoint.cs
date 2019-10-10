@@ -66,7 +66,7 @@ namespace Engine.Physics.BEPUik
             Vector3 restrictedAxis;
             Vector3.Cross(ref worldHingeAxis, ref worldTwistAxis, out restrictedAxis);
             //Attempt to normalize the restricted axis.
-            var lengthSquared = restrictedAxis.LengthSquared();
+            float lengthSquared = restrictedAxis.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
                 Vector3.Divide(ref restrictedAxis, (float) Math.Sqrt(lengthSquared), out restrictedAxis);

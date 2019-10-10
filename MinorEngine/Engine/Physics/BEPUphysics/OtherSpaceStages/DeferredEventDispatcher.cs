@@ -96,7 +96,7 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
 
         protected override void UpdateStage()
         {
-            for (var i = activeEventCreators.Count - 1; i >= 0; i--)
+            for (int i = activeEventCreators.Count - 1; i >= 0; i--)
             {
                 activeEventCreators[i].DispatchEvents();
                 // Since it can attempt to remove or add any number of creators during the handler, all we can do is make sure 

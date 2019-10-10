@@ -53,7 +53,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             //TODO: Triangle meshes have a worldspace hierarchy that could be more efficiently traversed with a tree vs tree test.
             //This is just a lot simpler to manage in the short term.
 
-            for (var i = 0; i < compound.children.Count; i++)
+            for (int i = 0; i < compound.children.Count; i++)
             {
                 TryToAdd(compound.children.Elements[i].CollisionInformation);
             }

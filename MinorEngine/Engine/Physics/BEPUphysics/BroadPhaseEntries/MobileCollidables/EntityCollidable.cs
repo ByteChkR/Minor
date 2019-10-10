@@ -175,8 +175,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
             //Expand bounding box with velocity.
             if (dt > 0)
             {
-                var useExtraExpansion = MotionSettings.UseExtraExpansionForContinuousBoundingBoxes &&
-                                        entity.PositionUpdateMode == PositionUpdateMode.Continuous;
+                bool useExtraExpansion = MotionSettings.UseExtraExpansionForContinuousBoundingBoxes &&
+                                         entity.PositionUpdateMode == PositionUpdateMode.Continuous;
                 float velocityScaling = useExtraExpansion ? 2 : 1;
                 if (entity.linearVelocity.X > 0)
                 {
@@ -214,9 +214,9 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
                     //it way out of its bounding box.  By taking into account high velocity objects
                     //in danger of hitting us and expanding our own bounding box by their speed,
                     //we stand a much better chance of not missing secondary collisions.
-                    foreach (var e in OverlappedEntities)
+                    foreach (Entity e in OverlappedEntities)
                     {
-                        var velocity = e.linearVelocity.LengthSquared();
+                        float velocity = e.linearVelocity.LengthSquared();
                         if (velocity > expansion)
                         {
                             expansion = velocity;

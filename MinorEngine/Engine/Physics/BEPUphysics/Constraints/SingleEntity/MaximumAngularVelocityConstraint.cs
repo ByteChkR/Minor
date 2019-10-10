@@ -106,7 +106,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public override float SolveIteration()
         {
-            var angularSpeed = entity.angularVelocity.LengthSquared();
+            float angularSpeed = entity.angularVelocity.LengthSquared();
             if (angularSpeed > maximumSpeedSquared)
             {
                 angularSpeed = (float) Math.Sqrt(angularSpeed);
@@ -126,13 +126,13 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
 
 
                 //Accumulate
-                var previousAccumulatedImpulse = accumulatedImpulse;
+                Vector3 previousAccumulatedImpulse = accumulatedImpulse;
                 Vector3.Add(ref accumulatedImpulse, ref impulse, out accumulatedImpulse);
-                var forceMagnitude = accumulatedImpulse.LengthSquared();
+                float forceMagnitude = accumulatedImpulse.LengthSquared();
                 if (forceMagnitude > maxForceDtSquared)
                 {
                     //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                    var multiplier = maxForceDt / (float) Math.Sqrt(forceMagnitude);
+                    float multiplier = maxForceDt / (float) Math.Sqrt(forceMagnitude);
                     accumulatedImpulse.X *= multiplier;
                     accumulatedImpulse.Y *= multiplier;
                     accumulatedImpulse.Z *= multiplier;

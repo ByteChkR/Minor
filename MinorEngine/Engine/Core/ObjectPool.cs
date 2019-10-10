@@ -20,6 +20,7 @@ namespace Engine.Core
         /// A flag that indicates if this object is currently in use
         /// </summary>
         public bool IsUsed { get; private set; }
+
         /// <summary>
         /// A reference to the containing pool
         /// </summary>
@@ -144,9 +145,9 @@ namespace Engine.Core
         /// <param name="size">The initial size</param>
         private void InitializeSize(int size)
         {
-            for (var i = 0; i < size; i++)
+            for (int i = 0; i < size; i++)
             {
-                var ret = _Factory();
+                T ret = _Factory();
 
                 _InternalList.Add(new PooledObject<T>(ret, this, i));
             }
@@ -161,7 +162,7 @@ namespace Engine.Core
         /// <returns>The index of the next free object; -1 if there is none</returns>
         private int findNext(int startidx)
         {
-            for (var i = startidx; i < _InternalList.Count; i++)
+            for (int i = startidx; i < _InternalList.Count; i++)
             {
                 if (!_InternalList[i].IsUsed)
                 {
@@ -169,7 +170,7 @@ namespace Engine.Core
                 }
             }
 
-            for (var i = 0; i < startidx - 1; i++)
+            for (int i = 0; i < startidx - 1; i++)
             {
                 if (!_InternalList[i].IsUsed)
                 {
@@ -192,7 +193,7 @@ namespace Engine.Core
                 _nextID = 0;
             }
 
-            var id = findNext(_nextID);
+            int id = findNext(_nextID);
             if (id == -1 && _InternalList.Count < _maxItems) //No free objects found
             {
                 id = _InternalList.Count;
@@ -222,11 +223,11 @@ namespace Engine.Core
         /// <returns>An object</returns>
         public PooledObject<T> Take()
         {
-            var id = GetFreeID();
+            int id = GetFreeID();
             if (id == -1)
             {
                 Logger.Log("Object Pool is full, returning Unmanaged Instance.", DebugChannel.Warning);
-                var item = new PooledObject<T>(_Factory(), null, -1);
+                PooledObject<T> item = new PooledObject<T>(_Factory(), null, -1);
 
                 return item;
             }
@@ -240,7 +241,7 @@ namespace Engine.Core
         /// </summary>
         public void Clean()
         {
-            for (var i = _InternalList.Count - 1; i >= 0; i--)
+            for (int i = _InternalList.Count - 1; i >= 0; i--)
             {
                 if (!_InternalList[i].IsUsed)
                 {
@@ -256,7 +257,7 @@ namespace Engine.Core
         /// </summary>
         public void Dispose()
         {
-            for (var i = 0; i < _InternalList.Count; i++)
+            for (int i = 0; i < _InternalList.Count; i++)
             {
                 _InternalList[i].Object.Dispose();
             }

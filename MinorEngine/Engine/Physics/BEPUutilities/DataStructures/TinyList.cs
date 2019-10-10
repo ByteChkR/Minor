@@ -231,7 +231,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public bool Remove(T item)
         {
             //Identity-based removes aren't a super high priority feature, so can be a little slower.
-            var index = IndexOf(item);
+            int index = IndexOf(item);
             if (index != -1)
             {
                 RemoveAt(index);

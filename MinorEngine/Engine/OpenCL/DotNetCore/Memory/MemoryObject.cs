@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -42,14 +41,19 @@ namespace Engine.OpenCL.DotNetCore.Memory
         {
             get
             {
-                if (!this.size.HasValue)
+                if (!size.HasValue)
                 {
                     if (Marshal.SizeOf<IntPtr>() == sizeof(long))
-                        this.size = this.GetMemoryObjectInformation<long>(MemoryObjectInformation.Size);
+                    {
+                        size = GetMemoryObjectInformation<long>(MemoryObjectInformation.Size);
+                    }
                     else
-                        this.size = (long)this.GetMemoryObjectInformation<int>(MemoryObjectInformation.Size);
+                    {
+                        size = (long) GetMemoryObjectInformation<int>(MemoryObjectInformation.Size);
+                    }
                 }
-                return this.size.Value;
+
+                return size.Value;
             }
         }
 
@@ -65,14 +69,17 @@ namespace Engine.OpenCL.DotNetCore.Memory
         {
             get
             {
-                if (!this.flags.HasValue)
-                    this.flags = (MemoryFlag)this.GetMemoryObjectInformation<ulong>(MemoryObjectInformation.Flags);
-                return this.flags.Value;
+                if (!flags.HasValue)
+                {
+                    flags = (MemoryFlag) GetMemoryObjectInformation<ulong>(MemoryObjectInformation.Flags);
+                }
+
+                return flags.Value;
             }
         }
 
         #endregion
-        
+
         #region Private Methods
 
         /// <summary>
@@ -86,15 +93,22 @@ namespace Engine.OpenCL.DotNetCore.Memory
         {
             // Retrieves the size of the return value in bytes, this is used to later get the full information
             UIntPtr returnValueSize;
-            Result result = MemoryNativeApi.GetMemoryObjectInformation(this.Handle, memoryObjectInformation, UIntPtr.Zero, null, out returnValueSize);
+            Result result = MemoryNativeApi.GetMemoryObjectInformation(Handle, memoryObjectInformation, UIntPtr.Zero,
+                null,
+                out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The memory object information could not be retrieved.", result);
+            }
 
             // Allocates enough memory for the return value and retrieves it
             byte[] output = new byte[returnValueSize.ToUInt32()];
-            result = MemoryNativeApi.GetMemoryObjectInformation(this.Handle, memoryObjectInformation, new UIntPtr((uint)output.Length), output, out returnValueSize);
+            result = MemoryNativeApi.GetMemoryObjectInformation(Handle, memoryObjectInformation,
+                new UIntPtr((uint) output.Length), output, out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The memory object information could not be retrieved.", result);
+            }
 
             // Returns the output
             return InteropConverter.To<T>(output);
@@ -111,8 +125,10 @@ namespace Engine.OpenCL.DotNetCore.Memory
         protected override void Dispose(bool disposing)
         {
             // Checks if the memory object has already been disposed of, if not, then the memory object is disposed of
-            if (!this.IsDisposed)
-                MemoryNativeApi.ReleaseMemoryObject(this.Handle);
+            if (!IsDisposed)
+            {
+                MemoryNativeApi.ReleaseMemoryObject(Handle);
+            }
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);

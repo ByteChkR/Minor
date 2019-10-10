@@ -12,6 +12,7 @@ namespace Engine.Rendering
         /// The projection matrix of the Camera
         /// </summary>
         public Matrix4 Projection { get; set; }
+
         /// <summary>
         /// The view matrix of the Camera
         /// </summary>

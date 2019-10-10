@@ -20,7 +20,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             MobileMeshSolidity solidity)
         {
             Vector3 center;
-            var shape = new MobileMeshShape(vertices, indices, localTransform, solidity, out center);
+            MobileMeshShape shape = new MobileMeshShape(vertices, indices, localTransform, solidity, out center);
             Initialize(new MobileMeshCollidable(shape));
             Position = center;
         }
@@ -38,7 +38,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             MobileMeshSolidity solidity, float mass)
         {
             Vector3 center;
-            var shape = new MobileMeshShape(vertices, indices, localTransform, solidity, out center);
+            MobileMeshShape shape = new MobileMeshShape(vertices, indices, localTransform, solidity, out center);
             Initialize(new MobileMeshCollidable(shape), mass);
             Position = center;
         }

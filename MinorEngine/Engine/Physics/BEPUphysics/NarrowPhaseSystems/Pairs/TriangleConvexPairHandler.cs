@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUphysics.BroadPhaseSystems;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using Engine.Physics.BEPUphysics.CollisionTests.Manifolds;
@@ -81,11 +82,12 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
-            var overlap = BroadPhaseOverlap;
-            var triangleMode = triangle.entity == null
+            BroadPhaseOverlap overlap = BroadPhaseOverlap;
+            PositionUpdateMode triangleMode = triangle.entity == null
                 ? PositionUpdateMode.Discrete
                 : triangle.entity.PositionUpdateMode;
-            var convexMode = convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
+            PositionUpdateMode convexMode =
+                convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
             if (
                 (overlap.entryA.IsActive || overlap.entryB.IsActive) && //At least one has to be active.
                 (
@@ -117,9 +119,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
 
                 Vector3.Multiply(ref velocity, dt, out velocity);
-                var velocitySquared = velocity.LengthSquared();
+                float velocitySquared = velocity.LengthSquared();
 
-                var minimumRadiusA = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
+                float minimumRadiusA = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
                 if (minimumRadiusA * minimumRadiusA < velocitySquared)
                 {

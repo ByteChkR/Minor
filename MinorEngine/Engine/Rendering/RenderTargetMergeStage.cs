@@ -55,7 +55,8 @@ namespace Engine.Rendering
         /// <summary>
         /// The shaders used for the different merge types
         /// </summary>
-        private static Dictionary<RenderTargetMergeType, ShaderProgram> _mergeTypes = new Dictionary<RenderTargetMergeType, ShaderProgram>();
+        private static Dictionary<RenderTargetMergeType, ShaderProgram> _mergeTypes =
+            new Dictionary<RenderTargetMergeType, ShaderProgram>();
 
         /// <summary>
         /// Initialization method
@@ -64,11 +65,11 @@ namespace Engine.Rendering
         {
             _init = true;
             _screenVAO = GL.GenVertexArray();
-            var _screenVBO = GL.GenBuffer();
+            int _screenVBO = GL.GenBuffer();
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -78,7 +79,7 @@ namespace Engine.Rendering
             {
                 {ShaderType.FragmentShader, "shader/MergeRenderer_Add.fs"},
                 {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
-            }, out var _mergeAddShader))
+            }, out ShaderProgram _mergeAddShader))
             {
                 Console.ReadLine();
             }
@@ -89,7 +90,7 @@ namespace Engine.Rendering
             {
                 {ShaderType.FragmentShader, "shader/MergeRenderer_Mul.fs"},
                 {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
-            }, out var _mergeMulShader))
+            }, out ShaderProgram _mergeMulShader))
             {
                 Console.ReadLine();
             }
@@ -150,15 +151,15 @@ namespace Engine.Rendering
             }
 
 
-            var divideCount = targets.Count;
+            int divideCount = targets.Count;
 
             //GL.Enable(EnableCap.ScissorTest);
 
             //GL.Enable(EnableCap.ScissorTest);
-            foreach (var renderTarget in targets)
+            foreach (RenderTarget renderTarget in targets)
             {
-                var dst = GetTarget();
-                var src = GetSource();
+                RenderTarget dst = GetTarget();
+                RenderTarget src = GetSource();
 
                 _mergeTypes[renderTarget.MergeType].Use();
 

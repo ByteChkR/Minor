@@ -52,7 +52,7 @@ namespace Engine.Physics
                 return _internalLayerStore[layer].Item1;
             }
 
-            var rec = _registeredLayers.Count > 0;
+            bool rec = _registeredLayers.Count > 0;
             Logger.Crash(new LayerNotFoundException(layer), rec);
             return _internalLayerStore[_registeredLayers.ElementAt(0).Value].Item1;
         }
@@ -95,8 +95,8 @@ namespace Engine.Physics
         /// <param name="layerB">Index of layer B</param>
         public static void DisableCollisions(int layerA, int layerB)
         {
-            var a = IDToInternalLayer(layerA);
-            var b = IDToInternalLayer(layerB);
+            Layer a = IDToInternalLayer(layerA);
+            Layer b = IDToInternalLayer(layerB);
             Layer.DisableCollision(ref a, ref b);
         }
 

@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -43,7 +42,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] UIntPtr size,
             [In] IntPtr pointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -95,16 +95,20 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr buffer,
             [In] [MarshalAs(UnmanagedType.U4)] uint blockingRead,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] bufferOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] hostOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] bufferOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] hostOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr bufferRowPitch,
             [In] UIntPtr bufferSlicePitch,
             [In] UIntPtr hostRowPitch,
             [In] UIntPtr hostSlicePitch,
             [In] IntPtr pointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -144,10 +148,11 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] UIntPtr size,
             [In] IntPtr pointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
-        
+
         /// <summary>
         /// Enqueue command to write a 2D or 3D rectangular region to a buffer object from host memory.
         /// </summary>
@@ -197,16 +202,20 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr buffer,
             [In] [MarshalAs(UnmanagedType.U4)] uint blockingWrite,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] bufferOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] hostOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] bufferOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] hostOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr bufferRowPitch,
             [In] UIntPtr bufferSlicePitch,
             [In] UIntPtr hostRowPitch,
             [In] UIntPtr hostSlicePitch,
             [In] IntPtr pointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -243,7 +252,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] UIntPtr offset,
             [In] UIntPtr size,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -276,7 +286,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] UIntPtr destinationOffset,
             [In] UIntPtr size,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -328,15 +339,19 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr sourceBuffer,
             [In] IntPtr destinationBuffer,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] sourceOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] destinationOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] sourceOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] destinationOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr sourceRowPitch,
             [In] UIntPtr sourceSlicePitch,
             [In] UIntPtr destinationRowPitch,
             [In] UIntPtr destinationSlicePitch,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -386,13 +401,16 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr image,
             [In] [MarshalAs(UnmanagedType.U4)] uint blockingRead,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] origin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] origin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr rowPitch,
             [In] UIntPtr slicePitch,
             [In] IntPtr pointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -443,13 +461,16 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr image,
             [In] [MarshalAs(UnmanagedType.U4)] uint blockingWrite,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] origin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] origin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr inputRowPitch,
             [In] UIntPtr inputSlicePitch,
             [In] IntPtr pointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -488,10 +509,13 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr image,
             [In] IntPtr fillColor,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] origin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] origin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -542,11 +566,15 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr sourceImage,
             [In] IntPtr destinationImage,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] sourceOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] destinationOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] sourceOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] destinationOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -589,11 +617,14 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr sourceImage,
             [In] IntPtr destinationBuffer,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] sourceOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] sourceOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr destinationOffset,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -635,10 +666,13 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr sourceBuffer,
             [In] IntPtr destinationImage,
             [In] UIntPtr sourceOffset,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] destinationOrigin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] destinationOrigin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -679,7 +713,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] UIntPtr offset,
             [In] UIntPtr size,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
         );
@@ -736,12 +771,15 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr image,
             [In] [MarshalAs(UnmanagedType.U4)] uint blockingMap,
             [In] [MarshalAs(UnmanagedType.U8)] MapFlag mapFlag,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] origin,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] region,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] origin,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] region,
             [In] UIntPtr imageRowPitch,
             [In] UIntPtr imageSlicePitch,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
         );
@@ -769,7 +807,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr memoryObject,
             [In] IntPtr mappedPointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -798,10 +837,12 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueMigrateMemorysObjects(
             [In] IntPtr commandQueue,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfMemoryObjects,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] memoryObjects,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] memoryObjects,
             [In] [MarshalAs(UnmanagedType.U8)] MemoryMigrationFlag memoryMigrationFlags,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -842,7 +883,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr[] globalWorkSize,
             [In] IntPtr[] localWorkSize,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -877,13 +919,16 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueNativeKernel(
             [In] IntPtr commandQueue,
             [In] IntPtr userFunction,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] arguments,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] arguments,
             [In] UIntPtr argumentSize,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfMemoryObjects,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] memoryObjects,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] memoryObjects,
             [In] IntPtr argumentsMemoryLocation,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -905,7 +950,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueMarkerWithWaitList(
             [In] IntPtr commandQueue,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -927,7 +973,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueBarrierWithWaitList(
             [In] IntPtr commandQueue,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -962,11 +1009,13 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueSvmFree(
             [In] IntPtr commandQueue,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfSvmPointers,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] svmPointers,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] svmPointers,
             [In] IntPtr svmFreePointersCallback,
             [In] IntPtr userData,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -1008,7 +1057,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr sourcePointer,
             [In] UIntPtr size,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -1047,7 +1097,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] UIntPtr patternSize,
             [In] UIntPtr size,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -1086,7 +1137,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr svmPointer,
             [In] UIntPtr size,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -1113,7 +1165,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr svmPointer,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -1139,11 +1192,14 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueSvmMigrateMemory(
             [In] IntPtr commandQueue,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfSvmPointers,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] svmPointers,
-            [In] [MarshalAs(UnmanagedType.LPArray)] UIntPtr[] sizes,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] svmPointers,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            UIntPtr[] sizes,
             [In] [MarshalAs(UnmanagedType.U8)] MemoryMigrationFlag memoryMigrationFlags,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 
@@ -1166,8 +1222,6 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         //    [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
         //    [Out] out IntPtr waitEvent
         //);
-
-
 
         #endregion
 
@@ -1203,7 +1257,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
         public static extern Result EnqueueWaitForEvents(
             [In] IntPtr commandQueue,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList
         );
 
         /// <summary>
@@ -1239,7 +1294,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
             [In] IntPtr commandQueue,
             [In] IntPtr kernel,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEventsInWaitList,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventWaitList,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventWaitList,
             [Out] out IntPtr waitEvent
         );
 

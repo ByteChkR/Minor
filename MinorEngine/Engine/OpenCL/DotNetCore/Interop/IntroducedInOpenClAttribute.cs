@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -10,7 +9,8 @@ namespace Engine.OpenCL.DotNetCore.Interop
     /// <summary>
     /// Represents a custom attribute, which can be used to mark an element of the public API with the OpenCL version that is was introduced in.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Struct, Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Struct,
+        Inherited = true, AllowMultiple = false)]
     public class IntroducedInOpenClAttribute : Attribute
     {
         #region Constructors
@@ -22,8 +22,8 @@ namespace Engine.OpenCL.DotNetCore.Interop
         /// <param name="minorVersion">The minor version of OpenCL in which the marked element of the public API was introduced.</param>
         public IntroducedInOpenClAttribute(int majorVersion, int minorVersion)
         {
-            this.MajorVersion = majorVersion;
-            this.MinorVersion = minorVersion;
+            MajorVersion = majorVersion;
+            MinorVersion = minorVersion;
         }
 
         #endregion

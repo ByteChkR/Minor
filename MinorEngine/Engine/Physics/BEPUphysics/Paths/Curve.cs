@@ -50,8 +50,8 @@ namespace Engine.Physics.BEPUphysics.Paths
                 switch (preLoop)
                 {
                     case CurveEndpointBehavior.Wrap:
-                        var modifiedTime = time - intervalBegin;
-                        var intervalLength = intervalEnd - intervalBegin;
+                        double modifiedTime = time - intervalBegin;
+                        double intervalLength = intervalEnd - intervalBegin;
                         modifiedTime %= intervalLength;
                         return intervalEnd + modifiedTime;
                     case CurveEndpointBehavior.Clamp:
@@ -59,7 +59,7 @@ namespace Engine.Physics.BEPUphysics.Paths
                     case CurveEndpointBehavior.Mirror:
                         modifiedTime = time - intervalBegin;
                         intervalLength = intervalEnd - intervalBegin;
-                        var numFlips = (int) (modifiedTime / intervalLength);
+                        int numFlips = (int) (modifiedTime / intervalLength);
                         if (numFlips % 2 == 0)
                         {
                             return intervalBegin - modifiedTime % intervalLength;
@@ -73,8 +73,8 @@ namespace Engine.Physics.BEPUphysics.Paths
                 switch (postLoop)
                 {
                     case CurveEndpointBehavior.Wrap:
-                        var modifiedTime = time - intervalEnd;
-                        var intervalLength = intervalEnd - intervalBegin;
+                        double modifiedTime = time - intervalEnd;
+                        double intervalLength = intervalEnd - intervalBegin;
                         modifiedTime %= intervalLength;
                         return intervalBegin + modifiedTime;
                     case CurveEndpointBehavior.Clamp:
@@ -82,7 +82,7 @@ namespace Engine.Physics.BEPUphysics.Paths
                     case CurveEndpointBehavior.Mirror:
                         modifiedTime = time - intervalEnd;
                         intervalLength = intervalEnd - intervalBegin;
-                        var numFlips = (int) (modifiedTime / intervalLength);
+                        int numFlips = (int) (modifiedTime / intervalLength);
                         if (numFlips % 2 == 0)
                         {
                             return intervalEnd - modifiedTime % intervalLength;
@@ -139,7 +139,7 @@ namespace Engine.Physics.BEPUphysics.Paths
 
             time = ModifyTime(time, firstTime, lastTime, PreLoop, PostLoop);
 
-            var index = GetPreviousIndex(time);
+            int index = GetPreviousIndex(time);
             if (index == maxIndex)
             {
                 //Somehow the index is the very last index, so next index would be invalid.
@@ -149,7 +149,7 @@ namespace Engine.Physics.BEPUphysics.Paths
             }
             else
             {
-                var denominator = ControlPoints[index + 1].Time - ControlPoints[index].Time;
+                double denominator = ControlPoints[index + 1].Time - ControlPoints[index].Time;
 
                 float intervalTime;
                 if (denominator < Toolbox.Epsilon)
@@ -211,8 +211,8 @@ namespace Engine.Physics.BEPUphysics.Paths
         /// <returns>Index prior to or equal to the given time.</returns>
         public int GetPreviousIndex(double time)
         {
-            var indexMin = 0;
-            var indexMax = ControlPoints.Count;
+            int indexMin = 0;
+            int indexMax = ControlPoints.Count;
             if (indexMax == 0)
             {
                 return -1;
@@ -221,7 +221,7 @@ namespace Engine.Physics.BEPUphysics.Paths
             //If time < controlpoints.mintime, should be... 0 or -1?
             while (indexMax - indexMin > 1) //if time belongs to min
             {
-                var midIndex = (indexMin + indexMax) / 2;
+                int midIndex = (indexMin + indexMax) / 2;
                 if (time > ControlPoints[midIndex].Time)
                 {
                     indexMin = midIndex;
@@ -238,9 +238,9 @@ namespace Engine.Physics.BEPUphysics.Paths
 
         internal void InternalControlPointTimeChanged(CurveControlPoint<TValue> controlPoint)
         {
-            var oldIndex = ControlPoints.list.IndexOf(controlPoint);
+            int oldIndex = ControlPoints.list.IndexOf(controlPoint);
             ControlPoints.list.RemoveAt(oldIndex);
-            var index = GetPreviousIndex(controlPoint.Time) + 1;
+            int index = GetPreviousIndex(controlPoint.Time) + 1;
             ControlPoints.list.Insert(index, controlPoint);
             ControlPointTimeChanged(controlPoint, oldIndex, index);
         }

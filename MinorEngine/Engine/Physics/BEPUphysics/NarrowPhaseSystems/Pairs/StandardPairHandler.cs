@@ -1,4 +1,5 @@
 ﻿using Engine.Physics.BEPUphysics.BroadPhaseEntries;
+using Engine.Physics.BEPUphysics.BroadPhaseEntries.Events;
 using Engine.Physics.BEPUphysics.CollisionTests;
 using Engine.Physics.BEPUphysics.CollisionTests.Manifolds;
 using Engine.Physics.BEPUphysics.Constraints.Collision;
@@ -85,7 +86,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void CleanUp()
         {
             //Deal with the remaining contacts.
-            for (var i = ContactManifold.contacts.Count - 1; i >= 0; i--)
+            for (int i = ContactManifold.contacts.Count - 1; i >= 0; i--)
             {
                 OnContactRemoved(ContactManifold.contacts[i]);
             }
@@ -131,10 +132,10 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateCollision(float dt)
         {
             //Cache some properties.
-            var a = CollidableA;
-            var b = CollidableB;
-            var triggerA = a.EventTriggerer;
-            var triggerB = b.EventTriggerer;
+            Collidable a = CollidableA;
+            Collidable b = CollidableB;
+            IContactEventTriggerer triggerA = a.EventTriggerer;
+            IContactEventTriggerer triggerB = b.EventTriggerer;
 
             if (!suppressEvents)
             {
@@ -225,8 +226,8 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
                 if (!suppressEvents)
                 {
-                    var a = CollidableA;
-                    var b = CollidableB;
+                    Collidable a = CollidableA;
+                    Collidable b = CollidableB;
                     a.EventTriggerer.OnCollisionEnded(b, this);
                     b.EventTriggerer.OnCollisionEnded(a, this);
                 }

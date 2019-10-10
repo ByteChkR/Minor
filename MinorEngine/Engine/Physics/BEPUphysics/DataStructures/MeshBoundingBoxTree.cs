@@ -60,7 +60,7 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         public void Reconstruct()
         {
             root = null;
-            for (var i = 0; i < data.indices.Length; i += 3)
+            for (int i = 0; i < data.indices.Length; i += 3)
                 //Use a permuted version of the triangles instead of the actual triangle list.
                 //Permuting makes the input basically random, improving the quality of the tree.
             {
@@ -89,7 +89,7 @@ namespace Engine.Physics.BEPUphysics.DataStructures
 
             maxDepth = 0;
             minDepth = int.MaxValue;
-            for (var i = 0; i < depths.Count; i++)
+            for (int i = 0; i < depths.Count; i++)
             {
                 if (depths[i] > maxDepth)
                 {
@@ -109,7 +109,7 @@ namespace Engine.Physics.BEPUphysics.DataStructures
             //Insertions can easily be performed stacklessly.
             //Only one path is chosen at each step and nothing is returned, so the history of the 'recursion' is completely forgotten.
 
-            var node = new LeafNode(triangleIndex, data);
+            LeafNode node = new LeafNode(triangleIndex, data);
             if (root == null)
             {
                 //Empty tree.  This is the first and only node.
@@ -125,7 +125,7 @@ namespace Engine.Physics.BEPUphysics.DataStructures
                 {
                     //The caller is responsible for the merge.
                     BoundingBox.CreateMerged(ref node.BoundingBox, ref root.BoundingBox, out root.BoundingBox);
-                    var treeNode = root;
+                    Node treeNode = root;
                     while (!treeNode.TryToInsert(node, out treeNode))
                     {
                         ; //TryToInsert returns the next node, if any, and updates node bounding box.
@@ -467,7 +467,7 @@ namespace Engine.Physics.BEPUphysics.DataStructures
 
             internal override bool TryToInsert(LeafNode node, out Node treeNode)
             {
-                var newTreeNode = new InternalNode();
+                InternalNode newTreeNode = new InternalNode();
                 BoundingBox.CreateMerged(ref BoundingBox, ref node.BoundingBox, out newTreeNode.BoundingBox);
                 newTreeNode.ChildA = this;
                 newTreeNode.ChildB = node;

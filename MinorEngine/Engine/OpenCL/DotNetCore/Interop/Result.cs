@@ -1,4 +1,3 @@
-
 namespace Engine.OpenCL.DotNetCore.Interop
 {
     /// <summary>
@@ -257,17 +256,17 @@ namespace Engine.OpenCL.DotNetCore.Interop
         /// 
         /// </summary>
         InvalidCompilerOptions = -66,
-        
+
         /// <summary>
         /// 
         /// </summary>
         InvalidLinkerOptions = -67,
-        
+
         /// <summary>
         /// 
         /// </summary>
         InvalidDevicePartitionCount = -68,
-        
+
         /// <summary>
         /// 
         /// </summary>

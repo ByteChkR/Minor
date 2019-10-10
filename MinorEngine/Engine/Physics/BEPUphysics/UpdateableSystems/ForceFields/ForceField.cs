@@ -102,8 +102,8 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
             {
                 currentTimestep = dt;
                 //No multithreading, so do it directly.
-                var count = affectedEntities.Count;
-                for (var i = 0; i < count; i++)
+                int count = affectedEntities.Count;
+                for (int i = 0; i < count; i++)
                 {
                     CalculateImpulsesSubfunction(i);
                 }
@@ -120,7 +120,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
 
         private void CalculateImpulsesSubfunction(int index)
         {
-            var e = affectedEntities[index];
+            Entity e = affectedEntities[index];
             if (e.isDynamic && (e.activityInformation.IsActive || ForceWakeUp) && Shape.IsEntityAffected(e))
             {
                 if (ForceWakeUp)
@@ -141,7 +141,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
         public override void OnAdditionToSpace(Space newSpace)
         {
             base.OnAdditionToSpace(newSpace);
-            var space = newSpace;
+            Space space = newSpace;
             if (space != null)
             {
                 ParallelLooper = space.ParallelLooper;

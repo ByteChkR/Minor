@@ -24,6 +24,5 @@ namespace Engine.Audio
         /// Useful Property to check if something has gone wrong with OpenAL
         /// </summary>
         public static AlcError GetCurrentALcError => _context?.CurrentError ?? AlcError.InvalidContext;
-
     }
 }

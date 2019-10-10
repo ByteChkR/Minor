@@ -98,13 +98,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         public static bool AreBoxesColliding(BoxShape a, BoxShape b, ref RigidTransform transformA,
             ref RigidTransform transformB)
         {
-            var aX = a.HalfWidth;
-            var aY = a.HalfHeight;
-            var aZ = a.HalfLength;
+            float aX = a.HalfWidth;
+            float aY = a.HalfHeight;
+            float aZ = a.HalfLength;
 
-            var bX = b.HalfWidth;
-            var bY = b.HalfHeight;
-            var bZ = b.HalfLength;
+            float bX = b.HalfWidth;
+            float bY = b.HalfHeight;
+            float bZ = b.HalfLength;
 
             //Relative rotation from A to B.
             Matrix3x3 bR;
@@ -126,12 +126,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M11 = Math.Abs(bR.M11) + Toolbox.Epsilon;
             absBR.M12 = Math.Abs(bR.M12) + Toolbox.Epsilon;
             absBR.M13 = Math.Abs(bR.M13) + Toolbox.Epsilon;
-            var tX = t.X;
+            float tX = t.X;
             t.X = t.X * aO.M11 + t.Y * aO.M12 + t.Z * aO.M13;
 
             //Test the axes defines by entity A's rotation matrix.
             //A.X
-            var rb = bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
+            float rb = bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
             if (Math.Abs(t.X) > aX + rb)
             {
                 return false;
@@ -143,7 +143,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M21 = Math.Abs(bR.M21) + Toolbox.Epsilon;
             absBR.M22 = Math.Abs(bR.M22) + Toolbox.Epsilon;
             absBR.M23 = Math.Abs(bR.M23) + Toolbox.Epsilon;
-            var tY = t.Y;
+            float tY = t.Y;
             t.Y = tX * aO.M21 + t.Y * aO.M22 + t.Z * aO.M23;
 
             //A.Y
@@ -170,7 +170,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             //Test the axes defines by entity B's rotation matrix.
             //B.X
-            var ra = aX * absBR.M11 + aY * absBR.M21 + aZ * absBR.M31;
+            float ra = aX * absBR.M11 + aY * absBR.M21 + aZ * absBR.M31;
             if (Math.Abs(t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31) > ra + bX)
             {
                 return false;
@@ -280,13 +280,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         public static bool AreBoxesColliding(BoxShape a, BoxShape b, ref RigidTransform transformA,
             ref RigidTransform transformB, out float separationDistance, out Vector3 separatingAxis)
         {
-            var aX = a.HalfWidth;
-            var aY = a.HalfHeight;
-            var aZ = a.HalfLength;
+            float aX = a.HalfWidth;
+            float aY = a.HalfHeight;
+            float aZ = a.HalfLength;
 
-            var bX = b.HalfWidth;
-            var bY = b.HalfHeight;
-            var bZ = b.HalfLength;
+            float bX = b.HalfWidth;
+            float bY = b.HalfHeight;
+            float bZ = b.HalfLength;
 
             //Relative rotation from A to B.
             Matrix3x3 bR;
@@ -310,12 +310,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M11 = Math.Abs(bR.M11) + Toolbox.Epsilon;
             absBR.M12 = Math.Abs(bR.M12) + Toolbox.Epsilon;
             absBR.M13 = Math.Abs(bR.M13) + Toolbox.Epsilon;
-            var tX = t.X;
+            float tX = t.X;
             t.X = t.X * aO.M11 + t.Y * aO.M12 + t.Z * aO.M13;
 
             //Test the axes defines by entity A's rotation matrix.
             //A.X
-            var rarb = aX + bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
+            float rarb = aX + bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
             if (t.X > rarb)
             {
                 separationDistance = t.X - rarb;
@@ -337,7 +337,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M21 = Math.Abs(bR.M21) + Toolbox.Epsilon;
             absBR.M22 = Math.Abs(bR.M22) + Toolbox.Epsilon;
             absBR.M23 = Math.Abs(bR.M23) + Toolbox.Epsilon;
-            var tY = t.Y;
+            float tY = t.Y;
             t.Y = tX * aO.M21 + t.Y * aO.M22 + t.Z * aO.M23;
 
             //A.Y
@@ -387,7 +387,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //Test the axes defines by entity B's rotation matrix.
             //B.X
             rarb = bX + aX * absBR.M11 + aY * absBR.M21 + aZ * absBR.M31;
-            var tl = t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31;
+            float tl = t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31;
             if (tl > rarb)
             {
                 separationDistance = tl - rarb;
@@ -668,13 +668,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         public static bool AreBoxesCollidingWithPenetration(BoxShape a, BoxShape b, ref RigidTransform transformA,
             ref RigidTransform transformB, out float distance, out Vector3 axis)
         {
-            var aX = a.HalfWidth;
-            var aY = a.HalfHeight;
-            var aZ = a.HalfLength;
+            float aX = a.HalfWidth;
+            float aY = a.HalfHeight;
+            float aZ = a.HalfLength;
 
-            var bX = b.HalfWidth;
-            var bY = b.HalfHeight;
-            var bZ = b.HalfLength;
+            float bX = b.HalfWidth;
+            float bY = b.HalfHeight;
+            float bZ = b.HalfLength;
 
             //Relative rotation from A to B.
             Matrix3x3 bR;
@@ -689,8 +689,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Subtract(ref transformB.Position, ref transformA.Position, out t);
 
             float tempDistance;
-            var minimumDistance = -float.MaxValue;
-            var minimumAxis = new Vector3();
+            float minimumDistance = -float.MaxValue;
+            Vector3 minimumAxis = new Vector3();
 
             #region A Face Normals
 
@@ -702,12 +702,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M11 = Math.Abs(bR.M11) + Toolbox.Epsilon;
             absBR.M12 = Math.Abs(bR.M12) + Toolbox.Epsilon;
             absBR.M13 = Math.Abs(bR.M13) + Toolbox.Epsilon;
-            var tX = t.X;
+            float tX = t.X;
             t.X = t.X * aO.M11 + t.Y * aO.M12 + t.Z * aO.M13;
 
             //Test the axes defines by entity A's rotation matrix.
             //A.X
-            var rarb = aX + bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
+            float rarb = aX + bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
             if (t.X > rarb)
             {
                 distance = t.X - rarb;
@@ -749,7 +749,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M21 = Math.Abs(bR.M21) + Toolbox.Epsilon;
             absBR.M22 = Math.Abs(bR.M22) + Toolbox.Epsilon;
             absBR.M23 = Math.Abs(bR.M23) + Toolbox.Epsilon;
-            var tY = t.Y;
+            float tY = t.Y;
             t.Y = tX * aO.M21 + t.Y * aO.M22 + t.Z * aO.M23;
 
             //A.Y
@@ -839,7 +839,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //Test the axes defines by entity B's rotation matrix.
             //B.X
             rarb = bX + aX * absBR.M11 + aY * absBR.M21 + aZ * absBR.M31;
-            var tl = t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31;
+            float tl = t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31;
             if (tl > rarb)
             {
                 distance = tl - rarb;
@@ -1521,13 +1521,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             out TinyStructList<BoxContactData> contactData)
 #endif
         {
-            var aX = a.HalfWidth;
-            var aY = a.HalfHeight;
-            var aZ = a.HalfLength;
+            float aX = a.HalfWidth;
+            float aY = a.HalfHeight;
+            float aZ = a.HalfLength;
 
-            var bX = b.HalfWidth;
-            var bY = b.HalfHeight;
-            var bZ = b.HalfLength;
+            float bX = b.HalfWidth;
+            float bY = b.HalfHeight;
+            float bZ = b.HalfLength;
 
 #if ALLOWUNSAFE
             contactData = new BoxContactDataCache();
@@ -1547,8 +1547,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Subtract(ref transformB.Position, ref transformA.Position, out t);
 
             float tempDistance;
-            var minimumDistance = -float.MaxValue;
-            var minimumAxis = new Vector3();
+            float minimumDistance = -float.MaxValue;
+            Vector3 minimumAxis = new Vector3();
             byte minimumFeature = 2; //2 means edge.  0-> A face, 1 -> B face.
 
             #region A Face Normals
@@ -1561,12 +1561,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M11 = Math.Abs(bR.M11) + Toolbox.Epsilon;
             absBR.M12 = Math.Abs(bR.M12) + Toolbox.Epsilon;
             absBR.M13 = Math.Abs(bR.M13) + Toolbox.Epsilon;
-            var tX = t.X;
+            float tX = t.X;
             t.X = t.X * aO.M11 + t.Y * aO.M12 + t.Z * aO.M13;
 
             //Test the axes defines by entity A's rotation matrix.
             //A.X
-            var rarb = aX + bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
+            float rarb = aX + bX * absBR.M11 + bY * absBR.M12 + bZ * absBR.M13;
             if (t.X > rarb)
             {
                 distance = t.X - rarb;
@@ -1610,7 +1610,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             absBR.M21 = Math.Abs(bR.M21) + Toolbox.Epsilon;
             absBR.M22 = Math.Abs(bR.M22) + Toolbox.Epsilon;
             absBR.M23 = Math.Abs(bR.M23) + Toolbox.Epsilon;
-            var tY = t.Y;
+            float tY = t.Y;
             t.Y = tX * aO.M21 + t.Y * aO.M22 + t.Z * aO.M23;
 
             //A.Y
@@ -1707,7 +1707,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //Test the axes defines by entity B's rotation matrix.
             //B.X
             rarb = bX + aX * absBR.M11 + aY * absBR.M21 + aZ * absBR.M31;
-            var tl = t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31;
+            float tl = t.X * bR.M11 + t.Y * bR.M21 + t.Z * bR.M31;
             if (tl > rarb)
             {
                 distance = tl - rarb;
@@ -1829,7 +1829,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 minimumDistance -= antiBBias;
             }
 
-            var antiEdgeBias = .01f;
+            float antiEdgeBias = .01f;
             minimumDistance += antiEdgeBias;
             float axisLengthInverse;
             Vector3 tempAxis;
@@ -2467,7 +2467,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Matrix3x3.TransformTranspose(ref negatedMtd, ref orientationA, out mtdA);
             Matrix3x3.TransformTranspose(ref mtd, ref orientationB, out mtdB);
 
-            
+
             Vector3 edgeAStart1 = new Vector3(),
                 edgeAEnd1 = new Vector3(),
                 edgeAStart2 = new Vector3(),
@@ -2476,13 +2476,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 edgeBEnd1 = new Vector3(),
                 edgeBStart2 = new Vector3(),
                 edgeBEnd2 = new Vector3();
-            var aHalfWidth = a.halfWidth;
-            var aHalfHeight = a.halfHeight;
-            var aHalfLength = a.halfLength;
+            float aHalfWidth = a.halfWidth;
+            float aHalfHeight = a.halfHeight;
+            float aHalfLength = a.halfLength;
 
-            var bHalfWidth = b.halfWidth;
-            var bHalfHeight = b.halfHeight;
-            var bHalfLength = b.halfLength;
+            float bHalfWidth = b.halfWidth;
+            float bHalfHeight = b.halfHeight;
+            float bHalfLength = b.halfLength;
 
             //Letter stands for owner.  Number stands for edge (1 or 2).
             int edgeAStart1Id, edgeAEnd1Id, edgeAStart2Id, edgeAEnd2Id;
@@ -2499,7 +2499,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //mtd is in the Y-Z plane.
                 //Perform an implicit dot with the edge location relative to the center.
                 //Find the two edges furthest in the direction of the mtdA.
-                var dots = new TinyList<float>();
+                TinyList<float> dots = new TinyList<float>();
                 dots.Add(-aHalfHeight * mtdA.Y - aHalfLength * mtdA.Z);
                 dots.Add(-aHalfHeight * mtdA.Y + aHalfLength * mtdA.Z);
                 dots.Add(aHalfHeight * mtdA.Y - aHalfLength * mtdA.Z);
@@ -2519,7 +2519,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //mtd is in the X-Z plane
                 //Perform an implicit dot with the edge location relative to the center.
                 //Find the two edges furthest in the direction of the mtdA.
-                var dots = new TinyList<float>();
+                TinyList<float> dots = new TinyList<float>();
                 dots.Add(-aHalfWidth * mtdA.X - aHalfLength * mtdA.Z);
                 dots.Add(-aHalfWidth * mtdA.X + aHalfLength * mtdA.Z);
                 dots.Add(aHalfWidth * mtdA.X - aHalfLength * mtdA.Z);
@@ -2539,7 +2539,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //mtd is in the X-Y plane
                 //Perform an implicit dot with the edge location relative to the center.
                 //Find the two edges furthest in the direction of the mtdA.
-                var dots = new TinyList<float>();
+                TinyList<float> dots = new TinyList<float>();
                 dots.Add(-aHalfWidth * mtdA.X - aHalfHeight * mtdA.Y);
                 dots.Add(-aHalfWidth * mtdA.X + aHalfHeight * mtdA.Y);
                 dots.Add(aHalfWidth * mtdA.X - aHalfHeight * mtdA.Y);
@@ -2564,7 +2564,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //mtd is in the Y-Z plane.
                 //Perform an implicit dot with the edge location relative to the center.
                 //Find the two edges furthest in the direction of the mtdB.
-                var dots = new TinyList<float>();
+                TinyList<float> dots = new TinyList<float>();
                 dots.Add(-bHalfHeight * mtdB.Y - bHalfLength * mtdB.Z);
                 dots.Add(-bHalfHeight * mtdB.Y + bHalfLength * mtdB.Z);
                 dots.Add(bHalfHeight * mtdB.Y - bHalfLength * mtdB.Z);
@@ -2584,7 +2584,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //mtd is in the X-Z plane
                 //Perform an implicit dot with the edge location relative to the center.
                 //Find the two edges furthest in the direction of the mtdB.
-                var dots = new TinyList<float>();
+                TinyList<float> dots = new TinyList<float>();
                 dots.Add(-bHalfWidth * mtdB.X - bHalfLength * mtdB.Z);
                 dots.Add(-bHalfWidth * mtdB.X + bHalfLength * mtdB.Z);
                 dots.Add(bHalfWidth * mtdB.X - bHalfLength * mtdB.Z);
@@ -2604,7 +2604,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //mtd is in the X-Y plane
                 //Perform an implicit dot with the edge location relative to the center.
                 //Find the two edges furthest in the direction of the mtdB.
-                var dots = new TinyList<float>();
+                TinyList<float> dots = new TinyList<float>();
                 dots.Add(-bHalfWidth * mtdB.X - bHalfHeight * mtdB.Y);
                 dots.Add(-bHalfWidth * mtdB.X + bHalfHeight * mtdB.Y);
                 dots.Add(bHalfWidth * mtdB.X - bHalfHeight * mtdB.Y);
@@ -2756,7 +2756,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //0: plane with normal X
             //1: plane with normal Y
             //2: plane with normal Z
-            
+
             edgeStart = new Vector3();
             edgeEnd = new Vector3();
 
@@ -2915,10 +2915,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             out int secondHighestIndex)
         {
             highestIndex = 0;
-            var highestValue = dots[0];
-            for (var i = 1; i < 4; i++)
+            float highestValue = dots[0];
+            for (int i = 1; i < 4; i++)
             {
-                var dot = dots[i];
+                float dot = dots[i];
                 if (dot > highestValue)
                 {
                     highestIndex = i;
@@ -2927,10 +2927,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             secondHighestIndex = 0;
-            var secondHighestValue = -float.MaxValue;
-            for (var i = 0; i < 4; i++)
+            float secondHighestValue = -float.MaxValue;
+            for (int i = 0; i < 4; i++)
             {
-                var dot = dots[i];
+                float dot = dots[i];
                 if (i != highestIndex && dot > secondHighestValue)
                 {
                     secondHighestIndex = i;
@@ -2960,8 +2960,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3 r;
             Vector3.Subtract(ref p1, ref p2, out r);
             //distance
-            var a = d1.LengthSquared();
-            var e = d2.LengthSquared();
+            float a = d1.LengthSquared();
+            float e = d2.LengthSquared();
             float f;
             Vector3.Dot(ref d2, ref r, out f);
 
@@ -2989,7 +2989,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
             else
             {
-                var c = Vector3.Dot(d1, r);
+                float c = Vector3.Dot(d1, r);
                 if (e <= Toolbox.Epsilon)
                 {
                     // Second segment is basically a point.
@@ -2998,8 +2998,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 }
                 else
                 {
-                    var b = Vector3.Dot(d1, d2);
-                    var denom = a * e - b * b;
+                    float b = Vector3.Dot(d1, d2);
+                    float denom = a * e - b * b;
 
                     // If segments not parallel, compute closest point on L1 to L2, and
                     // clamp to segment S1. Else pick some s (here .5f)
@@ -3511,13 +3511,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             out TinyStructList<BoxContactData> contactData)
 #endif
         {
-            var aHalfWidth = a.halfWidth;
-            var aHalfHeight = a.halfHeight;
-            var aHalfLength = a.halfLength;
+            float aHalfWidth = a.halfWidth;
+            float aHalfHeight = a.halfHeight;
+            float aHalfLength = a.halfLength;
 
-            var bHalfWidth = b.halfWidth;
-            var bHalfHeight = b.halfHeight;
-            var bHalfLength = b.halfLength;
+            float bHalfWidth = b.halfWidth;
+            float bHalfHeight = b.halfHeight;
+            float bHalfLength = b.halfLength;
 
             BoxFace aBoxFace, bBoxFace;
 
@@ -3672,11 +3672,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         private static void PruneContactsMaxDistance(ref Vector3 mtd, TinyStructList<BoxContactData> input,
             out TinyStructList<BoxContactData> output)
         {
-            var count = input.Count;
+            int count = input.Count;
             //Find the deepest point.
             BoxContactData data, deepestData;
             input.Get(0, out deepestData);
-            for (var i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 input.Get(i, out data);
                 if (data.Depth > deepestData.Depth)
@@ -3690,7 +3690,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             input.Get(0, out furthestData);
             float furthestDistance;
             Vector3.DistanceSquared(ref deepestData.Position, ref furthestData.Position, out furthestDistance);
-            for (var i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 input.Get(i, out data);
                 float distance;
@@ -3716,7 +3716,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3.Dot(ref minData.Position, ref yAxis, out minY);
             maxY = minY;
-            for (var i = 1; i < count; i++)
+            for (int i = 1; i < count; i++)
             {
                 input.Get(i, out data);
                 float dot;
@@ -4583,13 +4583,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3 clipX, clipY;
             Vector3.Subtract(ref clipFace.V4, ref clipFace.V3, out clipX);
             Vector3.Subtract(ref clipFace.V2, ref clipFace.V3, out clipY);
-            var inverseClipWidth = 1 / clipFace.Width;
-            var inverseClipHeight = 1 / clipFace.Height;
-            var inverseClipWidthSquared = inverseClipWidth * inverseClipWidth;
+            float inverseClipWidth = 1 / clipFace.Width;
+            float inverseClipHeight = 1 / clipFace.Height;
+            float inverseClipWidthSquared = inverseClipWidth * inverseClipWidth;
             clipX.X *= inverseClipWidthSquared;
             clipX.Y *= inverseClipWidthSquared;
             clipX.Z *= inverseClipWidthSquared;
-            var inverseClipHeightSquared = inverseClipHeight * inverseClipHeight;
+            float inverseClipHeightSquared = inverseClipHeight * inverseClipHeight;
             clipY.X *= inverseClipHeightSquared;
             clipY.Y *= inverseClipHeightSquared;
             clipY.Z *= inverseClipHeightSquared;
@@ -4598,13 +4598,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3 faceX, faceY;
             Vector3.Subtract(ref face.V4, ref face.V3, out faceX);
             Vector3.Subtract(ref face.V2, ref face.V3, out faceY);
-            var inverseFaceWidth = 1 / face.Width;
-            var inverseFaceHeight = 1 / face.Height;
-            var inverseFaceWidthSquared = inverseFaceWidth * inverseFaceWidth;
+            float inverseFaceWidth = 1 / face.Width;
+            float inverseFaceHeight = 1 / face.Height;
+            float inverseFaceWidthSquared = inverseFaceWidth * inverseFaceWidth;
             faceX.X *= inverseFaceWidthSquared;
             faceX.Y *= inverseFaceWidthSquared;
             faceX.Z *= inverseFaceWidthSquared;
-            var inverseFaceHeightSquared = inverseFaceHeight * inverseFaceHeight;
+            float inverseFaceHeightSquared = inverseFaceHeight * inverseFaceHeight;
             faceY.X *= inverseFaceHeightSquared;
             faceY.Y *= inverseFaceHeightSquared;
             faceY.Z *= inverseFaceHeightSquared;
@@ -4631,23 +4631,23 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //Going from the center to the max or min goes half of the length of X edge, or +/- 0.5.
             //Bias could be added here.
             //const float extent = .5f; //.5f is the default, extra could be added for robustness or speed.
-            var extentX = .5f + .01f * inverseClipWidth;
-            var extentY = .5f + .01f * inverseClipHeight;
+            float extentX = .5f + .01f * inverseClipWidth;
+            float extentY = .5f + .01f * inverseClipHeight;
             //float extentX = .5f + .01f * inverseClipXLength;
             //float extentY = .5f + .01f * inverseClipYLength;
-            var clipCenterMaxX = clipCenterX + extentX;
-            var clipCenterMaxY = clipCenterY + extentY;
-            var clipCenterMinX = clipCenterX - extentX;
-            var clipCenterMinY = clipCenterY - extentY;
+            float clipCenterMaxX = clipCenterX + extentX;
+            float clipCenterMaxY = clipCenterY + extentY;
+            float clipCenterMinX = clipCenterX - extentX;
+            float clipCenterMinY = clipCenterY - extentY;
 
             extentX = .5f + .01f * inverseFaceWidth;
             extentY = .5f + .01f * inverseFaceHeight;
             //extentX = .5f + .01f * inverseFaceXLength;
             //extentY = .5f + .01f * inverseFaceYLength;
-            var faceCenterMaxX = faceCenterX + extentX;
-            var faceCenterMaxY = faceCenterY + extentY;
-            var faceCenterMinX = faceCenterX - extentX;
-            var faceCenterMinY = faceCenterY - extentY;
+            float faceCenterMaxX = faceCenterX + extentX;
+            float faceCenterMaxY = faceCenterY + extentY;
+            float faceCenterMinX = faceCenterX - extentX;
+            float faceCenterMinY = faceCenterY - extentY;
 
             //Find out where the opposing face is.
             float dotX, dotY;
@@ -4656,72 +4656,72 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             //Face v1
             Vector3.Dot(ref clipX, ref face.V1, out dotX);
-            var v1MaxXInside = dotX < clipCenterMaxX;
-            var v1MinXInside = dotX > clipCenterMinX;
+            bool v1MaxXInside = dotX < clipCenterMaxX;
+            bool v1MinXInside = dotX > clipCenterMinX;
             Vector3.Dot(ref clipY, ref face.V1, out dotY);
-            var v1MaxYInside = dotY < clipCenterMaxY;
-            var v1MinYInside = dotY > clipCenterMinY;
+            bool v1MaxYInside = dotY < clipCenterMaxY;
+            bool v1MinYInside = dotY > clipCenterMinY;
 
             //Face v2
             Vector3.Dot(ref clipX, ref face.V2, out dotX);
-            var v2MaxXInside = dotX < clipCenterMaxX;
-            var v2MinXInside = dotX > clipCenterMinX;
+            bool v2MaxXInside = dotX < clipCenterMaxX;
+            bool v2MinXInside = dotX > clipCenterMinX;
             Vector3.Dot(ref clipY, ref face.V2, out dotY);
-            var v2MaxYInside = dotY < clipCenterMaxY;
-            var v2MinYInside = dotY > clipCenterMinY;
+            bool v2MaxYInside = dotY < clipCenterMaxY;
+            bool v2MinYInside = dotY > clipCenterMinY;
 
             //Face v3
             Vector3.Dot(ref clipX, ref face.V3, out dotX);
-            var v3MaxXInside = dotX < clipCenterMaxX;
-            var v3MinXInside = dotX > clipCenterMinX;
+            bool v3MaxXInside = dotX < clipCenterMaxX;
+            bool v3MinXInside = dotX > clipCenterMinX;
             Vector3.Dot(ref clipY, ref face.V3, out dotY);
-            var v3MaxYInside = dotY < clipCenterMaxY;
-            var v3MinYInside = dotY > clipCenterMinY;
+            bool v3MaxYInside = dotY < clipCenterMaxY;
+            bool v3MinYInside = dotY > clipCenterMinY;
 
             //Face v4
             Vector3.Dot(ref clipX, ref face.V4, out dotX);
-            var v4MaxXInside = dotX < clipCenterMaxX;
-            var v4MinXInside = dotX > clipCenterMinX;
+            bool v4MaxXInside = dotX < clipCenterMaxX;
+            bool v4MinXInside = dotX > clipCenterMinX;
             Vector3.Dot(ref clipY, ref face.V4, out dotY);
-            var v4MaxYInside = dotY < clipCenterMaxY;
-            var v4MinYInside = dotY > clipCenterMinY;
+            bool v4MaxYInside = dotY < clipCenterMaxY;
+            bool v4MinYInside = dotY > clipCenterMinY;
 
             //Find out where the clip face is.
             //Clip v1
             Vector3.Dot(ref faceX, ref clipFace.V1, out dotX);
-            var clipv1MaxXInside = dotX < faceCenterMaxX;
-            var clipv1MinXInside = dotX > faceCenterMinX;
+            bool clipv1MaxXInside = dotX < faceCenterMaxX;
+            bool clipv1MinXInside = dotX > faceCenterMinX;
             Vector3.Dot(ref faceY, ref clipFace.V1, out dotY);
-            var clipv1MaxYInside = dotY < faceCenterMaxY;
-            var clipv1MinYInside = dotY > faceCenterMinY;
+            bool clipv1MaxYInside = dotY < faceCenterMaxY;
+            bool clipv1MinYInside = dotY > faceCenterMinY;
 
             //Clip v2
             Vector3.Dot(ref faceX, ref clipFace.V2, out dotX);
-            var clipv2MaxXInside = dotX < faceCenterMaxX;
-            var clipv2MinXInside = dotX > faceCenterMinX;
+            bool clipv2MaxXInside = dotX < faceCenterMaxX;
+            bool clipv2MinXInside = dotX > faceCenterMinX;
             Vector3.Dot(ref faceY, ref clipFace.V2, out dotY);
-            var clipv2MaxYInside = dotY < faceCenterMaxY;
-            var clipv2MinYInside = dotY > faceCenterMinY;
+            bool clipv2MaxYInside = dotY < faceCenterMaxY;
+            bool clipv2MinYInside = dotY > faceCenterMinY;
 
             //Clip v3
             Vector3.Dot(ref faceX, ref clipFace.V3, out dotX);
-            var clipv3MaxXInside = dotX < faceCenterMaxX;
-            var clipv3MinXInside = dotX > faceCenterMinX;
+            bool clipv3MaxXInside = dotX < faceCenterMaxX;
+            bool clipv3MinXInside = dotX > faceCenterMinX;
             Vector3.Dot(ref faceY, ref clipFace.V3, out dotY);
-            var clipv3MaxYInside = dotY < faceCenterMaxY;
-            var clipv3MinYInside = dotY > faceCenterMinY;
+            bool clipv3MaxYInside = dotY < faceCenterMaxY;
+            bool clipv3MinYInside = dotY > faceCenterMinY;
 
             //Clip v4
             Vector3.Dot(ref faceX, ref clipFace.V4, out dotX);
-            var clipv4MaxXInside = dotX < faceCenterMaxX;
-            var clipv4MinXInside = dotX > faceCenterMinX;
+            bool clipv4MaxXInside = dotX < faceCenterMaxX;
+            bool clipv4MinXInside = dotX > faceCenterMinX;
             Vector3.Dot(ref faceY, ref clipFace.V4, out dotY);
-            var clipv4MaxYInside = dotY < faceCenterMaxY;
-            var clipv4MinYInside = dotY > faceCenterMinY;
+            bool clipv4MaxYInside = dotY < faceCenterMaxY;
+            bool clipv4MinYInside = dotY > faceCenterMinY;
 
             #region Face Vertices
 
-            var item = new BoxContactData();
+            BoxContactData item = new BoxContactData();
             if (v1MinXInside && v1MaxXInside && v1MinYInside && v1MaxYInside)
             {
                 item.Position = face.V1;
@@ -4753,11 +4753,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             #endregion
 
             //Compute depths.
-            var tempData = contactData;
+            TinyStructList<BoxContactData> tempData = contactData;
             contactData.Clear();
             float clipFaceDot, faceDot;
             Vector3.Dot(ref clipFace.V1, ref mtd, out clipFaceDot);
-            for (var i = 0; i < tempData.Count; i++)
+            for (int i = 0; i < tempData.Count; i++)
             {
                 tempData.Get(i, out item);
                 Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -4768,7 +4768,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 }
             }
 
-            var previousCount = contactData.Count;
+            int previousCount = contactData.Count;
             if (previousCount >= 4) //Early finish :)
             {
                 return;
@@ -4823,15 +4823,15 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             #endregion
 
             //Compute depths.
-            var postClipCount = contactData.Count;
+            int postClipCount = contactData.Count;
             tempData = contactData;
-            for (var i = postClipCount - 1; i >= previousCount; i--) //TODO: >=?
+            for (int i = postClipCount - 1; i >= previousCount; i--) //TODO: >=?
             {
                 contactData.RemoveAt(i);
             }
 
 
-            for (var i = previousCount; i < tempData.Count; i++)
+            for (int i = previousCount; i < tempData.Count; i++)
             {
                 tempData.Get(i, out item);
                 Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -5354,12 +5354,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //Compute depths.
             postClipCount = contactData.Count;
             tempData = contactData;
-            for (var i = postClipCount - 1; i >= previousCount; i--)
+            for (int i = postClipCount - 1; i >= previousCount; i--)
             {
                 contactData.RemoveAt(i);
             }
 
-            for (var i = previousCount; i < tempData.Count; i++)
+            for (int i = previousCount; i < tempData.Count; i++)
             {
                 tempData.Get(i, out item);
                 Vector3.Dot(ref item.Position, ref mtd, out faceDot);
@@ -6113,7 +6113,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3.Dot(ref offset, ref clippingEdge.Perpendicular, out distanceToPlane);
             float edgeDirectionLength;
             Vector3.Dot(ref edgeDirection, ref clippingEdge.Perpendicular, out edgeDirectionLength);
-            var t = distanceToPlane / edgeDirectionLength;
+            float t = distanceToPlane / edgeDirectionLength;
             if (t < 0 || t > 1)
             {
                 //It's outside of the incoming edge!
@@ -6141,19 +6141,19 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         {
             boxFace = new BoxFace();
 
-            var xDot = orientation.M11 * mtd.X +
-                       orientation.M12 * mtd.Y +
-                       orientation.M13 * mtd.Z;
-            var yDot = orientation.M21 * mtd.X +
-                       orientation.M22 * mtd.Y +
-                       orientation.M23 * mtd.Z;
-            var zDot = orientation.M31 * mtd.X +
-                       orientation.M32 * mtd.Y +
-                       orientation.M33 * mtd.Z;
+            float xDot = orientation.M11 * mtd.X +
+                         orientation.M12 * mtd.Y +
+                         orientation.M13 * mtd.Z;
+            float yDot = orientation.M21 * mtd.X +
+                         orientation.M22 * mtd.Y +
+                         orientation.M23 * mtd.Z;
+            float zDot = orientation.M31 * mtd.X +
+                         orientation.M32 * mtd.Y +
+                         orientation.M33 * mtd.Z;
 
-            var absX = Math.Abs(xDot);
-            var absY = Math.Abs(yDot);
-            var absZ = Math.Abs(zDot);
+            float absX = Math.Abs(xDot);
+            float absY = Math.Abs(yDot);
+            float absZ = Math.Abs(zDot);
 
             Matrix worldTransform;
             Matrix3x3.ToMatrix4X4(ref orientation, out worldTransform);

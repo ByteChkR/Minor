@@ -58,11 +58,11 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="cellSize">Size of cells to determine redundancy.</param>
         public static void RemoveRedundantPoints(IList<Vector3> points, double cellSize)
         {
-            var rawPoints = CommonResources.GetVectorList();
+            RawList<Vector3> rawPoints = CommonResources.GetVectorList();
             rawPoints.AddRange(points);
             RemoveRedundantPoints(rawPoints, cellSize);
             points.Clear();
-            for (var i = 0; i < rawPoints.Count; ++i)
+            for (int i = 0; i < rawPoints.Count; ++i)
             {
                 points.Add(rawPoints.Elements[i]);
             }
@@ -86,11 +86,11 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="cellSize">Size of cells to determine redundancy.</param>
         public static void RemoveRedundantPoints(RawList<Vector3> points, double cellSize)
         {
-            var set = BlockedCellSets.Take();
-            for (var i = points.Count - 1; i >= 0; --i)
+            HashSet<BlockedCell> set = BlockedCellSets.Take();
+            for (int i = points.Count - 1; i >= 0; --i)
             {
-                var element = points.Elements[i];
-                var cell = new BlockedCell
+                Vector3 element = points.Elements[i];
+                BlockedCell cell = new BlockedCell
                 {
                     X = (int) Math.Floor(element.X / cellSize),
                     Y = (int) Math.Floor(element.Y / cellSize),

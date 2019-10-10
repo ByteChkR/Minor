@@ -7,7 +7,7 @@ namespace Engine.DataTypes
     /// <summary>
     /// A Data Type that is containing the information that is needed to store a Font in OpenGL
     /// </summary>
-    public class GameFont :IDisposable
+    public class GameFont : IDisposable
     {
         /// <summary>
         /// The Name of the Font. This is the key you can load Fonts by.
@@ -62,10 +62,11 @@ namespace Engine.DataTypes
         /// </summary>
         public void Dispose()
         {
-            foreach (var textCharacter in _fontAtlas)
+            foreach (KeyValuePair<char, TextCharacter> textCharacter in _fontAtlas)
             {
                 textCharacter.Value.Dispose();
             }
+
             _fontAtlas.Clear();
         }
     }

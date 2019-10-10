@@ -66,8 +66,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// <returns>The resulting bounce velocity of the impact.</returns>
         protected float ComputeBounceVelocity(float impactVelocity)
         {
-            var lowThreshold = bounceVelocityThreshold * 0.3f;
-            var velocityFraction =
+            float lowThreshold = bounceVelocityThreshold * 0.3f;
+            float velocityFraction =
                 MathHelper.Clamp(
                     (impactVelocity - lowThreshold) / (bounceVelocityThreshold - lowThreshold + Toolbox.Epsilon), 0, 1);
             return velocityFraction * impactVelocity * Bounciness;

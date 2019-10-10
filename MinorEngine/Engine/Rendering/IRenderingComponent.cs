@@ -1,5 +1,4 @@
-﻿
-using Engine.Rendering.Contexts;
+﻿using Engine.Rendering.Contexts;
 
 namespace Engine.Rendering
 {

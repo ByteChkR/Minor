@@ -36,7 +36,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         ///</summary>
         public override void CleanUp()
         {
-            foreach (var pair in subPairs.Values)
+            foreach (DetectorVolumePairHandler pair in subPairs.Values)
             {
                 pair.CleanUp();
             }
@@ -60,7 +60,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
                 if (!subPairs.ContainsKey(collidable))
                 {
-                    var newPair =
+                    DetectorVolumePairHandler newPair =
                         NarrowPhaseHelper.GetPairHandler(DetectorVolume, collidable, rule) as DetectorVolumePairHandler;
                     if (newPair != null)
                     {
@@ -84,7 +84,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             UpdateContainedPairs();
 
             //Eliminate old pairs.
-            foreach (var other in subPairs.Keys)
+            foreach (EntityCollidable other in subPairs.Keys)
             {
                 if (!containedPairs.Contains(other))
                 {
@@ -92,9 +92,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
             }
 
-            for (var i = 0; i < pairsToRemove.Count; i++)
+            for (int i = 0; i < pairsToRemove.Count; i++)
             {
-                var toReturn = subPairs[pairsToRemove.Elements[i]];
+                DetectorVolumePairHandler toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);
                 toReturn.CleanUp();
                 toReturn.Factory.GiveBack(toReturn);
@@ -109,11 +109,11 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             Touching = false;
             //Containing can be set to false by a single noncontaining or nontouching subpair.
             Containing = subPairs.Count > 0;
-            foreach (var pair in subPairs.Values)
+            foreach (DetectorVolumePairHandler pair in subPairs.Values)
             {
                 //For child convex pairs, we don't need to always perform containment checks.
                 //Only check if the containment state has not yet been invalidated or a touching state has not been identified.
-                var convexPair = pair as DetectorVolumeConvexPairHandler;
+                DetectorVolumeConvexPairHandler convexPair = pair as DetectorVolumeConvexPairHandler;
                 if (convexPair != null)
                 {
                     convexPair.CheckContainment = Containing || !Touching;

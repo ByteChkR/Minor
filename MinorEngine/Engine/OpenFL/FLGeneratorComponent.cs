@@ -9,7 +9,6 @@ using Engine.Rendering;
 
 namespace Engine.OpenFL
 {
-
     /// <summary>
     /// FLGeneratorComponent that implements a Demo usecase of OpenFL
     /// </summary>
@@ -29,6 +28,7 @@ namespace Engine.OpenFL
         /// The FL Interpreter
         /// </summary>
         private Interpreter _stepInterpreter;
+
         /// <summary>
         /// The Kernel Database that is used to provide the kernels that the interpreter uses
         /// </summary>
@@ -99,13 +99,13 @@ namespace Engine.OpenFL
         {
             Tex = TextureLoader.ParameterToTexture(width, height);
 
-            for (var i = 0; i < _previews.Count; i++)
+            for (int i = 0; i < _previews.Count; i++)
             {
                 _previews[i].Texture = Tex;
             }
 
 
-            var console =
+            DebugConsoleComponent console =
                 Owner.Scene.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
             console?.AddCommand("runfl", cmd_RunFL);
             console?.AddCommand("dbgfl", cmd_RunFLStepped);
@@ -121,7 +121,7 @@ namespace Engine.OpenFL
         /// </summary>
         protected override void OnDestroy()
         {
-            Tex=null;
+            Tex = null;
             _previews.Clear();
         }
 
@@ -141,10 +141,10 @@ namespace Engine.OpenFL
         /// <param name="filename">Path to the FL Script</param>
         public void RunOnObjImage(string filename)
         {
-            var buf = GetRendererTextureBuffer();
+            MemoryBuffer buf = GetRendererTextureBuffer();
 
-            var interpreter =
-                new Interpreter(filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
+            Interpreter interpreter =
+                new Interpreter(filename, buf, (int) Tex.Width, (int) Tex.Height, 1, 4, _db, true);
 
 
             do
@@ -153,7 +153,7 @@ namespace Engine.OpenFL
             } while (!interpreter.Terminated);
 
             byte[] retbuf = interpreter.GetResult<byte>();
-            TextureLoader.Update(Tex, retbuf, (int)Tex.Width, (int)Tex.Height);
+            TextureLoader.Update(Tex, retbuf, (int) Tex.Width, (int) Tex.Height);
         }
 
         /// <summary>
@@ -186,16 +186,16 @@ namespace Engine.OpenFL
                 return "Not in an active Debugging Session";
             }
 
-            var stepResult = _stepInterpreter.Step();
-            var res = stepResult.DebugBuffer;
+            Interpreter.InterpreterStepResult stepResult = _stepInterpreter.Step();
+            MemoryBuffer res = stepResult.DebugBuffer;
             if (_stepInterpreter.Terminated)
             {
                 _isInStepMode = false;
                 res = _stepInterpreter.GetResultBuffer();
             }
 
-            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(res, (int)res.Size), (int)Tex.Width,
-                (int)Tex.Height);
+            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width,
+                (int) Tex.Height);
 
             return stepResult.ToString();
         }
@@ -212,11 +212,11 @@ namespace Engine.OpenFL
                 return "No file specified.";
             }
 
-            var buf = GetRendererTextureBuffer();
+            MemoryBuffer buf = GetRendererTextureBuffer();
 
 
             _isInStepMode = true;
-            _stepInterpreter = new Interpreter(args[0], buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, false);
+            _stepInterpreter = new Interpreter(args[0], buf, (int) Tex.Width, (int) Tex.Height, 1, 4, _db, false);
 
             return "Debugging Session Started.";
         }

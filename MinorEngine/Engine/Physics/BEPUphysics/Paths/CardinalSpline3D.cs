@@ -44,11 +44,11 @@ namespace Engine.Physics.BEPUphysics.Paths
         protected override void ComputeTangents()
         {
             tangents.Add(Vector3.Zero);
-            for (var i = 1; i < ControlPoints.Count - 1; i++)
+            for (int i = 1; i < ControlPoints.Count - 1; i++)
             {
                 Vector3 tangent;
-                var previous = ControlPoints[i - 1].Value;
-                var next = ControlPoints[i + 1].Value;
+                Vector3 previous = ControlPoints[i - 1].Value;
+                Vector3 next = ControlPoints[i + 1].Value;
                 Vector3.Subtract(ref next, ref previous, out tangent);
                 Vector3.Multiply(ref tangent,
                     (float) ((1 - tension) / (ControlPoints[i + 1].Time - ControlPoints[i - 1].Time)), out tangent);

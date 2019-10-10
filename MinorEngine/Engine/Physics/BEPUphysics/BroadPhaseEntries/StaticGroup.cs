@@ -85,7 +85,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         public override bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
         {
             RayCastResult result;
-            var toReturn = Shape.RayCast(ray, maximumLength, out result);
+            bool toReturn = Shape.RayCast(ray, maximumLength, out result);
             rayHit = result.HitData;
             return toReturn;
         }
@@ -103,7 +103,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             out RayHit rayHit)
         {
             RayCastResult result;
-            var toReturn = Shape.RayCast(ray, maximumLength, filter, out result);
+            bool toReturn = Shape.RayCast(ray, maximumLength, filter, out result);
             rayHit = result.HitData;
             return toReturn;
         }
@@ -120,7 +120,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             out RayHit hit)
         {
             RayCastResult result;
-            var toReturn = Shape.ConvexCast(castShape, ref startingTransform, ref sweep, out result);
+            bool toReturn = Shape.ConvexCast(castShape, ref startingTransform, ref sweep, out result);
             hit = result.HitData;
             return toReturn;
         }
@@ -139,7 +139,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             Func<BroadPhaseEntry, bool> filter, out RayHit hit)
         {
             RayCastResult result;
-            var toReturn = Shape.ConvexCast(castShape, ref startingTransform, ref sweep, filter, out result);
+            bool toReturn = Shape.ConvexCast(castShape, ref startingTransform, ref sweep, filter, out result);
             hit = result.HitData;
             return toReturn;
         }

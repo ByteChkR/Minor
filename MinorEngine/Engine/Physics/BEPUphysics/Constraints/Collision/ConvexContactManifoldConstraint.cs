@@ -59,9 +59,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
 
             //Order matters in this adding process.  Sliding friction computes some information used by the twist friction, and both use penetration impulses.
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                var penetrationConstraint = new ContactPenetrationConstraint();
+                ContactPenetrationConstraint penetrationConstraint = new ContactPenetrationConstraint();
                 Add(penetrationConstraint);
                 penetrationConstraintPool.Push(penetrationConstraint);
             }
@@ -79,9 +79,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         {
             base.CleanUp();
             //Deactivate any remaining constraints.
-            for (var i = penetrationConstraints.Count - 1; i >= 0; i--)
+            for (int i = penetrationConstraints.Count - 1; i >= 0; i--)
             {
-                var penetrationConstraint = penetrationConstraints.Elements[i];
+                ContactPenetrationConstraint penetrationConstraint = penetrationConstraints.Elements[i];
                 penetrationConstraint.CleanUp();
                 penetrationConstraints.RemoveAt(i);
                 penetrationConstraintPool.Push(penetrationConstraint);
@@ -102,7 +102,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void AddContact(Contact contact)
         {
             contact.Validate();
-            var penetrationConstraint = penetrationConstraintPool.Pop();
+            ContactPenetrationConstraint penetrationConstraint = penetrationConstraintPool.Pop();
             penetrationConstraint.Setup(this, contact);
             penetrationConstraints.Add(penetrationConstraint);
             if (!twistFriction.isActive)
@@ -119,7 +119,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         ///<param name="contact">Contact to remove.</param>
         public override void RemoveContact(Contact contact)
         {
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 ContactPenetrationConstraint penetrationConstraint;
                 if ((penetrationConstraint = penetrationConstraints.Elements[i]).contact == contact)
@@ -155,7 +155,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public sealed override void Update(float dt)
         {
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 UpdateUpdateable(penetrationConstraints.Elements[i], dt);
             }
@@ -172,7 +172,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         /// </summary>
         public sealed override void ExclusiveUpdate()
         {
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 ExclusiveUpdateUpdateable(penetrationConstraints.Elements[i]);
             }
@@ -188,8 +188,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         /// <returns>The rough applied impulse magnitude.</returns>
         public sealed override float SolveIteration()
         {
-            var activeConstraints = 0;
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            int activeConstraints = 0;
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 SolveUpdateable(penetrationConstraints.Elements[i], ref activeConstraints);
             }

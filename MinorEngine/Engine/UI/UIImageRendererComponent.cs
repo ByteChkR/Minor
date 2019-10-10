@@ -6,13 +6,11 @@ using Engine.Rendering.Contexts;
 
 namespace Engine.UI
 {
-
     /// <summary>
     /// A Component that is rendering an image in camera space
     /// </summary>
     public class UIImageRendererComponent : UIElement
     {
-
         /// <summary>
         /// The backing field of the context
         /// </summary>
@@ -34,7 +32,6 @@ namespace Engine.UI
                 {
                     _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture,
                         WorldSpace, Alpha, Shader, RenderQueue);
-                    
                 }
                 else
                 {
@@ -71,7 +68,6 @@ namespace Engine.UI
             }
         }
 
-        
 
         /// <summary>
         /// public contstructor

@@ -168,13 +168,13 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         internal float ApplyImpulse()
         {
             //Compute relative velocity
-            var lambda = (RelativeVelocity
-                          - TargetSpeed) //Add in the extra goal speed
-                         * velocityToImpulse; //convert to impulse
+            float lambda = (RelativeVelocity
+                            - TargetSpeed) //Add in the extra goal speed
+                           * velocityToImpulse; //convert to impulse
 
 
             //Clamp accumulated impulse
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            float previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse += lambda;
             //Don't brake, and take into account the motor's maximum force.
             if (TargetSpeed > 0)
@@ -195,14 +195,14 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             }
 
             //Friction
-            var maxForce = BlendedCoefficient * Wheel.suspension.accumulatedImpulse;
+            float maxForce = BlendedCoefficient * Wheel.suspension.accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse, maxForce, -maxForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
 
 
             //Apply the impulse
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = lambda * linearAX;
             linear.Y = lambda * linearAY;
             linear.Z = lambda * linearAZ;
@@ -314,8 +314,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         internal void ExclusiveUpdate()
         {
             //Warm starting
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = accumulatedImpulse * linearAX;
             linear.Y = accumulatedImpulse * linearAY;
             linear.Z = accumulatedImpulse * linearAZ;

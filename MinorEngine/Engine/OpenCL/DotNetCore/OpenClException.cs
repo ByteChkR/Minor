@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -18,7 +17,9 @@ namespace Engine.OpenCL.DotNetCore
         /// <summary>
         /// Initializes a new <see cref="OpenClException"/> instance.
         /// </summary>
-        public OpenClException() { }
+        public OpenClException()
+        {
+        }
 
         /// <summary>
         /// Initializes a new <see cref="OpenClException"/> instance.
@@ -26,7 +27,7 @@ namespace Engine.OpenCL.DotNetCore
         /// <param name="result">The error code that was returned by OpenCL.</param>
         public OpenClException(Result result)
         {
-            this.Result = result;
+            Result = result;
         }
 
         /// <summary>
@@ -34,7 +35,9 @@ namespace Engine.OpenCL.DotNetCore
         /// </summary>
         /// <param name="message">An error message.</param>
         public OpenClException(string message)
-            : base(message) { }
+            : base(message)
+        {
+        }
 
         /// <summary>
         /// Initializes a new <see cref="OpenClException"/> instance.
@@ -44,7 +47,7 @@ namespace Engine.OpenCL.DotNetCore
         public OpenClException(string message, Result result)
             : base($"{message} Error code: {result}.")
         {
-            this.Result = result;
+            Result = result;
         }
 
         /// <summary>
@@ -53,7 +56,9 @@ namespace Engine.OpenCL.DotNetCore
         /// <param name="message">An error message.</param>
         /// <param name="inner">The inner exception, which is the root cause for this exception.</param>
         public OpenClException(string message, Exception inner)
-            : base(message, inner) { }
+            : base(message, inner)
+        {
+        }
 
         /// <summary>
         /// Initializes a new <see cref="OpenClException"/> instance.
@@ -64,7 +69,7 @@ namespace Engine.OpenCL.DotNetCore
         public OpenClException(string message, Exception inner, Result result)
             : base($"{message} Error code: {result}.", inner)
         {
-            this.Result = result;
+            Result = result;
         }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 
 namespace Engine.Physics.BEPUphysics.DataStructures
@@ -47,8 +48,8 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         ///<returns>Whether or not the ray hit the mesh.</returns>
         public bool RayCast(Ray ray, out int hitCount)
         {
-            var rayHits = CommonResources.GetRayHitList();
-            var toReturn = RayCast(ray, rayHits);
+            RawList<RayHit> rayHits = CommonResources.GetRayHitList();
+            bool toReturn = RayCast(ray, rayHits);
             hitCount = rayHits.Count;
             CommonResources.GiveBack(rayHits);
             return toReturn;
@@ -122,14 +123,14 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         ///<returns>Whether or not the ray hit the mesh.</returns>
         public bool RayCast(Ray ray, float maximumLength, TriangleSidedness sidedness, out RayHit rayHit)
         {
-            var rayHits = CommonResources.GetRayHitList();
-            var toReturn = RayCast(ray, maximumLength, sidedness, rayHits);
+            RawList<RayHit> rayHits = CommonResources.GetRayHitList();
+            bool toReturn = RayCast(ray, maximumLength, sidedness, rayHits);
             if (toReturn)
             {
                 rayHit = rayHits[0];
-                for (var i = 1; i < rayHits.Count; i++)
+                for (int i = 1; i < rayHits.Count; i++)
                 {
-                    var hit = rayHits[i];
+                    RayHit hit = rayHits[i];
                     if (hit.T < rayHit.T)
                     {
                         rayHit = hit;
@@ -167,9 +168,9 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         ///<returns>Whether or not the ray hit the mesh.</returns>
         public bool RayCast(Ray ray, float maximumLength, TriangleSidedness sidedness, IList<RayHit> hits)
         {
-            var hitElements = CommonResources.GetIntList();
+            RawList<int> hitElements = CommonResources.GetIntList();
             Tree.GetOverlaps(ray, maximumLength, hitElements);
-            for (var i = 0; i < hitElements.Count; i++)
+            for (int i = 0; i < hitElements.Count; i++)
             {
                 Vector3 v1, v2, v3;
                 data.GetTriangle(hitElements[i], out v1, out v2, out v3);

@@ -4,7 +4,6 @@ using System.Diagnostics;
 
 namespace Engine.Debug
 {
-
     /// <summary>
     /// Engine Stage information that holds all informations regarding a Stage in the engine
     /// </summary>
@@ -19,18 +18,22 @@ namespace Engine.Debug
         /// A property that indicates if the Current Stage info was finalized(e.g. it will not be updated again since the stage is over)
         /// </summary>
         public bool Finalized { get; private set; }
+
         /// <summary>
         /// The GC Collection at the start of the stage
         /// </summary>
         public long Before;
+
         /// <summary>
         /// The GC Collection at the end of the stage
         /// </summary>
         public long After;
+
         /// <summary>
         /// The GC Collection at the end of the stage after GC.Collect has been called.
         /// </summary>
         public long AfterGarbageCollection;
+
         /// <summary>
         /// The Timing information about the current stage
         /// </summary>
@@ -88,14 +91,14 @@ namespace Engine.Debug
         /// <returns></returns>
         public static string ToConsoleText(EngineStageInformation info, int depth)
         {
-            var ind = "\t";
-            for (var i = 0; i < depth; i++)
+            string ind = "\t";
+            for (int i = 0; i < depth; i++)
             {
                 ind += "\t";
             }
 
 
-            var ret = info.Name + "\n";
+            string ret = info.Name + "\n";
             ret += ind + "KB Used Before: " + info.Before + "\n";
             ret += ind + "KB Used After: " + info.After + "\n";
             ret += ind + "KB Used After(post GC): " + info.AfterGarbageCollection + "\n";
@@ -104,7 +107,7 @@ namespace Engine.Debug
             ret += ind + "Substeps: \n";
 
 
-            foreach (var stepMemoryInformation in info.SubStages)
+            foreach (EngineStageInformation stepMemoryInformation in info.SubStages)
             {
                 ret += ToConsoleText(stepMemoryInformation, depth + 1);
             }

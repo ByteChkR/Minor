@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -47,7 +46,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Devices
             [In] IntPtr platform,
             [In] [MarshalAs(UnmanagedType.U8)] DeviceType deviceType,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEntries,
-            [Out] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] devices,
+            [Out] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] devices,
             [Out] [MarshalAs(UnmanagedType.U4)] out uint numberOfDevicesReturned
         );
 
@@ -119,9 +119,11 @@ namespace Engine.OpenCL.DotNetCore.Interop.Devices
         [DllImport("OpenCL", EntryPoint = "clCreateSubDevices")]
         public static extern Result CreateSubDevices(
             [In] IntPtr inDevice,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] properties,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] properties,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [Out] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] outDevices,
+            [Out] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] outDevices,
             [Out] [MarshalAs(UnmanagedType.U4)] out uint numberOfDevicesReturned
         );
 

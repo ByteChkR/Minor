@@ -1,5 +1,7 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
+using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUutilities.DataStructures;
 
 namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -51,9 +53,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             //TODO: Static triangle meshes have a worldspace hierarchy that could be more efficiently traversed with a tree vs tree test.
             //This is just a lot simpler to manage in the short term.
 
-            var overlappedElements = PhysicsResources.GetCompoundChildList();
+            RawList<CompoundChild> overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh,
                     overlappedElements.Elements[i].Material, mesh.material);

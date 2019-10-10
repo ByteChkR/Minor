@@ -19,10 +19,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests
             //TODO: Could also refresh normals with some trickery.
             //Would also need to refresh depth using new normals, and would require some extra information.
 
-            for (var k = 0; k < contacts.Count; k++)
+            for (int k = 0; k < contacts.Count; k++)
             {
                 contacts.Elements[k].Validate();
-                var data = supplementData.Elements[k];
+                ContactSupplementData data = supplementData.Elements[k];
                 Vector3 newPosA, newPosB;
                 RigidTransform.Transform(ref data.LocalOffsetA, ref transformA, out newPosA);
                 RigidTransform.Transform(ref data.LocalOffsetB, ref transformB, out newPosB);

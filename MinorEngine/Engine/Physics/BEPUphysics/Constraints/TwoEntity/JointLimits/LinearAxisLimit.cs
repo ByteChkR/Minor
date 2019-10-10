@@ -307,7 +307,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             lambda *= massMatrix;
 
             //Clamp accumulated impulse (can't go negative)
-            var previousAccumulatedImpulse = TotalImpulse;
+            float previousAccumulatedImpulse = TotalImpulse;
             if (unadjustedError < 0)
             {
                 TotalImpulse = MathHelper.Min(TotalImpulse + lambda, 0);
@@ -355,7 +355,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             Matrix3x3.Transform(ref localAxis, ref connectionA.orientationMatrix, out worldAxis);
 
             //Compute error
-            var separation = new Vector3();
+            Vector3 separation = new Vector3();
             separation.X = worldAnchorB.X - worldAnchorA.X;
             separation.Y = worldAnchorB.Y - worldAnchorA.Y;
             separation.Z = worldAnchorB.Z - worldAnchorA.Z;

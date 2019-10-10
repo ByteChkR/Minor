@@ -61,7 +61,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             if (PairTester.GenerateContactCandidate(out contact))
             {
                 //Eliminate any old contacts which have normals which would fight with this new contact.
-                for (var i = 0; i < contacts.Count; ++i)
+                for (int i = 0; i < contacts.Count; ++i)
                 {
                     float normalDot;
                     Vector3.Dot(ref contacts.Elements[i].Normal, ref contact.Normal, out normalDot);
@@ -99,7 +99,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             else
             {
                 //No collision, clean out the manifold.
-                for (var i = contacts.Count - 1; i >= 0; i--)
+                for (int i = contacts.Count - 1; i >= 0; i--)
                 {
                     Remove(i);
                 }
@@ -129,7 +129,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         private bool IsContactUnique(ref ContactData contactCandidate)
         {
             contactCandidate.Validate();
-            for (var i = 0; i < contacts.Count; i++)
+            for (int i = 0; i < contacts.Count; i++)
             {
                 float distanceSquared;
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position,

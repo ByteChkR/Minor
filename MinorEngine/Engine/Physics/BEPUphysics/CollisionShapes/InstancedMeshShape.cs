@@ -45,14 +45,14 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         public void ComputeBoundingBox(ref AffineTransform transform, out BoundingBox boundingBox)
         {
             boundingBox = new BoundingBox();
-            var minX = float.MaxValue;
-            var minY = float.MaxValue;
-            var minZ = float.MaxValue;
+            float minX = float.MaxValue;
+            float minY = float.MaxValue;
+            float minZ = float.MaxValue;
 
-            var maxX = -float.MaxValue;
-            var maxY = -float.MaxValue;
-            var maxZ = -float.MaxValue;
-            for (var i = 0; i < triangleMesh.Data.vertices.Length; i++)
+            float maxX = -float.MaxValue;
+            float maxY = -float.MaxValue;
+            float maxZ = -float.MaxValue;
+            for (int i = 0; i < triangleMesh.Data.vertices.Length; i++)
             {
                 Vector3 vertex;
                 triangleMesh.Data.GetVertexPosition(i, out vertex);

@@ -35,7 +35,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         protected void RemoveQueuedContacts()
         {
             //TOREMOVE MUST BE SORTED LEAST TO GREATEST INDEX.
-            for (var i = contactIndicesToRemove.Count - 1; i >= 0; i--)
+            for (int i = contactIndicesToRemove.Count - 1; i >= 0; i--)
             {
                 Remove(contactIndicesToRemove.Elements[i]);
             }
@@ -45,7 +45,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
 
         protected virtual void Remove(int contactIndex)
         {
-            var removing = contacts.Elements[contactIndex];
+            Contact removing = contacts.Elements[contactIndex];
             contacts.FastRemoveAt(contactIndex);
             OnRemoved(removing);
             unusedContacts.GiveBack(removing);
@@ -53,7 +53,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
 
         protected virtual void Add(ref ContactData contactCandidate)
         {
-            var adding = unusedContacts.Take();
+            Contact adding = unusedContacts.Take();
             adding.Setup(ref contactCandidate);
             contacts.Add(adding);
             OnAdded(adding);
@@ -99,7 +99,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         ///</summary>
         public virtual void CleanUp()
         {
-            for (var i = contacts.Count - 1; i >= 0; --i)
+            for (int i = contacts.Count - 1; i >= 0; --i)
             {
                 unusedContacts.GiveBack(contacts.Elements[i]);
                 contacts.FastRemoveAt(i);
@@ -117,7 +117,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         /// </summary>
         public virtual void ClearContacts()
         {
-            for (var i = contacts.Count - 1; i >= 0; i--)
+            for (int i = contacts.Count - 1; i >= 0; i--)
             {
                 Remove(i);
             }

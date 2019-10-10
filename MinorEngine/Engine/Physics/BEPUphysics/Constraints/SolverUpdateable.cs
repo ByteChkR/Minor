@@ -99,7 +99,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         /// </summary>
         public void ActivateInvolvedEntities()
         {
-            for (var i = 0; i < involvedEntities.Count; i++)
+            for (int i = 0; i < involvedEntities.Count; i++)
             {
                 if (involvedEntities[i].isDynamic)
                 {
@@ -133,7 +133,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         /// </summary>
         public void EnterLock()
         {
-            for (var i = 0; i < numberOfInvolvedEntities; i++)
+            for (int i = 0; i < numberOfInvolvedEntities; i++)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                 {
@@ -148,7 +148,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         /// </summary>
         public void ExitLock()
         {
-            for (var i = numberOfInvolvedEntities - 1; i >= 0; i--)
+            for (int i = numberOfInvolvedEntities - 1; i >= 0; i--)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                 {
@@ -164,7 +164,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         /// <returns>True if the lock was entered successfully, false otherwise.</returns>
         public bool TryEnterLock()
         {
-            for (var i = 0; i < numberOfInvolvedEntities; i++)
+            for (int i = 0; i < numberOfInvolvedEntities; i++)
             {
                 if (involvedEntities.Elements[i].isDynamic) //Only need to lock dynamic entities.
                 {
@@ -196,9 +196,9 @@ namespace Engine.Physics.BEPUphysics.Constraints
                 //This is a simulation island connection.  We already know that all connected objects share the
                 //same simulation island (or don't have one, in the case of kinematics).  All we have to do is test to see if that island is active!
             {
-                for (var i = 0; i < simulationIslandConnection.entries.Count; i++)
+                for (int i = 0; i < simulationIslandConnection.entries.Count; i++)
                 {
-                    var island = simulationIslandConnection.entries.Elements[i].Member.SimulationIsland;
+                    SimulationIsland island = simulationIslandConnection.entries.Elements[i].Member.SimulationIsland;
                     if (island != null && island.isActive)
                     {
                         isActiveInSolver = true;
@@ -238,12 +238,12 @@ namespace Engine.Physics.BEPUphysics.Constraints
         protected internal virtual void OnInvolvedEntitiesChanged()
         {
             //First verify that something really changed.
-            var entitiesChanged = false;
-            var newInvolvedEntities = PhysicsResources.GetEntityRawList();
+            bool entitiesChanged = false;
+            RawList<Entity> newInvolvedEntities = PhysicsResources.GetEntityRawList();
             CollectInvolvedEntities(newInvolvedEntities);
             if (newInvolvedEntities.Count == involvedEntities.Count)
             {
-                for (var i = 0; i < newInvolvedEntities.Count; i++)
+                for (int i = 0; i < newInvolvedEntities.Count; i++)
                 {
                     if (newInvolvedEntities.Elements[i] != involvedEntities.Elements[i])
                     {
@@ -261,9 +261,9 @@ namespace Engine.Physics.BEPUphysics.Constraints
             {
                 //Probably need to wake things up given that such a significant change was made.
 
-                for (var i = 0; i < involvedEntities.Count; i++)
+                for (int i = 0; i < involvedEntities.Count; i++)
                 {
-                    var e = involvedEntities.Elements[i];
+                    Entity e = involvedEntities.Elements[i];
                     if (e.isDynamic)
                     {
                         e.activityInformation.Activate();
@@ -281,9 +281,9 @@ namespace Engine.Physics.BEPUphysics.Constraints
                 }
 
                 //We woke up the FORMER involved entities, now wake up the current involved entities.
-                for (var i = 0; i < involvedEntities.Count; i++)
+                for (int i = 0; i < involvedEntities.Count; i++)
                 {
-                    var e = involvedEntities.Elements[i];
+                    Entity e = involvedEntities.Elements[i];
                     if (e.isDynamic)
                     {
                         e.activityInformation.Activate();
@@ -327,7 +327,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         {
             //Since we're about to change this updateable's connections, make sure the 
             //simulation islands hear about it.  This is NOT thread safe.
-            var deactivationManager = simulationIslandConnection.DeactivationManager;
+            DeactivationManager deactivationManager = simulationIslandConnection.DeactivationManager;
 
             //Orphan the simulation island connection since it's about to get replaced.
             //There's three possible situations here:
@@ -357,7 +357,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
             //So create a new one!
             //Assume we've already dealt with the old connection.
             simulationIslandConnection = PhysicsResources.GetSimulationIslandConnection();
-            for (var i = 0; i < involvedEntities.Count; i++)
+            for (int i = 0; i < involvedEntities.Count; i++)
             {
                 simulationIslandConnection.Add(involvedEntities.Elements[i].activityInformation);
             }

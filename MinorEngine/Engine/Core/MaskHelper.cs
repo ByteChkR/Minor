@@ -23,8 +23,8 @@ namespace Engine.Core
                 return (mask & flag) == flag;
             }
 
-            var a = GetUniqueMasksSet(flag);
-            foreach (var f in a)
+            List<int> a = GetUniqueMasksSet(flag);
+            foreach (int f in a)
             {
                 if ((mask & f) == f)
                 {
@@ -47,10 +47,10 @@ namespace Engine.Core
                 return new List<int> {mask};
             }
 
-            var ret = new List<int>();
-            for (var i = 0; i < sizeof(int) * sizeof(byte); i++)
+            List<int> ret = new List<int>();
+            for (int i = 0; i < sizeof(int) * sizeof(byte); i++)
             {
-                var f = 1 << i;
+                int f = 1 << i;
                 if (IsContainedInMask(mask, f, true))
                 {
                     ret.Add(f);

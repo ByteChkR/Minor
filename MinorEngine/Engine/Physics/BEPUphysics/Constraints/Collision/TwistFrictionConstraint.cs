@@ -70,14 +70,14 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override float SolveIteration()
         {
             //Compute relative velocity.  Collisions can occur between an entity and a non-entity.  If it's not an entity, assume it's not moving.
-            var lambda = RelativeVelocity;
+            float lambda = RelativeVelocity;
 
             lambda *= velocityToImpulse; //convert to impulse
 
             //Clamp accumulated impulse
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            float previousAccumulatedImpulse = accumulatedImpulse;
             float maximumFrictionForce = 0;
-            for (var i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; i++)
             {
                 maximumFrictionForce += leverArms[i] *
                                         ContactManifoldConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
@@ -91,7 +91,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
 
             //Apply the impulse
-            var angular = new Vector3();
+            Vector3 angular = new Vector3();
             angular.X = lambda * angularX;
             angular.Y = lambda * angularY;
             angular.Z = lambda * angularZ;
@@ -123,7 +123,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             entityBDynamic = entityB != null && entityB.isDynamic;
 
             //Compute the jacobian......  Real hard!
-            var normal = ContactManifoldConstraint.penetrationConstraints.Elements[0].contact.Normal;
+            Vector3 normal = ContactManifoldConstraint.penetrationConstraints.Elements[0].contact.Normal;
             angularX = normal.X;
             angularY = normal.Y;
             angularZ = normal.Z;
@@ -167,9 +167,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
 
             //Compute the relative velocity to determine what kind of friction to use
-            var relativeAngularVelocity = RelativeVelocity;
+            float relativeAngularVelocity = RelativeVelocity;
             //Set up friction and find maximum friction force
-            var relativeSlidingVelocity = ContactManifoldConstraint.SlidingFriction.relativeVelocity;
+            Vector3 relativeSlidingVelocity = ContactManifoldConstraint.SlidingFriction.relativeVelocity;
             friction = Math.Abs(relativeAngularVelocity) > CollisionResponseSettings.StaticFrictionVelocityThreshold ||
                        Math.Abs(relativeSlidingVelocity.X) + Math.Abs(relativeSlidingVelocity.Y) +
                        Math.Abs(relativeSlidingVelocity.Z) > CollisionResponseSettings.StaticFrictionVelocityThreshold
@@ -180,7 +180,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             contactCount = ContactManifoldConstraint.penetrationConstraints.Count;
 
             Vector3 contactOffset;
-            for (var i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; i++)
             {
                 Vector3.Subtract(ref ContactManifoldConstraint.penetrationConstraints.Elements[i].contact.Position,
                     ref ContactManifoldConstraint.SlidingFriction.manifoldCenter, out contactOffset);
@@ -196,7 +196,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void ExclusiveUpdate()
         {
             //Apply the warmstarting impulse.
-            var angular = new Vector3();
+            Vector3 angular = new Vector3();
             angular.X = accumulatedImpulse * angularX;
             angular.Y = accumulatedImpulse * angularY;
             angular.Z = accumulatedImpulse * angularZ;

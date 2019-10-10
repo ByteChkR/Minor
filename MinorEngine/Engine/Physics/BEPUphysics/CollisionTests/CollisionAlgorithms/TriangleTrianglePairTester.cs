@@ -18,17 +18,17 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             {
                 //The triangle-convex pair test has already rejected contacts whose normals would violate the first triangle's sidedness.
                 //However, since it's a vanilla triangle-convex test, it doesn't know about the sidedness of the other triangle!
-                var shape = (TriangleShape) convex;
+                TriangleShape shape = (TriangleShape) convex;
                 Vector3 normal;
                 //Lots of recalculating ab-bc!
                 Vector3 ab, ac;
                 Vector3.Subtract(ref shape.vB, ref shape.vA, out ab);
                 Vector3.Subtract(ref shape.vC, ref shape.vA, out ac);
                 Vector3.Cross(ref ab, ref ac, out normal);
-                var sidedness = shape.sidedness;
+                TriangleSidedness sidedness = shape.sidedness;
                 if (sidedness != TriangleSidedness.DoubleSided)
                 {
-                    for (var i = contactList.Count - 1; i >= 0; i--)
+                    for (int i = contactList.Count - 1; i >= 0; i--)
                     {
                         ContactData item;
                         contactList.Get(i, out item);

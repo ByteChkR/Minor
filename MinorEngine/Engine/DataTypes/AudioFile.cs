@@ -3,7 +3,6 @@ using OpenTK.Audio.OpenAL;
 
 namespace Engine.DataTypes
 {
-
     /// <summary>
     /// A Data Type that is containing the information that is needed to reference a OpenAL Audio file.
     /// </summary>
@@ -24,7 +23,6 @@ namespace Engine.DataTypes
         }
 
 
-
         /// <summary>
         /// Disposable implementation to free the Buffer once it is no longer needed.
         /// </summary>
@@ -32,6 +30,5 @@ namespace Engine.DataTypes
         {
             AL.DeleteBuffer(Buffer);
         }
-
     }
 }

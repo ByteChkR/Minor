@@ -32,11 +32,11 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             get => isUpdatedSequentially;
             set
             {
-                var oldValue = isUpdatedSequentially;
+                bool oldValue = isUpdatedSequentially;
                 isUpdatedSequentially = value;
                 if (value != oldValue)
                 {
-                    for (var i = 0; i < managers.Count; i++)
+                    for (int i = 0; i < managers.Count; i++)
                     {
                         managers[i].SequentialUpdatingStateChanged(this);
                     }

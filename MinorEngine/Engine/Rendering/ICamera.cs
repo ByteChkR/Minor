@@ -22,6 +22,5 @@ namespace Engine.Rendering
         /// The view matrix of the Camera
         /// </summary>
         Matrix4 ViewMatrix { get; }
-
     }
 }

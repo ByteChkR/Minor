@@ -72,11 +72,11 @@ namespace Engine.Physics.BEPUik
             //Start a depth first search from each controlled bone to find any pinned bones.
             //All paths from the controlled bone to the pinned bones are 'stressed.'
             //Stressed bones are given greater mass later on.
-            foreach (var control in controls)
+            foreach (Control control in controls)
             {
                 //Paths connecting controls should be considered stressed just in case someone tries to pull things apart.
                 //Mark bones affected by controls so we can find them in the traversal.
-                foreach (var otherControl in controls)
+                foreach (Control otherControl in controls)
                 {
                     if (otherControl != control
                     ) //Don't include the current control; that could cause false positives for stress cycles.
@@ -90,7 +90,7 @@ namespace Engine.Physics.BEPUik
                 FindStressedPaths(control.TargetBone);
 
                 //We've analyzed the whole graph for this control. Clean up the bits we used.
-                foreach (var bone in bones)
+                foreach (Bone bone in bones)
                 {
                     bone.traversed = false;
                     bone.IsActive = false;
@@ -100,7 +100,7 @@ namespace Engine.Physics.BEPUik
                 bones.Clear();
 
                 //Get rid of the targetedByOtherControl markings.
-                foreach (var otherControl in controls)
+                foreach (Control otherControl in controls)
                 {
                     otherControl.TargetBone.targetedByOtherControl = false;
                 }
@@ -118,7 +118,7 @@ namespace Engine.Physics.BEPUik
             {
                 bone.traversed = true;
                 bone.stressCount++;
-                foreach (var predecessor in bone.predecessors)
+                foreach (Bone predecessor in bone.predecessors)
                 {
                     NotifyPredecessorsOfStress(predecessor);
                 }
@@ -129,9 +129,9 @@ namespace Engine.Physics.BEPUik
         {
             bone.IsActive = true; //We must keep track of which bones have been visited
             bones.Add(bone);
-            foreach (var joint in bone.joints)
+            foreach (IKJoint joint in bone.joints)
             {
-                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                 if (
                     bone.predecessors
                         .Contains(
@@ -190,7 +190,7 @@ namespace Engine.Physics.BEPUik
             if (!bone.unstressedCycle && bone.stressCount == 0)
             {
                 bone.unstressedCycle = true;
-                foreach (var predecessor in bone.predecessors)
+                foreach (Bone predecessor in bone.predecessors)
                 {
                     NotifyPredecessorsOfCycle(predecessor);
                 }
@@ -200,9 +200,9 @@ namespace Engine.Physics.BEPUik
         private void FindCycles(Bone bone)
         {
             //The current bone is known to not be stressed.
-            foreach (var joint in bone.joints)
+            foreach (IKJoint joint in bone.joints)
             {
-                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
 
                 if (bone.predecessors
                         .Contains(boneToAnalyze) || //Do not attempt to traverse a path which leads to this bone.
@@ -243,9 +243,9 @@ namespace Engine.Physics.BEPUik
         private void DistributeMass(Bone bone)
         {
             //Accumulate the number of child joints which we are going to distribute mass to.
-            foreach (var joint in bone.joints)
+            foreach (IKJoint joint in bone.joints)
             {
-                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
 
                 if (boneToAnalyze.traversed || boneToAnalyze.unstressedCycle ||
                     uniqueChildren.Contains(boneToAnalyze)
@@ -261,7 +261,7 @@ namespace Engine.Physics.BEPUik
             //We distribute a portion of the current bone's total mass to the child bones.
             //By applying a multiplier automassUnstressedFalloff, we guarantee that a chain has a certain maximum weight (excluding cycles).
             //This is thanks to the convergent geometric series sum(automassUnstressedFalloff^n, 1, infinity).
-            var massPerChild = uniqueChildren.Count > 0
+            float massPerChild = uniqueChildren.Count > 0
                 ? automassUnstressedFalloff * bone.Mass / uniqueChildren.Count
                 : 0;
 
@@ -270,9 +270,9 @@ namespace Engine.Physics.BEPUik
             //or bones which are members of unstressed cycles and will inherit the full parent weight. Don't have to worry about the 0 mass.)
 
             //The current bone is known to not be stressed.
-            foreach (var joint in bone.joints)
+            foreach (IKJoint joint in bone.joints)
             {
-                var boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                Bone boneToAnalyze = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                 //Note that no testing for pinned bones is necessary; based on the previous stressed path searches,
                 //any unstressed bone is known to not be a path to any pinned bones.
                 if (boneToAnalyze.traversed) // || bone.unstressedCycle)//bone.predecessors.Contains(boneToAnalyze))
@@ -322,7 +322,7 @@ namespace Engine.Physics.BEPUik
 
 
             //Perform a breadth-first search through the graph starting at the bones targeted by each control.
-            foreach (var control in controls)
+            foreach (Control control in controls)
             {
                 bonesToVisit.Enqueue(control.TargetBone);
                 //Note that a bone is added to the visited bone set before it is actually processed.
@@ -337,7 +337,7 @@ namespace Engine.Physics.BEPUik
             //The containment tests will stop it from adding in any redundant constraints as a result.
             while (bonesToVisit.Count > 0)
             {
-                var bone = bonesToVisit.Dequeue();
+                Bone bone = bonesToVisit.Dequeue();
                 if (bone.stressCount == 0)
                 {
                     bone.Mass = automassUnstressedFalloff;
@@ -352,9 +352,9 @@ namespace Engine.Physics.BEPUik
                 //The mass of stressed bones is a multiplier on the number of stressed paths overlapping the bone.
                 bone.Mass = bone.stressCount;
                 //This bone is not an unstressed branch root. Continue the breadth first search!
-                foreach (var joint in bone.joints)
+                foreach (IKJoint joint in bone.joints)
                 {
-                    var boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                    Bone boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                     if (!boneToAdd.Pinned && //Pinned bones act as dead ends! Don't try to traverse them.
                         !boneToAdd.IsActive) //Don't try to add a bone if it's already active.
                     {
@@ -372,8 +372,8 @@ namespace Engine.Physics.BEPUik
             }
 
             //Normalize the masses of objects so that the heaviest bones have AutomassTarget mass.
-            var lowestInverseMass = float.MaxValue;
-            foreach (var bone in bones)
+            float lowestInverseMass = float.MaxValue;
+            foreach (Bone bone in bones)
             {
                 if (bone.inverseMass < lowestInverseMass)
                 {
@@ -381,9 +381,9 @@ namespace Engine.Physics.BEPUik
                 }
             }
 
-            var inverseMassScale = 1 / (AutomassTarget * lowestInverseMass);
+            float inverseMassScale = 1 / (AutomassTarget * lowestInverseMass);
 
-            foreach (var bone in bones)
+            foreach (Bone bone in bones)
             {
                 //Normalize the mass to the AutomassTarget.
                 bone.inverseMass *= inverseMassScale;
@@ -404,7 +404,7 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public void Clear()
         {
-            for (var i = 0; i < bones.Count; i++)
+            for (int i = 0; i < bones.Count; i++)
             {
                 bones[i].IsActive = false;
                 bones[i].stressCount = 0;
@@ -412,7 +412,7 @@ namespace Engine.Physics.BEPUik
                 bones[i].Mass = .01f;
             }
 
-            for (var i = 0; i < joints.Count; i++)
+            for (int i = 0; i < joints.Count; i++)
             {
                 joints[i].IsActive = false;
             }
@@ -428,7 +428,7 @@ namespace Engine.Physics.BEPUik
             //Two IKSolvers cannot operate on the same graph; the active set flags could be corrupted.
             Clear();
 
-            for (var i = 0; i < joints.Count; ++i)
+            for (int i = 0; i < joints.Count; ++i)
             {
                 if (joints[i].Enabled)
                 {
@@ -452,7 +452,7 @@ namespace Engine.Physics.BEPUik
             //This could conceivably encounter issues with pathological cases, but we don't have controls to easily guide a better choice.
             if (UseAutomass)
             {
-                for (var i = 0; i < bones.Count; ++i)
+                for (int i = 0; i < bones.Count; ++i)
                 {
                     bones[i].Mass = automassTarget;
                 }
@@ -486,7 +486,7 @@ namespace Engine.Physics.BEPUik
             //While we have traversed the whole active set in the previous stressed/unstressed searches, we do not yet have a proper breadth-first constraint ordering available.
 
             //Perform a breadth-first search through the graph starting at the bones targeted by each control.
-            foreach (var control in controls)
+            foreach (Control control in controls)
             {
                 bonesToVisit.Enqueue(control.TargetBone);
                 //Note that a bone is added to the visited bone set before it is actually processed.
@@ -499,8 +499,8 @@ namespace Engine.Physics.BEPUik
             //The containment tests will stop it from adding in any redundant constraints as a result.
             while (bonesToVisit.Count > 0)
             {
-                var bone = bonesToVisit.Dequeue();
-                foreach (var joint in bone.joints)
+                Bone bone = bonesToVisit.Dequeue();
+                foreach (IKJoint joint in bone.joints)
                 {
                     if (!joint.IsActive)
                     {
@@ -509,7 +509,7 @@ namespace Engine.Physics.BEPUik
                         joints.Add(joint);
                     }
 
-                    var boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
+                    Bone boneToAdd = joint.ConnectionA == bone ? joint.ConnectionB : joint.ConnectionA;
                     if (!boneToAdd.Pinned && //Pinned bones act as dead ends! Don't try to traverse them.
                         !boneToAdd.IsActive) //Don't try to add a bone if it's already active.
                     {

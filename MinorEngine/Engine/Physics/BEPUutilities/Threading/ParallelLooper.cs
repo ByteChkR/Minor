@@ -30,7 +30,7 @@ namespace Engine.Physics.BEPUutilities.Threading
         /// per individual task.
         /// </summary>
         public int MaximumIterationsPerTask { get; set; } = 80;
-        
+
         internal int jobIndex;
         internal int maxJobIndex;
 
@@ -101,16 +101,16 @@ namespace Engine.Physics.BEPUutilities.Threading
             workerCount = workers.Count;
 
             //TODO: The job splitting could be tuned possibly.
-            var iterationCount = endIndex - beginIndex;
-            var tasksPerThread = Math.Max(MinimumTasksPerThread, iterationCount / MaximumIterationsPerTask);
-            var taskSubdivisions = workerCount * tasksPerThread;
+            int iterationCount = endIndex - beginIndex;
+            int tasksPerThread = Math.Max(MinimumTasksPerThread, iterationCount / MaximumIterationsPerTask);
+            int taskSubdivisions = workerCount * tasksPerThread;
 
             currentBeginIndex = beginIndex;
             currentEndIndex = endIndex;
             currentLoopBody = loopBody;
             iterationsPerSteal = Math.Max(1, iterationCount / taskSubdivisions);
             jobIndex = 0;
-            var maxJobs = iterationCount / (float) iterationsPerSteal;
+            float maxJobs = iterationCount / (float) iterationsPerSteal;
             if (maxJobs % 1 == 0)
             {
                 maxJobIndex = (int) maxJobs;
@@ -120,7 +120,7 @@ namespace Engine.Physics.BEPUutilities.Threading
                 maxJobIndex = 1 + (int) maxJobs;
             }
 
-            for (var i = 0; i < workers.Count; i++)
+            for (int i = 0; i < workers.Count; i++)
             {
                 workers[i].finalIndex = endIndex;
                 workers[i].iterationsPerSteal = iterationsPerSteal;

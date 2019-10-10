@@ -144,9 +144,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             ConvexShapeDescription description;
             description.EntityShapeVolume.Volume = width * height * length;
 
-            var widthSquared = width * width;
-            var heightSquared = height * height;
-            var lengthSquared = length * length;
+            float widthSquared = width * width;
+            float heightSquared = height * height;
+            float lengthSquared = length * length;
             const float inv12 = 1 / 12f;
 
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
@@ -175,13 +175,13 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             Matrix3x3.CreateFromQuaternion(ref shapeTransform.Orientation, out o);
             //Sample the local directions from the orientation matrix, implicitly transposed.
             //Notice only three directions are used.  Due to box symmetry, 'left' is just -right.
-            var right = new Vector3(Math.Sign(o.M11) * halfWidth, Math.Sign(o.M21) * halfHeight,
+            Vector3 right = new Vector3(Math.Sign(o.M11) * halfWidth, Math.Sign(o.M21) * halfHeight,
                 Math.Sign(o.M31) * halfLength);
 
-            var up = new Vector3(Math.Sign(o.M12) * halfWidth, Math.Sign(o.M22) * halfHeight,
+            Vector3 up = new Vector3(Math.Sign(o.M12) * halfWidth, Math.Sign(o.M22) * halfHeight,
                 Math.Sign(o.M32) * halfLength);
 
-            var backward = new Vector3(Math.Sign(o.M13) * halfWidth, Math.Sign(o.M23) * halfHeight,
+            Vector3 backward = new Vector3(Math.Sign(o.M13) * halfWidth, Math.Sign(o.M23) * halfHeight,
                 Math.Sign(o.M33) * halfLength);
 
 
@@ -227,7 +227,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             Quaternion.Transform(ref localOrigin, ref conjugate, out localOrigin);
             Vector3 localDirection;
             Quaternion.Transform(ref ray.Direction, ref conjugate, out localDirection);
-            var normal = Toolbox.ZeroVector;
+            Vector3 normal = Toolbox.ZeroVector;
             float temp, tmin = 0, tmax = maximumLength;
 
             if (Math.Abs(localDirection.X) < Toolbox.Epsilon &&
@@ -236,10 +236,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 return false;
             }
 
-            var inverseDirection = 1 / localDirection.X;
-            var t1 = (-halfWidth - localOrigin.X) * inverseDirection;
-            var t2 = (halfWidth - localOrigin.X) * inverseDirection;
-            var tempNormal = new Vector3(-1, 0, 0);
+            float inverseDirection = 1 / localDirection.X;
+            float t1 = (-halfWidth - localOrigin.X) * inverseDirection;
+            float t2 = (halfWidth - localOrigin.X) * inverseDirection;
+            Vector3 tempNormal = new Vector3(-1, 0, 0);
             if (t1 > t2)
             {
                 temp = t1;

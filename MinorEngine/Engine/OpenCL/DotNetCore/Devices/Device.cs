@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -43,9 +42,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.name))
-                    this.name = this.GetDeviceInformation<string>(DeviceInformation.Name);
-                return this.name;
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = GetDeviceInformation<string>(DeviceInformation.Name);
+                }
+
+                return name;
             }
         }
 
@@ -61,9 +63,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.vendor))
-                    this.vendor = this.GetDeviceInformation<string>(DeviceInformation.Vendor);
-                return this.vendor;
+                if (string.IsNullOrWhiteSpace(vendor))
+                {
+                    vendor = GetDeviceInformation<string>(DeviceInformation.Vendor);
+                }
+
+                return vendor;
             }
         }
 
@@ -79,9 +84,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.driverVersion))
-                    this.driverVersion = this.GetDeviceInformation<string>(DeviceInformation.DriverVersion);
-                return this.driverVersion;
+                if (string.IsNullOrWhiteSpace(driverVersion))
+                {
+                    driverVersion = GetDeviceInformation<string>(DeviceInformation.DriverVersion);
+                }
+
+                return driverVersion;
             }
         }
 
@@ -97,9 +105,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (!this.globalMemorySize.HasValue)
-                    this.globalMemorySize = (long)this.GetDeviceInformation<ulong>(DeviceInformation.GlobalMemorySize);
-                return this.globalMemorySize.Value;
+                if (!globalMemorySize.HasValue)
+                {
+                    globalMemorySize = (long) GetDeviceInformation<ulong>(DeviceInformation.GlobalMemorySize);
+                }
+
+                return globalMemorySize.Value;
             }
         }
 
@@ -115,9 +126,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (!this.addressBits.HasValue)
-                    this.addressBits = (int)this.GetDeviceInformation<uint>(DeviceInformation.AddressBits);
-                return this.addressBits.Value;
+                if (!addressBits.HasValue)
+                {
+                    addressBits = (int) GetDeviceInformation<uint>(DeviceInformation.AddressBits);
+                }
+
+                return addressBits.Value;
             }
         }
 
@@ -133,9 +147,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (!this.maximumClockFrequency.HasValue)
-                    this.maximumClockFrequency = (int)this.GetDeviceInformation<uint>(DeviceInformation.MaximumClockFrequency);
-                return this.maximumClockFrequency.Value;
+                if (!maximumClockFrequency.HasValue)
+                {
+                    maximumClockFrequency = (int) GetDeviceInformation<uint>(DeviceInformation.MaximumClockFrequency);
+                }
+
+                return maximumClockFrequency.Value;
             }
         }
 
@@ -151,9 +168,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (!this.isAvailable.HasValue)
-                    this.isAvailable = this.GetDeviceInformation<uint>(DeviceInformation.Available) == 1;
-                return this.isAvailable.Value;
+                if (!isAvailable.HasValue)
+                {
+                    isAvailable = GetDeviceInformation<uint>(DeviceInformation.Available) == 1;
+                }
+
+                return isAvailable.Value;
             }
         }
 
@@ -169,9 +189,12 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             get
             {
-                if (this.builtInKernels == null)
-                    this.builtInKernels = this.GetDeviceInformation<string>(DeviceInformation.BuiltInKernels).Split(';').ToList();
-                return this.builtInKernels;
+                if (builtInKernels == null)
+                {
+                    builtInKernels = GetDeviceInformation<string>(DeviceInformation.BuiltInKernels).Split(';').ToList();
+                }
+
+                return builtInKernels;
             }
         }
 
@@ -190,22 +213,29 @@ namespace Engine.OpenCL.DotNetCore.Devices
         {
             // Retrieves the size of the return value in bytes, this is used to later get the full information
             UIntPtr returnValueSize;
-            Result result = DevicesNativeApi.GetDeviceInformation(this.Handle, deviceInformation, UIntPtr.Zero, null, out returnValueSize);
+            Result result =
+                DevicesNativeApi.GetDeviceInformation(Handle, deviceInformation, UIntPtr.Zero, null,
+                    out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The device information could not be retrieved.", result);
-            
+            }
+
             // Allocates enough memory for the return value and retrieves it
             byte[] output = new byte[returnValueSize.ToUInt32()];
-            result = DevicesNativeApi.GetDeviceInformation(this.Handle, deviceInformation, new UIntPtr((uint)output.Length), output, out returnValueSize);
+            result = DevicesNativeApi.GetDeviceInformation(Handle, deviceInformation, new UIntPtr((uint) output.Length),
+                output, out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The device information could not be retrieved.", result);
+            }
 
             // Returns the output
             return InteropConverter.To<T>(output);
         }
 
         #endregion
-        
+
         #region IDisposable Implementation
 
         /// <summary>
@@ -215,8 +245,10 @@ namespace Engine.OpenCL.DotNetCore.Devices
         protected override void Dispose(bool disposing)
         {
             // Checks if the device has already been disposed of, if not, then the device is disposed of
-            if (!this.IsDisposed)
-                DevicesNativeApi.ReleaseDevice(this.Handle);
+            if (!IsDisposed)
+            {
+                DevicesNativeApi.ReleaseDevice(Handle);
+            }
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);

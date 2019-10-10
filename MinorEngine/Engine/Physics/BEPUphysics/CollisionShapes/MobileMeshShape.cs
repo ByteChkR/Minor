@@ -120,8 +120,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             MobileMeshSolidity solidity)
         {
             this.solidity = solidity;
-            var data = new TransformableMeshData(vertices, indices, localTransform);
-            var shapeDistributionInformation = ComputeVolumeDistribution(data);
+            TransformableMeshData data = new TransformableMeshData(vertices, indices, localTransform);
+            ShapeDistributionInformation shapeDistributionInformation = ComputeVolumeDistribution(data);
             data.worldTransform.Translation -= shapeDistributionInformation.Center;
 
             TriangleMesh = new TriangleMesh(data);
@@ -149,8 +149,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             MobileMeshSolidity solidity, out Vector3 center)
         {
             this.solidity = solidity;
-            var data = new TransformableMeshData(vertices, indices, localTransform);
-            var shapeDistributionInformation = ComputeVolumeDistribution(data);
+            TransformableMeshData data = new TransformableMeshData(vertices, indices, localTransform);
+            ShapeDistributionInformation shapeDistributionInformation = ComputeVolumeDistribution(data);
             data.worldTransform.Translation -= shapeDistributionInformation.Center;
             center = shapeDistributionInformation.Center;
 
@@ -209,13 +209,13 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         /// <returns>Whether or not the ray origin was in the mesh.</returns>
         public bool IsLocalRayOriginInMesh(ref Ray ray, out RayHit hit)
         {
-            var overlapList = CommonResources.GetIntList();
+            RawList<int> overlapList = CommonResources.GetIntList();
             hit = new RayHit();
             hit.T = float.MaxValue;
             if (TriangleMesh.Tree.GetOverlaps(ray, overlapList))
             {
-                var minimumClockwise = false;
-                for (var i = 0; i < overlapList.Count; i++)
+                bool minimumClockwise = false;
+                for (int i = 0; i < overlapList.Count; i++)
                 {
                     Vector3 vA, vB, vC;
                     TriangleMesh.Data.GetTriangle(overlapList[i], out vA, out vB, out vC);
@@ -249,7 +249,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
         internal bool IsHitUnique(RawList<RayHit> hits, ref RayHit hit)
         {
-            for (var i = 0; i < hits.Count; i++)
+            for (int i = 0; i < hits.Count; i++)
             {
                 if (Math.Abs(hits.Elements[i].T - hit.T) < MeshHitUniquenessThreshold)
                 {
@@ -276,7 +276,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
             //Pick a ray direction that goes to a random location on the mesh.  
             //A vertex would work, but targeting the middle of a triangle avoids some edge cases.
-            var ray = new Ray();
+            Ray ray = new Ray();
             Vector3 vA, vB, vC;
             TriangleMesh.Data.GetTriangle(TriangleMesh.Data.indices.Length / 3 / 2 * 3, out vA, out vB, out vC);
             ray.Direction = (vA + vB + vC) / 3;
@@ -290,17 +290,17 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         private TriangleSidedness ComputeSolidSidednessHelper(Ray ray)
         {
             TriangleSidedness toReturn;
-            var hitList = CommonResources.GetIntList();
+            RawList<int> hitList = CommonResources.GetIntList();
             if (TriangleMesh.Tree.GetOverlaps(ray, hitList))
             {
                 Vector3 vA, vB, vC;
-                var hits = CommonResources.GetRayHitList();
+                RawList<RayHit> hits = CommonResources.GetRayHitList();
                 //Identify the first and last hits.
-                var minimum = 0;
-                var maximum = 0;
-                var minimumT = float.MaxValue;
+                int minimum = 0;
+                int maximum = 0;
+                float minimumT = float.MaxValue;
                 float maximumT = -1;
-                for (var i = 0; i < hitList.Count; i++)
+                for (int i = 0; i < hitList.Count; i++)
                 {
                     TriangleMesh.Data.GetTriangle(hitList[i], out vA, out vB, out vC);
                     RayHit hit;
@@ -328,7 +328,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                     //such that it faces towards us.
 
                     TriangleMesh.Data.GetTriangle(minimum, out vA, out vB, out vC);
-                    var normal = Vector3.Cross(vA - vB, vA - vC);
+                    Vector3 normal = Vector3.Cross(vA - vB, vA - vC);
                     if (Vector3.Dot(normal, ray.Direction) < 0)
                     {
                         toReturn = TriangleSidedness.Clockwise;
@@ -344,7 +344,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                     //such that it faces away from us.
 
                     TriangleMesh.Data.GetTriangle(maximum, out vA, out vB, out vC);
-                    var normal = Vector3.Cross(vA - vB, vA - vC);
+                    Vector3 normal = Vector3.Cross(vA - vB, vA - vC);
                     if (Vector3.Dot(normal, ray.Direction) < 0)
                     {
                         toReturn = TriangleSidedness.Counterclockwise;
@@ -372,11 +372,11 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             if (Volume > 0)
             {
                 ConvexHullHelper.GetConvexHull(TriangleMesh.Data.vertices, hullVertices);
-                var transformableData = TriangleMesh.Data as TransformableMeshData;
+                TransformableMeshData transformableData = TriangleMesh.Data as TransformableMeshData;
                 if (transformableData != null)
                 {
-                    var transform = transformableData.worldTransform;
-                    for (var i = 0; i < hullVertices.Count; i++)
+                    AffineTransform transform = transformableData.worldTransform;
+                    for (int i = 0; i < hullVertices.Count; i++)
                     {
                         AffineTransform.Transform(ref hullVertices.Elements[i], ref transform,
                             out hullVertices.Elements[i]);
@@ -388,8 +388,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 hullVertices.Clear();
                 //A mobile mesh is allowed to have zero volume, so long as it isn't solid.
                 //In this case, compute the bounding box of all points.
-                var box = new BoundingBox();
-                for (var i = 0; i < TriangleMesh.Data.vertices.Length; i++)
+                BoundingBox box = new BoundingBox();
+                for (int i = 0; i < TriangleMesh.Data.vertices.Length; i++)
                 {
                     Vector3 v;
                     TriangleMesh.Data.GetVertexPosition(i, out v);
@@ -448,14 +448,14 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             if (solidity == MobileMeshSolidity.Solid)
             {
                 //The following inertia tensor calculation assumes a closed mesh.
-                var transformedVertices = CommonResources.GetVectorList();
+                RawList<Vector3> transformedVertices = CommonResources.GetVectorList();
                 if (transformedVertices.Capacity < data.vertices.Length)
                 {
                     transformedVertices.Capacity = data.vertices.Length;
                 }
 
                 transformedVertices.Count = data.vertices.Length;
-                for (var i = 0; i < data.vertices.Length; ++i)
+                for (int i = 0; i < data.vertices.Length; ++i)
                 {
                     data.GetVertexPosition(i, out transformedVertices.Elements[i]);
                 }
@@ -474,7 +474,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             shapeInformation.Center = new Vector3();
             shapeInformation.VolumeDistribution = new Matrix3x3();
             float totalWeight = 0;
-            for (var i = 0; i < data.indices.Length; i += 3)
+            for (int i = 0; i < data.indices.Length; i += 3)
             {
                 //Compute the center contribution.
                 Vector3 vA, vB, vC;
@@ -485,10 +485,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 Vector3.Subtract(ref vC, ref vA, out vAvC);
                 Vector3 cross;
                 Vector3.Cross(ref vAvB, ref vAvC, out cross);
-                var weight = cross.Length();
+                float weight = cross.Length();
                 totalWeight += weight;
 
-                var perVertexWeight = weight * (1f / 3f);
+                float perVertexWeight = weight * (1f / 3f);
                 shapeInformation.Center += perVertexWeight * (vA + vB + vC);
 
                 //Compute the inertia contribution of this triangle.
@@ -530,9 +530,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         {
             boundingBox = new BoundingBox();
             //Sample the local directions from the matrix, implicitly transposed.
-            var rightDirection = new Vector3(o.M11, o.M21, o.M31);
-            var upDirection = new Vector3(o.M12, o.M22, o.M32);
-            var backDirection = new Vector3(o.M13, o.M23, o.M33);
+            Vector3 rightDirection = new Vector3(o.M11, o.M21, o.M31);
+            Vector3 upDirection = new Vector3(o.M12, o.M22, o.M32);
+            Vector3 backDirection = new Vector3(o.M13, o.M23, o.M33);
 
             int right = 0, left = 0, up = 0, down = 0, backward = 0, forward = 0;
             float minX = float.MaxValue,
@@ -542,7 +542,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 minZ = float.MaxValue,
                 maxZ = -float.MaxValue;
 
-            for (var i = 0; i < hullVertices.Count; i++)
+            for (int i = 0; i < hullVertices.Count; i++)
             {
                 float dotX, dotY, dotZ;
                 Vector3.Dot(ref rightDirection, ref hullVertices.Elements[i], out dotX);
@@ -593,12 +593,12 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             Vector3.Multiply(ref backDirection, meshCollisionMargin / (float) Math.Sqrt(backDirection.Length()),
                 out backDirection);
 
-            var rightElement = hullVertices.Elements[right];
-            var leftElement = hullVertices.Elements[left];
-            var upElement = hullVertices.Elements[up];
-            var downElement = hullVertices.Elements[down];
-            var backwardElement = hullVertices.Elements[backward];
-            var forwardElement = hullVertices.Elements[forward];
+            Vector3 rightElement = hullVertices.Elements[right];
+            Vector3 leftElement = hullVertices.Elements[left];
+            Vector3 upElement = hullVertices.Elements[up];
+            Vector3 downElement = hullVertices.Elements[down];
+            Vector3 backwardElement = hullVertices.Elements[backward];
+            Vector3 forwardElement = hullVertices.Elements[forward];
             Vector3.Add(ref rightElement, ref rightDirection, out rightElement);
             Vector3.Subtract(ref leftElement, ref rightDirection, out leftElement);
             Vector3.Add(ref upElement, ref upDirection, out upElement);

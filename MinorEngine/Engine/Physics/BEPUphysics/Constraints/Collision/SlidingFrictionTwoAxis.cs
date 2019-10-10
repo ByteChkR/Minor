@@ -105,8 +105,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
                 //float dvz = entityA.linearVelocity.Z + (entityA.angularVelocity.X * ra.Y) - (entityA.angularVelocity.Y * ra.X)
                 //            - entityB.linearVelocity.Z - (entityB.angularVelocity.X * rb.Y) + (entityB.angularVelocity.Y * rb.X);
-                
-                var lambda = new Vector2();
+
+                Vector2 lambda = new Vector2();
                 lambda.X = dvx * linearA.M11 + dvy * linearA.M12 + dvz * linearA.M13;
                 lambda.Y = dvx * linearA.M21 + dvy * linearA.M22 + dvz * linearA.M23;
                 return lambda;
@@ -141,21 +141,21 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         /// <returns>The rough applied impulse magnitude.</returns>
         public override float SolveIteration()
         {
-            var lambda = RelativeVelocity;
+            Vector2 lambda = RelativeVelocity;
 
             //Convert to impulse
             //Matrix2x2.Transform(ref lambda, ref velocityToImpulse, out lambda);
-            var x = lambda.X;
+            float x = lambda.X;
             lambda.X = x * velocityToImpulse.M11 + lambda.Y * velocityToImpulse.M21;
             lambda.Y = x * velocityToImpulse.M12 + lambda.Y * velocityToImpulse.M22;
 
             //Accumulate and clamp
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            Vector2 previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse.X += lambda.X;
             accumulatedImpulse.Y += lambda.Y;
-            var length = accumulatedImpulse.LengthSquared();
+            float length = accumulatedImpulse.LengthSquared();
             float maximumFrictionForce = 0;
-            for (var i = 0; i < contactCount; i++)
+            for (int i = 0; i < contactCount; i++)
             {
                 maximumFrictionForce += ContactManifoldConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
             }
@@ -185,8 +185,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             //lambda.Y = accumulatedImpulse.Y - previousAccumulatedImpulse;
 
             //Apply impulse
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             //Matrix2x3.Transform(ref lambda, ref linearA, out linear);
             linear.X = lambda.X * linearA.M11 + lambda.Y * linearA.M21;
             linear.Y = lambda.X * linearA.M12 + lambda.Y * linearA.M22;
@@ -303,19 +303,19 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             Vector3.Subtract(ref velocityA, ref velocityB, out relativeVelocity);
 
             //Get rid of the normal velocity.
-            var normal = ContactManifoldConstraint.penetrationConstraints.Elements[0].contact.Normal;
-            var normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y +
-                                       normal.Z * relativeVelocity.Z;
+            Vector3 normal = ContactManifoldConstraint.penetrationConstraints.Elements[0].contact.Normal;
+            float normalVelocityScalar = normal.X * relativeVelocity.X + normal.Y * relativeVelocity.Y +
+                                         normal.Z * relativeVelocity.Z;
             relativeVelocity.X -= normalVelocityScalar * normal.X;
             relativeVelocity.Y -= normalVelocityScalar * normal.Y;
             relativeVelocity.Z -= normalVelocityScalar * normal.Z;
 
             //Create the jacobian entry and decide the friction coefficient.
-            var length = relativeVelocity.LengthSquared();
+            float length = relativeVelocity.LengthSquared();
             if (length > Toolbox.Epsilon)
             {
                 length = (float) Math.Sqrt(length);
-                var inverseLength = 1 / length;
+                float inverseLength = 1 / length;
                 linearA.M11 = relativeVelocity.X * inverseLength;
                 linearA.M12 = relativeVelocity.Y * inverseLength;
                 linearA.M13 = relativeVelocity.Z * inverseLength;
@@ -341,7 +341,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
                     if (length > Toolbox.Epsilon)
                     {
                         length = (float) Math.Sqrt(length);
-                        var inverseLength = 1 / length;
+                        float inverseLength = 1 / length;
                         linearA.M11 = axis1.X * inverseLength;
                         linearA.M12 = axis1.Y * inverseLength;
                         linearA.M13 = axis1.Z * inverseLength;
@@ -437,8 +437,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void ExclusiveUpdate()
         {
             //Warm starting
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             //Matrix2x3.Transform(ref lambda, ref linearA, out linear);
             linear.X = accumulatedImpulse.X * linearA.M11 + accumulatedImpulse.Y * linearA.M21;
             linear.Y = accumulatedImpulse.X * linearA.M12 + accumulatedImpulse.Y * linearA.M22;

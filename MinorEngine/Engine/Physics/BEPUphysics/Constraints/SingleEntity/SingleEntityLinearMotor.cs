@@ -166,11 +166,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             Matrix3x3.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
 
             //Sum the impulse.
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            Vector3 previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse += lambda;
 
             //If the impulse it takes to get to the goal is too high for the motor to handle, scale it back.
-            var sumImpulseLengthSquared = accumulatedImpulse.LengthSquared();
+            float sumImpulseLengthSquared = accumulatedImpulse.LengthSquared();
             if (sumImpulseLengthSquared > maxForceDtSquared)
             {
                 //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
@@ -199,11 +199,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             Matrix3x3.Transform(ref localPoint, ref entity.orientationMatrix, out r);
             Vector3.Add(ref r, ref entity.position, out worldPoint);
 
-            var updateRate = 1 / dt;
+            float updateRate = 1 / dt;
             if (Settings.mode == MotorMode.Servomechanism)
             {
                 Vector3.Subtract(ref Settings.servo.goal, ref worldPoint, out error);
-                var separationDistance = error.Length();
+                float separationDistance = error.Length();
                 if (separationDistance > Toolbox.BigEpsilon)
                 {
                     float errorReduction;
@@ -212,16 +212,16 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
 
                     //The rate of correction can be based on a constant correction velocity as well as a 'spring like' correction velocity.
                     //The constant correction velocity could overshoot the destination, so clamp it.
-                    var correctionSpeed =
+                    float correctionSpeed =
                         MathHelper.Min(Settings.servo.baseCorrectiveSpeed, separationDistance * updateRate) +
                         separationDistance * errorReduction;
 
                     Vector3.Multiply(ref error, correctionSpeed / separationDistance, out biasVelocity);
                     //Ensure that the corrective velocity doesn't exceed the max.
-                    var length = biasVelocity.LengthSquared();
+                    float length = biasVelocity.LengthSquared();
                     if (length > Settings.servo.maxCorrectiveVelocitySquared)
                     {
-                        var multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                        float multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
                         biasVelocity.X *= multiplier;
                         biasVelocity.Y *= multiplier;
                         biasVelocity.Z *= multiplier;

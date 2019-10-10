@@ -132,7 +132,8 @@
         {
             get
             {
-                var t = new AffineTransform {LinearTransform = Matrix3x3.Identity, Translation = new Vector3()};
+                AffineTransform t = new AffineTransform
+                    {LinearTransform = Matrix3x3.Identity, Translation = new Vector3()};
                 return t;
             }
         }

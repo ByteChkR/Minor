@@ -36,7 +36,7 @@ namespace Engine.Physics.BEPUphysics.Paths
 
             if (ControlPoints.Count == 2)
             {
-                var tangent = ControlPoints[1].Value - ControlPoints[0].Value;
+                Vector3 tangent = ControlPoints[1].Value - ControlPoints[0].Value;
                 tangents.Add(tangent);
                 tangents.Add(tangent);
                 return;
@@ -54,7 +54,7 @@ namespace Engine.Physics.BEPUphysics.Paths
             //Vector3.Add(ref tangentA, ref tangentB, out tangentA);
             tangents.Add(tangentA);
 
-            for (var i = 1; i < ControlPoints.Count - 1; i++)
+            for (int i = 1; i < ControlPoints.Count - 1; i++)
             {
                 previous = current;
                 current = next;
@@ -73,8 +73,8 @@ namespace Engine.Physics.BEPUphysics.Paths
             current = next;
             Vector3.Negate(ref current, out tangentA);
             Vector3.Subtract(ref current, ref previous, out tangentB);
-            var currentIndex = ControlPoints.Count - 1;
-            var previousIndex = currentIndex - 1;
+            int currentIndex = ControlPoints.Count - 1;
+            int previousIndex = currentIndex - 1;
             //Vector3.Multiply(ref tangentA, .5f / (-controlPoints[currentIndex].time), out tangentA);
             Vector3.Multiply(ref tangentB,
                 (float) (.5 / (ControlPoints[currentIndex].Time - ControlPoints[previousIndex].Time)), out tangentB);

@@ -47,7 +47,7 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
         /// <returns>New resource.</returns>
         protected T CreateNewResource()
         {
-            var toReturn = new T();
+            T toReturn = new T();
             if (InstanceInitializer != null)
             {
                 InstanceInitializer(toReturn);

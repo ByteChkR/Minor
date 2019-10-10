@@ -214,7 +214,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Compute a vector which is perpendicular to the axis.  It'll be added in local space to both connections.
             Vector3 xAxis;
             Vector3.Cross(ref twistAxis, ref Toolbox.UpVector, out xAxis);
-            var length = xAxis.LengthSquared();
+            float length = xAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref twistAxis, ref Toolbox.RightVector, out xAxis);
@@ -251,8 +251,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             Vector3 axis;
             float angle;
             Quaternion.GetAxisAngleFromQuaternion(ref relativeRotation, out axis, out angle);
-            
-            var axisAngle = new Vector3();
+
+            Vector3 axisAngle = new Vector3();
             //This combined axis-angle representation is similar to angular velocity in describing a rotation.
             //Just like you can dot an axis with angular velocity to get a velocity around that axis,
             //dotting an axis with the axis-angle representation gets the angle of rotation around that axis.
@@ -268,8 +268,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
 
 
             //The position constraint states that the angles must be within an ellipse. The following is just a reorganization of the x^2 / a^2 + y^2 / b^2 <= 1 definition of an ellipse's area.
-            var maxAngleXSquared = maximumAngleX * maximumAngleX;
-            var maxAngleYSquared = maximumAngleY * maximumAngleY;
+            float maxAngleXSquared = maximumAngleX * maximumAngleX;
+            float maxAngleYSquared = maximumAngleY * maximumAngleY;
             Error = angleX * angleX * maxAngleYSquared + angleY * angleY * maxAngleXSquared -
                     maxAngleXSquared * maxAngleYSquared;
 
@@ -301,7 +301,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Splitting it out fully would reveal two dot products with equivalent but negated jacobians.]
 
             //The jacobian is implemented by first considering the local values (2x / a^2) and (2y / b^2).
-            var tangent = new Vector2();
+            Vector2 tangent = new Vector2();
             tangent.X = 2 * angleX / maxAngleXSquared;
             tangent.Y = 2 * angleY / maxAngleYSquared;
 
@@ -323,7 +323,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
 
 
             float errorReduction;
-            var inverseDt = 1 / dt;
+            float inverseDt = 1 / dt;
             springSettings.ComputeErrorReductionAndSoftness(dt, inverseDt, out errorReduction, out softness);
 
             //Compute the error correcting velocity
@@ -408,13 +408,13 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            var lambda = -velocityA - velocityB - biasVelocity - softness * TotalImpulse;
+            float lambda = -velocityA - velocityB - biasVelocity - softness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Clamp accumulated impulse (can't go negative)
-            var previousAccumulatedImpulse = TotalImpulse;
+            float previousAccumulatedImpulse = TotalImpulse;
             TotalImpulse = MathHelper.Min(TotalImpulse + lambda, 0);
             lambda = TotalImpulse - previousAccumulatedImpulse;
 

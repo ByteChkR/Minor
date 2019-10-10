@@ -8,7 +8,6 @@ using OpenTK.Audio.OpenAL;
 
 namespace Engine.IO
 {
-
     /// <summary>
     /// Static class responsible to load Audio Files from Disk
     /// </summary>
@@ -30,11 +29,11 @@ namespace Engine.IO
         /// <returns>True if the loading succeeded</returns>
         private static bool TryGetFormatProvider(string filename, out IAudioFormatLoader formatProvider)
         {
-            foreach (var format in _formats)
+            foreach (KeyValuePair<string, Type> format in _formats)
             {
                 if (filename.EndsWith(format.Key))
                 {
-                    formatProvider = (IAudioFormatLoader)Activator.CreateInstance(format.Value);
+                    formatProvider = (IAudioFormatLoader) Activator.CreateInstance(format.Value);
                     return true;
                 }
             }
@@ -71,22 +70,21 @@ namespace Engine.IO
         /// <param name="clip">Data that has been loaded</param>
         public static bool TryLoad(string filename, out AudioFile clip)
         {
-            var ret = TryGetFormatProvider(filename, out var formatProvider);
+            bool ret = TryGetFormatProvider(filename, out IAudioFormatLoader formatProvider);
 
             if (ret)
             {
-                ret = formatProvider.TryLoadFile(filename, out var data, out var channel, out var bits,
-                    out var bitRate);
+                ret = formatProvider.TryLoadFile(filename, out byte[] data, out int channel, out int bits,
+                    out int bitRate);
                 if (ret)
                 {
-
                     int buf = AL.GenBuffer();
 
                     AL.BufferData(buf, GetSoundFormat(channel, bits), data, data.Length, bitRate);
 
 
-                    AL.GetBuffer(buf, ALGetBufferi.Size, out var bufSize);
-                    
+                    AL.GetBuffer(buf, ALGetBufferi.Size, out int bufSize);
+
                     clip = new AudioFile(buf, bufSize);
 
                     return true;
@@ -100,6 +98,5 @@ namespace Engine.IO
             clip = null;
             return false;
         }
-
     }
 }

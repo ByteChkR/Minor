@@ -33,7 +33,7 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
         public override IList<Entity> GetPossiblyAffectedEntities()
         {
             affectedEntities.Clear();
-            foreach (var entity in Volume.pairs.Keys)
+            foreach (Entity entity in Volume.pairs.Keys)
             {
                 affectedEntities.Add(entity);
             }

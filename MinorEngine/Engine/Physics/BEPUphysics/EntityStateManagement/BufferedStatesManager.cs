@@ -121,9 +121,9 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 {
                     if (e.BufferedStates.BufferedStatesManager == this)
                     {
-                        var index = entities.IndexOf(e);
+                        int index = entities.IndexOf(e);
 
-                        var endIndex = entities.Count - 1;
+                        int endIndex = entities.Count - 1;
                         entities[index] = entities[endIndex];
                         entities.RemoveAt(endIndex);
                         if (index < entities.Count)

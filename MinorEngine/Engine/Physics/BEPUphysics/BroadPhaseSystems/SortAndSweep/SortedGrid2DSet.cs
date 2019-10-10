@@ -19,8 +19,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
         internal bool TryGetIndex(ref Int2 cellIndex, out int index, out int sortingHash)
         {
             sortingHash = cellIndex.GetSortingHash();
-            var minIndex = 0; //inclusive
-            var maxIndex = count; //exclusive
+            int minIndex = 0; //inclusive
+            int maxIndex = count; //exclusive
             index = 0;
             while (maxIndex - minIndex > 0
             ) //If the testing interval has a length of zero, we've done as much as we can.
@@ -78,7 +78,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 return;
             }
 
-            var cell = cellPool.Take();
+            GridCell2D cell = cellPool.Take();
             cell.Initialize(ref index, sortingHash);
             cell.Add(entry);
             cells.Insert(cellIndex, cell);
@@ -132,7 +132,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 if (cells.Elements[cellIndex].entries.Count == 0)
                 {
                     //The cell is now empty.  Give it back to the pool.
-                    var toRemove = cells.Elements[cellIndex];
+                    GridCell2D toRemove = cells.Elements[cellIndex];
                     //There's no cleanup to do on the grid cell.
                     //Its list is empty, and the rest is just value types.
                     cells.RemoveAt(cellIndex);

@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUutilities.DataStructures;
 
 namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -50,9 +51,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void UpdateContainedPairs()
         {
-            var overlappedElements = PhysicsResources.GetCompoundChildList();
+            RawList<CompoundChild> overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(convexInfo.boundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i].CollisionInformation, CollidableB,
                     overlappedElements.Elements[i].Material);

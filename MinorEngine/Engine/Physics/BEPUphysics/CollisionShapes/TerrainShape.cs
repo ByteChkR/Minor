@@ -93,10 +93,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 maxZvertex = new Vector3();
 
             //Find the extreme locations.
-            for (var i = 0; i < heights.GetLength(0); i++)
-            for (var j = 0; j < heights.GetLength(1); j++)
+            for (int i = 0; i < heights.GetLength(0); i++)
+            for (int j = 0; j < heights.GetLength(1); j++)
             {
-                var vertex = new Vector3(i, heights[i, j], j);
+                Vector3 vertex = new Vector3(i, heights[i, j], j);
                 Matrix3x3.Transform(ref vertex, ref transform.LinearTransform, out vertex);
                 if (vertex.X < minX)
                 {
@@ -180,7 +180,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             float maxX = heights.GetLength(0) - 1;
             float maxZ = heights.GetLength(1) - 1;
 
-            var progressingOrigin = localRay.Position;
+            Vector3 progressingOrigin = localRay.Position;
             float distance = 0;
             //Check the outside cases first.
             if (progressingOrigin.X < 0)
@@ -188,7 +188,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 if (localRay.Direction.X > 0)
                 {
                     //Off the left side.
-                    var timeToMinX = -progressingOrigin.X / localRay.Direction.X;
+                    float timeToMinX = -progressingOrigin.X / localRay.Direction.X;
                     distance += timeToMinX;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinX, out increment);
@@ -204,7 +204,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 if (localRay.Direction.X < 0)
                 {
                     //Off the left side.
-                    var timeToMinX = -(progressingOrigin.X - maxX) / localRay.Direction.X;
+                    float timeToMinX = -(progressingOrigin.X - maxX) / localRay.Direction.X;
                     distance += timeToMinX;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinX, out increment);
@@ -220,7 +220,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             {
                 if (localRay.Direction.Z > 0)
                 {
-                    var timeToMinZ = -progressingOrigin.Z / localRay.Direction.Z;
+                    float timeToMinZ = -progressingOrigin.Z / localRay.Direction.Z;
                     distance += timeToMinZ;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinZ, out increment);
@@ -235,7 +235,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             {
                 if (localRay.Direction.Z < 0)
                 {
-                    var timeToMinZ = -(progressingOrigin.Z - maxZ) / localRay.Direction.Z;
+                    float timeToMinZ = -(progressingOrigin.Z - maxZ) / localRay.Direction.Z;
                     distance += timeToMinZ;
                     Vector3 increment;
                     Vector3.Multiply(ref localRay.Direction, timeToMinZ, out increment);
@@ -255,8 +255,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
             //By now, we should be entering the main body of the terrain.
 
-            var xCell = (int) progressingOrigin.X;
-            var zCell = (int) progressingOrigin.Z;
+            int xCell = (int) progressingOrigin.X;
+            int zCell = (int) progressingOrigin.Z;
             //If it's hitting the border and going in, then correct the index
             //so that it will initially target a valid quad.
             //Without this, a quad beyond the border would be tried and failed.
@@ -295,8 +295,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
                 //Don't bother doing ray intersection tests if the ray can't intersect it.
 
-                var highest = v1.Y;
-                var lowest = v1.Y;
+                float highest = v1.Y;
+                float lowest = v1.Y;
                 if (v2.Y > highest)
                 {
                     highest = v2.Y;
@@ -497,6 +497,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             {
                 rowIndex = heights.GetLength(1) - 1;
             }
+
             position = new Vector3();
             position.X = columnIndex;
             position.Y = heights[columnIndex, rowIndex];
@@ -513,10 +514,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         /// <param name="normal">Non-normalized local space normal at the given indices.</param>
         public void GetLocalNormal(int columnIndex, int rowIndex, out Vector3 normal)
         {
-            var topHeight = heights[columnIndex, Math.Min(rowIndex + 1, heights.GetLength(1) - 1)];
-            var bottomHeight = heights[columnIndex, Math.Max(rowIndex - 1, 0)];
-            var rightHeight = heights[Math.Min(columnIndex + 1, heights.GetLength(0) - 1), rowIndex];
-            var leftHeight = heights[Math.Max(columnIndex - 1, 0), rowIndex];
+            float topHeight = heights[columnIndex, Math.Min(rowIndex + 1, heights.GetLength(1) - 1)];
+            float bottomHeight = heights[columnIndex, Math.Max(rowIndex - 1, 0)];
+            float rightHeight = heights[Math.Min(columnIndex + 1, heights.GetLength(0) - 1), rowIndex];
+            float leftHeight = heights[Math.Max(columnIndex - 1, 0), rowIndex];
 
             //Since the horizontal offsets are known to be 1 in local space, we can omit quite a few operations compared to a full Vector3 and cross product.
 
@@ -549,20 +550,20 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         public bool GetOverlaps<T>(BoundingBox localBoundingBox, ref T overlappedElements)
             where T : IList<int> //Designed to work with value type ILists, hence anti-boxing interface constraint and ref.
         {
-            var width = heights.GetLength(0);
-            var minX = Math.Max((int) localBoundingBox.Min.X, 0);
-            var minY = Math.Max((int) localBoundingBox.Min.Z, 0);
-            var maxX = Math.Min((int) localBoundingBox.Max.X, width - 2);
-            var maxY = Math.Min((int) localBoundingBox.Max.Z, heights.GetLength(1) - 2);
-            for (var i = minX; i <= maxX; i++)
-            for (var j = minY; j <= maxY; j++)
+            int width = heights.GetLength(0);
+            int minX = Math.Max((int) localBoundingBox.Min.X, 0);
+            int minY = Math.Max((int) localBoundingBox.Min.Z, 0);
+            int maxX = Math.Min((int) localBoundingBox.Max.X, width - 2);
+            int maxY = Math.Min((int) localBoundingBox.Max.Z, heights.GetLength(1) - 2);
+            for (int i = minX; i <= maxX; i++)
+            for (int j = minY; j <= maxY; j++)
             {
                 //Before adding a triangle to the list, make sure the object isn't too high or low from the quad.
                 float highest, lowest;
-                var y1 = heights[i, j];
-                var y2 = heights[i + 1, j];
-                var y3 = heights[i, j + 1];
-                var y4 = heights[i + 1, j + 1];
+                float y1 = heights[i, j];
+                float y2 = heights[i + 1, j];
+                float y3 = heights[i, j + 1];
+                float y4 = heights[i + 1, j + 1];
 
                 highest = y1;
                 lowest = y1;
@@ -602,7 +603,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
 
                 //Now the local bounding box is very likely intersecting those of the triangles.
                 //Add the triangles to the list.
-                var quadIndex = (i + j * width) << 1;
+                int quadIndex = (i + j * width) << 1;
                 overlappedElements.Add(quadIndex);
                 overlappedElements.Add(quadIndex | 1);
             }
@@ -675,10 +676,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         public void GetTriangle(int index, ref AffineTransform transform, out Vector3 a, out Vector3 b, out Vector3 c)
         {
             //Find the quad.
-            var quadIndex = index / 2;
+            int quadIndex = index / 2;
             //TODO: This division could be avoided if you're willing to get tricky or impose some size requirements.
-            var rowIndex = quadIndex / heights.GetLength(0);
-            var columnIndex = quadIndex - rowIndex * heights.GetLength(0);
+            int rowIndex = quadIndex / heights.GetLength(0);
+            int columnIndex = quadIndex - rowIndex * heights.GetLength(0);
             if ((index & 1) == 0) //Check if this is the first or second triangle.
             {
                 GetFirstTriangle(columnIndex, rowIndex, ref transform, out a, out b, out c);
@@ -693,10 +694,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         internal void GetLocalIndices(int i, out TerrainVertexIndices a, out TerrainVertexIndices b,
             out TerrainVertexIndices c)
         {
-            var quadIndex = i / 2;
+            int quadIndex = i / 2;
             //TODO: This division could be avoided if you're willing to get tricky or impose some size requirements.
-            var rowIndex = quadIndex / heights.GetLength(0);
-            var columnIndex = quadIndex - rowIndex * heights.GetLength(0);
+            int rowIndex = quadIndex / heights.GetLength(0);
+            int columnIndex = quadIndex - rowIndex * heights.GetLength(0);
             if ((i & 1) == 0) //Check if this is the first or second triangle.
             {
                 if (quadTriangleOrganization == QuadTriangleOrganization.BottomLeftUpperRight)

@@ -47,7 +47,7 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
 
         private void LoopBody(int i)
         {
-            var entry = entries.Elements[i];
+            MobileCollidable entry = entries.Elements[i];
             if (entry.IsActive)
             {
                 entry.UpdateBoundingBox(timeStepSettings.TimeStepDuration);
@@ -81,7 +81,7 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
 
         protected override void UpdateSingleThreaded()
         {
-            for (var i = 0; i < entries.Count; ++i)
+            for (int i = 0; i < entries.Count; ++i)
             {
                 LoopBody(i);
             }

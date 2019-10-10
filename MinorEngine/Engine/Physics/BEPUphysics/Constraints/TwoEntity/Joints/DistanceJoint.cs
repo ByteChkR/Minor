@@ -275,7 +275,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            var currentDistance = separation.Length();
+            float currentDistance = separation.Length();
 
             //Compute jacobians
             if (currentDistance > Toolbox.Epsilon)

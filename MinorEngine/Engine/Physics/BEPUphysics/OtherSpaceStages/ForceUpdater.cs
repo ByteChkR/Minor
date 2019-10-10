@@ -77,7 +77,7 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
         protected override void UpdateSingleThreaded()
         {
             Vector3.Multiply(ref gravity, timeStepSettings.TimeStepDuration, out gravityDt);
-            for (var i = 0; i < dynamicObjects.Count; i++)
+            for (int i = 0; i < dynamicObjects.Count; i++)
             {
                 UpdateObject(i);
             }

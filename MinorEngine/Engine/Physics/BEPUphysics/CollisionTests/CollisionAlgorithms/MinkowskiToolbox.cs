@@ -131,7 +131,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         public static void ExpandMinkowskiSum(float marginA, float marginB, ref Vector3 direction,
             out Vector3 contribution)
         {
-            var lengthSquared = direction.LengthSquared();
+            float lengthSquared = direction.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
                 //The contribution to the minkowski sum by the margin is:
                 //direction * marginA - (-direction) * marginB.
@@ -157,7 +157,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         public static void ExpandMinkowskiSum(float marginA, float marginB, Vector3 direction, ref Vector3 toExpandA,
             ref Vector3 toExpandB)
         {
-            var lengthSquared = direction.LengthSquared();
+            float lengthSquared = direction.LengthSquared();
             if (lengthSquared > Toolbox.Epsilon)
             {
                 lengthSquared = 1 / (float) Math.Sqrt(lengthSquared);

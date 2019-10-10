@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -57,11 +56,14 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
 
             // Reads the memory object, by enqueuing the read operation to the command queue
             IntPtr waitEventPointer;
-            Result result = EnqueuedCommandsNativeApi.EnqueueReadBuffer(this.Handle, memoryObject.Handle, 1, UIntPtr.Zero, new UIntPtr((uint)size), resultValuePointer, 0, null, out waitEventPointer);
-            
+            Result result = EnqueuedCommandsNativeApi.EnqueueReadBuffer(Handle, memoryObject.Handle, 1, UIntPtr.Zero,
+                new UIntPtr((uint) size), resultValuePointer, 0, null, out waitEventPointer);
+
             // Checks if the read operation was queued successfuly, if not, an exception is thrown
             if (result != Result.Success)
+            {
                 throw new OpenClException("The memory object could not be read.", result);
+            }
 
             // Subscribes to the completed event of the wait event that was returned, when the command finishes, the task completion source is resolved
             AwaitableEvent awaitableEvent = new AwaitableEvent(waitEventPointer);
@@ -72,14 +74,18 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
                     // Checks if the command was executed successfully, if not, then an exception is thrown
                     if (awaitableEvent.CommandExecutionStatus == CommandExecutionStatus.Error)
                     {
-                        taskCompletionSource.TrySetException(new OpenClException($"The command completed with the error code {awaitableEvent.CommandExecutionStatusCode}."));
+                        taskCompletionSource.TrySetException(new OpenClException(
+                            $"The command completed with the error code {awaitableEvent.CommandExecutionStatusCode}."));
                         return;
                     }
 
                     // Goes through the result and converts the content of the result to an array
                     T[] resultValue = new T[outputSize];
                     for (int i = 0; i < outputSize; i++)
-                        resultValue[i] = Marshal.PtrToStructure<T>(IntPtr.Add(resultValuePointer, i * Marshal.SizeOf<T>()));
+                    {
+                        resultValue[i] =
+                            Marshal.PtrToStructure<T>(IntPtr.Add(resultValuePointer, i * Marshal.SizeOf<T>()));
+                    }
 
                     // Sets the result
                     taskCompletionSource.TrySetResult(resultValue);
@@ -92,7 +98,10 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
                 {
                     // Finally the allocated memory has to be freed and the allocated resources are disposed of
                     if (resultValuePointer != IntPtr.Zero)
+                    {
                         Marshal.FreeHGlobal(resultValuePointer);
+                    }
+
                     awaitableEvent.Dispose();
                 }
             };
@@ -120,17 +129,23 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
 
                 // Reads the memory object, by enqueuing the read operation to the command queue
                 IntPtr waitEventPointer;
-                Result result = EnqueuedCommandsNativeApi.EnqueueReadBuffer(this.Handle, memoryObject.Handle, 1, UIntPtr.Zero, new UIntPtr((uint)size), resultValuePointer, 0, null, out waitEventPointer);
-                
+                Result result = EnqueuedCommandsNativeApi.EnqueueReadBuffer(Handle, memoryObject.Handle, 1,
+                    UIntPtr.Zero,
+                    new UIntPtr((uint) size), resultValuePointer, 0, null, out waitEventPointer);
+
                 // Checks if the read operation was queued successfuly, if not, an exception is thrown
                 if (result != Result.Success)
+                {
                     throw new OpenClException("The memory object could not be read.", result);
+                }
 
                 // Goes through the result and converts the content of the result to an array
                 T[] resultValue = new T[outputSize];
                 for (int i = 0; i < outputSize; i++)
+                {
                     resultValue[i] = Marshal.PtrToStructure<T>(IntPtr.Add(resultValuePointer, i * Marshal.SizeOf<T>()));
-                
+                }
+
                 // Returns the content of the memory object
                 return resultValue;
             }
@@ -138,7 +153,9 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
             {
                 // Finally the allocated memory has to be freed
                 if (resultValuePointer != IntPtr.Zero)
+                {
                     Marshal.FreeHGlobal(resultValuePointer);
+                }
             }
         }
 
@@ -160,19 +177,23 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
                 int size = Marshal.SizeOf<T>() * value.Length;
                 // Reads the memory object, by enqueuing the read operation to the command queue
                 IntPtr waitEventPointer;
-                Result result = EnqueuedCommandsNativeApi.EnqueueWriteBuffer(this.Handle, memoryObject.Handle, 1, UIntPtr.Zero, new UIntPtr((uint)size), resultValuePointer, 0, null, out waitEventPointer);
+                Result result = EnqueuedCommandsNativeApi.EnqueueWriteBuffer(Handle, memoryObject.Handle, 1,
+                    UIntPtr.Zero,
+                    new UIntPtr((uint) size), resultValuePointer, 0, null, out waitEventPointer);
 
                 // Checks if the read operation was queued successfuly, if not, an exception is thrown
                 if (result != Result.Success)
+                {
                     throw new OpenClException("The memory object could not be written to.", result);
-
-                
+                }
             }
             finally
             {
                 // Finally the allocated memory has to be freed
                 if (resultValuePointer != IntPtr.Zero)
+                {
                     h.Free();
+                }
             }
         }
 
@@ -190,11 +211,14 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
 
             // Enqueues the kernel
             IntPtr waitEventPointer;
-            Result result = EnqueuedCommandsNativeApi.EnqueueNDRangeKernel(this.Handle, kernel.Handle, (uint)workDimension, null, new IntPtr[] { new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
+            Result result = EnqueuedCommandsNativeApi.EnqueueNDRangeKernel(Handle, kernel.Handle, (uint) workDimension,
+                null, new IntPtr[] {new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
 
             // Checks if the kernel was enqueued successfully, if not, then an exception is thrown
             if (result != Result.Success)
+            {
                 throw new OpenClException("The kernel could not be enqueued.", result);
+            }
 
             // Subscribes to the completed event of the wait event that was returned, when the command finishes, the task completion source is resolved
             AwaitableEvent awaitableEvent = new AwaitableEvent(waitEventPointer);
@@ -203,9 +227,14 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
                 try
                 {
                     if (awaitableEvent.CommandExecutionStatus == CommandExecutionStatus.Error)
-                        taskCompletionSource.TrySetException(new OpenClException($"The command completed with the error code {awaitableEvent.CommandExecutionStatusCode}."));
+                    {
+                        taskCompletionSource.TrySetException(new OpenClException(
+                            $"The command completed with the error code {awaitableEvent.CommandExecutionStatusCode}."));
+                    }
                     else
+                    {
                         taskCompletionSource.TrySetResult(true);
+                    }
                 }
                 catch (Exception exception)
                 {
@@ -230,11 +259,14 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
         {
             // Enqueues the kernel
             IntPtr waitEventPointer;
-            Result result = EnqueuedCommandsNativeApi.EnqueueNDRangeKernel(this.Handle, kernel.Handle, (uint)workDimension, null, new IntPtr[] { new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
+            Result result = EnqueuedCommandsNativeApi.EnqueueNDRangeKernel(Handle, kernel.Handle, (uint) workDimension,
+                null, new IntPtr[] {new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
 
             // Checks if the kernel was enqueued successfully, if not, then an exception is thrown
             if (result != Result.Success)
+            {
                 throw new OpenClException("The kernel could not be enqueued.", result);
+            }
         }
 
         //public void EnqueueAcquireGLObjects(MemoryObject[] objs)
@@ -272,18 +304,21 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
         {
             // Creates the new command queue for the specified context and device
             Result result;
-            IntPtr commandQueuePointer = CommandQueuesNativeApi.CreateCommandQueue(context.Handle, device.Handle, 0, out result);
+            IntPtr commandQueuePointer =
+                CommandQueuesNativeApi.CreateCommandQueue(context.Handle, device.Handle, 0, out result);
 
             // Checks if the command queue creation was successful, if not, then an exception is thrown
             if (result != Result.Success)
+            {
                 throw new OpenClException("The command queue could not be created.", result);
+            }
 
             // Creates the new command queue object from the pointer and returns it
             return new CommandQueue(commandQueuePointer);
         }
 
         #endregion
-        
+
         #region IDisposable Implementation
 
         /// <summary>
@@ -293,8 +328,10 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
         protected override void Dispose(bool disposing)
         {
             // Checks if the command queue has already been disposed of, if not, then the command queue is disposed of
-            if (!this.IsDisposed)
-                CommandQueuesNativeApi.ReleaseCommandQueue(this.Handle);
+            if (!IsDisposed)
+            {
+                CommandQueuesNativeApi.ReleaseCommandQueue(Handle);
+            }
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);

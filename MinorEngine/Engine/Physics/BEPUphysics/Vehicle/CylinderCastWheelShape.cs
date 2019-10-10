@@ -4,6 +4,7 @@ using Engine.Physics.BEPUphysics.CollisionRuleManagement;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.Entities;
 using Engine.Physics.BEPUphysics.Materials;
+using Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs;
 using Engine.Physics.BEPUutilities;
 
 namespace Engine.Physics.BEPUphysics.Vehicle
@@ -85,7 +86,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         public override void UpdateWorldTransform()
         {
-            var newPosition = new Vector3();
+            Vector3 newPosition = new Vector3();
             Vector3 worldAttachmentPoint;
             Vector3 localAttach;
             Vector3.Add(ref wheel.suspension.localAttachmentPoint,
@@ -99,7 +100,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             Vector3 worldDirection;
             Matrix.Transform(ref wheel.suspension.localDirection, ref worldTransform, out worldDirection);
 
-            var length = wheel.suspension.currentLength;
+            float length = wheel.suspension.currentLength;
             newPosition.X = worldAttachmentPoint.X + worldDirection.X * length;
             newPosition.Y = worldAttachmentPoint.Y + worldDirection.Y * length;
             newPosition.Z = worldAttachmentPoint.Z + worldDirection.Z * length;
@@ -142,12 +143,12 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             Collidable testCollidable;
             RayHit rayHit;
 
-            var hit = false;
+            bool hit = false;
 
             Quaternion localSteeringTransform;
             Quaternion.CreateFromAxisAngle(ref wheel.suspension.localDirection, steeringAngle,
                 out localSteeringTransform);
-            var startingTransform = new RigidTransform
+            RigidTransform startingTransform = new RigidTransform
             {
                 Position = wheel.suspension.worldAttachmentPoint,
                 Orientation =
@@ -159,9 +160,9 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             Vector3 sweep;
             Vector3.Multiply(ref wheel.suspension.worldDirection, wheel.suspension.restLength, out sweep);
 
-            for (var i = 0; i < detector.CollisionInformation.pairs.Count; i++)
+            for (int i = 0; i < detector.CollisionInformation.pairs.Count; i++)
             {
-                var pair = detector.CollisionInformation.pairs[i];
+                CollidablePairHandler pair = detector.CollisionInformation.pairs[i];
                 testCollidable =
                     (pair.BroadPhaseOverlap.entryA == detector.CollisionInformation
                         ? pair.BroadPhaseOverlap.entryB
@@ -183,7 +184,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
                         {
                             entity = null;
                             supportingCollidable = testCollidable;
-                            var materialOwner = testCollidable as IMaterialOwner;
+                            IMaterialOwner materialOwner = testCollidable as IMaterialOwner;
                             if (materialOwner != null)
                             {
                                 material = materialOwner.Material;
@@ -229,10 +230,10 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         protected internal override void Initialize()
         {
             //Setup the dimensions of the detector.
-            var initialTransform = new RigidTransform {Orientation = LocalWheelOrientation};
+            RigidTransform initialTransform = new RigidTransform {Orientation = LocalWheelOrientation};
             BoundingBox boundingBox;
             shape.GetBoundingBox(ref initialTransform, out boundingBox);
-            var expansion = wheel.suspension.localDirection * wheel.suspension.restLength;
+            Vector3 expansion = wheel.suspension.localDirection * wheel.suspension.restLength;
             if (expansion.X > 0)
             {
                 boundingBox.Max.X += expansion.X;
@@ -271,7 +272,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         protected internal override void UpdateDetectorPosition()
         {
-            var newPosition = new Vector3();
+            Vector3 newPosition = new Vector3();
 
             newPosition.X = wheel.suspension.worldAttachmentPoint.X +
                             wheel.suspension.worldDirection.X * wheel.suspension.restLength * .5f;

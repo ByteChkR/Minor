@@ -3,7 +3,6 @@ using Common;
 
 namespace Engine.Debug
 {
-
     /// <summary>
     /// The Settings for a Log Stream
     /// </summary>

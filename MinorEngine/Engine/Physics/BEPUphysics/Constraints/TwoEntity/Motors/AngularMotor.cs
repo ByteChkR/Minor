@@ -148,25 +148,25 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public override float SolveIteration()
         {
-            var lambda = new Vector3();
-            var aVel = connectionA.angularVelocity;
-            var bVel = connectionB.angularVelocity;
+            Vector3 lambda = new Vector3();
+            Vector3 aVel = connectionA.angularVelocity;
+            Vector3 bVel = connectionB.angularVelocity;
             lambda.X = bVel.X - aVel.X - biasVelocity.X - usedSoftness * accumulatedImpulse.X;
             lambda.Y = bVel.Y - aVel.Y - biasVelocity.Y - usedSoftness * accumulatedImpulse.Y;
             lambda.Z = bVel.Z - aVel.Z - biasVelocity.Z - usedSoftness * accumulatedImpulse.Z;
 
             Matrix3x3.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
 
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            Vector3 previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse.X += lambda.X;
             accumulatedImpulse.Y += lambda.Y;
             accumulatedImpulse.Z += lambda.Z;
-            var sumLengthSquared = accumulatedImpulse.LengthSquared();
+            float sumLengthSquared = accumulatedImpulse.LengthSquared();
 
             if (sumLengthSquared > maxForceDtSquared)
             {
                 //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                var multiplier = maxForceDt / (float) Math.Sqrt(sumLengthSquared);
+                float multiplier = maxForceDt / (float) Math.Sqrt(sumLengthSquared);
                 accumulatedImpulse.X *= multiplier;
                 accumulatedImpulse.Y *= multiplier;
                 accumulatedImpulse.Z *= multiplier;
@@ -202,7 +202,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
             Basis.rotationMatrix = connectionA.orientationMatrix;
             Basis.ComputeWorldSpaceAxes();
 
-            var inverseDt = 1 / dt;
+            float inverseDt = 1 / dt;
             if (Settings.mode == MotorMode.Servomechanism) //Only need to do the bulk of this work if it's a servo.
             {
                 //The error is computed using this equation:
@@ -214,7 +214,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
                 //Error = (GoalRelativeOrientation * ConnectionA.Orientation)^-1 * ConnectionB.Orientation
 
                 //ConnectionA.Orientation is replaced in the above by the world space basis orientation.
-                var worldBasis = Quaternion.CreateFromRotationMatrix(Basis.WorldTransform);
+                Quaternion worldBasis = Quaternion.CreateFromRotationMatrix(Basis.WorldTransform);
 
                 Quaternion bTarget;
                 Quaternion.Concatenate(ref Settings.servo.goal, ref worldBasis, out bTarget);
@@ -235,8 +235,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
                 //Scale the axis by the desired velocity if the angle is sufficiently large (epsilon).
                 if (angle > Toolbox.BigEpsilon)
                 {
-                    var velocity = -(MathHelper.Min(Settings.servo.baseCorrectiveSpeed, angle * inverseDt) +
-                                     angle * errorReduction);
+                    float velocity = -(MathHelper.Min(Settings.servo.baseCorrectiveSpeed, angle * inverseDt) +
+                                       angle * errorReduction);
 
                     biasVelocity.X = axis.X * velocity;
                     biasVelocity.Y = axis.Y * velocity;
@@ -244,10 +244,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
 
 
                     //Ensure that the corrective velocity doesn't exceed the max.
-                    var length = biasVelocity.LengthSquared();
+                    float length = biasVelocity.LengthSquared();
                     if (length > Settings.servo.maxCorrectiveVelocitySquared)
                     {
-                        var multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                        float multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
                         biasVelocity.X *= multiplier;
                         biasVelocity.Y *= multiplier;
                         biasVelocity.Z *= multiplier;
@@ -264,7 +264,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
             {
                 usedSoftness = Settings.velocityMotor.softness * inverseDt;
                 angle = 0; //Zero out the error;
-                var transform = Basis.WorldTransform;
+                Matrix3x3 transform = Basis.WorldTransform;
                 Matrix3x3.Transform(ref Settings.velocityMotor.goalVelocity, ref transform, out biasVelocity);
             }
 

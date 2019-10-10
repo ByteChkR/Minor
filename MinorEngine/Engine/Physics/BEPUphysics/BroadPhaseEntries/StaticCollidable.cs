@@ -65,7 +65,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
 
         protected virtual void OnMaterialChanged(Material newMaterial)
         {
-            for (var i = 0; i < pairs.Count; i++)
+            for (int i = 0; i < pairs.Count; i++)
             {
                 pairs[i].UpdateMaterialProperties();
             }

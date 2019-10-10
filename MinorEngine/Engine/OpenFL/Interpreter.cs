@@ -99,26 +99,26 @@ namespace Engine.OpenFL
                 return;
             }
 
-            var varname = arg[0].Trim();
+            string varname = arg[0].Trim();
             if (_definedBuffers.ContainsKey(varname))
             {
                 Logger.Log("Overwriting " + varname, DebugChannel.Warning);
                 _definedBuffers.Remove(varname);
             }
 
-            var args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
 
-            var filename = args[0].Trim();
+            string filename = args[0].Trim();
 
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
                 Logger.Log("Loading SubScript...", DebugChannel.Log);
 
-                var buf =
+                MemoryBuffer buf =
                     CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
-                var interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
+                Interpreter interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
                     _depth, _channelCount, _kernelDb, true);
 
                 do
@@ -138,6 +138,7 @@ namespace Engine.OpenFL
                 _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
             }
         }
+
         /// <summary>
         /// Define handler that loads defined textures
         /// </summary>
@@ -150,7 +151,7 @@ namespace Engine.OpenFL
                 return;
             }
 
-            var varname = arg[0].Trim();
+            string varname = arg[0].Trim();
 
 
             if (_definedBuffers.ContainsKey(varname))
@@ -159,8 +160,8 @@ namespace Engine.OpenFL
                 _definedBuffers.Remove(varname);
             }
 
-            var flags = MemoryFlag.ReadWrite;
-            var flagTest = varname.Split(' ');
+            MemoryFlag flags = MemoryFlag.ReadWrite;
+            string[] flagTest = varname.Split(' ');
             if (flagTest.Length > 1)
             {
                 varname = flagTest[1];
@@ -175,28 +176,29 @@ namespace Engine.OpenFL
                 }
             }
 
-            var args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
 
-            var filename = args[0].Trim();
+            string filename = args[0].Trim();
 
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                var bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
+                Bitmap bmp = (Bitmap) Image.FromFile(filename.Replace(FilepathIndicator, ""));
                 _definedBuffers.Add(varname,
                     CLAPI.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "random")
             {
-                var buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                MemoryBuffer buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
                 CLAPI.WriteRandom(buf, randombytesource, _activeChannels);
                 _definedBuffers.Add(varname, buf);
             }
             else if (filename == "empty")
             {
-                _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.CopyHostPointer | flags));
+                _definedBuffers.Add(varname,
+                    CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.CopyHostPointer | flags));
             }
             else if (filename == "wfc")
             {
@@ -207,55 +209,55 @@ namespace Engine.OpenFL
                     _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
-                if (!int.TryParse(args[2], out var n))
+                if (!int.TryParse(args[2], out int n))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
-                if (!int.TryParse(args[3], out var width))
+                if (!int.TryParse(args[3], out int width))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
-                if (!int.TryParse(args[4], out var height))
+                if (!int.TryParse(args[4], out int height))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
-                if (!bool.TryParse(args[5], out var periodicInput))
+                if (!bool.TryParse(args[5], out bool periodicInput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
-                if (!bool.TryParse(args[6], out var periodicOutput))
+                if (!bool.TryParse(args[6], out bool periodicOutput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                 }
 
-                if (!int.TryParse(args[7], out var symetry))
-                {
-                    Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
-                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
-                }
-
-                if (!int.TryParse(args[8], out var ground))
+                if (!int.TryParse(args[7], out int symetry))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
                 }
 
-                if (!int.TryParse(args[9], out var limit))
+                if (!int.TryParse(args[8], out int ground))
+                {
+                    Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
+                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
+                    _definedBuffers.Add(varname, CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite));
+                }
+
+                if (!int.TryParse(args[9], out int limit))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -267,7 +269,7 @@ namespace Engine.OpenFL
 
                 wfc.Run(limit);
 
-                var bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
+                Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                 _definedBuffers.Add(varname,
                     CLAPI.CreateFromImage(bmp,
                         MemoryFlag.CopyHostPointer | flags));
@@ -349,19 +351,19 @@ namespace Engine.OpenFL
             public override string ToString()
             {
                 _sb.Clear();
-                for (var i = 0; i < ActiveChannels.Length; i++)
+                for (int i = 0; i < ActiveChannels.Length; i++)
                 {
                     _sb.Append(ActiveChannels[i]);
                 }
 
-                var channels = _sb.ToString();
+                string channels = _sb.ToString();
                 _sb.Clear();
-                foreach (var definedBuffer in DefinedBuffers)
+                foreach (KeyValuePair<string, MemoryBuffer> definedBuffer in DefinedBuffers)
                 {
                     _sb.Append($"\n  {definedBuffer.Key}({definedBuffer.Value.Size})");
                 }
 
-                var definedBuffers = _sb.ToString();
+                string definedBuffers = _sb.ToString();
 
                 return
                     $"Debug Step Info:\n SourceLine:{SourceLine}\n HasJumped:{HasJumped}\n Triggered Breakpoint:{TriggeredDebug}\n Terminated:{Terminated}\n Active Channels:{channels}\n Defined Buffers:{definedBuffers}";
@@ -478,7 +480,7 @@ namespace Engine.OpenFL
         {
             get
             {
-                var idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
+                int idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
                 if (idx == -1 || _source.Count - 1 == idx)
                 {
                     Logger.Crash(new FLInvalidEntryPointException("There needs to be a main function."), true);
@@ -509,17 +511,17 @@ namespace Engine.OpenFL
                 return;
             }
 
-            var temp = new byte[_channelCount];
+            byte[] temp = new byte[_channelCount];
             while (_currentArgStack.Count != 1)
             {
-                var val = _currentArgStack.Pop();
+                object val = _currentArgStack.Pop();
                 if (!(val is decimal))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("setactive", "Invalid channel Arguments"), true);
                     val = 0;
                 }
 
-                var channel = (byte) Convert.ChangeType(val, typeof(byte));
+                byte channel = (byte) Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
                 {
                     Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
@@ -540,7 +542,7 @@ namespace Engine.OpenFL
 
             if (_currentArgStack.Peek() is decimal)
             {
-                var channel = (byte) Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
+                byte channel = (byte) Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
                 temp[channel] = 1;
             }
             else
@@ -548,8 +550,8 @@ namespace Engine.OpenFL
                 _currentBuffer = (MemoryBuffer) _currentArgStack.Pop();
             }
 
-            var needCopy = false;
-            for (var i = 0; i < _channelCount; i++)
+            bool needCopy = false;
+            for (int i = 0; i < _channelCount; i++)
             {
                 if (_activeChannels[i] != temp[i])
                 {
@@ -587,7 +589,7 @@ namespace Engine.OpenFL
 
             while (_currentArgStack.Count != 0)
             {
-                var obj = _currentArgStack.Pop();
+                object obj = _currentArgStack.Pop();
                 if (!(obj is MemoryBuffer))
                 {
                     Logger.Crash(
@@ -625,7 +627,7 @@ namespace Engine.OpenFL
             }
             else if (_currentArgStack.Count == 1)
             {
-                var obj = _currentArgStack.Pop();
+                object obj = _currentArgStack.Pop();
                 if (!(obj is MemoryBuffer))
                 {
                     Logger.Crash(
@@ -687,7 +689,8 @@ namespace Engine.OpenFL
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height, int depth,
+        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height,
+            int depth,
             int channelCount, string kernelDBFolder,
             bool ignoreDebug) : this(file, input, width, height, depth, channelCount,
             new KernelDatabase(kernelDBFolder, genType), ignoreDebug)
@@ -705,7 +708,8 @@ namespace Engine.OpenFL
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
-        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height, int depth,
+        public Interpreter(string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height,
+            int depth,
             int channelCount, string kernelDBFolder) : this(file, input, width, height, depth, channelCount,
             new KernelDatabase(kernelDBFolder, genType), false)
         {
@@ -764,15 +768,16 @@ namespace Engine.OpenFL
             _channelCount = channelCount;
             _kernelDb = kernelDB;
             _activeChannels = new byte[_channelCount];
-            for (var i = 0; i < _channelCount; i++)
+            for (int i = 0; i < _channelCount; i++)
             {
                 _activeChannels[i] = 1;
             }
 
-            _activeChannelBuffer = CLAPI.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
+            _activeChannelBuffer =
+                CLAPI.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
 
             _currentArgStack = new Stack<object>();
-            foreach (var memoryBuffer in _definedBuffers)
+            foreach (KeyValuePair<string, MemoryBuffer> memoryBuffer in _definedBuffers)
             {
                 memoryBuffer.Value.Dispose();
             }
@@ -828,7 +833,7 @@ namespace Engine.OpenFL
             }
             else
             {
-                var code = _source[_currentIndex].Split(CommentPrefix)[0];
+                string code = _source[_currentIndex].Split(CommentPrefix)[0];
                 if (code == string.Empty)
                 {
                     _currentIndex++; //Next Line since this one is emtpy
@@ -860,7 +865,7 @@ namespace Engine.OpenFL
         /// </summary>
         private void ParseJumpLocations()
         {
-            for (var i = _source.Count - 1; i >= 0; i--)
+            for (int i = _source.Count - 1; i >= 0; i--)
             {
                 if (_source[i].EndsWith(FunctionNamePostfix) && _source.Count - 1 != i)
                 {
@@ -877,17 +882,17 @@ namespace Engine.OpenFL
         /// <returns>True if the program counter should be increased</returns>
         private bool Analyze(string code)
         {
-            var words = code.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = code.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
 
-            var function = words.Length == 0 ? "" : words[0];
+            string function = words.Length == 0 ? "" : words[0];
             CLKernel kernel = null;
             if (function == "")
             {
                 return false;
             }
 
-            var isBakedFunction = _flFunctions.ContainsKey(function);
-            var isDirectExecute = function == "jmp";
+            bool isBakedFunction = _flFunctions.ContainsKey(function);
+            bool isDirectExecute = function == "jmp";
 
 
             if (!isBakedFunction && !_kernelDb.TryGetCLKernel(function, out kernel))
@@ -905,12 +910,12 @@ namespace Engine.OpenFL
                 _currentArgStack = new Stack<object>();
             }
 
-            var ret = true;
+            bool ret = true;
             for (;
                 _currentWord < words.Length;
                 _currentWord++) //loop through the words. start value can be != 0 when returning from a function specified as an argument to a kernel
             {
-                if (AnalyzeWord(words[_currentWord], out var val))
+                if (AnalyzeWord(words[_currentWord], out object val))
                 {
                     JumpTo(_jumpLocations[words[_currentWord]], isDirectExecute);
                     ret = false; //We Jumped to another point in the code.
@@ -939,9 +944,9 @@ namespace Engine.OpenFL
                 else
                 {
                     //Execute filter
-                    for (var i = kernel.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
+                    for (int i = kernel.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
                     {
-                        var obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
+                        object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
                         kernel.SetArg(i, obj);
                     }
 
@@ -976,7 +981,7 @@ namespace Engine.OpenFL
             {
                 val = _definedBuffers[word];
             }
-            else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out var numberDecimal))
+            else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out decimal numberDecimal))
             {
                 val = numberDecimal;
             }
@@ -1016,11 +1021,11 @@ namespace Engine.OpenFL
         /// </summary>
         private void ParseDefines(string key, DefineHandler handler)
         {
-            for (var i = _source.Count - 1; i >= 0; i--)
+            for (int i = _source.Count - 1; i >= 0; i--)
             {
                 if (_source[i].StartsWith(key))
                 {
-                    var kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
+                    string[] kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
 
                     handler?.Invoke(kvp);
                     _source.RemoveAt(i);
@@ -1044,7 +1049,7 @@ namespace Engine.OpenFL
                 }
                 else
                 {
-                    var lastState = _jumpStack.Pop();
+                    InterpreterState lastState = _jumpStack.Pop();
 
                     Logger.Log("Returning to location: " + _source[lastState.Line], DebugChannel.Log);
                     _currentIndex = lastState.Line;
@@ -1074,7 +1079,7 @@ namespace Engine.OpenFL
         {
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
             _stepResult.HasJumped = true;
-            var size = (int) _currentBuffer.Size;
+            int size = (int) _currentBuffer.Size;
             if (!keepBuffer)
             {
                 _currentBuffer = CLAPI.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer);
@@ -1092,19 +1097,19 @@ namespace Engine.OpenFL
         {
             Logger.Log("Loading Source..", DebugChannel.Log);
 
-            var defs = new Dictionary<string, bool>();
+            Dictionary<string, bool> defs = new Dictionary<string, bool>();
 
-            for (var i = 0; i < _channelCount; i++)
+            for (int i = 0; i < _channelCount; i++)
             {
                 defs.Add("channel" + i, true);
             }
 
-            var lines = TextProcessorAPI.PreprocessLines(file, defs).ToList();
+            List<string> lines = TextProcessorAPI.PreprocessLines(file, defs).ToList();
 
 
-            for (var i = lines.Count - 1; i >= 0; i--)
+            for (int i = lines.Count - 1; i >= 0; i--)
             {
-                var line = lines[i].Trim();
+                string line = lines[i].Trim();
                 if (line.StartsWith(CommentPrefix))
                 {
                     lines.RemoveAt(i); //Remove otherwise emtpty lines after removing comments

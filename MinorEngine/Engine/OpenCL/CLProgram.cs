@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common;
 using Engine.OpenCL;
+using Engine.OpenCL.DotNetCore.Kernels;
 using Engine.OpenCL.DotNetCore.Programs;
 
 namespace Engine.OpenCL
@@ -91,27 +92,24 @@ namespace Engine.OpenCL
         /// </summary>
         private void Initialize()
         {
-
-
-            var vnum = GetVectorNum(_genType);
-            var lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
+            int vnum = GetVectorNum(_genType);
+            string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
                 vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
-            var defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
-            var source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
-            var kernelNames = FindKernelNames(source);
+            Dictionary<string, bool> defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
+            string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
+            string[] kernelNames = FindKernelNames(source);
 
             ClProgramHandle = CLAPI.CreateCLProgramFromSource(source);
 
 
-
-            foreach (var kernelName in kernelNames)
+            foreach (string kernelName in kernelNames)
             {
-                var k = CLAPI.CreateKernelFromName(ClProgramHandle, kernelName);
-                var kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
+                Kernel k = CLAPI.CreateKernelFromName(ClProgramHandle, kernelName);
+                int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = kernelNameIndex == -1
                     ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture)
                     : kernelNameIndex;
-                var parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
+                KernelParameter[] parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
                     kernelNameIndex,
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
 
@@ -127,15 +125,15 @@ namespace Engine.OpenCL
         /// <returns>A list of kernel names</returns>
         private static string[] FindKernelNames(string source)
         {
-            var kernelNames = new List<string>();
-            var s = source.Split(' ');
-            var parts = new List<string>();
-            foreach (var part in s)
+            List<string> kernelNames = new List<string>();
+            string[] s = source.Split(' ');
+            List<string> parts = new List<string>();
+            foreach (string part in s)
             {
                 parts.AddRange(part.Split('\n'));
             }
 
-            for (var i = 0; i < parts.Count; i++)
+            for (int i = 0; i < parts.Count; i++)
             {
                 if (parts[i] == "__kernel" || parts[i] == "kernel")
                 {

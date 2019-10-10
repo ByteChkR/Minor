@@ -48,7 +48,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="b">Material of the second member of the pair.</param>
         public override void UpdateMaterialProperties(Material a, Material b)
         {
-            foreach (var pairHandler in subPairs.Values)
+            foreach (CollidablePairHandler pairHandler in subPairs.Values)
             {
                 pairHandler.UpdateMaterialProperties(a, b);
             }
@@ -60,7 +60,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         /// <param name="properties">Properties to use.</param>
         public override void UpdateMaterialProperties(InteractionProperties properties)
         {
-            foreach (var pairHandler in subPairs.Values)
+            foreach (CollidablePairHandler pairHandler in subPairs.Values)
             {
                 pairHandler.UpdateMaterialProperties(properties);
             }
@@ -86,7 +86,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void CleanUp()
         {
             //The pair handler cleanup will get rid of contacts.
-            foreach (var pairHandler in subPairs.Values)
+            foreach (CollidablePairHandler pairHandler in subPairs.Values)
             {
                 pairHandler.CleanUp();
                 //Don't forget to give the pair back to the factory!
@@ -129,10 +129,10 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                     rule = CollisionRule;
                 }
 
-                var pair = new CollidablePair(a, b);
+                CollidablePair pair = new CollidablePair(a, b);
                 if (!subPairs.ContainsKey(pair))
                 {
-                    var newPair = NarrowPhaseHelper.GetPairHandler(ref pair, rule);
+                    CollidablePairHandler newPair = NarrowPhaseHelper.GetPairHandler(ref pair, rule);
                     if (newPair != null)
                     {
                         newPair.UpdateMaterialProperties(materialA, materialB); //Override the materials, if necessary.
@@ -156,7 +156,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             UpdateContainedPairs();
             //Eliminate old pairs.
-            foreach (var pair in subPairs.Keys)
+            foreach (CollidablePair pair in subPairs.Keys)
             {
                 if (!containedPairs.Contains(pair))
                 {
@@ -164,9 +164,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
             }
 
-            for (var i = 0; i < pairsToRemove.Count; i++)
+            for (int i = 0; i < pairsToRemove.Count; i++)
             {
-                var toReturn = subPairs[pairsToRemove.Elements[i]];
+                CollidablePairHandler toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);
                 toReturn.CleanUp();
                 toReturn.Factory.GiveBack(toReturn);
@@ -175,7 +175,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             containedPairs.Clear();
             pairsToRemove.Clear();
 
-            foreach (var pair in subPairs.Values)
+            foreach (CollidablePairHandler pair in subPairs.Values)
             {
                 if (pair.BroadPhaseOverlap.collisionRule < CollisionRule.NoNarrowPhaseUpdate
                 ) //Don't test if the collision rules say don't.
@@ -238,7 +238,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
             timeOfImpact = 1;
-            foreach (var pair in subPairs.Values)
+            foreach (CollidablePairHandler pair in subPairs.Values)
                 //The system uses the identity of the requester to determine if it needs to do handle the TOI calculation.
                 //Use the child pair's own entries as a proxy.
             {
@@ -264,9 +264,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected internal override void GetContactInformation(int index, out ContactInformation info)
         {
-            foreach (var pair in subPairs.Values)
+            foreach (CollidablePairHandler pair in subPairs.Values)
             {
-                var count = pair.Contacts.Count;
+                int count = pair.Contacts.Count;
                 if (index - count < 0)
                 {
                     pair.GetContactInformation(index, out info);
@@ -341,7 +341,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         /// </summary>
         public override void ClearContacts()
         {
-            foreach (var pair in subPairs.Values)
+            foreach (CollidablePairHandler pair in subPairs.Values)
             {
                 pair.ClearContacts();
             }

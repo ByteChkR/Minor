@@ -86,7 +86,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         {
             TerrainVertexIndices a, b, c;
             terrain.Shape.GetLocalIndices(overlappedTriangles[i], out a, out b, out c);
-            var terrainWidth = terrain.Shape.Heights.GetLength(0);
+            int terrainWidth = terrain.Shape.Heights.GetLength(0);
             indices.A = a.ToSequentialIndex(terrainWidth);
             indices.B = b.ToSequentialIndex(terrainWidth);
             indices.C = c.ToSequentialIndex(terrainWidth);
@@ -114,7 +114,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             if ((candidates.Count == 0) & (terrain.thickness > 0))
             {
                 RayHit rayHit;
-                var ray = new Ray
+                Ray ray = new Ray
                     {Position = convex.worldTransform.Position, Direction = terrain.worldTransform.LinearTransform.Up};
                 ray.Direction.Normalize();
                 //The raycast has to use doublesidedness, since we're casting from the bottom up.
@@ -126,7 +126,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                     float dot;
                     Vector3.Dot(ref ray.Direction, ref rayHit.Normal, out dot);
 
-                    var newContact = new ContactData
+                    ContactData newContact = new ContactData
                     {
                         Normal = rayHit.Normal,
                         Position = convex.worldTransform.Position,
@@ -134,8 +134,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                         PenetrationDepth = -rayHit.T * dot + convex.Shape.MinimumRadius
                     };
                     newContact.Validate();
-                    var found = false;
-                    for (var i = 0; i < contacts.Count; i++)
+                    bool found = false;
+                    for (int i = 0; i < contacts.Count; i++)
                     {
                         if (contacts.Elements[i].Id == 2)
                         {

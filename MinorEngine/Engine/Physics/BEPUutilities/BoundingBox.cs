@@ -35,7 +35,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Corners of the bounding box.</returns>
         public Vector3[] GetCorners()
         {
-            var toReturn = new Vector3[8];
+            Vector3[] toReturn = new Vector3[8];
             toReturn[0] = new Vector3(Min.X, Max.Y, Max.Z);
             toReturn[1] = Max;
             toReturn[2] = new Vector3(Max.X, Min.Y, Max.Z);
@@ -185,9 +185,9 @@ namespace Engine.Physics.BEPUutilities
 
             aabb.Min = points[0];
             aabb.Max = aabb.Min;
-            for (var i = points.Count - 1; i >= 1; i--)
+            for (int i = points.Count - 1; i >= 1; i--)
             {
-                var v = points[i];
+                Vector3 v = points[i];
                 if (v.X < aabb.Min.X)
                 {
                     aabb.Min.X = v.X;

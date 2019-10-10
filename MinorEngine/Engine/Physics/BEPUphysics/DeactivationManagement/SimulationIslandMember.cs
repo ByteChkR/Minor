@@ -42,9 +42,9 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         public void UpdateDeactivationCandidacy(float dt)
         {
             //Get total velocity, and see if the entity is losing energy.
-            var velocity = Owner.linearVelocity.LengthSquared() + Owner.angularVelocity.LengthSquared();
+            float velocity = Owner.linearVelocity.LengthSquared() + Owner.angularVelocity.LengthSquared();
 
-            var isActive = IsActive;
+            bool isActive = IsActive;
             if (isActive)
             {
                 TryToCompressIslandHierarchy();
@@ -121,16 +121,17 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
                         //tell simulation islands associated with connected objects that they aren't allowed to deactivate.
 
                     {
-                        for (var i = 0; i < connections.Count; i++)
+                        for (int i = 0; i < connections.Count; i++)
                         {
-                            var connectedMembers = connections.Elements[i].entries;
-                            for (var j = connectedMembers.Count - 1; j >= 0; j--)
+                            RawList<SimulationIslandConnection.Entry>
+                                connectedMembers = connections.Elements[i].entries;
+                            for (int j = connectedMembers.Count - 1; j >= 0; j--)
                             {
                                 //The change locker must be obtained before attempting to access the SimulationIsland.
                                 //Path compression can force the simulation island to evaluate to null briefly.
                                 //Do not permit the object to undergo path compression during this (brief) operation.
                                 connectedMembers.Elements[j].Member.simulationIslandChangeLocker.Enter();
-                                var island = connectedMembers.Elements[j].Member.SimulationIsland;
+                                SimulationIsland island = connectedMembers.Elements[j].Member.SimulationIsland;
                                 if (island != null)
                                 {
                                     //It's possible a kinematic entity to go inactive for one frame, allowing nearby entities to go to sleep.
@@ -196,7 +197,7 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
 
         private void TryToCompressIslandHierarchy()
         {
-            var currentSimulationIsland = simulationIsland;
+            SimulationIsland currentSimulationIsland = simulationIsland;
             if (currentSimulationIsland != null)
             {
                 if (currentSimulationIsland.immediateParent != currentSimulationIsland)
@@ -235,7 +236,7 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         {
             get
             {
-                var currentSimulationIsland = SimulationIsland;
+                SimulationIsland currentSimulationIsland = SimulationIsland;
                 if (currentSimulationIsland != null)
                 {
                     return currentSimulationIsland.isActive;
@@ -252,7 +253,7 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         {
             //If we're trying to activate, always set the deactivation candidacy to false.  This resets the timer if necessary.
             IsDeactivationCandidate = false;
-            var currentSimulationIsland = SimulationIsland;
+            SimulationIsland currentSimulationIsland = SimulationIsland;
             if (currentSimulationIsland != null)
                 //We can force-activate an island.
                 //Note that this does nothing for objects not in a space

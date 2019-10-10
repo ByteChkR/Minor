@@ -81,7 +81,7 @@
         {
             get
             {
-                var t = new RigidTransform {Orientation = Quaternion.Identity, Position = new Vector3()};
+                RigidTransform t = new RigidTransform {Orientation = Quaternion.Identity, Position = new Vector3()};
                 return t;
             }
         }

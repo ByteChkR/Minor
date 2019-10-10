@@ -208,10 +208,10 @@ namespace Engine.Physics.BEPUik
             Vector3.Negate(ref constraintSpaceImpulse, out constraintSpaceImpulse);
 
             //Add the constraint space impulse to the accumulated impulse so that warm starting and softness work properly.
-            var preadd = accumulatedImpulse;
+            Vector3 preadd = accumulatedImpulse;
             Vector3.Add(ref constraintSpaceImpulse, ref accumulatedImpulse, out accumulatedImpulse);
             //But wait! The accumulated impulse may exceed this constraint's capacity! Check to make sure!
-            var impulseSquared = accumulatedImpulse.LengthSquared();
+            float impulseSquared = accumulatedImpulse.LengthSquared();
             if (impulseSquared > maximumImpulseSquared)
             {
                 //Oops! Clamp that down.

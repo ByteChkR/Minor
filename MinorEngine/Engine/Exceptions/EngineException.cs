@@ -2,7 +2,6 @@
 
 namespace Engine.Exceptions
 {
-
     /// <summary>
     /// Exception that the SuperClass of all exceptions that get thrown with logger.crash
     /// </summary>

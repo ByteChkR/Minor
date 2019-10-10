@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUphysics.Constraints;
 using Engine.Physics.BEPUphysics.Entities;
@@ -96,7 +97,7 @@ namespace Engine.Physics.BEPUphysics.Character
         public void UpdateSupportData()
         {
             //Check if the support has changed, and perform the necessary bookkeeping to keep the connections up to date.
-            var oldSupport = supportData.SupportObject;
+            Collidable oldSupport = supportData.SupportObject;
             supportData = supportFinder.VerticalSupportData;
             if (oldSupport != supportData.SupportObject)
             {
@@ -106,7 +107,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
-            var entityCollidable = supportData.SupportObject as EntityCollidable;
+            EntityCollidable entityCollidable = supportData.SupportObject as EntityCollidable;
             if (entityCollidable != null)
             {
                 outputInvolvedEntities.Add(entityCollidable.Entity);
@@ -142,7 +143,7 @@ namespace Engine.Physics.BEPUphysics.Character
             if (supportData.SupportObject != null)
             {
                 //Get an easy reference to the support.
-                var support = supportData.SupportObject as EntityCollidable;
+                EntityCollidable support = supportData.SupportObject as EntityCollidable;
                 if (support != null)
                 {
                     supportEntity = support.Entity;
@@ -171,16 +172,16 @@ namespace Engine.Physics.BEPUphysics.Character
 
             linearJacobianA = supportData.Normal;
             Vector3.Negate(ref linearJacobianA, out linearJacobianB);
-            var inverseEffectiveMass = characterBody.InverseMass;
+            float inverseEffectiveMass = characterBody.InverseMass;
             if (supportEntity != null)
             {
-                var offsetB = supportData.Position - supportEntity.Position;
+                Vector3 offsetB = supportData.Position - supportEntity.Position;
                 Vector3.Cross(ref offsetB, ref linearJacobianB, out angularJacobianB);
                 if (supportEntity.IsDynamic)
                 {
                     //Only dynamic entities can actually contribute anything to the effective mass.
                     //Kinematic entities have infinite mass and inertia, so this would all zero out.
-                    var inertiaInverse = supportEntity.InertiaTensorInverse;
+                    Matrix3x3 inertiaInverse = supportEntity.InertiaTensorInverse;
                     Vector3 angularComponentB;
                     Matrix3x3.Transform(ref angularJacobianB, ref inertiaInverse, out angularComponentB);
                     float effectiveMassContribution;
@@ -201,8 +202,8 @@ namespace Engine.Physics.BEPUphysics.Character
         public override void ExclusiveUpdate()
         {
             //Warm start the constraint using the previous impulses and the new jacobians!
-            var impulse = new Vector3();
-            var torque = new Vector3();
+            Vector3 impulse = new Vector3();
+            Vector3 torque = new Vector3();
             Vector3.Multiply(ref linearJacobianA, accumulatedImpulse, out impulse);
 
             characterBody.ApplyLinearImpulse(ref impulse);
@@ -227,20 +228,20 @@ namespace Engine.Physics.BEPUphysics.Character
             //y is the perpendicular direction.
 
             //Note that positive velocity is penetrating velocity.
-            var relativeVelocity = RelativeVelocity + permittedVelocity;
+            float relativeVelocity = RelativeVelocity + permittedVelocity;
 
 
             //Create the full velocity change, and convert it to an impulse in constraint space.
-            var lambda = -relativeVelocity * EffectiveMass;
+            float lambda = -relativeVelocity * EffectiveMass;
 
             //Add and clamp the impulse.
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            float previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, 0, maximumForce);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
             //Use the jacobians to put the impulse into world space.
-            
-            var impulse = new Vector3();
-            var torque = new Vector3();
+
+            Vector3 impulse = new Vector3();
+            Vector3 torque = new Vector3();
             Vector3.Multiply(ref linearJacobianA, lambda, out impulse);
 
             characterBody.ApplyLinearImpulse(ref impulse);

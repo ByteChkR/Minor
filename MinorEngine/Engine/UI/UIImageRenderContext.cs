@@ -36,6 +36,7 @@ namespace Engine.UI
         /// Private flag if the Screen Space Quad has been loaded
         /// </summary>
         private bool _init;
+
         private int _vao;
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace Engine.UI
         {
             _init = true;
             _vao = GL.GenVertexArray();
-            var _screenVBO = GL.GenBuffer();
+            int _screenVBO = GL.GenBuffer();
             GL.BindVertexArray(_vao);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
@@ -91,7 +92,7 @@ namespace Engine.UI
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             Program.Use();
 
-            var mat = Matrix4.Identity;
+            Matrix4 mat = Matrix4.Identity;
 
             if (WorldSpace)
             {

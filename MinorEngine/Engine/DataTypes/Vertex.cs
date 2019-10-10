@@ -4,7 +4,6 @@ using OpenTK;
 
 namespace Engine.DataTypes
 {
-
     /// <summary>
     /// A Data Type that is containing the information that Represents a Vertex in OpenGL
     /// </summary>
@@ -15,18 +14,22 @@ namespace Engine.DataTypes
         /// Position of Vertex
         /// </summary>
         [FieldOffset(0)] public Vector3 Position;
+
         /// <summary>
         /// Normal of Vertex
         /// </summary>
         [FieldOffset(12)] public Vector3 Normal;
+
         /// <summary>
         /// UV Coords of Vertex
         /// </summary>
         [FieldOffset(24)] public Vector2 UV;
+
         /// <summary>
         /// Tangent of the Normal of the Vertex
         /// </summary>
         [FieldOffset(32)] public Vector3 Tangent;
+
         /// <summary>
         /// Bitangent of the Normal of the Vertex
         /// </summary>

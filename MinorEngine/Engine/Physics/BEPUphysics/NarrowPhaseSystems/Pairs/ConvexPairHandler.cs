@@ -1,5 +1,6 @@
 ﻿using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUphysics.BroadPhaseSystems;
 using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using Engine.Physics.BEPUphysics.PositionUpdating;
 using Engine.Physics.BEPUphysics.Settings;
@@ -27,16 +28,16 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
-            var collidableA = CollidableA as ConvexCollidable;
-            var collidableB = CollidableB as ConvexCollidable;
-            var modeA = collidableA.entity == null
+            ConvexCollidable collidableA = CollidableA as ConvexCollidable;
+            ConvexCollidable collidableB = CollidableB as ConvexCollidable;
+            PositionUpdateMode modeA = collidableA.entity == null
                 ? PositionUpdateMode.Discrete
                 : collidableA.entity.PositionUpdateMode;
-            var modeB = collidableB.entity == null
+            PositionUpdateMode modeB = collidableB.entity == null
                 ? PositionUpdateMode.Discrete
                 : collidableB.entity.PositionUpdateMode;
 
-            var overlap = BroadPhaseOverlap;
+            BroadPhaseOverlap overlap = BroadPhaseOverlap;
             if (
                 (overlap.entryA.IsActive || overlap.entryB.IsActive) && //At least one has to be active.
                 (
@@ -69,9 +70,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
 
                 Vector3.Multiply(ref velocity, dt, out velocity);
-                var velocitySquared = velocity.LengthSquared();
+                float velocitySquared = velocity.LengthSquared();
 
-                var minimumRadiusA = collidableA.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
+                float minimumRadiusA = collidableA.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
                 if (minimumRadiusA * minimumRadiusA < velocitySquared)
                 {
@@ -84,7 +85,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                     }
                 }
 
-                var minimumRadiusB = collidableB.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
+                float minimumRadiusB = collidableB.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 if (minimumRadiusB * minimumRadiusB < velocitySquared)
                 {
                     //Spherecast B against A.

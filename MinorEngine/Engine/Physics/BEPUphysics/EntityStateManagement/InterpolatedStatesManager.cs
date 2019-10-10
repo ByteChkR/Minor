@@ -45,12 +45,12 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             //Turn everything on.
             lock (FlipLocker)
             {
-                var initialCount = Math.Max(manager.entities.Count, 64);
+                int initialCount = Math.Max(manager.entities.Count, 64);
                 backBuffer = new RigidTransform[initialCount];
                 states = new RigidTransform[initialCount];
-                for (var i = 0; i < manager.entities.Count; i++)
+                for (int i = 0; i < manager.entities.Count; i++)
                 {
-                    var entity = manager.entities[i];
+                    Entity entity = manager.entities[i];
                     backBuffer[i].Position = entity.position;
                     backBuffer[i].Orientation = entity.orientation;
                 }
@@ -127,7 +127,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
         private void UpdateIndex(int i)
         {
-            var entity = manager.entities[i];
+            Entity entity = manager.entities[i];
             //Blend between previous and current states.
             //Interpolated updates occur after proper updates complete.
             //That means that the internal positions and the front buffer positions are equivalent.
@@ -147,7 +147,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
         protected override void UpdateSingleThreaded()
         {
-            for (var i = 0; i < manager.entities.Count; i++)
+            for (int i = 0; i < manager.entities.Count; i++)
             {
                 UpdateIndex(i);
             }
@@ -162,7 +162,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
         {
             lock (FlipLocker)
             {
-                var formerFrontBuffer = states;
+                RigidTransform[] formerFrontBuffer = states;
                 states = backBuffer;
                 backBuffer = formerFrontBuffer;
             }
@@ -202,7 +202,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             //Don't need to lock since the parent manager handles it.
             if (states.Length <= e.BufferedStates.motionStateIndex)
             {
-                var newStates = new RigidTransform[states.Length * 2];
+                RigidTransform[] newStates = new RigidTransform[states.Length * 2];
                 states.CopyTo(newStates, 0);
                 states = newStates;
             }
@@ -212,7 +212,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
             if (backBuffer.Length <= e.BufferedStates.motionStateIndex)
             {
-                var newStates = new RigidTransform[backBuffer.Length * 2];
+                RigidTransform[] newStates = new RigidTransform[backBuffer.Length * 2];
                 backBuffer.CopyTo(newStates, 0);
                 backBuffer = newStates;
             }

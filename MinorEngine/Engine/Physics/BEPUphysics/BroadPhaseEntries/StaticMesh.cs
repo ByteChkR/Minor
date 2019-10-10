@@ -6,6 +6,7 @@ using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using Engine.Physics.BEPUphysics.DataStructures;
 using Engine.Physics.BEPUphysics.OtherSpaceStages;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 
 namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
@@ -169,12 +170,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             hit = new RayHit();
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
-            var tri = PhysicsThreadResources.GetTriangle();
-            var hitElements = CommonResources.GetIntList();
+            TriangleShape tri = PhysicsThreadResources.GetTriangle();
+            RawList<int> hitElements = CommonResources.GetIntList();
             if (Mesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (var i = 0; i < hitElements.Count; i++)
+                for (int i = 0; i < hitElements.Count; i++)
                 {
                     Mesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     Vector3 center;
@@ -185,7 +186,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                     Vector3.Subtract(ref tri.vB, ref center, out tri.vB);
                     Vector3.Subtract(ref tri.vC, ref center, out tri.vC);
                     tri.MaximumRadius = tri.vA.LengthSquared();
-                    var radius = tri.vB.LengthSquared();
+                    float radius = tri.vB.LengthSquared();
                     if (tri.MaximumRadius < radius)
                     {
                         tri.MaximumRadius = radius;
@@ -199,7 +200,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
 
                     tri.MaximumRadius = (float) Math.Sqrt(tri.MaximumRadius);
                     tri.collisionMargin = 0;
-                    var triangleTransform = new RigidTransform {Orientation = Quaternion.Identity, Position = center};
+                    RigidTransform triangleTransform = new RigidTransform
+                        {Orientation = Quaternion.Identity, Position = center};
                     RayHit tempHit;
                     if (MPRToolbox.Sweep(castShape, tri, ref sweep, ref Toolbox.ZeroVector, ref startingTransform,
                             ref triangleTransform, out tempHit) && tempHit.T < hit.T)

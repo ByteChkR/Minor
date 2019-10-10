@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using Engine.Physics.BEPUphysics.CollisionTests.Manifolds;
 using Engine.Physics.BEPUphysics.Constraints.Collision;
@@ -105,16 +106,16 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 //Only perform the test if the minimum radii are small enough relative to the size of the velocity.
                 Vector3 velocity;
                 Vector3.Multiply(ref convex.entity.linearVelocity, dt, out velocity);
-                var velocitySquared = velocity.LengthSquared();
+                float velocitySquared = velocity.LengthSquared();
 
-                var minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
+                float minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
                 if (minimumRadius * minimumRadius < velocitySquared)
                 {
-                    var triangle = PhysicsThreadResources.GetTriangle();
+                    TriangleShape triangle = PhysicsThreadResources.GetTriangle();
                     triangle.collisionMargin = 0;
                     //Spherecast against all triangles to find the earliest time.
-                    for (var i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
+                    for (int i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
                     {
                         mesh.Shape.TriangleMeshData.GetTriangle(MeshManifold.overlappedTriangles.Elements[i],
                             out triangle.vA, out triangle.vB, out triangle.vC);
@@ -164,7 +165,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal and friction forces.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (var i = 0; i < contactConstraint.frictionConstraints.Count; i++)
+            for (int i = 0; i < contactConstraint.frictionConstraints.Count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {

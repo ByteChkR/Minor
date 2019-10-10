@@ -37,13 +37,13 @@ namespace Common
             Debug.AddPrefixForMask(0, "[NONE]");
             Debug.AddPrefixForMask(-1, "[EXCEPTION]");
 
-            foreach (var logStreamSettings in settings.Streams)
+            foreach (ILogStreamSettings logStreamSettings in settings.Streams)
             {
                 Debug.AddOutputStream(OpenStream(logStreamSettings));
             }
 
 
-            var cconf = new CrashConfig();
+            CrashConfig cconf = new CrashConfig();
             cconf.CrashMask = -1;
             cconf.CheckForUpdates = settings.SearchForUpdates;
             CrashHandler.Initialize(cconf);
@@ -68,7 +68,7 @@ namespace Common
 
         private static LogStream OpenNetworkStream(ILogStreamSettings settings)
         {
-            var nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
+            NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
                 settings.Destination, settings.NetworkPort, settings.Mask, (MatchType) settings.MatchMode,
                 settings.Timestamp);
             return nls;

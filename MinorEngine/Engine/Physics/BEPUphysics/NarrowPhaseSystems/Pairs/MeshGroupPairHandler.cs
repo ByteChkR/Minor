@@ -133,7 +133,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void CleanUp()
         {
             //The pair handler cleanup will get rid of contacts.
-            foreach (var pairHandler in subPairs.Values)
+            foreach (MobileMeshPairHandler pairHandler in subPairs.Values)
             {
                 //The contained pairs list pulled TriangleCollidables from a pool to create the opposing collidables.
                 //Clean those up now.
@@ -157,11 +157,13 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected void TryToAdd(int index)
         {
-            var entry = new TriangleEntry {Index = index};
+            TriangleEntry entry = new TriangleEntry {Index = index};
             if (!subPairs.ContainsKey(entry))
             {
-                var collidablePair = new CollidablePair(CollidableA, entry.Collidable = GetOpposingCollidable(index));
-                var newPair = (MobileMeshPairHandler) NarrowPhaseHelper.GetPairHandler(ref collidablePair);
+                CollidablePair collidablePair =
+                    new CollidablePair(CollidableA, entry.Collidable = GetOpposingCollidable(index));
+                MobileMeshPairHandler newPair =
+                    (MobileMeshPairHandler) NarrowPhaseHelper.GetPairHandler(ref collidablePair);
                 if (newPair != null)
                 {
                     newPair.CollisionRule = CollisionRule;
@@ -209,7 +211,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             UpdateContainedPairs(dt);
             //Eliminate old pairs.
-            foreach (var pair in subPairs.Keys)
+            foreach (TriangleEntry pair in subPairs.Keys)
             {
                 if (!containedPairs.Contains(pair))
                 {
@@ -217,9 +219,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
             }
 
-            for (var i = 0; i < pairsToRemove.Count; i++)
+            for (int i = 0; i < pairsToRemove.Count; i++)
             {
-                var toReturn = subPairs[pairsToRemove.Elements[i]];
+                MobileMeshPairHandler toReturn = subPairs[pairsToRemove.Elements[i]];
                 subPairs.Remove(pairsToRemove.Elements[i]);
                 //The contained pairs list pulled TriangleCollidables from a pool to create the opposing collidables.
                 //Clean those up now.
@@ -232,7 +234,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             containedPairs.Clear();
             pairsToRemove.Clear();
 
-            foreach (var pair in subPairs)
+            foreach (KeyValuePair<TriangleEntry, MobileMeshPairHandler> pair in subPairs)
             {
                 if (pair.Value.BroadPhaseOverlap.collisionRule < CollisionRule.NoNarrowPhaseUpdate
                 ) //Don't test if the collision rules say don't.
@@ -298,7 +300,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
             timeOfImpact = 1;
-            foreach (var pair in subPairs.Values)
+            foreach (MobileMeshPairHandler pair in subPairs.Values)
             {
                 //The system uses the identity of the requester to determine if it needs to do handle the TOI calculation.
                 //Use the child pair's own entries as a proxy.
@@ -323,7 +325,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             foreach (CollidablePairHandler pair in subPairs.Values)
             {
-                var count = pair.Contacts.Count;
+                int count = pair.Contacts.Count;
                 if (index - count < 0)
                 {
                     pair.GetContactInformation(index, out info);
@@ -398,7 +400,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         /// </summary>
         public override void ClearContacts()
         {
-            foreach (var pair in subPairs.Values)
+            foreach (MobileMeshPairHandler pair in subPairs.Values)
             {
                 pair.ClearContacts();
             }

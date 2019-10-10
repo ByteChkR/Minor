@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -28,24 +27,28 @@ namespace Engine.OpenCL.DotNetCore.Events
         {
             // Subscribes to the event callbacks of the OpenCL event, so that a CLR event can be raised
             EventsNativeApi.SetEventCallback(
-                this.Handle,
-                (int)CommandExecutionStatus.Queued,
-                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) => this.OnQueued?.Invoke(this, new EventArgs()))),
+                Handle,
+                (int) CommandExecutionStatus.Queued,
+                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) =>
+                    OnQueued?.Invoke(this, new EventArgs()))),
                 IntPtr.Zero);
             EventsNativeApi.SetEventCallback(
-                this.Handle,
-                (int)CommandExecutionStatus.Submitted,
-                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) => this.OnSubmitted?.Invoke(this, new EventArgs()))),
+                Handle,
+                (int) CommandExecutionStatus.Submitted,
+                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) =>
+                    OnSubmitted?.Invoke(this, new EventArgs()))),
                 IntPtr.Zero);
             EventsNativeApi.SetEventCallback(
-                this.Handle,
-                (int)CommandExecutionStatus.Running,
-                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) => this.OnRunning?.Invoke(this, new EventArgs()))),
+                Handle,
+                (int) CommandExecutionStatus.Running,
+                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) =>
+                    OnRunning?.Invoke(this, new EventArgs()))),
                 IntPtr.Zero);
             EventsNativeApi.SetEventCallback(
-                this.Handle,
-                (int)CommandExecutionStatus.Complete,
-                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) => this.OnCompleted?.Invoke(this, new EventArgs()))),
+                Handle,
+                (int) CommandExecutionStatus.Complete,
+                Marshal.GetFunctionPointerForDelegate(new AwaitableEventCallback((waitEvent, userData) =>
+                    OnCompleted?.Invoke(this, new EventArgs()))),
                 IntPtr.Zero);
         }
 
@@ -56,13 +59,7 @@ namespace Engine.OpenCL.DotNetCore.Events
         /// <summary>
         /// Gets the current command execution status code. This is the raw numeric status code, which can be helpful, when the command raised an error, to retrieve more information about the type of error that was returned.
         /// </summary>
-        public int CommandExecutionStatusCode
-        {
-            get
-            {
-                return this.GetEventInformation<int>(EventInformation.CommandExecutionStatus);
-            }
-        }
+        public int CommandExecutionStatusCode => GetEventInformation<int>(EventInformation.CommandExecutionStatus);
 
         /// <summary>
         /// Gets the current command execution status.
@@ -71,9 +68,12 @@ namespace Engine.OpenCL.DotNetCore.Events
         {
             get
             {
-                int commandExecutionStatusCode = this.CommandExecutionStatusCode;
+                int commandExecutionStatusCode = CommandExecutionStatusCode;
                 if (commandExecutionStatusCode >= 0)
-                    return (CommandExecutionStatus)commandExecutionStatusCode;
+                {
+                    return (CommandExecutionStatus) commandExecutionStatusCode;
+                }
+
                 return CommandExecutionStatus.Error;
             }
         }
@@ -93,15 +93,21 @@ namespace Engine.OpenCL.DotNetCore.Events
         {
             // Retrieves the size of the return value in bytes, this is used to later get the full information
             UIntPtr returnValueSize;
-            Result result = EventsNativeApi.GetEventInformation(this.Handle, eventInformation, UIntPtr.Zero, null, out returnValueSize);
+            Result result =
+                EventsNativeApi.GetEventInformation(Handle, eventInformation, UIntPtr.Zero, null, out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The event information could not be retrieved.", result);
-            
+            }
+
             // Allocates enough memory for the return value and retrieves it
             byte[] output = new byte[returnValueSize.ToUInt32()];
-            result = EventsNativeApi.GetEventInformation(this.Handle, eventInformation, new UIntPtr((uint)output.Length), output, out returnValueSize);
+            result = EventsNativeApi.GetEventInformation(Handle, eventInformation, new UIntPtr((uint) output.Length),
+                output, out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The event information could not be retrieved.", result);
+            }
 
             // Returns the output
             return InteropConverter.To<T>(output);
@@ -153,8 +159,10 @@ namespace Engine.OpenCL.DotNetCore.Events
         protected override void Dispose(bool disposing)
         {
             // Checks if the event has already been disposed of, if not, then it is disposed of
-            if (!this.IsDisposed)
-                EventsNativeApi.ReleaseEvent(this.Handle);
+            if (!IsDisposed)
+            {
+                EventsNativeApi.ReleaseEvent(Handle);
+            }
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);

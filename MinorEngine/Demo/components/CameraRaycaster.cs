@@ -25,9 +25,9 @@ namespace Demo.components
 
         protected override void Update(float deltaTime)
         {
-            var r = ConstructRayFromMousePosition();
-            var ret = PhysicsEngine.RayCastFirst(r, 1000, cast,
-                out var arr);
+            Ray r = ConstructRayFromMousePosition();
+            bool ret = PhysicsEngine.RayCastFirst(r, 1000, cast,
+                out KeyValuePair<Collider, RayHit> arr);
             if (ret)
             {
                 Vector3 pos = arr.Value.Location;
@@ -41,9 +41,9 @@ namespace Demo.components
         {
             if (e.Key == Key.B)
             {
-                var r = ConstructRayFromMousePosition();
-                var ret = PhysicsEngine.RayCastFirst(r, 1000, cast,
-                    out var arr);
+                Ray r = ConstructRayFromMousePosition();
+                bool ret = PhysicsEngine.RayCastFirst(r, 1000, cast,
+                    out KeyValuePair<Collider, RayHit> arr);
                 if (ret)
                 {
                     Vector3 pos = arr.Value.Location;
@@ -57,7 +57,7 @@ namespace Demo.components
         private Ray ConstructRayFromMousePosition()
         {
             Vector2 mpos = GameEngine.Instance.MousePosition;
-            var mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int) mpos.X, (int) mpos.Y);
+            Vector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int) mpos.X, (int) mpos.Y);
             return new Ray(Owner.GetLocalPosition(), (mousepos - Owner.GetLocalPosition()).Normalized());
         }
     }

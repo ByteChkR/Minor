@@ -1,6 +1,8 @@
 ﻿using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 
 namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
@@ -21,7 +23,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         protected override TriangleCollidable GetOpposingCollidable(int index)
         {
             //Construct a TriangleCollidable from the static mesh.
-            var toReturn = PhysicsResources.GetTriangleCollidable();
+            TriangleCollidable toReturn = PhysicsResources.GetTriangleCollidable();
             toReturn.Shape.sidedness = mesh.Shape.Sidedness;
             toReturn.Shape.collisionMargin = mobileMesh.Shape.MeshCollisionMargin;
             toReturn.Entity = mesh.entity;
@@ -36,7 +38,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void ConfigureCollidable(TriangleEntry entry, float dt)
         {
-            var shape = entry.Collidable.Shape;
+            TriangleShape shape = entry.Collidable.Shape;
             mesh.Shape.TriangleMesh.Data.GetTriangle(entry.Index, out shape.vA, out shape.vB, out shape.vC);
             Matrix3x3 o;
             Matrix3x3.CreateFromQuaternion(ref mesh.worldTransform.Orientation, out o);
@@ -83,7 +85,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
         protected override void UpdateContainedPairs(float dt)
         {
-            var overlappedElements = CommonResources.GetIntList();
+            RawList<int> overlappedElements = CommonResources.GetIntList();
             BoundingBox localBoundingBox;
             AffineTransform meshTransform;
             AffineTransform.CreateFromRigidTransform(ref mesh.worldTransform, out meshTransform);
@@ -94,7 +96,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             mobileMesh.Shape.GetSweptLocalBoundingBox(ref mobileMesh.worldTransform, ref meshTransform, ref sweep,
                 out localBoundingBox);
             mesh.Shape.TriangleMesh.Tree.GetOverlaps(localBoundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i]);
             }

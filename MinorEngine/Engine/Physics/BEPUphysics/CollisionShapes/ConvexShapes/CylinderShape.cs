@@ -83,12 +83,12 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             description.EntityShapeVolume.Volume = MathHelper.Pi * radius * radius * height;
 
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            var diagValue = .0833333333f * height * height + .25f * radius * radius;
+            float diagValue = .0833333333f * height * height + .25f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = .5f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;
 
-            var halfHeight = height * 0.5f;
+            float halfHeight = height * 0.5f;
             description.MinimumRadius = Math.Min(radius, halfHeight);
             description.MaximumRadius = (float) Math.Sqrt(radius * radius + halfHeight * halfHeight);
             description.CollisionMargin = collisionMargin;
@@ -110,7 +110,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             Matrix3x3.CreateFromQuaternion(ref shapeTransform.Orientation, out o);
             //Sample the local directions from the orientation matrix, implicitly transposed.
             //Notice only three directions are used.  Due to cylinder symmetry, 'left' is just -right.
-            var direction = new Vector3(o.M11, o.M21, o.M31);
+            Vector3 direction = new Vector3(o.M11, o.M21, o.M31);
             Vector3 right;
             GetLocalExtremePointWithoutMargin(ref direction, out right);
 
@@ -144,10 +144,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="extremePoint">Extreme point on the shape.</param>
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
-            var horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
+            float horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
             if (horizontalLengthSquared > Toolbox.Epsilon)
             {
-                var multiplier = (radius - collisionMargin) / (float) Math.Sqrt(horizontalLengthSquared);
+                float multiplier = (radius - collisionMargin) / (float) Math.Sqrt(horizontalLengthSquared);
                 extremePoint = new Vector3(direction.X * multiplier,
                     Math.Sign(direction.Y) * (halfHeight - collisionMargin), direction.Z * multiplier);
             }
@@ -194,7 +194,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 hit.T = 0;
                 hit.Location = localRay.Position;
                 hit.Normal = new Vector3(hit.Location.X, 0, hit.Location.Z);
-                var normalLengthSquared = hit.Normal.LengthSquared();
+                float normalLengthSquared = hit.Normal.LengthSquared();
                 if (normalLengthSquared > 1e-9f)
                 {
                     Vector3.Divide(ref hit.Normal, (float) Math.Sqrt(normalLengthSquared), out hit.Normal);
@@ -213,8 +213,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //Project the ray direction onto the plane where the cylinder is a circle.
             //The projected ray is then tested against the circle to compute the time of impact.
             //That time of impact is used to compute the 3d hit location.
-            var planeDirection = new Vector2(localRay.Direction.X, localRay.Direction.Z);
-            var planeDirectionLengthSquared = planeDirection.LengthSquared();
+            Vector2 planeDirection = new Vector2(localRay.Direction.X, localRay.Direction.Z);
+            float planeDirectionLengthSquared = planeDirection.LengthSquared();
 
             if (planeDirectionLengthSquared < Toolbox.Epsilon)
             {
@@ -236,16 +236,16 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 return false;
             }
 
-            var planeOrigin = new Vector2(localRay.Position.X, localRay.Position.Z);
+            Vector2 planeOrigin = new Vector2(localRay.Position.X, localRay.Position.Z);
             float dot;
             Vector2.Dot(ref planeDirection, ref planeOrigin, out dot);
-            var closestToCenterT = -dot / planeDirectionLengthSquared;
+            float closestToCenterT = -dot / planeDirectionLengthSquared;
 
             Vector2 closestPoint;
             Vector2.Multiply(ref planeDirection, closestToCenterT, out closestPoint);
             Vector2.Add(ref planeOrigin, ref closestPoint, out closestPoint);
             //How close does the ray come to the circle?
-            var squaredDistance = closestPoint.LengthSquared();
+            float squaredDistance = closestPoint.LengthSquared();
             if (squaredDistance > radius * radius)
             {
                 //It's too far!  The ray cannot possibly hit the capsule.
@@ -255,8 +255,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
 
 
             //With the squared distance, compute the distance backward along the ray from the closest point on the ray to the axis.
-            var backwardsDistance = radius * (float) Math.Sqrt(1 - squaredDistance / (radius * radius));
-            var tOffset = backwardsDistance / (float) Math.Sqrt(planeDirectionLengthSquared);
+            float backwardsDistance = radius * (float) Math.Sqrt(1 - squaredDistance / (radius * radius));
+            float tOffset = backwardsDistance / (float) Math.Sqrt(planeDirectionLengthSquared);
 
             hit.T = closestToCenterT - tOffset;
 
@@ -269,7 +269,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             {
                 //Yup!
                 hit.Normal = new Vector3(hit.Location.X, 0, hit.Location.Z);
-                var normalLengthSquared = hit.Normal.LengthSquared();
+                float normalLengthSquared = hit.Normal.LengthSquared();
                 if (normalLengthSquared > 1e-9f)
                 {
                     Vector3.Divide(ref hit.Normal, (float) Math.Sqrt(normalLengthSquared), out hit.Normal);
@@ -300,7 +300,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 return false;
             }
 
-            var t = (halfHeight - localRay.Position.Y) / localRay.Direction.Y;
+            float t = (halfHeight - localRay.Position.Y) / localRay.Direction.Y;
             Vector3 planeIntersection;
             Vector3.Multiply(ref localRay.Direction, t, out planeIntersection);
             Vector3.Add(ref localRay.Position, ref planeIntersection, out planeIntersection);

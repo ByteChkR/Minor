@@ -5,7 +5,6 @@ using Engine.Rendering.Contexts;
 
 namespace Engine.Rendering
 {
-
     /// <summary>
     /// Implements A mesh Renderer component that can be used to add 3D Objects to the game world
     /// </summary>
@@ -15,18 +14,22 @@ namespace Engine.Rendering
         /// The Context Backing field
         /// </summary>
         private RenderContext _context;
+
         /// <summary>
         /// A flag that indicates if the context needs to be updated
         /// </summary>
         private bool _contextInvalid = true;
+
         /// <summary>
         /// The Shader backing field
         /// </summary>
         private ShaderProgram _shader;
+
         /// <summary>
         /// The Mesh Backing field
         /// </summary>
         private Mesh _model;
+
         /// <summary>
         /// The Texture Backing Field
         /// </summary>
@@ -47,7 +50,8 @@ namespace Engine.Rendering
                 if (_context == null || _contextInvalid)
                 {
                     _contextInvalid = false;
-                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, new[] { Texture }, RenderType);
+                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] {Model}, new[] {Texture},
+                        RenderType);
                 }
                 else
                 {
@@ -61,7 +65,7 @@ namespace Engine.Rendering
             }
         }
 
-        
+
         /// <summary>
         /// The property that implements the render mask requirement of IRendereringComponent
         /// </summary>
@@ -145,7 +149,8 @@ namespace Engine.Rendering
         /// <param name="texture">The Texture to drawn on the mesh</param>
         /// <param name="renderMask">The render mask</param>
         /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
-        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture texture, int renderMask, bool disposeOnDestroy = true)
+        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture texture, int renderMask,
+            bool disposeOnDestroy = true)
         {
             Shader = shader;
             Texture = texture;
@@ -172,7 +177,6 @@ namespace Engine.Rendering
         {
             Logger.Log($"Mesh Info:{Owner.Name} (IDs: VAO: {Model._vao}, VBO: {Model._vbo}, EBO: {Model._ebo})..",
                 DebugChannel.Log);
-
         }
     }
 }

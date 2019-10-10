@@ -5,7 +5,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
 {
-
     /// <summary>
     /// Implements the Render Target
     /// </summary>
@@ -26,6 +25,7 @@ namespace Engine.Rendering
         /// The Color that is used to clear the buffer when reusing it
         /// </summary>
         public Color ClearColor { get; set; }
+
         /// <summary>
         /// The Framebuffer Handle that is rendered to
         /// </summary>
@@ -35,6 +35,7 @@ namespace Engine.Rendering
         /// The Texture Attachment
         /// </summary>
         public int RenderedTexture { get; }
+
         /// <summary>
         /// Depthbuffer attachment
         /// </summary>
@@ -76,14 +77,14 @@ namespace Engine.Rendering
                 GameEngine.Instance.Width, GameEngine.Instance.Height, 0, PixelFormat.Bgra,
                 PixelType.UnsignedByte, IntPtr.Zero);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int)TextureMagFilter.Nearest);
+                (int) TextureMagFilter.Nearest);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int)TextureMinFilter.Nearest);
+                (int) TextureMinFilter.Nearest);
 
             GL.FramebufferTexture(FramebufferTarget.Framebuffer, FramebufferAttachment.ColorAttachment0,
                 RenderedTexture, 0);
 
-            GL.DrawBuffers(1, new[] { DrawBuffersEnum.ColorAttachment0 });
+            GL.DrawBuffers(1, new[] {DrawBuffersEnum.ColorAttachment0});
 
             if (noDepth)
             {
@@ -144,7 +145,7 @@ namespace Engine.Rendering
         /// <returns>True if the render targets have the same mask</returns>
         public override bool Equals(object obj)
         {
-            var other = obj as RenderTarget;
+            RenderTarget other = obj as RenderTarget;
             if (ReferenceEquals(other, null))
             {
                 return false;

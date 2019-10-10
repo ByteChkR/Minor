@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -40,7 +39,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Events
         [DllImport("OpenCL", EntryPoint = "clWaitForEvents")]
         public static extern Result WaitForEvents(
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEvents,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] eventList
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] eventList
         );
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Engine.OpenCL.DotNetCore.Interop.Events
             [In] IntPtr notificationCallback,
             [In] IntPtr userData
         );
-        
+
         #endregion
     }
 }

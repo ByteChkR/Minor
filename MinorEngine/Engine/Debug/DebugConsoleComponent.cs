@@ -13,7 +13,6 @@ using OpenTK.Input;
 
 namespace Engine.Debug
 {
-
     /// <summary>
     /// A Convenient Debug Console that is quite versatile
     /// </summary>
@@ -23,6 +22,7 @@ namespace Engine.Debug
         /// The Maximum Amount of console lines that is *roughly* working for the usecase
         /// </summary>
         private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 20;
+
         /// <summary>
         /// The Text to be displayed when the Console is Closed.
         /// </summary>
@@ -160,21 +160,21 @@ namespace Engine.Debug
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
                 {ShaderType.VertexShader, "shader/UITextRender.vs"}
-            }, out var textShader);
+            }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UIRender.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
-            }, out var uiShader);
+            }, out ShaderProgram uiShader);
 
-            var obj = new GameObject("Console");
-            var _in = new GameObject("ConsoleInput");
-            var _out = new GameObject("ConsoleOutput");
-            var _titleObj = new GameObject("Title");
-            var _bgObj = new GameObject("BackgroundImage");
-            var _bgOutObj = new GameObject("BackgroundOutputImage");
-            var _hint = new GameObject("HintText");
+            GameObject obj = new GameObject("Console");
+            GameObject _in = new GameObject("ConsoleInput");
+            GameObject _out = new GameObject("ConsoleOutput");
+            GameObject _titleObj = new GameObject("Title");
+            GameObject _bgObj = new GameObject("BackgroundImage");
+            GameObject _bgOutObj = new GameObject("BackgroundOutputImage");
+            GameObject _hint = new GameObject("HintText");
 
             obj.Add(_in);
             obj.Add(_out);
@@ -189,32 +189,32 @@ namespace Engine.Debug
             rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
             GameEngine.Instance.AddRenderTarget(rt2);
 
-            var _bgImage =
+            UIImageRendererComponent _bgImage =
                 new UIImageRendererComponent(TextureLoader.FileToTexture("textures/black.png"), false,
                     0.65f, uiShader);
             _bgImage.RenderMask = 1 << 29;
 
-            var _bgOutImage =
+            UIImageRendererComponent _bgOutImage =
                 new UIImageRendererComponent(TextureLoader.FileToTexture("textures/black.png"), false, 0.4f,
                     uiShader);
             _bgOutImage.RenderMask = 1 << 28;
 
 
-            var _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = "GameEngine Console:"
             };
-            var _tHint = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tHint = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = "GameEngine Console:"
             };
 
-            var _tIn = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tIn = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = ""
             };
 
-            var _tOut = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tOut = new UITextRendererComponent("Arial", false, 1f, textShader)
             {
                 Text = "Console Initialized.."
             };
@@ -255,8 +255,8 @@ namespace Engine.Debug
         /// <param name="text"></param>
         public void WriteToConsole(string text)
         {
-            var arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var s in arr)
+            string[] arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in arr)
             {
                 _consoleOutBuffer.Enqueue(s);
             }
@@ -276,7 +276,7 @@ namespace Engine.Debug
         {
             _outSB.Clear();
 
-            foreach (var line in _consoleOutBuffer)
+            foreach (string line in _consoleOutBuffer)
             {
                 _outSB.Append(line + "\n");
             }
@@ -347,9 +347,9 @@ namespace Engine.Debug
         {
             _sb.Clear();
             _sb.Append("Commands:");
-            var col = 10;
-            var count = 0;
-            foreach (var consoleCommand in _commands)
+            int col = 10;
+            int count = 0;
+            foreach (KeyValuePair<string, ConsoleCommand> consoleCommand in _commands)
             {
                 count++;
                 if (count % col == 0)
@@ -420,13 +420,13 @@ namespace Engine.Debug
                 return "Please enter a function to redirect";
             }
 
-            var ret = args[0] + "\n";
+            string ret = args[0] + "\n";
 
-            var words = args.ToList();
-            if (_commands.TryGetValue(words[0], out var cmd))
+            List<string> words = args.ToList();
+            if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
             {
                 words.RemoveAt(0);
-                var s = cmd?.Invoke(words.ToArray());
+                string s = cmd?.Invoke(words.ToArray());
                 if (s == null)
                 {
                     ret += "No Return";
@@ -459,12 +459,12 @@ namespace Engine.Debug
                 if (e.Key == Key.Enter)
                 {
                     WriteToConsole(_sb.ToString());
-                    var words = _sb.ToString().Split(' ').ToList();
+                    List<string> words = _sb.ToString().Split(' ').ToList();
 
-                    if (_commands.TryGetValue(words[0], out var cmd))
+                    if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
                     {
                         words.RemoveAt(0);
-                        var s = cmd?.Invoke(words.ToArray());
+                        string s = cmd?.Invoke(words.ToArray());
                         if (s == null)
                         {
                             s = "No Return";
@@ -607,7 +607,7 @@ namespace Engine.Debug
             _invalidate = false;
             if (_showConsole)
             {
-                var input = "Something Went Wrong.";
+                string input = "Something Went Wrong.";
                 if (_currentId == _commandHistory.Count)
                 {
                     input = _sb.ToString();

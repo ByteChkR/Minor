@@ -148,7 +148,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            var inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z + W * W));
+            float inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z + W * W));
             X *= inverse;
             Y *= inverse;
             Z *= inverse;
@@ -252,7 +252,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Result of the division.</param>
         public static void Divide(ref Vector4 v, float divisor, out Vector4 result)
         {
-            var inverse = 1 / divisor;
+            float inverse = 1 / divisor;
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
@@ -452,10 +452,10 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="distanceSquared">Squared distance between the two vectors.</param>
         public static void DistanceSquared(ref Vector4 a, ref Vector4 b, out float distanceSquared)
         {
-            var x = a.X - b.X;
-            var y = a.Y - b.Y;
-            var z = a.Z - b.Z;
-            var w = a.W - b.W;
+            float x = a.X - b.X;
+            float y = a.Y - b.Y;
+            float z = a.Z - b.Z;
+            float w = a.W - b.W;
             distanceSquared = x * x + y * y + z * z + w * w;
         }
 
@@ -467,10 +467,10 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="distance">Distance between the two vectors.</param>
         public static void Distance(ref Vector4 a, ref Vector4 b, out float distance)
         {
-            var x = a.X - b.X;
-            var y = a.Y - b.Y;
-            var z = a.Z - b.Z;
-            var w = a.W - b.W;
+            float x = a.X - b.X;
+            float y = a.Y - b.Y;
+            float z = a.Z - b.Z;
+            float w = a.W - b.W;
             distance = (float) Math.Sqrt(x * x + y * y + z * z + w * w);
         }
 
@@ -531,7 +531,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Normalized vector.</param>
         public static void Normalize(ref Vector4 v, out Vector4 result)
         {
-            var inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z + v.W * v.W));
+            float inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z + v.W * v.W));
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
@@ -686,7 +686,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Interpolated intermediate state.</param>
         public static void Lerp(ref Vector4 start, ref Vector4 end, float interpolationAmount, out Vector4 result)
         {
-            var startAmount = 1 - interpolationAmount;
+            float startAmount = 1 - interpolationAmount;
             result.X = start.X * startAmount + end.X * interpolationAmount;
             result.Y = start.Y * startAmount + end.Y * interpolationAmount;
             result.Z = start.Z * startAmount + end.Z * interpolationAmount;
@@ -705,12 +705,12 @@ namespace Engine.Physics.BEPUutilities
         public static void Hermite(ref Vector4 value1, ref Vector4 tangent1, ref Vector4 value2, ref Vector4 tangent2,
             float interpolationAmount, out Vector4 result)
         {
-            var weightSquared = interpolationAmount * interpolationAmount;
-            var weightCubed = interpolationAmount * weightSquared;
-            var value1Blend = 2 * weightCubed - 3 * weightSquared + 1;
-            var tangent1Blend = weightCubed - 2 * weightSquared + interpolationAmount;
-            var value2Blend = -2 * weightCubed + 3 * weightSquared;
-            var tangent2Blend = weightCubed - weightSquared;
+            float weightSquared = interpolationAmount * interpolationAmount;
+            float weightCubed = interpolationAmount * weightSquared;
+            float value1Blend = 2 * weightCubed - 3 * weightSquared + 1;
+            float tangent1Blend = weightCubed - 2 * weightSquared + interpolationAmount;
+            float value2Blend = -2 * weightCubed + 3 * weightSquared;
+            float tangent2Blend = weightCubed - weightSquared;
             result.X = value1.X * value1Blend + value2.X * value2Blend + tangent1.X * tangent1Blend +
                        tangent2.X * tangent2Blend;
             result.Y = value1.Y * value1Blend + value2.Y * value2Blend + tangent1.Y * tangent1Blend +

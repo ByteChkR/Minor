@@ -71,10 +71,10 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
                 stack.TryUnsafeDequeueFirst(out toRemove);
             }
 
-            var length = stack.lastIndex - stack.firstIndex + 1; //lastIndex is inclusive, so add 1.
+            int length = stack.lastIndex - stack.firstIndex + 1; //lastIndex is inclusive, so add 1.
             if (InstanceInitializer != null)
             {
-                for (var i = 0; i < length; i++)
+                for (int i = 0; i < length; i++)
                 {
                     InstanceInitializer(stack.array[(stack.firstIndex + i) % stack.array.Length]);
                 }

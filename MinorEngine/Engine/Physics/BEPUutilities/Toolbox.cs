@@ -136,9 +136,9 @@ namespace Engine.Physics.BEPUutilities
             Vector3.Dot(ref ac, ref ac, out ACdotAC);
             Vector3.Dot(ref ac, ref ap, out ACdotAP);
 
-            var denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
-            var u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
-            var v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
+            float denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
+            float u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
+            float v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
 
             return u >= -BigEpsilon && v >= -BigEpsilon && u + v <= 1 + BigEpsilon;
         }
@@ -222,9 +222,9 @@ namespace Engine.Physics.BEPUutilities
             Vector3.Dot(ref ac, ref ac, out ACdotAC);
             Vector3.Dot(ref ac, ref ap, out ACdotAP);
 
-            var denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
-            var u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
-            var v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
+            float denom = 1 / (ABdotAB * ACdotAC - ABdotAC * ABdotAC);
+            float u = (ACdotAC * ABdotAP - ABdotAC * ACdotAP) * denom;
+            float v = (ABdotAB * ACdotAP - ABdotAC * ABdotAP) * denom;
 
             return u >= -BigEpsilon && v >= -BigEpsilon && u + v <= 1 + BigEpsilon;
         }
@@ -387,7 +387,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region AB?
-            var vc = d1 * d4 - d3 * d2;
+            float vc = d1 * d4 - d3 * d2;
             if (vc <= 0 && d1 >= 0 && d3 <= 0)
             {
                 v = d1 / (d1 - d3);
@@ -410,7 +410,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region AC?
-            var vb = d5 * d2 - d1 * d6;
+            float vb = d5 * d2 - d1 * d6;
             if (vb <= 0 && d2 >= 0 && d6 <= 0)
             {
                 w = d2 / (d2 - d6);
@@ -420,7 +420,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region BC?
-            var va = d3 * d6 - d5 * d4;
+            float va = d3 * d6 - d5 * d4;
             if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0)
             {
                 w = (d4 - d3) / (d4 - d3 + (d5 - d6));
@@ -431,7 +431,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Inside triangle?
-            var denom = 1 / (va + vb + vc);
+            float denom = 1 / (va + vb + vc);
             v = vb * denom;
             w = vc * denom;
             Vector3 abv;
@@ -492,7 +492,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region AB?
-            var vc = d1 * d4 - d3 * d2;
+            float vc = d1 * d4 - d3 * d2;
             if (vc <= 0 && d1 >= 0 && d3 <= 0)
             {
                 subsimplex.Add(a);
@@ -518,7 +518,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region AC?
-            var vb = d5 * d2 - d1 * d6;
+            float vb = d5 * d2 - d1 * d6;
             if (vb <= 0 && d2 >= 0 && d6 <= 0)
             {
                 subsimplex.Add(a);
@@ -530,7 +530,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region BC?
-            var va = d3 * d6 - d5 * d4;
+            float va = d3 * d6 - d5 * d4;
             if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0)
             {
                 subsimplex.Add(b);
@@ -546,7 +546,7 @@ namespace Engine.Physics.BEPUutilities
             subsimplex.Add(a);
             subsimplex.Add(b);
             subsimplex.Add(c);
-            var denom = 1 / (va + vb + vc);
+            float denom = 1 / (va + vb + vc);
             v = vb * denom;
             w = vc * denom;
             Vector3 abv;
@@ -576,9 +576,9 @@ namespace Engine.Physics.BEPUutilities
             subsimplex.Clear();
             baryCoords.Clear();
             float v, w;
-            var a = q[i];
-            var b = q[j];
-            var c = q[k];
+            Vector3 a = q[i];
+            Vector3 b = q[j];
+            Vector3 c = q[k];
             Vector3 ab;
             Vector3.Subtract(ref b, ref a, out ab);
             Vector3 ac;
@@ -614,7 +614,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region AB?
-            var vc = d1 * d4 - d3 * d2;
+            float vc = d1 * d4 - d3 * d2;
             if (vc <= 0 && d1 >= 0 && d3 <= 0)
             {
                 subsimplex.Add(i);
@@ -643,7 +643,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region AC?
-            var vb = d5 * d2 - d1 * d6;
+            float vb = d5 * d2 - d1 * d6;
             if (vb <= 0 && d2 >= 0 && d6 <= 0)
             {
                 subsimplex.Add(i);
@@ -657,7 +657,7 @@ namespace Engine.Physics.BEPUutilities
             }
 
             //Edge region BC?
-            var va = d3 * d6 - d5 * d4;
+            float va = d3 * d6 - d5 * d4;
             if (va <= 0 && d4 - d3 >= 0 && d5 - d6 >= 0)
             {
                 subsimplex.Add(j);
@@ -675,7 +675,7 @@ namespace Engine.Physics.BEPUutilities
             subsimplex.Add(i);
             subsimplex.Add(j);
             subsimplex.Add(k);
-            var denom = 1 / (va + vb + vc);
+            float denom = 1 / (va + vb + vc);
             v = vb * denom;
             w = vc * denom;
             baryCoords.Add(1 - v - w);
@@ -750,7 +750,7 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
+                float denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
                 if (t >= denom)
                 {
                     closestPoint = b;
@@ -793,7 +793,7 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
+                float denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
                 if (t >= denom)
                 {
                     //t = 1;//Don't need this for returning purposes.
@@ -827,8 +827,8 @@ namespace Engine.Physics.BEPUutilities
         public static void GetClosestPointOnSegmentToPoint(List<Vector3> q, int i, int j, ref Vector3 p,
             List<int> subsimplex, List<float> baryCoords, out Vector3 closestPoint)
         {
-            var a = q[i];
-            var b = q[j];
+            Vector3 a = q[i];
+            Vector3 b = q[j];
             subsimplex.Clear();
             baryCoords.Clear();
             Vector3 ab;
@@ -845,7 +845,7 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
+                float denom = ab.X * ab.X + ab.Y * ab.Y + ab.Z * ab.Z;
                 if (t >= denom)
                 {
                     subsimplex.Add(j);
@@ -927,8 +927,8 @@ namespace Engine.Physics.BEPUutilities
             Vector3 r;
             Vector3.Subtract(ref p1, ref p2, out r);
             //distance
-            var a = d1.LengthSquared();
-            var e = d2.LengthSquared();
+            float a = d1.LengthSquared();
+            float e = d2.LengthSquared();
             float f;
             Vector3.Dot(ref d2, ref r, out f);
 
@@ -949,7 +949,7 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var c = Vector3.Dot(d1, r);
+                float c = Vector3.Dot(d1, r);
                 if (e <= Epsilon)
                 {
                     // Second segment is basically a point.
@@ -958,8 +958,8 @@ namespace Engine.Physics.BEPUutilities
                 }
                 else
                 {
-                    var b = Vector3.Dot(d1, d2);
-                    var denom = a * e - b * b;
+                    float b = Vector3.Dot(d1, d2);
+                    float denom = a * e - b * b;
 
                     // If segments not parallel, compute closest point on L1 to L2, and
                     // clamp to segment S1. Else pick some s (here .5f)
@@ -1019,8 +1019,8 @@ namespace Engine.Physics.BEPUutilities
             Vector3 r;
             Vector3.Subtract(ref p1, ref p2, out r);
             //distance
-            var a = d1.LengthSquared();
-            var e = d2.LengthSquared();
+            float a = d1.LengthSquared();
+            float e = d2.LengthSquared();
             float f;
             Vector3.Dot(ref d2, ref r, out f);
 
@@ -1041,7 +1041,7 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var c = Vector3.Dot(d1, r);
+                float c = Vector3.Dot(d1, r);
                 if (e <= Epsilon)
                 {
                     // Second segment is basically a point.
@@ -1050,8 +1050,8 @@ namespace Engine.Physics.BEPUutilities
                 }
                 else
                 {
-                    var b = Vector3.Dot(d1, d2);
-                    var denom = a * e - b * b;
+                    float b = Vector3.Dot(d1, d2);
+                    float denom = a * e - b * b;
 
                     // If segments not parallel, compute closest point on L1 to L2, and
                     // clamp to segment S1. Else pick some s (here .5f)
@@ -1141,7 +1141,7 @@ namespace Engine.Physics.BEPUutilities
             Vector3.Dot(ref normal, ref point, out dot);
             float dot2;
             Vector3.Dot(ref pointOnPlane, ref normal, out dot2);
-            var t = (dot - dot2) / normal.LengthSquared();
+            float t = (dot - dot2) / normal.LengthSquared();
             Vector3 multiply;
             Vector3.Multiply(ref normal, t, out multiply);
             Vector3.Subtract(ref point, ref multiply, out projectedPoint);
@@ -1156,7 +1156,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Whether or not the point is within the edge planes.</returns>
         public static bool IsPointWithinFaceExtrusion(Vector3 point, List<Plane> planes, Vector3 centroid)
         {
-            foreach (var plane in planes)
+            foreach (Plane plane in planes)
             {
                 float centroidPlaneDot;
                 plane.DotCoordinate(ref centroid, out centroidPlaneDot);
@@ -1195,13 +1195,13 @@ namespace Engine.Physics.BEPUutilities
             closestPoint = p;
             Vector3 pq;
             Vector3 q;
-            var bestSqDist = float.MaxValue;
+            float bestSqDist = float.MaxValue;
             // If point outside face abc then compute closest point on abc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref d, ref a, ref b, ref c))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref b, ref c, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 // Update best closest point if (squared) distance is less than current best
                 if (sqDist < bestSqDist)
                 {
@@ -1215,7 +1215,7 @@ namespace Engine.Physics.BEPUutilities
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref c, ref d, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
@@ -1228,7 +1228,7 @@ namespace Engine.Physics.BEPUutilities
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref d, ref b, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
@@ -1241,7 +1241,7 @@ namespace Engine.Physics.BEPUutilities
             {
                 GetClosestPointOnTriangleToPoint(ref b, ref d, ref c, ref p, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     closestPoint = q;
@@ -1273,13 +1273,13 @@ namespace Engine.Physics.BEPUutilities
             closestPoint = p;
             Vector3 pq;
             Vector3 q;
-            var bestSqDist = float.MaxValue;
+            float bestSqDist = float.MaxValue;
             // If point outside face abc then compute closest point on abc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref d, ref a, ref b, ref c))
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref b, ref c, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 // Update best closest point if (squared) distance is less than current best
                 if (sqDist < bestSqDist)
                 {
@@ -1293,7 +1293,7 @@ namespace Engine.Physics.BEPUutilities
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref c, ref d, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
@@ -1306,7 +1306,7 @@ namespace Engine.Physics.BEPUutilities
             {
                 GetClosestPointOnTriangleToPoint(ref a, ref d, ref b, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
@@ -1319,7 +1319,7 @@ namespace Engine.Physics.BEPUutilities
             {
                 GetClosestPointOnTriangleToPoint(ref b, ref d, ref c, ref p, subsimplex, out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
+                float sqDist = pq.X * pq.X + pq.Y * pq.Y + pq.Z * pq.Z;
                 if (sqDist < bestSqDist)
                 {
                     closestPoint = q;
@@ -1340,15 +1340,15 @@ namespace Engine.Physics.BEPUutilities
         public static void GetClosestPointOnTetrahedronToPoint(RawList<Vector3> tetrahedron, ref Vector3 p,
             RawList<int> subsimplex, RawList<float> baryCoords, out Vector3 closestPoint)
         {
-            var subsimplexCandidate = CommonResources.GetIntList();
-            var baryCoordsCandidate = CommonResources.GetFloatList();
-            var a = tetrahedron[0];
-            var b = tetrahedron[1];
-            var c = tetrahedron[2];
-            var d = tetrahedron[3];
+            RawList<int> subsimplexCandidate = CommonResources.GetIntList();
+            RawList<float> baryCoordsCandidate = CommonResources.GetFloatList();
+            Vector3 a = tetrahedron[0];
+            Vector3 b = tetrahedron[1];
+            Vector3 c = tetrahedron[2];
+            Vector3 d = tetrahedron[3];
             closestPoint = p;
             Vector3 pq;
-            var bestSqDist = float.MaxValue;
+            float bestSqDist = float.MaxValue;
             subsimplex.Clear();
             subsimplex.Add(0); //Provides a baseline; if the object is not outside of any planes, then it's inside and the subsimplex is the tetrahedron itself.
             subsimplex.Add(1);
@@ -1356,7 +1356,7 @@ namespace Engine.Physics.BEPUutilities
             subsimplex.Add(3);
             baryCoords.Clear();
             Vector3 q;
-            var baryCoordsFound = false;
+            bool baryCoordsFound = false;
 
             // If point outside face abc then compute closest point on abc
             if (ArePointsOnOppositeSidesOfPlane(ref p, ref d, ref a, ref b, ref c))
@@ -1364,7 +1364,7 @@ namespace Engine.Physics.BEPUutilities
                 GetClosestPointOnTriangleToPoint(tetrahedron, 0, 1, 2, ref p, subsimplexCandidate, baryCoordsCandidate,
                     out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.LengthSquared();
+                float sqDist = pq.LengthSquared();
                 // Update best closest point if (squared) distance is less than current best
                 if (sqDist < bestSqDist)
                 {
@@ -1372,7 +1372,7 @@ namespace Engine.Physics.BEPUutilities
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (var k = 0; k < subsimplexCandidate.Count; k++)
+                    for (int k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
@@ -1390,14 +1390,14 @@ namespace Engine.Physics.BEPUutilities
                 GetClosestPointOnTriangleToPoint(tetrahedron, 0, 2, 3, ref p, subsimplexCandidate, baryCoordsCandidate,
                     out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.LengthSquared();
+                float sqDist = pq.LengthSquared();
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (var k = 0; k < subsimplexCandidate.Count; k++)
+                    for (int k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
@@ -1415,14 +1415,14 @@ namespace Engine.Physics.BEPUutilities
                 GetClosestPointOnTriangleToPoint(tetrahedron, 0, 3, 1, ref p, subsimplexCandidate, baryCoordsCandidate,
                     out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.LengthSquared();
+                float sqDist = pq.LengthSquared();
                 if (sqDist < bestSqDist)
                 {
                     bestSqDist = sqDist;
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (var k = 0; k < subsimplexCandidate.Count; k++)
+                    for (int k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
@@ -1440,13 +1440,13 @@ namespace Engine.Physics.BEPUutilities
                 GetClosestPointOnTriangleToPoint(tetrahedron, 1, 3, 2, ref p, subsimplexCandidate, baryCoordsCandidate,
                     out q);
                 Vector3.Subtract(ref q, ref p, out pq);
-                var sqDist = pq.LengthSquared();
+                float sqDist = pq.LengthSquared();
                 if (sqDist < bestSqDist)
                 {
                     closestPoint = q;
                     subsimplex.Clear();
                     baryCoords.Clear();
-                    for (var k = 0; k < subsimplexCandidate.Count; k++)
+                    for (int k = 0; k < subsimplexCandidate.Count; k++)
                     {
                         subsimplex.Add(subsimplexCandidate[k]);
                         baryCoords.Add(baryCoordsCandidate[k]);
@@ -1463,19 +1463,19 @@ namespace Engine.Physics.BEPUutilities
                 //subsimplex is the entire tetrahedron, can only occur when objects intersect!  Determinants of each of the tetrahedrons based on triangles composing the sides and the point itself.
                 //This is basically computing the volume of parallelepipeds (triple scalar product).
                 //Could be quicker just to do it directly.
-                var abcd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
+                float abcd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
                     tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
                     tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
                     tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
-                var pbcd = new Matrix(p.X, p.Y, p.Z, 1,
+                float pbcd = new Matrix(p.X, p.Y, p.Z, 1,
                     tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
                     tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
                     tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
-                var apcd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
+                float apcd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
                     p.X, p.Y, p.Z, 1,
                     tetrahedron[2].X, tetrahedron[2].Y, tetrahedron[2].Z, 1,
                     tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
-                var abpd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
+                float abpd = new Matrix(tetrahedron[0].X, tetrahedron[0].Y, tetrahedron[0].Z, 1,
                     tetrahedron[1].X, tetrahedron[1].Y, tetrahedron[1].Z, 1,
                     p.X, p.Y, p.Z, 1,
                     tetrahedron[3].X, tetrahedron[3].Y, tetrahedron[3].Z, 1).Determinant();
@@ -1508,21 +1508,21 @@ namespace Engine.Physics.BEPUutilities
             out RayHit hit)
         {
             Vector3 normalizedDirection;
-            var length = ray.Direction.Length();
+            float length = ray.Direction.Length();
             Vector3.Divide(ref ray.Direction, length, out normalizedDirection);
             maximumLength *= length;
             hit = new RayHit();
             Vector3 m;
             Vector3.Subtract(ref ray.Position, ref spherePosition, out m);
-            var b = Vector3.Dot(m, normalizedDirection);
-            var c = m.LengthSquared() - radius * radius;
+            float b = Vector3.Dot(m, normalizedDirection);
+            float c = m.LengthSquared() - radius * radius;
 
             if (c > 0 && b > 0)
             {
                 return false;
             }
 
-            var discriminant = b * b - c;
+            float discriminant = b * b - c;
             if (discriminant < 0)
             {
                 return false;
@@ -1755,7 +1755,7 @@ namespace Engine.Physics.BEPUutilities
             Vector3 halfspin;
             Matrix3x3.Transform(ref angularMomentum, ref tempInertiaTensorInverse, out halfspin);
             Vector3.Multiply(ref halfspin, .5f, out halfspin);
-            var halfspinQuaternion = new Quaternion(halfspin.X, halfspin.Y, halfspin.Z, 0);
+            Quaternion halfspinQuaternion = new Quaternion(halfspin.X, halfspin.Y, halfspin.Z, 0);
             Quaternion.Multiply(ref halfspinQuaternion, ref normalizedOrientation, out orientationChange);
         }
 
@@ -1778,9 +1778,9 @@ namespace Engine.Physics.BEPUutilities
             Vector3.Subtract(ref c, ref a, out ac);
             Vector3 triangleNormal;
             Vector3.Cross(ref ab, ref ac, out triangleNormal);
-            var x = triangleNormal.X < 0 ? -triangleNormal.X : triangleNormal.X;
-            var y = triangleNormal.Y < 0 ? -triangleNormal.Y : triangleNormal.Y;
-            var z = triangleNormal.Z < 0 ? -triangleNormal.Z : triangleNormal.Z;
+            float x = triangleNormal.X < 0 ? -triangleNormal.X : triangleNormal.X;
+            float y = triangleNormal.Y < 0 ? -triangleNormal.Y : triangleNormal.Y;
+            float z = triangleNormal.Z < 0 ? -triangleNormal.Z : triangleNormal.Z;
 
             float numeratorU, numeratorV, denominator;
             if (x >= y && x >= z)

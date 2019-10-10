@@ -2,13 +2,11 @@
 
 namespace Engine.Exceptions
 {
-
     /// <summary>
     /// This exception gets thrown when a FL instruction or kernel was not found or could not be resolved.
     /// </summary>
     public class FLParseError : EngineException
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

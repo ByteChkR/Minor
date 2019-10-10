@@ -281,7 +281,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
             lambda *= massMatrix;
 
             //Clamp accumulated impulse
-            var previousAccumulatedImpulse = TotalImpulse;
+            float previousAccumulatedImpulse = TotalImpulse;
             TotalImpulse = MathHelper.Clamp(TotalImpulse + lambda, -maxForceDt, maxForceDt);
             lambda = TotalImpulse - previousAccumulatedImpulse;
 
@@ -316,11 +316,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
             Vector3.Subtract(ref worldAnchorB, ref connectionA.position, out rA);
             Matrix3x3.Transform(ref localAxis, ref connectionA.orientationMatrix, out worldAxis);
 
-            var updateRate = 1 / dt;
+            float updateRate = 1 / dt;
             if (Settings.mode == MotorMode.Servomechanism)
             {
                 //Compute error
-                var separation = new Vector3();
+                Vector3 separation = new Vector3();
                 separation.X = worldAnchorB.X - worldAnchorA.X;
                 separation.Y = worldAnchorB.Y - worldAnchorA.Y;
                 separation.Z = worldAnchorB.Z - worldAnchorA.Z;
@@ -332,7 +332,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
 
 
                 //Compute bias
-                var absErrorOverDt = Math.Abs(error * updateRate);
+                float absErrorOverDt = Math.Abs(error * updateRate);
                 float errorReduction;
                 Settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, updateRate, out errorReduction,
                     out usedSoftness);

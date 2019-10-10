@@ -82,8 +82,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         protected override bool ConfigureLocalTriangle(int i, TriangleShape localTriangleShape,
             out TriangleIndices indices)
         {
-            var data = mesh.Shape.TriangleMesh.Data;
-            var triangleIndex = overlappedTriangles.Elements[i];
+            MeshBoundingBoxTreeData data = mesh.Shape.TriangleMesh.Data;
+            int triangleIndex = overlappedTriangles.Elements[i];
             //TODO: Note the IsQuery hack to avoid missing contacts. Avoid doing this in v2.
             localTriangleShape.sidedness = IsQuery ? TriangleSidedness.DoubleSided : mesh.sidedness;
             localTriangleShape.collisionMargin = 0;

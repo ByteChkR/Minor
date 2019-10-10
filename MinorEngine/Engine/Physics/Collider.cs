@@ -3,11 +3,11 @@ using Engine.Debug;
 using Engine.Exceptions;
 using Engine.Physics.BEPUphysics.CollisionRuleManagement;
 using Engine.Physics.BEPUphysics.Entities;
+using Engine.Physics.BEPUutilities;
 using Vector3 = OpenTK.Vector3;
 
 namespace Engine.Physics
 {
-
     /// <summary>
     /// Collider Component that is used to Connect the physics engine to the game systems
     /// </summary>
@@ -22,10 +22,12 @@ namespace Engine.Physics
         /// The constraints of the collider
         /// </summary>
         public ColliderConstraints ColliderConstraints { get; set; }
+
         /// <summary>
         /// The Collision layer
         /// </summary>
         public int CollisionLayer { get; set; }
+
         /// <summary>
         /// Private flag if the collider has been removed from the physics engine
         /// </summary>
@@ -145,7 +147,7 @@ namespace Engine.Physics
         /// </summary>
         private void enforceRotationConstraints()
         {
-            var veel = PhysicsCollider.LocalInertiaTensorInverse;
+            Matrix3x3 veel = PhysicsCollider.LocalInertiaTensorInverse;
 
             if ((ColliderConstraints.RotationConstraints & FreezeConstraints.X) != 0)
             {

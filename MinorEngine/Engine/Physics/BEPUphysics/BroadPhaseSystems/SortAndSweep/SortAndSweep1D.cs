@@ -55,9 +55,9 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             }
 
             //binary search for the approximately correct location.  This helps prevent large first-frame sort times.
-            var minIndex = 0; //inclusive
-            var maxIndex = entries.Count; //exclusive
-            var index = 0;
+            int minIndex = 0; //inclusive
+            int maxIndex = entries.Count; //exclusive
+            int index = 0;
             while (maxIndex - minIndex > 0)
             {
                 index = (maxIndex + minIndex) / 2;
@@ -100,10 +100,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
             Overlaps.Clear();
             //Sort along x axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (var i = 1; i < entries.Count; i++)
+            for (int i = 1; i < entries.Count; i++)
             {
-                var entry = entries.Elements[i];
-                for (var j = i - 1; j >= 0; j--)
+                BroadPhaseEntry entry = entries.Elements[i];
+                for (int j = i - 1; j >= 0; j--)
                 {
                     if (entry.boundingBox.Min.X < entries.Elements[j].boundingBox.Min.X)
                     {
@@ -153,10 +153,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
         {
             Overlaps.Clear();
             //Sort along x axis using insertion sort; the list will be nearly sorted, so very few swaps are necessary.
-            for (var i = 1; i < entries.Count; i++)
+            for (int i = 1; i < entries.Count; i++)
             {
-                var entry = entries.Elements[i];
-                for (var j = i - 1; j >= 0; j--)
+                BroadPhaseEntry entry = entries.Elements[i];
+                for (int j = i - 1; j >= 0; j--)
                 {
                     if (entry.boundingBox.Min.X < entries.Elements[j].boundingBox.Min.X)
                     {
@@ -171,10 +171,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             }
 
             //Sweep the list looking for overlaps.
-            for (var i = 0; i < entries.Count; i++)
+            for (int i = 0; i < entries.Count; i++)
             {
-                var a = entries.Elements[i].boundingBox;
-                for (var j = i + 1; j < entries.Count && a.Max.X >= entries.Elements[j].boundingBox.Min.X; j++)
+                BoundingBox a = entries.Elements[i].boundingBox;
+                for (int j = i + 1; j < entries.Count && a.Max.X >= entries.Elements[j].boundingBox.Min.X; j++)
                 {
                     if (!(a.Min.Y > entries.Elements[j].boundingBox.Max.Y ||
                           a.Max.Y < entries.Elements[j].boundingBox.Min.Y ||
@@ -194,7 +194,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
         private void Sweep(int segment)
         {
-            var intervalLength = entries.Count / sweepSegmentCount;
+            int intervalLength = entries.Count / sweepSegmentCount;
             int end;
             if (segment == sweepSegmentCount - 1)
             {
@@ -205,10 +205,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 end = intervalLength * (segment + 1);
             }
 
-            for (var i = intervalLength * segment; i < end; i++)
+            for (int i = intervalLength * segment; i < end; i++)
             {
-                var a = entries.Elements[i].boundingBox;
-                for (var j = i + 1; j < entries.Count && a.Max.X >= entries.Elements[j].boundingBox.Min.X; j++)
+                BoundingBox a = entries.Elements[i].boundingBox;
+                for (int j = i + 1; j < entries.Count && a.Max.X >= entries.Elements[j].boundingBox.Min.X; j++)
                 {
                     if (!(a.Min.Y > entries.Elements[j].boundingBox.Max.Y ||
                           a.Max.Y < entries.Elements[j].boundingBox.Min.Y ||
@@ -225,8 +225,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
         private void SortSection(int section)
         {
-            var intervalLength = entries.Count / sortSegmentCount;
-            var start = section * intervalLength;
+            int intervalLength = entries.Count / sortSegmentCount;
+            int start = section * intervalLength;
             int end;
             if (section == sortSegmentCount - 1)
             {
@@ -237,10 +237,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 end = intervalLength * (section + 1);
             }
 
-            for (var i = start + 1; i < end; i++)
+            for (int i = start + 1; i < end; i++)
             {
-                var entry = entries.Elements[i];
-                for (var j = i - 1; j >= 0; j--)
+                BroadPhaseEntry entry = entries.Elements[i];
+                for (int j = i - 1; j >= 0; j--)
                 {
                     if (entry.boundingBox.Min.X < entries.Elements[j].boundingBox.Min.X)
                     {
@@ -259,11 +259,11 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
 
         private void MergeSections(int a, int b)
         {
-            var intervalLength = entries.Count / sortSegmentCount;
+            int intervalLength = entries.Count / sortSegmentCount;
             //'a' is known to be less than b, which means it cannot be the last section.
-            var aStart = intervalLength * a;
-            var aEnd = intervalLength * (a + 1);
-            var bStart = intervalLength * b;
+            int aStart = intervalLength * a;
+            int aEnd = intervalLength * (a + 1);
+            int bStart = intervalLength * b;
             int bEnd;
             int length;
             if (b == sortSegmentCount - 1)
@@ -278,7 +278,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             }
 
             int aIndex = aStart, bIndex = bStart;
-            var i = 0;
+            int i = 0;
             while (i < length)
             {
                 //Compute the location in the buffer array to put the minimum element.

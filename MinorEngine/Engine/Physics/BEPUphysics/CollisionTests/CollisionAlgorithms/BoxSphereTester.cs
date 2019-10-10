@@ -26,7 +26,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3 localPosition;
             RigidTransform.TransformByInverse(ref spherePosition, ref boxTransform, out localPosition);
-            var localClosestPoint = new Vector3();
+            Vector3 localClosestPoint = new Vector3();
             localClosestPoint.X = MathHelper.Clamp(localPosition.X, -box.halfWidth, box.halfWidth);
             localClosestPoint.Y = MathHelper.Clamp(localPosition.Y, -box.halfHeight, box.halfHeight);
             localClosestPoint.Z = MathHelper.Clamp(localPosition.Z, -box.halfLength, box.halfLength);
@@ -35,7 +35,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             Vector3 offset;
             Vector3.Subtract(ref spherePosition, ref contact.Position, out offset);
-            var offsetLength = offset.LengthSquared();
+            float offsetLength = offset.LengthSquared();
 
             if (offsetLength > (sphere.collisionMargin + CollisionDetectionSettings.maximumContactDistance) *
                 (sphere.collisionMargin + CollisionDetectionSettings.maximumContactDistance))

@@ -115,17 +115,17 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             //Now, generate a contact between the two shapes.
             float distance;
             Vector3 axis;
-            var manifold = new TinyStructList<BoxContactData>();
+            TinyStructList<BoxContactData> manifold = new TinyStructList<BoxContactData>();
             if (BoxBoxCollider.AreBoxesColliding(boxA.Shape, boxB.Shape, ref boxA.worldTransform,
                 ref boxB.worldTransform, out distance, out axis, out manifold))
             {
                 Vector3.Negate(ref axis, out axis);
-                var toRemove = new TinyList<int>();
+                TinyList<int> toRemove = new TinyList<int>();
                 BoxContactData data;
-                for (var i = 0; i < contacts.Count; i++)
+                for (int i = 0; i < contacts.Count; i++)
                 {
-                    var found = false;
-                    for (var j = manifold.Count - 1; j >= 0; j--)
+                    bool found = false;
+                    for (int j = manifold.Count - 1; j >= 0; j--)
                     {
                         manifold.Get(j, out data);
                         if (contacts.Elements[i].Id == data.Id)
@@ -169,16 +169,16 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
 
                 //Alright, we ran out of contacts to replace (if, in fact, toRemove isn't empty now).  Just remove the remainder.
                 //toRemove is sorted by increasing index.  Go backwards along it so that the indices are valid all the way through.
-                for (var i = toRemove.Count - 1; i >= 0; i--)
+                for (int i = toRemove.Count - 1; i >= 0; i--)
                 {
                     Remove(toRemove[i]);
                 }
 
                 //Add new contacts.
-                for (var i = 0; i < manifold.Count; i++)
+                for (int i = 0; i < manifold.Count; i++)
                 {
                     manifold.Get(i, out data);
-                    var newContact = new ContactData();
+                    ContactData newContact = new ContactData();
                     newContact.Position = data.Position;
                     newContact.PenetrationDepth = -data.Depth;
                     newContact.Normal = axis;
@@ -190,7 +190,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             else
             {
                 //Not colliding, so get rid of it.
-                for (var i = contacts.Count - 1; i >= 0; i--)
+                for (int i = contacts.Count - 1; i >= 0; i--)
                 {
                     Remove(i);
                 }

@@ -77,7 +77,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             Vector3.Dot(ref segmentDisplacement, ref A, out dotA);
 
             //Inside segment.
-            var V = -dotA / segmentDisplacement.LengthSquared();
+            float V = -dotA / segmentDisplacement.LengthSquared();
 
             Vector3.Multiply(ref segmentDisplacement, V, out point);
             Vector3.Add(ref point, ref A, out point);
@@ -141,13 +141,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             Vector3.Dot(ref ac, ref A, out d2);
             d1 = -d1;
             d2 = -d2;
-            var vb = d5 * d2 - d1 * d6;
+            float vb = d5 * d2 - d1 * d6;
             if (vb <= 0f && d2 > 0f && d6 < 0f) //Note > instead of >= and < instead of <=; prevents bad denominator
             {
                 //Get rid of B.  Compress C into B.
                 State = SimplexState.Segment;
                 B = C;
-                var V = d2 / (d2 - d6);
+                float V = d2 / (d2 - d6);
                 Vector3.Multiply(ref ac, V, out point);
                 Vector3.Add(ref point, ref A, out point);
                 return;
@@ -159,7 +159,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             Vector3.Dot(ref ac, ref B, out d4);
             d3 = -d3;
             d4 = -d4;
-            var va = d3 * d6 - d5 * d4;
+            float va = d3 * d6 - d5 * d4;
             float d3d4;
             float d6d5;
             if (va <= 0f && (d3d4 = d4 - d3) > 0f && (d6d5 = d5 - d6) > 0f
@@ -169,7 +169,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 //TODO: Does B->A, C->B work better?
                 State = SimplexState.Segment;
                 A = C;
-                var U = d3d4 / (d3d4 + d6d5);
+                float U = d3d4 / (d3d4 + d6d5);
 
                 Vector3 bc;
                 Vector3.Subtract(ref C, ref B, out bc);
@@ -180,10 +180,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
 
             //On the face of the triangle.
-            var vc = d1 * d4 - d3 * d2;
-            var denom = 1f / (va + vb + vc);
-            var v = vb * denom;
-            var w = vc * denom;
+            float vc = d1 * d4 - d3 * d2;
+            float denom = 1f / (va + vb + vc);
+            float v = vb * denom;
+            float w = vc * denom;
 
             Vector3.Multiply(ref ab, v, out point);
             Vector3 acw;
@@ -208,9 +208,9 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
             //There is some overlap of calculations in this method, since DAC, DCB, and DBA are tested fully.
 
-            var minimumSimplex = new SimpleSimplex();
+            SimpleSimplex minimumSimplex = new SimpleSimplex();
             point = new Vector3();
-            var minimumDistance = float.MaxValue;
+            float minimumDistance = float.MaxValue;
 
 
             SimpleSimplex candidate;
@@ -305,14 +305,14 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 Vector3.Dot(ref ac, ref A, out AdotAC);
                 AdotAB = -AdotAB;
                 AdotAC = -AdotAC;
-                var vb = CdotAB * AdotAC - AdotAB * CdotAC;
+                float vb = CdotAB * AdotAC - AdotAB * CdotAC;
                 if (vb <= 0f && AdotAC > 0f && CdotAC < 0f
                 ) //Note > instead of >= and < instead of <=; prevents bad denominator
                 {
                     simplex.State = SimplexState.Segment;
                     simplex.A = A;
                     simplex.B = C;
-                    var V = AdotAC / (AdotAC - CdotAC);
+                    float V = AdotAC / (AdotAC - CdotAC);
 
                     Vector3.Multiply(ref ac, V, out point);
                     Vector3.Add(ref point, ref A, out point);
@@ -325,7 +325,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 Vector3.Dot(ref ac, ref B, out BdotAC);
                 BdotAB = -BdotAB;
                 BdotAC = -BdotAC;
-                var va = BdotAB * CdotAC - CdotAB * BdotAC;
+                float va = BdotAB * CdotAC - CdotAB * BdotAC;
                 float d3d4;
                 float d6d5;
                 if (va <= 0f && (d3d4 = BdotAC - BdotAB) > 0f && (d6d5 = CdotAB - CdotAC) > 0f
@@ -334,7 +334,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                     simplex.State = SimplexState.Segment;
                     simplex.A = B;
                     simplex.B = C;
-                    var V = d3d4 / (d3d4 + d6d5);
+                    float V = d3d4 / (d3d4 + d6d5);
 
                     Vector3 bc;
                     Vector3.Subtract(ref C, ref B, out bc);
@@ -345,14 +345,14 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
 
                 //On the face of the triangle.
-                var vc = AdotAB * BdotAC - BdotAB * AdotAC;
+                float vc = AdotAB * BdotAC - BdotAB * AdotAC;
                 simplex.A = A;
                 simplex.B = B;
                 simplex.C = C;
                 simplex.State = SimplexState.Triangle;
-                var denom = 1f / (va + vb + vc);
-                var w = vc * denom;
-                var v = vb * denom;
+                float denom = 1f / (va + vb + vc);
+                float w = vc * denom;
+                float v = vb * denom;
 
                 Vector3.Multiply(ref ab, v, out point);
                 Vector3 acw;

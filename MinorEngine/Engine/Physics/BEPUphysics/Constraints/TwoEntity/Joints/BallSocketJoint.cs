@@ -258,10 +258,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             Vector3.Multiply(ref error, -errorReductionParameter, out biasVelocity);
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            var length = biasVelocity.LengthSquared();
+            float length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                var multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                float multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
                 biasVelocity.Z *= multiplier;
@@ -277,7 +277,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         {
             //Warm starting
             //Constraint.applyImpulse(myConnectionA, myConnectionB, ref rA, ref rB, ref accumulatedImpulse);
-            var linear = new Vector3();
+            Vector3 linear = new Vector3();
             if (connectionA.isDynamic)
             {
                 linear.X = -accumulatedImpulse.X;
@@ -305,7 +305,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         /// </summary>
         public override float SolveIteration()
         {
-            var lambda = new Vector3();
+            Vector3 lambda = new Vector3();
 
             //Velocity along the length.
             Vector3 cross;
@@ -327,7 +327,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
 
             //Apply the impulse
             //Constraint.applyImpulse(myConnectionA, myConnectionB, ref rA, ref rB, ref impulse);
-            var linear = new Vector3();
+            Vector3 linear = new Vector3();
             if (connectionA.isDynamic)
             {
                 linear.X = -lambda.X;

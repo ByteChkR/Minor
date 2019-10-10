@@ -4,7 +4,7 @@ using OpenTK;
 using OpenTK.Graphics;
 
 namespace Engine.Core
-{ 
+{
     /// <summary>
     /// Settings for the engine
     /// </summary>
@@ -34,7 +34,7 @@ namespace Engine.Core
         /// Title of the Window
         /// </summary>
         public string Title { get; set; }
-        
+
         /// <summary>
         /// Vsync Enable State
         /// </summary>
@@ -44,6 +44,7 @@ namespace Engine.Core
         /// The Game window flags
         /// </summary>
         public GameWindowFlags WindowFlags { get; set; }
+
         /// <summary>
         /// Debug settings
         /// </summary>

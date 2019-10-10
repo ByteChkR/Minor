@@ -129,7 +129,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         {
             RigidTransform localTransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localTransformB);
-            var toReturn = GetLocalOverlapPosition(shapeA, shapeB, ref localTransformB, out position);
+            bool toReturn = GetLocalOverlapPosition(shapeA, shapeB, ref localTransformB, out position);
             RigidTransform.Transform(ref position, ref transformA, out position);
             return toReturn;
         }
@@ -173,7 +173,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = originRay;
+            Vector3 n = originRay;
             Vector3 v1;
             Vector3
                 v1A,
@@ -206,7 +206,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float dotv0;
                 //Dot > 0, so dotv0 starts out negative.
                 Vector3.Dot(ref v0, ref originRay, out dotv0);
-                var barycentricCoordinate = -dotv0 / (dot - dotv0);
+                float barycentricCoordinate = -dotv0 / (dot - dotv0);
                 //Vector3.Subtract(ref v1A, ref v0A, out offset); //'v0a' is just the zero vector, so there's no need to calculate the offset.
                 Vector3.Multiply(ref v1A, barycentricCoordinate, out position);
                 return true;
@@ -223,7 +223,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3A, v3B, v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -320,11 +320,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
                     if (v0v1v2v3volume > Toolbox.Epsilon * .01f)
                     {
-                        var inverseTotalVolume = 1 / v0v1v2v3volume;
-                        var v0Weight = ov1v2v3volume * inverseTotalVolume;
-                        var v1Weight = v0ov2v3volume * inverseTotalVolume;
-                        var v2Weight = v0v1ov3volume * inverseTotalVolume;
-                        var v3Weight = 1 - v0Weight - v1Weight - v2Weight;
+                        float inverseTotalVolume = 1 / v0v1v2v3volume;
+                        float v0Weight = ov1v2v3volume * inverseTotalVolume;
+                        float v1Weight = v0ov2v3volume * inverseTotalVolume;
+                        float v2Weight = v0v1ov3volume * inverseTotalVolume;
+                        float v3Weight = 1 - v0Weight - v1Weight - v2Weight;
                         position = v1Weight * v1A + v2Weight * v2A + v3Weight * v3A;
                     }
                     else
@@ -463,7 +463,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = originRay;
+            Vector3 n = originRay;
             Vector3 v1;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1);
 
@@ -499,7 +499,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -646,7 +646,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = direction;
+            Vector3 n = direction;
             Vector3 v1;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1);
             //v1 could be zero in some degenerate cases.
@@ -666,7 +666,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //This isn't a bad thing- it means the direction is exactly aligned with the extreme point offset.
                 //In other words, if the raycast is followed out to the surface, it will arrive at the extreme point!
 
-                var rayLengthSquared = direction.LengthSquared();
+                float rayLengthSquared = direction.LengthSquared();
                 if (rayLengthSquared > Toolbox.Epsilon * .01f)
                 {
                     Vector3.Divide(ref direction, (float) Math.Sqrt(rayLengthSquared), out normal);
@@ -713,7 +713,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -792,7 +792,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                     ////Find the distance from the origin to the plane.
                     //t = dot * normalLengthInverse;
 
-                    var lengthSquared = n.LengthSquared();
+                    float lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .01f)
                     {
                         Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out normal);
@@ -940,7 +940,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = direction;
+            Vector3 n = direction;
             Vector3 v1, v1A;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref n, ref localTransformB, out v1A, out v1);
             //v1 could be zero in some degenerate cases.
@@ -960,7 +960,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //This isn't a bad thing- it means the direction is exactly aligned with the extreme point offset.
                 //In other words, if the raycast is followed out to the surface, it will arrive at the extreme point!
 
-                var rayLengthSquared = direction.LengthSquared();
+                float rayLengthSquared = direction.LengthSquared();
                 if (rayLengthSquared > Toolbox.Epsilon * .01f)
                 {
                     Vector3.Divide(ref direction, (float) Math.Sqrt(rayLengthSquared), out normal);
@@ -1012,7 +1012,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3, v3A;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -1096,7 +1096,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                     ////Find the distance from the origin to the plane.
                     //t = dot * normalLengthInverse;
 
-                    var lengthSquared = n.LengthSquared();
+                    float lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .01f)
                     {
                         Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out normal);
@@ -1238,14 +1238,14 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             ref Vector3 direction)
         {
             //v1, v0, v3
-            var cross = Vector3.Cross(v0 - v1, v3 - v1);
-            var planeProduct1 = Vector3.Dot(cross, direction);
+            Vector3 cross = Vector3.Cross(v0 - v1, v3 - v1);
+            float planeProduct1 = Vector3.Dot(cross, direction);
             //v3, v0, v2
             cross = Vector3.Cross(v0 - v3, v2 - v3);
-            var planeProduct2 = Vector3.Dot(cross, direction);
+            float planeProduct2 = Vector3.Dot(cross, direction);
             //v2, v0, v1
             cross = Vector3.Cross(v0 - v2, v1 - v2);
-            var planeProduct3 = Vector3.Dot(cross, direction);
+            float planeProduct3 = Vector3.Dot(cross, direction);
             return planeProduct1 <= 0 && planeProduct2 <= 0 && planeProduct3 <= 0 ||
                    planeProduct1 >= 0 && planeProduct2 >= 0 && planeProduct3 >= 0;
         }
@@ -1269,7 +1269,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             {
                 //First, try to use the heuristically found direction.  This comes from either the GJK shallow contact separating axis or from the relative velocity.
                 Vector3 rayCastDirection;
-                var lengthSquared = penetrationAxis.LengthSquared();
+                float lengthSquared = penetrationAxis.LengthSquared();
                 if (lengthSquared > Toolbox.Epsilon)
                 {
                     Vector3.Divide(ref penetrationAxis, (float) Math.Sqrt(lengthSquared),
@@ -1354,7 +1354,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             out Vector3 position)
         {
             //The local casting can optionally continue.  Eventually, it will converge to the local minimum.
-            var optimizingCount = 0;
+            int optimizingCount = 0;
             refinedNormal = initialNormal;
             penetrationDepth = initialDepth;
             float candidateDepth;
@@ -1434,7 +1434,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //First: Compute the sweep amount along the sweep direction.
             //This sweep amount needs to expand the minkowski difference to fully intersect the plane defined by the sweep direction and origin.
 
-            var rayLengthSquared = localDirection.LengthSquared();
+            float rayLengthSquared = localDirection.LengthSquared();
             float sweepLength;
             if (rayLengthSquared > Toolbox.Epsilon * .01f)
             {
@@ -1451,7 +1451,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             //If the sweep direction is found to be negative, the ray can be thought of as pointing away from the shape.
             //Do not sweep backward.
-            var negativeLength = sweepLength < 0;
+            bool negativeLength = sweepLength < 0;
             if (negativeLength)
             {
                 sweepLength = 0;
@@ -1490,7 +1490,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 ref localTransformB, out hit))
             {
                 //Compute the actual hit location on the minkowski surface.
-                var minkowskiRayHit = -hit.T * localDirection;
+                Vector3 minkowskiRayHit = -hit.T * localDirection;
                 //TODO: This uses MPR to identify a witness point on shape A.
                 //It's a very roundabout way to do it.  There should be a much simpler/faster way to compute the witness point directly, or with a little sampling. 
                 GetLocalPosition(shapeA, shapeB, ref localTransformB, ref minkowskiRayHit, out hit.Location);
@@ -1516,7 +1516,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //First guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = localDirection;
+            Vector3 n = localDirection;
             Vector3 v1, v1A;
             GetSweptExtremePoint(shape, shapeB, ref localTransformB, ref sweep, ref n, out v1A, out v1);
             //v1 could be zero in some degenerate cases.
@@ -1601,7 +1601,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3, v3A;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -1676,7 +1676,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //The portal is now on the surface.  The algorithm can now compute the TOI and exit.
-                    var lengthSquared = n.LengthSquared();
+                    float lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .00001f)
                     {
                         Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out hit.Normal);
@@ -1807,7 +1807,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = rayDirection;
+            Vector3 n = rayDirection;
             Vector3 v1;
             Vector3
                 v1A,
@@ -1828,7 +1828,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //If the origin is within this extreme point, then there is an intersection.
                 //For this test, we already guarantee that the point is extremely close to the A-B shape or inside of it, so don't bother
                 //trying to return false.
-                var dot = Vector3.Dot(v1 - minkowskiPosition, rayDirection);
+                float dot = Vector3.Dot(v1 - minkowskiPosition, rayDirection);
                 //Vector3.Dot(ref v1, ref rayDirection, out dot);
                 //if (dot < 0) //if we were trying to return false here (in a IsPointContained style test), then the '0' should actually be a dot between the minkowskiPoint and rayDirection (simplified by a subtraction and then a dot).
                 //{
@@ -1838,10 +1838,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 //}
                 //Origin is inside.
                 //Compute barycentric coordinates along simplex (segment).
-                var dotv0 = Vector3.Dot(v0 - minkowskiPosition, rayDirection);
+                float dotv0 = Vector3.Dot(v0 - minkowskiPosition, rayDirection);
                 //Dot > 0, so dotv0 starts out negative.
                 //Vector3.Dot(ref v0, ref rayDirection, out dotv0);
-                var barycentricCoordinate = -dotv0 / (dot - dotv0);
+                float barycentricCoordinate = -dotv0 / (dot - dotv0);
                 //Vector3.Subtract(ref v1A, ref v0A, out offset); //'v0a' is just the zero vector, so there's no need to calculate the offset.
                 Vector3.Multiply(ref v1A, barycentricCoordinate, out position);
                 Vector3 offset;
@@ -1862,7 +1862,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Vector3 pointToV0;
             Vector3.Subtract(ref v0, ref minkowskiPosition, out pointToV0);
             Vector3 v3A, v3B, v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -2092,7 +2092,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = localTransformB.Position;
+            Vector3 n = localTransformB.Position;
             Vector3 v1;
             Vector3
                 v1A; //extreme point contributions from each shape.  Used later to compute contact position; could be used to cache simplex too.
@@ -2124,7 +2124,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 float dotv0;
                 //Dot > 0, so dotv0 starts out negative.
                 Vector3.Dot(ref v0, ref localTransformB.Position, out dotv0);
-                var barycentricCoordinate = -dotv0 / (dot - dotv0);
+                float barycentricCoordinate = -dotv0 / (dot - dotv0);
                 //Vector3.Subtract(ref v1A, ref v0A, out offset); //'v0a' is just the zero vector, so there's no need to calculate the offset.
                 Vector3.Multiply(ref v1A, barycentricCoordinate, out position);
                 return true;
@@ -2141,7 +2141,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3A, v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -2235,11 +2235,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                     Vector3.Dot(ref cross, ref temp3, out v0v1ov3volume);
 
 
-                    var inverseTotalVolume = 1 / v0v1v2v3volume;
-                    var v0Weight = ov1v2v3volume * inverseTotalVolume;
-                    var v1Weight = v0ov2v3volume * inverseTotalVolume;
-                    var v2Weight = v0v1ov3volume * inverseTotalVolume;
-                    var v3Weight = 1 - v0Weight - v1Weight - v2Weight;
+                    float inverseTotalVolume = 1 / v0v1v2v3volume;
+                    float v0Weight = ov1v2v3volume * inverseTotalVolume;
+                    float v1Weight = v0ov2v3volume * inverseTotalVolume;
+                    float v2Weight = v0v1ov3volume * inverseTotalVolume;
+                    float v3Weight = 1 - v0Weight - v1Weight - v2Weight;
                     position = v1Weight * v1A + v2Weight * v2A + v3Weight * v3A;
                     //DEBUGlastPosition = position;
                     return true;
@@ -2402,7 +2402,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //First: Compute the sweep amount along the sweep direction.
             //This sweep amount needs to expand the minkowski difference to fully intersect the plane defined by the sweep direction and origin.
 
-            var rayLengthSquared = localRay.Direction.LengthSquared();
+            float rayLengthSquared = localRay.Direction.LengthSquared();
             float sweepLength;
             if (rayLengthSquared > Toolbox.Epsilon * .01f)
             {
@@ -2420,7 +2420,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
             //If the sweep direction is found to be negative, the ray can be thought of as pointing away from the shape.
             //Do not sweep backward.
-            var negativeLength = sweepLength < 0;
+            bool negativeLength = sweepLength < 0;
             if (negativeLength)
             {
                 sweepLength = 0;
@@ -2492,7 +2492,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //To do this, first guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = localPoint;
+            Vector3 n = localPoint;
             Vector3 v1;
             //MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shape, shapeB, ref n, ref localPoint, out v1A, out v1B, out v1);
             GetSweptExtremePoint(shape, ref localPoint, ref sweep, ref n, out v1);
@@ -2529,7 +2529,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
 
             Vector3 v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -2664,7 +2664,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //First guess a portal.
             //This implementation is similar to that of the original XenoCollide.
             //'n' will be the direction used to find supports throughout the algorithm.
-            var n = localDirection;
+            Vector3 n = localDirection;
             Vector3 v1;
             GetSweptExtremePoint(shape, ref rayOrigin, ref sweep, ref n, out v1);
             //v1 could be zero in some degenerate cases.
@@ -2746,7 +2746,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             Vector3 v3;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 //Find a final extreme point using the normal of the plane defined by v0, v1, v2.
@@ -2819,7 +2819,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 ) // TODO: Could use a dynamic epsilon for possibly better behavior.
                 {
                     //The portal is now on the surface.  The algorithm can now compute the TOI and exit.
-                    var lengthSquared = n.LengthSquared();
+                    float lengthSquared = n.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon * .00001f)
                     {
                         Vector3.Divide(ref n, (float) Math.Sqrt(lengthSquared), out hit.Normal);

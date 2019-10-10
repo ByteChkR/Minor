@@ -1,4 +1,5 @@
 ﻿using System;
+using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUphysics.Constraints;
 using Engine.Physics.BEPUphysics.Entities;
@@ -36,7 +37,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 {
                     characterBody.ActivityInformation.Activate();
 
-                    var lengthSquared = value.LengthSquared();
+                    float lengthSquared = value.LengthSquared();
                     if (lengthSquared > Toolbox.Epsilon)
                     {
                         Vector2.Divide(ref value, (float) Math.Sqrt(lengthSquared), out movementDirection);
@@ -143,9 +144,9 @@ namespace Engine.Physics.BEPUphysics.Character
         /// <param name="forward">Forward facing direction of the character.</param>
         public void UpdateMovementBasis(ref Vector3 forward)
         {
-            var down = characterBody.orientationMatrix.Down;
+            Vector3 down = characterBody.orientationMatrix.Down;
             horizontalForwardDirection = forward - down * Vector3.Dot(down, forward);
-            var forwardLengthSquared = horizontalForwardDirection.LengthSquared();
+            float forwardLengthSquared = horizontalForwardDirection.LengthSquared();
 
             if (forwardLengthSquared < Toolbox.Epsilon)
             {
@@ -174,12 +175,12 @@ namespace Engine.Physics.BEPUphysics.Character
         public void UpdateSupportData()
         {
             //Check if the support has changed, and perform the necessary bookkeeping to keep the connections up to date.
-            var oldSupport = supportData.SupportObject;
+            Collidable oldSupport = supportData.SupportObject;
             supportData = supportFinder.SupportData;
             if (oldSupport != supportData.SupportObject)
             {
                 OnInvolvedEntitiesChanged();
-                var supportEntityCollidable = supportData.SupportObject as EntityCollidable;
+                EntityCollidable supportEntityCollidable = supportData.SupportObject as EntityCollidable;
                 if (supportEntityCollidable != null)
                 {
                     supportEntity = supportEntityCollidable.Entity;
@@ -252,7 +253,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
-            var entityCollidable = supportData.SupportObject as EntityCollidable;
+            EntityCollidable entityCollidable = supportData.SupportObject as EntityCollidable;
             if (entityCollidable != null)
             {
                 outputInvolvedEntities.Add(entityCollidable.Entity);
@@ -275,7 +276,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
 
             //Compute the jacobians.  This is basically a PointOnLineJoint with motorized degrees of freedom.
-            var downDirection = characterBody.orientationMatrix.Down;
+            Vector3 downDirection = characterBody.orientationMatrix.Down;
 
             if (MovementMode != MovementMode.Floating)
             {
@@ -288,11 +289,11 @@ namespace Engine.Physics.BEPUphysics.Character
                     //This projection is NOT along the support normal to the plane; that would cause the character to veer off course when moving on slopes.
                     //Instead, project along the sweep direction to the plane.
                     //For a 6DOF character controller, the lineStart would be different; it must be perpendicular to the local up.
-                    var lineStart = movementDirection3d;
+                    Vector3 lineStart = movementDirection3d;
 
                     Vector3 lineEnd;
                     Vector3.Add(ref lineStart, ref downDirection, out lineEnd);
-                    var plane = new Plane(supportData.Normal, 0);
+                    Plane plane = new Plane(supportData.Normal, 0);
                     float t;
                     //This method can return false when the line is parallel to the plane, but previous tests and the slope limit guarantee that it won't happen.
                     Toolbox.GetLinePlaneIntersection(ref lineStart, ref lineEnd, ref plane, out t,
@@ -323,7 +324,7 @@ namespace Engine.Physics.BEPUphysics.Character
                     Vector3.Subtract(ref linearJacobianA1, ref toRemove, out linearJacobianA1);
 
                     //Vector3.Cross(ref linearJacobianA2, ref supportData.Normal, out linearJacobianA1);
-                    var length = linearJacobianA1.LengthSquared();
+                    float length = linearJacobianA1.LengthSquared();
                     if (length < Toolbox.Epsilon)
                     {
                         //First guess failed.  Try the right vector.
@@ -350,7 +351,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 if (supportEntity != null)
                 {
                     //Compute the angular jacobians.
-                    var supportToContact = supportData.Position - supportEntity.Position;
+                    Vector3 supportToContact = supportData.Position - supportEntity.Position;
                     //Since we treat the character to have infinite inertia, we're only concerned with the support's angular jacobians.
                     //Note the order of the cross product- it is reversed to negate the result.
                     Vector3.Cross(ref linearJacobianA1, ref supportToContact, out angularJacobianB1);
@@ -388,7 +389,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
 
                 //Scale the inertia and mass of the support.  This will make the solver view the object as 'heavier' with respect to horizontal motion.
-                var inertiaInverse = supportEntity.InertiaTensorInverse;
+                Matrix3x3 inertiaInverse = supportEntity.InertiaTensorInverse;
                 Matrix3x3.Multiply(ref inertiaInverse, supportForceFactor, out inertiaInverse);
                 float extra;
                 inverseMass = supportForceFactor * supportEntity.InverseMass;
@@ -431,7 +432,7 @@ namespace Engine.Physics.BEPUphysics.Character
             //The state is now up to date.  Compute an error and velocity bias, if needed.
             if (!isTryingToMove && MovementMode == MovementMode.Traction && supportEntity != null)
             {
-                var distanceToBottomOfCharacter = supportFinder.BottomDistance;
+                float distanceToBottomOfCharacter = supportFinder.BottomDistance;
 
                 if (timeSinceTransition >= 0 && timeSinceTransition < TimeUntilPositionAnchor)
                 {
@@ -452,7 +453,7 @@ namespace Engine.Physics.BEPUphysics.Character
                     Vector3 targetPosition;
                     Vector3.Multiply(ref downDirection, distanceToBottomOfCharacter, out targetPosition);
                     targetPosition += characterBody.Position;
-                    var worldSupportLocation =
+                    Vector3 worldSupportLocation =
                         Matrix3x3.Transform(positionLocalOffset, supportEntity.OrientationMatrix) +
                         supportEntity.Position;
                     Vector3 error;
@@ -498,11 +499,11 @@ namespace Engine.Physics.BEPUphysics.Character
         {
             //Warm start the constraint using the previous impulses and the new jacobians!
 
-            var impulse = new Vector3();
-            var torque = new Vector3();
+            Vector3 impulse = new Vector3();
+            Vector3 torque = new Vector3();
 
-            var x = accumulatedImpulse.X;
-            var y = accumulatedImpulse.Y;
+            float x = accumulatedImpulse.X;
+            float y = accumulatedImpulse.Y;
             impulse.X = linearJacobianA1.X * x + linearJacobianA2.X * y;
             impulse.Y = linearJacobianA1.Y * x + linearJacobianA2.Y * y;
             impulse.Z = linearJacobianA1.Z * x + linearJacobianA2.Z * y;
@@ -531,7 +532,7 @@ namespace Engine.Physics.BEPUphysics.Character
         /// <returns>Impulse magnitude computed by the iteration.</returns>
         public override float SolveIteration()
         {
-            var relativeVelocity = RelativeVelocity;
+            Vector2 relativeVelocity = RelativeVelocity;
 
             Vector2.Add(ref relativeVelocity, ref positionCorrectionBias, out relativeVelocity);
 
@@ -543,7 +544,7 @@ namespace Engine.Physics.BEPUphysics.Character
 
             //Add and clamp the impulse.
 
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            Vector2 previousAccumulatedImpulse = accumulatedImpulse;
             if (MovementMode == MovementMode.Floating)
             {
                 //If it's floating, clamping rules are different.
@@ -556,7 +557,7 @@ namespace Engine.Physics.BEPUphysics.Character
             else
             {
                 Vector2.Add(ref lambda, ref accumulatedImpulse, out accumulatedImpulse);
-                var length = accumulatedImpulse.LengthSquared();
+                float length = accumulatedImpulse.LengthSquared();
                 if (length > maxForceDt * maxForceDt)
                 {
                     Vector2.Multiply(ref accumulatedImpulse, maxForceDt / (float) Math.Sqrt(length),
@@ -573,11 +574,11 @@ namespace Engine.Physics.BEPUphysics.Character
 
 
             //Use the jacobians to put the impulse into world space.
-            
-            var impulse = new Vector3();
-            var torque = new Vector3();
-            var x = lambda.X;
-            var y = lambda.Y;
+
+            Vector3 impulse = new Vector3();
+            Vector3 torque = new Vector3();
+            float x = lambda.X;
+            float y = lambda.Y;
             impulse.X = linearJacobianA1.X * x + linearJacobianA2.X * y;
             impulse.Y = linearJacobianA1.Y * x + linearJacobianA2.Y * y;
             impulse.Z = linearJacobianA1.Z * x + linearJacobianA2.Z * y;
@@ -613,7 +614,7 @@ namespace Engine.Physics.BEPUphysics.Character
             {
                 //The relative velocity's x component is in the movement direction.
                 //y is the perpendicular direction.
-                var relativeVelocity = new Vector2();
+                Vector2 relativeVelocity = new Vector2();
 
                 Vector3.Dot(ref linearJacobianA1, ref characterBody.linearVelocity, out relativeVelocity.X);
                 Vector3.Dot(ref linearJacobianA2, ref characterBody.linearVelocity, out relativeVelocity.Y);
@@ -642,7 +643,7 @@ namespace Engine.Physics.BEPUphysics.Character
         {
             get
             {
-                var bodyVelocity = characterBody.LinearVelocity;
+                Vector3 bodyVelocity = characterBody.LinearVelocity;
                 if (supportEntity != null)
                 {
                     return bodyVelocity - Toolbox.GetVelocityOfPoint(supportData.Position, supportEntity.Position,

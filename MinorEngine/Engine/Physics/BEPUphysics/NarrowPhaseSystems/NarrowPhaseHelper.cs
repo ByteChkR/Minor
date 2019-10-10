@@ -479,18 +479,18 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
             NarrowPhasePairFactory factory;
             if (collisionManagers.TryGetValue(new TypePair(pair.entryA.GetType(), pair.entryB.GetType()), out factory))
             {
-                var toReturn = factory.GetNarrowPhasePair();
+                NarrowPhasePair toReturn = factory.GetNarrowPhasePair();
                 toReturn.BroadPhaseOverlap = pair;
                 toReturn.Factory = factory;
                 return toReturn;
             }
 
             //Convex-convex collisions are a pretty significant chunk of all tests, so rather than defining them all, just have a fallback.
-            var a = pair.entryA as ConvexCollidable;
-            var b = pair.entryB as ConvexCollidable;
+            ConvexCollidable a = pair.entryA as ConvexCollidable;
+            ConvexCollidable b = pair.entryB as ConvexCollidable;
             if (a != null && b != null)
             {
-                var toReturn = Factories.ConvexConvex.GetNarrowPhasePair();
+                NarrowPhasePair toReturn = Factories.ConvexConvex.GetNarrowPhasePair();
                 toReturn.BroadPhaseOverlap = pair;
                 toReturn.Factory = Factories.ConvexConvex;
                 return toReturn;
@@ -508,7 +508,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         ///<returns>A NarrowPhasePair for the overlap.</returns>
         public static NarrowPhasePair GetPairHandler(BroadPhaseEntry entryA, BroadPhaseEntry entryB, CollisionRule rule)
         {
-            var overlap = new BroadPhaseOverlap(entryA, entryB, rule);
+            BroadPhaseOverlap overlap = new BroadPhaseOverlap(entryA, entryB, rule);
             return GetPairHandler(ref overlap);
         }
 
@@ -520,7 +520,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         ///<returns>AINarrowPhasePair for the overlap.</returns>
         public static NarrowPhasePair GetPairHandler(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
-            var overlap = new BroadPhaseOverlap(entryA, entryB);
+            BroadPhaseOverlap overlap = new BroadPhaseOverlap(entryA, entryB);
             return GetPairHandler(ref overlap);
         }
 
@@ -532,7 +532,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         /// <returns>CollidablePairHandler for the pair.</returns>
         public static CollidablePairHandler GetPairHandler(ref CollidablePair pair, CollisionRule rule)
         {
-            var overlap = new BroadPhaseOverlap(pair.collidableA, pair.collidableB, rule);
+            BroadPhaseOverlap overlap = new BroadPhaseOverlap(pair.collidableA, pair.collidableB, rule);
             return GetPairHandler(ref overlap) as CollidablePairHandler;
         }
 
@@ -543,7 +543,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         /// <returns>CollidablePairHandler for the pair.</returns>
         public static CollidablePairHandler GetPairHandler(ref CollidablePair pair)
         {
-            var overlap = new BroadPhaseOverlap(pair.collidableA, pair.collidableB);
+            BroadPhaseOverlap overlap = new BroadPhaseOverlap(pair.collidableA, pair.collidableB);
             return GetPairHandler(ref overlap) as CollidablePairHandler;
         }
 
@@ -554,7 +554,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         /// <returns>Whether or not the pair is intersecting.</returns>
         public static bool Intersecting(ref CollidablePair pair)
         {
-            var pairHandler = GetPairHandler(ref pair);
+            CollidablePairHandler pairHandler = GetPairHandler(ref pair);
             if (pairHandler == null)
             {
                 return false;
@@ -562,7 +562,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
 
             pairHandler.SuppressEvents = true;
             pairHandler.UpdateCollision(0);
-            var toReturn = pairHandler.Colliding;
+            bool toReturn = pairHandler.Colliding;
             pairHandler.SuppressEvents = false;
             pairHandler.CleanUp();
             pairHandler.Factory.GiveBack(pairHandler);

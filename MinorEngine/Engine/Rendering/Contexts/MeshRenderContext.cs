@@ -6,7 +6,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering.Contexts
 {
-
     /// <summary>
     /// Class that implements rendering meshes
     /// </summary>
@@ -45,19 +44,19 @@ namespace Engine.Rendering.Contexts
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
             Program.Use();
-            var mat = ModelMat;
+            Matrix4 mat = ModelMat;
             GL.UniformMatrix4(Program.GetUniformLocation("modelMatrix"), false, ref mat);
             GL.UniformMatrix4(Program.GetUniformLocation("viewMatrix"), false, ref viewMat);
             GL.UniformMatrix4(Program.GetUniformLocation("projectionMatrix"), false, ref projMat);
-            var mvp = ModelMat * viewMat * projMat;
+            Matrix4 mvp = ModelMat * viewMat * projMat;
             GL.UniformMatrix4(Program.GetUniformLocation("mvpMatrix"), false, ref mvp);
 
-            foreach (var gameMesh in Meshes)
+            foreach (Mesh gameMesh in Meshes)
             {
                 uint diff, spec, norm, hegt, unknown;
                 diff = spec = norm = hegt = unknown = 1;
 
-                for (var i = 0; i < Textures.Length; i++)
+                for (int i = 0; i < Textures.Length; i++)
                 {
                     if (Textures[i] == null)
                     {
@@ -67,8 +66,8 @@ namespace Engine.Rendering.Contexts
 
                     GL.ActiveTexture(TextureUnit.Texture0 + i);
 
-                    var name = "";
-                    var number = "";
+                    string name = "";
+                    string number = "";
                     switch (Textures[i].TexType)
                     {
                         case TextureType.Diffuse:

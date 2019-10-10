@@ -88,7 +88,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public Triangle(Vector3 v1, Vector3 v2, Vector3 v3, float mass)
         {
             Vector3 center;
-            var shape = new TriangleShape(v1, v2, v3, out center);
+            TriangleShape shape = new TriangleShape(v1, v2, v3, out center);
             Initialize(new ConvexCollidable<TriangleShape>(shape), mass);
             Position = center;
         }
@@ -102,7 +102,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public Triangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
             Vector3 center;
-            var shape = new TriangleShape(v1, v2, v3, out center);
+            TriangleShape shape = new TriangleShape(v1, v2, v3, out center);
             Initialize(new ConvexCollidable<TriangleShape>(shape));
             Position = center;
         }

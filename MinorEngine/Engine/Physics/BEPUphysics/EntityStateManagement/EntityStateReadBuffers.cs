@@ -42,12 +42,12 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             //Turn everything on.
             lock (FlipLocker)
             {
-                var initialCount = Math.Max(manager.entities.Count, 64);
+                int initialCount = Math.Max(manager.entities.Count, 64);
                 backBuffer = new MotionState[initialCount];
                 frontBuffer = new MotionState[initialCount];
-                for (var i = 0; i < manager.entities.Count; i++)
+                for (int i = 0; i < manager.entities.Count; i++)
                 {
-                    var entity = manager.entities[i];
+                    Entity entity = manager.entities[i];
                     backBuffer[i].Position = entity.position;
                     backBuffer[i].Orientation = entity.orientation;
                     backBuffer[i].LinearVelocity = entity.linearVelocity;
@@ -110,7 +110,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
         private void MultithreadedStateUpdate(int i)
         {
-            var entity = manager.entities[i];
+            Entity entity = manager.entities[i];
             backBuffer[i].Position = entity.position;
             backBuffer[i].Orientation = entity.orientation;
             backBuffer[i].LinearVelocity = entity.linearVelocity;
@@ -126,9 +126,9 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
         protected override void UpdateSingleThreaded()
         {
-            for (var i = 0; i < manager.entities.Count; i++)
+            for (int i = 0; i < manager.entities.Count; i++)
             {
-                var entity = manager.entities[i];
+                Entity entity = manager.entities[i];
                 backBuffer[i].Position = entity.position;
                 backBuffer[i].Orientation = entity.orientation;
                 backBuffer[i].LinearVelocity = entity.linearVelocity;
@@ -143,7 +143,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             //Don't need to lock since the parent manager handles it.
             if (frontBuffer.Length <= e.BufferedStates.motionStateIndex)
             {
-                var newStates = new MotionState[frontBuffer.Length * 2]; //TODO: shifty
+                MotionState[] newStates = new MotionState[frontBuffer.Length * 2]; //TODO: shifty
                 frontBuffer.CopyTo(newStates, 0);
                 frontBuffer = newStates;
             }
@@ -153,7 +153,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
             if (backBuffer.Length <= e.BufferedStates.motionStateIndex)
             {
-                var newStates = new MotionState[backBuffer.Length * 2]; //TODO: shifty
+                MotionState[] newStates = new MotionState[backBuffer.Length * 2]; //TODO: shifty
                 backBuffer.CopyTo(newStates, 0);
                 backBuffer = newStates;
             }
@@ -176,7 +176,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
         {
             lock (FlipLocker)
             {
-                var formerFrontBuffer = frontBuffer;
+                MotionState[] formerFrontBuffer = frontBuffer;
                 frontBuffer = backBuffer;
                 backBuffer = formerFrontBuffer;
             }

@@ -2,7 +2,6 @@
 
 namespace Engine.Exceptions
 {
-
     /// <summary>
     /// This exception gets thrown when an Object Pool is full or has been initialized incorrectly.
     /// </summary>

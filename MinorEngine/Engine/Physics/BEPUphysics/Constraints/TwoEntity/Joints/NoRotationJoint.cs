@@ -216,10 +216,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             biasVelocity.Z = errorReduction * error.Z;
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            var length = biasVelocity.LengthSquared();
+            float length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                var multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                float multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
                 biasVelocity.Z *= multiplier;

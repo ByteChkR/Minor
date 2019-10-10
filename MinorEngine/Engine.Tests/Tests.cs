@@ -16,13 +16,13 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_CreateBuffer()
         {
-            var b = new byte[255];
-            for (var i = 0; i < b.Length; i++)
+            byte[] b = new byte[255];
+            for (int i = 0; i < b.Length; i++)
             {
                 b[i] = (byte) i;
             }
 
-            var buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            MemoryBuffer buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
@@ -31,15 +31,15 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_ReadBuffer()
         {
-            var b = new float[255];
-            for (var i = 0; i < b.Length; i++)
+            float[] b = new float[255];
+            for (int i = 0; i < b.Length; i++)
             {
                 b[i] = i;
             }
 
-            var buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            MemoryBuffer buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
-            var c = CLAPI.ReadBuffer<float>(buffer, b.Length);
+            float[] c = CLAPI.ReadBuffer<float>(buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -48,18 +48,18 @@ namespace MinorEngine.Tests
         [Fact]
         public void CL_WriteBuffer()
         {
-            var b = new float[255];
-            for (var i = 0; i < b.Length; i++)
+            float[] b = new float[255];
+            for (int i = 0; i < b.Length; i++)
             {
                 b[i] = i;
             }
 
-            var buffer = CLAPI.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            MemoryBuffer buffer = CLAPI.CreateEmpty<float>(b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
 
             CLAPI.WriteToBuffer(buffer, b);
 
-            var c = CLAPI.ReadBuffer<float>(buffer, b.Length);
+            float[] c = CLAPI.ReadBuffer<float>(buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -67,8 +67,8 @@ namespace MinorEngine.Tests
 
         private static bool CheckValues(float[] values, float[] reference)
         {
-            var working = true;
-            for (var i = 0; i < values.Length; i++)
+            bool working = true;
+            for (int i = 0; i < values.Length; i++)
             {
                 if (Math.Abs(values[i] - reference[i]) > 0.01f)
                 {
@@ -84,17 +84,18 @@ namespace MinorEngine.Tests
         public void FLInterpreterTest()
         {
             DebugHelper.SeverityFilter = 10;
-            var oldPath = Directory.GetCurrentDirectory();
-            var path = Path.GetFullPath("../../../resources");
-            var files = Directory.GetFiles(path + "/filter/tests", "*.fl");
+            string oldPath = Directory.GetCurrentDirectory();
+            string path = Path.GetFullPath("../../../resources");
+            string[] files = Directory.GetFiles(path + "/filter/tests", "*.fl");
 
             Directory.SetCurrentDirectory(path);
-            var db = new KernelDatabase(path + "/kernel", DataTypes.UCHAR1);
+            KernelDatabase db = new KernelDatabase(path + "/kernel", DataTypes.UCHAR1);
 
-            foreach (var file in files)
+            foreach (string file in files)
             {
-                var P = new Interpreter(file,
-                    CLAPI.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512, 1,
+                Interpreter P = new Interpreter(file,
+                    CLAPI.CreateEmpty<byte>(512 * 512 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 512, 512,
+                    1,
                     4, db);
                 while (!P.Terminated)
                 {
@@ -110,10 +111,10 @@ namespace MinorEngine.Tests
         public void CL_KernelSignatureAnalysis()
         {
             DebugHelper.SeverityFilter = 10;
-            var path = Path.GetFullPath("../../../resources");
-            var kdb = new KernelDatabase(path, DataTypes.UCHAR1);
+            string path = Path.GetFullPath("../../../resources");
+            KernelDatabase kdb = new KernelDatabase(path, DataTypes.UCHAR1);
 
-            Assert.True(kdb.TryGetCLKernel("addval", out var kernel));
+            Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel));
 
             Assert.True(kernel.Parameter.Count == 5);
 

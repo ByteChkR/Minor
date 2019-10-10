@@ -89,7 +89,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             //Temporarily remove the object from the space.  
             //The reset process will update any systems that need to be updated.
             //This is not thread safe, but this operation should not be performed mid-frame anyway.
-            var space = Space;
+            Space space = Space;
             if (space != null)
             {
                 Space.Remove(this);
@@ -122,7 +122,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             //Temporarily remove the object from the space.  
             //The reset process will update any systems that need to be updated.
             //This is not thread safe, but this operation should not be performed mid-frame anyway.
-            var space = Space;
+            Space space = Space;
             if (space != null)
             {
                 Space.Remove(this);
@@ -150,7 +150,7 @@ namespace Engine.Physics.BEPUphysics.Entities
             //Temporarily remove the object from the space.  
             //The reset process will update any systems that need to be updated.
             //This is not thread safe, but this operation should not be performed mid-frame anyway.
-            var space = Space;
+            Space space = Space;
             if (space != null)
             {
                 Space.Remove(this);

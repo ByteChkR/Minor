@@ -91,7 +91,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = M31;
                 vector.Y = M32;
                 vector.Z = M33;
@@ -112,7 +112,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = -M21;
                 vector.Y = -M22;
                 vector.Z = -M23;
@@ -133,7 +133,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = -M31;
                 vector.Y = -M32;
                 vector.Z = -M33;
@@ -154,7 +154,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = -M11;
                 vector.Y = -M12;
                 vector.Z = -M13;
@@ -175,7 +175,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = M11;
                 vector.Y = M12;
                 vector.Z = M13;
@@ -196,7 +196,7 @@ namespace Engine.Physics.BEPUutilities
         {
             get
             {
-                var vector = new Vector3();
+                Vector3 vector = new Vector3();
                 vector.X = M21;
                 vector.Y = M22;
                 vector.Z = M23;
@@ -218,17 +218,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix3x3 a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
-            var m13 = a.M13 + b.M13;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
+            float m13 = a.M13 + b.M13;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
-            var m23 = a.M23 + b.M23;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
+            float m23 = a.M23 + b.M23;
 
-            var m31 = a.M31 + b.M31;
-            var m32 = a.M32 + b.M32;
-            var m33 = a.M33 + b.M33;
+            float m31 = a.M31 + b.M31;
+            float m32 = a.M32 + b.M32;
+            float m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -251,17 +251,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
-            var m13 = a.M13 + b.M13;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
+            float m13 = a.M13 + b.M13;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
-            var m23 = a.M23 + b.M23;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
+            float m23 = a.M23 + b.M23;
 
-            var m31 = a.M31 + b.M31;
-            var m32 = a.M32 + b.M32;
-            var m33 = a.M33 + b.M33;
+            float m31 = a.M31 + b.M31;
+            float m32 = a.M32 + b.M32;
+            float m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -284,17 +284,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix3x3 a, ref Matrix b, out Matrix3x3 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
-            var m13 = a.M13 + b.M13;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
+            float m13 = a.M13 + b.M13;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
-            var m23 = a.M23 + b.M23;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
+            float m23 = a.M23 + b.M23;
 
-            var m31 = a.M31 + b.M31;
-            var m32 = a.M32 + b.M32;
-            var m33 = a.M33 + b.M33;
+            float m31 = a.M31 + b.M31;
+            float m32 = a.M32 + b.M32;
+            float m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -317,17 +317,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix a, ref Matrix b, out Matrix3x3 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
-            var m13 = a.M13 + b.M13;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
+            float m13 = a.M13 + b.M13;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
-            var m23 = a.M23 + b.M23;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
+            float m23 = a.M23 + b.M23;
 
-            var m31 = a.M31 + b.M31;
-            var m32 = a.M32 + b.M32;
-            var m33 = a.M33 + b.M33;
+            float m31 = a.M31 + b.M31;
+            float m32 = a.M32 + b.M32;
+            float m33 = a.M33 + b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -419,7 +419,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Scaling matrix.</returns>
         public static Matrix3x3 CreateScale(float scale)
         {
-            var matrix = new Matrix3x3 {M11 = scale, M22 = scale, M33 = scale};
+            Matrix3x3 matrix = new Matrix3x3 {M11 = scale, M22 = scale, M33 = scale};
             return matrix;
         }
 
@@ -440,7 +440,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Scaling matrix.</returns>
         public static Matrix3x3 CreateScale(ref Vector3 scale)
         {
-            var matrix = new Matrix3x3 {M11 = scale.X, M22 = scale.Y, M33 = scale.Z};
+            Matrix3x3 matrix = new Matrix3x3 {M11 = scale.X, M22 = scale.Y, M33 = scale.Z};
             return matrix;
         }
 
@@ -466,7 +466,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Scaling matrix.</returns>
         public static Matrix3x3 CreateScale(float x, float y, float z)
         {
-            var matrix = new Matrix3x3 {M11 = x, M22 = y, M33 = z};
+            Matrix3x3 matrix = new Matrix3x3 {M11 = x, M22 = y, M33 = z};
             return matrix;
         }
 
@@ -477,18 +477,18 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Inverted matrix.</param>
         public static void Invert(ref Matrix3x3 matrix, out Matrix3x3 result)
         {
-            var determinantInverse = 1 / matrix.Determinant();
-            var m11 = (matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32) * determinantInverse;
-            var m12 = (matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12) * determinantInverse;
-            var m13 = (matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13) * determinantInverse;
+            float determinantInverse = 1 / matrix.Determinant();
+            float m11 = (matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32) * determinantInverse;
+            float m12 = (matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12) * determinantInverse;
+            float m13 = (matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13) * determinantInverse;
 
-            var m21 = (matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33) * determinantInverse;
-            var m22 = (matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31) * determinantInverse;
-            var m23 = (matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23) * determinantInverse;
+            float m21 = (matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33) * determinantInverse;
+            float m22 = (matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31) * determinantInverse;
+            float m23 = (matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23) * determinantInverse;
 
-            var m31 = (matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31) * determinantInverse;
-            var m32 = (matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32) * determinantInverse;
-            var m33 = (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21) * determinantInverse;
+            float m31 = (matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31) * determinantInverse;
+            float m32 = (matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32) * determinantInverse;
+            float m33 = (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21) * determinantInverse;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -523,7 +523,7 @@ namespace Engine.Physics.BEPUutilities
         public static void AdaptiveInvert(ref Matrix3x3 matrix, out Matrix3x3 result)
         {
             int submatrix;
-            var determinantInverse = 1 / matrix.AdaptiveDeterminant(out submatrix);
+            float determinantInverse = 1 / matrix.AdaptiveDeterminant(out submatrix);
             float m11, m12, m13, m21, m22, m23, m31, m32, m33;
             switch (submatrix)
             {
@@ -659,17 +659,17 @@ namespace Engine.Physics.BEPUutilities
             //2) det(M) == det(transpose(M))
             //This organization makes it clearer that the invert's usual division by determinant drops out.
 
-            var m11 = matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32;
-            var m12 = matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12;
-            var m13 = matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13;
+            float m11 = matrix.M22 * matrix.M33 - matrix.M23 * matrix.M32;
+            float m12 = matrix.M13 * matrix.M32 - matrix.M33 * matrix.M12;
+            float m13 = matrix.M12 * matrix.M23 - matrix.M22 * matrix.M13;
 
-            var m21 = matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33;
-            var m22 = matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31;
-            var m23 = matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23;
+            float m21 = matrix.M23 * matrix.M31 - matrix.M21 * matrix.M33;
+            float m22 = matrix.M11 * matrix.M33 - matrix.M13 * matrix.M31;
+            float m23 = matrix.M13 * matrix.M21 - matrix.M11 * matrix.M23;
 
-            var m31 = matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31;
-            var m32 = matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32;
-            var m33 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
+            float m31 = matrix.M21 * matrix.M32 - matrix.M22 * matrix.M31;
+            float m32 = matrix.M12 * matrix.M31 - matrix.M11 * matrix.M32;
+            float m33 = matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21;
 
             //Note transposition.
             result.M11 = m11;
@@ -746,17 +746,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix3x3 a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
-            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
-            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
 
-            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
-            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
+            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -779,17 +779,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix3x3 a, ref Matrix b, out Matrix3x3 result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
-            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
-            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
 
-            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
-            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
+            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -812,17 +812,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
-            var resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21 + a.M13 * b.M31;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22 + a.M13 * b.M32;
+            float resultM13 = a.M11 * b.M13 + a.M12 * b.M23 + a.M13 * b.M33;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
-            var resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21 + a.M23 * b.M31;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22 + a.M23 * b.M32;
+            float resultM23 = a.M21 * b.M13 + a.M22 * b.M23 + a.M23 * b.M33;
 
-            var resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
-            var resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
-            var resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
+            float resultM31 = a.M31 * b.M11 + a.M32 * b.M21 + a.M33 * b.M31;
+            float resultM32 = a.M31 * b.M12 + a.M32 * b.M22 + a.M33 * b.M32;
+            float resultM33 = a.M31 * b.M13 + a.M32 * b.M23 + a.M33 * b.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -846,17 +846,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void MultiplyTransposed(ref Matrix3x3 transpose, ref Matrix3x3 matrix, out Matrix3x3 result)
         {
-            var resultM11 = transpose.M11 * matrix.M11 + transpose.M21 * matrix.M21 + transpose.M31 * matrix.M31;
-            var resultM12 = transpose.M11 * matrix.M12 + transpose.M21 * matrix.M22 + transpose.M31 * matrix.M32;
-            var resultM13 = transpose.M11 * matrix.M13 + transpose.M21 * matrix.M23 + transpose.M31 * matrix.M33;
+            float resultM11 = transpose.M11 * matrix.M11 + transpose.M21 * matrix.M21 + transpose.M31 * matrix.M31;
+            float resultM12 = transpose.M11 * matrix.M12 + transpose.M21 * matrix.M22 + transpose.M31 * matrix.M32;
+            float resultM13 = transpose.M11 * matrix.M13 + transpose.M21 * matrix.M23 + transpose.M31 * matrix.M33;
 
-            var resultM21 = transpose.M12 * matrix.M11 + transpose.M22 * matrix.M21 + transpose.M32 * matrix.M31;
-            var resultM22 = transpose.M12 * matrix.M12 + transpose.M22 * matrix.M22 + transpose.M32 * matrix.M32;
-            var resultM23 = transpose.M12 * matrix.M13 + transpose.M22 * matrix.M23 + transpose.M32 * matrix.M33;
+            float resultM21 = transpose.M12 * matrix.M11 + transpose.M22 * matrix.M21 + transpose.M32 * matrix.M31;
+            float resultM22 = transpose.M12 * matrix.M12 + transpose.M22 * matrix.M22 + transpose.M32 * matrix.M32;
+            float resultM23 = transpose.M12 * matrix.M13 + transpose.M22 * matrix.M23 + transpose.M32 * matrix.M33;
 
-            var resultM31 = transpose.M13 * matrix.M11 + transpose.M23 * matrix.M21 + transpose.M33 * matrix.M31;
-            var resultM32 = transpose.M13 * matrix.M12 + transpose.M23 * matrix.M22 + transpose.M33 * matrix.M32;
-            var resultM33 = transpose.M13 * matrix.M13 + transpose.M23 * matrix.M23 + transpose.M33 * matrix.M33;
+            float resultM31 = transpose.M13 * matrix.M11 + transpose.M23 * matrix.M21 + transpose.M33 * matrix.M31;
+            float resultM32 = transpose.M13 * matrix.M12 + transpose.M23 * matrix.M22 + transpose.M33 * matrix.M32;
+            float resultM33 = transpose.M13 * matrix.M13 + transpose.M23 * matrix.M23 + transpose.M33 * matrix.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -879,17 +879,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void MultiplyByTransposed(ref Matrix3x3 matrix, ref Matrix3x3 transpose, out Matrix3x3 result)
         {
-            var resultM11 = matrix.M11 * transpose.M11 + matrix.M12 * transpose.M12 + matrix.M13 * transpose.M13;
-            var resultM12 = matrix.M11 * transpose.M21 + matrix.M12 * transpose.M22 + matrix.M13 * transpose.M23;
-            var resultM13 = matrix.M11 * transpose.M31 + matrix.M12 * transpose.M32 + matrix.M13 * transpose.M33;
+            float resultM11 = matrix.M11 * transpose.M11 + matrix.M12 * transpose.M12 + matrix.M13 * transpose.M13;
+            float resultM12 = matrix.M11 * transpose.M21 + matrix.M12 * transpose.M22 + matrix.M13 * transpose.M23;
+            float resultM13 = matrix.M11 * transpose.M31 + matrix.M12 * transpose.M32 + matrix.M13 * transpose.M33;
 
-            var resultM21 = matrix.M21 * transpose.M11 + matrix.M22 * transpose.M12 + matrix.M23 * transpose.M13;
-            var resultM22 = matrix.M21 * transpose.M21 + matrix.M22 * transpose.M22 + matrix.M23 * transpose.M23;
-            var resultM23 = matrix.M21 * transpose.M31 + matrix.M22 * transpose.M32 + matrix.M23 * transpose.M33;
+            float resultM21 = matrix.M21 * transpose.M11 + matrix.M22 * transpose.M12 + matrix.M23 * transpose.M13;
+            float resultM22 = matrix.M21 * transpose.M21 + matrix.M22 * transpose.M22 + matrix.M23 * transpose.M23;
+            float resultM23 = matrix.M21 * transpose.M31 + matrix.M22 * transpose.M32 + matrix.M23 * transpose.M33;
 
-            var resultM31 = matrix.M31 * transpose.M11 + matrix.M32 * transpose.M12 + matrix.M33 * transpose.M13;
-            var resultM32 = matrix.M31 * transpose.M21 + matrix.M32 * transpose.M22 + matrix.M33 * transpose.M23;
-            var resultM33 = matrix.M31 * transpose.M31 + matrix.M32 * transpose.M32 + matrix.M33 * transpose.M33;
+            float resultM31 = matrix.M31 * transpose.M11 + matrix.M32 * transpose.M12 + matrix.M33 * transpose.M13;
+            float resultM32 = matrix.M31 * transpose.M21 + matrix.M32 * transpose.M22 + matrix.M33 * transpose.M23;
+            float resultM33 = matrix.M31 * transpose.M31 + matrix.M32 * transpose.M32 + matrix.M33 * transpose.M33;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -953,17 +953,17 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Difference of the two matrices.</param>
         public static void Subtract(ref Matrix3x3 a, ref Matrix3x3 b, out Matrix3x3 result)
         {
-            var m11 = a.M11 - b.M11;
-            var m12 = a.M12 - b.M12;
-            var m13 = a.M13 - b.M13;
+            float m11 = a.M11 - b.M11;
+            float m12 = a.M12 - b.M12;
+            float m13 = a.M13 - b.M13;
 
-            var m21 = a.M21 - b.M21;
-            var m22 = a.M22 - b.M22;
-            var m23 = a.M23 - b.M23;
+            float m21 = a.M21 - b.M21;
+            float m22 = a.M22 - b.M22;
+            float m23 = a.M23 - b.M23;
 
-            var m31 = a.M31 - b.M31;
-            var m32 = a.M32 - b.M32;
-            var m33 = a.M33 - b.M33;
+            float m31 = a.M31 - b.M31;
+            float m32 = a.M32 - b.M32;
+            float m33 = a.M33 - b.M33;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -1014,7 +1014,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Created 4x4 matrix.</returns>
         public static Matrix ToMatrix4X4(Matrix3x3 a)
         {
-            var b = new Matrix();
+            Matrix b = new Matrix();
             b.M11 = a.M11;
             b.M12 = a.M12;
             b.M13 = a.M13;
@@ -1045,9 +1045,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the transformation.</param>
         public static void Transform(ref Vector3 v, ref Matrix3x3 matrix, out Vector3 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             result = new Vector3();
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32;
@@ -1065,9 +1065,9 @@ namespace Engine.Physics.BEPUutilities
         {
             Vector3 result;
             result = new Vector3();
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
 
             result.X = vX * matrix.M11 + vY * matrix.M21 + vZ * matrix.M31;
             result.Y = vX * matrix.M12 + vY * matrix.M22 + vZ * matrix.M32;
@@ -1083,9 +1083,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the transformation.</param>
         public static void TransformTranspose(ref Vector3 v, ref Matrix3x3 matrix, out Vector3 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             result = new Vector3();
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13;
             result.Y = vX * matrix.M21 + vY * matrix.M22 + vZ * matrix.M23;
@@ -1100,9 +1100,9 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Product of the transformation.</returns>
         public static Vector3 TransformTranspose(Vector3 v, Matrix3x3 matrix)
         {
-            var vX = v.X;
-            var vY = v.Y;
-            var vZ = v.Z;
+            float vX = v.X;
+            float vY = v.Y;
+            float vZ = v.Z;
             Vector3 result;
             result = new Vector3();
             result.X = vX * matrix.M11 + vY * matrix.M12 + vZ * matrix.M13;
@@ -1118,12 +1118,12 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transposed matrix.</param>
         public static void Transpose(ref Matrix3x3 matrix, out Matrix3x3 result)
         {
-            var m21 = matrix.M12;
-            var m31 = matrix.M13;
-            var m12 = matrix.M21;
-            var m32 = matrix.M23;
-            var m13 = matrix.M31;
-            var m23 = matrix.M32;
+            float m21 = matrix.M12;
+            float m31 = matrix.M13;
+            float m12 = matrix.M21;
+            float m32 = matrix.M23;
+            float m13 = matrix.M31;
+            float m23 = matrix.M32;
 
             result.M11 = matrix.M11;
             result.M12 = m12;
@@ -1143,12 +1143,12 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Transposed matrix.</param>
         public static void Transpose(ref Matrix matrix, out Matrix3x3 result)
         {
-            var m21 = matrix.M12;
-            var m31 = matrix.M13;
-            var m12 = matrix.M21;
-            var m32 = matrix.M23;
-            var m13 = matrix.M31;
-            var m23 = matrix.M32;
+            float m21 = matrix.M12;
+            float m31 = matrix.M13;
+            float m12 = matrix.M21;
+            float m32 = matrix.M23;
+            float m13 = matrix.M31;
+            float m23 = matrix.M32;
 
             result.M11 = matrix.M11;
             result.M12 = m12;
@@ -1166,7 +1166,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Transpose()
         {
-            var intermediate = M12;
+            float intermediate = M12;
             M12 = M21;
             M21 = intermediate;
 
@@ -1211,8 +1211,8 @@ namespace Engine.Physics.BEPUutilities
         internal float AdaptiveDeterminant(out int subMatrixCode)
         {
             //Try the full matrix first.
-            var determinant = M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 -
-                              M31 * M22 * M13 - M32 * M23 * M11 - M33 * M21 * M12;
+            float determinant = M11 * M22 * M33 + M12 * M23 * M31 + M13 * M21 * M32 -
+                                M31 * M22 * M13 - M32 * M23 * M11 - M33 * M21 * M12;
             if (determinant != 0
             ) //This could be a little numerically flimsy.  Fortunately, the way this method is used, that doesn't matter!
             {
@@ -1277,18 +1277,18 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Matrix representing the quaternion's orientation.</param>
         public static void CreateFromQuaternion(ref Quaternion quaternion, out Matrix3x3 result)
         {
-            var qX2 = quaternion.X + quaternion.X;
-            var qY2 = quaternion.Y + quaternion.Y;
-            var qZ2 = quaternion.Z + quaternion.Z;
-            var XX = qX2 * quaternion.X;
-            var YY = qY2 * quaternion.Y;
-            var ZZ = qZ2 * quaternion.Z;
-            var XY = qX2 * quaternion.Y;
-            var XZ = qX2 * quaternion.Z;
-            var XW = qX2 * quaternion.W;
-            var YZ = qY2 * quaternion.Z;
-            var YW = qY2 * quaternion.W;
-            var ZW = qZ2 * quaternion.W;
+            float qX2 = quaternion.X + quaternion.X;
+            float qY2 = quaternion.Y + quaternion.Y;
+            float qZ2 = quaternion.Z + quaternion.Z;
+            float XX = qX2 * quaternion.X;
+            float YY = qY2 * quaternion.Y;
+            float ZZ = qZ2 * quaternion.Z;
+            float XY = qX2 * quaternion.Y;
+            float XZ = qX2 * quaternion.Z;
+            float XW = qX2 * quaternion.W;
+            float YZ = qY2 * quaternion.Z;
+            float YW = qY2 * quaternion.W;
+            float ZW = qZ2 * quaternion.W;
 
             result.M11 = 1 - YY - ZZ;
             result.M21 = XY - ZW;
@@ -1357,15 +1357,15 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Matrix representing the rotation.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Matrix3x3 result)
         {
-            var xx = axis.X * axis.X;
-            var yy = axis.Y * axis.Y;
-            var zz = axis.Z * axis.Z;
-            var xy = axis.X * axis.Y;
-            var xz = axis.X * axis.Z;
-            var yz = axis.Y * axis.Z;
+            float xx = axis.X * axis.X;
+            float yy = axis.Y * axis.Y;
+            float zz = axis.Z * axis.Z;
+            float xy = axis.X * axis.Y;
+            float xz = axis.X * axis.Z;
+            float yz = axis.Y * axis.Z;
 
-            var sinAngle = (float) Math.Sin(angle);
-            var oneMinusCosAngle = 1 - (float) Math.Cos(angle);
+            float sinAngle = (float) Math.Sin(angle);
+            float oneMinusCosAngle = 1 - (float) Math.Cos(angle);
 
             result.M11 = 1 + oneMinusCosAngle * (xx - 1);
             result.M21 = -axis.Z * sinAngle + oneMinusCosAngle * xy;

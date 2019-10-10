@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -74,7 +73,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Kernels
         public static extern Result CreateKernelsInProgram(
             [In] IntPtr program,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfKernels,
-            [Out] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] kernels,
+            [Out] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] kernels,
             [Out] [MarshalAs(UnmanagedType.U4)] out uint numberOfKernelsReturned
         );
 

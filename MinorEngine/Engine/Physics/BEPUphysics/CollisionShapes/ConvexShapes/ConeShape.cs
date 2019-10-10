@@ -87,7 +87,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             description.EntityShapeVolume.Volume = (float) (.333333 * Math.PI * radius * radius * height);
 
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            var diagValue = .1f * height * height + .15f * radius * radius;
+            float diagValue = .1f * height * height + .15f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = .3f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;
@@ -113,7 +113,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
             //Is it the tip of the cone?
-            var sinThetaSquared = radius * radius / (radius * radius + height * height);
+            float sinThetaSquared = radius * radius / (radius * radius + height * height);
             //If d.Y * d.Y / d.LengthSquared >= sinthetaSquared
             if (direction.Y > 0 && direction.Y * direction.Y >= direction.LengthSquared() * sinThetaSquared)
             {
@@ -122,10 +122,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             }
 
             //Is it a bottom edge of the cone?
-            var horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
+            float horizontalLengthSquared = direction.X * direction.X + direction.Z * direction.Z;
             if (horizontalLengthSquared > Toolbox.Epsilon)
             {
-                var radOverSigma = radius / Math.Sqrt(horizontalLengthSquared);
+                double radOverSigma = radius / Math.Sqrt(horizontalLengthSquared);
                 extremePoint = new Vector3((float) (radOverSigma * direction.X), -.25f * height,
                     (float) (radOverSigma * direction.Z));
             }

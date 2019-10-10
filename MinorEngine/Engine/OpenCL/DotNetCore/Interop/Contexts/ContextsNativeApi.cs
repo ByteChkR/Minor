@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -53,7 +52,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Contexts
         public static extern IntPtr CreateContext(
             [In] IntPtr properties,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfDevices,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] devices,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] devices,
             [In] IntPtr notificationCallback,
             [In] IntPtr userData,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode

@@ -27,7 +27,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal force.
             float totalNormalImpulse = 0;
             info.NormalImpulse = 0;
-            for (var i = 0; i < contactConstraint.penetrationConstraints.Count; i++)
+            for (int i = 0; i < contactConstraint.penetrationConstraints.Count; i++)
             {
                 totalNormalImpulse += contactConstraint.penetrationConstraints.Elements[i].accumulatedImpulse;
                 if (contactConstraint.penetrationConstraints.Elements[i].contact == info.Contact)

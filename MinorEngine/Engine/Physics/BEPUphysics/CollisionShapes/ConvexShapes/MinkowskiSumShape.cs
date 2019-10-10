@@ -109,7 +109,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 throw new ArgumentException("Cannot create a wrapped shape with no contained shapes.");
             }
 
-            for (var i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; i++)
             {
                 Shapes.Add(shapeEntries[i]);
             }
@@ -139,7 +139,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public MinkowskiSumShape(IList<OrientedConvexShapeEntry> shapeEntries, Vector3 localOffset,
             ConvexShapeDescription description)
         {
-            for (var i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; i++)
             {
                 Shapes.Add(shapeEntries[i]);
             }
@@ -169,19 +169,19 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public void UpdateConvexShapeInfo()
         {
             //Compute the volume distribution.
-            var samples = CommonResources.GetVectorList();
+            RawList<Vector3> samples = CommonResources.GetVectorList();
             if (samples.Capacity < InertiaHelper.SampleDirections.Length)
             {
                 samples.Capacity = InertiaHelper.SampleDirections.Length;
             }
 
             samples.Count = InertiaHelper.SampleDirections.Length;
-            for (var i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
+            for (int i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
             {
                 GetLocalExtremePoint(InertiaHelper.SampleDirections[i], out samples.Elements[i]);
             }
 
-            var triangles = CommonResources.GetIntList();
+            RawList<int> triangles = CommonResources.GetIntList();
             ConvexHullHelper.GetConvexHull(samples, triangles);
 
             float volume;
@@ -196,7 +196,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
 
             //Compute the radii.
             float minRadius = 0, maxRadius = 0;
-            for (var i = 0; i < Shapes.Count; i++)
+            for (int i = 0; i < Shapes.Count; i++)
             {
                 minRadius += Shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
                 maxRadius += Shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius;
@@ -214,9 +214,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         ///<param name="extremePoint">Extreme point on the shape.</param>
         public override void GetLocalExtremePointWithoutMargin(ref Vector3 direction, out Vector3 extremePoint)
         {
-            var transform = new RigidTransform {Orientation = Shapes.WrappedList.Elements[0].Orientation};
+            RigidTransform transform = new RigidTransform {Orientation = Shapes.WrappedList.Elements[0].Orientation};
             Shapes.WrappedList.Elements[0].CollisionShape.GetExtremePoint(direction, ref transform, out extremePoint);
-            for (var i = 1; i < Shapes.WrappedList.Count; i++)
+            for (int i = 1; i < Shapes.WrappedList.Count; i++)
             {
                 Vector3 temp;
                 transform.Orientation = Shapes.WrappedList.Elements[i].Orientation;

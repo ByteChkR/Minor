@@ -131,9 +131,6 @@ Static Private Member Functions</h2></td></tr>
 <tr class="memitem:a805b8696b4573f9dd747d4d7d92fa636"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfb/class_engine_1_1_i_o_1_1_mesh_loader.html#a805b8696b4573f9dd747d4d7d92fa636">setupMesh</a> (uint[] indices, <a class="el" href="../../de/da6/struct_engine_1_1_data_types_1_1_vertex.html">Vertex</a>[] vertices, out int vao, out int vbo, out int ebo)</td></tr>
 <tr class="memdesc:a805b8696b4573f9dd747d4d7d92fa636"><td class="mdescLeft">&#160;</td><td class="mdescRight">Code that is setting up the mesh in OpenGL  <a href="#a805b8696b4573f9dd747d4d7d92fa636">More...</a><br /></td></tr>
 <tr class="separator:a805b8696b4573f9dd747d4d7d92fa636"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8cc15dc8e498c0c1a50652766451673"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfb/class_engine_1_1_i_o_1_1_mesh_loader.html#af8cc15dc8e498c0c1a50652766451673">loadMaterialTextures</a> (Material m, <a class="el" href="../../d2/df0/namespace_engine_1_1_data_types.html#aaf0c48e251c4afa5d02fbee1f816fc39">TextureType</a> texType, string dir)</td></tr>
-<tr class="memdesc:af8cc15dc8e498c0c1a50652766451673"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Textures from AssimpMaterials  <a href="#af8cc15dc8e498c0c1a50652766451673">More...</a><br /></td></tr>
-<tr class="separator:af8cc15dc8e498c0c1a50652766451673"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Static class responsible to load Meshes from Disk </p>
@@ -205,59 +202,6 @@ Static Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The loaded Meshes</dd></dl>
-
-</div>
-</div>
-<a id="af8cc15dc8e498c0c1a50652766451673"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af8cc15dc8e498c0c1a50652766451673">&#9670;&nbsp;</a></span>loadMaterialTextures()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static List&lt;<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&gt; Engine.IO.MeshLoader.loadMaterialTextures </td>
-          <td>(</td>
-          <td class="paramtype">Material&#160;</td>
-          <td class="paramname"><em>m</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d2/df0/namespace_engine_1_1_data_types.html#aaf0c48e251c4afa5d02fbee1f816fc39">TextureType</a>&#160;</td>
-          <td class="paramname"><em>texType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>dir</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Loads Textures from AssimpMaterials </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">m</td><td>Assimp Material</td></tr>
-    <tr><td class="paramname">texType</td><td>Type of texture</td></tr>
-    <tr><td class="paramname">dir</td><td>The directory of the file that references this material</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A list of textures that were attached to the material</dd></dl>
 
 </div>
 </div>

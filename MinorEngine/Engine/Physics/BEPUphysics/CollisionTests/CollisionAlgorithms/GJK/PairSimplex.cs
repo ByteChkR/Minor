@@ -480,7 +480,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             }
 
             //Check to see if it's outside AB.
-            var vc = AdotAB * BdotAC - BdotAB * AdotAC;
+            float vc = AdotAB * BdotAC - BdotAB * AdotAC;
             if (vc <= 0 && AdotAB > 0 && BdotAB < 0) //Note > and < instead of => <=; avoids possibly division by zero
             {
                 State = SimplexState.Segment;
@@ -517,7 +517,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             //Vector3.Dot(ref ac, ref A, out AdotAC);
             //AdotAB = -AdotAB;
             //AdotAC = -AdotAC;
-            var vb = CdotAB * AdotAC - AdotAB * CdotAC;
+            float vb = CdotAB * AdotAC - AdotAB * CdotAC;
             if (vb <= 0f && AdotAC > 0f && CdotAC < 0f
             ) //Note > instead of >= and < instead of <=; prevents bad denominator
             {
@@ -539,7 +539,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             //Vector3.Dot(ref ac, ref B, out BdotAC);
             //BdotAB = -BdotAB;
             //BdotAC = -BdotAC;
-            var va = BdotAB * CdotAC - CdotAB * BdotAC;
+            float va = BdotAB * CdotAC - CdotAB * BdotAC;
             float d3d4;
             float d6d5;
             if (va <= 0f && (d3d4 = BdotAC - BdotAB) > 0f && (d6d5 = CdotAB - CdotAC) > 0f
@@ -563,7 +563,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
 
 
             //On the face of the triangle.
-            var denom = 1f / (va + vb + vc);
+            float denom = 1f / (va + vb + vc);
             V = vb * denom;
             W = vc * denom;
             U = 1 - V - W;
@@ -591,9 +591,9 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             //There is some overlap of calculations in this method, since DAC, DCB, and DBA are tested fully.
 
 
-            var minimumSimplex = new PairSimplex();
+            PairSimplex minimumSimplex = new PairSimplex();
             point = new Vector3();
-            var minimumDistance = float.MaxValue;
+            float minimumDistance = float.MaxValue;
 
 
             PairSimplex candidate;
@@ -733,7 +733,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 }
 
                 //Check to see if it's outside AB.
-                var vc = AdotAB * BdotAC - BdotAB * AdotAC;
+                float vc = AdotAB * BdotAC - BdotAB * AdotAC;
                 if (vc <= 0 && AdotAB > 0 && BdotAB < 0
                 ) //Note > and < instead of => <=; avoids possibly division by zero
                 {
@@ -777,7 +777,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 //Vector3.Dot(ref ac, ref A, out AdotAC);
                 //AdotAB = -AdotAB;
                 //AdotAC = -AdotAC;
-                var vb = CdotAB * AdotAC - AdotAB * CdotAC;
+                float vb = CdotAB * AdotAC - AdotAB * CdotAC;
                 if (vb <= 0f && AdotAC > 0f && CdotAC < 0f
                 ) //Note > instead of >= and < instead of <=; prevents bad denominator
                 {
@@ -801,7 +801,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 //Vector3.Dot(ref ac, ref B, out BdotAC);
                 //BdotAB = -BdotAB;
                 //BdotAC = -BdotAC;
-                var va = BdotAB * CdotAC - CdotAB * BdotAC;
+                float va = BdotAB * CdotAC - CdotAB * BdotAC;
                 float d3d4;
                 float d6d5;
                 if (va <= 0f && (d3d4 = BdotAC - BdotAB) > 0f && (d6d5 = CdotAB - CdotAC) > 0f
@@ -836,7 +836,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 simplex.SimplexB.B = B2;
                 simplex.SimplexB.C = C2;
                 simplex.State = SimplexState.Triangle;
-                var denom = 1f / (va + vb + vc);
+                float denom = 1f / (va + vb + vc);
                 simplex.W = vc * denom;
                 simplex.V = vb * denom;
                 simplex.U = 1 - simplex.V - simplex.W;
@@ -882,9 +882,9 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             //If S is not further towards the origin along negativeDirection than closestPoint, then we're done.
             float dotS;
             Vector3.Dot(ref S, ref negativeDirection, out dotS); //-P * S
-            var distanceToClosest = closestPoint.LengthSquared();
+            float distanceToClosest = closestPoint.LengthSquared();
 
-            var progression = dotS + distanceToClosest;
+            float progression = dotS + distanceToClosest;
             //It's likely that the system is oscillating between two or more states, usually because of a degenerate simplex.
             //Rather than detect specific problem cases, this approach just lets it run and catches whatever falls through.
             //During oscillation, one of the states is usually just BARELY outside of the numerical tolerance.

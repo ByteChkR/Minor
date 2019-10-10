@@ -105,7 +105,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
 
         protected override void CollisionRulesUpdated()
         {
-            for (var i = 0; i < pairs.Count; i++)
+            for (int i = 0; i < pairs.Count; i++)
             {
                 pairs[i].CollisionRule = CollisionRules.CollisionRuleCalculator(pairs[i].BroadPhaseOverlap.entryA,
                     pairs[i].BroadPhaseOverlap.entryB);
@@ -126,7 +126,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                 pairs.FastRemoveAt(index);
                 if (pairs.Count > index)
                 {
-                    var endPair = pairs.Elements[index];
+                    CollidablePairHandler endPair = pairs.Elements[index];
                     if (endPair.CollidableA == this)
                     {
                         endPair.listIndexA = index;

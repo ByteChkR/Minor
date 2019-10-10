@@ -2,8 +2,6 @@
 
 namespace Engine.Exceptions
 {
-
-
     /// <summary>
     /// Exception that gets thrown when the Audio Loader was not able to load the file.
     /// </summary>

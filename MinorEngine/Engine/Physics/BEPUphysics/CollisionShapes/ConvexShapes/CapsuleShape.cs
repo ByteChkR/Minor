@@ -80,8 +80,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 (float) (Math.PI * radius * radius * length + 1.333333 * Math.PI * radius * radius * radius);
 
             description.EntityShapeVolume.VolumeDistribution = new Matrix3x3();
-            var effectiveLength = length + radius / 2; //This is a cylindrical inertia tensor. Approximate.
-            var diagValue = .0833333333f * effectiveLength * effectiveLength + .25f * radius * radius;
+            float effectiveLength = length + radius / 2; //This is a cylindrical inertia tensor. Approximate.
+            float diagValue = .0833333333f * effectiveLength * effectiveLength + .25f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M11 = diagValue;
             description.EntityShapeVolume.VolumeDistribution.M22 = .5f * radius * radius;
             description.EntityShapeVolume.VolumeDistribution.M33 = diagValue;
@@ -195,7 +195,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 hit.T = 0;
                 hit.Location = localRay.Position;
                 hit.Normal = new Vector3(hit.Location.X, 0, hit.Location.Z);
-                var normalLengthSquared = hit.Normal.LengthSquared();
+                float normalLengthSquared = hit.Normal.LengthSquared();
                 if (normalLengthSquared > 1e-9f)
                 {
                     Vector3.Divide(ref hit.Normal, (float) Math.Sqrt(normalLengthSquared), out hit.Normal);
@@ -214,8 +214,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //Project the ray direction onto the plane where the cylinder is a circle.
             //The projected ray is then tested against the circle to compute the time of impact.
             //That time of impact is used to compute the 3d hit location.
-            var planeDirection = new Vector2(localRay.Direction.X, localRay.Direction.Z);
-            var planeDirectionLengthSquared = planeDirection.LengthSquared();
+            Vector2 planeDirection = new Vector2(localRay.Direction.X, localRay.Direction.Z);
+            float planeDirectionLengthSquared = planeDirection.LengthSquared();
 
             if (planeDirectionLengthSquared < Toolbox.Epsilon)
             {
@@ -237,16 +237,16 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 return false;
             }
 
-            var planeOrigin = new Vector2(localRay.Position.X, localRay.Position.Z);
+            Vector2 planeOrigin = new Vector2(localRay.Position.X, localRay.Position.Z);
             float dot;
             Vector2.Dot(ref planeDirection, ref planeOrigin, out dot);
-            var closestToCenterT = -dot / planeDirectionLengthSquared;
+            float closestToCenterT = -dot / planeDirectionLengthSquared;
 
             Vector2 closestPoint;
             Vector2.Multiply(ref planeDirection, closestToCenterT, out closestPoint);
             Vector2.Add(ref planeOrigin, ref closestPoint, out closestPoint);
             //How close does the ray come to the circle?
-            var squaredDistance = closestPoint.LengthSquared();
+            float squaredDistance = closestPoint.LengthSquared();
             if (squaredDistance > collisionMargin * collisionMargin)
             {
                 //It's too far!  The ray cannot possibly hit the capsule.
@@ -256,9 +256,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
 
 
             //With the squared distance, compute the distance backward along the ray from the closest point on the ray to the axis.
-            var backwardsDistance = collisionMargin *
-                                    (float) Math.Sqrt(1 - squaredDistance / (collisionMargin * collisionMargin));
-            var tOffset = backwardsDistance / (float) Math.Sqrt(planeDirectionLengthSquared);
+            float backwardsDistance = collisionMargin *
+                                      (float) Math.Sqrt(1 - squaredDistance / (collisionMargin * collisionMargin));
+            float tOffset = backwardsDistance / (float) Math.Sqrt(planeDirectionLengthSquared);
 
             hit.T = closestToCenterT - tOffset;
 
@@ -271,7 +271,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             {
                 //Yup!
                 hit.Normal = new Vector3(hit.Location.X, 0, hit.Location.Z);
-                var normalLengthSquared = hit.Normal.LengthSquared();
+                float normalLengthSquared = hit.Normal.LengthSquared();
                 if (normalLengthSquared > 1e-9f)
                 {
                     Vector3.Divide(ref hit.Normal, (float) Math.Sqrt(normalLengthSquared), out hit.Normal);
@@ -296,7 +296,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             //Nope! It may be intersecting the ends of the capsule though.
             //We're above the capsule, so cast a ray against the upper sphere.
             //We don't have to worry about it hitting the bottom of the sphere since it would have hit the cylinder portion first.
-            var spherePosition = new Vector3(0, halfLength, 0);
+            Vector3 spherePosition = new Vector3(0, halfLength, 0);
             if (Toolbox.RayCastSphere(ref localRay, ref spherePosition, collisionMargin, maximumLength, out hit))
             {
                 //Pull the hit into world space.

@@ -108,7 +108,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             get => Elements.Length;
             set
             {
-                var newArray = new T[value];
+                T[] newArray = new T[value];
                 Array.Copy(Elements, newArray, Math.Min(value, Count));
                 Elements = newArray;
             }
@@ -134,10 +134,10 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         ///<param name="items">Elements to add.</param>
         public void AddRange(RawList<T> items)
         {
-            var neededLength = Count + items.Count;
+            int neededLength = Count + items.Count;
             if (neededLength > Elements.Length)
             {
-                var newLength = Elements.Length * 2;
+                int newLength = Elements.Length * 2;
                 if (newLength < neededLength)
                 {
                     newLength = neededLength;
@@ -156,10 +156,10 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         ///<param name="items">Elements to add.</param>
         public void AddRange(List<T> items)
         {
-            var neededLength = Count + items.Count;
+            int neededLength = Count + items.Count;
             if (neededLength > Elements.Length)
             {
-                var newLength = Elements.Length * 2;
+                int newLength = Elements.Length * 2;
                 if (newLength < neededLength)
                 {
                     newLength = neededLength;
@@ -178,10 +178,10 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         ///<param name="items">Elements to add.</param>
         public void AddRange(IList<T> items)
         {
-            var neededLength = Count + items.Count;
+            int neededLength = Count + items.Count;
             if (neededLength > Elements.Length)
             {
-                var newLength = Elements.Length * 2;
+                int newLength = Elements.Length * 2;
                 if (newLength < neededLength)
                 {
                     newLength = neededLength;
@@ -213,7 +213,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
         public bool Remove(T item)
         {
-            var index = IndexOf(item);
+            int index = IndexOf(item);
             if (index == -1)
             {
                 return false;
@@ -232,7 +232,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         /// <param name="item">The object to remove from the <see cref="T:System.Collections.Generic.ICollection`1"/>.</param><exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1"/> is read-only.</exception>
         public bool FastRemove(T item)
         {
-            var index = IndexOf(item);
+            int index = IndexOf(item);
             if (index == -1)
             {
                 return false;
@@ -260,7 +260,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         /// <returns>An array containing the elements in the list.</returns>
         public T[] ToArray()
         {
-            var toReturn = new T[Count];
+            T[] toReturn = new T[Count];
             Array.Copy(Elements, toReturn, Count);
             return toReturn;
         }

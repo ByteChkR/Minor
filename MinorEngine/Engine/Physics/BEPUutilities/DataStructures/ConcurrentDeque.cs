@@ -55,7 +55,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
                 {
                     //Resize
                     //TODO: Better shift-resize
-                    var oldArray = array;
+                    T[] oldArray = array;
                     array = new T[Math.Max(4, oldArray.Length * 2)];
                     //Copy the old first-end to the first part of the new array.
                     Array.Copy(oldArray, firstIndex, array, 0, oldArray.Length - firstIndex);
@@ -218,7 +218,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             {
                 //TODO: if it's always powers of 2, then resizing is quicker.
                 //Resize
-                var oldArray = array;
+                T[] oldArray = array;
                 array = new T[oldArray.Length * 2];
                 //Copy the old first-end to the first part of the new array.
                 Array.Copy(oldArray, firstIndex, array, 0, oldArray.Length - firstIndex);

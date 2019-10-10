@@ -2,18 +2,16 @@
 
 namespace Engine.DataTypes
 {
-
     /// <summary>
     /// A Data Type that is containing the information that is needed to render a Single Characer in OpenGL
     /// </summary>
     public class TextCharacter : IDisposable
     {
-
         /// <summary>
         /// The Texture containing the Pixel Data of the Character
         /// </summary>
         public Texture GlTexture { get; set; }
-        
+
         /// <summary>
         /// Width in Pixels
         /// </summary>

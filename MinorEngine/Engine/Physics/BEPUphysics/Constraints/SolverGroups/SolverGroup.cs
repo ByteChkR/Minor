@@ -24,9 +24,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// </summary>
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
-            foreach (var item in solverUpdateables)
+            foreach (SolverUpdateable item in solverUpdateables)
             {
-                for (var i = 0; i < item.involvedEntities.Count; i++)
+                for (int i = 0; i < item.involvedEntities.Count; i++)
                 {
                     if (!outputInvolvedEntities.Contains(item.involvedEntities.Elements[i]))
                     {
@@ -47,9 +47,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
             if (isActive)
             {
                 isActiveInSolver = false;
-                for (var i = 0; i < solverUpdateables.Count; i++)
+                for (int i = 0; i < solverUpdateables.Count; i++)
                 {
-                    var item = solverUpdateables.Elements[i];
+                    SolverUpdateable item = solverUpdateables.Elements[i];
                     item.UpdateSolverActivity();
                     isActiveInSolver |= item.isActiveInSolver;
                 }
@@ -84,7 +84,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         ///<param name="dt">Timestep duration.</param>
         public override void Update(float dt)
         {
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 UpdateUpdateable(solverUpdateables.Elements[i], dt);
             }
@@ -98,7 +98,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// </summary>
         public override void ExclusiveUpdate()
         {
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 ExclusiveUpdateUpdateable(solverUpdateables.Elements[i]);
             }
@@ -114,7 +114,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         {
             if (item.isActiveInSolver)
             {
-                var subSolverSettings = item.solverSettings;
+                SolverSettings subSolverSettings = item.solverSettings;
 
                 subSolverSettings.currentIterations++;
                 if (subSolverSettings.currentIterations <= solver.iterationLimit &&
@@ -151,8 +151,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// <returns>The rough applied impulse magnitude.</returns>
         public override float SolveIteration()
         {
-            var activeConstraints = 0;
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            int activeConstraints = 0;
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 SolveUpdateable(solverUpdateables.Elements[i], ref activeConstraints);
             }
@@ -220,7 +220,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// <param name="newSpace"></param>
         public override void OnAdditionToSpace(Space newSpace)
         {
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnAdditionToSpace(newSpace);
             }
@@ -231,7 +231,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// </summary>
         public override void OnRemovalFromSpace(Space oldSpace)
         {
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnRemovalFromSpace(oldSpace);
             }
@@ -243,7 +243,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         ///<param name="newSolver">Solver to which the updateable was added.</param>
         public override void OnAdditionToSolver(Solver newSolver)
         {
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnAdditionToSolver(newSolver);
             }
@@ -255,7 +255,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// <param name="oldSolver">Solver from which the updateable was removed.</param>
         public override void OnRemovalFromSolver(Solver oldSolver)
         {
-            for (var i = 0; i < solverUpdateables.Count; i++)
+            for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnRemovalFromSolver(oldSolver);
             }
@@ -270,7 +270,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
             protected internal set
             {
                 base.Solver = value;
-                for (var i = 0; i < solverUpdateables.Count; i++)
+                for (int i = 0; i < solverUpdateables.Count; i++)
                 {
                     solverUpdateables.Elements[i].Solver = value;
                 }

@@ -78,7 +78,7 @@ namespace Engine.Physics.BEPUik
             Vector3.Dot(ref axisA, ref axisB, out dot);
 
             //Yes, we could avoid this acos here. Performance is not the highest goal of this system; the less tricks used, the easier it is to understand.
-            var angle = (float) Math.Acos(MathHelper.Clamp(dot, -1, 1));
+            float angle = (float) Math.Acos(MathHelper.Clamp(dot, -1, 1));
 
             //One angular DOF is constrained by this limit.
             Vector3 hingeAxis;

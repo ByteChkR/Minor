@@ -25,7 +25,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public ConvexHull(IList<Vector3> points)
         {
             Vector3 center;
-            var shape = new ConvexHullShape(points, out center);
+            ConvexHullShape shape = new ConvexHullShape(points, out center);
             Initialize(new ConvexCollidable<ConvexHullShape>(shape));
             Position = center;
         }
@@ -39,7 +39,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         public ConvexHull(IList<Vector3> points, float mass)
         {
             Vector3 center;
-            var shape = new ConvexHullShape(points, out center);
+            ConvexHullShape shape = new ConvexHullShape(points, out center);
             Initialize(new ConvexCollidable<ConvexHullShape>(shape), mass);
             Position = center;
         }

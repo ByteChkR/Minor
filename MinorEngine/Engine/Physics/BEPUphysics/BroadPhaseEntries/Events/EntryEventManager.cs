@@ -20,7 +20,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.Events
             get => childDeferredEventCreators;
             set
             {
-                var previousValue = childDeferredEventCreators;
+                int previousValue = childDeferredEventCreators;
                 childDeferredEventCreators = value;
                 if (childDeferredEventCreators == 0 && previousValue != 0)
                 {

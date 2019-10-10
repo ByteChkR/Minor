@@ -54,11 +54,11 @@
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix2x2 a, ref Matrix2x2 b, out Matrix2x2 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -75,11 +75,11 @@
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix a, ref Matrix2x2 b, out Matrix2x2 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -96,11 +96,11 @@
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix2x2 a, ref Matrix b, out Matrix2x2 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -117,11 +117,11 @@
         /// <param name="result">Sum of the two matrices.</param>
         public static void Add(ref Matrix a, ref Matrix b, out Matrix2x2 result)
         {
-            var m11 = a.M11 + b.M11;
-            var m12 = a.M12 + b.M12;
+            float m11 = a.M11 + b.M11;
+            float m12 = a.M12 + b.M12;
 
-            var m21 = a.M21 + b.M21;
-            var m22 = a.M22 + b.M22;
+            float m21 = a.M21 + b.M21;
+            float m22 = a.M22 + b.M22;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -152,12 +152,12 @@
         /// <param name="result">Inverted matrix.</param>
         public static void Invert(ref Matrix2x2 matrix, out Matrix2x2 result)
         {
-            var determinantInverse = 1 / (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21);
-            var m11 = matrix.M22 * determinantInverse;
-            var m12 = -matrix.M12 * determinantInverse;
+            float determinantInverse = 1 / (matrix.M11 * matrix.M22 - matrix.M12 * matrix.M21);
+            float m11 = matrix.M22 * determinantInverse;
+            float m12 = -matrix.M12 * determinantInverse;
 
-            var m21 = -matrix.M21 * determinantInverse;
-            var m22 = matrix.M11 * determinantInverse;
+            float m21 = -matrix.M21 * determinantInverse;
+            float m22 = matrix.M11 * determinantInverse;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -174,11 +174,11 @@
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix2x2 a, ref Matrix2x2 b, out Matrix2x2 result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -195,11 +195,11 @@
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix2x2 a, ref Matrix b, out Matrix2x2 result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -216,11 +216,11 @@
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Matrix a, ref Matrix2x2 b, out Matrix2x2 result)
         {
-            var resultM11 = a.M11 * b.M11 + a.M12 * b.M21;
-            var resultM12 = a.M11 * b.M12 + a.M12 * b.M22;
+            float resultM11 = a.M11 * b.M11 + a.M12 * b.M21;
+            float resultM12 = a.M11 * b.M12 + a.M12 * b.M22;
 
-            var resultM21 = a.M21 * b.M11 + a.M22 * b.M21;
-            var resultM22 = a.M21 * b.M12 + a.M22 * b.M22;
+            float resultM21 = a.M21 * b.M11 + a.M22 * b.M21;
+            float resultM22 = a.M21 * b.M12 + a.M22 * b.M22;
 
             result.M11 = resultM11;
             result.M12 = resultM12;
@@ -251,11 +251,11 @@
         /// <param name="result">Negated matrix.</param>
         public static void Negate(ref Matrix2x2 matrix, out Matrix2x2 result)
         {
-            var m11 = -matrix.M11;
-            var m12 = -matrix.M12;
+            float m11 = -matrix.M11;
+            float m12 = -matrix.M12;
 
-            var m21 = -matrix.M21;
-            var m22 = -matrix.M22;
+            float m21 = -matrix.M21;
+            float m22 = -matrix.M22;
 
 
             result.M11 = m11;
@@ -273,11 +273,11 @@
         /// <param name="result">Difference of the two matrices.</param>
         public static void Subtract(ref Matrix2x2 a, ref Matrix2x2 b, out Matrix2x2 result)
         {
-            var m11 = a.M11 - b.M11;
-            var m12 = a.M12 - b.M12;
+            float m11 = a.M11 - b.M11;
+            float m12 = a.M12 - b.M12;
 
-            var m21 = a.M21 - b.M21;
-            var m22 = a.M22 - b.M22;
+            float m21 = a.M21 - b.M21;
+            float m22 = a.M22 - b.M22;
 
             result.M11 = m11;
             result.M12 = m12;
@@ -294,8 +294,8 @@
         /// <param name="result">Product of the transformation.</param>
         public static void Transform(ref Vector2 v, ref Matrix2x2 matrix, out Vector2 result)
         {
-            var vX = v.X;
-            var vY = v.Y;
+            float vX = v.X;
+            float vY = v.Y;
             result = new Vector2();
             result.X = vX * matrix.M11 + vY * matrix.M21;
             result.Y = vX * matrix.M12 + vY * matrix.M22;
@@ -308,7 +308,7 @@
         /// <param name="result">Transposed matrix.</param>
         public static void Transpose(ref Matrix2x2 matrix, out Matrix2x2 result)
         {
-            var m21 = matrix.M12;
+            float m21 = matrix.M12;
 
             result.M11 = matrix.M11;
             result.M12 = matrix.M21;
@@ -322,7 +322,7 @@
         /// </summary>
         public void Transpose()
         {
-            var m21 = M21;
+            float m21 = M21;
             M21 = M12;
             M12 = m21;
         }

@@ -79,12 +79,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             //there is a little extra possible optimization.
             lastRegion = Toolbox.GetClosestPointOnTriangleToPoint(ref triangle.vA, ref triangle.vB, ref triangle.vC,
                 ref Toolbox.ZeroVector, out closestPoint);
-            var lengthSquared = closestPoint.LengthSquared();
-            var marginSum = triangle.collisionMargin + sphere.collisionMargin;
+            float lengthSquared = closestPoint.LengthSquared();
+            float marginSum = triangle.collisionMargin + sphere.collisionMargin;
 
             if (lengthSquared <= marginSum * marginSum)
             {
-                var contact = new ContactData();
+                ContactData contact = new ContactData();
                 if (lengthSquared < Toolbox.Epsilon)
                 {
                     //Super close to the triangle.  Normalizing would be dangerous.

@@ -19,6 +19,7 @@ namespace Engine.Physics
         /// The Space the simulation takes place
         /// </summary>
         private static Space _space;
+
         /// <summary>
         /// The Force updater that is used to apply gravity to the colliders
         /// </summary>
@@ -57,8 +58,8 @@ namespace Engine.Physics
         /// <returns>A ray from origin to mouse position in world coordinates</returns>
         public static Ray ConstructRayFromMousePosition(TKVector3 origin)
         {
-            var mpos = GameEngine.Instance.MousePosition;
-            var mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int) mpos.X, (int) mpos.Y);
+            TKVector2 mpos = GameEngine.Instance.MousePosition;
+            TKVector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int) mpos.X, (int) mpos.Y);
             return new Ray(origin, (mousepos - origin).Normalized());
         }
 
@@ -88,9 +89,9 @@ namespace Engine.Physics
             out KeyValuePair<Collider, RayHit>[] collisions)
         {
             IList<RayCastResult> results = new List<RayCastResult>();
-            var ret = _space.RayCast(ray, maxLength, entry => FilterFunc(entry, layerInfo), results);
+            bool ret = _space.RayCast(ray, maxLength, entry => FilterFunc(entry, layerInfo), results);
             collisions = new KeyValuePair<Collider, RayHit>[results.Count];
-            for (var i = 0; i < results.Count; i++)
+            for (int i = 0; i < results.Count; i++)
             {
                 collisions[i] =
                     new KeyValuePair<Collider, RayHit>((Collider) results[i].HitObject.Tag, results[i].HitData);
@@ -125,7 +126,7 @@ namespace Engine.Physics
         public static bool RayCastFirst(Ray ray, float maxLength, int layerInfo,
             out KeyValuePair<Collider, RayHit> collision)
         {
-            var ret = _space.RayCast(ray, maxLength, entry => FilterFunc(entry, layerInfo), out var res);
+            bool ret = _space.RayCast(ray, maxLength, entry => FilterFunc(entry, layerInfo), out RayCastResult res);
             if (!ret)
             {
                 collision = new KeyValuePair<Collider, RayHit>(null, new RayHit());
@@ -151,7 +152,7 @@ namespace Engine.Physics
                 return false;
             }
 
-            var obj = (Collider) entry.Tag;
+            Collider obj = (Collider) entry.Tag;
             return LayerManager.AllowCollision(obj.CollisionLayer, layerInfo);
         }
 

@@ -117,7 +117,7 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             //Since these do not care about CCD, just update them as if they were discrete.
             //In addition, go through the remaining non-discrete objects and perform their prestep.
             //This usually involves updating their angular motion, but not their linear motion.
-            var count = discreteUpdateables.Count + passiveUpdateables.Count + continuousUpdateables.Count;
+            int count = discreteUpdateables.Count + passiveUpdateables.Count + continuousUpdateables.Count;
             ParallelLooper.ForLoop(0, count, preUpdate);
 
             //Now go through the list of all full CCD objects.  These are responsible
@@ -128,7 +128,7 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             }
             else
             {
-                for (var i = 0; i < continuousUpdateables.Count; i++)
+                for (int i = 0; i < continuousUpdateables.Count; i++)
                 {
                     UpdateTimeOfImpact(i);
                 }
@@ -143,7 +143,7 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             }
             else
             {
-                for (var i = 0; i < count; i++)
+                for (int i = 0; i < count; i++)
                 {
                     UpdateContinuousItem(i);
                 }
@@ -161,15 +161,15 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             //Since these do not care about CCD, just update them as if they were discrete.
             //In addition, go through the remaining non-discrete objects and perform their prestep.
             //This usually involves updating their angular motion, but not their linear motion.
-            var count = discreteUpdateables.Count + passiveUpdateables.Count + continuousUpdateables.Count;
-            for (var i = 0; i < count; i++)
+            int count = discreteUpdateables.Count + passiveUpdateables.Count + continuousUpdateables.Count;
+            for (int i = 0; i < count; i++)
             {
                 PreUpdate(i);
             }
 
             //Now go through the list of all full CCD objects.  These are responsible
             //for determining the TOI of collision pairs, if existent.
-            for (var i = 0; i < continuousUpdateables.Count; i++)
+            for (int i = 0; i < continuousUpdateables.Count; i++)
             {
                 UpdateTimeOfImpact(i);
             }
@@ -177,7 +177,7 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             //The TOI's are now computed, so we can integrate all of the CCD or allow-motionclampers 
             //to their new positions.
             count = passiveUpdateables.Count + continuousUpdateables.Count;
-            for (var i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
             {
                 UpdateContinuousItem(i);
             }
@@ -228,7 +228,7 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             if (updateable.PositionUpdater == null)
             {
                 updateable.PositionUpdater = this;
-                var ccdUpdateable = updateable as ICCDPositionUpdateable;
+                ICCDPositionUpdateable ccdUpdateable = updateable as ICCDPositionUpdateable;
                 if (ccdUpdateable != null)
                 {
                     switch (ccdUpdateable.PositionUpdateMode)
@@ -266,7 +266,7 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             if (updateable.PositionUpdater == this)
             {
                 updateable.PositionUpdater = null;
-                var ccdUpdateable = updateable as ICCDPositionUpdateable;
+                ICCDPositionUpdateable ccdUpdateable = updateable as ICCDPositionUpdateable;
                 if (ccdUpdateable != null)
                 {
                     switch (ccdUpdateable.PositionUpdateMode)

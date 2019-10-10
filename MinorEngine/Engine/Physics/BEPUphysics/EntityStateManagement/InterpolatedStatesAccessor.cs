@@ -71,7 +71,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 Matrix3x3 toReturn;
                 if (IsBufferAccessible())
                 {
-                    var o = bufferedStates.BufferedStatesManager.InterpolatedStates
+                    Quaternion o = bufferedStates.BufferedStatesManager.InterpolatedStates
                         .GetState(bufferedStates.motionStateIndex).Orientation;
                     Matrix3x3.CreateFromQuaternion(ref o, out toReturn);
                 }
@@ -114,7 +114,7 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                         .motionStateIndex);
                 }
 
-                var toReturn = new RigidTransform
+                RigidTransform toReturn = new RigidTransform
                 {
                     Position = bufferedStates.Entity.position,
                     Orientation = bufferedStates.Entity.orientation

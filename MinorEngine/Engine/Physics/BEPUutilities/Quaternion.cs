@@ -64,14 +64,14 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Multiply(ref Quaternion a, ref Quaternion b, out Quaternion result)
         {
-            var x = a.X;
-            var y = a.Y;
-            var z = a.Z;
-            var w = a.W;
-            var bX = b.X;
-            var bY = b.Y;
-            var bZ = b.Z;
-            var bW = b.W;
+            float x = a.X;
+            float y = a.Y;
+            float z = a.Z;
+            float w = a.W;
+            float bX = b.X;
+            float bY = b.Y;
+            float bZ = b.Z;
+            float bW = b.W;
             result.X = x * bW + bX * w + y * bZ - z * bY;
             result.Y = y * bW + bY * w + z * bX - x * bZ;
             result.Z = z * bW + bZ * w + x * bY - y * bX;
@@ -100,14 +100,14 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Product of the multiplication.</param>
         public static void Concatenate(ref Quaternion a, ref Quaternion b, out Quaternion result)
         {
-            var aX = a.X;
-            var aY = a.Y;
-            var aZ = a.Z;
-            var aW = a.W;
-            var bX = b.X;
-            var bY = b.Y;
-            var bZ = b.Z;
-            var bW = b.W;
+            float aX = a.X;
+            float aY = a.Y;
+            float aZ = a.Z;
+            float aW = a.W;
+            float bX = b.X;
+            float bY = b.Y;
+            float bZ = b.Z;
+            float bW = b.W;
 
             result.X = aW * bX + aX * bW + aZ * bY - aY * bZ;
             result.Y = aW * bY + aY * bW + aX * bZ - aZ * bX;
@@ -141,12 +141,12 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="q">Quaternion based on the rotation matrix.</param>
         public static void CreateFromRotationMatrix(ref Matrix3x3 r, out Quaternion q)
         {
-            var trace = r.M11 + r.M22 + r.M33;
+            float trace = r.M11 + r.M22 + r.M33;
             q = new Quaternion();
             if (trace >= 0)
             {
-                var S = (float) Math.Sqrt(trace + 1.0) * 2; // S=4*qw 
-                var inverseS = 1 / S;
+                float S = (float) Math.Sqrt(trace + 1.0) * 2; // S=4*qw 
+                float inverseS = 1 / S;
                 q.W = 0.25f * S;
                 q.X = (r.M23 - r.M32) * inverseS;
                 q.Y = (r.M31 - r.M13) * inverseS;
@@ -154,8 +154,8 @@ namespace Engine.Physics.BEPUutilities
             }
             else if ((r.M11 > r.M22) & (r.M11 > r.M33))
             {
-                var S = (float) Math.Sqrt(1.0 + r.M11 - r.M22 - r.M33) * 2; // S=4*qx 
-                var inverseS = 1 / S;
+                float S = (float) Math.Sqrt(1.0 + r.M11 - r.M22 - r.M33) * 2; // S=4*qx 
+                float inverseS = 1 / S;
                 q.W = (r.M23 - r.M32) * inverseS;
                 q.X = 0.25f * S;
                 q.Y = (r.M21 + r.M12) * inverseS;
@@ -163,8 +163,8 @@ namespace Engine.Physics.BEPUutilities
             }
             else if (r.M22 > r.M33)
             {
-                var S = (float) Math.Sqrt(1.0 + r.M22 - r.M11 - r.M33) * 2; // S=4*qy
-                var inverseS = 1 / S;
+                float S = (float) Math.Sqrt(1.0 + r.M22 - r.M11 - r.M33) * 2; // S=4*qy
+                float inverseS = 1 / S;
                 q.W = (r.M31 - r.M13) * inverseS;
                 q.X = (r.M21 + r.M12) * inverseS;
                 q.Y = 0.25f * S;
@@ -172,8 +172,8 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var S = (float) Math.Sqrt(1.0 + r.M33 - r.M11 - r.M22) * 2; // S=4*qz
-                var inverseS = 1 / S;
+                float S = (float) Math.Sqrt(1.0 + r.M33 - r.M11 - r.M22) * 2; // S=4*qz
+                float inverseS = 1 / S;
                 q.W = (r.M12 - r.M21) * inverseS;
                 q.X = (r.M31 + r.M13) * inverseS;
                 q.Y = (r.M32 + r.M23) * inverseS;
@@ -237,8 +237,8 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="toReturn">Normalized quaternion.</param>
         public static void Normalize(ref Quaternion quaternion, out Quaternion toReturn)
         {
-            var inverse = (float) (1 / Math.Sqrt(quaternion.X * quaternion.X + quaternion.Y * quaternion.Y +
-                                                 quaternion.Z * quaternion.Z + quaternion.W * quaternion.W));
+            float inverse = (float) (1 / Math.Sqrt(quaternion.X * quaternion.X + quaternion.Y * quaternion.Y +
+                                                   quaternion.Z * quaternion.Z + quaternion.W * quaternion.W));
             toReturn.X = quaternion.X * inverse;
             toReturn.Y = quaternion.Y * inverse;
             toReturn.Z = quaternion.Z * inverse;
@@ -250,7 +250,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            var inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z + W * W));
+            float inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z + W * W));
             X *= inverse;
             Y *= inverse;
             Z *= inverse;
@@ -309,11 +309,11 @@ namespace Engine.Physics.BEPUutilities
             }
 
             // Calculate temporary values.
-            var halfTheta = Math.Acos(cosHalfTheta);
-            var sinHalfTheta = Math.Sqrt(1.0 - cosHalfTheta * cosHalfTheta);
+            double halfTheta = Math.Acos(cosHalfTheta);
+            double sinHalfTheta = Math.Sqrt(1.0 - cosHalfTheta * cosHalfTheta);
 
-            var aFraction = Math.Sin((1 - interpolationAmount) * halfTheta) / sinHalfTheta;
-            var bFraction = Math.Sin(interpolationAmount * halfTheta) / sinHalfTheta;
+            double aFraction = Math.Sin((1 - interpolationAmount) * halfTheta) / sinHalfTheta;
+            double bFraction = Math.Sin(interpolationAmount * halfTheta) / sinHalfTheta;
 
             //Blend the two quaternions to get the result!
             result.X = (float) (start.X * aFraction + end.X * bFraction);
@@ -370,8 +370,8 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Result of the inversion.</param>
         public static void Inverse(ref Quaternion quaternion, out Quaternion result)
         {
-            var inverseSquaredNorm = quaternion.X * quaternion.X + quaternion.Y * quaternion.Y +
-                                     quaternion.Z * quaternion.Z + quaternion.W * quaternion.W;
+            float inverseSquaredNorm = quaternion.X * quaternion.X + quaternion.Y * quaternion.Y +
+                                       quaternion.Z * quaternion.Z + quaternion.W * quaternion.W;
             result.X = -quaternion.X * inverseSquaredNorm;
             result.Y = -quaternion.Y * inverseSquaredNorm;
             result.Z = -quaternion.Z * inverseSquaredNorm;
@@ -443,7 +443,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Negated result.</returns>
         public static Quaternion Negate(Quaternion q)
         {
-            Negate(ref q, out var result);
+            Negate(ref q, out Quaternion result);
             return result;
         }
 
@@ -454,7 +454,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Negated result.</returns>
         public static Quaternion operator -(Quaternion q)
         {
-            Negate(ref q, out var result);
+            Negate(ref q, out Quaternion result);
             return result;
         }
 
@@ -511,22 +511,22 @@ namespace Engine.Physics.BEPUutilities
             //The expanded form would be to treat v as an 'axis only' quaternion
             //and perform standard quaternion multiplication.  Assuming q is normalized,
             //q^-1 can be replaced by a conjugation.
-            var x2 = rotation.X + rotation.X;
-            var y2 = rotation.Y + rotation.Y;
-            var z2 = rotation.Z + rotation.Z;
-            var xx2 = rotation.X * x2;
-            var xy2 = rotation.X * y2;
-            var xz2 = rotation.X * z2;
-            var yy2 = rotation.Y * y2;
-            var yz2 = rotation.Y * z2;
-            var zz2 = rotation.Z * z2;
-            var wx2 = rotation.W * x2;
-            var wy2 = rotation.W * y2;
-            var wz2 = rotation.W * z2;
+            float x2 = rotation.X + rotation.X;
+            float y2 = rotation.Y + rotation.Y;
+            float z2 = rotation.Z + rotation.Z;
+            float xx2 = rotation.X * x2;
+            float xy2 = rotation.X * y2;
+            float xz2 = rotation.X * z2;
+            float yy2 = rotation.Y * y2;
+            float yz2 = rotation.Y * z2;
+            float zz2 = rotation.Z * z2;
+            float wx2 = rotation.W * x2;
+            float wy2 = rotation.W * y2;
+            float wz2 = rotation.W * z2;
             //Defer the component setting since they're used in computation.
-            var transformedX = v.X * (1f - yy2 - zz2) + v.Y * (xy2 - wz2) + v.Z * (xz2 + wy2);
-            var transformedY = v.X * (xy2 + wz2) + v.Y * (1f - xx2 - zz2) + v.Z * (yz2 - wx2);
-            var transformedZ = v.X * (xz2 - wy2) + v.Y * (yz2 + wx2) + v.Z * (1f - xx2 - yy2);
+            float transformedX = v.X * (1f - yy2 - zz2) + v.Y * (xy2 - wz2) + v.Z * (xz2 + wy2);
+            float transformedY = v.X * (xy2 + wz2) + v.Y * (1f - xx2 - zz2) + v.Z * (yz2 - wx2);
+            float transformedZ = v.X * (xz2 - wy2) + v.Y * (yz2 + wx2) + v.Z * (1f - xx2 - yy2);
             result.X = transformedX;
             result.Y = transformedY;
             result.Z = transformedZ;
@@ -557,18 +557,18 @@ namespace Engine.Physics.BEPUutilities
             //The expanded form would be to treat v as an 'axis only' quaternion
             //and perform standard quaternion multiplication.  Assuming q is normalized,
             //q^-1 can be replaced by a conjugation.
-            var y2 = rotation.Y + rotation.Y;
-            var z2 = rotation.Z + rotation.Z;
-            var xy2 = rotation.X * y2;
-            var xz2 = rotation.X * z2;
-            var yy2 = rotation.Y * y2;
-            var zz2 = rotation.Z * z2;
-            var wy2 = rotation.W * y2;
-            var wz2 = rotation.W * z2;
+            float y2 = rotation.Y + rotation.Y;
+            float z2 = rotation.Z + rotation.Z;
+            float xy2 = rotation.X * y2;
+            float xz2 = rotation.X * z2;
+            float yy2 = rotation.Y * y2;
+            float zz2 = rotation.Z * z2;
+            float wy2 = rotation.W * y2;
+            float wz2 = rotation.W * z2;
             //Defer the component setting since they're used in computation.
-            var transformedX = x * (1f - yy2 - zz2);
-            var transformedY = x * (xy2 + wz2);
-            var transformedZ = x * (xz2 - wy2);
+            float transformedX = x * (1f - yy2 - zz2);
+            float transformedY = x * (xy2 + wz2);
+            float transformedZ = x * (xz2 - wy2);
             result.X = transformedX;
             result.Y = transformedY;
             result.Z = transformedZ;
@@ -586,19 +586,19 @@ namespace Engine.Physics.BEPUutilities
             //The expanded form would be to treat v as an 'axis only' quaternion
             //and perform standard quaternion multiplication.  Assuming q is normalized,
             //q^-1 can be replaced by a conjugation.
-            var x2 = rotation.X + rotation.X;
-            var y2 = rotation.Y + rotation.Y;
-            var z2 = rotation.Z + rotation.Z;
-            var xx2 = rotation.X * x2;
-            var xy2 = rotation.X * y2;
-            var yz2 = rotation.Y * z2;
-            var zz2 = rotation.Z * z2;
-            var wx2 = rotation.W * x2;
-            var wz2 = rotation.W * z2;
+            float x2 = rotation.X + rotation.X;
+            float y2 = rotation.Y + rotation.Y;
+            float z2 = rotation.Z + rotation.Z;
+            float xx2 = rotation.X * x2;
+            float xy2 = rotation.X * y2;
+            float yz2 = rotation.Y * z2;
+            float zz2 = rotation.Z * z2;
+            float wx2 = rotation.W * x2;
+            float wz2 = rotation.W * z2;
             //Defer the component setting since they're used in computation.
-            var transformedX = y * (xy2 - wz2);
-            var transformedY = y * (1f - xx2 - zz2);
-            var transformedZ = y * (yz2 + wx2);
+            float transformedX = y * (xy2 - wz2);
+            float transformedY = y * (1f - xx2 - zz2);
+            float transformedZ = y * (yz2 + wx2);
             result.X = transformedX;
             result.Y = transformedY;
             result.Z = transformedZ;
@@ -616,19 +616,19 @@ namespace Engine.Physics.BEPUutilities
             //The expanded form would be to treat v as an 'axis only' quaternion
             //and perform standard quaternion multiplication.  Assuming q is normalized,
             //q^-1 can be replaced by a conjugation.
-            var x2 = rotation.X + rotation.X;
-            var y2 = rotation.Y + rotation.Y;
-            var z2 = rotation.Z + rotation.Z;
-            var xx2 = rotation.X * x2;
-            var xz2 = rotation.X * z2;
-            var yy2 = rotation.Y * y2;
-            var yz2 = rotation.Y * z2;
-            var wx2 = rotation.W * x2;
-            var wy2 = rotation.W * y2;
+            float x2 = rotation.X + rotation.X;
+            float y2 = rotation.Y + rotation.Y;
+            float z2 = rotation.Z + rotation.Z;
+            float xx2 = rotation.X * x2;
+            float xz2 = rotation.X * z2;
+            float yy2 = rotation.Y * y2;
+            float yz2 = rotation.Y * z2;
+            float wx2 = rotation.W * x2;
+            float wy2 = rotation.W * y2;
             //Defer the component setting since they're used in computation.
-            var transformedX = z * (xz2 + wy2);
-            var transformedY = z * (yz2 - wx2);
-            var transformedZ = z * (1f - xx2 - yy2);
+            float transformedX = z * (xz2 + wy2);
+            float transformedY = z * (yz2 - wx2);
+            float transformedZ = z * (1f - xx2 - yy2);
             result.X = transformedX;
             result.Y = transformedY;
             result.Z = transformedZ;
@@ -656,8 +656,8 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Quaternion representing the axis and angle rotation.</returns>
         public static Quaternion CreateFromAxisAngle(Vector3 axis, float angle)
         {
-            var halfAngle = angle * 0.5;
-            var s = Math.Sin(halfAngle);
+            double halfAngle = angle * 0.5;
+            double s = Math.Sin(halfAngle);
             Quaternion q;
             q.X = (float) (axis.X * s);
             q.Y = (float) (axis.Y * s);
@@ -674,8 +674,8 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="q">Quaternion representing the axis and angle rotation.</param>
         public static void CreateFromAxisAngle(ref Vector3 axis, float angle, out Quaternion q)
         {
-            var halfAngle = angle * 0.5;
-            var s = Math.Sin(halfAngle);
+            double halfAngle = angle * 0.5;
+            double s = Math.Sin(halfAngle);
             q.X = (float) (axis.X * s);
             q.Y = (float) (axis.Y * s);
             q.Z = (float) (axis.Z * s);
@@ -705,22 +705,22 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="q">Quaternion representing the yaw, pitch, and roll.</param>
         public static void CreateFromYawPitchRoll(float yaw, float pitch, float roll, out Quaternion q)
         {
-            var halfRoll = roll * 0.5;
-            var halfPitch = pitch * 0.5;
-            var halfYaw = yaw * 0.5;
+            double halfRoll = roll * 0.5;
+            double halfPitch = pitch * 0.5;
+            double halfYaw = yaw * 0.5;
 
-            var sinRoll = Math.Sin(halfRoll);
-            var sinPitch = Math.Sin(halfPitch);
-            var sinYaw = Math.Sin(halfYaw);
+            double sinRoll = Math.Sin(halfRoll);
+            double sinPitch = Math.Sin(halfPitch);
+            double sinYaw = Math.Sin(halfYaw);
 
-            var cosRoll = Math.Cos(halfRoll);
-            var cosPitch = Math.Cos(halfPitch);
-            var cosYaw = Math.Cos(halfYaw);
+            double cosRoll = Math.Cos(halfRoll);
+            double cosPitch = Math.Cos(halfPitch);
+            double cosYaw = Math.Cos(halfYaw);
 
-            var cosYawCosPitch = cosYaw * cosPitch;
-            var cosYawSinPitch = cosYaw * sinPitch;
-            var sinYawCosPitch = sinYaw * cosPitch;
-            var sinYawSinPitch = sinYaw * sinPitch;
+            double cosYawCosPitch = cosYaw * cosPitch;
+            double cosYawSinPitch = cosYaw * sinPitch;
+            double sinYawCosPitch = sinYaw * cosPitch;
+            double sinYawSinPitch = sinYaw * sinPitch;
 
             q.X = (float) (cosYawSinPitch * cosRoll + sinYawCosPitch * sinRoll);
             q.Y = (float) (sinYawCosPitch * cosRoll - cosYawSinPitch * sinRoll);
@@ -735,7 +735,7 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Angle around the axis represented by the quaternion.</returns>
         public static float GetAngleFromQuaternion(ref Quaternion q)
         {
-            var qw = Math.Abs(q.W);
+            float qw = Math.Abs(q.W);
             if (qw > 1)
             {
                 return 0;
@@ -753,7 +753,7 @@ namespace Engine.Physics.BEPUutilities
         public static void GetAxisAngleFromQuaternion(ref Quaternion q, out Vector3 axis, out float angle)
         {
             axis = new Vector3();
-            var qw = q.W;
+            float qw = q.W;
             if (qw > 0)
             {
                 axis.X = q.X;
@@ -768,7 +768,7 @@ namespace Engine.Physics.BEPUutilities
                 qw = -qw;
             }
 
-            var lengthSquared = axis.LengthSquared();
+            float lengthSquared = axis.LengthSquared();
             if (lengthSquared > 1e-14f)
             {
                 Vector3.Divide(ref axis, (float) Math.Sqrt(lengthSquared), out axis);
@@ -800,9 +800,9 @@ namespace Engine.Physics.BEPUutilities
                 //The solution is to pick an arbitrary perpendicular axis.
                 //Project onto the plane which has the lowest component magnitude.
                 //On that 2d plane, perform a 90 degree rotation.
-                var absX = Math.Abs(v1.X);
-                var absY = Math.Abs(v1.Y);
-                var absZ = Math.Abs(v1.Z);
+                float absX = Math.Abs(v1.X);
+                float absY = Math.Abs(v1.Y);
+                float absZ = Math.Abs(v1.Z);
                 if (absX < absY && absX < absZ)
                 {
                     q = new Quaternion(0, -v1.Z, v1.Y, 0);

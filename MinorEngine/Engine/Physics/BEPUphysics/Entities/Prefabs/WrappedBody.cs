@@ -22,7 +22,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         private WrappedBody(IList<ConvexShapeEntry> subShapes, float mass)
         {
             Vector3 center;
-            var shape = new WrappedShape(subShapes, out center);
+            WrappedShape shape = new WrappedShape(subShapes, out center);
             Initialize(new ConvexCollidable<WrappedShape>(shape), mass);
             Position = center;
         }
@@ -31,7 +31,7 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         private WrappedBody(IList<ConvexShapeEntry> subShapes)
         {
             Vector3 center;
-            var shape = new WrappedShape(subShapes, out center);
+            WrappedShape shape = new WrappedShape(subShapes, out center);
             Initialize(new ConvexCollidable<WrappedShape>(shape));
             Position = center;
         }

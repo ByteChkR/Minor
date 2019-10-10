@@ -3,6 +3,7 @@ using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUphysics.CollisionShapes;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms;
+using Engine.Physics.BEPUphysics.DataStructures;
 using Engine.Physics.BEPUutilities;
 using Engine.Physics.BEPUutilities.DataStructures;
 
@@ -75,11 +76,11 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             Containing = true;
 
 
-            var meshData = mesh.Shape.TriangleMesh.Data;
+            MeshBoundingBoxTreeData meshData = mesh.Shape.TriangleMesh.Data;
             RigidTransform mobileTriangleTransform, detectorTriangleTransform;
             mobileTriangleTransform.Orientation = Quaternion.Identity;
             detectorTriangleTransform.Orientation = Quaternion.Identity;
-            for (var i = 0; i < meshData.Indices.Length; i += 3)
+            for (int i = 0; i < meshData.Indices.Length; i += 3)
             {
                 //Grab a triangle associated with the mobile mesh.
                 meshData.GetTriangle(i, out mobileTriangle.vA, out mobileTriangle.vB, out mobileTriangle.vC);
@@ -99,7 +100,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 BoundingBox mobileBoundingBox;
                 mobileTriangle.GetBoundingBox(ref mobileTriangleTransform, out mobileBoundingBox);
                 DetectorVolume.TriangleMesh.Tree.GetOverlaps(mobileBoundingBox, overlaps);
-                for (var j = 0; j < overlaps.Count; j++)
+                for (int j = 0; j < overlaps.Count; j++)
                 {
                     DetectorVolume.TriangleMesh.Data.GetTriangle(overlaps.Elements[j], out detectorTriangle.vA,
                         out detectorTriangle.vB, out detectorTriangle.vC);

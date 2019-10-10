@@ -36,8 +36,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 throw new ArgumentException("Vertices list used to create a ConvexHullShape cannot be empty.");
             }
 
-            var surfaceVertices = CommonResources.GetVectorList();
-            var hullTriangleIndices = CommonResources.GetIntList();
+            RawList<Vector3> surfaceVertices = CommonResources.GetVectorList();
+            RawList<int> hullTriangleIndices = CommonResources.GetIntList();
 
             Vector3 center;
             UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, hullTriangleIndices,
@@ -66,8 +66,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 throw new ArgumentException("Vertices list used to create a ConvexHullShape cannot be empty.");
             }
 
-            var surfaceVertices = CommonResources.GetVectorList();
-            var hullTriangleIndices = CommonResources.GetIntList();
+            RawList<Vector3> surfaceVertices = CommonResources.GetVectorList();
+            RawList<int> hullTriangleIndices = CommonResources.GetIntList();
 
             UpdateConvexShapeInfo(ComputeDescription(vertices, collisionMargin, out center, hullTriangleIndices,
                 surfaceVertices));
@@ -169,7 +169,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             InertiaHelper.ComputeShapeDistribution(vertices, outputHullTriangleIndices, out center,
                 out description.EntityShapeVolume.Volume, out description.EntityShapeVolume.VolumeDistribution);
             //Recenter the surface vertices.
-            for (var i = 0; i < outputUniqueSurfaceVertices.Count; ++i)
+            for (int i = 0; i < outputUniqueSurfaceVertices.Count; ++i)
             {
                 outputUniqueSurfaceVertices[i] -= center;
             }
@@ -192,9 +192,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public static float ComputeMaximumRadius(IList<Vector3> localSurfaceVertices, float collisionMargin)
         {
             float longestLengthSquared = 0;
-            for (var i = 0; i < localSurfaceVertices.Count; ++i)
+            for (int i = 0; i < localSurfaceVertices.Count; ++i)
             {
-                var lengthCandidate = localSurfaceVertices[i].LengthSquared();
+                float lengthCandidate = localSurfaceVertices[i].LengthSquared();
                 if (lengthCandidate > longestLengthSquared)
                 {
                     longestLengthSquared = lengthCandidate;
@@ -220,22 +220,22 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             float minX, maxX;
             float minY, maxY;
             float minZ, maxZ;
-            var right = new Vector3(o.M11, o.M21, o.M31);
-            var up = new Vector3(o.M12, o.M22, o.M32);
-            var backward = new Vector3(o.M13, o.M23, o.M33);
+            Vector3 right = new Vector3(o.M11, o.M21, o.M31);
+            Vector3 up = new Vector3(o.M12, o.M22, o.M32);
+            Vector3 backward = new Vector3(o.M13, o.M23, o.M33);
             Vector3.Dot(ref vertices[0], ref right, out maxX);
             minX = maxX;
             Vector3.Dot(ref vertices[0], ref up, out maxY);
             minY = maxY;
             Vector3.Dot(ref vertices[0], ref backward, out maxZ);
             minZ = maxZ;
-            var minXIndex = 0;
-            var maxXIndex = 0;
-            var minYIndex = 0;
-            var maxYIndex = 0;
-            var minZIndex = 0;
-            var maxZIndex = 0;
-            for (var i = 1; i < vertices.Length; ++i)
+            int minXIndex = 0;
+            int maxXIndex = 0;
+            int minYIndex = 0;
+            int maxYIndex = 0;
+            int minZIndex = 0;
+            int maxZIndex = 0;
+            for (int i = 1; i < vertices.Length; ++i)
             {
                 float dot;
                 Vector3.Dot(ref vertices[i], ref right, out dot);
@@ -297,8 +297,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         {
             float max;
             Vector3.Dot(ref vertices[0], ref direction, out max);
-            var maxIndex = 0;
-            for (var i = 1; i < vertices.Length; i++)
+            int maxIndex = 0;
+            for (int i = 1; i < vertices.Length; i++)
             {
                 float dot;
                 Vector3.Dot(ref vertices[i], ref direction, out dot);

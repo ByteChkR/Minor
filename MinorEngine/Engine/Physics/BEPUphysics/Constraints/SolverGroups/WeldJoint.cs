@@ -26,7 +26,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
 
         private static Vector3 GetAnchorGuess(Entity connectionA, Entity connectionB)
         {
-            var anchor = new Vector3();
+            Vector3 anchor = new Vector3();
             if (connectionA != null)
             {
                 anchor += connectionA.position;

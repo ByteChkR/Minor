@@ -17,7 +17,7 @@
         public override T[] TakeFromPoolIndex(int poolIndex)
         {
             locker.Enter();
-            var toReturn = base.TakeFromPoolIndex(poolIndex);
+            T[] toReturn = base.TakeFromPoolIndex(poolIndex);
             locker.Exit();
             return toReturn;
         }

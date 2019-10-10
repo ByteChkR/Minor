@@ -1,4 +1,3 @@
-
 namespace Engine.OpenCL.DotNetCore.Interop.Memory
 {
     /// <summary>
@@ -6,7 +5,6 @@ namespace Engine.OpenCL.DotNetCore.Interop.Memory
     /// </summary>
     public enum BufferCreateType : uint
     {
-
         /// <summary>
         /// Creates a buffer object that represents a specific region in the buffer.
         /// </summary>

@@ -93,7 +93,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         public override void Update(float dt)
         {
             //First, refresh all existing contacts.  This is an incremental manifold.
-            var transform = MeshTransform;
+            RigidTransform transform = MeshTransform;
             ContactRefresher.ContactRefresh(contacts, supplementData, ref convex.worldTransform, ref transform,
                 contactIndicesToRemove);
 
@@ -105,7 +105,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             //Note that the collection of triangles is left up to the child implementation.
             //We're basically treating the child class like an indexable collection.
             //A little gross to have it organized this way instead of an explicit collection to separate the logic up. Would be nice to improve someday!
-            var triangleCount = FindOverlappingTriangles(dt);
+            int triangleCount = FindOverlappingTriangles(dt);
 
             //Just use 32 elements for all the lists and sets in this system.
             const int bufferPoolSizePower = 5;
@@ -119,10 +119,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 boundarySets = new BoundarySets();
             }
 
-            var candidatesToAdd = new QuickList<ContactData>(BufferPools<ContactData>.Thread);
+            QuickList<ContactData> candidatesToAdd = new QuickList<ContactData>(BufferPools<ContactData>.Thread);
 
             //A single triangle shape will be reused for all operations. It's pulled from a thread local pool to avoid holding a TriangleShape around for every single contact manifold or pair tester.
-            var localTriangleShape = PhysicsThreadResources.GetTriangle();
+            TriangleShape localTriangleShape = PhysicsThreadResources.GetTriangle();
 
             //Precompute the transform to take triangles from their native local space to the convex's local space.
             RigidTransform inverseConvexWorldTransform;
@@ -138,8 +138,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
 
             Matrix3x3 orientation;
             Matrix3x3.CreateFromQuaternion(ref convex.worldTransform.Orientation, out orientation);
-            var guaranteedContacts = 0;
-            for (var i = 0; i < triangleCount; i++)
+            int guaranteedContacts = 0;
+            for (int i = 0; i < triangleCount; i++)
             {
                 //Initialize the local triangle.
                 TriangleIndices indices;
@@ -182,7 +182,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                     TinyStructList<ContactData> contactList;
                     if (pairTester.GenerateContactCandidates(localTriangleShape, out contactList))
                     {
-                        for (var j = 0; j < contactList.Count; j++)
+                        for (int j = 0; j < contactList.Count; j++)
                         {
                             ContactData contact;
                             contactList.Get(j, out contact);
@@ -246,10 +246,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                     //all normals are coplanar, and
                     //at least one normal faces against the other normals (meaning it's probably stuck, as opposed to just colliding on a corner).
 
-                    var allNormalsInSamePlane = true;
-                    var atLeastOneNormalAgainst = false;
+                    bool allNormalsInSamePlane = true;
+                    bool atLeastOneNormalAgainst = false;
 
-                    var firstNormal = boundarySets.EdgeContacts.Elements[0].ContactData.Normal;
+                    Vector3 firstNormal = boundarySets.EdgeContacts.Elements[0].ContactData.Normal;
                     boundarySets.EdgeContacts.Elements[0].CorrectedNormal.Normalize();
                     float dot;
                     Vector3.Dot(ref firstNormal, ref boundarySets.EdgeContacts.Elements[0].CorrectedNormal, out dot);
@@ -263,7 +263,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                         //It's possible that some existing contacts could interfere and cause issues, but for the sake of simplicity and due to rarity
                         //we'll ignore that possibility for now.
                     {
-                        for (var i = 1; i < boundarySets.EdgeContacts.Count; i++)
+                        for (int i = 1; i < boundarySets.EdgeContacts.Count; i++)
                         {
                             Vector3.Dot(ref boundarySets.EdgeContacts.Elements[i].ContactData.Normal, ref firstNormal,
                                 out dot);
@@ -296,7 +296,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                             boundarySets.EdgeContacts.Elements[0].CorrectedNormal;
                         boundarySets.EdgeContacts.Elements[0].ShouldCorrect = true;
 
-                        for (var i = 1; i < boundarySets.EdgeContacts.Count; i++)
+                        for (int i = 1; i < boundarySets.EdgeContacts.Count; i++)
                         {
                             //Must normalize the corrected normal before using it.
                             boundarySets.EdgeContacts.Elements[i].CorrectedNormal.Normalize();
@@ -322,7 +322,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 }
 
 
-                for (var i = 0; i < boundarySets.EdgeContacts.Count; i++)
+                for (int i = 0; i < boundarySets.EdgeContacts.Count; i++)
                     //Only correct if it's allowed AND it's blocked.
                     //If it's not blocked, the contact being created is necessary!
                     //The normal generated by the triangle-convex tester is already known not to
@@ -353,7 +353,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 //If it's blocked AND it doesn't allow correction, ignore its existence.
 
 
-                for (var i = 0; i < boundarySets.VertexContacts.Count; i++)
+                for (int i = 0; i < boundarySets.VertexContacts.Count; i++)
                 {
                     if (!boundarySets.BlockedVertexRegions.Contains(boundarySets.VertexContacts.Elements[i].Vertex))
                     {
@@ -385,9 +385,9 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
 
 
             //Remove stale pair testers.
-            for (var i = activePairTesters.Count - 1; i >= 0; --i)
+            for (int i = activePairTesters.Count - 1; i >= 0; --i)
             {
-                var tester = activePairTesters.Values[i];
+                TrianglePairTester tester = activePairTesters.Values[i];
                 if (!tester.Updated)
                 {
                     tester.CleanUp();
@@ -408,11 +408,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             if (contacts.Count + candidatesToAdd.Count > 4)
             {
                 //Adding all the contacts would overflow the manifold.  Reduce to the best subset.
-                var reducedCandidates = new QuickList<ContactData>(BufferPools<ContactData>.Thread);
+                QuickList<ContactData> reducedCandidates = new QuickList<ContactData>(BufferPools<ContactData>.Thread);
                 ContactReducer.ReduceContacts(contacts, ref candidatesToAdd, contactIndicesToRemove,
                     ref reducedCandidates);
                 RemoveQueuedContacts();
-                for (var i = reducedCandidates.Count - 1; i >= 0; i--)
+                for (int i = reducedCandidates.Count - 1; i >= 0; i--)
                 {
                     Add(ref reducedCandidates.Elements[i]);
                     reducedCandidates.RemoveAt(i);
@@ -423,7 +423,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             else if (candidatesToAdd.Count > 0)
             {
                 //Won't overflow the manifold, so just toss it in PROVIDED that it isn't too close to something else.
-                for (var i = 0; i < candidatesToAdd.Count; i++)
+                for (int i = 0; i < candidatesToAdd.Count; i++)
                 {
                     Add(ref candidatesToAdd.Elements[i]);
                 }
@@ -612,7 +612,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             //The closest point method computes the local space versions before transforming to world... consider cutting out the middle man
             RigidTransform.TransformByInverse(ref contactCandidate.Position, ref convex.worldTransform,
                 out supplement.LocalOffsetA);
-            var transform = MeshTransform;
+            RigidTransform transform = MeshTransform;
             RigidTransform.TransformByInverse(ref contactCandidate.Position, ref transform,
                 out supplement.LocalOffsetB);
             supplementData.Add(ref supplement);
@@ -630,8 +630,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         {
             contactCandidate.Validate();
             float distanceSquared;
-            var meshTransform = MeshTransform;
-            for (var i = 0; i < contacts.Count; i++)
+            RigidTransform meshTransform = MeshTransform;
+            for (int i = 0; i < contacts.Count; i++)
             {
                 Vector3.DistanceSquared(ref contacts.Elements[i].Position, ref contactCandidate.Position,
                     out distanceSquared);
@@ -657,7 +657,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 }
             }
 
-            for (var i = 0; i < candidatesToAdd.Count; i++)
+            for (int i = 0; i < candidatesToAdd.Count; i++)
             {
                 Vector3.DistanceSquared(ref candidatesToAdd.Elements[i].Position, ref contactCandidate.Position,
                     out distanceSquared);
@@ -705,7 +705,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         {
             supplementData.Clear();
             convex = null;
-            for (var i = activePairTesters.Count - 1; i >= 0; --i)
+            for (int i = activePairTesters.Count - 1; i >= 0; --i)
             {
                 activePairTesters.Values[i].CleanUp();
                 GiveBackTester(activePairTesters.Values[i]);

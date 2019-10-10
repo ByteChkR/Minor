@@ -15,13 +15,17 @@ namespace Demo
         private static bool AskForDebugLogSending()
         {
             Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
-            if (Console.ReadLine().ToLower() == "y") return true;
+            if (Console.ReadLine().ToLower() == "y")
+            {
+                return true;
+            }
+
             return false;
         }
 
         private static void Main(string[] args)
         {
-            var gm = new GraphicsMode(ColorFormat.Empty, 8, 0, 16);
+            GraphicsMode gm = new GraphicsMode(ColorFormat.Empty, 8, 0, 16);
 
             DebugSettings dbgSettings = DebugSettings.Default;
 
@@ -56,11 +60,10 @@ namespace Demo
                 PhysicsThreadCount = 4,
                 VSync = VSyncMode.Off,
                 DebugSettings = dbgSettings,
-
             };
 
 
-            var engine = new GameEngine(es);
+            GameEngine engine = new GameEngine(es);
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();

@@ -128,7 +128,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 throw new ArgumentException("Cannot create a wrapped shape with no contained shapes.");
             }
 
-            for (var i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; i++)
             {
                 Shapes.Add(shapeEntries[i]);
             }
@@ -152,7 +152,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 throw new ArgumentException("Cannot create a wrapped shape with no contained shapes.");
             }
 
-            for (var i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; i++)
             {
                 Shapes.Add(shapeEntries[i]);
             }
@@ -174,7 +174,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 throw new ArgumentException("Cannot create a wrapped shape with no contained shapes.");
             }
 
-            for (var i = 0; i < shapeEntries.Count; i++)
+            for (int i = 0; i < shapeEntries.Count; i++)
             {
                 Shapes.Add(shapeEntries[i]);
             }
@@ -204,19 +204,19 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public void UpdateConvexShapeInfo(out Vector3 center)
         {
             //Compute the volume distribution.
-            var samples = CommonResources.GetVectorList();
+            RawList<Vector3> samples = CommonResources.GetVectorList();
             if (samples.Capacity < InertiaHelper.SampleDirections.Length)
             {
                 samples.Capacity = InertiaHelper.SampleDirections.Length;
             }
 
             samples.Count = InertiaHelper.SampleDirections.Length;
-            for (var i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
+            for (int i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
             {
                 GetLocalExtremePoint(InertiaHelper.SampleDirections[i], out samples.Elements[i]);
             }
 
-            var triangles = CommonResources.GetIntList();
+            RawList<int> triangles = CommonResources.GetIntList();
             ConvexHullHelper.GetConvexHull(samples, triangles);
 
             float volume;
@@ -227,7 +227,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             CommonResources.GiveBack(triangles);
 
             //Now recenter the shape and compute the radii estimates.
-            for (var i = 0; i < Shapes.Count; i++)
+            for (int i = 0; i < Shapes.Count; i++)
             {
                 Shapes.WrappedList.Elements[i].Transform.Position -= center;
             }
@@ -247,7 +247,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             RigidTransform subTransform;
             RigidTransform.Multiply(ref Shapes.WrappedList.Elements[0].Transform, ref shapeTransform, out subTransform);
             Shapes.WrappedList.Elements[0].CollisionShape.GetBoundingBox(ref subTransform, out boundingBox);
-            for (var i = 1; i < Shapes.WrappedList.Count; i++)
+            for (int i = 1; i < Shapes.WrappedList.Count; i++)
             {
                 RigidTransform.Multiply(ref Shapes.WrappedList.Elements[i].Transform, ref shapeTransform,
                     out subTransform);
@@ -277,7 +277,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 ref Shapes.WrappedList.Elements[0].Transform, out extremePoint);
             float maxDot;
             Vector3.Dot(ref extremePoint, ref direction, out maxDot);
-            for (var i = 1; i < Shapes.WrappedList.Count; i++)
+            for (int i = 1; i < Shapes.WrappedList.Count; i++)
             {
                 float dot;
                 Vector3 temp;
@@ -304,10 +304,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         {
             //This can overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
             float maxRadius = 0;
-            for (var i = 0; i < Shapes.Count; i++)
+            for (int i = 0; i < Shapes.Count; i++)
             {
-                var radius = Shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius +
-                             Shapes.WrappedList.Elements[i].Transform.Position.Length();
+                float radius = Shapes.WrappedList.Elements[i].CollisionShape.MaximumRadius +
+                               Shapes.WrappedList.Elements[i].Transform.Position.Length();
                 if (radius > maxRadius)
                 {
                     maxRadius = radius;
@@ -327,9 +327,9 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         {
             //Could also use the tetrahedron approximation approach.
             float minRadius = 0;
-            for (var i = 0; i < Shapes.Count; i++)
+            for (int i = 0; i < Shapes.Count; i++)
             {
-                var radius = Shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
+                float radius = Shapes.WrappedList.Elements[i].CollisionShape.MinimumRadius;
                 if (radius < minRadius)
                 {
                     minRadius = radius;

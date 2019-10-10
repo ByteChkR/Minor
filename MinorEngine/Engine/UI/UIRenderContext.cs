@@ -4,13 +4,11 @@ using OpenTK;
 
 namespace Engine.UI
 {
-
     /// <summary>
     /// Abstraction for UI Rendering
     /// </summary>
     public abstract class UIRenderContext : RenderContext
     {
-
         /// <summary>
         /// Position in UV Space
         /// </summary>

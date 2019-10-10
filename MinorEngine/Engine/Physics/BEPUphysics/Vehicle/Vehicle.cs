@@ -47,7 +47,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             //The body is always active, so don't bother with stabilization either.
             //Stabilization can introduce artifacts as well.
             body.activityInformation.AllowStabilization = false;
-            foreach (var wheel in wheelList)
+            foreach (Wheel wheel in wheelList)
             {
                 AddWheel(wheel);
             }
@@ -74,8 +74,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         {
             get
             {
-                var toReturn = 0;
-                foreach (var wheel in Wheels)
+                int toReturn = 0;
+                foreach (Wheel wheel in Wheels)
                 {
                     if (wheel.HasSupport)
                     {
@@ -101,7 +101,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         public override void OnAdditionToSpace(Space newSpace)
         {
             newSpace.Add(body);
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 wheel.OnAdditionToSpace(newSpace);
             }
@@ -113,7 +113,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         public override void OnRemovalFromSpace(Space oldSpace)
         {
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 wheel.OnRemovalFromSpace(oldSpace);
             }
@@ -128,7 +128,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         void IEndOfFrameUpdateable.Update(float dt)
         {
             //Graphics should be updated at the end of each frame.
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 wheel.UpdateAtEndOfFrame(dt);
             }
@@ -141,7 +141,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         void IEndOfTimeStepUpdateable.Update(float dt)
         {
             //Graphics should be updated at the end of each frame.
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 wheel.UpdateAtEndOfUpdate(dt);
             }
@@ -150,7 +150,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         void IBeforeNarrowPhaseUpdateable.Update(float dt)
         {
             //After broadphase, test for supports.
-            foreach (var wheel in wheels)
+            foreach (Wheel wheel in wheels)
             {
                 wheel.FindSupport();
             }
@@ -160,7 +160,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
 
         void IDuringForcesUpdateable.Update(float dt)
         {
-            foreach (var wheel in wheels)
+            foreach (Wheel wheel in wheels)
             {
                 wheel.UpdateDuringForces(dt);
             }
@@ -208,8 +208,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         public override float SolveIteration()
         {
-            var numActive = 0;
-            foreach (var wheel in Wheels)
+            int numActive = 0;
+            foreach (Wheel wheel in Wheels)
             {
                 if (wheel.isActiveInSolver)
                 {
@@ -240,7 +240,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         protected internal override void CollectInvolvedEntities(RawList<Entity> outputInvolvedEntities)
         {
             outputInvolvedEntities.Add(Body);
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 if (wheel.supportingEntity != null && !outputInvolvedEntities.Contains(wheel.supportingEntity))
                 {
@@ -263,7 +263,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             //Maybe a SolverGroup instead of CombinedUpdateable, though.
 
             //Update the wheel 'constraints.'
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 if (wheel.isActiveInSolver)
                 {
@@ -279,7 +279,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         public override void ExclusiveUpdate()
         {
-            foreach (var wheel in Wheels)
+            foreach (Wheel wheel in Wheels)
             {
                 if (wheel.isActiveInSolver)
                 {
@@ -298,7 +298,7 @@ namespace Engine.Physics.BEPUphysics.Vehicle
                 isActiveInSolver = false;
                 if (body.activityInformation.IsActive)
                 {
-                    foreach (var wheel in Wheels)
+                    foreach (Wheel wheel in Wheels)
                     {
                         wheel.UpdateSolverActivity();
                         isActiveInSolver = isActiveInSolver || wheel.isActiveInSolver;

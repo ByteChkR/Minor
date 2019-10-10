@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -20,7 +19,7 @@ namespace Engine.OpenCL.DotNetCore
         /// <param name="handle">The handle that represents the OpenCL object.</param>
         public HandleBase(IntPtr handle)
         {
-            this.Handle = handle;
+            Handle = handle;
         }
 
         #endregion
@@ -50,12 +49,16 @@ namespace Engine.OpenCL.DotNetCore
         public static bool operator ==(HandleBase leftOperand, HandleBase rightOperand)
         {
             // Checks if both are null, or both are same instance, in that case true is returned
-            if (object.ReferenceEquals(leftOperand, rightOperand))
+            if (ReferenceEquals(leftOperand, rightOperand))
+            {
                 return true;
+            }
 
             // Checks if one is null, but not both, in that case false is returned
-            if (object.ReferenceEquals(leftOperand, null) || object.ReferenceEquals(null, rightOperand))
+            if (ReferenceEquals(leftOperand, null) || ReferenceEquals(null, rightOperand))
+            {
                 return false;
+            }
 
             // Returns true if both point to the same underlying unmanaged memory
             return leftOperand.Handle.ToInt64() == rightOperand.Handle.ToInt64();
@@ -67,7 +70,10 @@ namespace Engine.OpenCL.DotNetCore
         /// <param name="leftOperand">The left operand.</param>
         /// <param name="rightOperand">The right operand</param>
         /// <returns>Returns <c>false</c> if both objects point to the same underlying unmanaged memory and <c>true</c> otherwise.</returns>
-        public static bool operator !=(HandleBase leftOperand, HandleBase rightOperand) => !(leftOperand == rightOperand);
+        public static bool operator !=(HandleBase leftOperand, HandleBase rightOperand)
+        {
+            return !(leftOperand == rightOperand);
+        }
 
         #endregion
 
@@ -82,15 +88,19 @@ namespace Engine.OpenCL.DotNetCore
         {
             // Checks if the other object is null, in that case it is not equal to this object
             if (obj == null)
+            {
                 return false;
+            }
 
             // Checks if the other object can be cast into a HandleBase, if not, then it is not equal to this object
             HandleBase otherHandleBase = obj as HandleBase;
             if (otherHandleBase == null)
+            {
                 return false;
+            }
 
             // Checks if the handles, that both objects contain are the same, in that case they are equal, if not they are not equal
-            return this.Handle == otherHandleBase.Handle;
+            return Handle == otherHandleBase.Handle;
         }
 
         /// <summary>
@@ -102,17 +112,22 @@ namespace Engine.OpenCL.DotNetCore
         {
             // Checks if the other object is null, in that case it is not equal to this object
             if (otherHandleBase == null)
+            {
                 return false;
+            }
 
             // Checks if the handles, that both objects contain are the same, in that case they are equal, if not they are not equal
-            return this.Handle == otherHandleBase.Handle;
+            return Handle == otherHandleBase.Handle;
         }
 
         /// <summary>
         /// Serves as the default hash function.
         /// </summary>
         /// <returns>Returns a hash code for the current object, which is the numeric representation of the pointer that points to the underlying unmanaged memory.</returns>
-        public override int GetHashCode() => this.Handle.ToInt32();
+        public override int GetHashCode()
+        {
+            return Handle.ToInt32();
+        }
 
         #endregion
 
@@ -125,13 +140,13 @@ namespace Engine.OpenCL.DotNetCore
         protected virtual void Dispose(bool disposing)
         {
             // Checks if the object has alread been disposed of
-            if (!this.IsDisposed)
+            if (!IsDisposed)
             {
                 // Sets the handle to null
-                this.Handle = IntPtr.Zero;
+                Handle = IntPtr.Zero;
 
                 // Since the context has been disposed of, the is disposed flag is set to true, so that it is not called twice
-                this.IsDisposed = true;
+                IsDisposed = true;
             }
         }
 
@@ -141,7 +156,7 @@ namespace Engine.OpenCL.DotNetCore
         ~HandleBase()
         {
             // Makes sure that unmanaged resources get disposed of eventually
-            this.Dispose(false);
+            Dispose(false);
         }
 
         /// <summary>
@@ -150,8 +165,8 @@ namespace Engine.OpenCL.DotNetCore
         public void Dispose()
         {
             // Disposes of all acquired resources
-            this.Dispose(true);
-            
+            Dispose(true);
+
             // Since the resources have already been disposed of, the destructor does not need to be called anymore
             GC.SuppressFinalize(this);
         }

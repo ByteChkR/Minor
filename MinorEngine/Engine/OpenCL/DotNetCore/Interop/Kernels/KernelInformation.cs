@@ -1,4 +1,3 @@
-
 namespace Engine.OpenCL.DotNetCore.Interop.Kernels
 {
     /// <summary>
@@ -10,7 +9,7 @@ namespace Engine.OpenCL.DotNetCore.Interop.Kernels
         /// The kernel function name.
         /// </summary>
         FunctionName = 0x1190,
-        
+
         /// <summary>
         /// The number of arguments to kernel.
         /// </summary>

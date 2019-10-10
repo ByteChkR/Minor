@@ -4,6 +4,7 @@ using Engine.Physics.BEPUphysics.CollisionShapes;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 
 namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
@@ -173,7 +174,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
             if (Shape.solidity == MobileMeshSolidity.Solid)
             {
                 //If the convex cast is inside the mesh and the mesh is solid, it should return t = 0.
-                var ray = new Ray {Position = startingTransform.Position, Direction = Toolbox.UpVector};
+                Ray ray = new Ray {Position = startingTransform.Position, Direction = Toolbox.UpVector};
                 if (Shape.IsLocalRayOriginInMesh(ref ray, out hit))
                 {
                     hit = new RayHit {Location = startingTransform.Position, Normal = new Vector3(), T = 0};
@@ -183,15 +184,15 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
 
             hit = new RayHit();
             BoundingBox boundingBox;
-            var transform = new AffineTransform {Translation = worldTransform.Position};
+            AffineTransform transform = new AffineTransform {Translation = worldTransform.Position};
             Matrix3x3.CreateFromQuaternion(ref worldTransform.Orientation, out transform.LinearTransform);
             castShape.GetSweptLocalBoundingBox(ref startingTransform, ref transform, ref sweep, out boundingBox);
-            var tri = PhysicsThreadResources.GetTriangle();
-            var hitElements = CommonResources.GetIntList();
+            TriangleShape tri = PhysicsThreadResources.GetTriangle();
+            RawList<int> hitElements = CommonResources.GetIntList();
             if (Shape.TriangleMesh.Tree.GetOverlaps(boundingBox, hitElements))
             {
                 hit.T = float.MaxValue;
-                for (var i = 0; i < hitElements.Count; i++)
+                for (int i = 0; i < hitElements.Count; i++)
                 {
                     Shape.TriangleMesh.Data.GetTriangle(hitElements[i], out tri.vA, out tri.vB, out tri.vC);
                     AffineTransform.Transform(ref tri.vA, ref transform, out tri.vA);
@@ -205,7 +206,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
                     Vector3.Subtract(ref tri.vB, ref center, out tri.vB);
                     Vector3.Subtract(ref tri.vC, ref center, out tri.vC);
                     tri.MaximumRadius = tri.vA.LengthSquared();
-                    var radius = tri.vB.LengthSquared();
+                    float radius = tri.vB.LengthSquared();
                     if (tri.MaximumRadius < radius)
                     {
                         tri.MaximumRadius = radius;
@@ -219,7 +220,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
 
                     tri.MaximumRadius = (float) Math.Sqrt(tri.MaximumRadius);
                     tri.collisionMargin = 0;
-                    var triangleTransform = new RigidTransform {Orientation = Quaternion.Identity, Position = center};
+                    RigidTransform triangleTransform = new RigidTransform
+                        {Orientation = Quaternion.Identity, Position = center};
                     RayHit tempHit;
                     if (MPRToolbox.Sweep(castShape, tri, ref sweep, ref Toolbox.ZeroVector, ref startingTransform,
                             ref triangleTransform, out tempHit) && tempHit.T < hit.T)

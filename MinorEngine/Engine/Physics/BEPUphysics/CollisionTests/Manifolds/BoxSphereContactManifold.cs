@@ -43,7 +43,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         public override void Update(float dt)
         {
             ContactData contactData;
-            var colliding = false;
+            bool colliding = false;
             if (BoxSphereTester.AreShapesColliding(box.Shape, sphere.Shape, ref box.worldTransform,
                 ref sphere.worldTransform.Position, out contactData))
             {

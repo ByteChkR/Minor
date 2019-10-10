@@ -11,7 +11,6 @@ using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 
 namespace Engine.UI
 {
-
     /// <summary>
     /// Font Library. Is Used to store the loaded game Fonts
     /// </summary>
@@ -29,8 +28,8 @@ namespace Engine.UI
         public FontLibrary(string folderPath)
         {
             _fonts = new Dictionary<string, GameFont>();
-            var files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
-            foreach (var file in files)
+            string[] files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
+            foreach (string file in files)
             {
                 LoadFont(file);
             }
@@ -52,26 +51,26 @@ namespace Engine.UI
         /// <param name="pixelSize">The size of the font in pixels</param>
         public void LoadFont(string filename, int pixelSize)
         {
-            var ff = new FontFace(File.OpenRead(filename));
+            FontFace ff = new FontFace(File.OpenRead(filename));
 
             if (_fonts.ContainsKey(ff.FullName))
             {
                 return;
             }
 
-            var fontAtlas = new Dictionary<char, TextCharacter>();
+            Dictionary<char, TextCharacter> fontAtlas = new Dictionary<char, TextCharacter>();
 
-            for (var i = 0; i < ushort.MaxValue; i++)
+            for (int i = 0; i < ushort.MaxValue; i++)
             {
-                var g = ff.GetGlyph(new CodePoint(i), pixelSize);
+                Glyph g = ff.GetGlyph(new CodePoint(i), pixelSize);
                 if (g == null)
                 {
                     continue;
                 }
 
-                var buf = new byte[g.RenderWidth * g.RenderHeight];
-                var handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
-                var s = new Surface
+                byte[] buf = new byte[g.RenderWidth * g.RenderHeight];
+                GCHandle handle = GCHandle.Alloc(buf, GCHandleType.Pinned);
+                Surface s = new Surface
                 {
                     Bits = handle.AddrOfPinnedObject(),
                     Width = g.RenderWidth,
@@ -83,11 +82,11 @@ namespace Engine.UI
                 Texture glTex;
                 if (g.RenderWidth != 0 && g.RenderHeight != 0)
                 {
-                    var bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
-                    var data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
+                    Bitmap bmp = new Bitmap(g.RenderWidth, g.RenderHeight);
+                    BitmapData data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-                    var iimgBuf = new byte[buf.Length * 4];
-                    for (var j = 0; j < buf.Length; j++)
+                    byte[] iimgBuf = new byte[buf.Length * 4];
+                    for (int j = 0; j < buf.Length; j++)
                     {
                         iimgBuf[j * 4 + 3] = 255;
                         iimgBuf[j * 4 + 1] = buf[j];
@@ -104,7 +103,7 @@ namespace Engine.UI
                     data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
-                    var tex = TextureLoader.ParameterToTexture(bmp.Width, bmp.Height);
+                    Texture tex = TextureLoader.ParameterToTexture(bmp.Width, bmp.Height);
                     glTex = tex;
                     GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
@@ -126,7 +125,7 @@ namespace Engine.UI
                     glTex = null;
                 }
 
-                var c = new TextCharacter
+                TextCharacter c = new TextCharacter
                 {
                     GlTexture = glTex,
                     Width = s.Width,
@@ -138,7 +137,7 @@ namespace Engine.UI
                 fontAtlas.Add((char) i, c);
             }
 
-            var font = new GameFont(ff, pixelSize, fontAtlas);
+            GameFont font = new GameFont(ff, pixelSize, fontAtlas);
             _fonts.Add(ff.FullName, font);
         }
 

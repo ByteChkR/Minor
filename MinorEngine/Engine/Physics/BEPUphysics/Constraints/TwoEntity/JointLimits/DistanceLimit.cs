@@ -260,7 +260,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             lambda *= velocityToImpulse;
 
             //Clamp accumulated impulse (can't go negative)
-            var previousAccumulatedImpulse = TotalImpulse;
+            float previousAccumulatedImpulse = TotalImpulse;
             TotalImpulse = MathHelper.Max(TotalImpulse + lambda, 0);
             lambda = TotalImpulse - previousAccumulatedImpulse;
 
@@ -300,7 +300,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            var distance = separation.Length();
+            float distance = separation.Length();
             if (distance <= maximumLength && distance >= minimumLength)
             {
                 isActiveInSolver = false;

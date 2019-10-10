@@ -152,7 +152,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
 
         private void MultithreadedPrestep(int i)
         {
-            var updateable = solverUpdateables.Elements[i];
+            SolverUpdateable updateable = solverUpdateables.Elements[i];
             updateable.UpdateSolverActivity();
             if (updateable.isActiveInSolver)
             {
@@ -166,7 +166,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
 
         private void MultithreadedExclusiveUpdate(int i)
         {
-            var updateable = solverUpdateables.Elements[i];
+            SolverUpdateable updateable = solverUpdateables.Elements[i];
             if (updateable.isActiveInSolver)
             {
                 updateable.EnterLock();
@@ -189,15 +189,16 @@ namespace Engine.Physics.BEPUphysics.Constraints
             //'i' is currently an index into an implicit array of solver updateables that goes from 0 to solverUpdateables.count * iterationLimit.
             //It includes iterationLimit copies of each updateable.
             //Permute the entire set with duplicates.
-            var updateable = solverUpdateables.Elements[PermutationMapper.GetMappedIndex(i, solverUpdateables.Count)];
+            SolverUpdateable updateable =
+                solverUpdateables.Elements[PermutationMapper.GetMappedIndex(i, solverUpdateables.Count)];
 
 
-            var solverSettings = updateable.solverSettings;
+            SolverSettings solverSettings = updateable.solverSettings;
             //Updateables only ever go from active to inactive during iterations,
             //so it's safe to check for activity before we do hard (synchronized) work.
             if (updateable.isActiveInSolver)
             {
-                var incrementedIterations = -1;
+                int incrementedIterations = -1;
                 updateable.EnterLock();
                 //This duplicate test protects against the possibility that the updateable went inactive between the first check and the lock.
                 if (updateable.isActiveInSolver)
@@ -242,22 +243,22 @@ namespace Engine.Physics.BEPUphysics.Constraints
 
         protected override void UpdateSingleThreaded()
         {
-            var totalUpdateableCount = solverUpdateables.Count;
-            for (var i = 0; i < totalUpdateableCount; i++)
+            int totalUpdateableCount = solverUpdateables.Count;
+            for (int i = 0; i < totalUpdateableCount; i++)
             {
                 UnsafePrestep(solverUpdateables.Elements[i]);
             }
 
             //By performing all velocity modifications after the prestep, the prestep is free to read velocities consistently.
             //If the exclusive update was performed in the same call as the prestep, the velocities would enter inconsistent states based on update order.
-            for (var i = 0; i < totalUpdateableCount; i++)
+            for (int i = 0; i < totalUpdateableCount; i++)
             {
                 UnsafeExclusiveUpdate(solverUpdateables.Elements[i]);
             }
 
-            var totalCount = iterationLimit * totalUpdateableCount;
+            int totalCount = iterationLimit * totalUpdateableCount;
             ++PermutationMapper.PermutationIndex;
-            for (var i = 0; i < totalCount; i++)
+            for (int i = 0; i < totalCount; i++)
             {
                 UnsafeSolveIteration(
                     solverUpdateables.Elements[PermutationMapper.GetMappedIndex(i, totalUpdateableCount)]);
@@ -269,7 +270,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
             updateable.UpdateSolverActivity();
             if (updateable.isActiveInSolver)
             {
-                var solverSettings = updateable.solverSettings;
+                SolverSettings solverSettings = updateable.solverSettings;
                 solverSettings.currentIterations = 0;
                 solverSettings.iterationsAtZeroImpulse = 0;
                 updateable.Update(timeStepSettings.TimeStepDuration);
@@ -288,7 +289,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         {
             if (updateable.isActiveInSolver)
             {
-                var solverSettings = updateable.solverSettings;
+                SolverSettings solverSettings = updateable.solverSettings;
 
 
                 solverSettings.currentIterations++;

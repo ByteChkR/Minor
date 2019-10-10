@@ -203,8 +203,8 @@ namespace Engine.Physics.BEPUphysics.Character
         /// <returns>True if the target stance is different than the current stance and the transition is valid, false otherwise.</returns>
         public bool CheckTransition(Stance targetStance, out float newHeight, out Vector3 newPosition)
         {
-            var currentPosition = characterBody.position;
-            var down = characterBody.orientationMatrix.Down;
+            Vector3 currentPosition = characterBody.position;
+            Vector3 down = characterBody.orientationMatrix.Down;
             newPosition = new Vector3();
             newHeight = 0;
 
@@ -272,10 +272,14 @@ namespace Engine.Physics.BEPUphysics.Character
                         break;
                 }
 
-                var tractionContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-                var supportContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-                var sideContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
-                var headContacts = new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+                QuickList<CharacterContact> tractionContacts =
+                    new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+                QuickList<CharacterContact> supportContacts =
+                    new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+                QuickList<CharacterContact> sideContacts =
+                    new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
+                QuickList<CharacterContact> headContacts =
+                    new QuickList<CharacterContact>(BufferPools<CharacterContact>.Thread);
                 try
                 {
                     if (SupportFinder.HasSupport)
@@ -305,17 +309,17 @@ namespace Engine.Physics.BEPUphysics.Character
                         //(We arbitrarily ignore the case where the character could push off a ceiling.)
                         //The goal is to put the feet of the character on any support that can be found, and then verify that the rest of its body fits in that location.
                         float lowestBound = 0;
-                        var originalHighestBound = (targetHeight - currentHeight) * -.5f;
-                        var highestBound = originalHighestBound;
+                        float originalHighestBound = (targetHeight - currentHeight) * -.5f;
+                        float highestBound = originalHighestBound;
                         float currentOffset = 0;
 
-                        var attempts = 0;
+                        int attempts = 0;
                         //Don't keep querying indefinitely.  If we fail to reach it in a few informed steps, it's probably not worth continuing.
                         //The bound size check prevents the system from continuing to search a meaninglessly tiny interval.
-                        var lastState = CharacterContactPositionState.Accepted;
+                        CharacterContactPositionState lastState = CharacterContactPositionState.Accepted;
                         while (attempts++ < 5 && lowestBound - highestBound > Toolbox.BigEpsilon)
                         {
-                            var candidatePosition = currentPosition + currentOffset * down;
+                            Vector3 candidatePosition = currentPosition + currentOffset * down;
                             float hintOffset;
                             switch (lastState = TrySupportLocation(queryObject, ref candidatePosition, out hintOffset,
                                 ref tractionContacts, ref supportContacts, ref sideContacts, ref headContacts))
@@ -401,7 +405,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 return true;
             }
 
-            for (var i = 0; i < supportContacts.Count; ++i)
+            for (int i = 0; i < supportContacts.Count; ++i)
             {
                 if (IsSupportContactObstructive(ref supportContacts.Elements[i].Contact))
                 {
@@ -421,11 +425,11 @@ namespace Engine.Physics.BEPUphysics.Character
             }
 
             //If there is already a contact that is deeper than the new contact, then allow it. It won't make things worse.
-            foreach (var c in SupportFinder.Supports)
+            foreach (CharacterContact c in SupportFinder.Supports)
             {
                 //An existing contact is considered 'deeper' if its normal-adjusted depth is greater than the new contact.
-                var dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
-                var depth = dot * c.Contact.PenetrationDepth + Toolbox.BigEpsilon;
+                float dot = Vector3.Dot(contact.Normal, c.Contact.Normal);
+                float depth = dot * c.Contact.PenetrationDepth + Toolbox.BigEpsilon;
                 if (depth >= contact.PenetrationDepth)
                 {
                     return false;
@@ -445,7 +449,7 @@ namespace Engine.Physics.BEPUphysics.Character
             }
 
             //A contact is considered obstructive if its projected depth is deeper than any existing contact along the existing contacts' normals.
-            for (var i = 0; i < sideContacts.Count; i++)
+            for (int i = 0; i < sideContacts.Count; i++)
             {
                 if (SupportFinder.IsSideContactObstructive(ref sideContacts.Elements[i].Contact))
                 {
@@ -467,7 +471,7 @@ namespace Engine.Physics.BEPUphysics.Character
             QueryManager.QueryContacts(queryObject, ref tractionContacts, ref supportContacts, ref sideContacts,
                 ref headContacts, true);
 
-            var obstructed = IsObstructed(ref sideContacts, ref headContacts);
+            bool obstructed = IsObstructed(ref sideContacts, ref headContacts);
             if (obstructed)
             {
                 return CharacterContactPositionState.Obstructed;
@@ -479,7 +483,7 @@ namespace Engine.Physics.BEPUphysics.Character
                 CharacterContact supportContact;
                 QueryManager.AnalyzeSupportState(ref tractionContacts, ref supportContacts, out supportState,
                     out supportContact);
-                var down = characterBody.orientationMatrix.Down;
+                Vector3 down = characterBody.orientationMatrix.Down;
                 //Note that traction is not tested for; it isn't important for the stance manager.
                 if (supportState == CharacterContactPositionState.Accepted)
                 {

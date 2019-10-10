@@ -101,7 +101,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
                     throw new InvalidOperationException("Constraints cannot have both 0 stiffness and 0 damping.");
                 }
 
-                var multiplier = 1 / (dt * stiffness + damping);
+                float multiplier = 1 / (dt * stiffness + damping);
                 errorReduction = stiffness * multiplier;
                 softness = updateRate * multiplier;
             }

@@ -3,6 +3,7 @@ var struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16 =
     [ "double16", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#adf3fa7ec584f779c182b89988f299513", null ],
     [ "double16", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a42c13d8c55ede434252b26330f225483", null ],
     [ "ToString", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#af69a5a8f7104a6d73f3b33465633e3ef", null ],
+    [ "Rank", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#ae7e1ffeda127fc69fd32bbf55b18efc3", null ],
     [ "s0", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a8d98bab903eb3ea36292af480b99e696", null ],
     [ "s1", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a318562b73091cf7baa2451f19fd5f853", null ],
     [ "s2", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#aa8190c4866d63b46997fd9f52269e616", null ],
@@ -25,7 +26,6 @@ var struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16 =
     [ "sE", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#aa333c6b6cd17f8889de737d9119da677", null ],
     [ "sf", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a410e1fd1b0e3985eadfcc3cfa0e9bf33", null ],
     [ "sF", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a2e958c543757178e37b86fb5131c5154", null ],
-    [ "Rank", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#ae7e1ffeda127fc69fd32bbf55b18efc3", null ],
     [ "Size", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a4d54451e003f94dfef1798bd3c17ab30", null ],
     [ "this[int index]", "d7/d5f/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1double16.html#a7b5f4f312553dea9b8e6ae7a7a3331b5", null ]
 ];

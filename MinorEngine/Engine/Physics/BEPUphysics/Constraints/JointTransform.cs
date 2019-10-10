@@ -28,7 +28,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         {
             get
             {
-                var toReturn = new Matrix3x3 {Right = localXAxis, Up = localYAxis, Backward = localPrimaryAxis};
+                Matrix3x3 toReturn = new Matrix3x3 {Right = localXAxis, Up = localYAxis, Backward = localPrimaryAxis};
                 return toReturn;
             }
             set => SetLocalAxes(value);
@@ -69,7 +69,7 @@ namespace Engine.Physics.BEPUphysics.Constraints
         {
             get
             {
-                var toReturn = new Matrix3x3 {Right = xAxis, Up = yAxis, Backward = primaryAxis};
+                Matrix3x3 toReturn = new Matrix3x3 {Right = xAxis, Up = yAxis, Backward = primaryAxis};
                 return toReturn;
             }
             set => SetWorldAxes(value);

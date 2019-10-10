@@ -50,9 +50,9 @@ namespace Engine.OpenCL
         /// </summary>
         private void Initialize()
         {
-            var files = Directory.GetFiles(_folderName, "*.cl");
+            string[] files = Directory.GetFiles(_folderName, "*.cl");
 
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 AddProgram(file);
             }
@@ -72,12 +72,12 @@ namespace Engine.OpenCL
             }
 
 
-            var path = Path.GetFullPath(file);
+            string path = Path.GetFullPath(file);
 
             Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
-            var program = new CLProgram(path, GenDataType);
+            CLProgram program = new CLProgram(path, GenDataType);
 
-            foreach (var containedKernel in program.ContainedKernels)
+            foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {
                 if (!_loadedKernels.ContainsKey(containedKernel.Key))
                 {

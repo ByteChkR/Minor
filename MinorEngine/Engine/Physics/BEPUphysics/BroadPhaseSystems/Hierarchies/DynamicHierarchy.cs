@@ -122,7 +122,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             //The depth to which we dive is offset by some precomputed values (when available) or a guess based on whether or not the 
             //thread count is a power of 2.  Thread counts which are a power of 2 match well to the binary tree, while other thread counts
             //require going deeper for better distributions.
-            var offset = ParallelLooper.ThreadCount <= threadSplitOffsets.Length
+            int offset = ParallelLooper.ThreadCount <= threadSplitOffsets.Length
                 ? threadSplitOffsets[ParallelLooper.ThreadCount - 1]
                 : (ParallelLooper.ThreadCount & (ParallelLooper.ThreadCount - 1)) == 0
                     ? 0
@@ -137,7 +137,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                 Overlaps.Clear();
                 if (root != null)
                 {
-                    var splitDepth = GetSplitDepth();
+                    int splitDepth = GetSplitDepth();
 #if PROFILE
                     startRefit = Stopwatch.GetTimestamp();
 #endif
@@ -172,7 +172,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
 
         private void MultithreadedOverlap(int i)
         {
-            var overlap = multithreadingSourceOverlaps.Elements[i];
+            NodePair overlap = multithreadingSourceOverlaps.Elements[i];
             //Note: It's okay not to check to see if a and b are equal and leaf nodes, because the systems which added nodes to the list already did it.
             overlap.a.GetOverlaps(overlap.b, this);
         }
@@ -233,7 +233,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             }
 
             //Could buffer additions to get a better construction in the tree.
-            var node = leafNodes.Take();
+            LeafNode node = leafNodes.Take();
             node.Initialize(entry);
             if (root == null)
             {
@@ -249,12 +249,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
                 else
                 {
                     BoundingBox.CreateMerged(ref node.BoundingBox, ref root.BoundingBox, out root.BoundingBox);
-                    var internalNode = (InternalNode) root;
+                    InternalNode internalNode = (InternalNode) root;
                     Vector3.Subtract(ref root.BoundingBox.Max, ref root.BoundingBox.Min, out offset);
                     internalNode.currentVolume = offset.X * offset.Y * offset.Z;
                     //internalNode.maximumVolume = internalNode.currentVolume * InternalNode.MaximumVolumeScale;
                     //The caller is responsible for the merge.
-                    var treeNode = root;
+                    Node treeNode = root;
                     while (!treeNode.TryToInsert(node, out treeNode))
                     {
                         ; //TryToInsert returns the next node, if any, and updates node bounding box.
@@ -347,8 +347,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
         {
             if (root != null)
             {
-                var offset = root.BoundingBox.Max - root.BoundingBox.Min;
-                var volume = offset.X * offset.Y * offset.Z;
+                Vector3 offset = root.BoundingBox.Max - root.BoundingBox.Min;
+                float volume = offset.X * offset.Y * offset.Z;
                 if (volume < 1e-9f)
                 {
                     return 0;

@@ -193,7 +193,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            var lambda = -(velocityA + velocityB) + biasVelocity - softness * TotalImpulse;
+            float lambda = -(velocityA + velocityB) + biasVelocity - softness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
@@ -334,7 +334,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             //Compute a vector which is perpendicular to the axis.  It'll be added in local space to both connections.
             Vector3 yAxis;
             Vector3.Cross(ref worldAxisA, ref Toolbox.UpVector, out yAxis);
-            var length = yAxis.LengthSquared();
+            float length = yAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref worldAxisA, ref Toolbox.RightVector, out yAxis);

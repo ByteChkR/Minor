@@ -129,14 +129,14 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             {
                 //The initialization of the pair creates a pretty decent simplex to start from.
                 //Just don't try to update it.
-                var preInitializedSimplex = cachedSimplex;
+                CachedSimplex preInitializedSimplex = cachedSimplex;
                 GJKToolbox.GetClosestPoints(collidableA.Shape, collidableB.Shape, ref collidableA.worldTransform,
                     ref collidableB.worldTransform, ref preInitializedSimplex, out closestA, out closestB);
             }
 
             Vector3 displacement;
             Vector3.Subtract(ref closestB, ref closestA, out displacement);
-            var distanceSquared = displacement.LengthSquared();
+            float distanceSquared = displacement.LengthSquared();
 
             if (distanceSquared < Toolbox.Epsilon)
             {
@@ -145,7 +145,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
 
             localDirection = displacement; //Use this as the direction for future deep contacts.
-            var margin = collidableA.Shape.collisionMargin + collidableB.Shape.collisionMargin;
+            float margin = collidableA.Shape.collisionMargin + collidableB.Shape.collisionMargin;
 
 
             if (distanceSquared < margin * margin)
@@ -166,7 +166,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 Vector3.Add(ref closestA, ref contact.Position, out contact.Position); //A + t * AB.
 
                 contact.Normal = displacement;
-                var distance = (float) Math.Sqrt(distanceSquared);
+                float distance = (float) Math.Sqrt(distanceSquared);
                 Vector3.Divide(ref contact.Normal, distance, out contact.Normal);
                 contact.PenetrationDepth = margin - distance;
                 return true;

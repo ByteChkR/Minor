@@ -256,7 +256,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             //if(velocityDifference > 0)
             //    Logger.Log("Velocity difference: " + velocityDifference);
             //Logger.Log("softness velocity: " + softness * accumulatedImpulse);
-            var lambda = negativeEffectiveMass * (velocityDifference + biasVelocity + softness * TotalImpulse);
+            float lambda = negativeEffectiveMass * (velocityDifference + biasVelocity + softness * TotalImpulse);
             TotalImpulse += lambda;
 
             Vector3 impulse;
@@ -298,7 +298,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             float pointDistance, planeDistance;
             Vector3.Dot(ref worldPointAnchor, ref worldPlaneNormal, out pointDistance);
             Vector3.Dot(ref worldPlaneAnchor, ref worldPlaneNormal, out planeDistance);
-            var distanceChange = planeDistance - pointDistance;
+            float distanceChange = planeDistance - pointDistance;
             Vector3 closestPointOnPlane;
             Vector3.Multiply(ref worldPlaneNormal, distanceChange, out closestPointOnPlane);
             Vector3.Add(ref closestPointOnPlane, ref worldPointAnchor, out closestPointOnPlane);

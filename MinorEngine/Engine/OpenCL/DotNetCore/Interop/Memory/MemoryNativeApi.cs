@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -119,7 +118,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Memory
             [In] [MarshalAs(UnmanagedType.U8)] MemoryFlag flags,
             [In] [MarshalAs(UnmanagedType.U4)] uint pipePacketSize,
             [In] [MarshalAs(UnmanagedType.U4)] uint pipeMaximumNumberOfPackets,
-            [In] [MarshalAs(UnmanagedType.LPArray)] IntPtr[] properties,
+            [In] [MarshalAs(UnmanagedType.LPArray)]
+            IntPtr[] properties,
             [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
         );
 
@@ -190,7 +190,8 @@ namespace Engine.OpenCL.DotNetCore.Interop.Memory
             [In] [MarshalAs(UnmanagedType.U8)] MemoryFlag flags,
             [In] [MarshalAs(UnmanagedType.U4)] MemoryObjectType imageType,
             [In] [MarshalAs(UnmanagedType.U4)] uint numberOfEntries,
-            [Out] [MarshalAs(UnmanagedType.LPArray)] ImageFormat[] imageFormats,
+            [Out] [MarshalAs(UnmanagedType.LPArray)]
+            ImageFormat[] imageFormats,
             [Out] [MarshalAs(UnmanagedType.U4)] out uint numberOfImageFormats
         );
 

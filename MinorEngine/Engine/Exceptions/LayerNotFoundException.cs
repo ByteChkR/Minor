@@ -7,7 +7,6 @@ namespace Engine.Exceptions
     /// </summary>
     public class LayerNotFoundException : EngineException
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

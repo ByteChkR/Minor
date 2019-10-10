@@ -3,12 +3,10 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.DataTypes
 {
-
-
     /// <summary>
     /// A Data Type that is containing the information that is needed to store a Texture in OpenGL
     /// </summary>
-    public class Texture :IDisposable
+    public class Texture : IDisposable
     {
         /// <summary>
         /// The Texture type used to automatically bind textures to the right Uniforms in the shader

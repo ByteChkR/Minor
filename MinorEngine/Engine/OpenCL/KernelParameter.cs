@@ -98,63 +98,65 @@ namespace Engine.OpenCL
             typeof(ulong16)
         };
 
-        private static List<Tuple<string, float, TypeEnums.DataTypes>> DataTypePairs = new List<Tuple<string, float, TypeEnums.DataTypes>>
-        {
-            new Tuple<string, float, TypeEnums.DataTypes>("float", float.MaxValue, TypeEnums.DataTypes.FLOAT1),
-            new Tuple<string, float, TypeEnums.DataTypes>("float2", float.MaxValue, TypeEnums.DataTypes.FLOAT2),
-            new Tuple<string, float, TypeEnums.DataTypes>("float3", float.MaxValue, TypeEnums.DataTypes.FLOAT3),
-            new Tuple<string, float, TypeEnums.DataTypes>("float4", float.MaxValue, TypeEnums.DataTypes.FLOAT4),
-            new Tuple<string, float, TypeEnums.DataTypes>("float8", float.MaxValue, TypeEnums.DataTypes.FLOAT8),
-            new Tuple<string, float, TypeEnums.DataTypes>("float16", float.MaxValue, TypeEnums.DataTypes.FLOAT16),
-            new Tuple<string, float, TypeEnums.DataTypes>("int", int.MaxValue, TypeEnums.DataTypes.INT1),
-            new Tuple<string, float, TypeEnums.DataTypes>("int2", int.MaxValue, TypeEnums.DataTypes.INT2),
-            new Tuple<string, float, TypeEnums.DataTypes>("int3", int.MaxValue, TypeEnums.DataTypes.INT3),
-            new Tuple<string, float, TypeEnums.DataTypes>("int4", int.MaxValue, TypeEnums.DataTypes.INT4),
-            new Tuple<string, float, TypeEnums.DataTypes>("int8", int.MaxValue, TypeEnums.DataTypes.INT8),
-            new Tuple<string, float, TypeEnums.DataTypes>("int16", int.MaxValue, TypeEnums.DataTypes.INT16),
-            new Tuple<string, float, TypeEnums.DataTypes>("uint", uint.MaxValue, TypeEnums.DataTypes.UINT1),
-            new Tuple<string, float, TypeEnums.DataTypes>("uint2", uint.MaxValue, TypeEnums.DataTypes.UINT2),
-            new Tuple<string, float, TypeEnums.DataTypes>("uint3", uint.MaxValue, TypeEnums.DataTypes.UINT3),
-            new Tuple<string, float, TypeEnums.DataTypes>("uint4", uint.MaxValue, TypeEnums.DataTypes.UINT4),
-            new Tuple<string, float, TypeEnums.DataTypes>("uint8", uint.MaxValue, TypeEnums.DataTypes.UINT8),
-            new Tuple<string, float, TypeEnums.DataTypes>("uint16", uint.MaxValue, TypeEnums.DataTypes.UINT16),
-            new Tuple<string, float, TypeEnums.DataTypes>("char", sbyte.MaxValue, TypeEnums.DataTypes.CHAR1),
-            new Tuple<string, float, TypeEnums.DataTypes>("char2", sbyte.MaxValue, TypeEnums.DataTypes.CHAR2),
-            new Tuple<string, float, TypeEnums.DataTypes>("char3", sbyte.MaxValue, TypeEnums.DataTypes.CHAR3),
-            new Tuple<string, float, TypeEnums.DataTypes>("char4", sbyte.MaxValue, TypeEnums.DataTypes.CHAR4),
-            new Tuple<string, float, TypeEnums.DataTypes>("char8", sbyte.MaxValue, TypeEnums.DataTypes.CHAR8),
-            new Tuple<string, float, TypeEnums.DataTypes>("char16", sbyte.MaxValue, TypeEnums.DataTypes.CHAR16),
-            new Tuple<string, float, TypeEnums.DataTypes>("uchar", byte.MaxValue, TypeEnums.DataTypes.UCHAR1),
-            new Tuple<string, float, TypeEnums.DataTypes>("uchar2", byte.MaxValue, TypeEnums.DataTypes.UCHAR2),
-            new Tuple<string, float, TypeEnums.DataTypes>("uchar3", byte.MaxValue, TypeEnums.DataTypes.UCHAR3),
-            new Tuple<string, float, TypeEnums.DataTypes>("uchar4", byte.MaxValue, TypeEnums.DataTypes.UCHAR4),
-            new Tuple<string, float, TypeEnums.DataTypes>("uchar8", byte.MaxValue, TypeEnums.DataTypes.UCHAR8),
-            new Tuple<string, float, TypeEnums.DataTypes>("uchar16", byte.MaxValue, TypeEnums.DataTypes.UCHAR16),
-            new Tuple<string, float, TypeEnums.DataTypes>("short", short.MaxValue, TypeEnums.DataTypes.SHORT1),
-            new Tuple<string, float, TypeEnums.DataTypes>("short2", short.MaxValue, TypeEnums.DataTypes.SHORT2),
-            new Tuple<string, float, TypeEnums.DataTypes>("short3", short.MaxValue, TypeEnums.DataTypes.SHORT3),
-            new Tuple<string, float, TypeEnums.DataTypes>("short4", short.MaxValue, TypeEnums.DataTypes.SHORT4),
-            new Tuple<string, float, TypeEnums.DataTypes>("short8", short.MaxValue, TypeEnums.DataTypes.SHORT8),
-            new Tuple<string, float, TypeEnums.DataTypes>("short16", short.MaxValue, TypeEnums.DataTypes.SHORT16),
-            new Tuple<string, float, TypeEnums.DataTypes>("ushort", ushort.MaxValue, TypeEnums.DataTypes.USHORT1),
-            new Tuple<string, float, TypeEnums.DataTypes>("ushort2", ushort.MaxValue, TypeEnums.DataTypes.USHORT2),
-            new Tuple<string, float, TypeEnums.DataTypes>("ushort3", ushort.MaxValue, TypeEnums.DataTypes.USHORT3),
-            new Tuple<string, float, TypeEnums.DataTypes>("ushort4", ushort.MaxValue, TypeEnums.DataTypes.USHORT4),
-            new Tuple<string, float, TypeEnums.DataTypes>("ushort8", ushort.MaxValue, TypeEnums.DataTypes.USHORT8),
-            new Tuple<string, float, TypeEnums.DataTypes>("ushort16", ushort.MaxValue, TypeEnums.DataTypes.USHORT16),
-            new Tuple<string, float, TypeEnums.DataTypes>("long", long.MaxValue, TypeEnums.DataTypes.LONG1),
-            new Tuple<string, float, TypeEnums.DataTypes>("long2", long.MaxValue, TypeEnums.DataTypes.LONG2),
-            new Tuple<string, float, TypeEnums.DataTypes>("long3", long.MaxValue, TypeEnums.DataTypes.LONG3),
-            new Tuple<string, float, TypeEnums.DataTypes>("long4", long.MaxValue, TypeEnums.DataTypes.LONG4),
-            new Tuple<string, float, TypeEnums.DataTypes>("long8", long.MaxValue, TypeEnums.DataTypes.LONG8),
-            new Tuple<string, float, TypeEnums.DataTypes>("long16", long.MaxValue, TypeEnums.DataTypes.LONG16),
-            new Tuple<string, float, TypeEnums.DataTypes>("ulong", ulong.MaxValue, TypeEnums.DataTypes.ULONG1),
-            new Tuple<string, float, TypeEnums.DataTypes>("ulong2", ulong.MaxValue, TypeEnums.DataTypes.ULONG2),
-            new Tuple<string, float, TypeEnums.DataTypes>("ulong3", ulong.MaxValue, TypeEnums.DataTypes.ULONG3),
-            new Tuple<string, float, TypeEnums.DataTypes>("ulong4", ulong.MaxValue, TypeEnums.DataTypes.ULONG4),
-            new Tuple<string, float, TypeEnums.DataTypes>("ulong8", ulong.MaxValue, TypeEnums.DataTypes.ULONG8),
-            new Tuple<string, float, TypeEnums.DataTypes>("ulong16", ulong.MaxValue, TypeEnums.DataTypes.ULONG16)
-        };
+        private static List<Tuple<string, float, TypeEnums.DataTypes>> DataTypePairs =
+            new List<Tuple<string, float, TypeEnums.DataTypes>>
+            {
+                new Tuple<string, float, TypeEnums.DataTypes>("float", float.MaxValue, TypeEnums.DataTypes.FLOAT1),
+                new Tuple<string, float, TypeEnums.DataTypes>("float2", float.MaxValue, TypeEnums.DataTypes.FLOAT2),
+                new Tuple<string, float, TypeEnums.DataTypes>("float3", float.MaxValue, TypeEnums.DataTypes.FLOAT3),
+                new Tuple<string, float, TypeEnums.DataTypes>("float4", float.MaxValue, TypeEnums.DataTypes.FLOAT4),
+                new Tuple<string, float, TypeEnums.DataTypes>("float8", float.MaxValue, TypeEnums.DataTypes.FLOAT8),
+                new Tuple<string, float, TypeEnums.DataTypes>("float16", float.MaxValue, TypeEnums.DataTypes.FLOAT16),
+                new Tuple<string, float, TypeEnums.DataTypes>("int", int.MaxValue, TypeEnums.DataTypes.INT1),
+                new Tuple<string, float, TypeEnums.DataTypes>("int2", int.MaxValue, TypeEnums.DataTypes.INT2),
+                new Tuple<string, float, TypeEnums.DataTypes>("int3", int.MaxValue, TypeEnums.DataTypes.INT3),
+                new Tuple<string, float, TypeEnums.DataTypes>("int4", int.MaxValue, TypeEnums.DataTypes.INT4),
+                new Tuple<string, float, TypeEnums.DataTypes>("int8", int.MaxValue, TypeEnums.DataTypes.INT8),
+                new Tuple<string, float, TypeEnums.DataTypes>("int16", int.MaxValue, TypeEnums.DataTypes.INT16),
+                new Tuple<string, float, TypeEnums.DataTypes>("uint", uint.MaxValue, TypeEnums.DataTypes.UINT1),
+                new Tuple<string, float, TypeEnums.DataTypes>("uint2", uint.MaxValue, TypeEnums.DataTypes.UINT2),
+                new Tuple<string, float, TypeEnums.DataTypes>("uint3", uint.MaxValue, TypeEnums.DataTypes.UINT3),
+                new Tuple<string, float, TypeEnums.DataTypes>("uint4", uint.MaxValue, TypeEnums.DataTypes.UINT4),
+                new Tuple<string, float, TypeEnums.DataTypes>("uint8", uint.MaxValue, TypeEnums.DataTypes.UINT8),
+                new Tuple<string, float, TypeEnums.DataTypes>("uint16", uint.MaxValue, TypeEnums.DataTypes.UINT16),
+                new Tuple<string, float, TypeEnums.DataTypes>("char", sbyte.MaxValue, TypeEnums.DataTypes.CHAR1),
+                new Tuple<string, float, TypeEnums.DataTypes>("char2", sbyte.MaxValue, TypeEnums.DataTypes.CHAR2),
+                new Tuple<string, float, TypeEnums.DataTypes>("char3", sbyte.MaxValue, TypeEnums.DataTypes.CHAR3),
+                new Tuple<string, float, TypeEnums.DataTypes>("char4", sbyte.MaxValue, TypeEnums.DataTypes.CHAR4),
+                new Tuple<string, float, TypeEnums.DataTypes>("char8", sbyte.MaxValue, TypeEnums.DataTypes.CHAR8),
+                new Tuple<string, float, TypeEnums.DataTypes>("char16", sbyte.MaxValue, TypeEnums.DataTypes.CHAR16),
+                new Tuple<string, float, TypeEnums.DataTypes>("uchar", byte.MaxValue, TypeEnums.DataTypes.UCHAR1),
+                new Tuple<string, float, TypeEnums.DataTypes>("uchar2", byte.MaxValue, TypeEnums.DataTypes.UCHAR2),
+                new Tuple<string, float, TypeEnums.DataTypes>("uchar3", byte.MaxValue, TypeEnums.DataTypes.UCHAR3),
+                new Tuple<string, float, TypeEnums.DataTypes>("uchar4", byte.MaxValue, TypeEnums.DataTypes.UCHAR4),
+                new Tuple<string, float, TypeEnums.DataTypes>("uchar8", byte.MaxValue, TypeEnums.DataTypes.UCHAR8),
+                new Tuple<string, float, TypeEnums.DataTypes>("uchar16", byte.MaxValue, TypeEnums.DataTypes.UCHAR16),
+                new Tuple<string, float, TypeEnums.DataTypes>("short", short.MaxValue, TypeEnums.DataTypes.SHORT1),
+                new Tuple<string, float, TypeEnums.DataTypes>("short2", short.MaxValue, TypeEnums.DataTypes.SHORT2),
+                new Tuple<string, float, TypeEnums.DataTypes>("short3", short.MaxValue, TypeEnums.DataTypes.SHORT3),
+                new Tuple<string, float, TypeEnums.DataTypes>("short4", short.MaxValue, TypeEnums.DataTypes.SHORT4),
+                new Tuple<string, float, TypeEnums.DataTypes>("short8", short.MaxValue, TypeEnums.DataTypes.SHORT8),
+                new Tuple<string, float, TypeEnums.DataTypes>("short16", short.MaxValue, TypeEnums.DataTypes.SHORT16),
+                new Tuple<string, float, TypeEnums.DataTypes>("ushort", ushort.MaxValue, TypeEnums.DataTypes.USHORT1),
+                new Tuple<string, float, TypeEnums.DataTypes>("ushort2", ushort.MaxValue, TypeEnums.DataTypes.USHORT2),
+                new Tuple<string, float, TypeEnums.DataTypes>("ushort3", ushort.MaxValue, TypeEnums.DataTypes.USHORT3),
+                new Tuple<string, float, TypeEnums.DataTypes>("ushort4", ushort.MaxValue, TypeEnums.DataTypes.USHORT4),
+                new Tuple<string, float, TypeEnums.DataTypes>("ushort8", ushort.MaxValue, TypeEnums.DataTypes.USHORT8),
+                new Tuple<string, float, TypeEnums.DataTypes>("ushort16", ushort.MaxValue,
+                    TypeEnums.DataTypes.USHORT16),
+                new Tuple<string, float, TypeEnums.DataTypes>("long", long.MaxValue, TypeEnums.DataTypes.LONG1),
+                new Tuple<string, float, TypeEnums.DataTypes>("long2", long.MaxValue, TypeEnums.DataTypes.LONG2),
+                new Tuple<string, float, TypeEnums.DataTypes>("long3", long.MaxValue, TypeEnums.DataTypes.LONG3),
+                new Tuple<string, float, TypeEnums.DataTypes>("long4", long.MaxValue, TypeEnums.DataTypes.LONG4),
+                new Tuple<string, float, TypeEnums.DataTypes>("long8", long.MaxValue, TypeEnums.DataTypes.LONG8),
+                new Tuple<string, float, TypeEnums.DataTypes>("long16", long.MaxValue, TypeEnums.DataTypes.LONG16),
+                new Tuple<string, float, TypeEnums.DataTypes>("ulong", ulong.MaxValue, TypeEnums.DataTypes.ULONG1),
+                new Tuple<string, float, TypeEnums.DataTypes>("ulong2", ulong.MaxValue, TypeEnums.DataTypes.ULONG2),
+                new Tuple<string, float, TypeEnums.DataTypes>("ulong3", ulong.MaxValue, TypeEnums.DataTypes.ULONG3),
+                new Tuple<string, float, TypeEnums.DataTypes>("ulong4", ulong.MaxValue, TypeEnums.DataTypes.ULONG4),
+                new Tuple<string, float, TypeEnums.DataTypes>("ulong8", ulong.MaxValue, TypeEnums.DataTypes.ULONG8),
+                new Tuple<string, float, TypeEnums.DataTypes>("ulong16", ulong.MaxValue, TypeEnums.DataTypes.ULONG16)
+            };
 
         /// <summary>
         /// Casts the supplied value to the specified type
@@ -165,7 +167,7 @@ namespace Engine.OpenCL
         {
             if (IsArray)
             {
-                var data = (object[]) value;
+                object[] data = (object[]) value;
 
                 return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
                     Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
@@ -195,14 +197,14 @@ namespace Engine.OpenCL
         /// <returns>A parsed list of Kernel parameters</returns>
         public static KernelParameter[] CreateKernelParametersFromKernelCode(string code, int startIndex, int endIndex)
         {
-            var kernelHeader = code.Substring(startIndex, endIndex);
+            string kernelHeader = code.Substring(startIndex, endIndex);
             int start = kernelHeader.IndexOf('('), end = kernelHeader.LastIndexOf(')');
-            var parameters = kernelHeader.Substring(start + 1, end - start - 1);
-            var pars = parameters.Split(',');
-            var ret = new KernelParameter[pars.Length];
-            for (var i = 0; i < pars.Length; i++)
+            string parameters = kernelHeader.Substring(start + 1, end - start - 1);
+            string[] pars = parameters.Split(',');
+            KernelParameter[] ret = new KernelParameter[pars.Length];
+            for (int i = 0; i < pars.Length; i++)
             {
-                var parametr = pars[i].Trim().Split(' ');
+                string[] parametr = pars[i].Trim().Split(' ');
 
                 ret[i] = new KernelParameter
                 {
@@ -225,7 +227,7 @@ namespace Engine.OpenCL
         /// <returns>The keyword for OpenCL as string</returns>
         public static string GetDataString(TypeEnums.DataTypes type)
         {
-            foreach (var dataTypePair in DataTypePairs)
+            foreach (Tuple<string, float, TypeEnums.DataTypes> dataTypePair in DataTypePairs)
             {
                 if (dataTypePair.Item3 == type)
                 {
@@ -244,7 +246,7 @@ namespace Engine.OpenCL
         /// <returns>max value of the data type</returns>
         public static float GetDataMaxSize(string genType)
         {
-            foreach (var dataTypePair in DataTypePairs)
+            foreach (Tuple<string, float, TypeEnums.DataTypes> dataTypePair in DataTypePairs)
             {
                 if (dataTypePair.Item1 == genType)
                 {
@@ -262,7 +264,7 @@ namespace Engine.OpenCL
         /// <returns>The data type</returns>
         public static TypeEnums.DataTypes GetDataType(string str)
         {
-            foreach (var dataTypePair in DataTypePairs)
+            foreach (Tuple<string, float, TypeEnums.DataTypes> dataTypePair in DataTypePairs)
             {
                 if (dataTypePair.Item1 == str)
                 {

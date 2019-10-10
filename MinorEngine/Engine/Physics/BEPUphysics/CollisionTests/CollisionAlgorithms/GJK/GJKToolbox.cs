@@ -31,7 +31,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             ref RigidTransform transformB)
         {
             //Zero isn't a very good guess!  But it's a cheap guess.
-            var separatingAxis = Toolbox.ZeroVector;
+            Vector3 separatingAxis = Toolbox.ZeroVector;
             return AreShapesIntersecting(shapeA, shapeB, ref transformA, ref transformB, ref separatingAxis);
         }
 
@@ -52,14 +52,14 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localtransformB);
 
             //Warm start the simplex.
-            var simplex = new SimpleSimplex();
+            SimpleSimplex simplex = new SimpleSimplex();
             Vector3 extremePoint;
             MinkowskiToolbox.GetLocalMinkowskiExtremePoint(shapeA, shapeB, ref localSeparatingAxis, ref localtransformB,
                 out extremePoint);
             simplex.AddNewSimplexPoint(ref extremePoint);
 
             Vector3 closestPoint;
-            var count = 0;
+            int count = 0;
             while (count++ < MaximumGJKIterations)
             {
                 if (simplex.GetPointClosestToOrigin(out closestPoint) || //Also reduces the simplex.
@@ -112,9 +112,9 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             RigidTransform localtransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localtransformB);
 
-            var simplex = new CachedSimplex {State = SimplexState.Point};
+            CachedSimplex simplex = new CachedSimplex {State = SimplexState.Point};
             // new CachedSimplex(shapeA, shapeB, ref localtransformB);
-            var toReturn = GetClosestPoints(shapeA, shapeB, ref localtransformB, ref simplex, out closestPointA,
+            bool toReturn = GetClosestPoints(shapeA, shapeB, ref localtransformB, ref simplex, out closestPointA,
                 out closestPointB);
 
             RigidTransform.Transform(ref closestPointA, ref transformA, out closestPointA);
@@ -140,7 +140,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             RigidTransform localtransformB;
             MinkowskiToolbox.GetLocalTransform(ref transformA, ref transformB, out localtransformB);
 
-            var toReturn = GetClosestPoints(shapeA, shapeB, ref localtransformB, ref cachedSimplex, out closestPointA,
+            bool toReturn = GetClosestPoints(shapeA, shapeB, ref localtransformB, ref cachedSimplex, out closestPointA,
                 out closestPointB);
 
             RigidTransform.Transform(ref closestPointA, ref transformA, out closestPointA);
@@ -151,10 +151,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
         private static bool GetClosestPoints(ConvexShape shapeA, ConvexShape shapeB, ref RigidTransform localTransformB,
             ref CachedSimplex cachedSimplex, out Vector3 localClosestPointA, out Vector3 localClosestPointB)
         {
-            var simplex = new PairSimplex(ref cachedSimplex, ref localTransformB);
+            PairSimplex simplex = new PairSimplex(ref cachedSimplex, ref localTransformB);
 
             Vector3 closestPoint;
-            var count = 0;
+            int count = 0;
             while (true)
             {
                 if (
@@ -216,12 +216,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             hit.T = 0;
             hit.Location = ray.Position;
             hit.Normal = Toolbox.ZeroVector;
-            var closestOffset = hit.Location;
+            Vector3 closestOffset = hit.Location;
 
-            var simplex = new RaySimplex();
+            RaySimplex simplex = new RaySimplex();
 
             float vw, closestPointDotDirection;
-            var count = 0;
+            int count = 0;
             //This epsilon has a significant impact on performance and accuracy.  Changing it to use BigEpsilon instead increases speed by around 30-40% usually, but jigging is more evident.
             while (closestOffset.LengthSquared() >= Toolbox.Epsilon * simplex.GetErrorTolerance(ref ray.Position))
             {
@@ -328,13 +328,13 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             hit.T = 0;
             hit.Location = Vector3.Zero; //The ray starts at the origin.
             hit.Normal = Toolbox.ZeroVector;
-            var v = hit.Location;
+            Vector3 v = hit.Location;
 
-            var simplex = new RaySimplex();
+            RaySimplex simplex = new RaySimplex();
 
 
             float vw, vdir;
-            var count = 0;
+            int count = 0;
             do
             {
                 if (++count > MaximumGJKIterations)
@@ -414,12 +414,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             hit.T = 0;
             hit.Location = ray.Position;
             hit.Normal = Toolbox.ZeroVector;
-            var v = hit.Location;
+            Vector3 v = hit.Location;
 
-            var simplex = new RaySimplex();
+            RaySimplex simplex = new RaySimplex();
 
             float vw, vdir;
-            var count = 0;
+            int count = 0;
 
             //This epsilon has a significant impact on performance and accuracy.  Changing it to use BigEpsilon instead increases speed by around 30-40% usually, but jigging is more evident.
             while (v.LengthSquared() >= Toolbox.Epsilon * simplex.GetErrorTolerance(ref ray.Position))
@@ -489,7 +489,7 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
             float maximumLength,
             out RayHit hit)
         {
-            var iterations = 0;
+            int iterations = 0;
             while (true)
             {
                 if (SphereCast(ray, radius, target, ref shapeTransform, maximumLength, out hit) &&

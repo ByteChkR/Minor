@@ -166,9 +166,9 @@ namespace Engine.Physics.BEPUik
 
         private void ComputeLocalInertiaTensor()
         {
-            var localInertiaTensor = new Matrix3x3();
-            var multiplier = Mass * InertiaTensorScaling;
-            var diagValue = (.0833333333f * Height * Height + .25f * Radius * Radius) * multiplier;
+            Matrix3x3 localInertiaTensor = new Matrix3x3();
+            float multiplier = Mass * InertiaTensorScaling;
+            float diagValue = (.0833333333f * Height * Height + .25f * Radius * Radius) * multiplier;
             localInertiaTensor.M11 = diagValue;
             localInertiaTensor.M22 = .5f * Radius * Radius * multiplier;
             localInertiaTensor.M33 = diagValue;
@@ -200,7 +200,7 @@ namespace Engine.Physics.BEPUik
             //Update the orientation based on the angular velocity.
             Vector3 increment;
             Vector3.Multiply(ref angularVelocity, .5f, out increment);
-            var multiplier = new Quaternion(increment.X, increment.Y, increment.Z, 0);
+            Quaternion multiplier = new Quaternion(increment.X, increment.Y, increment.Z, 0);
             Quaternion.Multiply(ref multiplier, ref Orientation, out multiplier);
             Quaternion.Add(ref Orientation, ref multiplier, out Orientation);
             Orientation.Normalize();

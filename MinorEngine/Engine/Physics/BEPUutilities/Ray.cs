@@ -51,12 +51,12 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var inverseDirection = 1 / Direction.X;
-                var t1 = (boundingBox.Min.X - Position.X) * inverseDirection;
-                var t2 = (boundingBox.Max.X - Position.X) * inverseDirection;
+                float inverseDirection = 1 / Direction.X;
+                float t1 = (boundingBox.Min.X - Position.X) * inverseDirection;
+                float t2 = (boundingBox.Max.X - Position.X) * inverseDirection;
                 if (t1 > t2)
                 {
-                    var temp = t1;
+                    float temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
@@ -82,12 +82,12 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var inverseDirection = 1 / Direction.Y;
-                var t1 = (boundingBox.Min.Y - Position.Y) * inverseDirection;
-                var t2 = (boundingBox.Max.Y - Position.Y) * inverseDirection;
+                float inverseDirection = 1 / Direction.Y;
+                float t1 = (boundingBox.Min.Y - Position.Y) * inverseDirection;
+                float t2 = (boundingBox.Max.Y - Position.Y) * inverseDirection;
                 if (t1 > t2)
                 {
-                    var temp = t1;
+                    float temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }
@@ -113,12 +113,12 @@ namespace Engine.Physics.BEPUutilities
             }
             else
             {
-                var inverseDirection = 1 / Direction.Z;
-                var t1 = (boundingBox.Min.Z - Position.Z) * inverseDirection;
-                var t2 = (boundingBox.Max.Z - Position.Z) * inverseDirection;
+                float inverseDirection = 1 / Direction.Z;
+                float t1 = (boundingBox.Min.Z - Position.Z) * inverseDirection;
+                float t2 = (boundingBox.Max.Z - Position.Z) * inverseDirection;
                 if (t1 > t2)
                 {
-                    var temp = t1;
+                    float temp = t1;
                     t1 = t2;
                     t2 = temp;
                 }

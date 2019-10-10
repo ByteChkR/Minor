@@ -254,39 +254,39 @@ namespace Engine.Physics.BEPUphysics
 
             spaceObject.Space = this;
 
-            var simulationIslandMember = spaceObject as SimulationIslandMember;
+            SimulationIslandMember simulationIslandMember = spaceObject as SimulationIslandMember;
             if (simulationIslandMember != null)
             {
                 DeactivationManager.Add(simulationIslandMember);
             }
 
-            var simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
+            ISimulationIslandMemberOwner simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
             if (simulationIslandMemberOwner != null)
             {
                 DeactivationManager.Add(simulationIslandMemberOwner.ActivityInformation);
             }
 
             //Go through each stage, adding the space object to it if necessary.
-            var velocityUpdateable = spaceObject as IForceUpdateable;
+            IForceUpdateable velocityUpdateable = spaceObject as IForceUpdateable;
             if (velocityUpdateable != null)
             {
                 ForceUpdater.Add(velocityUpdateable);
             }
 
-            var boundingBoxUpdateable = spaceObject as MobileCollidable;
+            MobileCollidable boundingBoxUpdateable = spaceObject as MobileCollidable;
             if (boundingBoxUpdateable != null)
             {
                 BoundingBoxUpdater.Add(boundingBoxUpdateable);
             }
 
-            var broadPhaseEntry = spaceObject as BroadPhaseEntry;
+            BroadPhaseEntry broadPhaseEntry = spaceObject as BroadPhaseEntry;
             if (broadPhaseEntry != null)
             {
                 BroadPhase.Add(broadPhaseEntry);
             }
 
             //Entites own collision proxies, but are not entries themselves.
-            var broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
+            IBroadPhaseEntryOwner broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
             if (broadPhaseEntryOwner != null)
             {
                 BroadPhase.Add(broadPhaseEntryOwner.Entry);
@@ -297,69 +297,69 @@ namespace Engine.Physics.BEPUphysics
                 }
             }
 
-            var solverUpdateable = spaceObject as SolverUpdateable;
+            SolverUpdateable solverUpdateable = spaceObject as SolverUpdateable;
             if (solverUpdateable != null)
             {
                 Solver.Add(solverUpdateable);
             }
 
-            var integrable = spaceObject as IPositionUpdateable;
+            IPositionUpdateable integrable = spaceObject as IPositionUpdateable;
             if (integrable != null)
             {
                 PositionUpdater.Add(integrable);
             }
 
-            var entity = spaceObject as Entity;
+            Entity entity = spaceObject as Entity;
             if (entity != null)
             {
                 BufferedStates.Add(entity);
             }
 
-            var deferredEventCreator = spaceObject as IDeferredEventCreator;
+            IDeferredEventCreator deferredEventCreator = spaceObject as IDeferredEventCreator;
             if (deferredEventCreator != null)
             {
                 DeferredEventDispatcher.AddEventCreator(deferredEventCreator);
             }
 
-            var deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
+            IDeferredEventCreatorOwner deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
             if (deferredEventCreatorOwner != null)
             {
                 DeferredEventDispatcher.AddEventCreator(deferredEventCreatorOwner.EventCreator);
             }
 
             //Updateable stages.
-            var duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
+            IDuringForcesUpdateable duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
             if (duringForcesUpdateable != null)
             {
                 DuringForcesUpdateables.Add(duringForcesUpdateable);
             }
 
-            var beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
+            IBeforeNarrowPhaseUpdateable beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
             if (beforeNarrowPhaseUpdateable != null)
             {
                 BeforeNarrowPhaseUpdateables.Add(beforeNarrowPhaseUpdateable);
             }
 
-            var beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
+            IBeforeSolverUpdateable beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
             if (beforeSolverUpdateable != null)
             {
                 BeforeSolverUpdateables.Add(beforeSolverUpdateable);
             }
 
-            var beforePositionUpdateUpdateable =
+            IBeforePositionUpdateUpdateable beforePositionUpdateUpdateable =
                 spaceObject as IBeforePositionUpdateUpdateable;
             if (beforePositionUpdateUpdateable != null)
             {
                 BeforePositionUpdateUpdateables.Add(beforePositionUpdateUpdateable);
             }
 
-            var endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
+            IEndOfTimeStepUpdateable endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
             if (endOfStepUpdateable != null)
             {
                 EndOfTimeStepUpdateables.Add(endOfStepUpdateable);
             }
 
-            var endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
+            IEndOfFrameUpdateable endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
             if (endOfFrameUpdateable != null)
             {
                 EndOfFrameUpdateables.Add(endOfFrameUpdateable);
@@ -379,39 +379,39 @@ namespace Engine.Physics.BEPUphysics
                 throw new ArgumentException("The object does not belong to this space; cannot remove it.");
             }
 
-            var simulationIslandMember = spaceObject as SimulationIslandMember;
+            SimulationIslandMember simulationIslandMember = spaceObject as SimulationIslandMember;
             if (simulationIslandMember != null)
             {
                 DeactivationManager.Remove(simulationIslandMember);
             }
 
-            var simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
+            ISimulationIslandMemberOwner simulationIslandMemberOwner = spaceObject as ISimulationIslandMemberOwner;
             if (simulationIslandMemberOwner != null)
             {
                 DeactivationManager.Remove(simulationIslandMemberOwner.ActivityInformation);
             }
 
             //Go through each stage, removing the space object from it if necessary.
-            var velocityUpdateable = spaceObject as IForceUpdateable;
+            IForceUpdateable velocityUpdateable = spaceObject as IForceUpdateable;
             if (velocityUpdateable != null)
             {
                 ForceUpdater.Remove(velocityUpdateable);
             }
 
-            var boundingBoxUpdateable = spaceObject as MobileCollidable;
+            MobileCollidable boundingBoxUpdateable = spaceObject as MobileCollidable;
             if (boundingBoxUpdateable != null)
             {
                 BoundingBoxUpdater.Remove(boundingBoxUpdateable);
             }
 
-            var broadPhaseEntry = spaceObject as BroadPhaseEntry;
+            BroadPhaseEntry broadPhaseEntry = spaceObject as BroadPhaseEntry;
             if (broadPhaseEntry != null)
             {
                 BroadPhase.Remove(broadPhaseEntry);
             }
 
             //Entites own collision proxies, but are not entries themselves.
-            var broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
+            IBroadPhaseEntryOwner broadPhaseEntryOwner = spaceObject as IBroadPhaseEntryOwner;
             if (broadPhaseEntryOwner != null)
             {
                 BroadPhase.Remove(broadPhaseEntryOwner.Entry);
@@ -422,70 +422,70 @@ namespace Engine.Physics.BEPUphysics
                 }
             }
 
-            var solverUpdateable = spaceObject as SolverUpdateable;
+            SolverUpdateable solverUpdateable = spaceObject as SolverUpdateable;
             if (solverUpdateable != null)
             {
                 Solver.Remove(solverUpdateable);
             }
 
-            var integrable = spaceObject as IPositionUpdateable;
+            IPositionUpdateable integrable = spaceObject as IPositionUpdateable;
             if (integrable != null)
             {
                 PositionUpdater.Remove(integrable);
             }
 
-            var entity = spaceObject as Entity;
+            Entity entity = spaceObject as Entity;
             if (entity != null)
             {
                 BufferedStates.Remove(entity);
             }
 
-            var deferredEventCreator = spaceObject as IDeferredEventCreator;
+            IDeferredEventCreator deferredEventCreator = spaceObject as IDeferredEventCreator;
             if (deferredEventCreator != null)
             {
                 DeferredEventDispatcher.RemoveEventCreator(deferredEventCreator);
             }
 
-            var deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
+            IDeferredEventCreatorOwner deferredEventCreatorOwner = spaceObject as IDeferredEventCreatorOwner;
             if (deferredEventCreatorOwner != null)
             {
                 DeferredEventDispatcher.RemoveEventCreator(deferredEventCreatorOwner.EventCreator);
             }
 
             //Updateable stages.
-            var duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
+            IDuringForcesUpdateable duringForcesUpdateable = spaceObject as IDuringForcesUpdateable;
             if (duringForcesUpdateable != null)
             {
                 DuringForcesUpdateables.Remove(duringForcesUpdateable);
             }
 
-            var beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
+            IBeforeNarrowPhaseUpdateable beforeNarrowPhaseUpdateable = spaceObject as IBeforeNarrowPhaseUpdateable;
             if (beforeNarrowPhaseUpdateable != null)
             {
                 BeforeNarrowPhaseUpdateables.Remove(beforeNarrowPhaseUpdateable);
             }
 
-            var beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
+            IBeforeSolverUpdateable beforeSolverUpdateable = spaceObject as IBeforeSolverUpdateable;
             if (beforeSolverUpdateable != null)
             {
                 BeforeSolverUpdateables.Remove(beforeSolverUpdateable);
             }
 
 
-            var beforePositionUpdateUpdateable =
+            IBeforePositionUpdateUpdateable beforePositionUpdateUpdateable =
                 spaceObject as IBeforePositionUpdateUpdateable;
             if (beforePositionUpdateUpdateable != null)
             {
                 BeforePositionUpdateUpdateables.Remove(beforePositionUpdateUpdateable);
             }
 
-            var endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
+            IEndOfTimeStepUpdateable endOfStepUpdateable = spaceObject as IEndOfTimeStepUpdateable;
             if (endOfStepUpdateable != null)
             {
                 EndOfTimeStepUpdateables.Remove(endOfStepUpdateable);
             }
 
-            var endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
+            IEndOfFrameUpdateable endOfFrameUpdateable = spaceObject as IEndOfFrameUpdateable;
             if (endOfFrameUpdateable != null)
             {
                 EndOfFrameUpdateables.Remove(endOfFrameUpdateable);
@@ -549,7 +549,7 @@ namespace Engine.Physics.BEPUphysics
         public void Update(float dt)
         {
             TimeStepSettings.AccumulatedTime += dt;
-            for (var i = 0; i < TimeStepSettings.MaximumTimeStepsPerFrame; i++)
+            for (int i = 0; i < TimeStepSettings.MaximumTimeStepsPerFrame; i++)
             {
                 if (TimeStepSettings.AccumulatedTime >= TimeStepSettings.TimeStepDuration)
                 {
@@ -600,12 +600,12 @@ namespace Engine.Physics.BEPUphysics
         /// <returns>Whether or not the ray hit anything.</returns>
         public bool RayCast(Ray ray, float maximumLength, out RayCastResult result)
         {
-            var resultsList = PhysicsResources.GetRayCastResultList();
-            var didHit = RayCast(ray, maximumLength, resultsList);
+            RawList<RayCastResult> resultsList = PhysicsResources.GetRayCastResultList();
+            bool didHit = RayCast(ray, maximumLength, resultsList);
             result = resultsList.Elements[0];
-            for (var i = 1; i < resultsList.Count; i++)
+            for (int i = 1; i < resultsList.Count; i++)
             {
-                var candidate = resultsList.Elements[i];
+                RayCastResult candidate = resultsList.Elements[i];
                 if (candidate.HitData.T < result.HitData.T)
                 {
                     result = candidate;
@@ -627,12 +627,12 @@ namespace Engine.Physics.BEPUphysics
         /// <returns>Whether or not the ray hit anything.</returns>
         public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter, out RayCastResult result)
         {
-            var resultsList = PhysicsResources.GetRayCastResultList();
-            var didHit = RayCast(ray, maximumLength, filter, resultsList);
+            RawList<RayCastResult> resultsList = PhysicsResources.GetRayCastResultList();
+            bool didHit = RayCast(ray, maximumLength, filter, resultsList);
             result = resultsList.Elements[0];
-            for (var i = 1; i < resultsList.Count; i++)
+            for (int i = 1; i < resultsList.Count; i++)
             {
-                var candidate = resultsList.Elements[i];
+                RayCastResult candidate = resultsList.Elements[i];
                 if (candidate.HitData.T < result.HitData.T)
                 {
                     result = candidate;
@@ -653,13 +653,13 @@ namespace Engine.Physics.BEPUphysics
         /// <returns>Whether or not the ray hit anything.</returns>
         public bool RayCast(Ray ray, float maximumLength, IList<RayCastResult> outputRayCastResults)
         {
-            var outputIntersections = PhysicsResources.GetBroadPhaseEntryList();
+            RawList<BroadPhaseEntry> outputIntersections = PhysicsResources.GetBroadPhaseEntryList();
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
-                for (var i = 0; i < outputIntersections.Count; i++)
+                for (int i = 0; i < outputIntersections.Count; i++)
                 {
                     RayHit rayHit;
-                    var candidate = outputIntersections.Elements[i];
+                    BroadPhaseEntry candidate = outputIntersections.Elements[i];
                     if (candidate.RayCast(ray, maximumLength, out rayHit))
                     {
                         outputRayCastResults.Add(new RayCastResult(rayHit, candidate));
@@ -682,13 +682,13 @@ namespace Engine.Physics.BEPUphysics
         public bool RayCast(Ray ray, float maximumLength, Func<BroadPhaseEntry, bool> filter,
             IList<RayCastResult> outputRayCastResults)
         {
-            var outputIntersections = PhysicsResources.GetBroadPhaseEntryList();
+            RawList<BroadPhaseEntry> outputIntersections = PhysicsResources.GetBroadPhaseEntryList();
             if (BroadPhase.QueryAccelerator.RayCast(ray, maximumLength, outputIntersections))
             {
-                for (var i = 0; i < outputIntersections.Count; i++)
+                for (int i = 0; i < outputIntersections.Count; i++)
                 {
                     RayHit rayHit;
-                    var candidate = outputIntersections.Elements[i];
+                    BroadPhaseEntry candidate = outputIntersections.Elements[i];
                     if (candidate.RayCast(ray, maximumLength, filter, out rayHit))
                     {
                         outputRayCastResults.Add(new RayCastResult(rayHit, candidate));
@@ -712,12 +712,12 @@ namespace Engine.Physics.BEPUphysics
         public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
             out RayCastResult castResult)
         {
-            var castResults = PhysicsResources.GetRayCastResultList();
-            var didHit = ConvexCast(castShape, ref startingTransform, ref sweep, castResults);
+            RawList<RayCastResult> castResults = PhysicsResources.GetRayCastResultList();
+            bool didHit = ConvexCast(castShape, ref startingTransform, ref sweep, castResults);
             castResult = castResults.Elements[0];
-            for (var i = 1; i < castResults.Count; i++)
+            for (int i = 1; i < castResults.Count; i++)
             {
-                var candidate = castResults.Elements[i];
+                RayCastResult candidate = castResults.Elements[i];
                 if (candidate.HitData.T < castResult.HitData.T)
                 {
                     castResult = candidate;
@@ -741,12 +741,12 @@ namespace Engine.Physics.BEPUphysics
         public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
             Func<BroadPhaseEntry, bool> filter, out RayCastResult castResult)
         {
-            var castResults = PhysicsResources.GetRayCastResultList();
-            var didHit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, castResults);
+            RawList<RayCastResult> castResults = PhysicsResources.GetRayCastResultList();
+            bool didHit = ConvexCast(castShape, ref startingTransform, ref sweep, filter, castResults);
             castResult = castResults.Elements[0];
-            for (var i = 1; i < castResults.Count; i++)
+            for (int i = 1; i < castResults.Count; i++)
             {
-                var candidate = castResults.Elements[i];
+                RayCastResult candidate = castResults.Elements[i];
                 if (candidate.HitData.T < castResult.HitData.T)
                 {
                     castResult = candidate;
@@ -769,12 +769,12 @@ namespace Engine.Physics.BEPUphysics
         public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
             IList<RayCastResult> outputCastResults)
         {
-            var overlappedElements = PhysicsResources.GetBroadPhaseEntryList();
+            RawList<BroadPhaseEntry> overlappedElements = PhysicsResources.GetBroadPhaseEntryList();
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
 
             BroadPhase.QueryAccelerator.GetEntries(boundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; ++i)
+            for (int i = 0; i < overlappedElements.Count; ++i)
             {
                 RayHit hit;
                 if (overlappedElements.Elements[i].ConvexCast(castShape, ref startingTransform, ref sweep, out hit))
@@ -801,12 +801,12 @@ namespace Engine.Physics.BEPUphysics
         public bool ConvexCast(ConvexShape castShape, ref RigidTransform startingTransform, ref Vector3 sweep,
             Func<BroadPhaseEntry, bool> filter, IList<RayCastResult> outputCastResults)
         {
-            var overlappedElements = PhysicsResources.GetBroadPhaseEntryList();
+            RawList<BroadPhaseEntry> overlappedElements = PhysicsResources.GetBroadPhaseEntryList();
             BoundingBox boundingBox;
             castShape.GetSweptBoundingBox(ref startingTransform, ref sweep, out boundingBox);
 
             BroadPhase.QueryAccelerator.GetEntries(boundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; ++i)
+            for (int i = 0; i < overlappedElements.Count; ++i)
             {
                 RayHit hit;
                 if (overlappedElements.Elements[i]

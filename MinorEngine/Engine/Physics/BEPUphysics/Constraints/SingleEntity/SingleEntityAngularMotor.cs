@@ -86,24 +86,24 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public override float SolveIteration()
         {
-            var lambda = new Vector3();
-            var aVel = entity.angularVelocity;
+            Vector3 lambda = new Vector3();
+            Vector3 aVel = entity.angularVelocity;
             lambda.X = -aVel.X + biasVelocity.X - usedSoftness * accumulatedImpulse.X;
             lambda.Y = -aVel.Y + biasVelocity.Y - usedSoftness * accumulatedImpulse.Y;
             lambda.Z = -aVel.Z + biasVelocity.Z - usedSoftness * accumulatedImpulse.Z;
 
             Matrix3x3.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
 
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            Vector3 previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse.X += lambda.X;
             accumulatedImpulse.Y += lambda.Y;
             accumulatedImpulse.Z += lambda.Z;
-            var sumLengthSquared = accumulatedImpulse.LengthSquared();
+            float sumLengthSquared = accumulatedImpulse.LengthSquared();
 
             if (sumLengthSquared > maxForceDtSquared)
             {
                 //max / impulse gives some value 0 < x < 1.  Basically, normalize the vector (divide by the length) and scale by the maximum.
-                var multiplier = maxForceDt / (float) Math.Sqrt(sumLengthSquared);
+                float multiplier = maxForceDt / (float) Math.Sqrt(sumLengthSquared);
                 accumulatedImpulse.X *= multiplier;
                 accumulatedImpulse.Y *= multiplier;
                 accumulatedImpulse.Z *= multiplier;
@@ -130,11 +130,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             Basis.rotationMatrix = entity.orientationMatrix;
             Basis.ComputeWorldSpaceAxes();
 
-            var updateRate = 1 / dt;
+            float updateRate = 1 / dt;
             if (Settings.mode == MotorMode.Servomechanism) //Only need to do the bulk of this work if it's a servo.
             {
                 Quaternion currentRelativeOrientation;
-                var worldTransform = Basis.WorldTransform;
+                Matrix3x3 worldTransform = Basis.WorldTransform;
                 Quaternion.CreateFromRotationMatrix(ref worldTransform, out currentRelativeOrientation);
 
 
@@ -154,8 +154,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
                 //Scale the axis by the desired velocity if the angle is sufficiently large (epsilon).
                 if (angle > Toolbox.BigEpsilon)
                 {
-                    var velocity = MathHelper.Min(Settings.servo.baseCorrectiveSpeed, angle * updateRate) +
-                                   angle * errorReduction;
+                    float velocity = MathHelper.Min(Settings.servo.baseCorrectiveSpeed, angle * updateRate) +
+                                     angle * errorReduction;
 
                     biasVelocity.X = axis.X * velocity;
                     biasVelocity.Y = axis.Y * velocity;
@@ -163,10 +163,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
 
 
                     //Ensure that the corrective velocity doesn't exceed the max.
-                    var length = biasVelocity.LengthSquared();
+                    float length = biasVelocity.LengthSquared();
                     if (length > Settings.servo.maxCorrectiveVelocitySquared)
                     {
-                        var multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                        float multiplier = Settings.servo.maxCorrectiveVelocity / (float) Math.Sqrt(length);
                         biasVelocity.X *= multiplier;
                         biasVelocity.Y *= multiplier;
                         biasVelocity.Z *= multiplier;
@@ -182,7 +182,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             {
                 usedSoftness = Settings.velocityMotor.softness * updateRate;
                 angle = 0; //Zero out the error;
-                var transform = Basis.WorldTransform;
+                Matrix3x3 transform = Basis.WorldTransform;
                 Matrix3x3.Transform(ref Settings.velocityMotor.goalVelocity, ref transform, out biasVelocity);
             }
 

@@ -26,8 +26,8 @@ namespace Demo.components
 
 
             Position = new Vector2(MathF.Sin(time * 2), MathF.Cos(time * 2));
-            var x = MathF.Abs(MathF.Sin(time * 2)) * 0.3f + 0.1f;
-            var y = MathF.Abs(MathF.Cos(time * 2)) * 0.3f + 0.1f;
+            float x = MathF.Abs(MathF.Sin(time * 2)) * 0.3f + 0.1f;
+            float y = MathF.Abs(MathF.Cos(time * 2)) * 0.3f + 0.1f;
             Scale = new Vector2(x, y);
         }
     }

@@ -38,11 +38,11 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             //Test against each bounding box up until the exit value is reached.
             float length = 0;
             Int2 cellIndex;
-            var currentPosition = ray.Position;
+            Vector3 currentPosition = ray.Position;
             Grid2DSortAndSweep.ComputeCell(ref currentPosition, out cellIndex);
             while (true)
             {
-                var cellWidth = 1 / Grid2DSortAndSweep.cellSizeInverse;
+                float cellWidth = 1 / Grid2DSortAndSweep.cellSizeInverse;
                 float nextT; //Distance along ray to next boundary.
                 float nextTy; //Distance along ray to next boundary along y axis.
                 float nextTz; //Distance along ray to next boundary along z axis.
@@ -73,7 +73,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                     nextTz = 10e10f;
                 }
 
-                var yIsMinimum = nextTy < nextTz;
+                bool yIsMinimum = nextTy < nextTz;
                 nextT = yIsMinimum ? nextTy : nextTz;
 
 
@@ -94,12 +94,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                     //To fully accelerate this, the entries list would need to contain both min and max interval markers.
                     //Since it only contains the sorted min intervals, we can't just start at a point in the middle of the list.
                     //Consider some giant bounding box that spans the entire list. 
-                    for (var i = 0;
+                    for (int i = 0;
                         i < cell.entries.Count
                         && cell.entries.Elements[i].item.boundingBox.Min.X <= endingX;
                         i++) //TODO: Try additional x axis pruning?
                     {
-                        var item = cell.entries.Elements[i].item;
+                        BroadPhaseEntry item = cell.entries.Elements[i].item;
                         float t;
                         if (ray.Intersects(ref item.boundingBox, out t) && t < maximumLength &&
                             !outputIntersections.Contains(item))
@@ -153,8 +153,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             Int2 min, max;
             Grid2DSortAndSweep.ComputeCell(ref boundingShape.Min, out min);
             Grid2DSortAndSweep.ComputeCell(ref boundingShape.Max, out max);
-            for (var i = min.Y; i <= max.Y; i++)
-            for (var j = min.Z; j <= max.Z; j++)
+            for (int i = min.Y; i <= max.Y; i++)
+            for (int j = min.Z; j <= max.Z; j++)
             {
                 //Grab the cell that we are currently in.
                 Int2 cellIndex;
@@ -166,13 +166,13 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                     //Since it only contains the sorted min intervals, we can't just start at a point in the middle of the list.
                     //Consider some giant bounding box that spans the entire list. 
                 {
-                    for (var k = 0;
+                    for (int k = 0;
                         k < cell.entries.Count
                         && cell.entries.Elements[k].item.boundingBox.Min.X <= boundingShape.Max.X;
                         k++) //TODO: Try additional x axis pruning? A bit of optimization potential due to overlap with AABB test.
                     {
                         bool intersects;
-                        var item = cell.entries.Elements[k].item;
+                        BroadPhaseEntry item = cell.entries.Elements[k].item;
                         boundingShape.Intersects(ref item.boundingBox, out intersects);
                         if (intersects && !overlaps.Contains(item))
                         {
@@ -189,7 +189,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             //Compute the min and max of the bounding box.
             //Loop through the cells and select bounding boxes which overlap the x axis.
 
-            var offset = new Vector3();
+            Vector3 offset = new Vector3();
 
             offset.X = boundingShape.Radius;
             offset.Y = offset.X;
@@ -201,8 +201,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             Int2 min, max;
             Grid2DSortAndSweep.ComputeCell(ref box.Min, out min);
             Grid2DSortAndSweep.ComputeCell(ref box.Max, out max);
-            for (var i = min.Y; i <= max.Y; i++)
-            for (var j = min.Z; j <= max.Z; j++)
+            for (int i = min.Y; i <= max.Y; i++)
+            for (int j = min.Z; j <= max.Z; j++)
             {
                 //Grab the cell that we are currently in.
                 Int2 cellIndex;
@@ -214,13 +214,13 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                     //Since it only contains the sorted min intervals, we can't just start at a point in the middle of the list.
                     //Consider some giant bounding box that spans the entire list. 
                 {
-                    for (var k = 0;
+                    for (int k = 0;
                         k < cell.entries.Count
                         && cell.entries.Elements[k].item.boundingBox.Min.X <= box.Max.X;
                         k++) //TODO: Try additional x axis pruning? A bit of optimization potential due to overlap with AABB test.
                     {
                         bool intersects;
-                        var item = cell.entries.Elements[k].item;
+                        BroadPhaseEntry item = cell.entries.Elements[k].item;
                         item.boundingBox.Intersects(ref boundingShape, out intersects);
                         if (intersects && !overlaps.Contains(item))
                         {

@@ -2,13 +2,11 @@
 
 namespace Engine.Exceptions
 {
-
     /// <summary>
     /// Gets thrown if an Object is beeing garbage colllected but has still references in the active scene that would otherwise cause Memory Leaks
     /// </summary>
     public class PossibleMemoryLeakException : EngineException
     {
-
         /// <summary>
         /// Constructor
         /// </summary>

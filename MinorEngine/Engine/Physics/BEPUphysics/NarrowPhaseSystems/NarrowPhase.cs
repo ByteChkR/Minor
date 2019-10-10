@@ -142,7 +142,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
 
         private void UpdateBroadPhaseOverlap(int i)
         {
-            var overlap = BroadPhaseOverlaps.Elements[i];
+            BroadPhaseOverlap overlap = BroadPhaseOverlaps.Elements[i];
 
             if (overlap.collisionRule < CollisionRule.NoNarrowPhasePair)
             {
@@ -251,8 +251,8 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
             startPairs = Stopwatch.GetTimestamp();
 #endif
 
-            var count = BroadPhaseOverlaps.Count;
-            for (var i = 0; i < count; i++)
+            int count = BroadPhaseOverlaps.Count;
+            for (int i = 0; i < count; i++)
             {
                 UpdateBroadPhaseOverlap(i);
             }
@@ -282,9 +282,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         private void RemoveStaleOverlaps()
         {
             //Remove stale objects.
-            for (var i = narrowPhasePairs.Count - 1; i >= 0; i--)
+            for (int i = narrowPhasePairs.Count - 1; i >= 0; i--)
             {
-                var pair = narrowPhasePairs.Elements[i];
+                NarrowPhasePair pair = narrowPhasePairs.Elements[i];
 
                 //A stale overlap is a pair which has not been updated, but not because of inactivity.
 

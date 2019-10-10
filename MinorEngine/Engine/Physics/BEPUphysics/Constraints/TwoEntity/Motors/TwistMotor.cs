@@ -158,7 +158,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
 
             Vector3 worldXAxis;
             Vector3.Cross(ref worldTwistAxisA, ref Toolbox.UpVector, out worldXAxis);
-            var length = worldXAxis.LengthSquared();
+            float length = worldXAxis.LengthSquared();
             if (length < Toolbox.Epsilon)
             {
                 Vector3.Cross(ref worldTwistAxisA, ref Toolbox.RightVector, out worldXAxis);
@@ -192,13 +192,13 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
             Vector3.Dot(ref connectionA.angularVelocity, ref jacobianA, out velocityA);
             Vector3.Dot(ref connectionB.angularVelocity, ref jacobianB, out velocityB);
             //Add in the constraint space bias velocity
-            var lambda = -(velocityA + velocityB) + biasVelocity - usedSoftness * TotalImpulse;
+            float lambda = -(velocityA + velocityB) + biasVelocity - usedSoftness * TotalImpulse;
 
             //Transform to an impulse
             lambda *= velocityToImpulse;
 
             //Accumulate the impulse
-            var previousAccumulatedImpulse = TotalImpulse;
+            float previousAccumulatedImpulse = TotalImpulse;
             TotalImpulse = MathHelper.Clamp(TotalImpulse + lambda, -maxForceDt, maxForceDt);
             lambda = TotalImpulse - previousAccumulatedImpulse;
 
@@ -245,11 +245,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
                 float y, x;
                 Vector3.Dot(ref twistMeasureAxis, ref BasisA.yAxis, out y);
                 Vector3.Dot(ref twistMeasureAxis, ref BasisA.xAxis, out x);
-                var angle = (float) Math.Atan2(y, x);
+                float angle = (float) Math.Atan2(y, x);
 
                 //Compute goal velocity.
                 Error = GetDistanceFromGoal(angle);
-                var absErrorOverDt = Math.Abs(Error / dt);
+                float absErrorOverDt = Math.Abs(Error / dt);
                 float errorReduction;
                 Settings.servo.springSettings.ComputeErrorReductionAndSoftness(dt, 1 / dt, out errorReduction,
                     out usedSoftness);
@@ -346,7 +346,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
         private float GetDistanceFromGoal(float angle)
         {
             float forwardDistance;
-            var goalAngle = MathHelper.WrapAngle(Settings.servo.goal);
+            float goalAngle = MathHelper.WrapAngle(Settings.servo.goal);
             if (goalAngle > 0)
             {
                 if (angle > goalAngle)

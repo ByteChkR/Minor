@@ -1,5 +1,6 @@
 ﻿using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUutilities;
+using Engine.Physics.BEPUutilities.DataStructures;
 using Engine.Physics.BEPUutilities.ResourceManagement;
 
 namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
@@ -78,19 +79,19 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public void UpdateConvexShapeInfo()
         {
             //Compute the volume distribution.
-            var samples = CommonResources.GetVectorList();
+            RawList<Vector3> samples = CommonResources.GetVectorList();
             if (samples.Capacity < InertiaHelper.SampleDirections.Length)
             {
                 samples.Capacity = InertiaHelper.SampleDirections.Length;
             }
 
             samples.Count = InertiaHelper.SampleDirections.Length;
-            for (var i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
+            for (int i = 0; i < InertiaHelper.SampleDirections.Length; ++i)
             {
                 shape.GetLocalExtremePointWithoutMargin(ref InertiaHelper.SampleDirections[i], out samples.Elements[i]);
             }
 
-            var triangles = CommonResources.GetIntList();
+            RawList<int> triangles = CommonResources.GetIntList();
             ConvexHullHelper.GetConvexHull(samples, triangles);
 
             float volume;
@@ -129,7 +130,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public float ComputeMaximumRadius()
         {
             //This will overestimate the actual maximum radius, but such is the defined behavior of the ComputeMaximumRadius function.  It's not exact; it's an upper bound on the actual maximum.
-            var identity = RigidTransform.Identity;
+            RigidTransform identity = RigidTransform.Identity;
             BoundingBox boundingBox;
             GetBoundingBox(ref identity, out boundingBox);
             Vector3 diameter;

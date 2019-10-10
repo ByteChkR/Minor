@@ -92,8 +92,9 @@ namespace Engine.Physics.BEPUutilities.DataStructures
 
         private void Resize(int newPoolIndex)
         {
-            System.Diagnostics.Debug.Assert(Count <= 1 << newPoolIndex, "New pool index must contain all elements in the queue.");
-            var oldQueue = this;
+            System.Diagnostics.Debug.Assert(Count <= 1 << newPoolIndex,
+                "New pool index must contain all elements in the queue.");
+            QuickQueue<T> oldQueue = this;
             this = new QuickQueue<T>(pool, newPoolIndex);
             Count = oldQueue.Count;
             //Copy the old first-end to the first part of the new array.
@@ -200,7 +201,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
                 throw new InvalidOperationException("The queue is empty.");
             }
 
-            var element = Elements[FirstIndex];
+            T element = Elements[FirstIndex];
             Elements[FirstIndex] = default;
             FirstIndex = (FirstIndex + 1) & capacityMask;
             --Count;
@@ -222,7 +223,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
                 throw new InvalidOperationException("The queue is empty.");
             }
 
-            var element = Elements[LastIndex];
+            T element = Elements[LastIndex];
             Elements[LastIndex] = default;
             LastIndex = (LastIndex - 1) & capacityMask;
             --Count;
@@ -345,7 +346,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public void Compact()
         {
             Validate();
-            var newPoolIndex = BufferPool<T>.GetPoolIndex(Count);
+            int newPoolIndex = BufferPool<T>.GetPoolIndex(Count);
             if (newPoolIndex != poolIndex)
             {
                 Resize(newPoolIndex);
@@ -375,7 +376,8 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         [Conditional("DEBUG")]
         private void Validate()
         {
-            System.Diagnostics.Debug.Assert(pool != null, "Should not use a default-constructed or disposed QuickQueue.");
+            System.Diagnostics.Debug.Assert(pool != null,
+                "Should not use a default-constructed or disposed QuickQueue.");
         }
 
         public Enumerator GetEnumerator()

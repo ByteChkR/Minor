@@ -54,13 +54,13 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             penetrationConstraints = new RawList<ContactPenetrationConstraint>(4);
             frictionConstraints = new RawList<ContactFrictionConstraint>(4);
 
-            for (var i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                var penetrationConstraint = new ContactPenetrationConstraint();
+                ContactPenetrationConstraint penetrationConstraint = new ContactPenetrationConstraint();
                 penetrationConstraintPool.Push(penetrationConstraint);
                 Add(penetrationConstraint);
 
-                var frictionConstraint = new ContactFrictionConstraint();
+                ContactFrictionConstraint frictionConstraint = new ContactFrictionConstraint();
                 frictionConstraintPool.Push(frictionConstraint);
                 Add(frictionConstraint);
             }
@@ -74,17 +74,17 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         {
             base.CleanUp();
             //Deactivate any remaining constraints.
-            for (var i = penetrationConstraints.Count - 1; i >= 0; i--)
+            for (int i = penetrationConstraints.Count - 1; i >= 0; i--)
             {
-                var penetrationConstraint = penetrationConstraints.Elements[i];
+                ContactPenetrationConstraint penetrationConstraint = penetrationConstraints.Elements[i];
                 penetrationConstraint.CleanUp();
                 penetrationConstraints.RemoveAt(i);
                 penetrationConstraintPool.Push(penetrationConstraint);
             }
 
-            for (var i = frictionConstraints.Count - 1; i >= 0; i--)
+            for (int i = frictionConstraints.Count - 1; i >= 0; i--)
             {
-                var frictionConstraint = frictionConstraints.Elements[i];
+                ContactFrictionConstraint frictionConstraint = frictionConstraints.Elements[i];
                 frictionConstraint.CleanUp();
                 frictionConstraints.RemoveAt(i);
                 frictionConstraintPool.Push(frictionConstraint);
@@ -106,11 +106,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void AddContact(Contact contact)
         {
             contact.Validate();
-            var penetrationConstraint = penetrationConstraintPool.Pop();
+            ContactPenetrationConstraint penetrationConstraint = penetrationConstraintPool.Pop();
             penetrationConstraint.Setup(this, contact);
             penetrationConstraints.Add(penetrationConstraint);
 
-            var frictionConstraint = frictionConstraintPool.Pop();
+            ContactFrictionConstraint frictionConstraint = frictionConstraintPool.Pop();
             frictionConstraint.Setup(this, penetrationConstraint);
             frictionConstraints.Add(frictionConstraint);
         }
@@ -122,7 +122,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         public override void RemoveContact(Contact contact)
         {
             ContactPenetrationConstraint penetrationConstraint = null;
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 if ((penetrationConstraint = penetrationConstraints.Elements[i]).contact == contact)
                 {
@@ -133,9 +133,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
                 }
             }
 
-            for (var i = frictionConstraints.Count - 1; i >= 0; i--)
+            for (int i = frictionConstraints.Count - 1; i >= 0; i--)
             {
-                var frictionConstraint = frictionConstraints[i];
+                ContactFrictionConstraint frictionConstraint = frictionConstraints[i];
                 if (frictionConstraint.PenetrationConstraint == penetrationConstraint)
                 {
                     frictionConstraint.CleanUp();
@@ -161,12 +161,12 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         ///<param name="dt">Timestep duration.</param>
         public sealed override void Update(float dt)
         {
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 UpdateUpdateable(penetrationConstraints.Elements[i], dt);
             }
 
-            for (var i = 0; i < frictionConstraints.Count; i++)
+            for (int i = 0; i < frictionConstraints.Count; i++)
             {
                 UpdateUpdateable(frictionConstraints.Elements[i], dt);
             }
@@ -180,12 +180,12 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         /// </summary>
         public sealed override void ExclusiveUpdate()
         {
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 ExclusiveUpdateUpdateable(penetrationConstraints.Elements[i]);
             }
 
-            for (var i = 0; i < frictionConstraints.Count; i++)
+            for (int i = 0; i < frictionConstraints.Count; i++)
             {
                 ExclusiveUpdateUpdateable(frictionConstraints.Elements[i]);
             }
@@ -198,13 +198,13 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         /// <returns>The rough applied impulse magnitude.</returns>
         public sealed override float SolveIteration()
         {
-            var activeConstraints = 0;
-            for (var i = 0; i < penetrationConstraints.Count; i++)
+            int activeConstraints = 0;
+            for (int i = 0; i < penetrationConstraints.Count; i++)
             {
                 SolveUpdateable(penetrationConstraints.Elements[i], ref activeConstraints);
             }
 
-            for (var i = 0; i < frictionConstraints.Count; i++)
+            for (int i = 0; i < frictionConstraints.Count; i++)
             {
                 SolveUpdateable(frictionConstraints.Elements[i], ref activeConstraints);
             }

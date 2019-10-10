@@ -241,11 +241,11 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         {
             get
             {
-                var velocity = vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY +
-                               vehicleEntity.linearVelocity.Z * linearAZ +
-                               vehicleEntity.angularVelocity.X * angularAX +
-                               vehicleEntity.angularVelocity.Y * angularAY +
-                               vehicleEntity.angularVelocity.Z * angularAZ;
+                float velocity = vehicleEntity.linearVelocity.X * linearAX + vehicleEntity.linearVelocity.Y * linearAY +
+                                 vehicleEntity.linearVelocity.Z * linearAZ +
+                                 vehicleEntity.angularVelocity.X * angularAX +
+                                 vehicleEntity.angularVelocity.Y * angularAY +
+                                 vehicleEntity.angularVelocity.Z * angularAZ;
                 if (supportEntity != null)
                 {
                     velocity += -supportEntity.linearVelocity.X * linearAX - supportEntity.linearVelocity.Y * linearAY -
@@ -262,19 +262,19 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         internal float ApplyImpulse()
         {
             //Compute relative velocity
-            var lambda = (RelativeVelocity
-                          + bias //Add in position correction
-                          + softness * accumulatedImpulse) //Add in squishiness
-                         * velocityToImpulse; //convert to impulse
+            float lambda = (RelativeVelocity
+                            + bias //Add in position correction
+                            + softness * accumulatedImpulse) //Add in squishiness
+                           * velocityToImpulse; //convert to impulse
 
 
             //Clamp accumulated impulse
-            var previousAccumulatedImpulse = accumulatedImpulse;
+            float previousAccumulatedImpulse = accumulatedImpulse;
             accumulatedImpulse = MathHelper.Clamp(accumulatedImpulse + lambda, -maximumSpringForce, 0);
             lambda = accumulatedImpulse - previousAccumulatedImpulse;
-            
-            var linear = new Vector3();
-            var angular = new Vector3();
+
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = lambda * linearAX;
             linear.Y = lambda * linearAY;
             linear.Z = lambda * linearAZ;
@@ -401,8 +401,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         internal void ExclusiveUpdate()
         {
             //Warm starting
-            var linear = new Vector3();
-            var angular = new Vector3();
+            Vector3 linear = new Vector3();
+            Vector3 angular = new Vector3();
             linear.X = accumulatedImpulse * linearAX;
             linear.Y = accumulatedImpulse * linearAY;
             linear.Z = accumulatedImpulse * linearAZ;

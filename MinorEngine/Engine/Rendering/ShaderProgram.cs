@@ -34,15 +34,15 @@ namespace Engine.Rendering
         /// <returns></returns>
         public static bool TryCreate(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
         {
-            var ret = true;
+            bool ret = true;
             program = new ShaderProgram();
-            var shaders = new List<int>();
-            foreach (var shader in subshaders)
+            List<int> shaders = new List<int>();
+            foreach (KeyValuePair<ShaderType, string> shader in subshaders)
             {
                 Logger.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
 
-                var code = TextProcessorAPI.PreprocessSource(shader.Value, null);
-                var r = TryCompileShader(shader.Key, code, out var id);
+                string code = TextProcessorAPI.PreprocessSource(shader.Value, null);
+                bool r = TryCompileShader(shader.Key, code, out int id);
                 ret &= r;
                 if (r)
                 {
@@ -51,7 +51,7 @@ namespace Engine.Rendering
             }
 
 
-            for (var i = 0; i < shaders.Count; i++)
+            for (int i = 0; i < shaders.Count; i++)
             {
                 Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i), DebugChannel.Log);
                 GL.AttachShader(program._prgId, shaders[i]);
@@ -60,7 +60,7 @@ namespace Engine.Rendering
             Logger.Log("Linking Program...", DebugChannel.Log);
             GL.LinkProgram(program._prgId);
 
-            GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out var success);
+            GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out int success);
             if (success == 0)
             {
                 Logger.Log(GL.GetProgramInfoLog(program._prgId), DebugChannel.Error);
@@ -93,9 +93,10 @@ namespace Engine.Rendering
         /// <returns>Attribute Location</returns>
         public int GetAttribLocation(string name)
         {
-            var loc = GL.GetAttribLocation(_prgId, name);
+            int loc = GL.GetAttribLocation(_prgId, name);
             return loc;
         }
+
         /// <summary>
         /// Returns the Uniform location by name
         /// </summary>
@@ -103,7 +104,7 @@ namespace Engine.Rendering
         /// <returns>Uniform Location</returns>
         public int GetUniformLocation(string name)
         {
-            var loc = GL.GetUniformLocation(_prgId, name);
+            int loc = GL.GetUniformLocation(_prgId, name);
             return loc;
         }
 
@@ -119,7 +120,7 @@ namespace Engine.Rendering
             shaderID = GL.CreateShader(type);
             GL.ShaderSource(shaderID, source);
             GL.CompileShader(shaderID);
-            GL.GetShader(shaderID, ShaderParameter.CompileStatus, out var success);
+            GL.GetShader(shaderID, ShaderParameter.CompileStatus, out int success);
             if (success == 0)
             {
                 Logger.Log(GL.GetShaderInfoLog(shaderID), DebugChannel.Error);

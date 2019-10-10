@@ -52,9 +52,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         protected override void UpdateContainedPairs()
         {
             compoundInfo.hierarchy.Tree.GetOverlaps(compoundInfoB.hierarchy.Tree, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
-                var element = overlappedElements.Elements[i];
+                TreeOverlapPair<CompoundChild, CompoundChild> element = overlappedElements.Elements[i];
                 TryToAdd(element.OverlapA.CollisionInformation, element.OverlapB.CollisionInformation,
                     element.OverlapA.Material, element.OverlapB.Material);
             }

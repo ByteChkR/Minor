@@ -217,12 +217,12 @@ namespace Engine.Physics.BEPUphysics
                 SubPoolTriangleCollidables = new UnsafeResourcePool<TriangleCollidable>();
             }
 
-            var tri = SubPoolTriangleCollidables.Take();
-            var shape = tri.Shape;
+            TriangleCollidable tri = SubPoolTriangleCollidables.Take();
+            TriangleShape shape = tri.Shape;
             shape.vA = a;
             shape.vB = b;
             shape.vC = c;
-            var identity = RigidTransform.Identity;
+            RigidTransform identity = RigidTransform.Identity;
             tri.UpdateBoundingBoxForTransform(ref identity);
             return tri;
         }

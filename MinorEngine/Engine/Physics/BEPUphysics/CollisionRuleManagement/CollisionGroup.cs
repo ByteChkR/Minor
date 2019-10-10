@@ -16,7 +16,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         public CollisionGroup()
         {
             const ulong prime = 0xd8163841;
-            var hash = (ulong) base.GetHashCode();
+            ulong hash = (ulong) base.GetHashCode();
             hash = hash * hash * hash * hash * hash * prime;
             hashCode = (int) hash;
         }
@@ -31,7 +31,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         /// <param name="rule">CollisionRule to use between the pair.</param>
         public static void DefineCollisionRule(CollisionGroup groupA, CollisionGroup groupB, CollisionRule rule)
         {
-            var pair = new CollisionGroupPair(groupA, groupB);
+            CollisionGroupPair pair = new CollisionGroupPair(groupA, groupB);
             if (CollisionRules.CollisionGroupRules.ContainsKey(pair))
             {
                 CollisionRules.CollisionGroupRules[pair] = rule;
@@ -51,7 +51,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         public static void DefineCollisionRulesBetweenSets(List<CollisionGroup> aGroups, List<CollisionGroup> bGroups,
             CollisionRule rule)
         {
-            foreach (var group in aGroups)
+            foreach (CollisionGroup group in aGroups)
             {
                 DefineCollisionRulesWithSet(@group, bGroups, rule);
             }
@@ -66,13 +66,13 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         public static void DefineCollisionRulesInSet(List<CollisionGroup> groups, CollisionRule self,
             CollisionRule other)
         {
-            for (var i = 0; i < groups.Count; i++)
+            for (int i = 0; i < groups.Count; i++)
             {
                 DefineCollisionRule(groups[i], groups[i], self);
             }
 
-            for (var i = 0; i < groups.Count - 1; i++)
-            for (var j = i + 1; j < groups.Count; j++)
+            for (int i = 0; i < groups.Count - 1; i++)
+            for (int j = i + 1; j < groups.Count; j++)
             {
                 DefineCollisionRule(groups[i], groups[j], other);
             }
@@ -87,7 +87,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         public static void DefineCollisionRulesWithSet(CollisionGroup group, List<CollisionGroup> groups,
             CollisionRule rule)
         {
-            foreach (var g in groups)
+            foreach (CollisionGroup g in groups)
             {
                 DefineCollisionRule(@group, g, rule);
             }
@@ -100,8 +100,8 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         /// <param name="groupB">SecondCollisionGroup of the pair.</param>
         public static void RemoveCollisionRule(CollisionGroup groupA, CollisionGroup groupB)
         {
-            var dictionary = CollisionRules.CollisionGroupRules;
-            var pair = new CollisionGroupPair(groupA, groupB);
+            Dictionary<CollisionGroupPair, CollisionRule> dictionary = CollisionRules.CollisionGroupRules;
+            CollisionGroupPair pair = new CollisionGroupPair(groupA, groupB);
             if (dictionary.ContainsKey(pair))
             {
                 dictionary.Remove(pair);
@@ -115,7 +115,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         /// <param name="bGroups">Second set of groups.</param>
         public static void RemoveCollisionRulesBetweenSets(List<CollisionGroup> aGroups, List<CollisionGroup> bGroups)
         {
-            foreach (var group in aGroups)
+            foreach (CollisionGroup group in aGroups)
             {
                 RemoveCollisionRulesWithSet(@group, bGroups);
             }
@@ -127,13 +127,13 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         /// <param name="groups">Set of CollisionGroups.</param>
         public static void RemoveCollisionRulesInSet(List<CollisionGroup> groups)
         {
-            for (var i = 0; i < groups.Count; i++)
+            for (int i = 0; i < groups.Count; i++)
             {
                 RemoveCollisionRule(groups[i], groups[i]);
             }
 
-            for (var i = 0; i < groups.Count - 1; i++)
-            for (var j = i + 1; j < groups.Count; j++)
+            for (int i = 0; i < groups.Count - 1; i++)
+            for (int j = i + 1; j < groups.Count; j++)
             {
                 RemoveCollisionRule(groups[i], groups[j]);
             }
@@ -146,7 +146,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         /// <param name="groups">Set of CollisionGroups; each group will have its CollisionRule with the first group removed.</param>
         public static void RemoveCollisionRulesWithSet(CollisionGroup group, List<CollisionGroup> groups)
         {
-            foreach (var g in groups)
+            foreach (CollisionGroup g in groups)
             {
                 RemoveCollisionRule(@group, g);
             }

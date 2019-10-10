@@ -1,6 +1,8 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUphysics.BroadPhaseSystems;
+using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK;
 using Engine.Physics.BEPUphysics.CollisionTests.Manifolds;
 using Engine.Physics.BEPUphysics.Constraints.Collision;
@@ -102,11 +104,12 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         ///<param name="dt">Timestep duration.</param>
         public override void UpdateTimeOfImpact(Collidable requester, float dt)
         {
-            var overlap = BroadPhaseOverlap;
-            var meshMode = mobileMesh.entity == null
+            BroadPhaseOverlap overlap = BroadPhaseOverlap;
+            PositionUpdateMode meshMode = mobileMesh.entity == null
                 ? PositionUpdateMode.Discrete
                 : mobileMesh.entity.PositionUpdateMode;
-            var convexMode = convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
+            PositionUpdateMode convexMode =
+                convex.entity == null ? PositionUpdateMode.Discrete : convex.entity.PositionUpdateMode;
 
             if (
                 (mobileMesh.IsActive || convex.IsActive) && //At least one has to be active.
@@ -142,22 +145,22 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
                 }
 
                 Vector3.Multiply(ref velocity, dt, out velocity);
-                var velocitySquared = velocity.LengthSquared();
+                float velocitySquared = velocity.LengthSquared();
 
-                var minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
+                float minimumRadius = convex.Shape.MinimumRadius * MotionSettings.CoreShapeScaling;
                 timeOfImpact = 1;
                 if (minimumRadius * minimumRadius < velocitySquared)
                 {
-                    var sidedness = mobileMesh.Shape.Sidedness;
+                    TriangleSidedness sidedness = mobileMesh.Shape.Sidedness;
                     Matrix3x3 orientation;
                     Matrix3x3.CreateFromQuaternion(ref mobileMesh.worldTransform.Orientation, out orientation);
-                    var triangle = PhysicsThreadResources.GetTriangle();
+                    TriangleShape triangle = PhysicsThreadResources.GetTriangle();
                     triangle.collisionMargin = 0;
                     //Spherecast against all triangles to find the earliest time.
-                    for (var i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
+                    for (int i = 0; i < MeshManifold.overlappedTriangles.Count; i++)
                     {
-                        var data = mobileMesh.Shape.TriangleMesh.Data;
-                        var triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
+                        MeshBoundingBoxTreeData data = mobileMesh.Shape.TriangleMesh.Data;
+                        int triangleIndex = MeshManifold.overlappedTriangles.Elements[i];
                         data.GetTriangle(triangleIndex, out triangle.vA, out triangle.vB, out triangle.vC);
                         Matrix3x3.Transform(ref triangle.vA, ref orientation, out triangle.vA);
                         Matrix3x3.Transform(ref triangle.vB, ref orientation, out triangle.vB);
@@ -211,7 +214,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             //Find the contact's normal and friction forces.
             info.FrictionImpulse = 0;
             info.NormalImpulse = 0;
-            for (var i = 0; i < contactConstraint.frictionConstraints.Count; i++)
+            for (int i = 0; i < contactConstraint.frictionConstraints.Count; i++)
             {
                 if (contactConstraint.frictionConstraints.Elements[i].PenetrationConstraint.contact == info.Contact)
                 {

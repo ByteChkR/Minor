@@ -9,13 +9,15 @@ namespace Engine.OpenCL
 {
     public static class BufferOperations
     {
-        public static MemoryBuffer GetRegion<T>(MemoryBuffer buffer, int3 sourceBufferDimensions, int channelcount, int3 start, int3 bounds) where T : struct
+        public static MemoryBuffer GetRegion<T>(MemoryBuffer buffer, int3 sourceBufferDimensions, int channelcount,
+            int3 start, int3 bounds) where T : struct
         {
             CLProgram program = new CLProgram("internal_kernels/get_buffer_region.cl", "");
 
             CLKernel kernel = program.ContainedKernels["getregion"];
 
-            int bufferSize = sourceBufferDimensions.x * sourceBufferDimensions.y * sourceBufferDimensions.z * channelcount;
+            int bufferSize = sourceBufferDimensions.x * sourceBufferDimensions.y * sourceBufferDimensions.z *
+                             channelcount;
 
             int dstSize = bounds.x * bounds.y * bounds.z * channelcount;
 
@@ -34,7 +36,6 @@ namespace Engine.OpenCL
 
             T[] ret = CLAPI.ReadBuffer<T>(buf, dstSize);
             return buf;
-
         }
     }
 }

@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -47,7 +46,7 @@ namespace Engine.OpenCL.DotNetCore.Interop.Profiling
             [Out] byte[] parameterValue,
             [Out] out UIntPtr parameterValueSizeReturned
         );
-        
+
         #endregion
     }
 }

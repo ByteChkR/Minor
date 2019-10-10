@@ -1,4 +1,3 @@
-
 #region Using Directives
 
 using System;
@@ -45,9 +44,12 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.name))
-                    this.name = this.GetPlatformInformation<string>(PlatformInformation.Name);
-                return this.name;
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = GetPlatformInformation<string>(PlatformInformation.Name);
+                }
+
+                return name;
             }
         }
 
@@ -63,9 +65,12 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(this.vendor))
-                    this.vendor = this.GetPlatformInformation<string>(PlatformInformation.Vendor);
-                return this.vendor;
+                if (string.IsNullOrWhiteSpace(vendor))
+                {
+                    vendor = GetPlatformInformation<string>(PlatformInformation.Vendor);
+                }
+
+                return vendor;
             }
         }
 
@@ -81,9 +86,12 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (this.version == null)
-                    this.version = new Version(this.GetPlatformInformation<string>(PlatformInformation.Version));
-                return this.version;
+                if (version == null)
+                {
+                    version = new Version(GetPlatformInformation<string>(PlatformInformation.Version));
+                }
+
+                return version;
             }
         }
 
@@ -99,15 +107,20 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (!this.profile.HasValue)
+                if (!profile.HasValue)
                 {
-                    string profileName = this.GetPlatformInformation<string>(PlatformInformation.Profile);
+                    string profileName = GetPlatformInformation<string>(PlatformInformation.Profile);
                     if (profileName == "FULL_PROFILE")
-                        this.profile = Profile.Full;
+                    {
+                        profile = Profile.Full;
+                    }
                     else
-                        this.profile = Profile.Embedded;
+                    {
+                        profile = Profile.Embedded;
+                    }
                 }
-                return this.profile.Value;
+
+                return profile.Value;
             }
         }
 
@@ -123,9 +136,12 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (this.extensions == null)
-                    this.extensions = this.GetPlatformInformation<string>(PlatformInformation.Extensions).Split(' ').ToList();
-                return this.extensions;
+                if (extensions == null)
+                {
+                    extensions = GetPlatformInformation<string>(PlatformInformation.Extensions).Split(' ').ToList();
+                }
+
+                return extensions;
             }
         }
 
@@ -141,9 +157,13 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (!this.platformHostTimerResolution.HasValue)
-                    this.platformHostTimerResolution = (long)this.GetPlatformInformation<ulong>(PlatformInformation.PlatformHostTimerResolution);
-                return this.platformHostTimerResolution.Value;
+                if (!platformHostTimerResolution.HasValue)
+                {
+                    platformHostTimerResolution =
+                        (long) GetPlatformInformation<ulong>(PlatformInformation.PlatformHostTimerResolution);
+                }
+
+                return platformHostTimerResolution.Value;
             }
         }
 
@@ -159,9 +179,12 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             get
             {
-                if (this.platformIcdSuffix == null)
-                    this.platformIcdSuffix = this.GetPlatformInformation<string>(PlatformInformation.PlatformIcdSuffix);
-                return this.platformIcdSuffix;
+                if (platformIcdSuffix == null)
+                {
+                    platformIcdSuffix = GetPlatformInformation<string>(PlatformInformation.PlatformIcdSuffix);
+                }
+
+                return platformIcdSuffix;
             }
         }
 
@@ -180,15 +203,21 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         {
             // Retrieves the size of the return value in bytes, this is used to later get the full information
             UIntPtr returnValueSize;
-            Result result = PlatformsNativeApi.GetPlatformInformation(this.Handle, platformInformation, UIntPtr.Zero, null, out returnValueSize);
+            Result result = PlatformsNativeApi.GetPlatformInformation(Handle, platformInformation, UIntPtr.Zero, null,
+                out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The platform information could not be retrieved.", result);
+            }
 
             // Allocates enough memory for the return value and retrieves it
             byte[] output = new byte[returnValueSize.ToUInt32()];
-            result = PlatformsNativeApi.GetPlatformInformation(this.Handle, platformInformation, new UIntPtr((uint)output.Length), output, out returnValueSize);
+            result = PlatformsNativeApi.GetPlatformInformation(Handle, platformInformation,
+                new UIntPtr((uint) output.Length), output, out returnValueSize);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The platform information could not be retrieved.", result);
+            }
 
             // Returns the output
             return InteropConverter.To<T>(output);
@@ -204,23 +233,31 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         /// <param name="deviceType">The type of devices that is to be retrieved.</param>
         /// <exception cref="OpenClException">If the devices could not be retrieved, then a <see cref="OpenClException"/> is thrown.</exception>
         /// <returns>Returns a list of all devices that matched the specified device type.</returns>
-        public IEnumerable<Device> GetDevices(Engine.OpenCL.DotNetCore.Devices.DeviceType deviceType)
+        public IEnumerable<Device> GetDevices(Devices.DeviceType deviceType)
         {
             // Gets the number of available devices of the specified type
             uint numberOfAvailableDevices;
-            Result result = DevicesNativeApi.GetDeviceIds(this.Handle, (Interop.Devices.DeviceType)deviceType, 0, null, out numberOfAvailableDevices);
+            Result result = DevicesNativeApi.GetDeviceIds(Handle, (Interop.Devices.DeviceType) deviceType, 0, null,
+                out numberOfAvailableDevices);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The number of available devices could not be queried.", result);
+            }
 
             // Gets the pointers to the devices of the specified type
             IntPtr[] devicePointers = new IntPtr[numberOfAvailableDevices];
-            result = DevicesNativeApi.GetDeviceIds(this.Handle, (Interop.Devices.DeviceType)deviceType, numberOfAvailableDevices, devicePointers, out numberOfAvailableDevices);
+            result = DevicesNativeApi.GetDeviceIds(Handle, (Interop.Devices.DeviceType) deviceType,
+                numberOfAvailableDevices, devicePointers, out numberOfAvailableDevices);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The devices could not be retrieved.", result);
+            }
 
             // Converts the pointer to device objects
             foreach (IntPtr devicePointer in devicePointers)
+            {
                 yield return new Device(devicePointer);
+            }
         }
 
         #endregion
@@ -238,17 +275,24 @@ namespace Engine.OpenCL.DotNetCore.Platforms
             uint numberOfAvailablePlatforms;
             Result result = PlatformsNativeApi.GetPlatformIds(0, null, out numberOfAvailablePlatforms);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The number of platforms could not be queried.", result);
-            
+            }
+
             // Gets pointers to all the platforms
             IntPtr[] platformPointers = new IntPtr[numberOfAvailablePlatforms];
-            result = PlatformsNativeApi.GetPlatformIds(numberOfAvailablePlatforms, platformPointers, out numberOfAvailablePlatforms);
+            result = PlatformsNativeApi.GetPlatformIds(numberOfAvailablePlatforms, platformPointers,
+                out numberOfAvailablePlatforms);
             if (result != Result.Success)
+            {
                 throw new OpenClException("The platforms could not be retrieved.", result);
+            }
 
             // Converts the pointers to platform objects
             foreach (IntPtr platformPointer in platformPointers)
+            {
                 yield return new Platform(platformPointer);
+            }
         }
 
         #endregion

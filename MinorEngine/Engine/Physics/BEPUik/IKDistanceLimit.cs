@@ -94,10 +94,10 @@ namespace Engine.Physics.BEPUik
             //Compute the distance.
             Vector3 separation;
             Vector3.Subtract(ref anchorB, ref anchorA, out separation);
-            var currentDistance = separation.Length();
+            float currentDistance = separation.Length();
 
             //Compute jacobians
-            Vector3 linearA= new Vector3();
+            Vector3 linearA = new Vector3();
 
             if (currentDistance > Toolbox.Epsilon)
             {

@@ -132,8 +132,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             {
                 Vector3 velocity;
                 Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
-                
-                var lambda = new Vector2();
+
+                Vector2 lambda = new Vector2();
                 Vector3.Dot(ref worldConstrainedAxis1, ref velocity, out lambda.X);
                 Vector3.Dot(ref worldConstrainedAxis2, ref velocity, out lambda.Y);
                 return lambda;
@@ -237,10 +237,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
 
 
             //Ensure that the corrective velocity doesn't exceed the max.
-            var length = biasVelocity.LengthSquared();
+            float length = biasVelocity.LengthSquared();
             if (length > maxCorrectiveVelocitySquared)
             {
-                var multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
+                float multiplier = maxCorrectiveVelocity / (float) Math.Sqrt(length);
                 biasVelocity.X *= multiplier;
                 biasVelocity.Y *= multiplier;
             }
@@ -288,7 +288,7 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         public override void ExclusiveUpdate()
         {
             //Warm Starting
-            var impulse = new Vector3();
+            Vector3 impulse = new Vector3();
             impulse.X = worldConstrainedAxis1.X * accumulatedImpulse.X + worldConstrainedAxis2.X * accumulatedImpulse.Y;
             impulse.Y = worldConstrainedAxis1.Y * accumulatedImpulse.X + worldConstrainedAxis2.Y * accumulatedImpulse.Y;
             impulse.Z = worldConstrainedAxis1.Z * accumulatedImpulse.X + worldConstrainedAxis2.Z * accumulatedImpulse.Y;
@@ -315,8 +315,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             // P = JT * lambda
             Vector3 velocity;
             Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
-            
-            var lambda = new Vector2();
+
+            Vector2 lambda = new Vector2();
             Vector3.Dot(ref worldConstrainedAxis1, ref velocity, out lambda.X);
             Vector3.Dot(ref worldConstrainedAxis2, ref velocity, out lambda.Y);
             Vector2.Add(ref lambda, ref biasVelocity, out lambda);
@@ -325,8 +325,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             Vector2.Add(ref lambda, ref softnessImpulse, out lambda);
             Matrix2x2.Transform(ref lambda, ref effectiveMassMatrix, out lambda);
             Vector2.Add(ref accumulatedImpulse, ref lambda, out accumulatedImpulse);
-            
-            var impulse = new Vector3();
+
+            Vector3 impulse = new Vector3();
             impulse.X = worldConstrainedAxis1.X * lambda.X + worldConstrainedAxis2.X * lambda.Y;
             impulse.Y = worldConstrainedAxis1.Y * lambda.X + worldConstrainedAxis2.Y * lambda.Y;
             impulse.Z = worldConstrainedAxis1.Z * lambda.X + worldConstrainedAxis2.Z * lambda.Y;

@@ -103,8 +103,9 @@ namespace Engine.Physics.BEPUutilities.DataStructures
 
         private void Resize(int newPoolIndex)
         {
-            System.Diagnostics.Debug.Assert(Count <= 1 << newPoolIndex, "New pool index must contain all elements in the list.");
-            var oldList = this;
+            System.Diagnostics.Debug.Assert(Count <= 1 << newPoolIndex,
+                "New pool index must contain all elements in the list.");
+            QuickList<T> oldList = this;
             this = new QuickList<T>(Pool, newPoolIndex);
             Count = oldList.Count;
             Array.Copy(oldList.Elements, Elements, Count);
@@ -216,7 +217,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public bool Remove(T element)
         {
             Validate();
-            var index = IndexOf(element);
+            int index = IndexOf(element);
             if (index >= 0)
             {
                 RemoveAt(index);
@@ -237,7 +238,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public bool Remove(ref T element)
         {
             Validate();
-            var index = IndexOf(element);
+            int index = IndexOf(element);
             if (index >= 0)
             {
                 RemoveAt(index);
@@ -258,7 +259,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public bool FastRemove(T element)
         {
             Validate();
-            var index = IndexOf(element);
+            int index = IndexOf(element);
             if (index >= 0)
             {
                 FastRemoveAt(index);
@@ -279,7 +280,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public bool FastRemove(ref T element)
         {
             Validate();
-            var index = IndexOf(element);
+            int index = IndexOf(element);
             if (index >= 0)
             {
                 FastRemoveAt(index);
@@ -463,7 +464,7 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         public void Compact()
         {
             Validate();
-            var newPoolIndex = BufferPool<T>.GetPoolIndex(Count);
+            int newPoolIndex = BufferPool<T>.GetPoolIndex(Count);
             if (newPoolIndex != poolIndex)
             {
                 Resize(newPoolIndex);
@@ -490,7 +491,8 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         [Conditional("DEBUG")]
         private void Validate()
         {
-            System.Diagnostics.Debug.Assert(Pool != null, "Should not use a default-constructed or disposed QuickList.");
+            System.Diagnostics.Debug.Assert(Pool != null,
+                "Should not use a default-constructed or disposed QuickList.");
         }
 
         public Enumerator GetEnumerator()

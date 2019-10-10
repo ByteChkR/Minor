@@ -14,6 +14,7 @@ namespace Engine.UI
         /// Backing field of Instance
         /// </summary>
         private static UIHelper _instance;
+
         /// <summary>
         /// The instance
         /// </summary>
@@ -23,13 +24,13 @@ namespace Engine.UI
         /// The Font library that is storing all the fonts loaded into the system
         /// </summary>
         public FontLibrary FontLibrary { get; }
-        
+
         /// <summary>
         /// The Default Shader for UI Rendering
         /// </summary>
         public ShaderProgram DefaultUIShader { get; private set; }
 
-        
+
         /// <summary>
         /// Private Constructor
         /// </summary>
@@ -60,7 +61,7 @@ namespace Engine.UI
             {
                 {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
                 {ShaderType.VertexShader, "shader/UIRender.vs"}
-            }, out var shader))
+            }, out ShaderProgram shader))
             {
                 Console.ReadLine();
             }

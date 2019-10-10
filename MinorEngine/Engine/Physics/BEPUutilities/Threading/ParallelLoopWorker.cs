@@ -51,13 +51,13 @@ namespace Engine.Physics.BEPUutilities.Threading
                 while (manager.jobIndex <= manager.maxJobIndex)
                 {
                     //Claim a piece of job.
-                    var jobIndex = Interlocked.Increment(ref manager.jobIndex);
+                    int jobIndex = Interlocked.Increment(ref manager.jobIndex);
                     //The job interval.
-                    var endIndex = jobIndex * iterationsPerSteal;
-                    var beginIndex = endIndex - iterationsPerSteal;
+                    int endIndex = jobIndex * iterationsPerSteal;
+                    int beginIndex = endIndex - iterationsPerSteal;
 
                     //Do the job piece.  Make sure you don't do more than exists in the list itself.
-                    for (var i = beginIndex; i < endIndex && i < finalIndex; i++)
+                    for (int i = beginIndex; i < endIndex && i < finalIndex; i++)
                     {
                         manager.currentLoopBody(i);
                     }

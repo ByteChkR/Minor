@@ -132,10 +132,10 @@ namespace Engine.Physics.BEPUphysics.Character
             ref TOutputContacts headContacts)
             where TOutputContacts : IList<CharacterContact>
         {
-            var contactCollection = pair.Contacts;
-            for (var i = pair.ContactCount - 1; i >= 0; --i)
+            ContactCollection contactCollection = pair.Contacts;
+            for (int i = pair.ContactCount - 1; i >= 0; --i)
             {
-                var contactInfo = contactCollection[i];
+                ContactInformation contactInfo = contactCollection[i];
                 CharacterContact characterContact;
                 characterContact.Contact = new ContactData(contactInfo.Contact);
                 characterContact.Collidable =

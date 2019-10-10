@@ -1,5 +1,7 @@
 ﻿using System;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
+using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
+using Engine.Physics.BEPUutilities.DataStructures;
 
 namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 {
@@ -49,9 +51,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         {
             //Could go other way; get triangles in mesh that overlap the compound.
             //Could be faster sometimes depending on the way it's set up.
-            var overlappedElements = PhysicsResources.GetCompoundChildList();
+            RawList<CompoundChild> overlappedElements = PhysicsResources.GetCompoundChildList();
             compoundInfo.hierarchy.Tree.GetOverlaps(mesh.boundingBox, overlappedElements);
-            for (var i = 0; i < overlappedElements.Count; i++)
+            for (int i = 0; i < overlappedElements.Count; i++)
             {
                 TryToAdd(overlappedElements.Elements[i].CollisionInformation, mesh,
                     overlappedElements.Elements[i].Material, mesh.material);

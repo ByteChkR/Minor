@@ -82,7 +82,7 @@ namespace Engine.Physics.BEPUutilities
         /// </summary>
         public void Normalize()
         {
-            var inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z));
+            float inverse = (float) (1 / Math.Sqrt(X * X + Y * Y + Z * Z));
             X *= inverse;
             Y *= inverse;
             Z *= inverse;
@@ -179,7 +179,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Result of the division.</param>
         public static void Divide(ref Vector3 v, float divisor, out Vector3 result)
         {
-            var inverse = 1 / divisor;
+            float inverse = 1 / divisor;
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
@@ -371,9 +371,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="distanceSquared">Squared distance between the two vectors.</param>
         public static void DistanceSquared(ref Vector3 a, ref Vector3 b, out float distanceSquared)
         {
-            var x = a.X - b.X;
-            var y = a.Y - b.Y;
-            var z = a.Z - b.Z;
+            float x = a.X - b.X;
+            float y = a.Y - b.Y;
+            float z = a.Z - b.Z;
             distanceSquared = x * x + y * y + z * z;
         }
 
@@ -385,9 +385,9 @@ namespace Engine.Physics.BEPUutilities
         /// <returns>Squared distance between the two vectors.</returns>
         public static float DistanceSquared(Vector3 a, Vector3 b)
         {
-            var x = a.X - b.X;
-            var y = a.Y - b.Y;
-            var z = a.Z - b.Z;
+            float x = a.X - b.X;
+            float y = a.Y - b.Y;
+            float z = a.Z - b.Z;
             return x * x + y * y + z * z;
         }
 
@@ -400,9 +400,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="distance">Distance between the two vectors.</param>
         public static void Distance(ref Vector3 a, ref Vector3 b, out float distance)
         {
-            var x = a.X - b.X;
-            var y = a.Y - b.Y;
-            var z = a.Z - b.Z;
+            float x = a.X - b.X;
+            float y = a.Y - b.Y;
+            float z = a.Z - b.Z;
             distance = (float) Math.Sqrt(x * x + y * y + z * z);
         }
 
@@ -526,9 +526,9 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Cross product of the two vectors.</param>
         public static void Cross(ref Vector3 a, ref Vector3 b, out Vector3 result)
         {
-            var resultX = a.Y * b.Z - a.Z * b.Y;
-            var resultY = a.Z * b.X - a.X * b.Z;
-            var resultZ = a.X * b.Y - a.Y * b.X;
+            float resultX = a.Y * b.Z - a.Z * b.Y;
+            float resultY = a.Z * b.X - a.X * b.Z;
+            float resultZ = a.X * b.Y - a.Y * b.X;
             result.X = resultX;
             result.Y = resultY;
             result.Z = resultZ;
@@ -553,7 +553,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Normalized vector.</param>
         public static void Normalize(ref Vector3 v, out Vector3 result)
         {
-            var inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z));
+            float inverse = (float) (1 / Math.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z));
             result.X = v.X * inverse;
             result.Y = v.Y * inverse;
             result.Z = v.Z * inverse;
@@ -694,7 +694,7 @@ namespace Engine.Physics.BEPUutilities
         /// <param name="result">Interpolated intermediate state.</param>
         public static void Lerp(ref Vector3 start, ref Vector3 end, float interpolationAmount, out Vector3 result)
         {
-            var startAmount = 1 - interpolationAmount;
+            float startAmount = 1 - interpolationAmount;
             result.X = start.X * startAmount + end.X * interpolationAmount;
             result.Y = start.Y * startAmount + end.Y * interpolationAmount;
             result.Z = start.Z * startAmount + end.Z * interpolationAmount;
@@ -712,12 +712,12 @@ namespace Engine.Physics.BEPUutilities
         public static void Hermite(ref Vector3 value1, ref Vector3 tangent1, ref Vector3 value2, ref Vector3 tangent2,
             float interpolationAmount, out Vector3 result)
         {
-            var weightSquared = interpolationAmount * interpolationAmount;
-            var weightCubed = interpolationAmount * weightSquared;
-            var value1Blend = 2 * weightCubed - 3 * weightSquared + 1;
-            var tangent1Blend = weightCubed - 2 * weightSquared + interpolationAmount;
-            var value2Blend = -2 * weightCubed + 3 * weightSquared;
-            var tangent2Blend = weightCubed - weightSquared;
+            float weightSquared = interpolationAmount * interpolationAmount;
+            float weightCubed = interpolationAmount * weightSquared;
+            float value1Blend = 2 * weightCubed - 3 * weightSquared + 1;
+            float tangent1Blend = weightCubed - 2 * weightSquared + interpolationAmount;
+            float value2Blend = -2 * weightCubed + 3 * weightSquared;
+            float tangent2Blend = weightCubed - weightSquared;
             result.X = value1.X * value1Blend + value2.X * value2Blend + tangent1.X * tangent1Blend +
                        tangent2.X * tangent2Blend;
             result.Y = value1.Y * value1Blend + value2.Y * value2Blend + tangent1.Y * tangent1Blend +
