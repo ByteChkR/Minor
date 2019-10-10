@@ -12,6 +12,8 @@ using System.Xml;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 using Assimp;
+using Engine.Debug;
+using Engine.Exceptions;
 
 namespace Engine.Core
 {
@@ -62,6 +64,11 @@ namespace Engine.Core
 
         public static void LoadConfig(string configName, Assembly asm, string nameSpace)
         {
+            if (!File.Exists(configName))
+            {
+                Logger.Crash(new InvalidFilePathException(configName), true );
+                return;
+            }
 
             List<Tuple<string, MemberInfo>> serializedObjs = GetPropertiesWithAttribute<ConfigVariable>(asm, nameSpace).ToList();
             XmlDocument doc = new XmlDocument();

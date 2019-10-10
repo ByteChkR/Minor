@@ -85,7 +85,7 @@ namespace Engine.Core
             Instance = this;
             Settings = settings;
 
-            DebugHelper.ApplySettings(settings.DebugSettings ?? EngineDefault);
+            DebugHelper.ApplySettings(settings?.DebugSettings ?? EngineDefault);
         }
 
         /// <summary>
