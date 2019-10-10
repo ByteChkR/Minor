@@ -28,6 +28,7 @@ This is a C# Game Engine Project that is made for the specialization phase for u
 	- ...
 * The WaveCollapse Function
 
+## [Project Structure](resources/ProjectStructure.md)
 
 ## [Documentation / Reference Pages](https://bytechkr.github.io/Minor/index.html)
 
