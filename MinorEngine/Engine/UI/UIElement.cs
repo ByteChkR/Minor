@@ -11,6 +11,17 @@ namespace Engine.UI
     public abstract class UIElement : AbstractComponent, IRenderingComponent
     {
         /// <summary>
+        /// Flag if the context has changed and needs an update
+        /// </summary>
+        protected bool ContextInvalid = true;
+
+        private bool _worldSpace;
+        private float _alpha;
+        private int _renderQueue;
+        private ShaderProgram _shader;
+        private int _renderMask;
+
+        /// <summary>
         /// The Render Context
         /// </summary>
         public abstract RenderContext Context { get; }
@@ -18,12 +29,28 @@ namespace Engine.UI
         /// <summary>
         /// The Shader program that is used
         /// </summary>
-        public ShaderProgram Shader { get; set; }
+        public ShaderProgram Shader
+        {
+            get => _shader;
+            set
+            {
+                _shader = value;
+                ContextInvalid = true;
+            }
+        }
 
         /// <summary>
         /// The render mask that this element belongs to
         /// </summary>
-        public int RenderMask { get; set; }
+        public int RenderMask
+        {
+            get => _renderMask;
+            set
+            {
+                _renderMask = value;
+                ContextInvalid = true;
+            }
+        }
 
         /// <summary>
         /// The position of the UI element in uv coordinates
@@ -31,7 +58,11 @@ namespace Engine.UI
         public Vector2 Position
         {
             get => new Vector2(Owner.LocalPosition.X, Owner.LocalPosition.Y);
-            set => Owner.LocalPosition = new Vector3(value.X, value.Y, Owner.LocalPosition.Z);
+            set
+            {
+                Owner.LocalPosition = new Vector3(value.X, value.Y, Owner.LocalPosition.Z);
+                ContextInvalid = true;
+            }
         }
 
         /// <summary>
@@ -40,23 +71,57 @@ namespace Engine.UI
         public Vector2 Scale
         {
             get => new Vector2(Owner.Scale.X, Owner.Scale.Y);
-            set => Owner.Scale = new Vector3(value.X, value.Y, Owner.Scale.Z);
+            set
+            {
+                Owner.Scale = new Vector3(value.X, value.Y, Owner.Scale.Z);
+                ContextInvalid = true;
+            }
         }
 
         /// <summary>
         /// A flag if the Element is positioned in world space
         /// </summary>
-        public bool WorldSpace { get; set; }
+        public bool WorldSpace
+        {
+            get => _worldSpace;
+            set
+            {
+
+                _worldSpace = value;
+                ContextInvalid = true;
+
+            }
+        }
 
         /// <summary>
         /// Alpha value of the texture
         /// </summary>
-        public float Alpha { get; set; }
+        public float Alpha
+        {
+            get => _alpha;
+            set
+            {
+
+                _alpha = value;
+                ContextInvalid = true;
+
+            }
+        }
 
         /// <summary>
         /// The Render queue
         /// </summary>
-        public int RenderQueue { get; set; }
+        public int RenderQueue
+        {
+            get => _renderQueue;
+            set
+            {
+
+                _renderQueue = value;
+                ContextInvalid = true;
+
+            }
+        }
 
         /// <summary>
         /// The UI Element Constructor

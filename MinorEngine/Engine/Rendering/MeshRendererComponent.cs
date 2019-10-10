@@ -47,14 +47,15 @@ namespace Engine.Rendering
         {
             get
             {
-                if (_context == null || _contextInvalid)
+                if (_context == null)
                 {
                     _contextInvalid = false;
                     _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] {Model}, new[] {Texture},
                         RenderType);
                 }
-                else
+                else if (_contextInvalid)
                 {
+                    _contextInvalid = false;
                     if (_context.ModelMat != Owner._worldTransformCache)
                     {
                         _context.ModelMat = Owner._worldTransformCache;

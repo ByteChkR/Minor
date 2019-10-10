@@ -16,10 +16,7 @@ namespace Engine.UI
         /// </summary>
         private UIImageRenderContext _context;
 
-        /// <summary>
-        /// Flag if the context has changed and needs an update
-        /// </summary>
-        private bool _contextInvalid = true;
+        
 
         /// <summary>
         /// the context property for IRenderingComponent
@@ -28,13 +25,14 @@ namespace Engine.UI
         {
             get
             {
-                if (_context == null || _contextInvalid)
+                if (_context == null)
                 {
                     _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture,
                         WorldSpace, Alpha, Shader, RenderQueue);
                 }
-                else
+                else if (ContextInvalid)
                 {
+                    ContextInvalid = false;
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.Position = Position;
                     _context.Scale = Scale;
@@ -63,7 +61,7 @@ namespace Engine.UI
                 if (_texture != value)
                 {
                     _texture = value;
-                    _contextInvalid = true;
+                    ContextInvalid = true;
                 }
             }
         }

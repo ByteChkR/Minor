@@ -17,24 +17,21 @@ namespace Engine.UI
         private TextRenderContext _context;
 
         /// <summary>
-        /// Flag that indicates if the context is invalid
-        /// </summary>
-        private bool _contextInvalid = true;
-
-        /// <summary>
         /// The Context used to draw
         /// </summary>
         public override RenderContext Context
         {
             get
             {
-                if (_context == null || _contextInvalid)
+                if (_context == null)
                 {
+                    ContextInvalid = false;
                     _context = new TextRenderContext(Shader, Position, Scale, Owner._worldTransformCache, WorldSpace,
                         Alpha, font, _text, RenderQueue);
                 }
-                else
+                else if (ContextInvalid)
                 {
+                    ContextInvalid = false;
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.Alpha = Alpha;
                     _context.Position = Position;
@@ -67,7 +64,7 @@ namespace Engine.UI
             {
                 if (!string.Equals(_text, value))
                 {
-                    _contextInvalid = true;
+                    ContextInvalid = true;
                     _text = value;
                 }
             }
