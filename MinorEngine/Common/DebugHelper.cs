@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Reflection.Emit;
 using ADL;
 using ADL.Configs;
 using ADL.Crash;
@@ -56,6 +57,7 @@ namespace Common
 
         private static LogStream OpenFileStream(ILogStreamSettings settings)
         {
+            if (File.Exists(settings.Destination)) File.Delete(settings.Destination);
             return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask,
                 (MatchType) settings.MatchMode, settings.Timestamp);
         }
