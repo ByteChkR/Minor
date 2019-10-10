@@ -6,6 +6,7 @@ namespace Engine.Debug
     /// <summary>
     /// The Settings for a Log Stream
     /// </summary>
+    [Serializable]
     public struct LogStreamSettings : ILogStreamSettings
     {
         /// <summary>

@@ -10,10 +10,18 @@ namespace Engine.Core
     /// </summary>
     public class EngineSettings
     {
+        [ConfigVariable]
+        public static EngineSettings Settings;
+
         /// <summary>
         /// The Graphics Mode of the Window
         /// </summary>
-        public GraphicsMode Mode { get; set; }
+        public GraphicsMode Mode => new GraphicsMode(ColorFormat.Empty, Depth, Stencil, Samples);
+
+        public int Depth { get; set; } = 8;
+        public int Stencil { get; set; } = 0;
+        public int Samples { get; set; } = 16;
+
 
         /// <summary>
         /// Width of the Window

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Text;
+using System.Xml.Serialization;
 using Common;
 
 namespace Engine.Debug
@@ -8,8 +9,12 @@ namespace Engine.Debug
     /// <summary>
     /// Debug Settings used to Configure The debugging system
     /// </summary>
+    [Serializable]
     public class DebugSettings : IDebugSettings
     {
+        [XmlElement(ElementName = "LogStreamConfig")]
+        public LogStreamSettings[] _streams;
+
         /// <summary>
         /// Should we send logs in the first place?
         /// </summary>
@@ -39,16 +44,17 @@ namespace Engine.Debug
         /// The Stage names of the Different Channels
         /// </summary>
         public string[] StageNames { get; set; }
-
-        /// <summary>
-        /// The encoding used to encode logs
-        /// </summary>
-        public Encoding LogEncoding { get; set; }
+        
 
         /// <summary>
         /// List of streams that will be added to the Debug System.
         /// </summary>
-        public ILogStreamSettings[] Streams { get; set; }
+        [XmlIgnore]
+        public ILogStreamSettings[] Streams
+        {
+            get => _streams.Cast<ILogStreamSettings>().ToArray();
+            set => _streams = value.Cast<LogStreamSettings>().ToArray();
+        }
 
         /// <summary>
         /// Property that returns the default settings for debug logging.
@@ -59,7 +65,6 @@ namespace Engine.Debug
             SendInternalWarnings = true,
             SearchForUpdates = false,
             InternalUpdateMask = 0,
-            LogEncoding = Encoding.Default,
             StageNames = Enum.GetNames(typeof(DebugStage)).Select(x => "[" + x + "]").ToArray(),
             PrefixLookupFlags = 1 | 2 | 8,
             Streams = new[] {new LogStreamSettings {Mask = -1, Timestamp = true}}

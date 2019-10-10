@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Common;
 using Demo.scenes;
@@ -10,8 +11,19 @@ using OpenTK.Graphics;
 
 namespace Demo
 {
+    public struct TestStruct
+    {
+
+        public string NestedText;
+
+    }
     internal class Program
     {
+
+        [ConfigVariable]
+        public static string TestString = "This is a text.";
+        [ConfigVariable]
+        public static TestStruct TestVec = new TestStruct() { NestedText = "I am a member of Test Struct" };
         private static bool AskForDebugLogSending()
         {
             Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
@@ -25,10 +37,9 @@ namespace Demo
 
         private static void Main(string[] args)
         {
-            GraphicsMode gm = new GraphicsMode(ColorFormat.Empty, 8, 0, 16);
-
-            DebugSettings dbgSettings = DebugSettings.Default;
-
+            //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine");
+            EngineConfig.LoadConfig("configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)), "Engine");
+            DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
 #if COLLECT_LOGS
             if (AskForDebugLogSending())
             {
@@ -50,20 +61,9 @@ namespace Demo
             }
 #endif
 
-            EngineSettings es = new EngineSettings
-            {
-                WindowFlags = GameWindowFlags.Default,
-                Mode = gm,
-                InitWidth = 1280,
-                InitHeight = 720,
-                Title = "Test",
-                PhysicsThreadCount = 4,
-                VSync = VSyncMode.Off,
-                DebugSettings = dbgSettings,
-            };
 
 
-            GameEngine engine = new GameEngine(es);
+            GameEngine engine = new GameEngine(EngineSettings.Settings);
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();

@@ -10,7 +10,6 @@ namespace Common
         int InternalUpdateMask { get; set; }
         int PrefixLookupFlags { get; set; }
         string[] StageNames { get; set; }
-        Encoding LogEncoding { get; set; }
         ILogStreamSettings[] Streams { get; set; }
     }
 }

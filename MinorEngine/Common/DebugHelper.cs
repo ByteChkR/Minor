@@ -31,7 +31,6 @@ namespace Common
             Debug.AdlWarningMask = -1;
             Debug.SendWarnings = settings.SendInternalWarnings;
             Debug.UpdateMask = -1;
-            Debug.TextEncoding = settings.LogEncoding;
 
             Debug.SetAllPrefixes(settings.StageNames);
 
