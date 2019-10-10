@@ -155,6 +155,10 @@ namespace Engine.Rendering
 
             //GL.Enable(EnableCap.ScissorTest);
 
+            GL.Enable(EnableCap.Blend);
+            GL.Disable(EnableCap.DepthTest);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
             //GL.Enable(EnableCap.ScissorTest);
             foreach (RenderTarget renderTarget in targets)
             {
@@ -191,6 +195,9 @@ namespace Engine.Rendering
 
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
             }
+
+
+            GL.Disable(EnableCap.Blend);
 
             Ping();
             _screenShader.Use();
@@ -233,6 +240,9 @@ namespace Engine.Rendering
             //For whatever reason GL.Clear is not acting on the active framebuffer
             GL.ClearTexImage(_screenTarget1.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
             GL.ClearTexImage(_screenTarget0.RenderedTexture, 0, PixelFormat.Bgra, PixelType.UnsignedByte, IntPtr.Zero);
+
+
+            GL.Enable(EnableCap.DepthTest);
         }
     }
 }

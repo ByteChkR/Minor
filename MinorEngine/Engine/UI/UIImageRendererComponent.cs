@@ -39,6 +39,7 @@ namespace Engine.UI
                     _context.Texture = Texture;
                     _context.WorldSpace = WorldSpace;
                     _context.Alpha = Alpha;
+                    _context.RenderQueue = RenderQueue;
                 }
 
                 return _context;

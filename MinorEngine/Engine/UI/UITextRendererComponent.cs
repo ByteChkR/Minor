@@ -38,6 +38,7 @@ namespace Engine.UI
                     _context.Scale = Scale;
                     _context.DisplayText = _text;
                     _context.WorldSpace = WorldSpace;
+                    _context.RenderQueue = RenderQueue;
                 }
 
                 return _context;

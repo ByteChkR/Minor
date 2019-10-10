@@ -103,7 +103,8 @@ namespace Engine.UI
 
             //GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.Blend);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            GL.Disable(EnableCap.DepthTest);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One);
             Program.Use();
 
 
@@ -149,8 +150,8 @@ namespace Engine.UI
                 float xpos = x + chr.BearingX / scrW * Scale.X;
                 float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                float w = chr.Width / (float) scrW * Scale.X;
-                float h = chr.Height / (float) scrH * Scale.Y;
+                float w = chr.Width / (float)scrW * Scale.X;
+                float h = chr.Height / (float)scrH * Scale.Y;
 
                 //Remove Scale And initial position(start at (x,y) = 0)
                 //Add Translation to Make text be centered at origin(-TotalTextWidth/2,-TotalTextHeight/2)
@@ -171,7 +172,7 @@ namespace Engine.UI
                 {
                     GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
+                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
                         verts);
 
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
@@ -184,6 +185,7 @@ namespace Engine.UI
             GL.BindVertexArray(0);
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
+            GL.Enable(EnableCap.DepthTest);
             GL.Disable(EnableCap.Blend);
         }
     }

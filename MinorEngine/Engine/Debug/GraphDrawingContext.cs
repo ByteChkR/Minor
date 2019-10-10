@@ -69,6 +69,10 @@ namespace Engine.Debug
                 UpdateBuffer();
             }
 
+            GL.Enable(EnableCap.Blend);
+            GL.Disable(EnableCap.DepthTest);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+
             float red = 1, green = 0, blue = 0;
 
             Program.Use();
@@ -98,6 +102,8 @@ namespace Engine.Debug
             GL.BindTexture(TextureTarget.Texture2D, 0);
 
 
+            GL.Disable(EnableCap.Blend);
+            GL.Enable(EnableCap.DepthTest);
 
 
         }

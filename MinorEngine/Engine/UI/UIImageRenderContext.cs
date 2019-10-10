@@ -89,6 +89,7 @@ namespace Engine.UI
             }
 
             GL.Enable(EnableCap.Blend);
+            GL.Disable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             Program.Use();
 
@@ -116,6 +117,7 @@ namespace Engine.UI
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
             GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.Enable(EnableCap.DepthTest);
 
             GL.Disable(EnableCap.Blend);
         }

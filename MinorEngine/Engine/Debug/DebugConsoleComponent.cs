@@ -206,12 +206,10 @@ namespace Engine.Debug
             UIImageRendererComponent _bgImage =
                 new UIImageRendererComponent(TextureLoader.FileToTexture("textures/black.png"), false,
                     0.65f, uiShader);
-            _bgImage.RenderMask = 1 << 29;
 
             UIImageRendererComponent _bgOutImage =
                 new UIImageRendererComponent(TextureLoader.FileToTexture("textures/black.png"), false, 0.4f,
                     uiShader);
-            _bgOutImage.RenderMask = 1 << 28;
 
 
             UITextRendererComponent _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
@@ -235,13 +233,13 @@ namespace Engine.Debug
 
             GraphDrawingComponent _gDraw = new GraphDrawingComponent(graphShader, false, 1f);
 
-            _graph.AddComponent(_gDraw);
+            _bgOutObj.AddComponent(_bgOutImage);
             _bgObj.AddComponent(_bgImage);
+            _graph.AddComponent(_gDraw);
             _in.AddComponent(_tIn);
             _out.AddComponent(_tOut);
             _titleObj.AddComponent(_tText);
             _hint.AddComponent(_tHint);
-            _bgOutObj.AddComponent(_bgOutImage);
 
             _gDraw.Scale = new Vector2(0.5f, 0.5f);
             _gDraw.Position = new Vector2(0.5f);
@@ -589,7 +587,7 @@ namespace Engine.Debug
                     {
                         _sb.Remove(inputIndex - 1, 1);
                     }
-
+                    _currentId = _commandHistory.Count;
                     inputIndex--;
 
                     _invalidate = true;
