@@ -14,12 +14,12 @@ namespace Engine.Rendering.Contexts
         /// <summary>
         /// The meshes that are drawn to the screen
         /// </summary>
-        public Mesh[] Meshes { get; }
+        public Mesh[] Meshes { get; set; }
 
         /// <summary>
         /// The Textures that are used to draw the meshes
         /// </summary>
-        public Texture[] Textures { get; }
+        public Texture[] Textures { get; set; }
 
         /// <summary>
         /// Public Constructor

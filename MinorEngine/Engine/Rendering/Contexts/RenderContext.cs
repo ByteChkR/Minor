@@ -88,7 +88,7 @@ namespace Engine.Rendering.Contexts
         /// <summary>
         /// the shader program that is used
         /// </summary>
-        public ShaderProgram Program { get; }
+        public ShaderProgram Program { get; set; }
 
         /// <summary>
         /// the render queue that determines the order in which the objects are drawn

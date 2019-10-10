@@ -20,6 +20,7 @@ namespace Engine.WFC
         private readonly byte[][] _patterns;
         private readonly List<Color> _colors;
         private readonly int _ground;
+        public bool Success { get; private set; }
 
         public WFCOverlayMode(string filename, int N, int width, int height, bool periodicInput, bool periodicOutput,
             int symmetry, int ground)
@@ -27,6 +28,8 @@ namespace Engine.WFC
         {
             _n = N;
             Periodic = periodicOutput;
+
+            Success = true;
 
             Bitmap bitmap = new Bitmap(filename);
             int SMX = bitmap.Width, SMY = bitmap.Height;
@@ -280,6 +283,7 @@ namespace Engine.WFC
 
                     if (contributors == 0)
                     {
+                        Success = false;
                         Logger.Log("Pixel: " + i + " has no match", DebugChannel.Warning);
                         continue;
                     }
@@ -300,6 +304,7 @@ namespace Engine.WFC
         protected override void Clear()
         {
             base.Clear();
+            Success = true;
 
             if (_ground != 0)
             {
