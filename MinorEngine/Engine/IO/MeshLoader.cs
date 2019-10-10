@@ -2,16 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using Assimp;
 using Assimp.Configs;
 using Engine.DataTypes;
 using Engine.Debug;
+using Engine.Exceptions;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Mesh = Engine.DataTypes.Mesh;
 using AssimpMesh = Assimp.Mesh;
 using AssimpTextureType = Assimp.TextureType;
+using Bitmap = System.Drawing.Bitmap;
 using TextureType = Engine.DataTypes.TextureType;
 
 namespace Engine.IO
@@ -21,6 +24,9 @@ namespace Engine.IO
     /// </summary>
     public class MeshLoader
     {
+
+
+
         /// <summary>
         /// static Class providing frequently used objects
         /// </summary>
@@ -75,6 +81,12 @@ namespace Engine.IO
             return LoadModel(filename).ToArray();
         }
 
+        internal static List<Mesh> LoadModel(Stream stream, string filepath)
+        {
+            AssimpContext context = new AssimpContext();
+            context.SetConfig(new NormalSmoothingAngleConfig(66));
+            return LoadAssimpScene(context.ImportFileFromStream(stream), "");
+        }
         /// <summary>
         /// Loads a Assimp Model From File
         /// </summary>
@@ -82,10 +94,18 @@ namespace Engine.IO
         /// <returns>The loaded AssimpModel</returns>
         private static List<Mesh> LoadModel(string path)
         {
+            if (!File.Exists(path))
+            {
+                Logger.Log("Could not load model file.", DebugChannel.Error);
+                return new List<Mesh> { Mesh.DefaultMesh };
+            }
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
-            Scene s = context.ImportFile(path);
+            return LoadAssimpScene(context.ImportFile(path), path);
+        }
 
+        private static List<Mesh> LoadAssimpScene(Scene s, string path)
+        {
             if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
             {
                 Logger.Log("Loading Model File failed.", DebugChannel.Error);
@@ -108,6 +128,8 @@ namespace Engine.IO
             processNode(s.RootNode, s, ret, directory);
             return ret;
         }
+
+
 
 
         /// <summary>
@@ -183,7 +205,7 @@ namespace Engine.IO
             for (int i = 0; i < mesh.FaceCount; i++)
             {
                 Face f = mesh.Faces[i];
-                indices.AddRange(f.Indices.Select(x => (uint) x));
+                indices.AddRange(f.Indices.Select(x => (uint)x));
             }
 
 
@@ -233,13 +255,13 @@ namespace Engine.IO
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * Vertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers

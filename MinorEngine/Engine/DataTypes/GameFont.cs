@@ -1,5 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using Engine.Debug;
+using Engine.Exceptions;
+using Engine.UI;
+using OpenTK.Input;
 using SharpFont;
 
 namespace Engine.DataTypes
@@ -9,6 +15,27 @@ namespace Engine.DataTypes
     /// </summary>
     public class GameFont : IDisposable
     {
+        public static GameFont DefaultFont => _defaultFont ?? (_defaultFont = GetDefaultFont());
+
+        private static GameFont GetDefaultFont()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            string[] paths = asm.GetManifestResourceNames();
+            string path = asm.GetName().Name + "._DefaultResources.DefaultFont.ttf";
+            using (Stream resourceStream = asm.GetManifestResourceStream(path))
+            {
+                if (resourceStream == null)
+                {
+                    Logger.Crash(new EngineException("Could not load default font"), false);
+                    return null;
+                }
+                GameFont f = FontLibrary.LoadFontInternal(resourceStream, 32, out var name);
+                resourceStream.Close();
+                return f;
+
+            }
+        }
+
         /// <summary>
         /// The Name of the Font. This is the key you can load Fonts by.
         /// </summary>
@@ -23,6 +50,8 @@ namespace Engine.DataTypes
         /// Private field for the font this GameFont has been loaded from. Not needed perse, but it is convenient
         /// </summary>
         private readonly FontFace _fontFace;
+
+        private static GameFont _defaultFont;
 
         /// <summary>
         /// The Pixel size that has been used to Load the font into the GPU Memory

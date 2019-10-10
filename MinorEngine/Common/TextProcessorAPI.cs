@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ext_pp;
@@ -46,6 +47,11 @@ namespace Common
             {
                 return Path;
             }
+
+            public override string ToString()
+            {
+                return Key;
+            }
         }
 
         public abstract class APreProcessorConfig
@@ -73,7 +79,16 @@ namespace Common
                     definitions = new Definitions(defs);
                 }
 
-                return pp.Run(new[] {filename}, new Settings(), definitions);
+                string[] ret = { "FILE NOT FOUND" };
+                try
+                {
+                    ret = pp.Run(new[] { filename }, new Settings(), definitions);
+                }
+                catch (ProcessorException ex)
+                {
+                    DebugHelper.Crash(new TextProcessingException("Could not preprocess file: " + filename.GetFilePath(), ex), true);
+                }
+                return ret;
             }
         }
 
@@ -191,7 +206,7 @@ namespace Common
 
         public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
         {
-            return new[] {_configs[ext].GetGenericInclude(file, genType)};
+            return new[] { _configs[ext].GetGenericInclude(file, genType) };
         }
 
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)

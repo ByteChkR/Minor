@@ -1,4 +1,9 @@
 ﻿using System;
+using System.IO;
+using System.Reflection;
+using Engine.Debug;
+using Engine.Exceptions;
+using Engine.IO;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.DataTypes
@@ -8,6 +13,32 @@ namespace Engine.DataTypes
     /// </summary>
     public class Mesh : IDisposable
     {
+        private static Mesh _defaultMesh;
+        public static Mesh DefaultMesh => _defaultMesh ?? (_defaultMesh = GetDefaultMesh());
+
+        private static Mesh GetDefaultMesh()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            string path = asm.GetName().Name + "._DefaultResources.DefaultMesh.obj";
+            using (Stream resourceStream = asm.GetManifestResourceStream(path))
+            {
+                if (resourceStream == null)
+                {
+                    Logger.Crash(new EngineException("Could not load default mesh"), false);
+                    return null;
+                }
+                byte[] buf = new byte[resourceStream.Length];
+                resourceStream.Read(buf, 0, (int)resourceStream.Length);
+
+                MemoryStream ms = new MemoryStream(buf);
+
+                Mesh f = MeshLoader.LoadModel(ms, path)[0];
+                resourceStream.Close();
+                return f;
+
+            }
+        }
+
         /// <summary>
         /// Element Buffer Object used to store the Indices of the Mesh Vertexes
         /// </summary>

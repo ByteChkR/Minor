@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Runtime.InteropServices;
 using Engine.DataTypes;
+using Engine.Debug;
 using Engine.IO;
 using OpenTK.Graphics.OpenGL;
 using SharpFont;
@@ -16,10 +18,12 @@ namespace Engine.UI
     /// </summary>
     public class FontLibrary
     {
+
         /// <summary>
         /// Table of game fonts
         /// </summary>
-        private readonly Dictionary<string, GameFont> _fonts;
+        private readonly Dictionary<string, Tuple<string, GameFont>> _fonts;
+
 
         /// <summary>
         /// Public constructor that is loading every font in the specified folder
@@ -27,7 +31,7 @@ namespace Engine.UI
         /// <param name="folderPath">the specified folder</param>
         public FontLibrary(string folderPath)
         {
-            _fonts = new Dictionary<string, GameFont>();
+            _fonts = new Dictionary<string, Tuple<string, GameFont>>();
             string[] files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
             foreach (string file in files)
             {
@@ -44,19 +48,24 @@ namespace Engine.UI
             LoadFont(filename, 32);
         }
 
-        /// <summary>
-        /// Loads a font by filename and pixel size
-        /// </summary>
-        /// <param name="filename">the filename</param>
-        /// <param name="pixelSize">The size of the font in pixels</param>
         public void LoadFont(string filename, int pixelSize)
         {
-            FontFace ff = new FontFace(File.OpenRead(filename));
 
-            if (_fonts.ContainsKey(ff.FullName))
+            if (File.Exists(filename))
             {
-                return;
+                LoadFont(File.OpenRead(filename), pixelSize, filename);
             }
+            else
+            {
+                Logger.Log("Could not find Font: " + filename, DebugChannel.Error, 10);
+            }
+        }
+
+        internal static GameFont LoadFontInternal(Stream fileStream, int pixelSize, out string fontName)
+        {
+            FontFace ff = new FontFace(fileStream);
+
+            fontName = ff.FullName;
 
             Dictionary<char, TextCharacter> fontAtlas = new Dictionary<char, TextCharacter>();
 
@@ -110,13 +119,13 @@ namespace Engine.UI
                     GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, g.RenderWidth, g.RenderHeight,
                         0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapS,
-                        (int) TextureWrapMode.ClampToEdge);
+                        (int)TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapT,
-                        (int) TextureWrapMode.ClampToEdge);
+                        (int)TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMinFilter,
-                        (int) TextureMinFilter.Linear);
+                        (int)TextureMinFilter.Linear);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMagFilter,
-                        (int) TextureMagFilter.Linear);
+                        (int)TextureMagFilter.Linear);
 
                     bmp.UnlockBits(data);
                 }
@@ -134,11 +143,28 @@ namespace Engine.UI
                     BearingX = g.HorizontalMetrics.Bearing.X,
                     BearingY = g.HorizontalMetrics.Bearing.Y
                 };
-                fontAtlas.Add((char) i, c);
+                fontAtlas.Add((char)i, c);
             }
 
             GameFont font = new GameFont(ff, pixelSize, fontAtlas);
-            _fonts.Add(ff.FullName, font);
+            return font;
+
+        }
+
+        /// <summary>
+        /// Loads a font by filename and pixel size
+        /// </summary>
+        /// <param name="filename">the filename</param>
+        /// <param name="pixelSize">The size of the font in pixels</param>
+        private void LoadFont(Stream fileStream, int pixelSize, string path)
+        {
+            if (_fonts.ContainsKey(path))
+            {
+                return;
+            }
+            GameFont font = LoadFontInternal(fileStream, pixelSize, out var name);
+
+            _fonts.Add(path, new Tuple<string, GameFont>(name, font));
         }
 
         /// <summary>
@@ -148,7 +174,28 @@ namespace Engine.UI
         /// <returns>The font with the specified name</returns>
         public GameFont GetFont(string name)
         {
-            return _fonts[name];
+            foreach (var font in _fonts)
+            {
+                if (name == font.Value.Item1) return font.Value.Item2;
+            }
+            Logger.Log("Could not Find font with name: "+ name, DebugChannel.Log);
+
+            return GameFont.DefaultFont;
+        }
+
+        /// <summary>
+        /// returns a font by name
+        /// </summary>
+        /// <param name="name">The name of the font</param>
+        /// <returns>The font with the specified name</returns>
+        public GameFont GetFontByPath(string path)
+        {
+            if (!_fonts.ContainsKey(path))
+            {
+                Logger.Log("Could not Find font with Path: " + path, DebugChannel.Log);
+                return GameFont.DefaultFont;
+            }
+            return _fonts[path].Item2;
         }
     }
 }

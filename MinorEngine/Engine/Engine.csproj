@@ -26,6 +26,7 @@
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="OpenTK.NetStandard" Version="1.0.4" />
     <PackageReference Include="SharpFontCore" Version="0.1.1" />
+    <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +35,13 @@
 
   <ItemGroup>
     <Folder Include="OpenCL\DotNetCore\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="System.Drawing">
+      <HintPath>System.Drawing</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>
@@ -55,4 +63,19 @@
     </Compile>
   </ItemGroup>
 
+<ItemGroup>
+  <Content Remove="_DefaultResources/DefaultFont.ttf" />
+  <Content Remove="_DefaultResources/DefaultTexture.bmp" />
+  <Content Remove="_DefaultResources/DefaultMesh.obj" />
+  <Content Remove="_DefaultResources/DefaultShader.vs" />
+  <Content Remove="_DefaultResources/DefaultShader.fs" />
+</ItemGroup>
+
+<ItemGroup>
+  <EmbeddedResource Include="_DefaultResources/DefaultFont.ttf" />
+  <EmbeddedResource Include="_DefaultResources/DefaultTexture.bmp" />
+  <EmbeddedResource Include="_DefaultResources/DefaultMesh.obj" />
+  <EmbeddedResource Include="_DefaultResources/DefaultShader.vs" />
+  <EmbeddedResource Include="_DefaultResources/DefaultShader.fs" />
+</ItemGroup>
 </Project>

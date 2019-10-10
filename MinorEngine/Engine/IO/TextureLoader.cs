@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.IO;
 using System.Runtime.InteropServices;
 using Assimp;
 using Engine.DataTypes;
@@ -200,7 +201,11 @@ namespace Engine.IO
         /// <returns>The GL Texture</returns>
         public static Texture FileToTexture(string file)
         {
-            //if (IsContained(file)) return KeyToTexture(file);
+            if (!File.Exists(file))
+            {
+                Logger.Log("Could not Find Texture with Path: " + file, DebugChannel.Log);
+                return Texture.DefaultTexture;
+            }
             return BitmapToTexture(new Bitmap(file));
         }
 

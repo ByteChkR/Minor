@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using Common;
 using Engine.Core;
+using Engine.DataTypes;
 using Engine.Debug;
+using Engine.Exceptions;
+using Engine.IO;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
@@ -13,10 +19,49 @@ namespace Engine.Rendering
     /// </summary>
     public class ShaderProgram : IDisposable
     {
+        private static ShaderProgram _defaultShader;
+        public static ShaderProgram DefaultShader => _defaultShader ?? (_defaultShader = GetDefaultShader());
+
+        private static ShaderProgram GetDefaultShader()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+            string[] paths = {"._DefaultResources.DefaultShader.vs", "._DefaultResources.DefaultShader.fs"};
+            Dictionary<ShaderType, string> shaderSource = new Dictionary<ShaderType, string>();
+            for (int i = 0; i < paths.Length; i++)
+            {
+                using (Stream resourceStream = asm.GetManifestResourceStream(asm.GetName().Name + paths[i]))
+                {
+                    if (resourceStream == null)
+                    {
+                        Logger.Crash(new EngineException("Could not load default shader"), false);
+                        return null;
+                    }
+
+                    TextReader tr = new StreamReader(resourceStream);
+                    string source = tr.ReadToEnd();
+
+                    resourceStream.Close();
+                    shaderSource.Add(i==0?ShaderType.VertexShader: ShaderType.FragmentShader, source);
+
+                }
+            }
+
+            if (TryCreateFromSource(shaderSource, out var shader))
+            {
+                return shader;
+            }
+
+            Logger.Crash(new EngineException("Could not compile default shader"), false);
+            return null;
+
+        }
+
         /// <summary>
         /// The program id of the shader
         /// </summary>
         private readonly int _prgId;
+
+
 
         /// <summary>
         /// Private constructor
@@ -26,23 +71,16 @@ namespace Engine.Rendering
             _prgId = GL.CreateProgram();
         }
 
-        /// <summary>
-        /// Tries to Create a Shader from source
-        /// </summary>
-        /// <param name="subshaders">The source paths of the sub shader</param>
-        /// <param name="program">The Program that will be created</param>
-        /// <returns></returns>
-        public static bool TryCreate(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
+        internal static bool TryCreateFromSource(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
         {
             bool ret = true;
             program = new ShaderProgram();
             List<int> shaders = new List<int>();
             foreach (KeyValuePair<ShaderType, string> shader in subshaders)
             {
-                Logger.Log("Compiling Shader: " + shader.Value, DebugChannel.Log);
-
-                string code = TextProcessorAPI.PreprocessSource(shader.Value, null);
-                bool r = TryCompileShader(shader.Key, code, out int id);
+                Logger.Log("Compiling Shader: " + shader.Key, DebugChannel.Log);
+                
+                bool r = TryCompileShader(shader.Key, shader.Value, out int id);
                 ret &= r;
                 if (r)
                 {
@@ -53,7 +91,7 @@ namespace Engine.Rendering
 
             for (int i = 0; i < shaders.Count; i++)
             {
-                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i), DebugChannel.Log);
+                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i).Key, DebugChannel.Log);
                 GL.AttachShader(program._prgId, shaders[i]);
             }
 
@@ -68,6 +106,24 @@ namespace Engine.Rendering
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Tries to Create a Shader from source
+        /// </summary>
+        /// <param name="subshaders">The source paths of the sub shader</param>
+        /// <param name="program">The Program that will be created</param>
+        /// <returns></returns>
+        public static bool TryCreate(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
+        {
+            Dictionary<ShaderType, string> ret = new Dictionary<ShaderType, string>();
+            foreach (var subshader in subshaders)
+            {
+                Logger.Log("Loading Shader: " + subshader.Value, DebugChannel.Log);
+                ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
+            }
+
+            return TryCreateFromSource(ret, out program);
         }
 
         /// <summary>

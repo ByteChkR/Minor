@@ -106,7 +106,7 @@ namespace Demo.scenes
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
                 {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"}
+                {ShaderType.VertexShader, "shader/UITextRender.vs"}
             }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -150,7 +150,7 @@ namespace Demo.scenes
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
 
 
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, bgTex, 1));
+            bgObj.AddComponent(new MeshRendererComponent(ShaderProgram.DefaultShader, bgBox, bgTex, 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
 
