@@ -101,6 +101,12 @@ namespace Engine.Core
 
         public static void LoadConfig(string configName, object obj)
         {
+            if (!File.Exists(configName))
+            {
+                Logger.Crash(new InvalidFilePathException(configName), true);
+                return;
+            }
+
             List<Tuple<string, MemberInfo>> serializedObjs = GetPropertiesWithAttribute(obj.GetType(), BindingFlags.Instance | BindingFlags.Public).ToList();
             XmlDocument doc = new XmlDocument();
             doc.Load(configName);
