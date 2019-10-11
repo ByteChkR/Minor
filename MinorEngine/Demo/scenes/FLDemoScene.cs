@@ -158,8 +158,10 @@ namespace Demo.scenes
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                         GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            mainCamera.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            mainCamera.Translate(new Vector3(0, 2, 2));
+
+            EngineConfig.LoadConfig("configs/camera_fldemo.xml", mainCamera);
+
+
             GameEngine.Instance.CurrentScene.Add(mainCamera);
             GameEngine.Instance.CurrentScene.SetCamera(mainCamera);
 

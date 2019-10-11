@@ -42,6 +42,11 @@ namespace Engine.Physics.BEPUutilities
             W = w;
         }
 
+
+        
+
+       
+
         /// <summary>
         /// Adds two quaternions together.
         /// </summary>

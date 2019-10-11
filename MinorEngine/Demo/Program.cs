@@ -38,7 +38,7 @@ namespace Demo
         private static void Main(string[] args)
         {
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine");
-            EngineConfig.LoadConfig("configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)), "Engine");
+            EngineConfig.LoadConfig("configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core");
             DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
 #if COLLECT_LOGS
             if (AskForDebugLogSending())

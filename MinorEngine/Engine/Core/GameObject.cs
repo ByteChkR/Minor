@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Engine.Debug;
 using Engine.Physics;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
@@ -86,17 +87,23 @@ namespace Engine.Core
         /// <summary>
         /// The Local position
         /// </summary>
-        public Vector3 LocalPosition { get; set; }
+        [ConfigVariable, XmlElement(Order = 1)]
+        public Engine.Physics.BEPUutilities.Vector3 LocalPosition { get; set; }
 
         /// <summary>
         /// The Scale
         /// </summary>
-        public Vector3 Scale { get; set; } = new Vector3(1);
+        [ConfigVariable, XmlElement(Order = 2)]
+        public Engine.Physics.BEPUutilities.Vector3 Scale
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// The Rotation
         /// </summary>
-        public Quaternion Rotation { get; set; } = Quaternion.Identity;
+        public Engine.Physics.BEPUutilities.Quaternion Rotation { get; set; } = Quaternion.Identity;
 
         /// <summary>
         /// The Current Scene the object belongs to
@@ -121,6 +128,7 @@ namespace Engine.Core
         /// <summary>
         /// The object name
         /// </summary>
+        [ConfigVariable, XmlElement(Order = 0)]
         public string Name { get; set; }
 
         /// <summary>
@@ -148,6 +156,15 @@ namespace Engine.Core
         /// Private flag that indicates that the object has been destroyed but is not yet removed from the systems
         /// </summary>
         private bool _destructionPending;
+
+
+
+        [ConfigVariable, XmlElement(Order = 3)]
+        public Engine.Physics.BEPUutilities.Vector4 AxisAngle
+        {
+            get => ((Quaternion)Rotation).ToAxisAngle();
+            set => Rotation = Physics.BEPUutilities.Quaternion.CreateFromAxisAngle(new Physics.BEPUutilities.Vector3(value.X, value.Y, value.Z), value.W);
+        }
 
         /// <summary>
         /// Destructor that will create a warning if undestroyed objects get garbage collected
@@ -271,7 +288,7 @@ namespace Engine.Core
                 {
                     applyRenderHierarchy(true);
                     ObjsWithAttachedRenderers.Add(this);
-                    RenderingComponent = (IRenderingComponent) component;
+                    RenderingComponent = (IRenderingComponent)component;
                 }
                 else if (component is Collider collider)
                 {
@@ -382,7 +399,7 @@ namespace Engine.Core
             {
                 if (typeof(T).IsAssignableFrom(abstractComponent.Key))
                 {
-                    return (T) abstractComponent.Value;
+                    return (T)abstractComponent.Value;
                 }
             }
 
@@ -398,7 +415,7 @@ namespace Engine.Core
         {
             if (_components.ContainsKey(typeof(T)))
             {
-                return (T) _components[typeof(T)];
+                return (T)_components[typeof(T)];
             }
 
             return null;
@@ -774,7 +791,8 @@ namespace Engine.Core
         /// <param name="translation">The translation</param>
         public void Translate(Vector3 translation)
         {
-            LocalPosition += translation;
+            Physics.BEPUutilities.Vector3 t = translation;
+            LocalPosition += t;
         }
 
         /// <summary>
@@ -783,7 +801,8 @@ namespace Engine.Core
         /// <param name="scaleAmount">amount</param>
         public void ScaleBy(Vector3 scaleAmount)
         {
-            Scale *= scaleAmount;
+            Physics.BEPUutilities.Vector3 s = scaleAmount;
+            Scale *= s;
         }
 
         /// <summary>
@@ -803,7 +822,8 @@ namespace Engine.Core
         /// <param name="angle">The angle in radians</param>
         public void Rotate(Vector3 axis, float angle)
         {
-            Rotation *= Quaternion.FromAxisAngle(axis, angle);
+            Physics.BEPUutilities.Quaternion q = Quaternion.FromAxisAngle(axis, angle);
+            Rotation *= q;
         }
 
         /// <summary>
