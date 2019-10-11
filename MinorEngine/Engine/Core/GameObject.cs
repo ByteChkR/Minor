@@ -77,7 +77,8 @@ namespace Engine.Core
             get
             {
                 Matrix4 mat = Matrix4.Identity;
-                mat *= Matrix4.CreateScale(Scale);
+                if (Scale != Physics.BEPUutilities.Vector3.Zero)
+                    mat *= Matrix4.CreateScale(Scale);
                 mat *= Matrix4.CreateFromQuaternion(Rotation);
                 mat *= Matrix4.CreateTranslation(LocalPosition);
                 return mat;
@@ -87,18 +88,16 @@ namespace Engine.Core
         /// <summary>
         /// The Local position
         /// </summary>
-        [ConfigVariable, XmlElement(Order = 1)]
+        [ConfigVariable]
+        [XmlElement(Order = 1)]
         public Engine.Physics.BEPUutilities.Vector3 LocalPosition { get; set; }
 
         /// <summary>
         /// The Scale
         /// </summary>
-        [ConfigVariable, XmlElement(Order = 2)]
-        public Engine.Physics.BEPUutilities.Vector3 Scale
-        {
-            get;
-            set;
-        }
+        [ConfigVariable]
+        [XmlElement(Order = 2)]
+        public Engine.Physics.BEPUutilities.Vector3 Scale { get; set; } = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
 
         /// <summary>
         /// The Rotation
@@ -128,7 +127,8 @@ namespace Engine.Core
         /// <summary>
         /// The object name
         /// </summary>
-        [ConfigVariable, XmlElement(Order = 0)]
+        [ConfigVariable]
+        [XmlElement(Order = 0)]
         public string Name { get; set; }
 
         /// <summary>
@@ -158,12 +158,14 @@ namespace Engine.Core
         private bool _destructionPending;
 
 
-
-        [ConfigVariable, XmlElement(Order = 3)]
+        [ConfigVariable]
+        [XmlElement(Order = 3)]
         public Engine.Physics.BEPUutilities.Vector4 AxisAngle
         {
             get => ((Quaternion)Rotation).ToAxisAngle();
-            set => Rotation = Physics.BEPUutilities.Quaternion.CreateFromAxisAngle(new Physics.BEPUutilities.Vector3(value.X, value.Y, value.Z), value.W);
+            set => Rotation =
+                Physics.BEPUutilities.Quaternion.CreateFromAxisAngle(
+                    new Physics.BEPUutilities.Vector3(value.X, value.Y, value.Z), value.W);
         }
 
         /// <summary>

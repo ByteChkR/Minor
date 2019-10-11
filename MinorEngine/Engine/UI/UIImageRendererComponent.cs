@@ -16,7 +16,6 @@ namespace Engine.UI
         /// </summary>
         private UIImageRenderContext _context;
 
-        
 
         /// <summary>
         /// the context property for IRenderingComponent

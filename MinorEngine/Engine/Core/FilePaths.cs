@@ -2,8 +2,5 @@
 {
     public static class FilePaths
     {
-
-
-
     }
 }

@@ -26,6 +26,7 @@ namespace Engine.IO.audioformats
                 channel = bitRate = bits = 0;
                 return false;
             }
+
             Stream s = File.Open(file, FileMode.Open);
 
             bool ret = TryLoadFile(s, out data, out channel, out bits, out bitRate);

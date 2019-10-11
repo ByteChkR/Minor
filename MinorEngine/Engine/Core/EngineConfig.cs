@@ -17,7 +17,7 @@ using Engine.Exceptions;
 
 namespace Engine.Core
 {
-
+    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class ConfigVariable : Attribute
     {
     }
@@ -36,7 +36,7 @@ namespace Engine.Core
 
             XmlDocument doc = new XmlDocument();
             XmlNode node = doc.AppendChild(doc.CreateNode(XmlNodeType.Element, "Settings", ""));
-            foreach (var serializedObj in serializedObjs)
+            foreach (Tuple<string, string> serializedObj in serializedObjs)
             {
                 XmlNode container = node.AppendChild(doc.CreateNode(XmlNodeType.Element, serializedObj.Item1, ""));
 
@@ -53,6 +53,7 @@ namespace Engine.Core
                 //content.OuterXml = serializedObj.Item2;
                 Console.Write("AAAA");
             }
+
             TextWriter tw = new StringWriter();
             XmlWriter xwr = XmlWriter.Create(tw, xws);
 
@@ -73,7 +74,7 @@ namespace Engine.Core
 
             XmlDocument doc = new XmlDocument();
             XmlNode node = doc.AppendChild(doc.CreateNode(XmlNodeType.Element, "Settings", ""));
-            foreach (var serializedObj in serializedObjs)
+            foreach (Tuple<string, string> serializedObj in serializedObjs)
             {
                 XmlNode container = node.AppendChild(doc.CreateNode(XmlNodeType.Element, serializedObj.Item1, ""));
 
@@ -90,6 +91,7 @@ namespace Engine.Core
                 //content.OuterXml = serializedObj.Item2;
                 Console.Write("AAAA");
             }
+
             TextWriter tw = new StringWriter();
             XmlWriter xwr = XmlWriter.Create(tw, xws);
 
@@ -107,15 +109,15 @@ namespace Engine.Core
                 return;
             }
 
-            List<Tuple<string, MemberInfo>> serializedObjs = GetPropertiesWithAttribute(obj.GetType(), BindingFlags.Instance | BindingFlags.Public).ToList();
+            List<Tuple<string, MemberInfo>> serializedObjs =
+                GetPropertiesWithAttribute(obj.GetType(), BindingFlags.Instance | BindingFlags.Public).ToList();
             XmlDocument doc = new XmlDocument();
             doc.Load(configName);
-            foreach (var serializedObj in serializedObjs)
+            foreach (Tuple<string, MemberInfo> serializedObj in serializedObjs)
             {
                 XmlNode node = GetObject(doc, serializedObj.Item1 + "." + serializedObj.Item2.Name);
                 if (node != null)
                 {
-
                     XmlSerializer xserializer = new XmlSerializer(GetMemberType(serializedObj.Item2));
                     TextReader tr = new StringReader(node.InnerXml);
                     XmlReader xr = XmlReader.Create(tr);
@@ -128,27 +130,25 @@ namespace Engine.Core
         {
             if (!File.Exists(configName))
             {
-                Logger.Crash(new InvalidFilePathException(configName), true );
+                Logger.Crash(new InvalidFilePathException(configName), true);
                 return;
             }
 
-            List<Tuple<string, MemberInfo>> serializedObjs = GetPropertiesWithAttribute<ConfigVariable>(asm, nameSpace).ToList();
+            List<Tuple<string, MemberInfo>> serializedObjs =
+                GetPropertiesWithAttribute<ConfigVariable>(asm, nameSpace).ToList();
             XmlDocument doc = new XmlDocument();
             doc.Load(configName);
-            foreach (var serializedObj in serializedObjs)
+            foreach (Tuple<string, MemberInfo> serializedObj in serializedObjs)
             {
                 XmlNode node = GetObject(doc, serializedObj.Item1 + "." + serializedObj.Item2.Name);
                 if (node != null)
                 {
-
                     XmlSerializer xserializer = new XmlSerializer(GetMemberType(serializedObj.Item2));
                     TextReader tr = new StringReader(node.InnerXml);
                     XmlReader xr = XmlReader.Create(tr);
                     SetValue(serializedObj.Item2, null, xserializer.Deserialize(xr));
                 }
             }
-
-
         }
 
         private static XmlNode GetObject(XmlDocument doc, string fullname)
@@ -158,15 +158,14 @@ namespace Engine.Core
 
         private const string NamespaceMatch = @"xmlns(:\w+)?=""([^""]+)""|xsi(:\w+)?=""([^""]+)""";
 
-        private static List<Tuple<string, string>> CreateConfigObjects(Assembly asm, string nameSpace, XmlWriterSettings settings)
+        private static List<Tuple<string, string>> CreateConfigObjects(Assembly asm, string nameSpace,
+            XmlWriterSettings settings)
         {
-
             Tuple<string, MemberInfo>[] info = GetPropertiesWithAttribute<ConfigVariable>(asm, nameSpace);
             List<Tuple<string, string>> serializedVars = new List<Tuple<string, string>>();
             XmlSerializer xs;
             for (int i = 0; i < info.Length; i++)
             {
-
                 xs = new XmlSerializer(GetMemberType(info[i].Item2));
                 TextWriter tw = new StringWriter();
                 XmlWriter xw = XmlWriter.Create(tw, settings);
@@ -182,13 +181,12 @@ namespace Engine.Core
 
         private static List<Tuple<string, string>> CreateConfigObjects(object obj, XmlWriterSettings settings)
         {
-
-            Tuple<string, MemberInfo>[] info = GetPropertiesWithAttribute(obj.GetType(), BindingFlags.Public | BindingFlags.Instance);
+            Tuple<string, MemberInfo>[] info =
+                GetPropertiesWithAttribute(obj.GetType(), BindingFlags.Public | BindingFlags.Instance);
             List<Tuple<string, string>> serializedVars = new List<Tuple<string, string>>();
             XmlSerializer xs;
             for (int i = 0; i < info.Length; i++)
             {
-
                 xs = new XmlSerializer(GetMemberType(info[i].Item2));
                 TextWriter tw = new StringWriter();
                 XmlWriter xw = XmlWriter.Create(tw, settings);
@@ -199,7 +197,6 @@ namespace Engine.Core
 
 
             return serializedVars;
-
         }
 
 
@@ -229,7 +226,6 @@ namespace Engine.Core
             {
                 ((PropertyInfo)info).SetValue(reference, value);
             }
-
         }
 
         private static Type GetMemberType(MemberInfo info)
@@ -282,22 +278,20 @@ namespace Engine.Core
             return ret.ToArray();
         }
 
-        private static Tuple<string, MemberInfo>[] GetPropertiesWithAttribute<T>(Assembly asm, string nameSpace) where T : Attribute
+        private static Tuple<string, MemberInfo>[] GetPropertiesWithAttribute<T>(Assembly asm, string nameSpace)
+            where T : Attribute
         {
             List<Tuple<string, MemberInfo>> ret = new List<Tuple<string, MemberInfo>>();
-            var namespaceTypes = from t in asm.GetTypes()
-                                 where t.Namespace != null && t.Namespace.Contains(nameSpace)
-                                 select new Tuple<string, Type>(t.FullName, t);
-
+            IEnumerable<Tuple<string, Type>> namespaceTypes = from t in asm.GetTypes()
+                                                              where t.Namespace != null && t.Namespace.Contains(nameSpace)
+                                                              select new Tuple<string, Type>(t.FullName, t);
 
 
             Type attribType = typeof(T);
             Tuple<string, Type>[] types = namespaceTypes.ToArray();
-            foreach (var item in types)
+            foreach (Tuple<string, Type> item in types)
             {
                 ret.AddRange(GetPropertiesWithAttribute(item.Item2, BindingFlags.Static | BindingFlags.Public));
-
-
             }
 
             return ret.ToArray();

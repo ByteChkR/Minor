@@ -29,10 +29,10 @@ namespace Engine.DataTypes
                     Logger.Crash(new EngineException("Could not load default font"), false);
                     return null;
                 }
-                GameFont f = FontLibrary.LoadFontInternal(resourceStream, 32, out var name);
+
+                GameFont f = FontLibrary.LoadFontInternal(resourceStream, 32, out string name);
                 resourceStream.Close();
                 return f;
-
             }
         }
 

@@ -10,13 +10,15 @@ namespace Engine.Debug
     public class GraphDrawingComponent : UIElement
     {
         private GraphDrawingContext _context;
+
         public override RenderContext Context
         {
             get
             {
                 if (_context == null)
                 {
-                    _context = new GraphDrawingContext(_points, Position, Scale, Owner._worldTransformCache, WorldSpace, Alpha, Shader, RenderQueue);
+                    _context = new GraphDrawingContext(_points, Position, Scale, Owner._worldTransformCache, WorldSpace,
+                        Alpha, Shader, RenderQueue);
                 }
                 else if (ContextInvalid)
                 {
@@ -30,6 +32,7 @@ namespace Engine.Debug
                     _context.Program = Shader;
                     _context.RenderQueue = RenderQueue;
                 }
+
                 return _context;
             }
         }
@@ -53,6 +56,7 @@ namespace Engine.Debug
         }
 
         private Vector2[] _points;
+
         public Vector2[] Points
         {
             get => _points;
@@ -69,7 +73,5 @@ namespace Engine.Debug
         {
             _points = new Vector2[0];
         }
-
-
     }
 }

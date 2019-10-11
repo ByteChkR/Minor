@@ -206,6 +206,7 @@ namespace Engine.IO
                 Logger.Log("Could not Find Texture with Path: " + file, DebugChannel.Log);
                 return Texture.DefaultTexture;
             }
+
             return BitmapToTexture(new Bitmap(file));
         }
 

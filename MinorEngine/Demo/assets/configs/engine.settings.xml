@@ -1,6 +1,6 @@
 <Settings>
   <Engine.Core.EngineSettings.Settings>
-    <EngineSettings  >
+    <EngineSettings>
       <Depth>8</Depth>
       <Stencil>0</Stencil>
       <Samples>16</Samples>

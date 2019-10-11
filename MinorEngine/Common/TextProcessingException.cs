@@ -6,7 +6,6 @@ namespace Common
     {
         public TextProcessingException(string errorMessage, ApplicationException inner) : base(errorMessage, inner)
         {
-            
         }
     }
 }

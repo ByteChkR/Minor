@@ -41,26 +41,23 @@ namespace Engine.Rendering
                     string source = tr.ReadToEnd();
 
                     resourceStream.Close();
-                    shaderSource.Add(i==0?ShaderType.VertexShader: ShaderType.FragmentShader, source);
-
+                    shaderSource.Add(i == 0 ? ShaderType.VertexShader : ShaderType.FragmentShader, source);
                 }
             }
 
-            if (TryCreateFromSource(shaderSource, out var shader))
+            if (TryCreateFromSource(shaderSource, out ShaderProgram shader))
             {
                 return shader;
             }
 
             Logger.Crash(new EngineException("Could not compile default shader"), false);
             return null;
-
         }
 
         /// <summary>
         /// The program id of the shader
         /// </summary>
         private readonly int _prgId;
-
 
 
         /// <summary>
@@ -79,7 +76,7 @@ namespace Engine.Rendering
             foreach (KeyValuePair<ShaderType, string> shader in subshaders)
             {
                 Logger.Log("Compiling Shader: " + shader.Key, DebugChannel.Log);
-                
+
                 bool r = TryCompileShader(shader.Key, shader.Value, out int id);
                 ret &= r;
                 if (r)
@@ -117,7 +114,7 @@ namespace Engine.Rendering
         public static bool TryCreate(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
         {
             Dictionary<ShaderType, string> ret = new Dictionary<ShaderType, string>();
-            foreach (var subshader in subshaders)
+            foreach (KeyValuePair<ShaderType, string> subshader in subshaders)
             {
                 Logger.Log("Loading Shader: " + subshader.Value, DebugChannel.Log);
                 ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));

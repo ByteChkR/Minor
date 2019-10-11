@@ -30,15 +30,15 @@ namespace Engine.DataTypes
                     Logger.Crash(new EngineException("Could not load default Texture"), false);
                     return null;
                 }
+
                 Texture f = TextureLoader.BitmapToTexture(new Bitmap(resourceStream));
                 GL.BindTexture(TextureTarget.Texture2D, f.TextureId);
-                GL.TextureParameter(f.TextureId, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
-                GL.TextureParameter(f.TextureId, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Nearest);
+                GL.TextureParameter(f.TextureId, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
+                GL.TextureParameter(f.TextureId, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
                 GL.BindTexture(TextureTarget.Texture2D, 0);
 
                 resourceStream.Close();
                 return f;
-
             }
         }
 

@@ -82,7 +82,6 @@ namespace Engine.Debug
 
             Timer.Stop();
             TimeSpentInStage = Timer.Elapsed;
-            
         }
 
         /// <summary>

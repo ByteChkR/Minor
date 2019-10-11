@@ -9,6 +9,7 @@ namespace Engine.Debug
     public class GraphDrawingContext : UIRenderContext
     {
         private Vector2[] _points;
+
         public Vector2[] Points
         {
             get => _points;
@@ -24,7 +25,8 @@ namespace Engine.Debug
         private bool _init = false;
         public bool Enabled { get; set; } = true;
 
-        public GraphDrawingContext(Vector2[] points, Vector2 position, Vector2 scale, Matrix4 modelMatrix, bool worldSpace, float alpha,
+        public GraphDrawingContext(Vector2[] points, Vector2 position, Vector2 scale, Matrix4 modelMatrix,
+            bool worldSpace, float alpha,
             ShaderProgram program, int renderQueue) : base(position, scale, modelMatrix, worldSpace, alpha, program,
             renderQueue)
         {
@@ -51,7 +53,7 @@ namespace Engine.Debug
         {
             GL.BindVertexArray(_vao);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(Points.Length * sizeof(float) * 2),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (Points.Length * sizeof(float) * 2),
                 Points, BufferUsageHint.StaticDraw);
             GL.BindVertexArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
@@ -59,11 +61,16 @@ namespace Engine.Debug
 
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
-            if (!Enabled) return;
+            if (!Enabled)
+            {
+                return;
+            }
+
             if (!_init)
             {
                 Initialize();
             }
+
             if (_bufferDirty)
             {
                 UpdateBuffer();
@@ -104,8 +111,6 @@ namespace Engine.Debug
 
             GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);
-
-
         }
     }
 }

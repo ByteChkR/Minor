@@ -245,8 +245,8 @@ namespace Engine.Debug
             _gDraw.Position = new Vector2(0.5f);
             _gDraw.Points = new[]
             {
-                new Vector2(0f,0f),
-                new Vector2(1f,1f),
+                new Vector2(0f, 0f),
+                new Vector2(1f, 1f),
             };
 
             _tText.Position = new Vector2(-0.39f, 0.353f);
@@ -278,7 +278,6 @@ namespace Engine.Debug
             float xInc = 1f / pts.Length;
             for (int i = 0; i < pts.Length; i++)
             {
-
                 pts[i] = new Vector2(xInc * i, _pts[i]);
             }
 
@@ -292,6 +291,7 @@ namespace Engine.Debug
             {
                 _graphData.Dequeue();
             }
+
             UpdateGraph();
         }
 
@@ -385,7 +385,6 @@ namespace Engine.Debug
         /// <returns>Result of Command</returns>
         private string cmd_Exit(string[] args)
         {
-
             return "Exited.";
         }
 
@@ -587,6 +586,7 @@ namespace Engine.Debug
                     {
                         _sb.Remove(inputIndex - 1, 1);
                     }
+
                     _currentId = _commandHistory.Count;
                     inputIndex--;
 
@@ -707,7 +707,6 @@ namespace Engine.Debug
 
             _bgImage.Alpha = _showConsole ? 0.65f : 0;
             _consoleOutputImage.Alpha = _showConsole ? 0.75f : 0;
-
 
 
             _hintText.Text = _showConsole ? "" : HelpText;

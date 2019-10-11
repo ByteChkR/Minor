@@ -50,7 +50,7 @@ namespace Engine.Rendering
                 if (_context == null)
                 {
                     _contextInvalid = false;
-                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, new[] { Texture },
+                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] {Model}, new[] {Texture},
                         RenderType);
                 }
                 else if (_contextInvalid || Owner._worldTransformCache != _context.ModelMat)
@@ -59,11 +59,10 @@ namespace Engine.Rendering
 
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.Program = Shader;
-                    _context.Meshes = new[] { Model };
-                    _context.Textures = new[] { Texture };
+                    _context.Meshes = new[] {Model};
+                    _context.Textures = new[] {Texture};
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.RenderType = RenderType;
-
                 }
 
                 return _context;

@@ -13,17 +13,16 @@ namespace Demo
 {
     public struct TestStruct
     {
-
         public string NestedText;
-
     }
+
     internal class Program
     {
+        [ConfigVariable] public static string TestString = "This is a text.";
 
         [ConfigVariable]
-        public static string TestString = "This is a text.";
-        [ConfigVariable]
-        public static TestStruct TestVec = new TestStruct() { NestedText = "I am a member of Test Struct" };
+        public static TestStruct TestVec = new TestStruct() {NestedText = "I am a member of Test Struct"};
+
         private static bool AskForDebugLogSending()
         {
             Console.WriteLine("Allow Sending Debug Logs? [y/N]:");
@@ -38,7 +37,8 @@ namespace Demo
         private static void Main(string[] args)
         {
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine");
-            EngineConfig.LoadConfig("configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core");
+            EngineConfig.LoadConfig("configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
+                "Engine.Core");
             DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
 #if COLLECT_LOGS
             if (AskForDebugLogSending())
@@ -60,7 +60,6 @@ namespace Demo
                 streams.Add(network);
             }
 #endif
-
 
 
             GameEngine engine = new GameEngine(EngineSettings.Settings);

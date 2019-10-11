@@ -24,9 +24,6 @@ namespace Engine.IO
     /// </summary>
     public class MeshLoader
     {
-
-
-
         /// <summary>
         /// static Class providing frequently used objects
         /// </summary>
@@ -87,6 +84,7 @@ namespace Engine.IO
             context.SetConfig(new NormalSmoothingAngleConfig(66));
             return LoadAssimpScene(context.ImportFileFromStream(stream), "");
         }
+
         /// <summary>
         /// Loads a Assimp Model From File
         /// </summary>
@@ -97,8 +95,9 @@ namespace Engine.IO
             if (!File.Exists(path))
             {
                 Logger.Log("Could not load model file.", DebugChannel.Error);
-                return new List<Mesh> { Mesh.DefaultMesh };
+                return new List<Mesh> {Mesh.DefaultMesh};
             }
+
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
             return LoadAssimpScene(context.ImportFile(path), path);
@@ -128,8 +127,6 @@ namespace Engine.IO
             processNode(s.RootNode, s, ret, directory);
             return ret;
         }
-
-
 
 
         /// <summary>
@@ -205,7 +202,7 @@ namespace Engine.IO
             for (int i = 0; i < mesh.FaceCount; i++)
             {
                 Face f = mesh.Faces[i];
-                indices.AddRange(f.Indices.Select(x => (uint)x));
+                indices.AddRange(f.Indices.Select(x => (uint) x));
             }
 
 
@@ -255,13 +252,13 @@ namespace Engine.IO
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * Vertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers

@@ -56,7 +56,11 @@ namespace Common
 
         private static LogStream OpenFileStream(ILogStreamSettings settings)
         {
-            if (File.Exists(settings.Destination)) File.Delete(settings.Destination);
+            if (File.Exists(settings.Destination))
+            {
+                File.Delete(settings.Destination);
+            }
+
             return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask,
                 (MatchType) settings.MatchMode, settings.Timestamp);
         }

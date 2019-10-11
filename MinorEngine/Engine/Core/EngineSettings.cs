@@ -10,8 +10,7 @@ namespace Engine.Core
     /// </summary>
     public class EngineSettings
     {
-        [ConfigVariable]
-        public static EngineSettings Settings;
+        [ConfigVariable] public static EngineSettings Settings;
 
         /// <summary>
         /// The Graphics Mode of the Window

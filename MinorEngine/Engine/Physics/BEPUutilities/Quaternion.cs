@@ -43,10 +43,6 @@ namespace Engine.Physics.BEPUutilities
         }
 
 
-        
-
-       
-
         /// <summary>
         /// Adds two quaternions together.
         /// </summary>

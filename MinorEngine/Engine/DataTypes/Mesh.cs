@@ -27,15 +27,15 @@ namespace Engine.DataTypes
                     Logger.Crash(new EngineException("Could not load default mesh"), false);
                     return null;
                 }
+
                 byte[] buf = new byte[resourceStream.Length];
-                resourceStream.Read(buf, 0, (int)resourceStream.Length);
+                resourceStream.Read(buf, 0, (int) resourceStream.Length);
 
                 MemoryStream ms = new MemoryStream(buf);
 
                 Mesh f = MeshLoader.LoadModel(ms, path)[0];
                 resourceStream.Close();
                 return f;
-
             }
         }
 

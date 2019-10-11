@@ -79,15 +79,17 @@ namespace Common
                     definitions = new Definitions(defs);
                 }
 
-                string[] ret = { "FILE NOT FOUND" };
+                string[] ret = {"FILE NOT FOUND"};
                 try
                 {
-                    ret = pp.Run(new[] { filename }, new Settings(), definitions);
+                    ret = pp.Run(new[] {filename}, new Settings(), definitions);
                 }
                 catch (ProcessorException ex)
                 {
-                    DebugHelper.Crash(new TextProcessingException("Could not preprocess file: " + filename.GetFilePath(), ex), true);
+                    DebugHelper.Crash(
+                        new TextProcessingException("Could not preprocess file: " + filename.GetFilePath(), ex), true);
                 }
+
                 return ret;
             }
         }
@@ -206,7 +208,7 @@ namespace Common
 
         public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
         {
-            return new[] { _configs[ext].GetGenericInclude(file, genType) };
+            return new[] {_configs[ext].GetGenericInclude(file, genType)};
         }
 
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)

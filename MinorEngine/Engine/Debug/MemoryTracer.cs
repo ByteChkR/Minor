@@ -138,7 +138,9 @@ namespace Engine.Debug
                 _informationCollection.Add(_current);
 
                 if (cur != null)
-                    _console?.AddGraphValue((float)cur.TimeSpentInStage.TotalMilliseconds);
+                {
+                    _console?.AddGraphValue((float) cur.TimeSpentInStage.TotalMilliseconds);
+                }
 
 
                 while (_informationCollection.Count >= MaxTraceCount)

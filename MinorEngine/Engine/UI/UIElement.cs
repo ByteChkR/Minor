@@ -86,10 +86,8 @@ namespace Engine.UI
             get => _worldSpace;
             set
             {
-
                 _worldSpace = value;
                 ContextInvalid = true;
-
             }
         }
 
@@ -101,10 +99,8 @@ namespace Engine.UI
             get => _alpha;
             set
             {
-
                 _alpha = value;
                 ContextInvalid = true;
-
             }
         }
 
@@ -116,10 +112,8 @@ namespace Engine.UI
             get => _renderQueue;
             set
             {
-
                 _renderQueue = value;
                 ContextInvalid = true;
-
             }
         }
 

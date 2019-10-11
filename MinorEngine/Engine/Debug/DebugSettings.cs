@@ -44,7 +44,7 @@ namespace Engine.Debug
         /// The Stage names of the Different Channels
         /// </summary>
         public string[] StageNames { get; set; }
-        
+
 
         /// <summary>
         /// List of streams that will be added to the Debug System.
