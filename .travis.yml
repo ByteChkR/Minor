@@ -33,7 +33,5 @@ script:
 
 #Testing all included projects.
 after_script:
-  - dotnet test ext-pp/ext_pp.sln -p:Configuration=Release
-  - dotnet test ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -p:Configuration=Release
   - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=TRAVIS_TEST
   - bash <(curl -s https://codecov.io/bash) #Uploading the coverage report to Codecov.
