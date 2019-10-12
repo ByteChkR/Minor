@@ -4,6 +4,7 @@ using Common;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
+using Engine.OpenCL.DotNetCore.DataTypes;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Xunit;
@@ -222,6 +223,23 @@ namespace Engine.Tests
                 {
                     P.Step();
                 }
+            }
+        }
+
+        [Fact]
+        public void TypeConversion()
+        {
+            float f = float.MaxValue / 2;
+            byte b = (byte)CLTypeConverter.Convert(typeof(byte), f);
+            float4 f4 = new float4(f);
+            uchar4 i4 = (uchar4)CLTypeConverter.Convert(typeof(uchar4), f4);
+            Assert.True(b == 128);
+
+            for (int i = 0; i < 4; i++)
+            {
+                byte s = i4[i];
+                Assert.True(s == 128);
+
             }
         }
     }

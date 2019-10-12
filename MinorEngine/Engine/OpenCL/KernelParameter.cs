@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Engine.OpenCL.DotNetCore.DataTypes;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
+using Engine.OpenFL;
 
 namespace Engine.OpenCL
 {
@@ -39,7 +40,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// A list of Types(in the same order as the DataType enum
         /// </summary>
-        private static Type[] Converters => new[]
+        internal static Type[] Converters => new[]
         {
             typeof(object),
             typeof(float),
@@ -167,13 +168,23 @@ namespace Engine.OpenCL
         {
             if (IsArray)
             {
-                object[] data = (object[]) value;
+                object[] data = (object[])value;
 
-                return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
-                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
+                return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int)DataType], x)),
+                    Converters[(int)DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
             }
 
-            return CastToType(Converters[(int) DataType], value);
+            
+            return CastToType(Converters[(int)DataType], value);
+        }
+
+        public static TypeEnums.DataTypes GetEnumFromType(Type t)
+        {
+            for (int i = 0; i < Converters.Length; i++)
+            {
+                if (Converters[i] == t) return (TypeEnums.DataTypes)i;
+            }
+            return TypeEnums.DataTypes.UNKNOWN;
         }
 
         /// <summary>
@@ -182,9 +193,13 @@ namespace Engine.OpenCL
         /// <param name="t">the target type</param>
         /// <param name="value">the value to be casted</param>
         /// <returns>The casted value</returns>
-        private static object CastToType(Type t, object value)
+        public static object CastToType(Type t, object value)
         {
-            return Convert.ChangeType(value, t);
+            if (value is decimal)
+            {
+                return Convert.ChangeType(value, t);
+            }
+            return CLTypeConverter.Convert(t, value);
         }
 
 
