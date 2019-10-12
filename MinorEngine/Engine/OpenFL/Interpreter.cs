@@ -254,8 +254,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!int.TryParse(args[2], out int n))
+                else if (!int.TryParse(args[2], out int n))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -263,8 +262,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!int.TryParse(args[3], out int width))
+                else if (!int.TryParse(args[3], out int width))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -272,8 +270,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!int.TryParse(args[4], out int height))
+                else if (!int.TryParse(args[4], out int height))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -281,8 +278,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!bool.TryParse(args[5], out bool periodicInput))
+                else if (!bool.TryParse(args[5], out bool periodicInput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -290,8 +286,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!bool.TryParse(args[6], out bool periodicOutput))
+                else if (!bool.TryParse(args[6], out bool periodicOutput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -299,8 +294,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!int.TryParse(args[7], out int symetry))
+                else if (!int.TryParse(args[7], out int symmetry))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -308,8 +302,7 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!int.TryParse(args[8], out int ground))
+                else if (!int.TryParse(args[8], out int ground))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
@@ -317,38 +310,41 @@ namespace Engine.OpenFL
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
-
-                if (!int.TryParse(args[9], out int limit))
+                else if (!int.TryParse(args[9], out int limit))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
                     Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
-                    info.SetKey(varname);
-                    AddBufferToDefine(varname, info);
-                }
-
-                string fn = args[1].Trim().Replace(FilepathIndicator, "");
-                if (File.Exists(fn))
-                {
-                    WaveFunctionCollapse wfc = new WFCOverlayMode(fn, n, width,
-                        height, periodicInput, periodicOutput, symetry, ground);
-
-                    wfc.Run(limit);
-
-                    Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(bmp,
-                            MemoryFlag.CopyHostPointer | flags), true);
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
                 else
                 {
-                    Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement"), true);
-                    Logger.Log("Invalid Image statement. Using empty buffer", DebugChannel.Error, 10);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
-                    info.SetKey(varname);
-                    AddBufferToDefine(varname, info);
+                    string fn = args[1].Trim().Replace(FilepathIndicator, "");
+                    if (File.Exists(fn))
+                    {
+                        WaveFunctionCollapse wfc = new WFCOverlayMode(fn, n, width,
+                            height, periodicInput, periodicOutput, symmetry, ground);
+
+                        wfc.Run(limit);
+
+                        Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
+                        CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(bmp,
+                            MemoryFlag.CopyHostPointer | flags), true);
+                        info.SetKey(varname);
+                        AddBufferToDefine(varname, info);
+                    }
+                    else
+                    {
+                        Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement"), true);
+                        Logger.Log("Invalid Image statement. Using empty buffer", DebugChannel.Error, 10);
+                        CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
+                        info.SetKey(varname);
+                        AddBufferToDefine(varname, info);
+                    }
                 }
+
+                
             }
 
             else

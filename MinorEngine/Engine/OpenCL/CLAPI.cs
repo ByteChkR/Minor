@@ -62,6 +62,11 @@ namespace Engine.OpenCL
             InitializeOpenCL();
         }
 
+        public static void Reinitialize()
+        {
+            _instance = new CLAPI();
+        }
+
         /// <summary>
         /// Initializes the OpenCL API
         /// </summary>

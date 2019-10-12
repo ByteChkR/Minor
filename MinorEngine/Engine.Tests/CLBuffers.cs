@@ -12,6 +12,7 @@ namespace Engine.Tests
         [Fact]
         public void CreateBuffer()
         {
+            CLAPI.Reinitialize();
             DebugHelper.ThrowOnAllExceptions = true;
             byte[] b = new byte[255];
             for (int i = 0; i < b.Length; i++)
@@ -28,6 +29,7 @@ namespace Engine.Tests
         [Fact]
         public void ReadBuffer()
         {
+            CLAPI.Reinitialize();
             DebugHelper.ThrowOnAllExceptions = true;
             float[] b = new float[255];
             for (int i = 0; i < b.Length; i++)
@@ -46,6 +48,7 @@ namespace Engine.Tests
         [Fact]
         public void WriteBuffer()
         {
+            CLAPI.Reinitialize();
             DebugHelper.ThrowOnAllExceptions = true;
             float[] b = new float[255];
             for (int i = 0; i < b.Length; i++)
