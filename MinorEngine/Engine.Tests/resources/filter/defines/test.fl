@@ -1,6 +1,6 @@
 --define texture textureA: "resources/blackDot.png"
---define texture textureB: "resources/blackDot.png"
---define texture textureC: "resources/blackDot.png"
-
+--define texture textureB: random
+--define texture textureC: empty
+--define texture textureD: wfc "resources/testtile.png" 3 128 128 false true 8 0 0 
 Main:
  setactive in

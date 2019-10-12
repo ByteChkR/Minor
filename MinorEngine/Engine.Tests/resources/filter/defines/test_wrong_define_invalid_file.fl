@@ -1,0 +1,4 @@
+--define texture textureA: "no/file/here"
+
+Main:
+ setactive in

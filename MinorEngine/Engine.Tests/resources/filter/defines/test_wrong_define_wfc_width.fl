@@ -1,0 +1,4 @@
+--define texture textureA: wfc "resources/testtile.png" 3 XXX 128 false true 8 0 0 
+
+Main:
+ setactive in

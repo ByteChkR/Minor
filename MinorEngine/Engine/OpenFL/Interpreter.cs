@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -124,18 +125,36 @@ namespace Engine.OpenFL
 
                 MemoryBuffer buf =
                     CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
-                Interpreter interpreter = new Interpreter(filename.Replace(FilepathIndicator, ""), buf, _width, _height,
-                    _depth, _channelCount, _kernelDb, true);
 
-                do
+
+                string fn = filename.Replace(FilepathIndicator, "");
+
+
+                if (File.Exists(fn))
                 {
-                    interpreter.Step();
-                } while (!interpreter.Terminated);
+                    Interpreter interpreter = new Interpreter(fn, buf, _width, _height,
+                        _depth, _channelCount, _kernelDb, true);
 
-                CLBufferInfo info = interpreter.GetActiveBufferInternal();
-                info.SetKey(varname);
-                _definedBuffers.Add(varname, info);
-                interpreter.ReleaseResources();
+                    do
+                    {
+                        interpreter.Step();
+                    } while (!interpreter.Terminated);
+
+                    CLBufferInfo info = interpreter.GetActiveBufferInternal();
+                    info.SetKey(varname);
+                    _definedBuffers.Add(varname, info);
+                    interpreter.ReleaseResources();
+                }
+                else
+                {
+                    Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."),
+                        true);
+                    Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
+
+                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
+                    info.SetKey(varname);
+                    AddBufferToDefine(varname, info);
+                }
             }
             else
             {
@@ -194,10 +213,22 @@ namespace Engine.OpenFL
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Bitmap bmp = (Bitmap)Image.FromFile(filename.Replace(FilepathIndicator, ""));
-                AddBufferToDefine(varname,
-                    new CLBufferInfo(CLAPI.CreateFromImage(bmp,
-                        MemoryFlag.CopyHostPointer | flags), true));
+                string fn = filename.Replace(FilepathIndicator, "");
+                if(File.Exists(fn))
+                {
+                    Bitmap bmp = (Bitmap) Image.FromFile(fn);
+                    AddBufferToDefine(varname,
+                        new CLBufferInfo(CLAPI.CreateFromImage(bmp,
+                            MemoryFlag.CopyHostPointer | flags), true));
+                }
+                else
+                {
+                    Logger.Crash(new FLInvalidFunctionUseException("define texture", "Invalid Filepath"), true);
+                    Logger.Log("Invalid Filepath. Using empty buffer", DebugChannel.Error, 10);
+                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
+                    info.SetKey(varname);
+                    AddBufferToDefine(varname, info);
+                }
             }
             else if (filename == "random")
             {
@@ -296,16 +327,30 @@ namespace Engine.OpenFL
                     AddBufferToDefine(varname, info);
                 }
 
-                WaveFunctionCollapse wfc = new WFCOverlayMode(args[1].Trim().Replace(FilepathIndicator, ""), n, width,
-                    height, periodicInput, periodicOutput, symetry, ground);
+                string fn = args[1].Trim().Replace(FilepathIndicator, "");
+                if (File.Exists(fn))
+                {
+                    WaveFunctionCollapse wfc = new WFCOverlayMode(fn, n, width,
+                        height, periodicInput, periodicOutput, symetry, ground);
 
-                wfc.Run(limit);
+                    wfc.Run(limit);
 
-                Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
-                _definedBuffers.Add(varname,
-                    new CLBufferInfo(CLAPI.CreateFromImage(bmp,
-                        MemoryFlag.CopyHostPointer | flags), true));
+                    Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
+                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(bmp,
+                            MemoryFlag.CopyHostPointer | flags), true);
+                    info.SetKey(varname);
+                    AddBufferToDefine(varname, info);
+                }
+                else
+                {
+                    Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement"), true);
+                    Logger.Log("Invalid Image statement. Using empty buffer", DebugChannel.Error, 10);
+                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
+                    info.SetKey(varname);
+                    AddBufferToDefine(varname, info);
+                }
             }
+
             else
             {
                 Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Define statement."), true);
@@ -397,7 +442,7 @@ namespace Engine.OpenFL
                 {
                     _sb.Append($"\n  {definedBuffer}");
                 }
-                
+
                 string definedBuffers = _sb.ToString();
 
                 _sb.Clear();
@@ -804,7 +849,7 @@ namespace Engine.OpenFL
                 {
                     if (memoryBuffer.Value.IsInternal)
                     {
-                        Logger.Log("Freeing Buffer: "+memoryBuffer.Value.ToString(), DebugChannel.Log);
+                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value.ToString(), DebugChannel.Log);
                         memoryBuffer.Value.Buffer.Dispose();
                     }
                 }

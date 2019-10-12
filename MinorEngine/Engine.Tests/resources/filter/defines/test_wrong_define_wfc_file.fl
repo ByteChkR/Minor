@@ -1,0 +1,4 @@
+--define texture textureA: wfc "the/file/is/a/lie" 3 128 128 false true 8 0 0 
+
+Main:
+ setactive in
