@@ -159,7 +159,9 @@ namespace Demo.scenes
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                         GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
 
-            EngineConfig.LoadConfig("configs/camera_fldemo.xml", mainCamera);
+            object mc = mainCamera;
+
+            EngineConfig.LoadConfig("configs/camera_fldemo.xml", ref mc);
 
 
             GameEngine.Instance.CurrentScene.Add(mainCamera);

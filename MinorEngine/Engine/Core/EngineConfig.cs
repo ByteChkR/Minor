@@ -101,7 +101,7 @@ namespace Engine.Core
             File.WriteAllText(filePath, config);
         }
 
-        public static void LoadConfig(string configName, object obj)
+        public static void LoadConfig(string configName, ref object obj)
         {
             if (!File.Exists(configName))
             {
@@ -255,7 +255,7 @@ namespace Engine.Core
                 {
                     if (fieldInfoCustomAttribute.AttributeType == typeof(ConfigVariable))
                     {
-                        ret.Add(new Tuple<string, MemberInfo>(t.FullName, fieldInfo));
+                        ret.Add(new Tuple<string, MemberInfo>(t.FullName.Replace("+", "."), fieldInfo));
                         break;
                     }
                 }
@@ -269,7 +269,7 @@ namespace Engine.Core
                 {
                     if (propertyInfoCustomAttribute.AttributeType == typeof(ConfigVariable))
                     {
-                        ret.Add(new Tuple<string, MemberInfo>(t.FullName, propertyInfo));
+                        ret.Add(new Tuple<string, MemberInfo>(t.FullName.Replace("+", "."), propertyInfo));
                         break;
                     }
                 }
@@ -284,7 +284,7 @@ namespace Engine.Core
             List<Tuple<string, MemberInfo>> ret = new List<Tuple<string, MemberInfo>>();
             IEnumerable<Tuple<string, Type>> namespaceTypes = from t in asm.GetTypes()
                                                               where t.Namespace != null && t.Namespace.Contains(nameSpace)
-                                                              select new Tuple<string, Type>(t.FullName, t);
+                                                              select new Tuple<string, Type>(t.FullName.Replace("+", "."), t);
 
 
             Type attribType = typeof(T);

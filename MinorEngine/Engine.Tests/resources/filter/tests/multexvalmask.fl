@@ -1,4 +1,4 @@
---define texture other: "TEST.png"
+--define texture other: "resources/TEST.png"
 
 Main:
 	setactive 3

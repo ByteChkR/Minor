@@ -1,0 +1,12 @@
+#there
+Main: #here
+#there
+#there
+#there
+
+  setactive 3 #there
+  setvalb 255 #there
+  setactive 0 1 2#even here
+  random #there
+  perlin 0.8 6 #there #there
+  #there

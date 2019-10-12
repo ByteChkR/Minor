@@ -4,6 +4,7 @@ using System.Linq;
 using System.Resources;
 using System.Text;
 using Engine.Core;
+using Engine.DataTypes;
 using Engine.IO;
 using Engine.Rendering;
 using Engine.UI;
@@ -212,21 +213,21 @@ namespace Engine.Debug
                     uiShader);
 
 
-            UITextRendererComponent _tText = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tText = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
             {
                 Text = "GameEngine Console:"
             };
-            UITextRendererComponent _tHint = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tHint = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
             {
                 Text = "GameEngine Console:"
             };
 
-            UITextRendererComponent _tIn = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tIn = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
             {
                 Text = ""
             };
 
-            UITextRendererComponent _tOut = new UITextRendererComponent("Arial", false, 1f, textShader)
+            UITextRendererComponent _tOut = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
             {
                 Text = "Console Initialized.."
             };

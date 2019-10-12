@@ -1,0 +1,6 @@
+--define texture textureA: "resources/blackDot.png"
+--define texture textureB: "resources/blackDot.png"
+--define texture textureC: "resources/blackDot.png"
+
+Main:
+ setactive in

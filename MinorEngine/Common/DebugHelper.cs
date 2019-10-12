@@ -15,7 +15,7 @@ namespace Common
     {
         public static int SeverityFilter = 0;
         private static int Stage = 1;
-        private static bool ThrowOnAllExceptions = false;
+        public static bool ThrowOnAllExceptions = false;
 
         public static void ApplySettings(IDebugSettings settings)
         {

@@ -17,7 +17,7 @@ using Engine.OpenCL.TypeEnums;
 using OpenTK.Platform.Windows;
 
 
-#if TRAVIS_TEST
+#if NO_CL
 using Engine.Debug;
 
 #endif
@@ -67,8 +67,8 @@ namespace Engine.OpenCL
         /// </summary>
         private void InitializeOpenCL()
         {
-#if TRAVIS_TEST
-            Logger.Log("Starting in TRAVIS_TEST Mode", DebugChannel.Warning);
+#if NO_CL
+            Logger.Log("Starting in NO_CL Mode", DebugChannel.Warning);
 #else
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
@@ -87,7 +87,7 @@ namespace Engine.OpenCL
         /// <returns>The CL Program that was created from the code.</returns>
         internal static Program CreateCLProgramFromSource(string source)
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
@@ -102,7 +102,7 @@ namespace Engine.OpenCL
         /// <returns>The CL Program that was created from the code.</returns>
         internal static Program CreateCLProgramFromSource(string[] source)
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
@@ -118,7 +118,7 @@ namespace Engine.OpenCL
         /// <returns>The Compiled and Linked Kernel</returns>
         internal static Kernel CreateKernelFromName(Program program, string name)
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning);
             return null;
 #else
@@ -161,7 +161,7 @@ namespace Engine.OpenCL
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer(object[] data, Type t, MemoryFlag flags)
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
             return null;
 #else
@@ -189,7 +189,7 @@ namespace Engine.OpenCL
             byte[] buffer = new byte[bmp.Width * bmp.Height * 4];
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning);
             return null;
 #else
@@ -287,7 +287,7 @@ namespace Engine.OpenCL
         public static void WriteRandom<T>(MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform)
             where T : struct
         {
-#if TRAVIS_TEST
+#if NO_CL
             T[] data = new T[1];
 #else
 
@@ -298,7 +298,7 @@ namespace Engine.OpenCL
 
             WriteRandom(data, enabledChannels, rnd, uniform);
 
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Writing Random Data to Buffer", DebugChannel.Warning);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buffer, data);
@@ -327,7 +327,7 @@ namespace Engine.OpenCL
         /// <param name="values">The values to be written to the buffer</param>
         public static void WriteToBuffer<T>(MemoryBuffer buf, T[] values) where T : struct
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Writing To Buffer..", DebugChannel.Warning);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buf, values);
@@ -343,7 +343,7 @@ namespace Engine.OpenCL
         /// <returns>The content of the buffer</returns>
         public static T[] ReadBuffer<T>(MemoryBuffer buf, int size) where T : struct
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Reading From Buffer..", DebugChannel.Warning);
             return new T[size];
 #else
@@ -364,7 +364,7 @@ namespace Engine.OpenCL
             MemoryBuffer enabledChannels,
             int channelCount)
         {
-#if TRAVIS_TEST
+#if NO_CL
             Logger.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
 #else
             kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);

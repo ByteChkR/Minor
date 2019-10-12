@@ -1,0 +1,17 @@
+<Settings>
+  <Engine.Tests.ConfigurationLoader.TestContainer.ContainerName>
+    <string>TestContainer</string>
+  </Engine.Tests.ConfigurationLoader.TestContainer.ContainerName>
+  <Engine.Tests.ConfigurationLoader.TestContainer.Data>
+    <TestStruct  >
+      <TestInt>123</TestInt>
+      <TestString>TestString</TestString>
+      <Position>
+        <X>0</X>
+        <Y>1</Y>
+        <Z>0</Z>
+        <W>0</W>
+      </Position>
+    </TestStruct>
+  </Engine.Tests.ConfigurationLoader.TestContainer.Data>
+</Settings>

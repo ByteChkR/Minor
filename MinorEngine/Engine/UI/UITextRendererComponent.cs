@@ -27,7 +27,7 @@ namespace Engine.UI
                 {
                     ContextInvalid = false;
                     _context = new TextRenderContext(Shader, Position, Scale, Owner._worldTransformCache, WorldSpace,
-                        Alpha, font, _text, RenderQueue);
+                        Alpha, Font, _text, RenderQueue);
                 }
                 else if (ContextInvalid)
                 {
@@ -48,7 +48,7 @@ namespace Engine.UI
         /// <summary>
         /// the Font that is used to draw
         /// </summary>
-        private readonly GameFont font;
+        private readonly GameFont Font;
 
         /// <summary>
         /// the backing field for Text
@@ -81,8 +81,21 @@ namespace Engine.UI
         public UITextRendererComponent(string fontName, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {
-            font = UIHelper.Instance.FontLibrary.GetFont("Arial");
-            Logger.Log("Reading Character Glyphs from " + fontName, DebugChannel.Log);
+            Font = UIHelper.Instance.FontLibrary.GetFont("Arial");
+        }
+
+
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="font">The Font</param>
+        /// <param name="worldSpace">Is the Object in world space</param>
+        /// <param name="alpha">Alpha value of the image</param>
+        /// <param name="shader">The shader to be used</param>
+        public UITextRendererComponent(GameFont font, bool worldSpace, float alpha, ShaderProgram shader) : base(
+            shader, worldSpace, alpha)
+        {
+            Font = font;
         }
     }
 }

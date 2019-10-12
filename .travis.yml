@@ -33,5 +33,5 @@ script:
 
 #Testing all included projects.
 after_script:
-  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=TRAVIS_TEST
+  - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -p:Configuration=Release -p:DefineConstants=NO_CL
   - bash <(curl -s https://codecov.io/bash) #Uploading the coverage report to Codecov.

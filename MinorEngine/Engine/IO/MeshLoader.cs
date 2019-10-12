@@ -214,8 +214,7 @@ namespace Engine.IO
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Specular, dir));
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Normals, dir));
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Height, dir));
-
-
+            
             setupMesh(indices.ToArray(), vertices.ToArray(), out int vao, out int vbo, out int ebo);
 
 
