@@ -146,7 +146,6 @@ namespace Demo.scenes
             bgObj.Scale = new Vector3(25, 1, 25);
 
             Texture bgTex = TextureLoader.FileToTexture("textures/ground4k.png");
-            MemoryBuffer buf = TextureLoader.TextureToMemoryBuffer(bgTex);
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
 
 
@@ -198,7 +197,7 @@ namespace Demo.scenes
         public override void OnDestroy()
         {
             GameEngine.Instance.RemoveRenderTarget(splitCam);
-            //splitCam.Destroy();
+            splitCam.Dispose();
         }
     }
 }

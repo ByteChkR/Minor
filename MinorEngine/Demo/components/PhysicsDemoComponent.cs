@@ -106,36 +106,30 @@ namespace Demo.components
             Random rnd = new Random();
             for (int i = 0; i < nmbrs; i++)
             {
-                Vector3 pos = new Vector3((float) rnd.NextDouble(), 3 + (float) rnd.NextDouble(),
-                    (float) rnd.NextDouble());
+                Vector3 pos = new Vector3((float)rnd.NextDouble(), 3 + (float)rnd.NextDouble(),
+                    (float)rnd.NextDouble());
                 pos -= Vector3.One * 0.5f;
                 pos *= 50;
 
 
                 GameObject obj = new GameObject(pos, "Sphere");
-                float radius = 0.3f + (float) rnd.NextDouble();
-                obj.AddComponent(new DestroyTimer(5));
+                float radius = 1f + (float)rnd.NextDouble();
+                obj.AddComponent(new DestroyTimer(55));
                 obj.Scale = new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
-                    obj.AddComponent(new MeshRendererComponent(_objShader, Box,
+                    obj.AddComponent(new MeshRendererComponent(_objShader, Box.Copy(),
                         TextureLoader.FileToTexture("textures/TEST.png"), 1));
 
 
                     Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
-                    ColliderConstraints c = coll.ColliderConstraints;
-                    c.RotationConstraints = FreezeConstraints.Z | FreezeConstraints.X;
-                    coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
                 else
                 {
-                    obj.AddComponent(new MeshRendererComponent(_objShader, Sphere,
+                    obj.AddComponent(new MeshRendererComponent(_objShader, Sphere.Copy(),
                         TextureLoader.FileToTexture("textures/TEST.png"), 1));
                     Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
-                    ColliderConstraints c = coll.ColliderConstraints;
-                    //c.RotationConstraints = FreezeConstraints.X;
-                    coll.ColliderConstraints = c;
                     obj.AddComponent(coll);
                 }
 

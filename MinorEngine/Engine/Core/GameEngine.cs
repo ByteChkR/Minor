@@ -275,18 +275,18 @@ namespace Engine.Core
                 _changeScene = false;
 
 
-                MemoryTracer.AddSubStage("Unload World");
+                MemoryTracer.AddSubStage("Removing Old Scene");
+
+                CurrentScene?.Destroy();
 
                 CurrentScene?._Destroy();
+
+                CurrentScene?.DestroyScene(); //Call on destroy on the scene itself.
 
                 MemoryTracer.NextStage("Removing World");
 
                 CurrentScene?.RemoveDestroyedObjects();
 
-
-                MemoryTracer.NextStage("Removing Old Scene");
-
-                CurrentScene?.Destroy();
 
                 MemoryTracer.NextStage("Create New Scene");
 

@@ -7,7 +7,7 @@
       <InitWidth>1280</InitWidth>
       <InitHeight>720</InitHeight>
       <PhysicsThreadCount>1</PhysicsThreadCount>
-      <VSync>Off</VSync>
+      <VSync>On</VSync>
       <WindowFlags>Default</WindowFlags>
       <Title>TestTitle</Title>
       <DebugSettings>

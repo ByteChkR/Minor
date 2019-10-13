@@ -143,8 +143,7 @@ namespace Demo.scenes
             BasicCamera c = new BasicCamera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
-            //c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            c.Translate(new Vector3(0, 20, 50));
+            c.Translate(new Vector3(0, 4, 0));
             _camLookCommandComponent = new LookAtComponent();
 
             c.AddComponent(_camLookCommandComponent);
@@ -164,7 +163,7 @@ namespace Demo.scenes
 
             source.Clip = clip;
             source.Looping = true;
-            //source.Play();
+            source.Play();
             GameEngine.Instance.CurrentScene.Add(_sourceCube);
 
             AudioListener listener = new AudioListener();

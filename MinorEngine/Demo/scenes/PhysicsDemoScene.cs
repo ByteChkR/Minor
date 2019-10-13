@@ -160,7 +160,7 @@ namespace Demo.scenes
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(-25));
-            c.Translate(new Vector3(55, 10, 45));
+            c.Translate(new Vector3(1,30, 45));
             c.AddComponent(new CameraRaycaster(mouseTarget, 3, boxO));
             GameEngine.Instance.CurrentScene.Add(c);
             GameEngine.Instance.CurrentScene.SetCamera(c);

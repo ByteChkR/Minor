@@ -44,7 +44,6 @@ namespace Engine.Core
         /// </summary>
         internal void _Destroy()
         {
-            OnDestroy();
 
             if (Owner != null)
             {
@@ -61,6 +60,7 @@ namespace Engine.Core
         public void Destroy()
         {
             _destructionPending = true;
+            OnDestroy();
         }
 
         /// <summary>
