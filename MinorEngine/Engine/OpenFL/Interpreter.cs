@@ -216,7 +216,7 @@ namespace Engine.OpenFL
                 string fn = filename.Replace(FilepathIndicator, "");
                 if(File.Exists(fn))
                 {
-                    Bitmap bmp = (Bitmap) Image.FromFile(fn);
+                    Bitmap bmp = new Bitmap((Bitmap)Image.FromFile(fn), _width, _height);
                     AddBufferToDefine(varname,
                         new CLBufferInfo(CLAPI.CreateFromImage(bmp,
                             MemoryFlag.CopyHostPointer | flags), true));
@@ -687,6 +687,31 @@ namespace Engine.OpenFL
         }
 
         /// <summary>
+        /// The implementation of the command random
+        /// </summary>
+        private void cmd_writerandomu()
+        {
+            if (_currentArgStack.Count == 0)
+            {
+                CLAPI.WriteRandom(_currentBuffer.Buffer, randombytesource, _activeChannels, false);
+            }
+
+            while (_currentArgStack.Count != 0)
+            {
+                object obj = _currentArgStack.Pop();
+                if (!(obj is CLBufferInfo))
+                {
+                    Logger.Crash(
+                        new FLInvalidArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"),
+                        true);
+                    continue;
+                }
+
+                CLAPI.WriteRandom((obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, false);
+            }
+        }
+
+        /// <summary>
         /// The implementation of the command jmp
         /// </summary>
         private void cmd_jump() //Dummy function. Implementation in AnalyzeLine(code) function(look for isDirectExecute)
@@ -751,6 +776,7 @@ namespace Engine.OpenFL
             {
                 {"setactive", new FLFunctionInfo(cmd_setactive, false)},
                 {"random", new FLFunctionInfo(cmd_writerandom, false)},
+                {"randomu", new FLFunctionInfo(cmd_writerandomu, false)},
                 {"jmp", new FLFunctionInfo(cmd_jump, true)},
                 {"brk", new FLFunctionInfo(cmd_break, false)}
             };
