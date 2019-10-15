@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Resources;
 using System.Text;
@@ -8,9 +9,11 @@ using Engine.DataTypes;
 using Engine.IO;
 using Engine.Rendering;
 using Engine.UI;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
+using OpenTK;
+using Bitmap = System.Drawing.Bitmap;
+using Color = OpenTK.Color;
 
 namespace Engine.Debug
 {
@@ -204,12 +207,15 @@ namespace Engine.Debug
             rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
             GameEngine.Instance.AddRenderTarget(rt2);
 
+            Bitmap bmp = new Bitmap(1,1);
+            bmp.SetPixel(0,0, System.Drawing.Color.Black);
+
             UIImageRendererComponent _bgImage =
-                new UIImageRendererComponent(TextureLoader.FileToTexture("textures/black.png"), false,
+                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false,
                     0.65f, uiShader);
 
             UIImageRendererComponent _bgOutImage =
-                new UIImageRendererComponent(TextureLoader.FileToTexture("textures/black.png"), false, 0.4f,
+                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.4f,
                     uiShader);
 
 
