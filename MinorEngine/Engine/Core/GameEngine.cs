@@ -277,8 +277,6 @@ namespace Engine.Core
 
                 MemoryTracer.AddSubStage("Removing Old Scene");
 
-                //CurrentScene?.Destroy();
-
                 CurrentScene?._Destroy();
 
                 CurrentScene?.DestroyScene(); //Call on destroy on the scene itself.

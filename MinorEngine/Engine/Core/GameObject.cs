@@ -185,12 +185,12 @@ namespace Engine.Core
         /// </summary>
         public void Destroy()
         {
+            _destructionPending = true;
             foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
             {
                 abstractComponent.Value.Destroy();
             }
 
-            _destructionPending = true;
             foreach (GameObject gameObject in _children)
             {
                 gameObject.Destroy();

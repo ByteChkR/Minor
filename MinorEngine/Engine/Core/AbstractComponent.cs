@@ -45,6 +45,7 @@ namespace Engine.Core
         internal void _Destroy()
         {
 
+            OnDestroy();
             if (Owner != null)
             {
                 Owner.RemoveComponent(GetType());
@@ -61,7 +62,6 @@ namespace Engine.Core
         {
             if (_destructionPending) return;
             _destructionPending = true;
-            OnDestroy();
         }
 
         /// <summary>
