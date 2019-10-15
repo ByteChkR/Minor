@@ -33,6 +33,10 @@ namespace Engine.IO
             /// Backing field of the Public Property Cube
             /// </summary>
             private static Mesh _cube = null;
+            /// <summary>
+            /// Backing field of the Public Property Sphere
+            /// </summary>
+            private static Mesh _sphere = null;
 
             /// <summary>
             /// Returns an instance of a Cube
@@ -47,6 +51,19 @@ namespace Engine.IO
                     }
 
                     return _cube.Copy();
+                }
+            }
+
+            public static Mesh Sphere
+            {
+                get
+                {
+                    if (_sphere == null)
+                    {
+                        _sphere = FileToMesh("models/cube_flat.obj");
+                    }
+
+                    return _sphere.Copy();
                 }
             }
         }
