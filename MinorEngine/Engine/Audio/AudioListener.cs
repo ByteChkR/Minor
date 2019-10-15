@@ -1,4 +1,5 @@
 ﻿using Engine.Core;
+using Engine.Debug;
 using OpenTK;
 using OpenTK.Audio.OpenAL;
 
@@ -15,10 +16,8 @@ namespace Engine.Audio
         /// <param name="deltaTime">Delta Time in Seconds</param>
         protected override void Update(float deltaTime)
         {
-            Vector4 v = new Vector4(Owner.GetLocalPosition(), 1);
-            v *= Owner.GetWorldTransform() * Owner.Scene.Camera.ViewMatrix;
 
-            Vector3 v3 = new Vector3(v);
+            Vector3 v3 = Owner.GetWorldPosition();
 
             AL.Listener(ALListener3f.Position, ref v3);
         }

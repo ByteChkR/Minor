@@ -30,6 +30,7 @@ namespace Engine.Audio
             get => _clip;
             set
             {
+                if (_clip != null && _clip.Buffer == value.Buffer) return;
                 bool wasPlaying = IsPlaying;
                 if (IsPlaying)
                 {
@@ -47,11 +48,19 @@ namespace Engine.Audio
             }
         }
 
+        public ALSourceState State
+        {
+            get
+            {
+                AL.GetSource(source, ALGetSourcei.SourceState, out int state);
+                return (ALSourceState) state;
+            }
+        }
 
         /// <summary>
         /// A Flag to get the Playing state of the AudioSource
         /// </summary>
-        public bool IsPlaying { get; private set; }
+        public bool IsPlaying => State == ALSourceState.Playing;
 
         /// <summary>
         /// A Wrapper to return the Current State of the OpenCL Audio Source bound to this object
@@ -190,14 +199,14 @@ namespace Engine.Audio
             get
             {
                 AL.GetSource(source, ALGetSourcei.ByteOffset, out int current);
-                float val = (float) current / Clip.BufferSize;
+                float val = (float)current / Clip.BufferSize;
 
                 return Math.Clamp(val, 0f, 1f);
             }
             set
             {
                 float val = Math.Clamp(value, 0f, 1f);
-                AL.Source(source, ALSourcei.ByteOffset, (int) (Clip.BufferSize * val));
+                AL.Source(source, ALSourcei.ByteOffset, (int)(Clip.BufferSize * val));
             }
         }
 
@@ -236,7 +245,6 @@ namespace Engine.Audio
         /// </summary>
         public void Play()
         {
-            IsPlaying = true;
             AL.SourcePlay(source);
         }
 
@@ -245,7 +253,6 @@ namespace Engine.Audio
         /// </summary>
         public void Pause()
         {
-            IsPlaying = false;
             AL.SourcePause(source);
         }
 
@@ -254,7 +261,6 @@ namespace Engine.Audio
         /// </summary>
         public void Stop()
         {
-            IsPlaying = false;
             AL.SourceStop(source);
             TrackPosition = 0;
         }

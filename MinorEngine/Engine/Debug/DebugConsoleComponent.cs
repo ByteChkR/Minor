@@ -23,7 +23,6 @@ namespace Engine.Debug
     public class DebugConsoleComponent : AbstractComponent
     {
         private Queue<float> _graphData;
-        private bool GraphEnabled = false;
         private int _maxGraphCount = 1600;
 
         /// <summary>
