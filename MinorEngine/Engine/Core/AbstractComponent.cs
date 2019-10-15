@@ -59,6 +59,7 @@ namespace Engine.Core
         /// </summary>
         public void Destroy()
         {
+            if (_destructionPending) return;
             _destructionPending = true;
             OnDestroy();
         }
