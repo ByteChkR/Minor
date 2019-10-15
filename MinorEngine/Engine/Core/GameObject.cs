@@ -546,6 +546,13 @@ namespace Engine.Core
             child.SetParent(null);
         }
 
+        public  void DestroyAllChildren()
+        {
+            foreach (var child in _children)
+            {
+                child.Destroy();
+            }
+        }
 
         /// <summary>
         /// Sets the Parent Object to be newParent
