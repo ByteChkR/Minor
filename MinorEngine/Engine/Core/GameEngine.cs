@@ -49,6 +49,8 @@ namespace Engine.Core
         /// </summary>
         public int Height => Window.Height;
 
+        public float AspectRatio => Width / (float) Height;
+
         /// <summary>
         /// Private flag if the there is a scene change in progress
         /// </summary>
