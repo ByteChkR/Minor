@@ -2,6 +2,7 @@
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Rendering.Contexts;
+using OpenTK;
 
 namespace Engine.Rendering
 {
@@ -30,6 +31,9 @@ namespace Engine.Rendering
         /// </summary>
         private Mesh _model;
 
+        private Vector2 _tiling = Vector2.One;
+        private Vector2 _offset;
+
         /// <summary>
         /// The Texture Backing Field
         /// </summary>
@@ -51,7 +55,7 @@ namespace Engine.Rendering
                 {
                     _contextInvalid = false;
                     _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] {Model}, new[] {Texture},
-                        RenderType);
+                        RenderType, Offset, Tiling);
                 }
                 else if (_contextInvalid || Owner._worldTransformCache != _context.ModelMat)
                 {
@@ -63,6 +67,8 @@ namespace Engine.Rendering
                     _context.Textures = new[] {Texture};
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.RenderType = RenderType;
+                    _context.Offset = Offset;
+                    _context.Tiling = Tiling;
                 }
 
                 return _context;
@@ -107,6 +113,37 @@ namespace Engine.Rendering
             }
         }
 
+        /// <summary>
+        /// The Tiling of the Diffuse Texture
+        /// </summary>
+        public Vector2 Tiling
+        {
+            get => _tiling;
+            set
+            {
+                if (_tiling != value)
+                {
+                    _tiling = value;
+                    _contextInvalid = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// The Offset of the Diffuse Texture
+        /// </summary>
+        public Vector2 Offset
+        {
+            get => _offset;
+            set
+            {
+                if (_offset != value)
+                {
+                    _offset = value;
+                    _contextInvalid = true;
+                }
+            }
+        }
 
         /// <summary>
         /// The Texture that is used to Render the Mesh

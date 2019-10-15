@@ -21,6 +21,9 @@ namespace Engine.Rendering.Contexts
         /// </summary>
         public Texture[] Textures { get; set; }
 
+        public Vector2 Tiling { get; set; }
+        public Vector2 Offset { get; set; }
+
         /// <summary>
         /// Public Constructor
         /// </summary>
@@ -30,8 +33,10 @@ namespace Engine.Rendering.Contexts
         /// <param name="textures">Textures to be drawn</param>
         /// <param name="renderType">The render type of the context</param>
         public MeshRenderContext(ShaderProgram program, Matrix4 modelMatrix, Mesh[] meshes, Texture[] textures,
-            Renderer.RenderType renderType) : base(program, modelMatrix, true, renderType, 0)
+            Renderer.RenderType renderType, Vector2 offset, Vector2 tiling) : base(program, modelMatrix, true, renderType, 0)
         {
+            Tiling = tiling;
+            Offset = offset;
             Textures = textures;
             Meshes = meshes;
         }
@@ -50,6 +55,8 @@ namespace Engine.Rendering.Contexts
             GL.UniformMatrix4(Program.GetUniformLocation("projectionMatrix"), false, ref projMat);
             Matrix4 mvp = ModelMat * viewMat * projMat;
             GL.UniformMatrix4(Program.GetUniformLocation("mvpMatrix"), false, ref mvp);
+            GL.Uniform2(Program.GetUniformLocation("tiling"), Tiling);
+            GL.Uniform2(Program.GetUniformLocation("offset"), Offset);
 
             foreach (Mesh gameMesh in Meshes)
             {
