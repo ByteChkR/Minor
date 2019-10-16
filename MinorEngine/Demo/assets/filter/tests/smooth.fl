@@ -1,6 +1,6 @@
 Main:
 	setactive 3
-	setvalb 255
+  setv 1
 	setactive 0 1 2
-  random
+  rnd
   smooth 7

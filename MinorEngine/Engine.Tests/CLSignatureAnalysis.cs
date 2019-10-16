@@ -22,7 +22,7 @@ namespace Engine.Tests
             string path = "resources/kernel";
             KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
 
-            Assert.True(kdb.TryGetCLKernel("addval", out CLKernel kernel), "Didnt find kernel");
+            Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel");
 
             Assert.True(kernel.Parameter.Count == 6, "Kernel header is not == 6");
 
@@ -52,7 +52,7 @@ namespace Engine.Tests
             Assert.True(kernel.Parameter.ElementAt(4).Value.Name == "channelEnableState", "channelEnableState has wrong argument name");
 
             Assert.False(kernel.Parameter.ElementAt(5).Value.IsArray, "value is detected as array");
-            Assert.True(kernel.Parameter.ElementAt(5).Value.DataType == DT.UCHAR1, "value has the wrong type");
+            Assert.True(kernel.Parameter.ElementAt(5).Value.DataType == DT.FLOAT1, "value has the wrong type");
             Assert.True(kernel.Parameter.ElementAt(5).Value.Id == 5, "value has the wrong id");
             Assert.True(kernel.Parameter.ElementAt(5).Value.Name == "value", "value has wrong argument name");
         }

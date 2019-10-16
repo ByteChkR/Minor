@@ -1,0 +1,9 @@
+--define texture mask: "textures/pointinsquare_smooth.png"
+--define texture tex: "textures/wood1.jpg"
+--define texture result: "textures/stone1.jpg"
+
+Main:
+  setactive result 0 1 2
+  mixt tex mask
+  setactive 0 #only red
+  adjustlevel 0.5 1 #we only want values in the bounds

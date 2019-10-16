@@ -29,12 +29,12 @@ namespace Engine.Tests
             Interpreter.InterpreterStepResult ret = P.Step();
 
 
-            System.Diagnostics.Debug.Assert(ret.DefinedBuffers.Count == 5);
-            System.Diagnostics.Debug.Assert(ret.DefinedBuffers[0] == "in_unmanaged");
-            System.Diagnostics.Debug.Assert(ret.DefinedBuffers[1] == "textureD_internal");
-            System.Diagnostics.Debug.Assert(ret.DefinedBuffers[2] == "textureC_internal");
-            System.Diagnostics.Debug.Assert(ret.DefinedBuffers[3] == "textureB_internal");
-            System.Diagnostics.Debug.Assert(ret.DefinedBuffers[4] == "textureA_internal");
+            Assert.True(ret.DefinedBuffers.Count == 5);
+            Assert.True(ret.DefinedBuffers[0] == "in_unmanaged");
+            Assert.True(ret.DefinedBuffers[1] == "textureD_internal");
+            Assert.True(ret.DefinedBuffers[2] == "textureC_internal");
+            Assert.True(ret.DefinedBuffers[3] == "textureB_internal");
+            Assert.True(ret.DefinedBuffers[4] == "textureA_internal");
 
 
         }

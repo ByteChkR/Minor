@@ -18,6 +18,7 @@ namespace Common
         {
             private readonly string[] _lines;
             private readonly string _incDir;
+            public bool HasValidFilepath => false;
             private string Key => _incDir + "/memoryFile";
             private string Path => _incDir + "/memoryFile";
 

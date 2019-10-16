@@ -1,5 +1,0 @@
-Main:
-	setactive 3
-	setvalb 255
-	setactive 0 1 2
-	addvalwrap 255

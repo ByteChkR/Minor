@@ -1,6 +1,6 @@
 --define texture other: "textures/TEST.png"
 
 Main:
-	setvalb 255
+	setv 1
 	setactive 0 1 2
-	mulval 0.5
+	mulv 0.5

@@ -1,7 +1,0 @@
---define texture other: "textures/TEST.png"
-
-Main:
-	setactive 3
-	setvalb 255
-	setactive 0 1 2
-	multexvalmask 0.5 other

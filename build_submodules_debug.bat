@@ -8,10 +8,6 @@ echo Setting up ext-pp:
 
 dotnet restore ext-pp/
 
-echo Setting up opencl-dotnet:
-
-dotnet restore opencl-dotnet/
-
 echo Building ADL Project:
 
 dotnet build ADL/ADL/ADL/ADL.csproj -c Debug

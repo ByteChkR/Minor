@@ -1,6 +1,6 @@
 uchar Lerp(uchar a, uchar b, float weightB)
 {
-    return (uchar)((float)a * (1 - weightB) + (float)b * weightB);
+    return (uchar)clamp((float)((float)a * (1 - weightB) + (float)b * weightB), (float)0.0, (float)255.0);
 }
 
 int GetFlattenedIndex(int x, int y, int z, int width, int height)
@@ -16,11 +16,6 @@ int3 Get3DimensionalIndex(int width, int height, int index)
     d2 = i / width;
     d1 = (int)fmod((float)i, (float)width);
     return (int3)( d1, d2, d3 );
-}
-
-uchar Mix(uchar a, uchar b, float weightB)
-{
-	return a * (1 - weightB) + b * weightB;
 }
 
 int2 Get2DIndex(int index, int width)

@@ -147,7 +147,7 @@ namespace Engine.OpenFL
                 }
                 else
                 {
-                    Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."),
+                    Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument.", new InvalidFilePathException(fn)),
                         true);
                     Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
 
@@ -214,7 +214,7 @@ namespace Engine.OpenFL
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
                 string fn = filename.Replace(FilepathIndicator, "");
-                if(File.Exists(fn))
+                if (File.Exists(fn))
                 {
                     Bitmap bmp = new Bitmap((Bitmap)Image.FromFile(fn), _width, _height);
                     AddBufferToDefine(varname,
@@ -223,17 +223,25 @@ namespace Engine.OpenFL
                 }
                 else
                 {
-                    Logger.Crash(new FLInvalidFunctionUseException("define texture", "Invalid Filepath"), true);
+                    Logger.Crash(new FLInvalidFunctionUseException(DefineKey, "Invalid Filepath", new InvalidFilePathException(fn)), true);
                     Logger.Log("Invalid Filepath. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);
                 }
             }
-            else if (filename == "random")
+            else if (filename == "rnd")
             {
                 MemoryBuffer buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
-                CLAPI.WriteRandom(buf, randombytesource, _activeChannels);
+                CLAPI.WriteRandom(buf, randombytesource, _activeChannels, false);
+
+                CLBufferInfo info = new CLBufferInfo(buf, true);
+                AddBufferToDefine(varname, info);
+            }
+            else if (filename == "urnd")
+            {
+                MemoryBuffer buf = CLAPI.CreateEmpty<byte>(InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                CLAPI.WriteRandom(buf, randombytesource, _activeChannels, true);
 
                 CLBufferInfo info = new CLBufferInfo(buf, true);
                 AddBufferToDefine(varname, info);
@@ -336,7 +344,7 @@ namespace Engine.OpenFL
                     }
                     else
                     {
-                        Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement"), true);
+                        Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement", new InvalidFilePathException(fn)), true);
                         Logger.Log("Invalid Image statement. Using empty buffer", DebugChannel.Error, 10);
                         CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                         info.SetKey(varname);
@@ -344,12 +352,17 @@ namespace Engine.OpenFL
                     }
                 }
 
-                
+
             }
 
             else
             {
-                Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Define statement."), true);
+                string s = "";
+                foreach (string s1 in args)
+                {
+                    s += s1 + " ";
+                }
+                Logger.Crash(new FLInvalidFunctionUseException(DefineKey, "Define statement wrong: " + s), true);
                 Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
                 CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                 info.SetKey(varname);
@@ -668,31 +681,6 @@ namespace Engine.OpenFL
         {
             if (_currentArgStack.Count == 0)
             {
-                CLAPI.WriteRandom(_currentBuffer.Buffer, randombytesource, _activeChannels);
-            }
-
-            while (_currentArgStack.Count != 0)
-            {
-                object obj = _currentArgStack.Pop();
-                if (!(obj is CLBufferInfo))
-                {
-                    Logger.Crash(
-                        new FLInvalidArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"),
-                        true);
-                    continue;
-                }
-
-                CLAPI.WriteRandom((obj as CLBufferInfo).Buffer, randombytesource, _activeChannels);
-            }
-        }
-
-        /// <summary>
-        /// The implementation of the command random
-        /// </summary>
-        private void cmd_writerandomu()
-        {
-            if (_currentArgStack.Count == 0)
-            {
                 CLAPI.WriteRandom(_currentBuffer.Buffer, randombytesource, _activeChannels, false);
             }
 
@@ -708,6 +696,31 @@ namespace Engine.OpenFL
                 }
 
                 CLAPI.WriteRandom((obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, false);
+            }
+        }
+
+        /// <summary>
+        /// The implementation of the command random
+        /// </summary>
+        private void cmd_writerandomu()
+        {
+            if (_currentArgStack.Count == 0)
+            {
+                CLAPI.WriteRandom(_currentBuffer.Buffer, randombytesource, _activeChannels, true);
+            }
+
+            while (_currentArgStack.Count != 0)
+            {
+                object obj = _currentArgStack.Pop();
+                if (!(obj is CLBufferInfo))
+                {
+                    Logger.Crash(
+                        new FLInvalidArgumentType("Argument: " + _currentArgStack.Count + 1, "MemoyBuffer/Image"),
+                        true);
+                    continue;
+                }
+
+                CLAPI.WriteRandom((obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, true);
             }
         }
 
@@ -775,8 +788,8 @@ namespace Engine.OpenFL
             _flFunctions = new Dictionary<string, FLFunctionInfo>
             {
                 {"setactive", new FLFunctionInfo(cmd_setactive, false)},
-                {"random", new FLFunctionInfo(cmd_writerandom, false)},
-                {"randomu", new FLFunctionInfo(cmd_writerandomu, false)},
+                {"rnd", new FLFunctionInfo(cmd_writerandom, false)},
+                {"urnd", new FLFunctionInfo(cmd_writerandomu, false)},
                 {"jmp", new FLFunctionInfo(cmd_jump, true)},
                 {"brk", new FLFunctionInfo(cmd_break, false)}
             };

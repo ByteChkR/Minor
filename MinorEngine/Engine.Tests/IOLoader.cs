@@ -12,7 +12,7 @@ namespace Engine.Tests
         [Fact]
         public void LoadTexture()
         {
-            byte[] buf = TextureLoader.BitmapToBytes((Bitmap)Image.FromFile("resources/testtile.png"));
+            byte[] buf = TextureLoader.BitmapToBytes((Bitmap)Image.FromFile("resources/WFCTiles/testtile.png"));
 
             for (int i = 0; i < buf.Length; i++)
             {

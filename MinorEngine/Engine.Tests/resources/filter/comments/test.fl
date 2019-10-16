@@ -5,8 +5,8 @@ Main: #here
 #there
 
   setactive 3 #there
-  setvalb 255 #there
+  setv 1 #there
   setactive 0 1 2#even here
-  random #there
+  rnd #there
   perlin 0.8 6 #there #there
   #there

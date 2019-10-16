@@ -1,0 +1,5 @@
+Main:
+	setactive 3
+	setv 1
+	setactive 0 1 2
+	invert

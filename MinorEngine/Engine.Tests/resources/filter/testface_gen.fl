@@ -1,0 +1,3 @@
+Main:
+	rnd
+	perlin 8 0.5
