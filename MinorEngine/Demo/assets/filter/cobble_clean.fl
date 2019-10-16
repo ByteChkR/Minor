@@ -1,0 +1,22 @@
+--define texture random: urnd
+--define texture mask: wfc "WFCTiles/brick.png" 3 32 32 false true 1 0 0 
+--define texture inverseMask: empty #Temporary Texture that is used to store a result
+--define script grass: "filter/grass.fl"
+
+Perlin: #Creates perlin noise
+  setactive 0 1 2
+  set random
+  perlin 0.8 6
+
+BrickColor: #Overwrites everything to white and removed G and B channel
+  setactive 0 1 2
+  mulv 0.5823
+
+
+Main:
+  setactive 0 1 2
+  set mask
+  mixt Perlin in #Creating ridges by mixing the mask with perlin
+  adjustlevelrescale 0.5 0.6 #increase the Difference between high and low
+  jmp BrickColor #apply the bricks color
+  

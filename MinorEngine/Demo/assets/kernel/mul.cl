@@ -9,7 +9,9 @@ __kernel void mul(__global uchar* image, int3 dimensions, int channelCount, floa
 		return;
 	}
 
-	image[idx] *= overlay[idx]/maxValue;
+	float frac = overlay[idx] / 255.0f;
+	float srcFrac = image[idx] / 255.0f;
+	image[idx] = srcFrac * frac * maxValue;
 }
 
 __kernel void mulv(__global uchar* image, int3 dimensions, int channelCount, float maxValue, __global uchar* channelEnableState, float value)
