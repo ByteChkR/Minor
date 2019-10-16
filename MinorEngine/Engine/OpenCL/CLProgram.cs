@@ -105,6 +105,7 @@ namespace Engine.OpenCL
             foreach (string kernelName in kernelNames)
             {
                 Kernel k = CLAPI.CreateKernelFromName(ClProgramHandle, kernelName);
+                if(k==null)continue;
                 int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = kernelNameIndex == -1
                     ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture)

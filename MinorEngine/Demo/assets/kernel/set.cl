@@ -21,5 +21,5 @@ __kernel void setv(__global uchar* image, int3 dimensions, int channelCount, flo
 		return;
 	}
 
-	image[idx] = (uchar)clamp(value*maxValue, 0, maxValue);
+	image[idx] = (uchar)clamp(value*maxValue, (float)0.0, maxValue);
 }

@@ -5,6 +5,8 @@ using System.Drawing.Imaging;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Engine.DataTypes;
+using Engine.Debug;
+using Engine.Exceptions;
 using Engine.OpenCL.DotNetCore.CommandQueues;
 using Engine.OpenCL.DotNetCore.Contexts;
 using Engine.OpenCL.DotNetCore.DataTypes;
@@ -96,7 +98,16 @@ namespace Engine.OpenCL
             Logger.Log("Creating CL Program", DebugChannel.Warning);
             return null;
 #else
-            return Instance._context.CreateAndBuildProgramFromString(source);
+            try
+            {
+                return Instance._context.CreateAndBuildProgramFromString(source);
+
+            }
+            catch (Exception e)
+            {
+                Logger.Crash(new CLProgramException("Could not compile file", e), true);
+                return null;
+            }
 #endif
         }
 
@@ -127,6 +138,7 @@ namespace Engine.OpenCL
             Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning);
             return null;
 #else
+            if (program == null) return null;
             return program.CreateKernel(name);
 #endif
         }

@@ -1,0 +1,23 @@
+--define texture wood: "textures/wood1.jpg"
+--define texture stone: "textures/stone1.jpg"
+
+CreateMask:
+  setactive 3
+  setv 1
+  setactive 0 1 2
+  circle 0.5 0.5 0 0.5
+  invert
+  circle 0.5 0.5 0 0.25
+  mixv Perlin 0.5
+
+Perlin:
+  setactive 3
+  setv 1
+  setactive 0 1 2
+  urnd
+  perlin 0.8 7
+  adjustlevel 0.8 1
+
+Main:
+  set wood
+  mixt stone CreateMask

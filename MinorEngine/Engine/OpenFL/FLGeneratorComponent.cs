@@ -89,9 +89,14 @@ namespace Engine.OpenFL
         /// <returns>Function Result</returns>
         private string cmd_FLReset(string[] args)
         {
+            Tex.Dispose();
             Tex = TextureLoader.ParameterToTexture(width, height);
+            for (int i = 0; i < _previews.Count; i++)
+            {
+                _previews[i].Texture = Tex;
+            }
             _stepInterpreter.ReleaseResources();
-            
+
             return "Texture Reset.";
         }
 
@@ -127,7 +132,7 @@ namespace Engine.OpenFL
             Tex = null;
             _previews.Clear();
         }
-        
+
         /// <summary>
         /// Converts the preview texture into an Memory Buffer
         /// </summary>
@@ -148,22 +153,19 @@ namespace Engine.OpenFL
 
             MemoryBuffer buf = GetRendererTextureBuffer();
             _stepInterpreter?.ReleaseResources();
-            if (_stepInterpreter == null)
-            {
-                _stepInterpreter = new Interpreter(filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
-            }
-            else
-            {
-                _stepInterpreter.Reset(filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
-            }
+            _stepInterpreter = new Interpreter(filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
+
+
 
 
             do
             {
                 _stepInterpreter.Step();
             } while (!_stepInterpreter.Terminated);
-            
-            TextureLoader.Update(Tex, _stepInterpreter.GetResult<byte>(), (int) Tex.Width, (int) Tex.Height);
+
+            byte[] buffer = _stepInterpreter.GetResult<byte>();
+
+            TextureLoader.Update(Tex, buffer, (int)Tex.Width, (int)Tex.Height);
         }
 
         /// <summary>
@@ -204,8 +206,8 @@ namespace Engine.OpenFL
                 res = _stepInterpreter.GetActiveBufferInternal().Buffer;
             }
 
-            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width,
-                (int) Tex.Height);
+            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(res, (int)res.Size), (int)Tex.Width,
+                (int)Tex.Height);
 
             return stepResult.ToString();
         }
@@ -226,7 +228,8 @@ namespace Engine.OpenFL
 
 
             _isInStepMode = true;
-            _stepInterpreter = new Interpreter(args[0], buf, (int) Tex.Width, (int) Tex.Height, 1, 4, _db, false);
+            _stepInterpreter?.ReleaseResources();   
+            _stepInterpreter = new Interpreter(args[0], buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, false);
 
             return "Debugging Session Started.";
         }
