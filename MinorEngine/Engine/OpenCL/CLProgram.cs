@@ -114,7 +114,7 @@ namespace Engine.OpenCL
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
                 if (k == null)
                 {
-                    CLKernel kernel = new CLKernel(null, kernelName, parameter);
+                    ContainedKernels.Add(kernelName, new CLKernel(null, kernelName, parameter));
                 }
                 else
                 {

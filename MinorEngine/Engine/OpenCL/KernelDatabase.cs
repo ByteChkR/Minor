@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 using Engine.Debug;
 using Engine.Exceptions;
 
@@ -86,6 +87,7 @@ namespace Engine.OpenCL
                 {
                     Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log);
                     LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
+                    Console.WriteLine("Adding Kernel: " + containedKernel.Key);
                 }
                 else
                 {
