@@ -44,12 +44,6 @@ namespace Engine.Tests
             DebugHelper.SeverityFilter = 10;
 
             string path = "resources/kernel";
-            string[] ff = Directory.GetFiles("resources/kernel");
-            Console.WriteLine("Files in Folder: " + path);
-            foreach (string s in ff)
-            {
-                Console.WriteLine(s);
-            }
             KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
 
 
