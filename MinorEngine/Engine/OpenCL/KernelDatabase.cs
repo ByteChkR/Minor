@@ -84,12 +84,12 @@ namespace Engine.OpenCL
             {
                 if (!LoadedKernels.ContainsKey(containedKernel.Key))
                 {
-                    Console.WriteLine("Adding Kernel: " + containedKernel.Key, DebugChannel.Log);
+                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log);
                     LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
                 {
-                    Console.WriteLine("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
+                    Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
                                             DebugChannel.Log);
                 }
             }

@@ -95,7 +95,7 @@ namespace Engine.OpenCL
             int vnum = GetVectorNum(_genType);
             string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
                 vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
-            Dictionary<string, bool> defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
+            Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
             string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
             string[] kernelNames = FindKernelNames(source);
 
@@ -105,7 +105,6 @@ namespace Engine.OpenCL
             foreach (string kernelName in kernelNames)
             {
                 Kernel k = CLAPI.CreateKernelFromName(ClProgramHandle, kernelName);
-                if(k==null)continue;
                 int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = kernelNameIndex == -1
                     ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture)
@@ -113,8 +112,14 @@ namespace Engine.OpenCL
                 KernelParameter[] parameter = KernelParameter.CreateKernelParametersFromKernelCode(source,
                     kernelNameIndex,
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
-
-                ContainedKernels.Add(kernelName, new CLKernel(k, kernelName, parameter));
+                if (k == null)
+                {
+                    CLKernel kernel = new CLKernel(null, kernelName, parameter);
+                }
+                else
+                {
+                    ContainedKernels.Add(kernelName, new CLKernel(k, kernelName, parameter));
+                }
             }
         }
 
