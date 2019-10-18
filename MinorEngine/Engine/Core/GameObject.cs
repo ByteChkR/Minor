@@ -25,7 +25,7 @@ namespace Engine.Core
         /// <param name="e"></param>
         internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            GameEngine.Instance.CurrentScene.OnKeyDown(sender, e);
+            GameEngine.Instance.CurrentScene?.OnKeyDown(sender, e);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@ namespace Engine.Core
         /// <param name="e"></param>
         internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            GameEngine.Instance.CurrentScene.OnKeyUp(sender, e);
+            GameEngine.Instance.CurrentScene?.OnKeyUp(sender, e);
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace Engine.Core
         /// <param name="e"></param>
         internal static void _KeyPress(object sender, KeyPressEventArgs e)
         {
-            GameEngine.Instance.CurrentScene.OnKeyPress(sender, e);
+            GameEngine.Instance.CurrentScene?.OnKeyPress(sender, e);
         }
 
         /// <summary>
