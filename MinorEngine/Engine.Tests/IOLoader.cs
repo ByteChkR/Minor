@@ -1,7 +1,5 @@
 ﻿using System.Drawing;
-using Engine.DataTypes;
 using Engine.IO;
-using Engine.Rendering;
 using Xunit;
 
 namespace Engine.Tests

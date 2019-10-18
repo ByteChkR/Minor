@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Common;
-using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.DataTypes;
@@ -9,7 +8,6 @@ using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Xunit;
 
-[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace Engine.Tests
 {
     public class FLInterpreter

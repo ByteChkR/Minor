@@ -1,12 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Common;
 using Engine.OpenCL;
-using Engine.OpenCL.DotNetCore.Memory;
 using DT = Engine.OpenCL.TypeEnums.DataTypes;
-using Engine.OpenFL;
 using Xunit;
 using Xunit.Abstractions;
 
