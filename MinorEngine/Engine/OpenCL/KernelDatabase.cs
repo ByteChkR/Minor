@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Engine.Debug;
 using Engine.Exceptions;
@@ -52,10 +53,10 @@ namespace Engine.OpenCL
         {
             string[] files = Directory.GetFiles(_folderName, "*.cl");
 
-            Logger.Log("Initializing: " + Path.GetFullPath(_folderName), DebugChannel.Log);
+            Console.WriteLine("Initializing: " + Path.GetFullPath(_folderName));
             foreach (string file in files)
             {
-                Logger.Log("Initializing File: " + Path.GetFullPath(file), DebugChannel.Log);
+                Console.WriteLine("Initializing File: " + Path.GetFullPath(file));
                 AddProgram(file);
             }
         }
