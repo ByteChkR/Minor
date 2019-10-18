@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Common;
 using Engine.OpenCL;
@@ -26,15 +28,15 @@ namespace Engine.Tests
             DebugHelper.SeverityFilter = 10;
 
             string path = "resources/kernel";
-            KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
-            string loadedKernels = "";
-            foreach (KeyValuePair<string, CLKernel> kdbLoadedKernel in kdb.LoadedKernels)
+            string[] ff = Directory.GetFiles("resources/kernel");
+            foreach (string s in ff)
             {
-                loadedKernels += kdbLoadedKernel.Key + "\n";
+                Console.WriteLine(s);
             }
+            KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
 
 
-            Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel: " + loadedKernels);
+            Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel");
 
             Assert.True(kernel.Parameter.Count == 6, "Kernel header is not == 6");
 

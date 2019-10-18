@@ -212,6 +212,7 @@ namespace Engine.Tests
 
             KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
             string[] ff = Directory.GetFiles("resources/kernel");
+            Console.WriteLine("Files in Folder: " + path);
             foreach (string s in ff)
             {
                 Console.WriteLine(s);
