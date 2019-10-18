@@ -343,8 +343,8 @@ namespace Engine.OpenFL
                             } while (!wfc.Success);
                         else
                         {
-                            bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                             wfc.Run(limit);
+                            bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                         }
 
                         CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(bmp,
