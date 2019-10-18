@@ -203,7 +203,6 @@ namespace Engine.Tests
         }
 
         [Fact]
-        [assembly: CollectionBehavior(DisableTestParallelization = true)]
         public void FLKernels()
         {
             DebugHelper.ThrowOnAllExceptions = true;
@@ -212,7 +211,11 @@ namespace Engine.Tests
             string[] files = Directory.GetFiles(path, "*.fl");
 
             KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
-
+            string[] ff = Directory.GetFiles("resources/kernel");
+            foreach (string s in ff)
+            {
+                Console.WriteLine(s);
+            }
             foreach (string file in files)
             {
                 Interpreter P = new Interpreter(file,
