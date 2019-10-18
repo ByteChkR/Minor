@@ -9,6 +9,7 @@ using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Xunit;
 
+[assembly: CollectionBehavior(DisableTestParallelization = true)]
 namespace Engine.Tests
 {
     public class FLInterpreter
@@ -204,6 +205,7 @@ namespace Engine.Tests
         }
 
         [Fact]
+        [assembly: CollectionBehavior(DisableTestParallelization = true)]
         public void FLKernels()
         {
             DebugHelper.ThrowOnAllExceptions = true;

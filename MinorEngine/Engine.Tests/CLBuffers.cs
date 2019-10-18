@@ -25,7 +25,7 @@ namespace Engine.Tests
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
         }
-
+        
         [Fact]
         public void ReadBuffer()
         {
@@ -44,7 +44,7 @@ namespace Engine.Tests
 
             Assert.True(CheckValues(c, b));
         }
-
+        
         [Fact]
         public void WriteBuffer()
         {
@@ -67,6 +67,7 @@ namespace Engine.Tests
             Assert.True(CheckValues(c, b));
         }
 
+        
         private static bool CheckValues(float[] values, float[] reference)
         {
             DebugHelper.ThrowOnAllExceptions = true;
