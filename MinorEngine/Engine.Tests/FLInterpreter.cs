@@ -22,13 +22,12 @@ namespace Engine.Tests
         public void FLDefines()
         {
             DebugHelper.ThrowOnAllExceptions = true;
-
-            KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+            
             string file = Path.GetFullPath("resources/filter/defines/test.fl");
             Interpreter P = new Interpreter(file,
                 CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                 1,
-                4, db);
+                4, TestSetup.KernelDB);
 
             InterpreterStepResult ret = P.Step();
 
@@ -49,8 +48,7 @@ namespace Engine.Tests
             DebugHelper.ThrowOnAllExceptions = true;
 
             string[] files = Directory.GetFiles("resources/filter/defines/", "test_wrong_define_wfc_*.fl");
-
-            KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+            
 
             for (int i = 0; i < 2; i++)
             {
@@ -64,7 +62,7 @@ namespace Engine.Tests
                             CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                             128,
                             1,
-                            4, db);
+                            4, TestSetup.KernelDB);
                         Assert.True(!DebugHelper.ThrowOnAllExceptions);
                     }
                     catch (Exception e)
@@ -89,8 +87,7 @@ namespace Engine.Tests
             DebugHelper.ThrowOnAllExceptions = true;
 
             string file = "resources/filter/defines/test_wrong_define_invalid_file.fl";
-
-            KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+            
 
             for (int i = 0; i < 2; i++)
             {
@@ -102,7 +99,7 @@ namespace Engine.Tests
                         CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                         128,
                         1,
-                        4, db);
+                        4, TestSetup.KernelDB);
                     Assert.True(!DebugHelper.ThrowOnAllExceptions);
                 }
                 catch (Exception e)
@@ -125,8 +122,7 @@ namespace Engine.Tests
             DebugHelper.ThrowOnAllExceptions = true;
 
             string file = "resources/filter/defines/test_wrong_script_invalid_file.fl";
-
-            KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+            
             for (int i = 0; i < 2; i++)
             {
 
@@ -136,7 +132,7 @@ namespace Engine.Tests
                         CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                         128,
                         1,
-                        4, db);
+                        4, TestSetup.KernelDB);
                     Assert.True(!DebugHelper.ThrowOnAllExceptions);
                 }
                 catch (Exception e)
@@ -160,8 +156,7 @@ namespace Engine.Tests
             DebugHelper.ThrowOnAllExceptions = true;
 
             string file = "resources/filter/defines/test_wrong_script_.fl";
-
-            KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+            
 
             for (int i = 0; i < 2; i++)
             {
@@ -172,7 +167,7 @@ namespace Engine.Tests
                         CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                         128,
                         1,
-                        4, db);
+                        4, TestSetup.KernelDB);
                     Assert.True(!DebugHelper.ThrowOnAllExceptions);
                 }
                 catch (Exception e)
@@ -193,12 +188,11 @@ namespace Engine.Tests
         public void FLComments()
         {
             DebugHelper.ThrowOnAllExceptions = true;
-            KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
             string file = Path.GetFullPath("resources/filter/comments/test.fl");
             Interpreter P = new Interpreter(file,
                 CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                 1,
-                4, db);
+                4, new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1)); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
             while (!P.Terminated)
             {
                 P.Step();
@@ -212,14 +206,13 @@ namespace Engine.Tests
             DebugHelper.SeverityFilter = 10;
             string path = "resources/filter/tests";
             string[] files = Directory.GetFiles(path, "*.fl");
-
             KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
             foreach (string file in files)
             {
                 Interpreter P = new Interpreter(file,
                     CLAPI.CreateEmpty<byte>(128 * 128 * 4, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                     1,
-                    4, db);
+                    4, db); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
                 while (!P.Terminated)
                 {
                     P.Step();

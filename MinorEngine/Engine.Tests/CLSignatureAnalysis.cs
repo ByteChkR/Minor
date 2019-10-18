@@ -29,10 +29,9 @@ namespace Engine.Tests
             DebugHelper.SeverityFilter = 10;
 
             string path = "resources/kernel";
-            KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
 
 
-            Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel");
+            Assert.True(TestSetup.KernelDB.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel");
 
             Assert.True(kernel.Parameter.Count == 6, "Kernel header is not == 6");
 
