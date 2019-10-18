@@ -26,7 +26,6 @@ namespace Engine.Tests
         public void CL_KernelSignatureAnalysis()
         {
 
-            DebugHelper.ApplySettings(new DebugSettings(){_streams= new []{new LogStreamSettings(){Mask = -1, StreamType = 0}}});
             DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
 

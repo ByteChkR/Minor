@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Common;
+using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.DataTypes;
@@ -72,7 +73,7 @@ namespace Engine.Tests
                             Assert.True(false);
                             continue;
                         }
-                        
+
                         //We passed
                     }
 
@@ -205,7 +206,20 @@ namespace Engine.Tests
         [Fact]
         public void FLKernels()
         {
-            DebugHelper.ApplySettings(new DebugSettings() { _streams = new[] { new LogStreamSettings() { Mask = -1, StreamType = 0 } } });
+            DebugHelper.ApplySettings(new DebugSettings()
+            {
+                Enabled = true,
+                StageNames = new[]{
+                "[Startup]",
+               "[Init]",
+               "[SceneInit]",
+               "[General]",
+               "[Update]",
+               "[Physics]",
+               "[CleanUp]",
+               "[Render]",},
+                _streams = new[] { new LogStreamSettings() { Mask = -1, StreamType = 0 } }
+            });
             DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
             string path = "resources/filter/tests";

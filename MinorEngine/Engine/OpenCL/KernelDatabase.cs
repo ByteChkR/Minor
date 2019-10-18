@@ -81,6 +81,7 @@ namespace Engine.OpenCL
             {
                 if (!LoadedKernels.ContainsKey(containedKernel.Key))
                 {
+                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Warning);
                     LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
