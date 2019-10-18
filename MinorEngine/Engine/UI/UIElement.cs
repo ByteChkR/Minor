@@ -15,10 +15,29 @@ namespace Engine.UI
         /// </summary>
         protected bool ContextInvalid = true;
 
+        /// <summary>
+        /// Backing field for World space
+        /// </summary>
         private bool _worldSpace;
+
+        /// <summary>
+        /// Backing field for alpha
+        /// </summary>
         private float _alpha;
+
+        /// <summary>
+        /// Backing field for Render Queue
+        /// </summary>
         private int _renderQueue;
+
+        /// <summary>
+        /// backing field of for Shader
+        /// </summary>
         private ShaderProgram _shader;
+
+        /// <summary>
+        /// backing field for the Render Mask
+        /// </summary>
         private int _renderMask;
 
         /// <summary>

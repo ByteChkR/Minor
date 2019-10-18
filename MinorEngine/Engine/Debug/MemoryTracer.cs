@@ -14,9 +14,17 @@ namespace Engine.Debug
         /// </summary>
         private static List<EngineStageInformation> _informationCollection = new List<EngineStageInformation>();
 
+        /// <summary>
+        /// The Console
+        /// </summary>
         private static DebugConsoleComponent _console;
 
-        public static void SetDebugComponent(DebugConsoleComponent component)
+
+        /// <summary>
+        /// Setter that sets the console
+        /// </summary>
+        /// <param name="component"></param>
+        internal static void SetDebugComponent(DebugConsoleComponent component)
         {
             _console = component;
         }

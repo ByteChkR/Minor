@@ -4,6 +4,11 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;TravisTest;Debug_FullTrace;Release_CollectLogs</Configurations>
+    <AssemblyVersion>0.2.0.0</AssemblyVersion>
+    <FileVersion>0.2.0.0</FileVersion>
+    <Version>0.2</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <RepositoryUrl>github.com/ByteChkR/Minor</RepositoryUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TravisTest|AnyCPU'">
@@ -27,10 +32,6 @@
     <PackageReference Include="OpenTK.NetStandard" Version="1.0.4" />
     <PackageReference Include="SharpFontCore" Version="0.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -77,5 +78,9 @@
   <EmbeddedResource Include="_DefaultResources/DefaultMesh.obj" />
   <EmbeddedResource Include="_DefaultResources/DefaultShader.vs" />
   <EmbeddedResource Include="_DefaultResources/DefaultShader.fs" />
+</ItemGroup>
+
+<ItemGroup>
+  <ProjectReference Include="..\Engine.Common\Engine.Common.csproj" />
 </ItemGroup>
 </Project>

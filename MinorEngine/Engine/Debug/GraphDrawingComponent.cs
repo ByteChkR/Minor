@@ -7,10 +7,24 @@ using OpenTK;
 
 namespace Engine.Debug
 {
+    /// <summary>
+    /// Graph Drawing Component
+    /// </summary>
     public class GraphDrawingComponent : UIElement
     {
+        /// <summary>
+        /// Backing field of the graph data
+        /// </summary>
+        private Vector2[] _points;
+
+        /// <summary>
+        /// The backing field of the graphics context
+        /// </summary>
         private GraphDrawingContext _context;
 
+        /// <summary>
+        /// The context that renders the graph data
+        /// </summary>
         public override RenderContext Context
         {
             get
@@ -37,6 +51,10 @@ namespace Engine.Debug
             }
         }
 
+        /// <summary>
+        /// Computes the UVs of the Quad that will contain the graph data
+        /// </summary>
+        /// <returns></returns>
         private Vector2[] ComputeUVPos()
         {
             Vector2[] ret = new Vector2[_points.Length];
@@ -55,8 +73,9 @@ namespace Engine.Debug
             return ret;
         }
 
-        private Vector2[] _points;
-
+        /// <summary>
+        /// Array of points containing the data to be drawn
+        /// </summary>
         public Vector2[] Points
         {
             get => _points;
@@ -68,6 +87,12 @@ namespace Engine.Debug
             }
         }
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="shader">The shader to be used</param>
+        /// <param name="worldSpace">flag if the graph is in world space</param>
+        /// <param name="alpha">the alpha value of the graph</param>
         public GraphDrawingComponent(ShaderProgram shader, bool worldSpace, float alpha) :
             base(shader, worldSpace, alpha)
         {

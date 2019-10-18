@@ -14,6 +14,7 @@ var class_engine_1_1_open_c_l_1_1_c_l_a_p_i =
     [ "InitializeOpenCL", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#ae3e4025cf9a9be19262822a7237e0678", null ],
     [ "RandomFunc< out T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#af3f0c6aa99e6219af6139ee552baa844", null ],
     [ "ReadBuffer< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a43c4defa3c689c57e54a1a174555fd7c", null ],
+    [ "Reinitialize", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#af7cd4d5bef6668a27001864385d299c3", null ],
     [ "Run", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#ae000ecf0e973b3ab5d08c208fbeb2251", null ],
     [ "WriteRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a9e623bbadab782faf4723b4382db59c3", null ],
     [ "WriteRandom< T >", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a23446281ddb49475a9e4761f4ceace10", null ],

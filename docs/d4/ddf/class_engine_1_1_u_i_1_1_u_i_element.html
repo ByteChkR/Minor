@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -88,7 +88,9 @@ $(document).ready(function(){initNavTree('d4/ddf/class_engine_1_1_u_i_1_1_u_i_el
 <div class="header">
   <div class="summary">
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
+<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d4/d38/class_engine_1_1_u_i_1_1_u_i_element-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.UI.UIElement Class Reference</div>  </div>
@@ -103,11 +105,12 @@ Inheritance diagram for Engine.UI.UIElement:</div>
  <div class="center">
   <img src="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.png" usemap="#Engine.UI.UIElement_map" alt=""/>
   <map id="Engine.UI.UIElement_map" name="Engine.UI.UIElement_map">
-<area href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html" title="Base class of every component " alt="Engine.Core.AbstractComponent" shape="rect" coords="0,56,241,80"/>
-<area href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html" title="Defines the Properties of an object that can be used for rendering " alt="Engine.Rendering.IRenderingComponent" shape="rect" coords="251,56,492,80"/>
-<area href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html" title="Interface used by Objects in the engine that have to be removed from some kind of system ..." alt="Engine.Core.IDestroyable" shape="rect" coords="0,0,241,24"/>
-<area href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html" title="A Component that is rendering an image in camera space " alt="Engine.UI.UIImageRendererComponent" shape="rect" coords="0,168,241,192"/>
-<area href="../../d9/d5e/class_engine_1_1_u_i_1_1_u_i_text_renderer_component.html" title="Implements A Text Renderer Component " alt="Engine.UI.UITextRendererComponent" shape="rect" coords="251,168,492,192"/>
+<area href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html" title="Base class of every component " alt="Engine.Core.AbstractComponent" shape="rect" coords="125,56,366,80"/>
+<area href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html" title="Defines the Properties of an object that can be used for rendering " alt="Engine.Rendering.IRenderingComponent" shape="rect" coords="376,56,617,80"/>
+<area href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html" title="Interface used by Objects in the engine that have to be removed from some kind of system ..." alt="Engine.Core.IDestroyable" shape="rect" coords="125,0,366,24"/>
+<area href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html" title="Graph Drawing Component " alt="Engine.Debug.GraphDrawingComponent" shape="rect" coords="0,168,241,192"/>
+<area href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html" title="A Component that is rendering an image in camera space " alt="Engine.UI.UIImageRendererComponent" shape="rect" coords="251,168,492,192"/>
+<area href="../../d9/d5e/class_engine_1_1_u_i_1_1_u_i_text_renderer_component.html" title="Implements A Text Renderer Component " alt="Engine.UI.UITextRendererComponent" shape="rect" coords="502,168,743,192"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -147,6 +150,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a2160ae2fe2c380ace0c34d2f36bfe2b5 inherit pro_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2160ae2fe2c380ace0c34d2f36bfe2b5">OnContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
 <tr class="memdesc:a2160ae2fe2c380ace0c34d2f36bfe2b5 inherit pro_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets called whenever a Contact Point was added on this game object  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2160ae2fe2c380ace0c34d2f36bfe2b5">More...</a><br /></td></tr>
 <tr class="separator:a2160ae2fe2c380ace0c34d2f36bfe2b5 inherit pro_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:ac53b10bb567f264599754f5463d7bd5d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ac53b10bb567f264599754f5463d7bd5d">ContextInvalid</a> = true</td></tr>
+<tr class="memdesc:ac53b10bb567f264599754f5463d7bd5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag if the context has changed and needs an update  <a href="#ac53b10bb567f264599754f5463d7bd5d">More...</a><br /></td></tr>
+<tr class="separator:ac53b10bb567f264599754f5463d7bd5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -188,6 +197,24 @@ Properties</h2></td></tr>
 <tr class="memitem:a5789181977c0c1f3ca7ed6f793d4cf46 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html#a5789181977c0c1f3ca7ed6f793d4cf46">RenderMask</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a5789181977c0c1f3ca7ed6f793d4cf46 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Render mask  <a href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html#a5789181977c0c1f3ca7ed6f793d4cf46">More...</a><br /></td></tr>
 <tr class="separator:a5789181977c0c1f3ca7ed6f793d4cf46 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
+Private Attributes</h2></td></tr>
+<tr class="memitem:a3be95f88194b030ef736991f5c053570"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a3be95f88194b030ef736991f5c053570">_worldSpace</a></td></tr>
+<tr class="memdesc:a3be95f88194b030ef736991f5c053570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backing field for World space  <a href="#a3be95f88194b030ef736991f5c053570">More...</a><br /></td></tr>
+<tr class="separator:a3be95f88194b030ef736991f5c053570"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d80a29cde767f95aea8073e3a5a7335"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a3d80a29cde767f95aea8073e3a5a7335">_alpha</a></td></tr>
+<tr class="memdesc:a3d80a29cde767f95aea8073e3a5a7335"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backing field for alpha  <a href="#a3d80a29cde767f95aea8073e3a5a7335">More...</a><br /></td></tr>
+<tr class="separator:a3d80a29cde767f95aea8073e3a5a7335"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a11da6cc775f094bf1ff4dacf8165e679"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a11da6cc775f094bf1ff4dacf8165e679">_renderQueue</a></td></tr>
+<tr class="memdesc:a11da6cc775f094bf1ff4dacf8165e679"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backing field for Render Queue  <a href="#a11da6cc775f094bf1ff4dacf8165e679">More...</a><br /></td></tr>
+<tr class="separator:a11da6cc775f094bf1ff4dacf8165e679"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8d5a1780b687e9a021725b7dd80cbe1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#af8d5a1780b687e9a021725b7dd80cbe1">_shader</a></td></tr>
+<tr class="memdesc:af8d5a1780b687e9a021725b7dd80cbe1"><td class="mdescLeft">&#160;</td><td class="mdescRight">backing field of for Shader  <a href="#af8d5a1780b687e9a021725b7dd80cbe1">More...</a><br /></td></tr>
+<tr class="separator:af8d5a1780b687e9a021725b7dd80cbe1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a27ee3a36c24d08bc621f47e44ec6ffc9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a27ee3a36c24d08bc621f47e44ec6ffc9">_renderMask</a></td></tr>
+<tr class="memdesc:a27ee3a36c24d08bc621f47e44ec6ffc9"><td class="mdescLeft">&#160;</td><td class="mdescRight">backing field for the Render Mask  <a href="#a27ee3a36c24d08bc621f47e44ec6ffc9">More...</a><br /></td></tr>
+<tr class="separator:a27ee3a36c24d08bc621f47e44ec6ffc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -280,6 +307,151 @@ Additional Inherited Members</h2></td></tr>
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a3d80a29cde767f95aea8073e3a5a7335"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d80a29cde767f95aea8073e3a5a7335">&#9670;&nbsp;</a></span>_alpha</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">float Engine.UI.UIElement._alpha</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Backing field for alpha </p>
+
+</div>
+</div>
+<a id="a27ee3a36c24d08bc621f47e44ec6ffc9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27ee3a36c24d08bc621f47e44ec6ffc9">&#9670;&nbsp;</a></span>_renderMask</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Engine.UI.UIElement._renderMask</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>backing field for the Render Mask </p>
+
+</div>
+</div>
+<a id="a11da6cc775f094bf1ff4dacf8165e679"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11da6cc775f094bf1ff4dacf8165e679">&#9670;&nbsp;</a></span>_renderQueue</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Engine.UI.UIElement._renderQueue</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Backing field for Render Queue </p>
+
+</div>
+</div>
+<a id="af8d5a1780b687e9a021725b7dd80cbe1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8d5a1780b687e9a021725b7dd80cbe1">&#9670;&nbsp;</a></span>_shader</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> Engine.UI.UIElement._shader</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>backing field of for Shader </p>
+
+</div>
+</div>
+<a id="a3be95f88194b030ef736991f5c053570"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3be95f88194b030ef736991f5c053570">&#9670;&nbsp;</a></span>_worldSpace</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.UI.UIElement._worldSpace</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Backing field for World space </p>
+
+</div>
+</div>
+<a id="ac53b10bb567f264599754f5463d7bd5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac53b10bb567f264599754f5463d7bd5d">&#9670;&nbsp;</a></span>ContextInvalid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.UI.UIElement.ContextInvalid = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag if the context has changed and needs an update </p>
 
 </div>
 </div>

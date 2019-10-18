@@ -1,5 +1,5 @@
 ﻿using System;
-using Common;
+using Engine.Common;
 using Engine.Audio;
 using Engine.Debug;
 using Engine.Physics;
@@ -49,6 +49,9 @@ namespace Engine.Core
         /// </summary>
         public int Height => Window.Height;
 
+        /// <summary>
+        /// Property that returns the current AspectRatio
+        /// </summary>
         public float AspectRatio => Width / (float) Height;
 
         /// <summary>

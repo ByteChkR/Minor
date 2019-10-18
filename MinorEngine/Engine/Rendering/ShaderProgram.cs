@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Common;
+using Engine.Common;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -19,9 +19,20 @@ namespace Engine.Rendering
     /// </summary>
     public class ShaderProgram : IDisposable
     {
+        /// <summary>
+        /// Backing field of the Default shader
+        /// </summary>
         private static ShaderProgram _defaultShader;
+
+        /// <summary>
+        /// The default shader
+        /// </summary>
         public static ShaderProgram DefaultShader => _defaultShader ?? (_defaultShader = GetDefaultShader());
 
+        /// <summary>
+        /// Creates the default Shader from embedded program resources
+        /// </summary>
+        /// <returns>The Default Shader</returns>
         private static ShaderProgram GetDefaultShader()
         {
             Assembly asm = Assembly.GetExecutingAssembly();

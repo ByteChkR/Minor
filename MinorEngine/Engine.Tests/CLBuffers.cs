@@ -1,5 +1,5 @@
 ﻿using System;
-using Common;
+using Engine.Common;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Xunit;
@@ -23,7 +23,7 @@ namespace Engine.Tests
             byte[] b = new byte[255];
             for (int i = 0; i < b.Length; i++)
             {
-                b[i] = (byte)i;
+                b[i] = (byte) i;
             }
 
             MemoryBuffer buffer = CLAPI.CreateBuffer(b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
@@ -31,7 +31,7 @@ namespace Engine.Tests
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
         }
-        
+
         [Fact]
         public void ReadBuffer()
         {
@@ -50,7 +50,7 @@ namespace Engine.Tests
 
             Assert.True(CheckValues(c, b));
         }
-        
+
         [Fact]
         public void WriteBuffer()
         {
@@ -73,7 +73,7 @@ namespace Engine.Tests
             Assert.True(CheckValues(c, b));
         }
 
-        
+
         private static bool CheckValues(float[] values, float[] reference)
         {
             DebugHelper.ThrowOnAllExceptions = true;

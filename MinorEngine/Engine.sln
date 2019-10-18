@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.645
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Common", "Engine.Common\Engine.Common.csproj", "{637F5AC5-CCD3-480B-831E-CF4CD43C68EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Tests", "Engine.Tests\Engine.Tests.csproj", "{31382B7A-8BBE-4FDE-A540-93373E77C496}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Demo", "Demo\Demo.csproj", "{1E537B4A-E4DE-4C14-B19F-3F89EF37B597}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Demo", "Engine.Demo\Engine.Demo.csproj", "{1E537B4A-E4DE-4C14-B19F-3F89EF37B597}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine", "Engine\Engine.csproj", "{CEBD35C6-24A4-4AF2-BF49-845276905FC7}"
 EndProject

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -88,6 +88,8 @@ $(document).ready(function(){initNavTree('d9/dfe/class_engine_1_1_u_i_1_1_font_l
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pac-static-methods">Static Package Functions</a> &#124;
+<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d7/de5/class_engine_1_1_u_i_1_1_font_library-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -107,17 +109,32 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a373fcdfea8b05089e0b1109b4e844ba2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manually loads a font by filename with default pixel size 32  <a href="#a373fcdfea8b05089e0b1109b4e844ba2">More...</a><br /></td></tr>
 <tr class="separator:a373fcdfea8b05089e0b1109b4e844ba2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8356d9e22fedec9dcc3bf2be5c79d836"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#a8356d9e22fedec9dcc3bf2be5c79d836">LoadFont</a> (string filename, int pixelSize)</td></tr>
-<tr class="memdesc:a8356d9e22fedec9dcc3bf2be5c79d836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a font by filename and pixel size  <a href="#a8356d9e22fedec9dcc3bf2be5c79d836">More...</a><br /></td></tr>
+<tr class="memdesc:a8356d9e22fedec9dcc3bf2be5c79d836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a font with the specifed pixel size  <a href="#a8356d9e22fedec9dcc3bf2be5c79d836">More...</a><br /></td></tr>
 <tr class="separator:a8356d9e22fedec9dcc3bf2be5c79d836"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4710d580b7c4994357038c8d66112831"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#a4710d580b7c4994357038c8d66112831">GetFont</a> (string name)</td></tr>
 <tr class="memdesc:a4710d580b7c4994357038c8d66112831"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns a font by name  <a href="#a4710d580b7c4994357038c8d66112831">More...</a><br /></td></tr>
 <tr class="separator:a4710d580b7c4994357038c8d66112831"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a19cfe47f65c43a3de6ba0b60b79d72be"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#a19cfe47f65c43a3de6ba0b60b79d72be">GetFontByPath</a> (string path)</td></tr>
+<tr class="memdesc:a19cfe47f65c43a3de6ba0b60b79d72be"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns a font by name  <a href="#a19cfe47f65c43a3de6ba0b60b79d72be">More...</a><br /></td></tr>
+<tr class="separator:a19cfe47f65c43a3de6ba0b60b79d72be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-methods"></a>
+Static Package Functions</h2></td></tr>
+<tr class="memitem:ad7ac5a54fa53583ae5f6a992680dfa53"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#ad7ac5a54fa53583ae5f6a992680dfa53">LoadFontInternal</a> (Stream fileStream, int pixelSize, out string fontName)</td></tr>
+<tr class="memdesc:ad7ac5a54fa53583ae5f6a992680dfa53"><td class="mdescLeft">&#160;</td><td class="mdescRight">loads a font from a filestream and creates the gl textures for the chars  <a href="#ad7ac5a54fa53583ae5f6a992680dfa53">More...</a><br /></td></tr>
+<tr class="separator:ad7ac5a54fa53583ae5f6a992680dfa53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
+Private Member Functions</h2></td></tr>
+<tr class="memitem:a732d7c0d19b0b6036038aea17d6de372"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#a732d7c0d19b0b6036038aea17d6de372">LoadFont</a> (Stream fileStream, int pixelSize, string path)</td></tr>
+<tr class="memdesc:a732d7c0d19b0b6036038aea17d6de372"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a font by filename and pixel size  <a href="#a732d7c0d19b0b6036038aea17d6de372">More...</a><br /></td></tr>
+<tr class="separator:a732d7c0d19b0b6036038aea17d6de372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:a08b8d61f82183ed34ef423724cc51990"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; string, <a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#a08b8d61f82183ed34ef423724cc51990">_fonts</a></td></tr>
-<tr class="memdesc:a08b8d61f82183ed34ef423724cc51990"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table of game fonts  <a href="#a08b8d61f82183ed34ef423724cc51990">More...</a><br /></td></tr>
-<tr class="separator:a08b8d61f82183ed34ef423724cc51990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1b1057bc935aa836059b7a2496da0ab"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; string, Tuple&lt; string, <a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfe/class_engine_1_1_u_i_1_1_font_library.html#aa1b1057bc935aa836059b7a2496da0ab">_fonts</a></td></tr>
+<tr class="memdesc:aa1b1057bc935aa836059b7a2496da0ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Table of game fonts  <a href="#aa1b1057bc935aa836059b7a2496da0ab">More...</a><br /></td></tr>
+<tr class="separator:aa1b1057bc935aa836059b7a2496da0ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Font Library. Is Used to store the loaded game Fonts </p>
@@ -176,8 +193,35 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a19cfe47f65c43a3de6ba0b60b79d72be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a19cfe47f65c43a3de6ba0b60b79d72be">&#9670;&nbsp;</a></span>GetFontByPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a> Engine.UI.FontLibrary.GetFontByPath </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>returns a font by name </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>The name of the font</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The font with the specified name</dd></dl>
+
+</div>
+</div>
 <a id="a373fcdfea8b05089e0b1109b4e844ba2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a373fcdfea8b05089e0b1109b4e844ba2">&#9670;&nbsp;</a></span>LoadFont() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a373fcdfea8b05089e0b1109b4e844ba2">&#9670;&nbsp;</a></span>LoadFont() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -203,7 +247,7 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <a id="a8356d9e22fedec9dcc3bf2be5c79d836"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8356d9e22fedec9dcc3bf2be5c79d836">&#9670;&nbsp;</a></span>LoadFont() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8356d9e22fedec9dcc3bf2be5c79d836">&#9670;&nbsp;</a></span>LoadFont() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -228,6 +272,57 @@ Private Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
+<p>Loads a font with the specifed pixel size </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td></td></tr>
+    <tr><td class="paramname">pixelSize</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a732d7c0d19b0b6036038aea17d6de372"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a732d7c0d19b0b6036038aea17d6de372">&#9670;&nbsp;</a></span>LoadFont() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.FontLibrary.LoadFont </td>
+          <td>(</td>
+          <td class="paramtype">Stream&#160;</td>
+          <td class="paramname"><em>fileStream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pixelSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
 <p>Loads a font by filename and pixel size </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -239,9 +334,8 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a08b8d61f82183ed34ef423724cc51990"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08b8d61f82183ed34ef423724cc51990">&#9670;&nbsp;</a></span>_fonts</h2>
+<a id="ad7ac5a54fa53583ae5f6a992680dfa53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7ac5a54fa53583ae5f6a992680dfa53">&#9670;&nbsp;</a></span>LoadFontInternal()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -250,7 +344,61 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly Dictionary&lt;string, <a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a>&gt; Engine.UI.FontLibrary._fonts</td>
+          <td class="memname">static <a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a> Engine.UI.FontLibrary.LoadFontInternal </td>
+          <td>(</td>
+          <td class="paramtype">Stream&#160;</td>
+          <td class="paramname"><em>fileStream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>pixelSize</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out string&#160;</td>
+          <td class="paramname"><em>fontName</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>loads a font from a filestream and creates the gl textures for the chars </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">fileStream</td><td>Filestream of the font file</td></tr>
+    <tr><td class="paramname">pixelSize</td><td>The Pixel Size</td></tr>
+    <tr><td class="paramname">fontName</td><td>The name of the font</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A the game font from an font file</dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa1b1057bc935aa836059b7a2496da0ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1b1057bc935aa836059b7a2496da0ab">&#9670;&nbsp;</a></span>_fonts</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Dictionary&lt;string, Tuple&lt;string, <a class="el" href="../../d9/db6/class_engine_1_1_data_types_1_1_game_font.html">GameFont</a>&gt; &gt; Engine.UI.FontLibrary._fonts</td>
         </tr>
       </table>
   </td>

@@ -99,6 +99,13 @@ namespace Engine.OpenCL
             typeof(ulong16)
         };
 
+
+        /// <summary>
+        /// A List of Data type pairs.
+        /// Item 1: C 99 compilant keyword for the type
+        /// Item 2: The maximum value of the data type
+        /// Item 3: The Enum Representation of the Type
+        /// </summary>
         private static List<Tuple<string, float, TypeEnums.DataTypes>> DataTypePairs =
             new List<Tuple<string, float, TypeEnums.DataTypes>>
             {
@@ -168,22 +175,31 @@ namespace Engine.OpenCL
         {
             if (IsArray)
             {
-                object[] data = (object[])value;
+                object[] data = (object[]) value;
 
-                return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int)DataType], x)),
-                    Converters[(int)DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
+                return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
+                    Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
             }
 
-            
-            return CastToType(Converters[(int)DataType], value);
+
+            return CastToType(Converters[(int) DataType], value);
         }
 
+        /// <summary>
+        /// Returns the Data type enum from the C# type
+        /// </summary>
+        /// <param name="t">The type</param>
+        /// <returns>The Data type or UNKNOWN if not found</returns>
         public static TypeEnums.DataTypes GetEnumFromType(Type t)
         {
             for (int i = 0; i < Converters.Length; i++)
             {
-                if (Converters[i] == t) return (TypeEnums.DataTypes)i;
+                if (Converters[i] == t)
+                {
+                    return (TypeEnums.DataTypes) i;
+                }
             }
+
             return TypeEnums.DataTypes.UNKNOWN;
         }
 
@@ -199,6 +215,7 @@ namespace Engine.OpenCL
             {
                 return Convert.ChangeType(value, t);
             }
+
             return CLTypeConverter.Convert(t, value);
         }
 

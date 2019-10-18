@@ -6,10 +6,19 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Debug
 {
+    /// <summary>
+    /// The Graph Drawing Context that uses GL.Lines
+    /// </summary>
     public class GraphDrawingContext : UIRenderContext
     {
+        /// <summary>
+        /// Backing field of the point data
+        /// </summary>
         private Vector2[] _points;
 
+        /// <summary>
+        /// the point data that will get drawn
+        /// </summary>
         public Vector2[] Points
         {
             get => _points;
@@ -20,11 +29,37 @@ namespace Engine.Debug
             }
         }
 
+        /// <summary>
+        /// The VBO of the screen quad
+        /// </summary>
         private int _vbo, _vao;
+
+        /// <summary>
+        /// A flag that indicates if we need to push the points to the gpu
+        /// </summary>
         private bool _bufferDirty = true;
+
+        /// <summary>
+        /// Flag that is used to initialize things on creation
+        /// </summary>
         private bool _init = false;
+
+        /// <summary>
+        /// Flag that enables or disables the graph rendering
+        /// </summary>
         public bool Enabled { get; set; } = true;
 
+        /// <summary>
+        /// Public Constructor
+        /// </summary>
+        /// <param name="points">the points to be drawn to the screen</param>
+        /// <param name="position">Position in screen space</param>
+        /// <param name="scale">The Scale of the Image</param>
+        /// <param name="modelMatrix">Model matrix</param>
+        /// <param name="worldSpace">Is the Object in world space</param>
+        /// <param name="alpha">Alpha value of the image</param>
+        /// <param name="program">The shader to be used</param>
+        /// <param name="renderQueue">The Render queue</param>
         public GraphDrawingContext(Vector2[] points, Vector2 position, Vector2 scale, Matrix4 modelMatrix,
             bool worldSpace, float alpha,
             ShaderProgram program, int renderQueue) : base(position, scale, modelMatrix, worldSpace, alpha, program,
@@ -33,6 +68,9 @@ namespace Engine.Debug
             Points = points;
         }
 
+        /// <summary>
+        /// Initializer of the Screen quad
+        /// </summary>
         private void Initialize()
         {
             _init = true;
@@ -49,6 +87,9 @@ namespace Engine.Debug
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
 
+        /// <summary>
+        /// Copies the point data to the gpu
+        /// </summary>
         private void UpdateBuffer()
         {
             GL.BindVertexArray(_vao);
@@ -59,6 +100,11 @@ namespace Engine.Debug
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
         }
 
+        /// <summary>
+        /// Renders the Graph
+        /// </summary>
+        /// <param name="viewMat">View matrix</param>
+        /// <param name="projMat">Project Matrix</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
             if (!Enabled)

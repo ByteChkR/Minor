@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -110,6 +110,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:af7cd4d5bef6668a27001864385d299c3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#af7cd4d5bef6668a27001864385d299c3">Reinitialize</a> ()</td></tr>
+<tr class="memdesc:af7cd4d5bef6668a27001864385d299c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reinitializes the CL API Used by The unit tests when requireing actual CL api calls(e.g. not in NO_CL mode)  <a href="#af7cd4d5bef6668a27001864385d299c3">More...</a><br /></td></tr>
+<tr class="separator:af7cd4d5bef6668a27001864385d299c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a45927a20d5dd63fcef3544428851a451"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a45927a20d5dd63fcef3544428851a451">CreateEmpty&lt; T &gt;</a> (int size, <a class="el" href="../../de/db2/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory.html#a6b93466a08fdb021295631e72699533b">MemoryFlag</a> flags)</td></tr>
 <tr class="memdesc:a45927a20d5dd63fcef3544428851a451"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates an empty buffer of type T with the specified size and MemoryFlags  <a href="#a45927a20d5dd63fcef3544428851a451">More...</a><br /></td></tr>
 <tr class="separator:a45927a20d5dd63fcef3544428851a451"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -152,8 +155,8 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-methods"></a>
 Static Package Functions</h2></td></tr>
-<tr class="memitem:a433878a223fdd0db53a40356bd91867b"><td class="memItemLeft" align="right" valign="top"><a id="a433878a223fdd0db53a40356bd91867b"></a>
-static <a class="el" href="../../dd/d55/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_command_queues_1_1_command_queue.html">CommandQueue</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetQueue</b> ()</td></tr>
+<tr class="memitem:a433878a223fdd0db53a40356bd91867b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../dd/d55/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_command_queues_1_1_command_queue.html">CommandQueue</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a433878a223fdd0db53a40356bd91867b">GetQueue</a> ()</td></tr>
+<tr class="memdesc:a433878a223fdd0db53a40356bd91867b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Command queue(dont use, its just for debugging if something is wrong)  <a href="#a433878a223fdd0db53a40356bd91867b">More...</a><br /></td></tr>
 <tr class="separator:a433878a223fdd0db53a40356bd91867b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57ab6eab016238bc2a40d850f0fe5451"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d1/dbc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_programs_1_1_program.html">Program</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html#a57ab6eab016238bc2a40d850f0fe5451">CreateCLProgramFromSource</a> (string source)</td></tr>
 <tr class="memdesc:a57ab6eab016238bc2a40d850f0fe5451"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a CL Program from source  <a href="#a57ab6eab016238bc2a40d850f0fe5451">More...</a><br /></td></tr>
@@ -699,6 +702,34 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a433878a223fdd0db53a40356bd91867b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a433878a223fdd0db53a40356bd91867b">&#9670;&nbsp;</a></span>GetQueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="../../dd/d55/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_command_queues_1_1_command_queue.html">CommandQueue</a> Engine.OpenCL.CLAPI.GetQueue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the Command queue(dont use, its just for debugging if something is wrong) </p>
+<dl class="section return"><dt>Returns</dt><dd>The Internal Command queue</dd></dl>
+
+</div>
+</div>
 <a id="ae3e4025cf9a9be19262822a7237e0678"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae3e4025cf9a9be19262822a7237e0678">&#9670;&nbsp;</a></span>InitializeOpenCL()</h2>
 
@@ -817,6 +848,33 @@ Static Private Attributes</h2></td></tr>
 </dd>
 </dl>
 </div>
+
+</div>
+</div>
+<a id="af7cd4d5bef6668a27001864385d299c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7cd4d5bef6668a27001864385d299c3">&#9670;&nbsp;</a></span>Reinitialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Engine.OpenCL.CLAPI.Reinitialize </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reinitializes the CL API Used by The unit tests when requireing actual CL api calls(e.g. not in NO_CL mode) </p>
 
 </div>
 </div>

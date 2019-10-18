@@ -47,6 +47,11 @@ namespace Engine.UI
             LoadFont(filename, 32);
         }
 
+        /// <summary>
+        /// Loads a font with the specifed pixel size
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <param name="pixelSize"></param>
         public void LoadFont(string filename, int pixelSize)
         {
             if (File.Exists(filename))
@@ -59,6 +64,13 @@ namespace Engine.UI
             }
         }
 
+        /// <summary>
+        /// loads a font from a filestream and creates the gl textures for the chars
+        /// </summary>
+        /// <param name="fileStream">Filestream of the font file</param>
+        /// <param name="pixelSize">The Pixel Size</param>
+        /// <param name="fontName">The name of the font</param>
+        /// <returns>A the game font from an font file</returns>
         internal static GameFont LoadFontInternal(Stream fileStream, int pixelSize, out string fontName)
         {
             FontFace ff = new FontFace(fileStream);

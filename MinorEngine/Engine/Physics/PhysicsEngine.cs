@@ -59,7 +59,7 @@ namespace Engine.Physics
         public static Ray ConstructRayFromMousePosition(TKVector3 origin)
         {
             TKVector2 mpos = GameEngine.Instance.MousePosition;
-            TKVector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int)mpos.X, (int)mpos.Y);
+            TKVector3 mousepos = GameEngine.Instance.ConvertScreenToWorldCoords((int) mpos.X, (int) mpos.Y);
             return new Ray(origin, (mousepos - origin).Normalized());
         }
 
@@ -94,7 +94,7 @@ namespace Engine.Physics
             for (int i = 0; i < results.Count; i++)
             {
                 collisions[i] =
-                    new KeyValuePair<Collider, RayHit>((Collider)results[i].HitObject.Tag, results[i].HitData);
+                    new KeyValuePair<Collider, RayHit>((Collider) results[i].HitObject.Tag, results[i].HitData);
             }
 
             return ret;
@@ -133,7 +133,7 @@ namespace Engine.Physics
             }
             else
             {
-                collision = new KeyValuePair<Collider, RayHit>((Collider)res.HitObject.Tag, res.HitData);
+                collision = new KeyValuePair<Collider, RayHit>((Collider) res.HitObject.Tag, res.HitData);
             }
 
             return ret;
@@ -152,7 +152,7 @@ namespace Engine.Physics
                 return false;
             }
 
-            Collider obj = (Collider)entry.Tag;
+            Collider obj = (Collider) entry.Tag;
             return LayerManager.AllowCollision(obj.CollisionLayer, layerInfo);
         }
 
@@ -172,7 +172,9 @@ namespace Engine.Physics
         public static void RemoveEntity(Entity physicsCollider)
         {
             if (physicsCollider.Space == _space)
+            {
                 _space.Remove(physicsCollider);
+            }
         }
 
         /// <summary>

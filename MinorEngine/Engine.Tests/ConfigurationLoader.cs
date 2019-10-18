@@ -8,7 +8,6 @@ namespace Engine.Tests
 {
     public class ConfigurationLoader
     {
-
         public ConfigurationLoader()
         {
             TestSetup.ApplyDebugSettings();
@@ -25,10 +24,8 @@ namespace Engine.Tests
         [Serializable]
         public struct TestContainer
         {
-            [ConfigVariable]
-            public string ContainerName;
-            [ConfigVariable]
-            public TestStruct Data;
+            [ConfigVariable] public string ContainerName;
+            [ConfigVariable] public TestStruct Data;
         }
 
         [Fact]
@@ -37,7 +34,7 @@ namespace Engine.Tests
             TestContainer container = new TestContainer()
             {
                 ContainerName = "TestContainer",
-                Data = new TestStruct() { TestString = "TestString", Position = Vector4.UnitY, TestInt = 123 }
+                Data = new TestStruct() {TestString = "TestString", Position = Vector4.UnitY, TestInt = 123}
             };
 
             EngineConfig.CreateConfig(container, "resources/ConfigTest_Save.xml");
@@ -45,7 +42,6 @@ namespace Engine.Tests
             string created = File.ReadAllText("resources/ConfigTest_Save.xml");
             string original = File.ReadAllText("resources/io/test_struct_original.xml");
             System.Diagnostics.Debug.Assert(original == created);
-
         }
 
         [Fact]
@@ -54,18 +50,17 @@ namespace Engine.Tests
             TestContainer reference = new TestContainer()
             {
                 ContainerName = "TestContainer",
-                Data = new TestStruct() { TestString = "TestString", Position = Vector4.UnitY, TestInt = 123 }
+                Data = new TestStruct() {TestString = "TestString", Position = Vector4.UnitY, TestInt = 123}
             };
 
             object container = new TestContainer();
             EngineConfig.LoadConfig("resources/io/test_struct_original.xml", ref container);
 
-            TestContainer c = (TestContainer)container;
+            TestContainer c = (TestContainer) container;
             System.Diagnostics.Debug.Assert(reference.ContainerName == c.ContainerName);
             System.Diagnostics.Debug.Assert(reference.Data.TestString == c.Data.TestString);
             System.Diagnostics.Debug.Assert(reference.Data.TestInt == c.Data.TestInt);
             System.Diagnostics.Debug.Assert(reference.Data.Position == c.Data.Position);
-
         }
     }
 }

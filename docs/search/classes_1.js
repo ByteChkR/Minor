@@ -32,7 +32,6 @@ var searchData=
   ['bruteforce',['BruteForce',['../d9/d9a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_brute_force.html',1,'Engine::Physics::BEPUphysics::BroadPhaseSystems']]],
   ['bufferedstatesaccessor',['BufferedStatesAccessor',['../d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html',1,'Engine::Physics::BEPUphysics::EntityStateManagement']]],
   ['bufferedstatesmanager',['BufferedStatesManager',['../d3/dac/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_manager.html',1,'Engine::Physics::BEPUphysics::EntityStateManagement']]],
-  ['bufferoperations',['BufferOperations',['../d1/d52/class_engine_1_1_open_c_l_1_1_buffer_operations.html',1,'Engine::OpenCL']]],
   ['bufferpool',['BufferPool',['../d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html',1,'Engine::Physics::BEPUutilities::ResourceManagement']]],
   ['bufferpool_3c_20int_20_3e',['BufferPool&lt; int &gt;',['../d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html',1,'Engine::Physics::BEPUutilities::ResourceManagement']]],
   ['bufferpool_3c_20tkey_20_3e',['BufferPool&lt; TKey &gt;',['../d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html',1,'Engine::Physics::BEPUutilities::ResourceManagement']]],

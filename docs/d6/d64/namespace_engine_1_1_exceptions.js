@@ -1,6 +1,7 @@
 var namespace_engine_1_1_exceptions =
 [
     [ "AudioFileInvalidException", "d9/dc8/class_engine_1_1_exceptions_1_1_audio_file_invalid_exception.html", "d9/dc8/class_engine_1_1_exceptions_1_1_audio_file_invalid_exception" ],
+    [ "CLProgramException", "da/dda/class_engine_1_1_exceptions_1_1_c_l_program_exception.html", "da/dda/class_engine_1_1_exceptions_1_1_c_l_program_exception" ],
     [ "EngineException", "d9/d18/class_engine_1_1_exceptions_1_1_engine_exception.html", "d9/d18/class_engine_1_1_exceptions_1_1_engine_exception" ],
     [ "FLInvalidArgumentType", "d8/d38/class_engine_1_1_exceptions_1_1_f_l_invalid_argument_type.html", "d8/d38/class_engine_1_1_exceptions_1_1_f_l_invalid_argument_type" ],
     [ "FLInvalidEntryPointException", "de/d4b/class_engine_1_1_exceptions_1_1_f_l_invalid_entry_point_exception.html", "de/d4b/class_engine_1_1_exceptions_1_1_f_l_invalid_entry_point_exception" ],

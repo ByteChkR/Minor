@@ -3,7 +3,7 @@
     <string>TestContainer</string>
   </Engine.Tests.ConfigurationLoader.TestContainer.ContainerName>
   <Engine.Tests.ConfigurationLoader.TestContainer.Data>
-    <TestStruct  >
+    <TestStruct>
       <TestInt>123</TestInt>
       <TestString>TestString</TestString>
       <Position>

@@ -18,6 +18,6 @@ var searchData=
   ['rollingfrictioncoefficient',['RollingFrictionCoefficient',['../d5/d04/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_brake.html#a7d7604ae55e4866e9aa5acc16e15628e',1,'Engine::Physics::BEPUphysics::Vehicle::WheelBrake']]],
   ['rollofffactor',['RollOffFactor',['../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a9f471360a4c6d2af02a89e7516686a5f',1,'Engine::Audio::AbstractAudioSource']]],
   ['roomrollofffactor',['RoomRollOffFactor',['../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a3bbe4ebb40cdad788cdfd3043f93ea1f',1,'Engine::Audio::AbstractAudioSource']]],
-  ['rotation',['Rotation',['../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a4cc5966400340e568bcec4aa5fa6c703',1,'Engine::Core::GameObject']]],
+  ['rotation',['Rotation',['../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ad0541a9de57bc79ef5f50199e67f540d',1,'Engine::Core::GameObject']]],
   ['rotationmatrix',['RotationMatrix',['../d9/d4a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis3_d.html#a09b43f60f45338d14687ebdfc2e7721b',1,'Engine.Physics.BEPUphysics.Constraints.JointBasis3D.RotationMatrix()'],['../d3/d76/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_joint_basis2_d.html#a7ae8da25082acce7fe9fcc189a148aa5',1,'Engine.Physics.BEPUphysics.Constraints.JointBasis2D.RotationMatrix()']]]
 ];

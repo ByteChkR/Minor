@@ -15,8 +15,15 @@ namespace Engine.DataTypes
     /// </summary>
     public class GameFont : IDisposable
     {
+        /// <summary>
+        /// The default font
+        /// </summary>
         public static GameFont DefaultFont => _defaultFont ?? (_defaultFont = GetDefaultFont());
 
+        /// <summary>
+        /// Creates the default font from embedded program resources
+        /// </summary>
+        /// <returns>The Default font</returns>
         private static GameFont GetDefaultFont()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -51,6 +58,9 @@ namespace Engine.DataTypes
         /// </summary>
         private readonly FontFace _fontFace;
 
+        /// <summary>
+        /// Backing field for the default font
+        /// </summary>
         private static GameFont _defaultFont;
 
         /// <summary>

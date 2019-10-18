@@ -22,7 +22,14 @@ namespace Engine.Debug
     /// </summary>
     public class DebugConsoleComponent : AbstractComponent
     {
+        /// <summary>
+        /// the Graph data stored.
+        /// </summary>
         private Queue<float> _graphData;
+
+        /// <summary>
+        /// The Maximum amount of graph data stored
+        /// </summary>
         private int _maxGraphCount = 1600;
 
         /// <summary>
@@ -70,6 +77,9 @@ namespace Engine.Debug
         /// </summary>
         private UIImageRendererComponent _bgImage;
 
+        /// <summary>
+        /// The Graph component
+        /// </summary>
         private GraphDrawingComponent _graph;
 
         /// <summary>
@@ -206,8 +216,8 @@ namespace Engine.Debug
             rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
             GameEngine.Instance.AddRenderTarget(rt2);
 
-            Bitmap bmp = new Bitmap(1,1);
-            bmp.SetPixel(0,0, System.Drawing.Color.Black);
+            Bitmap bmp = new Bitmap(1, 1);
+            bmp.SetPixel(0, 0, System.Drawing.Color.Black);
 
             UIImageRendererComponent _bgImage =
                 new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false,
@@ -276,7 +286,9 @@ namespace Engine.Debug
             return obj;
         }
 
-
+        /// <summary>
+        /// Updates the graph
+        /// </summary>
         private void UpdateGraph()
         {
             Vector2[] pts = new Vector2[_graphData.Count];
@@ -290,6 +302,11 @@ namespace Engine.Debug
             _graph.Points = pts;
         }
 
+
+        /// <summary>
+        /// Adds a value to the graph data
+        /// </summary>
+        /// <param name="yValue"></param>
         public void AddGraphValue(float yValue)
         {
             _graphData.Enqueue(yValue);

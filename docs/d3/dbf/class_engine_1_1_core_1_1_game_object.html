@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -154,6 +154,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aec3cd1118a04a264a4364aeb73be3411"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#aec3cd1118a04a264a4364aeb73be3411">Add</a> (<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a> child)</td></tr>
 <tr class="memdesc:aec3cd1118a04a264a4364aeb73be3411"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a child to the object  <a href="#aec3cd1118a04a264a4364aeb73be3411">More...</a><br /></td></tr>
 <tr class="separator:aec3cd1118a04a264a4364aeb73be3411"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a8993b74e4ec55744d7dc3127ed12c7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a6a8993b74e4ec55744d7dc3127ed12c7">DestroyAllChildren</a> ()</td></tr>
+<tr class="memdesc:a6a8993b74e4ec55744d7dc3127ed12c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destroys all child objects while leaving the current one intact(useful for container objects)  <a href="#a6a8993b74e4ec55744d7dc3127ed12c7">More...</a><br /></td></tr>
+<tr class="separator:a6a8993b74e4ec55744d7dc3127ed12c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c553f17f297115787007d960048d6e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a0c553f17f297115787007d960048d6e1">SetParent</a> (<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a> newParent)</td></tr>
 <tr class="memdesc:a0c553f17f297115787007d960048d6e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the Parent Object to be newParent  <a href="#a0c553f17f297115787007d960048d6e1">More...</a><br /></td></tr>
 <tr class="separator:a0c553f17f297115787007d960048d6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -265,15 +268,15 @@ Properties</h2></td></tr>
 <tr class="memitem:aa34cfd61f16c29c6e384f84e093e17f6"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#aa34cfd61f16c29c6e384f84e093e17f6">Transform</a><code> [get]</code></td></tr>
 <tr class="memdesc:aa34cfd61f16c29c6e384f84e093e17f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Transform component  <a href="#aa34cfd61f16c29c6e384f84e093e17f6">More...</a><br /></td></tr>
 <tr class="separator:aa34cfd61f16c29c6e384f84e093e17f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a425a8f48fc8bf36d5e3ad0fa238fd6e4"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a425a8f48fc8bf36d5e3ad0fa238fd6e4">LocalPosition</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a425a8f48fc8bf36d5e3ad0fa238fd6e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Local position  <a href="#a425a8f48fc8bf36d5e3ad0fa238fd6e4">More...</a><br /></td></tr>
-<tr class="separator:a425a8f48fc8bf36d5e3ad0fa238fd6e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf411d3a4752ad6d4de6438e3a9ff3ce"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#abf411d3a4752ad6d4de6438e3a9ff3ce">Scale</a> = new Vector3(1)<code> [get, set]</code></td></tr>
-<tr class="memdesc:abf411d3a4752ad6d4de6438e3a9ff3ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Scale  <a href="#abf411d3a4752ad6d4de6438e3a9ff3ce">More...</a><br /></td></tr>
-<tr class="separator:abf411d3a4752ad6d4de6438e3a9ff3ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cc5966400340e568bcec4aa5fa6c703"><td class="memItemLeft" align="right" valign="top">Quaternion&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a4cc5966400340e568bcec4aa5fa6c703">Rotation</a> = Quaternion.Identity<code> [get, set]</code></td></tr>
-<tr class="memdesc:a4cc5966400340e568bcec4aa5fa6c703"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Rotation  <a href="#a4cc5966400340e568bcec4aa5fa6c703">More...</a><br /></td></tr>
-<tr class="separator:a4cc5966400340e568bcec4aa5fa6c703"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ec334ba6cbe5e2eacdb442098e837dc"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Engine.Physics.BEPUutilities.Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a7ec334ba6cbe5e2eacdb442098e837dc">LocalPosition</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a7ec334ba6cbe5e2eacdb442098e837dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Local position  <a href="#a7ec334ba6cbe5e2eacdb442098e837dc">More...</a><br /></td></tr>
+<tr class="separator:a7ec334ba6cbe5e2eacdb442098e837dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c78eebd2f3df4d09ab713e102628962"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Engine.Physics.BEPUutilities.Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a8c78eebd2f3df4d09ab713e102628962">Scale</a> = new <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Physics.BEPUutilities.Vector3</a>(1f, 1f, 1f)<code> [get, set]</code></td></tr>
+<tr class="memdesc:a8c78eebd2f3df4d09ab713e102628962"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Scale  <a href="#a8c78eebd2f3df4d09ab713e102628962">More...</a><br /></td></tr>
+<tr class="separator:a8c78eebd2f3df4d09ab713e102628962"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0541a9de57bc79ef5f50199e67f540d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_quaternion.html">Engine.Physics.BEPUutilities.Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ad0541a9de57bc79ef5f50199e67f540d">Rotation</a> = Quaternion.Identity<code> [get, set]</code></td></tr>
+<tr class="memdesc:ad0541a9de57bc79ef5f50199e67f540d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Rotation  <a href="#ad0541a9de57bc79ef5f50199e67f540d">More...</a><br /></td></tr>
+<tr class="separator:ad0541a9de57bc79ef5f50199e67f540d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19be5f4edf906aa014954a1bac8dc5db"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d34/class_engine_1_1_core_1_1_abstract_scene.html">AbstractScene</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a19be5f4edf906aa014954a1bac8dc5db">Scene</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a19be5f4edf906aa014954a1bac8dc5db"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Current Scene the object belongs to  <a href="#a19be5f4edf906aa014954a1bac8dc5db">More...</a><br /></td></tr>
 <tr class="separator:a19be5f4edf906aa014954a1bac8dc5db"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -286,6 +289,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a18887a8c235229b0461ba11cfbeb05f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a18887a8c235229b0461ba11cfbeb05f1">Parent</a><code> [get, private set]</code></td></tr>
 <tr class="memdesc:a18887a8c235229b0461ba11cfbeb05f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent of the object  <a href="#a18887a8c235229b0461ba11cfbeb05f1">More...</a><br /></td></tr>
 <tr class="separator:a18887a8c235229b0461ba11cfbeb05f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a884c415e656ee25b849c5f0aad2e50f2"><td class="memItemLeft" align="right" valign="top"><a id="a884c415e656ee25b849c5f0aad2e50f2"></a>
+<a class="el" href="../../d6/de8/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector4.html">Engine.Physics.BEPUutilities.Vector4</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AxisAngle</b><code> [get, set]</code></td></tr>
+<tr class="separator:a884c415e656ee25b849c5f0aad2e50f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -853,6 +859,25 @@ Static Private Attributes</h2></td></tr>
 <p>Adds this game object to the list of game objects that will be removed at the end of the frame </p>
 
 <p>Implements <a class="el" href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html#ad275e8ada9b03cc80c3d2c419833e00c">Engine.Core.IDestroyable</a>.</p>
+
+</div>
+</div>
+<a id="a6a8993b74e4ec55744d7dc3127ed12c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6a8993b74e4ec55744d7dc3127ed12c7">&#9670;&nbsp;</a></span>DestroyAllChildren()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.GameObject.DestroyAllChildren </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Destroys all child objects while leaving the current one intact(useful for container objects) </p>
 
 </div>
 </div>
@@ -2268,8 +2293,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a425a8f48fc8bf36d5e3ad0fa238fd6e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a425a8f48fc8bf36d5e3ad0fa238fd6e4">&#9670;&nbsp;</a></span>LocalPosition</h2>
+<a id="a7ec334ba6cbe5e2eacdb442098e837dc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ec334ba6cbe5e2eacdb442098e837dc">&#9670;&nbsp;</a></span>LocalPosition</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2278,7 +2303,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Vector3 Engine.Core.GameObject.LocalPosition</td>
+          <td class="memname"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Engine.Physics.BEPUutilities.Vector3</a> Engine.Core.GameObject.LocalPosition</td>
         </tr>
       </table>
   </td>
@@ -2364,8 +2389,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4cc5966400340e568bcec4aa5fa6c703"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cc5966400340e568bcec4aa5fa6c703">&#9670;&nbsp;</a></span>Rotation</h2>
+<a id="ad0541a9de57bc79ef5f50199e67f540d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad0541a9de57bc79ef5f50199e67f540d">&#9670;&nbsp;</a></span>Rotation</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2374,7 +2399,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Quaternion Engine.Core.GameObject.Rotation = Quaternion.Identity</td>
+          <td class="memname"><a class="el" href="../../db/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_quaternion.html">Engine.Physics.BEPUutilities.Quaternion</a> Engine.Core.GameObject.Rotation = Quaternion.Identity</td>
         </tr>
       </table>
   </td>
@@ -2388,8 +2413,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="abf411d3a4752ad6d4de6438e3a9ff3ce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf411d3a4752ad6d4de6438e3a9ff3ce">&#9670;&nbsp;</a></span>Scale</h2>
+<a id="a8c78eebd2f3df4d09ab713e102628962"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c78eebd2f3df4d09ab713e102628962">&#9670;&nbsp;</a></span>Scale</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2398,7 +2423,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Vector3 Engine.Core.GameObject.Scale = new Vector3(1)</td>
+          <td class="memname"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Engine.Physics.BEPUutilities.Vector3</a> Engine.Core.GameObject.Scale = new <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Physics.BEPUutilities.Vector3</a>(1f, 1f, 1f)</td>
         </tr>
       </table>
   </td>

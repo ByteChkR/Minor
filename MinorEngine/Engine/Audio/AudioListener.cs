@@ -16,7 +16,6 @@ namespace Engine.Audio
         /// <param name="deltaTime">Delta Time in Seconds</param>
         protected override void Update(float deltaTime)
         {
-
             Vector3 v3 = Owner.GetWorldPosition();
 
             AL.Listener(ALListener3f.Position, ref v3);

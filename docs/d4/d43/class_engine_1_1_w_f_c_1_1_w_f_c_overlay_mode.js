@@ -7,5 +7,6 @@ var class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode =
     [ "_colors", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html#ac723fe9daa49cd750061d83d4a5a4379", null ],
     [ "_ground", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html#a97f0b0fd6442b5d52bac3ee990647266", null ],
     [ "_n", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html#aaa7dedc7f74cb5026a709246aa87296c", null ],
-    [ "_patterns", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html#ad898b7cd01b8dc8b823aa0b69d8213df", null ]
+    [ "_patterns", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html#ad898b7cd01b8dc8b823aa0b69d8213df", null ],
+    [ "Success", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html#aae154a87e065254951ee3837c08a523e", null ]
 ];

@@ -21,7 +21,14 @@ namespace Engine.Rendering.Contexts
         /// </summary>
         public Texture[] Textures { get; set; }
 
+        /// <summary>
+        /// The Tiling of the Textures
+        /// </summary>
         public Vector2 Tiling { get; set; }
+
+        /// <summary>
+        /// The Offset of the Textures
+        /// </summary>
         public Vector2 Offset { get; set; }
 
         /// <summary>
@@ -32,8 +39,11 @@ namespace Engine.Rendering.Contexts
         /// <param name="meshes">The meshes to be drawn</param>
         /// <param name="textures">Textures to be drawn</param>
         /// <param name="renderType">The render type of the context</param>
+        /// <param name="offset">the offset of the textures</param>
+        /// <param name="tiling">the tiling of the textures</param>
         public MeshRenderContext(ShaderProgram program, Matrix4 modelMatrix, Mesh[] meshes, Texture[] textures,
-            Renderer.RenderType renderType, Vector2 offset, Vector2 tiling) : base(program, modelMatrix, true, renderType, 0)
+            Renderer.RenderType renderType, Vector2 offset, Vector2 tiling) : base(program, modelMatrix, true,
+            renderType, 0)
         {
             Tiling = tiling;
             Offset = offset;

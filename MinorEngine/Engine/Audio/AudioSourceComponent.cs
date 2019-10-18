@@ -8,7 +8,11 @@ namespace Engine.Audio
     /// </summary>
     public class AudioSourceComponent : AbstractAudioSource
     {
+        /// <summary>
+        /// Flag that if set, updates the source position in openAL
+        /// </summary>
         public bool UpdatePosition { get; set; }
+
         /// <summary>
         /// OnDestroy Function. Gets called when the Component or the GameObject got removed from the game
         /// This function is called AFTER the engines update function. So it can happen that before the object is destroyed it can still collide and do other things until its removed at the end of the frame.

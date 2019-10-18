@@ -30,7 +30,11 @@ namespace Engine.Audio
             get => _clip;
             set
             {
-                if (_clip != null && _clip.Buffer == value.Buffer) return;
+                if (_clip != null && _clip.Buffer == value.Buffer)
+                {
+                    return;
+                }
+
                 bool wasPlaying = IsPlaying;
                 if (IsPlaying)
                 {
@@ -48,6 +52,9 @@ namespace Engine.Audio
             }
         }
 
+        /// <summary>
+        /// The State of the AL Audio Source(Directly calls AL api. Use sparingly
+        /// </summary>
         public ALSourceState State
         {
             get
@@ -56,6 +63,7 @@ namespace Engine.Audio
                 return (ALSourceState) state;
             }
         }
+
 
         /// <summary>
         /// A Flag to get the Playing state of the AudioSource
@@ -199,14 +207,14 @@ namespace Engine.Audio
             get
             {
                 AL.GetSource(source, ALGetSourcei.ByteOffset, out int current);
-                float val = (float)current / Clip.BufferSize;
+                float val = (float) current / Clip.BufferSize;
 
                 return Math.Clamp(val, 0f, 1f);
             }
             set
             {
                 float val = Math.Clamp(value, 0f, 1f);
-                AL.Source(source, ALSourcei.ByteOffset, (int)(Clip.BufferSize * val));
+                AL.Source(source, ALSourcei.ByteOffset, (int) (Clip.BufferSize * val));
             }
         }
 

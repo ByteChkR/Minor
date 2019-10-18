@@ -31,7 +31,14 @@ namespace Engine.Rendering
         /// </summary>
         private Mesh _model;
 
+        /// <summary>
+        /// The backing field of the tiling of the texture
+        /// </summary>
         private Vector2 _tiling = Vector2.One;
+
+        /// <summary>
+        /// The backing field of the offset of the texture
+        /// </summary>
         private Vector2 _offset;
 
         /// <summary>

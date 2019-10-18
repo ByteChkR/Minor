@@ -95,6 +95,7 @@ namespace Engine.OpenFL
             {
                 _previews[i].Texture = Tex;
             }
+
             _stepInterpreter.ReleaseResources();
 
             return "Texture Reset.";
@@ -148,14 +149,15 @@ namespace Engine.OpenFL
         /// <param name="filename">Path to the FL Script</param>
         public void RunOnObjImage(string filename)
         {
-            if (_isInStepMode) return;
+            if (_isInStepMode)
+            {
+                return;
+            }
 
 
             MemoryBuffer buf = GetRendererTextureBuffer();
             _stepInterpreter?.ReleaseResources();
-            _stepInterpreter = new Interpreter(filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
-
-
+            _stepInterpreter = new Interpreter(filename, buf, (int) Tex.Width, (int) Tex.Height, 1, 4, _db, true);
 
 
             do
@@ -165,7 +167,7 @@ namespace Engine.OpenFL
 
             byte[] buffer = _stepInterpreter.GetResult<byte>();
 
-            TextureLoader.Update(Tex, buffer, (int)Tex.Width, (int)Tex.Height);
+            TextureLoader.Update(Tex, buffer, (int) Tex.Width, (int) Tex.Height);
         }
 
         /// <summary>
@@ -206,8 +208,8 @@ namespace Engine.OpenFL
                 res = _stepInterpreter.GetActiveBufferInternal().Buffer;
             }
 
-            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(res, (int)res.Size), (int)Tex.Width,
-                (int)Tex.Height);
+            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(res, (int) res.Size), (int) Tex.Width,
+                (int) Tex.Height);
 
             return stepResult.ToString();
         }
@@ -228,8 +230,8 @@ namespace Engine.OpenFL
 
 
             _isInStepMode = true;
-            _stepInterpreter?.ReleaseResources();   
-            _stepInterpreter = new Interpreter(args[0], buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, false);
+            _stepInterpreter?.ReleaseResources();
+            _stepInterpreter = new Interpreter(args[0], buf, (int) Tex.Width, (int) Tex.Height, 1, 4, _db, false);
 
             return "Debugging Session Started.";
         }

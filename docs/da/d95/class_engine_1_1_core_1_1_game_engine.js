@@ -16,6 +16,7 @@ var class_engine_1_1_core_1_1_game_engine =
     [ "Window_MouseMove", "da/d95/class_engine_1_1_core_1_1_game_engine.html#a895a66d9c0aad2172ef25ec1dec6d93b", null ],
     [ "_changeScene", "da/d95/class_engine_1_1_core_1_1_game_engine.html#a04af6be06b6eda5fff0743c70a79a56e", null ],
     [ "_nextScene", "da/d95/class_engine_1_1_core_1_1_game_engine.html#a852297cce2e3cda747df12e446f74991", null ],
+    [ "AspectRatio", "da/d95/class_engine_1_1_core_1_1_game_engine.html#acafdd80fa2717f75f1d9fb7bafca9c95", null ],
     [ "EngineDefault", "da/d95/class_engine_1_1_core_1_1_game_engine.html#a702d029a3471c040734c8f2430ff4433", null ],
     [ "FrameCounter", "da/d95/class_engine_1_1_core_1_1_game_engine.html#a7e28db016ed02dd8730e9870cb880c47", null ],
     [ "Height", "da/d95/class_engine_1_1_core_1_1_game_engine.html#a2736e7fa58c0f86269434c71e5701d7a", null ],

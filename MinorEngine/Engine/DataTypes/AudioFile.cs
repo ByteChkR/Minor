@@ -8,7 +8,14 @@ namespace Engine.DataTypes
     /// </summary>
     public class AudioFile : IDisposable
     {
+        /// <summary>
+        /// The OpenAL Buffer handle
+        /// </summary>
         public int Buffer { get; }
+
+        /// <summary>
+        /// The buffer size in bytes
+        /// </summary>
         public int BufferSize { get; }
 
         /// <summary>

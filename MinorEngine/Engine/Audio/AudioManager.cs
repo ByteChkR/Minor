@@ -15,6 +15,9 @@ namespace Engine.Audio
         /// </summary>
         private static AudioContext _context;
 
+        /// <summary>
+        /// Initializes the OpenAL Audio Context
+        /// </summary>
         public static void Initialize()
         {
             _context = new AudioContext();

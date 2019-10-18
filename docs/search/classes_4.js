@@ -5,6 +5,7 @@ var searchData=
   ['ellipseswinglimit',['EllipseSwingLimit',['../db/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_joint_limits_1_1_ellipse_swing_limit.html',1,'Engine::Physics::BEPUphysics::Constraints::TwoEntity::JointLimits']]],
   ['endofframeupdateablemanager',['EndOfFrameUpdateableManager',['../db/da6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_end_of_frame_updateable_manager.html',1,'Engine::Physics::BEPUphysics::UpdateableSystems']]],
   ['endoftimestepupdateablemanager',['EndOfTimeStepUpdateableManager',['../d9/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_end_of_time_step_updateable_manager.html',1,'Engine::Physics::BEPUphysics::UpdateableSystems']]],
+  ['engineconfig',['EngineConfig',['../df/dad/class_engine_1_1_core_1_1_engine_config.html',1,'Engine::Core']]],
   ['engineexception',['EngineException',['../d9/d18/class_engine_1_1_exceptions_1_1_engine_exception.html',1,'Engine::Exceptions']]],
   ['enginesettings',['EngineSettings',['../d1/d8d/class_engine_1_1_core_1_1_engine_settings.html',1,'Engine::Core']]],
   ['enginestageinformation',['EngineStageInformation',['../de/d34/class_engine_1_1_debug_1_1_engine_stage_information.html',1,'Engine::Debug']]],

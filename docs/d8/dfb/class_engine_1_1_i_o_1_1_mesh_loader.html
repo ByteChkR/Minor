@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -89,6 +89,7 @@ $(document).ready(function(){initNavTree('d8/dfb/class_engine_1_1_i_o_1_1_mesh_l
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pac-static-methods">Static Package Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../df/d83/class_engine_1_1_i_o_1_1_mesh_loader-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -114,11 +115,20 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a460c8c73941f5ace1ae6c31b778f1b6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Meshes From File  <a href="#a460c8c73941f5ace1ae6c31b778f1b6b">More...</a><br /></td></tr>
 <tr class="separator:a460c8c73941f5ace1ae6c31b778f1b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-methods"></a>
+Static Package Functions</h2></td></tr>
+<tr class="memitem:a11d275b77e2a34581dbc37486137f121"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html">Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfb/class_engine_1_1_i_o_1_1_mesh_loader.html#a11d275b77e2a34581dbc37486137f121">LoadModel</a> (Stream stream)</td></tr>
+<tr class="memdesc:a11d275b77e2a34581dbc37486137f121"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a model with assimp  <a href="#a11d275b77e2a34581dbc37486137f121">More...</a><br /></td></tr>
+<tr class="separator:a11d275b77e2a34581dbc37486137f121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
 <tr class="memitem:af979db5fd902a3dbfd472c76c23e3af2"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html">Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfb/class_engine_1_1_i_o_1_1_mesh_loader.html#af979db5fd902a3dbfd472c76c23e3af2">LoadModel</a> (string path)</td></tr>
 <tr class="memdesc:af979db5fd902a3dbfd472c76c23e3af2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads a Assimp Model From File  <a href="#af979db5fd902a3dbfd472c76c23e3af2">More...</a><br /></td></tr>
 <tr class="separator:af979db5fd902a3dbfd472c76c23e3af2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7b8c600b8cb4aa06c1e86942c881f12"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html">Mesh</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfb/class_engine_1_1_i_o_1_1_mesh_loader.html#ad7b8c600b8cb4aa06c1e86942c881f12">LoadAssimpScene</a> (Scene s, string path)</td></tr>
+<tr class="memdesc:ad7b8c600b8cb4aa06c1e86942c881f12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts an assimp scene to a list of game meshes  <a href="#ad7b8c600b8cb4aa06c1e86942c881f12">More...</a><br /></td></tr>
+<tr class="separator:ad7b8c600b8cb4aa06c1e86942c881f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae07c46f082e3c795a7aa0d02b9fdecd7"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dfb/class_engine_1_1_i_o_1_1_mesh_loader.html#ae07c46f082e3c795a7aa0d02b9fdecd7">processNode</a> (Node node, Scene s, List&lt; <a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html">Mesh</a> &gt; meshes, string dir)</td></tr>
 <tr class="memdesc:ae07c46f082e3c795a7aa0d02b9fdecd7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Processes a node in an Assimp Scene  <a href="#ae07c46f082e3c795a7aa0d02b9fdecd7">More...</a><br /></td></tr>
 <tr class="separator:ae07c46f082e3c795a7aa0d02b9fdecd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -205,8 +215,89 @@ Static Private Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad7b8c600b8cb4aa06c1e86942c881f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7b8c600b8cb4aa06c1e86942c881f12">&#9670;&nbsp;</a></span>LoadAssimpScene()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static List&lt;<a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html">Mesh</a>&gt; Engine.IO.MeshLoader.LoadAssimpScene </td>
+          <td>(</td>
+          <td class="paramtype">Scene&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>path</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts an assimp scene to a list of game meshes </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>The scene</td></tr>
+    <tr><td class="paramname">path</td><td>Path to the object that was loaded by assimp</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a11d275b77e2a34581dbc37486137f121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a11d275b77e2a34581dbc37486137f121">&#9670;&nbsp;</a></span>LoadModel() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static List&lt;<a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html">Mesh</a>&gt; Engine.IO.MeshLoader.LoadModel </td>
+          <td>(</td>
+          <td class="paramtype">Stream&#160;</td>
+          <td class="paramname"><em>stream</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Loads a model with assimp </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">stream</td><td>the input stream for assimp</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <a id="af979db5fd902a3dbfd472c76c23e3af2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af979db5fd902a3dbfd472c76c23e3af2">&#9670;&nbsp;</a></span>LoadModel()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#af979db5fd902a3dbfd472c76c23e3af2">&#9670;&nbsp;</a></span>LoadModel() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">

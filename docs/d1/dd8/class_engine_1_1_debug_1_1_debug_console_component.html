@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -117,6 +117,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a5b8a039f3ad6070a10c2842aca9ef70a"><td class="memItemLeft" align="right" valign="top">delegate string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a5b8a039f3ad6070a10c2842aca9ef70a">ConsoleCommand</a> (string[] args)</td></tr>
 <tr class="memdesc:a5b8a039f3ad6070a10c2842aca9ef70a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delegate representing a command.  <a href="#a5b8a039f3ad6070a10c2842aca9ef70a">More...</a><br /></td></tr>
 <tr class="separator:a5b8a039f3ad6070a10c2842aca9ef70a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a954bd1f17d0cdce0417e885a885cace9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a954bd1f17d0cdce0417e885a885cace9">AddGraphValue</a> (float yValue)</td></tr>
+<tr class="memdesc:a954bd1f17d0cdce0417e885a885cace9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a value to the graph data  <a href="#a954bd1f17d0cdce0417e885a885cace9">More...</a><br /></td></tr>
+<tr class="separator:a954bd1f17d0cdce0417e885a885cace9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75b9254d1ea623192fd7244d70a8ab22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a75b9254d1ea623192fd7244d70a8ab22">WriteToConsole</a> (string text)</td></tr>
 <tr class="memdesc:a75b9254d1ea623192fd7244d70a8ab22"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the Specified text to the console. and removes the oldest messages when reaching message limit.  <a href="#a75b9254d1ea623192fd7244d70a8ab22">More...</a><br /></td></tr>
 <tr class="separator:a75b9254d1ea623192fd7244d70a8ab22"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,11 +173,17 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
+<tr class="memitem:a50fe235e3683ca1e57d5d6ea91f5fbb6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a50fe235e3683ca1e57d5d6ea91f5fbb6">UpdateGraph</a> ()</td></tr>
+<tr class="memdesc:a50fe235e3683ca1e57d5d6ea91f5fbb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the graph  <a href="#a50fe235e3683ca1e57d5d6ea91f5fbb6">More...</a><br /></td></tr>
+<tr class="separator:a50fe235e3683ca1e57d5d6ea91f5fbb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb95522203381e1bfdfc2ba75d5ac999"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#adb95522203381e1bfdfc2ba75d5ac999">ToConsoleText</a> ()</td></tr>
 <tr class="memdesc:adb95522203381e1bfdfc2ba75d5ac999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs the Console Output  <a href="#adb95522203381e1bfdfc2ba75d5ac999">More...</a><br /></td></tr>
 <tr class="separator:adb95522203381e1bfdfc2ba75d5ac999"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72d0d9371245de7514953dd6338d858b"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a72d0d9371245de7514953dd6338d858b">cmd_ToggleGraph</a> (string[] args)</td></tr>
+<tr class="memdesc:a72d0d9371245de7514953dd6338d858b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command in Console: q/exit/quit Exits the console  <a href="#a72d0d9371245de7514953dd6338d858b">More...</a><br /></td></tr>
+<tr class="separator:a72d0d9371245de7514953dd6338d858b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae592d07d1b3f79b2e94b8cf25fc80195"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#ae592d07d1b3f79b2e94b8cf25fc80195">cmd_Exit</a> (string[] args)</td></tr>
-<tr class="memdesc:ae592d07d1b3f79b2e94b8cf25fc80195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command in Console: q/exit/quit Exits the console  <a href="#ae592d07d1b3f79b2e94b8cf25fc80195">More...</a><br /></td></tr>
+<tr class="memdesc:ae592d07d1b3f79b2e94b8cf25fc80195"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command in Console: tg/togglegraph Shows/Hides the Graph  <a href="#ae592d07d1b3f79b2e94b8cf25fc80195">More...</a><br /></td></tr>
 <tr class="separator:ae592d07d1b3f79b2e94b8cf25fc80195"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b226ec6b763ade8e943c909b01326db"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a7b226ec6b763ade8e943c909b01326db">cmd_Clear</a> (string[] args)</td></tr>
 <tr class="memdesc:a7b226ec6b763ade8e943c909b01326db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Command in Console: clear/cls Clears the console output  <a href="#a7b226ec6b763ade8e943c909b01326db">More...</a><br /></td></tr>
@@ -194,6 +203,12 @@ Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:a7f3069d364fe7cb94bc3e04b73e674db"><td class="memItemLeft" align="right" valign="top">Queue&lt; float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a7f3069d364fe7cb94bc3e04b73e674db">_graphData</a></td></tr>
+<tr class="memdesc:a7f3069d364fe7cb94bc3e04b73e674db"><td class="mdescLeft">&#160;</td><td class="mdescRight">the Graph data stored.  <a href="#a7f3069d364fe7cb94bc3e04b73e674db">More...</a><br /></td></tr>
+<tr class="separator:a7f3069d364fe7cb94bc3e04b73e674db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65020a40b5d893fe27fafe4b2981fa20"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a65020a40b5d893fe27fafe4b2981fa20">_maxGraphCount</a> = 1600</td></tr>
+<tr class="memdesc:a65020a40b5d893fe27fafe4b2981fa20"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Maximum amount of graph data stored  <a href="#a65020a40b5d893fe27fafe4b2981fa20">More...</a><br /></td></tr>
+<tr class="separator:a65020a40b5d893fe27fafe4b2981fa20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac6aaefc2c99e790d0e079596b1a26453"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#ac6aaefc2c99e790d0e079596b1a26453">HelpText</a> = &quot;Press C to Open the FL Console&quot;</td></tr>
 <tr class="memdesc:ac6aaefc2c99e790d0e079596b1a26453"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Text to be displayed when the Console is Closed.  <a href="#ac6aaefc2c99e790d0e079596b1a26453">More...</a><br /></td></tr>
 <tr class="separator:ac6aaefc2c99e790d0e079596b1a26453"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -218,6 +233,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a8053621d2d04cd84c71553fecb898d49"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html">UIImageRendererComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a8053621d2d04cd84c71553fecb898d49">_bgImage</a></td></tr>
 <tr class="memdesc:a8053621d2d04cd84c71553fecb898d49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reference to the Background Image Renderer Component  <a href="#a8053621d2d04cd84c71553fecb898d49">More...</a><br /></td></tr>
 <tr class="separator:a8053621d2d04cd84c71553fecb898d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1e21e19bbe66d2a158f7678aaf0004"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html">GraphDrawingComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a4d1e21e19bbe66d2a158f7678aaf0004">_graph</a></td></tr>
+<tr class="memdesc:a4d1e21e19bbe66d2a158f7678aaf0004"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Graph component  <a href="#a4d1e21e19bbe66d2a158f7678aaf0004">More...</a><br /></td></tr>
+<tr class="separator:a4d1e21e19bbe66d2a158f7678aaf0004"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59d8f56d313872b2d494136877136a96"><td class="memItemLeft" align="right" valign="top">StringBuilder&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a59d8f56d313872b2d494136877136a96">_sb</a></td></tr>
 <tr class="memdesc:a59d8f56d313872b2d494136877136a96"><td class="mdescLeft">&#160;</td><td class="mdescRight">String builder used for inputs from the used  <a href="#a59d8f56d313872b2d494136877136a96">More...</a><br /></td></tr>
 <tr class="separator:a59d8f56d313872b2d494136877136a96"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -349,6 +367,32 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a954bd1f17d0cdce0417e885a885cace9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a954bd1f17d0cdce0417e885a885cace9">&#9670;&nbsp;</a></span>AddGraphValue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Debug.DebugConsoleComponent.AddGraphValue </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>yValue</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds a value to the graph data </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">yValue</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a77422cd58cddfe5d729c59c35a56c596"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77422cd58cddfe5d729c59c35a56c596">&#9670;&nbsp;</a></span>Awake()</h2>
 
@@ -437,7 +481,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Command in Console: q/exit/quit Exits the console </p>
+<p>Command in Console: tg/togglegraph Shows/Hides the Graph </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">args</td><td>The arguments provided(0)</td></tr>
@@ -473,6 +517,41 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Command in Console: clear/cls Lists all Console Commands </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">args</td><td>The arguments provided(0)</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Result of Command</dd></dl>
+
+</div>
+</div>
+<a id="a72d0d9371245de7514953dd6338d858b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a72d0d9371245de7514953dd6338d858b">&#9670;&nbsp;</a></span>cmd_ToggleGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Engine.Debug.DebugConsoleComponent.cmd_ToggleGraph </td>
+          <td>(</td>
+          <td class="paramtype">string []&#160;</td>
+          <td class="paramname"><em>args</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Command in Console: q/exit/quit Exits the console </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">args</td><td>The arguments provided(0)</td></tr>
@@ -821,6 +900,33 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a50fe235e3683ca1e57d5d6ea91f5fbb6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50fe235e3683ca1e57d5d6ea91f5fbb6">&#9670;&nbsp;</a></span>UpdateGraph()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Debug.DebugConsoleComponent.UpdateGraph </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Updates the graph </p>
+
+</div>
+</div>
 <a id="a75b9254d1ea623192fd7244d70a8ab22"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a75b9254d1ea623192fd7244d70a8ab22">&#9670;&nbsp;</a></span>WriteToConsole()</h2>
 
@@ -1112,6 +1218,54 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a4d1e21e19bbe66d2a158f7678aaf0004"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d1e21e19bbe66d2a158f7678aaf0004">&#9670;&nbsp;</a></span>_graph</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html">GraphDrawingComponent</a> Engine.Debug.DebugConsoleComponent._graph</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The Graph component </p>
+
+</div>
+</div>
+<a id="a7f3069d364fe7cb94bc3e04b73e674db"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f3069d364fe7cb94bc3e04b73e674db">&#9670;&nbsp;</a></span>_graphData</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Queue&lt;float&gt; Engine.Debug.DebugConsoleComponent._graphData</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>the Graph data stored. </p>
+
+</div>
+</div>
 <a id="ad0e26aa7aa4f622175154b5cf180c2b2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad0e26aa7aa4f622175154b5cf180c2b2">&#9670;&nbsp;</a></span>_hintText</h2>
 
@@ -1157,6 +1311,30 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Flag used to indicate that the console window has changed and we need to redraw it </p>
+
+</div>
+</div>
+<a id="a65020a40b5d893fe27fafe4b2981fa20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65020a40b5d893fe27fafe4b2981fa20">&#9670;&nbsp;</a></span>_maxGraphCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">int Engine.Debug.DebugConsoleComponent._maxGraphCount = 1600</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The Maximum amount of graph data stored </p>
 
 </div>
 </div>

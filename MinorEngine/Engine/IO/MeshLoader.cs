@@ -33,6 +33,7 @@ namespace Engine.IO
             /// Backing field of the Public Property Cube
             /// </summary>
             private static Mesh _cube = null;
+
             /// <summary>
             /// Backing field of the Public Property Sphere
             /// </summary>
@@ -54,6 +55,9 @@ namespace Engine.IO
                 }
             }
 
+            /// <summary>
+            /// Returns an instance of a Sphere
+            /// </summary>
             public static Mesh Sphere
             {
                 get
@@ -95,7 +99,13 @@ namespace Engine.IO
             return LoadModel(filename).ToArray();
         }
 
-        internal static List<Mesh> LoadModel(Stream stream, string filepath)
+
+        /// <summary>
+        /// Loads a model with assimp
+        /// </summary>
+        /// <param name="stream">the input stream for assimp</param>
+        /// <returns></returns>
+        internal static List<Mesh> LoadModel(Stream stream)
         {
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
@@ -120,6 +130,12 @@ namespace Engine.IO
             return LoadAssimpScene(context.ImportFile(path), path);
         }
 
+        /// <summary>
+        /// Converts an assimp scene to a list of game meshes
+        /// </summary>
+        /// <param name="s">The scene</param>
+        /// <param name="path">Path to the object that was loaded by assimp</param>
+        /// <returns></returns>
         private static List<Mesh> LoadAssimpScene(Scene s, string path)
         {
             if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
@@ -231,7 +247,7 @@ namespace Engine.IO
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Specular, dir));
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Normals, dir));
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Height, dir));
-            
+
             setupMesh(indices.ToArray(), vertices.ToArray(), out int vao, out int vbo, out int ebo);
 
 

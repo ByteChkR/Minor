@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -132,6 +132,9 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a8a0d7d54c6f50b264a9238081225fcdd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a8a0d7d54c6f50b264a9238081225fcdd">IsPlaying</a> =&gt; <a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a9bd79507c00d908ac4fe43dc539c9201">State</a> == ALSourceState.Playing</td></tr>
+<tr class="memdesc:a8a0d7d54c6f50b264a9238081225fcdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Flag to get the Playing state of the AudioSource  <a href="#a8a0d7d54c6f50b264a9238081225fcdd">More...</a><br /></td></tr>
+<tr class="separator:a8a0d7d54c6f50b264a9238081225fcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad2c2038c103f6b53a2d5b71dc5c072b3"><td class="memItemLeft" align="right" valign="top">ALSourceState&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#ad2c2038c103f6b53a2d5b71dc5c072b3">SourceState</a> =&gt; AL.GetSourceState(<a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a57554ce04e247eaf0f1cc5cd1bce01a0">source</a>)</td></tr>
 <tr class="memdesc:ad2c2038c103f6b53a2d5b71dc5c072b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Wrapper to return the Current State of the <a class="el" href="../../d2/d5b/namespace_engine_1_1_open_c_l.html">OpenCL</a> <a class="el" href="../../d8/dcd/namespace_engine_1_1_audio.html">Audio</a> Source bound to this object  <a href="#ad2c2038c103f6b53a2d5b71dc5c072b3">More...</a><br /></td></tr>
 <tr class="separator:ad2c2038c103f6b53a2d5b71dc5c072b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -184,9 +187,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a53c13809e50a516a1ab42796622d617a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d0a/class_engine_1_1_data_types_1_1_audio_file.html">AudioFile</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a53c13809e50a516a1ab42796622d617a">Clip</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a53c13809e50a516a1ab42796622d617a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Clip that is loaded by OpenAL  <a href="#a53c13809e50a516a1ab42796622d617a">More...</a><br /></td></tr>
 <tr class="separator:a53c13809e50a516a1ab42796622d617a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8a0d7d54c6f50b264a9238081225fcdd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a8a0d7d54c6f50b264a9238081225fcdd">IsPlaying</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a8a0d7d54c6f50b264a9238081225fcdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Flag to get the Playing state of the AudioSource  <a href="#a8a0d7d54c6f50b264a9238081225fcdd">More...</a><br /></td></tr>
-<tr class="separator:a8a0d7d54c6f50b264a9238081225fcdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bd79507c00d908ac4fe43dc539c9201"><td class="memItemLeft" align="right" valign="top">ALSourceState&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a9bd79507c00d908ac4fe43dc539c9201">State</a><code> [get]</code></td></tr>
+<tr class="memdesc:a9bd79507c00d908ac4fe43dc539c9201"><td class="mdescLeft">&#160;</td><td class="mdescRight">The State of the AL <a class="el" href="../../d8/dcd/namespace_engine_1_1_audio.html">Audio</a> Source(Directly calls AL api. Use sparingly  <a href="#a9bd79507c00d908ac4fe43dc539c9201">More...</a><br /></td></tr>
+<tr class="separator:a9bd79507c00d908ac4fe43dc539c9201"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8df53b190c5c441211eca5f778d44d75"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a8df53b190c5c441211eca5f778d44d75">Pitch</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8df53b190c5c441211eca5f778d44d75"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Property to get or set the pitch of the AudioSource  <a href="#a8df53b190c5c441211eca5f778d44d75">More...</a><br /></td></tr>
 <tr class="separator:a8df53b190c5c441211eca5f778d44d75"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -382,6 +385,22 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
+<a id="a8a0d7d54c6f50b264a9238081225fcdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a0d7d54c6f50b264a9238081225fcdd">&#9670;&nbsp;</a></span>IsPlaying</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.Audio.AbstractAudioSource.IsPlaying =&gt; <a class="el" href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html#a9bd79507c00d908ac4fe43dc539c9201">State</a> == ALSourceState.Playing</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>A Flag to get the Playing state of the AudioSource </p>
+
+</div>
+</div>
 <a id="a57554ce04e247eaf0f1cc5cd1bce01a0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a57554ce04e247eaf0f1cc5cd1bce01a0">&#9670;&nbsp;</a></span>source</h2>
 
@@ -492,30 +511,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>A Property to get or set the Gain of the AudioSource </p>
-
-</div>
-</div>
-<a id="a8a0d7d54c6f50b264a9238081225fcdd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a0d7d54c6f50b264a9238081225fcdd">&#9670;&nbsp;</a></span>IsPlaying</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Audio.AbstractAudioSource.IsPlaying</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A Flag to get the Playing state of the AudioSource </p>
 
 </div>
 </div>
@@ -708,6 +703,30 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 
 <p>A Property to get or set the RoomRollOffFactor of the AudioSource </p>
+
+</div>
+</div>
+<a id="a9bd79507c00d908ac4fe43dc539c9201"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9bd79507c00d908ac4fe43dc539c9201">&#9670;&nbsp;</a></span>State</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ALSourceState Engine.Audio.AbstractAudioSource.State</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The State of the AL <a class="el" href="../../d8/dcd/namespace_engine_1_1_audio.html">Audio</a> Source(Directly calls AL api. Use sparingly </p>
 
 </div>
 </div>

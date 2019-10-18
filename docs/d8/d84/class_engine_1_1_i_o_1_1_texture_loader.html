@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -112,6 +112,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="separator:acefbaa6fb0796dc4a30e8fb9393e2a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af186a723d46c442c65686f4e2a9e60"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a5af186a723d46c442c65686f4e2a9e60">Update</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> tex, byte[] data, int width, int height)</td></tr>
 <tr class="separator:a5af186a723d46c442c65686f4e2a9e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e02771a29b381c71552c6dde8c0e8a6"><td class="memItemLeft" align="right" valign="top">static byte []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a1e02771a29b381c71552c6dde8c0e8a6">BitmapToBytes</a> (Bitmap bmp)</td></tr>
+<tr class="memdesc:a1e02771a29b381c71552c6dde8c0e8a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns a bitmap into a GL Texture  <a href="#a1e02771a29b381c71552c6dde8c0e8a6">More...</a><br /></td></tr>
+<tr class="separator:a1e02771a29b381c71552c6dde8c0e8a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8fc124f5f83b87a07f96f7d634c08857"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a8fc124f5f83b87a07f96f7d634c08857">BitmapToTexture</a> (Bitmap bmp)</td></tr>
 <tr class="memdesc:a8fc124f5f83b87a07f96f7d634c08857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Turns a bitmap into a GL Texture  <a href="#a8fc124f5f83b87a07f96f7d634c08857">More...</a><br /></td></tr>
 <tr class="separator:a8fc124f5f83b87a07f96f7d634c08857"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +220,41 @@ Static Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>An array of all textures contained in the scene</dd></dl>
+
+</div>
+</div>
+<a id="a1e02771a29b381c71552c6dde8c0e8a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1e02771a29b381c71552c6dde8c0e8a6">&#9670;&nbsp;</a></span>BitmapToBytes()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static byte [] Engine.IO.TextureLoader.BitmapToBytes </td>
+          <td>(</td>
+          <td class="paramtype">Bitmap&#160;</td>
+          <td class="paramname"><em>bmp</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Turns a bitmap into a GL Texture </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">bmp</td><td>Bitmap to Load</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The GL Texture</dd></dl>
 
 </div>
 </div>

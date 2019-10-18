@@ -15,9 +15,17 @@ namespace Engine.DataTypes
     /// </summary>
     public class Texture : IDisposable
     {
+        /// <summary>
+        /// Backing field for the default texture
+        /// </summary>
         private static Texture _defaultTexture;
+
         public static Texture DefaultTexture => _defaultTexture ?? (_defaultTexture = GetDefaultTexture());
 
+        /// <summary>
+        /// Creates the default Texture from embedded program resources
+        /// </summary>
+        /// <returns>The Default Texture</returns>
         private static Texture GetDefaultTexture()
         {
             Assembly asm = Assembly.GetExecutingAssembly();

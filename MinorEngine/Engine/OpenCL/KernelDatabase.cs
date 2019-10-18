@@ -58,8 +58,6 @@ namespace Engine.OpenCL
             {
                 AddProgram(file);
             }
-
-
         }
 
 
@@ -91,7 +89,7 @@ namespace Engine.OpenCL
                 else
                 {
                     Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
-                                            DebugChannel.Log);
+                        DebugChannel.Log);
                 }
             }
         }

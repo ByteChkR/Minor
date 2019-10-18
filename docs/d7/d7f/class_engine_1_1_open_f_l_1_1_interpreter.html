@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.0.0.1</span>
+   &#160;<span id="projectnumber">0.2</span>
    </div>
   </td>
  </tr>
@@ -87,8 +87,8 @@ $(document).ready(function(){initNavTree('d7/d7f/class_engine_1_1_open_f_l_1_1_i
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pac-methods">Package Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-static-methods">Static Private Member Functions</a> &#124;
@@ -103,12 +103,6 @@ $(document).ready(function(){initNavTree('d7/d7f/class_engine_1_1_open_f_l_1_1_i
 <p>The FL <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a>  
  <a href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5e/struct_engine_1_1_open_f_l_1_1_interpreter_1_1_interpreter_step_result.html">InterpreterStepResult</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A struct that gets returned every step of the interpreter. Mostly for debuggin purposes and when hitting a break point  <a href="../../df/d5e/struct_engine_1_1_open_f_l_1_1_interpreter_1_1_interpreter_step_result.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:acc963532342faad2561d682ab4a55292"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#acc963532342faad2561d682ab4a55292">Interpreter</a> (string file, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> input, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDB, bool ignoreDebug)</td></tr>
@@ -126,18 +120,27 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a095eeb74c54bcc85897afa8220e8a0ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a095eeb74c54bcc85897afa8220e8a0ef">Reset</a> (string file, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> input, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDB)</td></tr>
 <tr class="memdesc:a095eeb74c54bcc85897afa8220e8a0ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> to work with a new script  <a href="#a095eeb74c54bcc85897afa8220e8a0ef">More...</a><br /></td></tr>
 <tr class="separator:a095eeb74c54bcc85897afa8220e8a0ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fd319b8fa93b6472310843bef7b3094"><td class="memItemLeft" align="right" valign="top"><a id="a0fd319b8fa93b6472310843bef7b3094"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ReleaseResources</b> ()</td></tr>
+<tr class="separator:a0fd319b8fa93b6472310843bef7b3094"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa0fee7aa5e922dbe1b2c14b97b4b62c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aa0fee7aa5e922dbe1b2c14b97b4b62c1">Reset</a> (string file, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> input, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDB, bool ignoreDebug)</td></tr>
 <tr class="memdesc:aa0fee7aa5e922dbe1b2c14b97b4b62c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> to work with a new script  <a href="#aa0fee7aa5e922dbe1b2c14b97b4b62c1">More...</a><br /></td></tr>
 <tr class="separator:aa0fee7aa5e922dbe1b2c14b97b4b62c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f2b8f426855235bcf709bfee7a6f95e"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a1f2b8f426855235bcf709bfee7a6f95e">GetResultBuffer</a> ()</td></tr>
-<tr class="memdesc:a1f2b8f426855235bcf709bfee7a6f95e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the currently active buffer  <a href="#a1f2b8f426855235bcf709bfee7a6f95e">More...</a><br /></td></tr>
-<tr class="separator:a1f2b8f426855235bcf709bfee7a6f95e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadbdcf25082c8f9baef95d310b3a90b2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aadbdcf25082c8f9baef95d310b3a90b2">GetActiveBuffer</a> ()</td></tr>
+<tr class="memdesc:aadbdcf25082c8f9baef95d310b3a90b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the currently active buffer  <a href="#aadbdcf25082c8f9baef95d310b3a90b2">More...</a><br /></td></tr>
+<tr class="separator:aadbdcf25082c8f9baef95d310b3a90b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cb8b1e1e480ce847cf7252b992ec16e"><td class="memItemLeft" align="right" valign="top">T []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7cb8b1e1e480ce847cf7252b992ec16e">GetResult&lt; T &gt;</a> ()</td></tr>
 <tr class="memdesc:a7cb8b1e1e480ce847cf7252b992ec16e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the currently active buffer  <a href="#a7cb8b1e1e480ce847cf7252b992ec16e">More...</a><br /></td></tr>
 <tr class="separator:a7cb8b1e1e480ce847cf7252b992ec16e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51fb966946aea10a06d4287480155d09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d5e/struct_engine_1_1_open_f_l_1_1_interpreter_1_1_interpreter_step_result.html">InterpreterStepResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a51fb966946aea10a06d4287480155d09">Step</a> ()</td></tr>
+<tr class="memitem:a51fb966946aea10a06d4287480155d09"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d2b/struct_engine_1_1_open_f_l_1_1_interpreter_step_result.html">InterpreterStepResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a51fb966946aea10a06d4287480155d09">Step</a> ()</td></tr>
 <tr class="memdesc:a51fb966946aea10a06d4287480155d09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Simulates a step on a processor  <a href="#a51fb966946aea10a06d4287480155d09">More...</a><br /></td></tr>
 <tr class="separator:a51fb966946aea10a06d4287480155d09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-methods"></a>
+Package Functions</h2></td></tr>
+<tr class="memitem:a1804fb8785b869cae5392c83144267db"><td class="memItemLeft" align="right" valign="top"><a id="a1804fb8785b869cae5392c83144267db"></a>
+<a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetActiveBufferInternal</b> ()</td></tr>
+<tr class="separator:a1804fb8785b869cae5392c83144267db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -150,63 +153,75 @@ Properties</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a7a8359ffcd28fbe6ba04e51007451f96"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7a8359ffcd28fbe6ba04e51007451f96">FlFunction</a> ()</td></tr>
-<tr class="memdesc:a7a8359ffcd28fbe6ba04e51007451f96"><td class="mdescLeft">&#160;</td><td class="mdescRight">A delegate used for special functions in the interpreter  <a href="#a7a8359ffcd28fbe6ba04e51007451f96">More...</a><br /></td></tr>
-<tr class="separator:a7a8359ffcd28fbe6ba04e51007451f96"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61fe33b965759cf9454161e221ddc099"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a61fe33b965759cf9454161e221ddc099">DefineHandler</a> (string[] arg)</td></tr>
-<tr class="memdesc:a61fe33b965759cf9454161e221ddc099"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delegate that is used to import defines  <a href="#a61fe33b965759cf9454161e221ddc099">More...</a><br /></td></tr>
-<tr class="separator:a61fe33b965759cf9454161e221ddc099"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f5f865795d7e2c8b66d839778e47e8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7f5f865795d7e2c8b66d839778e47e8a">DefineScript</a> (string[] arg)</td></tr>
-<tr class="memdesc:a7f5f865795d7e2c8b66d839778e47e8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define handler that loads defined scripts  <a href="#a7f5f865795d7e2c8b66d839778e47e8a">More...</a><br /></td></tr>
-<tr class="separator:a7f5f865795d7e2c8b66d839778e47e8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeefde16afeaf536feba541d17bb2e1ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aeefde16afeaf536feba541d17bb2e1ee">DefineTexture</a> (string[] arg)</td></tr>
-<tr class="memdesc:aeefde16afeaf536feba541d17bb2e1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define handler that loads defined textures  <a href="#aeefde16afeaf536feba541d17bb2e1ee">More...</a><br /></td></tr>
-<tr class="separator:aeefde16afeaf536feba541d17bb2e1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9dec9e02b583c6c9adda9969c6e820ec"><td class="memItemLeft" align="right" valign="top">delegate void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a9dec9e02b583c6c9adda9969c6e820ec">DefineHandler</a> (string[] arg, Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt; defines, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDb)</td></tr>
+<tr class="memdesc:a9dec9e02b583c6c9adda9969c6e820ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delegate that is used to import defines  <a href="#a9dec9e02b583c6c9adda9969c6e820ec">More...</a><br /></td></tr>
+<tr class="separator:a9dec9e02b583c6c9adda9969c6e820ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b6753323cd992c4a033e18f9cfe9ebc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a8b6753323cd992c4a033e18f9cfe9ebc">Reset</a> ()</td></tr>
+<tr class="memdesc:a8b6753323cd992c4a033e18f9cfe9ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> program counter and word counter to the beginning  <a href="#a8b6753323cd992c4a033e18f9cfe9ebc">More...</a><br /></td></tr>
+<tr class="separator:a8b6753323cd992c4a033e18f9cfe9ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53fef0ef13611f0f3e013375ec1a2786"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a53fef0ef13611f0f3e013375ec1a2786">AddBufferToDefine</a> (string key, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> info)</td></tr>
+<tr class="memdesc:a53fef0ef13611f0f3e013375ec1a2786"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a buffer to the Defined Buffer Dictionary  <a href="#a53fef0ef13611f0f3e013375ec1a2786">More...</a><br /></td></tr>
+<tr class="separator:a53fef0ef13611f0f3e013375ec1a2786"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09564ae2dc5b953e37c983e74e50d1d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a09564ae2dc5b953e37c983e74e50d1d4">Execute</a> ()</td></tr>
+<tr class="memdesc:a09564ae2dc5b953e37c983e74e50d1d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Executes one step of the Processor  <a href="#a09564ae2dc5b953e37c983e74e50d1d4">More...</a><br /></td></tr>
+<tr class="separator:a09564ae2dc5b953e37c983e74e50d1d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02fb5cd5aac8808e53ea71d5ceaaf115"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d5c/namespace_engine_1_1_open_f_l.html#ab309d1168d414cc13f3412792cd88e0c">LineAnalysisResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a02fb5cd5aac8808e53ea71d5ceaaf115">AnalyzeLine</a> (string[] words)</td></tr>
+<tr class="memdesc:a02fb5cd5aac8808e53ea71d5ceaaf115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes a line of code  <a href="#a02fb5cd5aac8808e53ea71d5ceaaf115">More...</a><br /></td></tr>
+<tr class="separator:a02fb5cd5aac8808e53ea71d5ceaaf115"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e36819e81821feaa281123260c3d73d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a9e36819e81821feaa281123260c3d73d">AnalyzeWord</a> (string word, out object val)</td></tr>
+<tr class="memdesc:a9e36819e81821feaa281123260c3d73d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes a single word of a line  <a href="#a9e36819e81821feaa281123260c3d73d">More...</a><br /></td></tr>
+<tr class="separator:a9e36819e81821feaa281123260c3d73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31ab38b1ba3856652362ba402ed6bf9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a31ab38b1ba3856652362ba402ed6bf9e">DetectEnd</a> ()</td></tr>
+<tr class="memdesc:a31ab38b1ba3856652362ba402ed6bf9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects if the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> has reached the end of the current function  <a href="#a31ab38b1ba3856652362ba402ed6bf9e">More...</a><br /></td></tr>
+<tr class="separator:a31ab38b1ba3856652362ba402ed6bf9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e825a235e7efb561a62b20e339d0fa0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a6e825a235e7efb561a62b20e339d0fa0">JumpTo</a> (int index, bool leaveBuffer=false)</td></tr>
+<tr class="memdesc:a6e825a235e7efb561a62b20e339d0fa0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jumps the interpreter to the specified index  <a href="#a6e825a235e7efb561a62b20e339d0fa0">More...</a><br /></td></tr>
+<tr class="separator:a6e825a235e7efb561a62b20e339d0fa0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aea84d3ae444b7d671521c575f871fb2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aea84d3ae444b7d671521c575f871fb2a">cmd_setactive</a> ()</td></tr>
 <tr class="memdesc:aea84d3ae444b7d671521c575f871fb2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The implementation of the command setactive  <a href="#aea84d3ae444b7d671521c575f871fb2a">More...</a><br /></td></tr>
 <tr class="separator:aea84d3ae444b7d671521c575f871fb2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa15759db979c77ee6e5aa32d9e2f8e80"><td class="memItemLeft" align="right" valign="top">byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aa15759db979c77ee6e5aa32d9e2f8e80">randombytesource</a> ()</td></tr>
-<tr class="memdesc:aa15759db979c77ee6e5aa32d9e2f8e80"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function used as RandomFunc of type byte&gt;  <a href="#aa15759db979c77ee6e5aa32d9e2f8e80">More...</a><br /></td></tr>
-<tr class="separator:aa15759db979c77ee6e5aa32d9e2f8e80"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ef6e1dee8d1a1a63a8a6cf77a30abe4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7ef6e1dee8d1a1a63a8a6cf77a30abe4">cmd_writerandom</a> ()</td></tr>
 <tr class="memdesc:a7ef6e1dee8d1a1a63a8a6cf77a30abe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The implementation of the command random  <a href="#a7ef6e1dee8d1a1a63a8a6cf77a30abe4">More...</a><br /></td></tr>
 <tr class="separator:a7ef6e1dee8d1a1a63a8a6cf77a30abe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a96fa8d9faca6217e71366beafd3f7216"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a96fa8d9faca6217e71366beafd3f7216">cmd_writerandomu</a> ()</td></tr>
+<tr class="memdesc:a96fa8d9faca6217e71366beafd3f7216"><td class="mdescLeft">&#160;</td><td class="mdescRight">The implementation of the command random  <a href="#a96fa8d9faca6217e71366beafd3f7216">More...</a><br /></td></tr>
+<tr class="separator:a96fa8d9faca6217e71366beafd3f7216"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af4f5bc6a78ec41ec5ceb4f471ea22083"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#af4f5bc6a78ec41ec5ceb4f471ea22083">cmd_jump</a> ()</td></tr>
 <tr class="memdesc:af4f5bc6a78ec41ec5ceb4f471ea22083"><td class="mdescLeft">&#160;</td><td class="mdescRight">The implementation of the command jmp  <a href="#af4f5bc6a78ec41ec5ceb4f471ea22083">More...</a><br /></td></tr>
 <tr class="separator:af4f5bc6a78ec41ec5ceb4f471ea22083"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9b9160219c16fcd779349201036962e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#ac9b9160219c16fcd779349201036962e">cmd_break</a> ()</td></tr>
 <tr class="memdesc:ac9b9160219c16fcd779349201036962e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The implementation of the command brk  <a href="#ac9b9160219c16fcd779349201036962e">More...</a><br /></td></tr>
 <tr class="separator:ac9b9160219c16fcd779349201036962e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9396fccc80810dc675ac9532ac3615d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aa9396fccc80810dc675ac9532ac3615d">ParseJumpLocations</a> ()</td></tr>
-<tr class="memdesc:aa9396fccc80810dc675ac9532ac3615d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds all jump locations inside the script  <a href="#aa9396fccc80810dc675ac9532ac3615d">More...</a><br /></td></tr>
-<tr class="separator:aa9396fccc80810dc675ac9532ac3615d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70b9d66fae5ef398ca543c01e26b589c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a70b9d66fae5ef398ca543c01e26b589c">Analyze</a> (string code)</td></tr>
-<tr class="memdesc:a70b9d66fae5ef398ca543c01e26b589c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes a line of code  <a href="#a70b9d66fae5ef398ca543c01e26b589c">More...</a><br /></td></tr>
-<tr class="separator:a70b9d66fae5ef398ca543c01e26b589c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e36819e81821feaa281123260c3d73d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a9e36819e81821feaa281123260c3d73d">AnalyzeWord</a> (string word, out object val)</td></tr>
-<tr class="memdesc:a9e36819e81821feaa281123260c3d73d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes a single word of a line  <a href="#a9e36819e81821feaa281123260c3d73d">More...</a><br /></td></tr>
-<tr class="separator:a9e36819e81821feaa281123260c3d73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8b6753323cd992c4a033e18f9cfe9ebc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a8b6753323cd992c4a033e18f9cfe9ebc">Reset</a> ()</td></tr>
-<tr class="memdesc:a8b6753323cd992c4a033e18f9cfe9ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resets the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> program counter and word counter to the beginning  <a href="#a8b6753323cd992c4a033e18f9cfe9ebc">More...</a><br /></td></tr>
-<tr class="separator:a8b6753323cd992c4a033e18f9cfe9ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a311e5a2b43ca41698c0fc67ceff5c3ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a311e5a2b43ca41698c0fc67ceff5c3ad">ParseDefines</a> (string key, <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a61fe33b965759cf9454161e221ddc099">DefineHandler</a> handler)</td></tr>
-<tr class="memdesc:a311e5a2b43ca41698c0fc67ceff5c3ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds, Parses and Loads all define statements  <a href="#a311e5a2b43ca41698c0fc67ceff5c3ad">More...</a><br /></td></tr>
-<tr class="separator:a311e5a2b43ca41698c0fc67ceff5c3ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31ab38b1ba3856652362ba402ed6bf9e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a31ab38b1ba3856652362ba402ed6bf9e">DetectEnd</a> ()</td></tr>
-<tr class="memdesc:a31ab38b1ba3856652362ba402ed6bf9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Detects if the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> has reached the end of the current function  <a href="#a31ab38b1ba3856652362ba402ed6bf9e">More...</a><br /></td></tr>
-<tr class="separator:a31ab38b1ba3856652362ba402ed6bf9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1813e05edd2627e010a5e751192f44cb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a1813e05edd2627e010a5e751192f44cb">JumpTo</a> (int index, bool keepBuffer=false)</td></tr>
-<tr class="memdesc:a1813e05edd2627e010a5e751192f44cb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jumps the interpreter to the specified index  <a href="#a1813e05edd2627e010a5e751192f44cb">More...</a><br /></td></tr>
-<tr class="separator:a1813e05edd2627e010a5e751192f44cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9c3fbcfba337231a4316225b3beecca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aa9c3fbcfba337231a4316225b3beecca">LoadSource</a> (string file)</td></tr>
-<tr class="memdesc:aa9c3fbcfba337231a4316225b3beecca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the source from file  <a href="#aa9c3fbcfba337231a4316225b3beecca">More...</a><br /></td></tr>
-<tr class="separator:aa9c3fbcfba337231a4316225b3beecca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
 Static Private Member Functions</h2></td></tr>
+<tr class="memitem:a368e51601b36786f083fbd5dbabc07f0"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a368e51601b36786f083fbd5dbabc07f0">SanitizeLine</a> (string line)</td></tr>
+<tr class="memdesc:a368e51601b36786f083fbd5dbabc07f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Code part(removes the comments)  <a href="#a368e51601b36786f083fbd5dbabc07f0">More...</a><br /></td></tr>
+<tr class="separator:a368e51601b36786f083fbd5dbabc07f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ee6b52db9c233e7dcbafdd5121b0664"><td class="memItemLeft" align="right" valign="top">static string []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a5ee6b52db9c233e7dcbafdd5121b0664">SplitLine</a> (string line)</td></tr>
+<tr class="memdesc:a5ee6b52db9c233e7dcbafdd5121b0664"><td class="mdescLeft">&#160;</td><td class="mdescRight">Splits the line into words  <a href="#a5ee6b52db9c233e7dcbafdd5121b0664">More...</a><br /></td></tr>
+<tr class="separator:a5ee6b52db9c233e7dcbafdd5121b0664"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2105a94a07d5723edc9f326439415885"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a2105a94a07d5723edc9f326439415885">IsSurroundedBy</a> (string text, string surrStr)</td></tr>
 <tr class="memdesc:a2105a94a07d5723edc9f326439415885"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the text is surrounded by the surrStr  <a href="#a2105a94a07d5723edc9f326439415885">More...</a><br /></td></tr>
 <tr class="separator:a2105a94a07d5723edc9f326439415885"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4310b30b6f0dcdc9f63a0d8977a4de1"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#ad4310b30b6f0dcdc9f63a0d8977a4de1">ParseJumpLocations</a> (List&lt; string &gt; source)</td></tr>
+<tr class="memdesc:ad4310b30b6f0dcdc9f63a0d8977a4de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds all jump locations inside the script  <a href="#ad4310b30b6f0dcdc9f63a0d8977a4de1">More...</a><br /></td></tr>
+<tr class="separator:ad4310b30b6f0dcdc9f63a0d8977a4de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1405315927eff8017d3550d2321736b8"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a1405315927eff8017d3550d2321736b8">ParseDefines</a> (string key, <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a9dec9e02b583c6c9adda9969c6e820ec">DefineHandler</a> handler, List&lt; string &gt; source, Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt; defines, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDb)</td></tr>
+<tr class="memdesc:a1405315927eff8017d3550d2321736b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds, Parses and Loads all define statements  <a href="#a1405315927eff8017d3550d2321736b8">More...</a><br /></td></tr>
+<tr class="separator:a1405315927eff8017d3550d2321736b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a73a6523a434e2fc4880c6fa3038e7836"><td class="memItemLeft" align="right" valign="top">static List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a73a6523a434e2fc4880c6fa3038e7836">LoadSource</a> (string file, int channelCount)</td></tr>
+<tr class="memdesc:a73a6523a434e2fc4880c6fa3038e7836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads the source from file  <a href="#a73a6523a434e2fc4880c6fa3038e7836">More...</a><br /></td></tr>
+<tr class="separator:a73a6523a434e2fc4880c6fa3038e7836"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7d1d4e799a5497f5647758751870c6f"><td class="memItemLeft" align="right" valign="top">static byte&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#af7d1d4e799a5497f5647758751870c6f">randombytesource</a> ()</td></tr>
+<tr class="memdesc:af7d1d4e799a5497f5647758751870c6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A function used as RandomFunc of type byte&gt;  <a href="#af7d1d4e799a5497f5647758751870c6f">More...</a><br /></td></tr>
+<tr class="separator:af7d1d4e799a5497f5647758751870c6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90c2c84afe61f5fd758c7c791da69abb"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a90c2c84afe61f5fd758c7c791da69abb">DefineScript</a> (string[] arg, Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt; defines, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDb)</td></tr>
+<tr class="memdesc:a90c2c84afe61f5fd758c7c791da69abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define handler that loads defined scripts  <a href="#a90c2c84afe61f5fd758c7c791da69abb">More...</a><br /></td></tr>
+<tr class="separator:a90c2c84afe61f5fd758c7c791da69abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a76c1b7d1a7a3e78be5ce8df9ecf04e42"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a76c1b7d1a7a3e78be5ce8df9ecf04e42">DefineTexture</a> (string[] arg, Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt; defines, int width, int height, int depth, int channelCount, <a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a> kernelDb)</td></tr>
+<tr class="memdesc:a76c1b7d1a7a3e78be5ce8df9ecf04e42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Define handler that loads defined textures  <a href="#a76c1b7d1a7a3e78be5ce8df9ecf04e42">More...</a><br /></td></tr>
+<tr class="separator:a76c1b7d1a7a3e78be5ce8df9ecf04e42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
@@ -237,12 +252,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:adaf3c267778d723c3fbadd81dfb03189"><td class="memItemLeft" align="right" valign="top">const string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#adaf3c267778d723c3fbadd81dfb03189">FilepathIndicator</a> = &quot;\&quot;&quot;</td></tr>
 <tr class="memdesc:adaf3c267778d723c3fbadd81dfb03189"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Symbol that indicates a filepath. (has to be surrounded e.g. "/path/to/file")  <a href="#adaf3c267778d723c3fbadd81dfb03189">More...</a><br /></td></tr>
 <tr class="separator:adaf3c267778d723c3fbadd81dfb03189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5b7aa6c8085d0a9bf67db0db87ce970"><td class="memItemLeft" align="right" valign="top">readonly Random&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aa5b7aa6c8085d0a9bf67db0db87ce970">rnd</a> = new Random()</td></tr>
-<tr class="memdesc:aa5b7aa6c8085d0a9bf67db0db87ce970"><td class="mdescLeft">&#160;</td><td class="mdescRight">A random that is used to provide random bytes  <a href="#aa5b7aa6c8085d0a9bf67db0db87ce970">More...</a><br /></td></tr>
-<tr class="separator:aa5b7aa6c8085d0a9bf67db0db87ce970"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad26e4a3c9fea57882b52b234236045db"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; string, <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7a8359ffcd28fbe6ba04e51007451f96">FlFunction</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#ad26e4a3c9fea57882b52b234236045db">_flFunctions</a></td></tr>
-<tr class="memdesc:ad26e4a3c9fea57882b52b234236045db"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Dictionary containing the special functions of the interpreter, indexed by name  <a href="#ad26e4a3c9fea57882b52b234236045db">More...</a><br /></td></tr>
-<tr class="separator:ad26e4a3c9fea57882b52b234236045db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57b396a1b562c0f0e71ec603f66061a7"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; string, <a class="el" href="../../d4/d69/struct_engine_1_1_open_f_l_1_1_f_l_function_info.html">FLFunctionInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a57b396a1b562c0f0e71ec603f66061a7">_flFunctions</a></td></tr>
+<tr class="memdesc:a57b396a1b562c0f0e71ec603f66061a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">A Dictionary containing the special functions of the interpreter, indexed by name  <a href="#a57b396a1b562c0f0e71ec603f66061a7">More...</a><br /></td></tr>
+<tr class="separator:a57b396a1b562c0f0e71ec603f66061a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abf98c70f10fc1ec0dea3440c76be53ab"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#abf98c70f10fc1ec0dea3440c76be53ab">_kernelDb</a></td></tr>
 <tr class="memdesc:abf98c70f10fc1ec0dea3440c76be53ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">The kernel database that provides the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> with kernels to execute  <a href="#abf98c70f10fc1ec0dea3440c76be53ab">More...</a><br /></td></tr>
 <tr class="separator:abf98c70f10fc1ec0dea3440c76be53ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -258,9 +270,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a6b4f37109bfc2c4523b8c64c1215899f"><td class="memItemLeft" align="right" valign="top">Stack&lt; object &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a6b4f37109bfc2c4523b8c64c1215899f">_currentArgStack</a></td></tr>
 <tr class="memdesc:a6b4f37109bfc2c4523b8c64c1215899f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The argument stack that is currently beeing worked on  <a href="#a6b4f37109bfc2c4523b8c64c1215899f">More...</a><br /></td></tr>
 <tr class="separator:a6b4f37109bfc2c4523b8c64c1215899f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac96f22ff90f3dccfb36654d59d3cb5b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aac96f22ff90f3dccfb36654d59d3cb5b">_currentBuffer</a></td></tr>
-<tr class="memdesc:aac96f22ff90f3dccfb36654d59d3cb5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">The active buffer  <a href="#aac96f22ff90f3dccfb36654d59d3cb5b">More...</a><br /></td></tr>
-<tr class="separator:aac96f22ff90f3dccfb36654d59d3cb5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a98c560229e94ac0d9c8278eedcc824"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a1a98c560229e94ac0d9c8278eedcc824">_currentBuffer</a></td></tr>
+<tr class="memdesc:a1a98c560229e94ac0d9c8278eedcc824"><td class="mdescLeft">&#160;</td><td class="mdescRight">The active buffer  <a href="#a1a98c560229e94ac0d9c8278eedcc824">More...</a><br /></td></tr>
+<tr class="separator:a1a98c560229e94ac0d9c8278eedcc824"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7155ba8eb5c8bf53369765bc44ea2c4c"><td class="memItemLeft" align="right" valign="top">readonly Stack&lt; <a class="el" href="../../d3/dbf/class_engine_1_1_open_f_l_1_1_interpreter_state.html">InterpreterState</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7155ba8eb5c8bf53369765bc44ea2c4c">_jumpStack</a> = new Stack&lt;<a class="el" href="../../d3/dbf/class_engine_1_1_open_f_l_1_1_interpreter_state.html">InterpreterState</a>&gt;()</td></tr>
 <tr class="memdesc:a7155ba8eb5c8bf53369765bc44ea2c4c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The jump stack containing all the previous jumps  <a href="#a7155ba8eb5c8bf53369765bc44ea2c4c">More...</a><br /></td></tr>
 <tr class="separator:a7155ba8eb5c8bf53369765bc44ea2c4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -285,19 +297,19 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:a1760f56972aaf0e327840a7763750b20"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a1760f56972aaf0e327840a7763750b20">_activeChannelBuffer</a></td></tr>
 <tr class="memdesc:a1760f56972aaf0e327840a7763750b20"><td class="mdescLeft">&#160;</td><td class="mdescRight">The memory buffer containing the active channels The buffer gets updated as soon the channel configuration changes  <a href="#a1760f56972aaf0e327840a7763750b20">More...</a><br /></td></tr>
 <tr class="separator:a1760f56972aaf0e327840a7763750b20"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc5309f88516bc882b709f208f4e6f76"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; string, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#acc5309f88516bc882b709f208f4e6f76">_definedBuffers</a> = new Dictionary&lt;string, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&gt;()</td></tr>
-<tr class="memdesc:acc5309f88516bc882b709f208f4e6f76"><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffers indexed by name that were defined with the DefineKey  <a href="#acc5309f88516bc882b709f208f4e6f76">More...</a><br /></td></tr>
-<tr class="separator:acc5309f88516bc882b709f208f4e6f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d7beed26ab61e1a6926d7916f96c463"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a2d7beed26ab61e1a6926d7916f96c463">_jumpLocations</a> = new Dictionary&lt;string, int&gt;()</td></tr>
-<tr class="memdesc:a2d7beed26ab61e1a6926d7916f96c463"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of possible jump locations  <a href="#a2d7beed26ab61e1a6926d7916f96c463">More...</a><br /></td></tr>
-<tr class="separator:a2d7beed26ab61e1a6926d7916f96c463"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac09aaf6887b2b6b4e6b2d8ca5261f6f4"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#ac09aaf6887b2b6b4e6b2d8ca5261f6f4">_definedBuffers</a> = new Dictionary&lt;string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a>&gt;()</td></tr>
+<tr class="memdesc:ac09aaf6887b2b6b4e6b2d8ca5261f6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">The buffers indexed by name that were defined with the DefineKey  <a href="#ac09aaf6887b2b6b4e6b2d8ca5261f6f4">More...</a><br /></td></tr>
+<tr class="separator:ac09aaf6887b2b6b4e6b2d8ca5261f6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab729f9df827c245b90ddac10e4e8d579"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#ab729f9df827c245b90ddac10e4e8d579">_jumpLocations</a> = new Dictionary&lt;string, int&gt;()</td></tr>
+<tr class="memdesc:ab729f9df827c245b90ddac10e4e8d579"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of possible jump locations  <a href="#ab729f9df827c245b90ddac10e4e8d579">More...</a><br /></td></tr>
+<tr class="separator:ab729f9df827c245b90ddac10e4e8d579"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f986f938762607b7041fea45beb4ecc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a8f986f938762607b7041fea45beb4ecc">_leaveStack</a></td></tr>
 <tr class="memdesc:a8f986f938762607b7041fea45beb4ecc"><td class="mdescLeft">&#160;</td><td class="mdescRight">a flag that indicates if the stack should not be deleted(get used when returning from a jump)  <a href="#a8f986f938762607b7041fea45beb4ecc">More...</a><br /></td></tr>
 <tr class="separator:a8f986f938762607b7041fea45beb4ecc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a608075fa1f3a93cd18f652a57fac3cf2"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a608075fa1f3a93cd18f652a57fac3cf2">_ignoreDebug</a></td></tr>
 <tr class="memdesc:a608075fa1f3a93cd18f652a57fac3cf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag that when set to true will ignore the break statement  <a href="#a608075fa1f3a93cd18f652a57fac3cf2">More...</a><br /></td></tr>
 <tr class="separator:a608075fa1f3a93cd18f652a57fac3cf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61c05900fd07138889760fa2b96ad344"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d5e/struct_engine_1_1_open_f_l_1_1_interpreter_1_1_interpreter_step_result.html">InterpreterStepResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a61c05900fd07138889760fa2b96ad344">_stepResult</a></td></tr>
+<tr class="memitem:a61c05900fd07138889760fa2b96ad344"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d2b/struct_engine_1_1_open_f_l_1_1_interpreter_step_result.html">InterpreterStepResult</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a61c05900fd07138889760fa2b96ad344">_stepResult</a></td></tr>
 <tr class="memdesc:a61c05900fd07138889760fa2b96ad344"><td class="mdescLeft">&#160;</td><td class="mdescRight">The current step result  <a href="#a61c05900fd07138889760fa2b96ad344">More...</a><br /></td></tr>
 <tr class="separator:a61c05900fd07138889760fa2b96ad344"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -306,9 +318,15 @@ Static Private Attributes</h2></td></tr>
 <tr class="memitem:a288943647e4a7dc79a5b83097c7dfd4b"><td class="memItemLeft" align="right" valign="top">static readonly CultureInfo&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a288943647e4a7dc79a5b83097c7dfd4b">NumberParsingHelper</a> = new CultureInfo(CultureInfo.InvariantCulture.LCID)</td></tr>
 <tr class="memdesc:a288943647e4a7dc79a5b83097c7dfd4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">A helper variable to accomodate funky german number parsing  <a href="#a288943647e4a7dc79a5b83097c7dfd4b">More...</a><br /></td></tr>
 <tr class="separator:a288943647e4a7dc79a5b83097c7dfd4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5b7aa6c8085d0a9bf67db0db87ce970"><td class="memItemLeft" align="right" valign="top">static readonly Random&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#aa5b7aa6c8085d0a9bf67db0db87ce970">rnd</a> = new Random()</td></tr>
+<tr class="memdesc:aa5b7aa6c8085d0a9bf67db0db87ce970"><td class="mdescLeft">&#160;</td><td class="mdescRight">A random that is used to provide random bytes  <a href="#aa5b7aa6c8085d0a9bf67db0db87ce970">More...</a><br /></td></tr>
+<tr class="separator:aa5b7aa6c8085d0a9bf67db0db87ce970"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The FL <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> </p>
+<p>partial class that contains the logic how to Parse Defines that are referencing a texture or other keywords </p>
+<p>partial class that contains the logic how to Parse Defines that are referencing another fl script </p>
+<p>Partial Class that Contains the Baked FL Functions </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="acc963532342faad2561d682ab4a55292"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#acc963532342faad2561d682ab4a55292">&#9670;&nbsp;</a></span>Interpreter() <span class="overload">[1/4]</span></h2>
@@ -627,8 +645,8 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a70b9d66fae5ef398ca543c01e26b589c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a70b9d66fae5ef398ca543c01e26b589c">&#9670;&nbsp;</a></span>Analyze()</h2>
+<a id="a53fef0ef13611f0f3e013375ec1a2786"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53fef0ef13611f0f3e013375ec1a2786">&#9670;&nbsp;</a></span>AddBufferToDefine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -637,10 +655,55 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Engine.OpenFL.Interpreter.Analyze </td>
+          <td class="memname">void Engine.OpenFL.Interpreter.AddBufferToDefine </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>code</em></td><td>)</td>
+          <td class="paramname"><em>key</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a>&#160;</td>
+          <td class="paramname"><em>info</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Adds a buffer to the Defined Buffer Dictionary </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">key</td><td>The key of the buffer</td></tr>
+    <tr><td class="paramname">info</td><td>The buffer to be stored</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a02fb5cd5aac8808e53ea71d5ceaaf115"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02fb5cd5aac8808e53ea71d5ceaaf115">&#9670;&nbsp;</a></span>AnalyzeLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../de/d5c/namespace_engine_1_1_open_f_l.html#ab309d1168d414cc13f3412792cd88e0c">LineAnalysisResult</a> Engine.OpenFL.Interpreter.AnalyzeLine </td>
+          <td>(</td>
+          <td class="paramtype">string []&#160;</td>
+          <td class="paramname"><em>words</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -816,8 +879,35 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a61fe33b965759cf9454161e221ddc099"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a61fe33b965759cf9454161e221ddc099">&#9670;&nbsp;</a></span>DefineHandler()</h2>
+<a id="a96fa8d9faca6217e71366beafd3f7216"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a96fa8d9faca6217e71366beafd3f7216">&#9670;&nbsp;</a></span>cmd_writerandomu()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.OpenFL.Interpreter.cmd_writerandomu </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The implementation of the command random </p>
+
+</div>
+</div>
+<a id="a9dec9e02b583c6c9adda9969c6e820ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9dec9e02b583c6c9adda9969c6e820ec">&#9670;&nbsp;</a></span>DefineHandler()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -829,8 +919,48 @@ Static Private Attributes</h2></td></tr>
           <td class="memname">delegate void Engine.OpenFL.Interpreter.DefineHandler </td>
           <td>(</td>
           <td class="paramtype">string []&#160;</td>
-          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt;&#160;</td>
+          <td class="paramname"><em>defines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channelCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a>&#160;</td>
+          <td class="paramname"><em>kernelDb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -850,8 +980,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7f5f865795d7e2c8b66d839778e47e8a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f5f865795d7e2c8b66d839778e47e8a">&#9670;&nbsp;</a></span>DefineScript()</h2>
+<a id="a90c2c84afe61f5fd758c7c791da69abb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90c2c84afe61f5fd758c7c791da69abb">&#9670;&nbsp;</a></span>DefineScript()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -860,16 +990,56 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.OpenFL.Interpreter.DefineScript </td>
+          <td class="memname">static void Engine.OpenFL.Interpreter.DefineScript </td>
           <td>(</td>
           <td class="paramtype">string []&#160;</td>
-          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt;&#160;</td>
+          <td class="paramname"><em>defines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channelCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a>&#160;</td>
+          <td class="paramname"><em>kernelDb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -884,8 +1054,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aeefde16afeaf536feba541d17bb2e1ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeefde16afeaf536feba541d17bb2e1ee">&#9670;&nbsp;</a></span>DefineTexture()</h2>
+<a id="a76c1b7d1a7a3e78be5ce8df9ecf04e42"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a76c1b7d1a7a3e78be5ce8df9ecf04e42">&#9670;&nbsp;</a></span>DefineTexture()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -894,16 +1064,56 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.OpenFL.Interpreter.DefineTexture </td>
+          <td class="memname">static void Engine.OpenFL.Interpreter.DefineTexture </td>
           <td>(</td>
           <td class="paramtype">string []&#160;</td>
-          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td class="paramname"><em>arg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt;&#160;</td>
+          <td class="paramname"><em>defines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channelCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a>&#160;</td>
+          <td class="paramname"><em>kernelDb</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -945,8 +1155,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7a8359ffcd28fbe6ba04e51007451f96"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a8359ffcd28fbe6ba04e51007451f96">&#9670;&nbsp;</a></span>FlFunction()</h2>
+<a id="a09564ae2dc5b953e37c983e74e50d1d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09564ae2dc5b953e37c983e74e50d1d4">&#9670;&nbsp;</a></span>Execute()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -955,7 +1165,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">delegate void Engine.OpenFL.Interpreter.FlFunction </td>
+          <td class="memname">void Engine.OpenFL.Interpreter.Execute </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -968,7 +1178,27 @@ Static Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>A delegate used for special functions in the interpreter </p>
+<p>Executes one step of the Processor </p>
+
+</div>
+</div>
+<a id="aadbdcf25082c8f9baef95d310b3a90b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aadbdcf25082c8f9baef95d310b3a90b2">&#9670;&nbsp;</a></span>GetActiveBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> Engine.OpenFL.Interpreter.GetActiveBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns the currently active buffer </p>
+<dl class="section return"><dt>Returns</dt><dd>The active buffer</dd></dl>
 
 </div>
 </div>
@@ -997,26 +1227,6 @@ Static Private Attributes</h2></td></tr>
 </dd>
 </dl>
 </div>
-
-</div>
-</div>
-<a id="a1f2b8f426855235bcf709bfee7a6f95e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1f2b8f426855235bcf709bfee7a6f95e">&#9670;&nbsp;</a></span>GetResultBuffer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> Engine.OpenFL.Interpreter.GetResultBuffer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Returns the currently active buffer </p>
-<dl class="section return"><dt>Returns</dt><dd>The active buffer</dd></dl>
 
 </div>
 </div>
@@ -1066,8 +1276,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a1813e05edd2627e010a5e751192f44cb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1813e05edd2627e010a5e751192f44cb">&#9670;&nbsp;</a></span>JumpTo()</h2>
+<a id="a6e825a235e7efb561a62b20e339d0fa0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e825a235e7efb561a62b20e339d0fa0">&#9670;&nbsp;</a></span>JumpTo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1085,7 +1295,7 @@ Static Private Attributes</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>keepBuffer</em> = <code>false</code>&#160;</td>
+          <td class="paramname"><em>leaveBuffer</em> = <code>false</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1104,15 +1314,15 @@ Static Private Attributes</h2></td></tr>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">index</td><td>the index of the line to jump to</td></tr>
-    <tr><td class="paramname">keepBuffer</td><td>a flag to optionally keep the current buffer</td></tr>
+    <tr><td class="paramname">leaveBuffer</td><td>a flag to optionally keep the current buffer</td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<a id="aa9c3fbcfba337231a4316225b3beecca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9c3fbcfba337231a4316225b3beecca">&#9670;&nbsp;</a></span>LoadSource()</h2>
+<a id="a73a6523a434e2fc4880c6fa3038e7836"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a73a6523a434e2fc4880c6fa3038e7836">&#9670;&nbsp;</a></span>LoadSource()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1121,16 +1331,26 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.OpenFL.Interpreter.LoadSource </td>
+          <td class="memname">static List&lt;string&gt; Engine.OpenFL.Interpreter.LoadSource </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>file</em></td><td>)</td>
+          <td class="paramname"><em>file</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channelCount</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1145,8 +1365,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a311e5a2b43ca41698c0fc67ceff5c3ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a311e5a2b43ca41698c0fc67ceff5c3ad">&#9670;&nbsp;</a></span>ParseDefines()</h2>
+<a id="a1405315927eff8017d3550d2321736b8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1405315927eff8017d3550d2321736b8">&#9670;&nbsp;</a></span>ParseDefines()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1155,7 +1375,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.OpenFL.Interpreter.ParseDefines </td>
+          <td class="memname">static void Engine.OpenFL.Interpreter.ParseDefines </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>key</em>, </td>
@@ -1163,8 +1383,50 @@ Static Private Attributes</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a61fe33b965759cf9454161e221ddc099">DefineHandler</a>&#160;</td>
-          <td class="paramname"><em>handler</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a9dec9e02b583c6c9adda9969c6e820ec">DefineHandler</a>&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">List&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Dictionary&lt; string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> &gt;&#160;</td>
+          <td class="paramname"><em>defines</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>width</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>height</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>depth</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>channelCount</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html">KernelDatabase</a>&#160;</td>
+          <td class="paramname"><em>kernelDb</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -1174,7 +1436,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1183,8 +1445,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa9396fccc80810dc675ac9532ac3615d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9396fccc80810dc675ac9532ac3615d">&#9670;&nbsp;</a></span>ParseJumpLocations()</h2>
+<a id="ad4310b30b6f0dcdc9f63a0d8977a4de1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4310b30b6f0dcdc9f63a0d8977a4de1">&#9670;&nbsp;</a></span>ParseJumpLocations()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1193,15 +1455,16 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.OpenFL.Interpreter.ParseJumpLocations </td>
+          <td class="memname">static Dictionary&lt;string, int&gt; Engine.OpenFL.Interpreter.ParseJumpLocations </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">List&lt; string &gt;&#160;</td>
+          <td class="paramname"><em>source</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1210,8 +1473,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aa15759db979c77ee6e5aa32d9e2f8e80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa15759db979c77ee6e5aa32d9e2f8e80">&#9670;&nbsp;</a></span>randombytesource()</h2>
+<a id="af7d1d4e799a5497f5647758751870c6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af7d1d4e799a5497f5647758751870c6f">&#9670;&nbsp;</a></span>randombytesource()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1220,7 +1483,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">byte Engine.OpenFL.Interpreter.randombytesource </td>
+          <td class="memname">static byte Engine.OpenFL.Interpreter.randombytesource </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1228,7 +1491,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1238,8 +1501,35 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a8b6753323cd992c4a033e18f9cfe9ebc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b6753323cd992c4a033e18f9cfe9ebc">&#9670;&nbsp;</a></span>Reset() <span class="overload">[1/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.OpenFL.Interpreter.Reset </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Resets the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> program counter and word counter to the beginning </p>
+
+</div>
+</div>
 <a id="a095eeb74c54bcc85897afa8220e8a0ef"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a095eeb74c54bcc85897afa8220e8a0ef">&#9670;&nbsp;</a></span>Reset() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a095eeb74c54bcc85897afa8220e8a0ef">&#9670;&nbsp;</a></span>Reset() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1311,7 +1601,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <a id="aa0fee7aa5e922dbe1b2c14b97b4b62c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0fee7aa5e922dbe1b2c14b97b4b62c1">&#9670;&nbsp;</a></span>Reset() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0fee7aa5e922dbe1b2c14b97b4b62c1">&#9670;&nbsp;</a></span>Reset() <span class="overload">[3/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1389,8 +1679,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8b6753323cd992c4a033e18f9cfe9ebc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b6753323cd992c4a033e18f9cfe9ebc">&#9670;&nbsp;</a></span>Reset() <span class="overload">[3/3]</span></h2>
+<a id="a368e51601b36786f083fbd5dbabc07f0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a368e51601b36786f083fbd5dbabc07f0">&#9670;&nbsp;</a></span>SanitizeLine()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1399,20 +1689,63 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.OpenFL.Interpreter.Reset </td>
+          <td class="memname">static string Engine.OpenFL.Interpreter.SanitizeLine </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>line</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Resets the <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html" title="The FL Interpreter ">Interpreter</a> program counter and word counter to the beginning </p>
+<p>Returns the Code part(removes the comments) </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">line</td><td>The line to be Sanizied</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The Sanizied line</dd></dl>
+
+</div>
+</div>
+<a id="a5ee6b52db9c233e7dcbafdd5121b0664"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ee6b52db9c233e7dcbafdd5121b0664">&#9670;&nbsp;</a></span>SplitLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string [] Engine.OpenFL.Interpreter.SplitLine </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>line</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Splits the line into words </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">line</td><td>the line to be split</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
 
 </div>
 </div>
@@ -1423,7 +1756,7 @@ Static Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../df/d5e/struct_engine_1_1_open_f_l_1_1_interpreter_1_1_interpreter_step_result.html">InterpreterStepResult</a> Engine.OpenFL.Interpreter.Step </td>
+          <td class="memname"><a class="el" href="../../de/d2b/struct_engine_1_1_open_f_l_1_1_interpreter_step_result.html">InterpreterStepResult</a> Engine.OpenFL.Interpreter.Step </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -1533,8 +1866,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="aac96f22ff90f3dccfb36654d59d3cb5b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac96f22ff90f3dccfb36654d59d3cb5b">&#9670;&nbsp;</a></span>_currentBuffer</h2>
+<a id="a1a98c560229e94ac0d9c8278eedcc824"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a98c560229e94ac0d9c8278eedcc824">&#9670;&nbsp;</a></span>_currentBuffer</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1543,7 +1876,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> Engine.OpenFL.Interpreter._currentBuffer</td>
+          <td class="memname"><a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a> Engine.OpenFL.Interpreter._currentBuffer</td>
         </tr>
       </table>
   </td>
@@ -1605,8 +1938,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="acc5309f88516bc882b709f208f4e6f76"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc5309f88516bc882b709f208f4e6f76">&#9670;&nbsp;</a></span>_definedBuffers</h2>
+<a id="ac09aaf6887b2b6b4e6b2d8ca5261f6f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac09aaf6887b2b6b4e6b2d8ca5261f6f4">&#9670;&nbsp;</a></span>_definedBuffers</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1615,7 +1948,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly Dictionary&lt;string, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&gt; Engine.OpenFL.Interpreter._definedBuffers = new Dictionary&lt;string, <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&gt;()</td>
+          <td class="memname">Dictionary&lt;string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a>&gt; Engine.OpenFL.Interpreter._definedBuffers = new Dictionary&lt;string, <a class="el" href="../../db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html">CLBufferInfo</a>&gt;()</td>
         </tr>
       </table>
   </td>
@@ -1653,8 +1986,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ad26e4a3c9fea57882b52b234236045db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad26e4a3c9fea57882b52b234236045db">&#9670;&nbsp;</a></span>_flFunctions</h2>
+<a id="a57b396a1b562c0f0e71ec603f66061a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57b396a1b562c0f0e71ec603f66061a7">&#9670;&nbsp;</a></span>_flFunctions</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1663,7 +1996,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly Dictionary&lt;string, <a class="el" href="../../d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html#a7a8359ffcd28fbe6ba04e51007451f96">FlFunction</a>&gt; Engine.OpenFL.Interpreter._flFunctions</td>
+          <td class="memname">readonly Dictionary&lt;string, <a class="el" href="../../d4/d69/struct_engine_1_1_open_f_l_1_1_f_l_function_info.html">FLFunctionInfo</a>&gt; Engine.OpenFL.Interpreter._flFunctions</td>
         </tr>
       </table>
   </td>
@@ -1725,8 +2058,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a2d7beed26ab61e1a6926d7916f96c463"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d7beed26ab61e1a6926d7916f96c463">&#9670;&nbsp;</a></span>_jumpLocations</h2>
+<a id="ab729f9df827c245b90ddac10e4e8d579"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab729f9df827c245b90ddac10e4e8d579">&#9670;&nbsp;</a></span>_jumpLocations</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1735,7 +2068,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">readonly Dictionary&lt;string, int&gt; Engine.OpenFL.Interpreter._jumpLocations = new Dictionary&lt;string, int&gt;()</td>
+          <td class="memname">Dictionary&lt;string, int&gt; Engine.OpenFL.Interpreter._jumpLocations = new Dictionary&lt;string, int&gt;()</td>
         </tr>
       </table>
   </td>
@@ -1855,7 +2188,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../df/d5e/struct_engine_1_1_open_f_l_1_1_interpreter_1_1_interpreter_step_result.html">InterpreterStepResult</a> Engine.OpenFL.Interpreter._stepResult</td>
+          <td class="memname"><a class="el" href="../../de/d2b/struct_engine_1_1_open_f_l_1_1_interpreter_step_result.html">InterpreterStepResult</a> Engine.OpenFL.Interpreter._stepResult</td>
         </tr>
       </table>
   </td>
@@ -2124,7 +2457,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2230,8 +2563,11 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>MinorEngine/Engine/OpenFL/Interpreter.cs</li>
+<li>MinorEngine/Engine/OpenFL/Interpreter_FLFunctions.cs</li>
+<li>MinorEngine/Engine/OpenFL/Interpreter_ScriptDefine.cs</li>
+<li>MinorEngine/Engine/OpenFL/Interpreter_TextureDefine.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

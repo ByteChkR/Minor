@@ -13,9 +13,20 @@ namespace Engine.DataTypes
     /// </summary>
     public class Mesh : IDisposable
     {
+        /// <summary>
+        /// The Backing field of the default mesh
+        /// </summary>
         private static Mesh _defaultMesh;
+
+        /// <summary>
+        /// The Default Mesh
+        /// </summary>
         public static Mesh DefaultMesh => _defaultMesh ?? (_defaultMesh = GetDefaultMesh());
 
+        /// <summary>
+        /// Creates the default mesh from embedded program resources
+        /// </summary>
+        /// <returns>The Default mesh</returns>
         private static Mesh GetDefaultMesh()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
@@ -33,7 +44,7 @@ namespace Engine.DataTypes
 
                 MemoryStream ms = new MemoryStream(buf);
 
-                Mesh f = MeshLoader.LoadModel(ms, path)[0];
+                Mesh f = MeshLoader.LoadModel(ms)[0];
                 resourceStream.Close();
                 return f;
             }

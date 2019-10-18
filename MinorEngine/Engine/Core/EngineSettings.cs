@@ -17,8 +17,19 @@ namespace Engine.Core
         /// </summary>
         public GraphicsMode Mode => new GraphicsMode(ColorFormat.Empty, Depth, Stencil, Samples);
 
+        /// <summary>
+        /// The Depth Bits
+        /// </summary>
         public int Depth { get; set; } = 8;
+
+        /// <summary>
+        /// The Stencil Bits
+        /// </summary>
         public int Stencil { get; set; } = 0;
+
+        /// <summary>
+        /// The FXAA Samples
+        /// </summary>
         public int Samples { get; set; } = 16;
 
 

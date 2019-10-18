@@ -51,6 +51,10 @@ namespace Engine.OpenCL
         /// </summary>
         private CommandQueue _commandQueue;
 
+        /// <summary>
+        /// Returns the Command queue(dont use, its just for debugging if something is wrong)
+        /// </summary>
+        /// <returns>The Internal Command queue</returns>
         internal static CommandQueue GetQueue()
         {
             return Instance._commandQueue;
@@ -64,6 +68,10 @@ namespace Engine.OpenCL
             InitializeOpenCL();
         }
 
+        /// <summary>
+        /// Reinitializes the CL API
+        /// Used by The unit tests when requireing actual CL api calls(e.g. not in NO_CL mode)
+        /// </summary>
         public static void Reinitialize()
         {
             _instance = new CLAPI();
@@ -101,7 +109,6 @@ namespace Engine.OpenCL
             try
             {
                 return Instance._context.CreateAndBuildProgramFromString(source);
-
             }
             catch (Exception e)
             {
@@ -138,7 +145,11 @@ namespace Engine.OpenCL
             Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning);
             return null;
 #else
-            if (program == null) return null;
+            if (program == null)
+            {
+                return null;
+            }
+
             return program.CreateKernel(name);
 #endif
         }

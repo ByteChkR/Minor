@@ -5,6 +5,6 @@ var class_engine_1_1_open_c_l_1_1_kernel_database =
     [ "Initialize", "d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html#a3439425b13194772753f7a197d7316b4", null ],
     [ "TryGetCLKernel", "d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html#acc7af71ac8447e7c6645e723cf55a4d3", null ],
     [ "_folderName", "d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html#ac32c4a324d7bc73b8893c8c3dd0d8150", null ],
-    [ "_loadedKernels", "d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html#a944e2a37bc11c99d8376a227ffe04782", null ],
+    [ "LoadedKernels", "d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html#acb0674b88410f672a56b575cbe98ec2b", null ],
     [ "GenDataType", "d1/da5/class_engine_1_1_open_c_l_1_1_kernel_database.html#aebdd38648f4cfbd559121f40dd9cfb25", null ]
 ];

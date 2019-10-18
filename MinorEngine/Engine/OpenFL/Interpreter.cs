@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
-using Common;
+using Engine.Common;
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Exceptions;
@@ -95,7 +95,8 @@ namespace Engine.OpenFL
         /// Delegate that is used to import defines
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private delegate void DefineHandler(string[] arg, Dictionary<string, CLBufferInfo> defines, int width, int height, int depth, int channelCount, KernelDatabase kernelDb);
+        private delegate void DefineHandler(string[] arg, Dictionary<string, CLBufferInfo> defines, int width,
+            int height, int depth, int channelCount, KernelDatabase kernelDb);
 
         /// <summary>
         /// A Dictionary containing the special functions of the interpreter, indexed by name
@@ -216,7 +217,6 @@ namespace Engine.OpenFL
                 return idx + 1;
             }
         }
-
 
         #endregion
 
@@ -410,8 +410,10 @@ namespace Engine.OpenFL
 
             _source = LoadSource(file, channelCount);
 
-            ParseDefines(ScriptDefineKey, DefineScript, _source, _definedBuffers, width, height, depth, channelCount, kernelDB);
-            ParseDefines(DefineKey, DefineTexture, _source, _definedBuffers, width, height, depth, channelCount, kernelDB);
+            ParseDefines(ScriptDefineKey, DefineScript, _source, _definedBuffers, width, height, depth, channelCount,
+                kernelDB);
+            ParseDefines(DefineKey, DefineTexture, _source, _definedBuffers, width, height, depth, channelCount,
+                kernelDB);
             _jumpLocations = ParseJumpLocations(_source);
 
             Reset();
@@ -421,6 +423,11 @@ namespace Engine.OpenFL
 
         #region Private Functions
 
+        /// <summary>
+        /// Adds a buffer to the Defined Buffer Dictionary
+        /// </summary>
+        /// <param name="key">The key of the buffer</param>
+        /// <param name="info">The buffer to be stored</param>
         private void AddBufferToDefine(string key, CLBufferInfo info)
         {
             info.SetKey(key);
@@ -430,11 +437,22 @@ namespace Engine.OpenFL
         #endregion
 
         #region String Operations
+
+        /// <summary>
+        /// Returns the Code part(removes the comments)
+        /// </summary>
+        /// <param name="line">The line to be Sanizied</param>
+        /// <returns>The Sanizied line</returns>
         private static string SanitizeLine(string line)
         {
             return line.Split(CommentPrefix)[0];
         }
 
+        /// <summary>
+        /// Splits the line into words
+        /// </summary>
+        /// <param name="line">the line to be split</param>
+        /// <returns></returns>
         private static string[] SplitLine(string line)
         {
             return line.Split(WordSeparator, StringSplitOptions.RemoveEmptyEntries);
@@ -454,6 +472,10 @@ namespace Engine.OpenFL
         #endregion
 
         #region Execution
+
+        /// <summary>
+        /// Executes one step of the Processor
+        /// </summary>
         private void Execute()
         {
             string code = SanitizeLine(_source[_currentIndex]);
@@ -651,7 +673,7 @@ namespace Engine.OpenFL
 #if NO_CL
             int size = 1;
 #else
-            int size = (int)_currentBuffer.Buffer.Size;
+            int size = (int) _currentBuffer.Buffer.Size;
 #endif
 
 
@@ -667,10 +689,10 @@ namespace Engine.OpenFL
             _currentWord = 1;
         }
 
-
         #endregion
 
         #region Parsing
+
         /// <summary>
         /// Finds all jump locations inside the script
         /// </summary>
@@ -691,7 +713,9 @@ namespace Engine.OpenFL
         /// <summary>
         /// Finds, Parses and Loads all define statements
         /// </summary>
-        private static void ParseDefines(string key, DefineHandler handler, List<string> source, Dictionary<string, CLBufferInfo> defines, int width, int height, int depth, int channelCount, KernelDatabase kernelDb)
+        private static void ParseDefines(string key, DefineHandler handler, List<string> source,
+            Dictionary<string, CLBufferInfo> defines, int width, int height, int depth, int channelCount,
+            KernelDatabase kernelDb)
         {
             for (int i = source.Count - 1; i >= 0; i--)
             {
@@ -704,7 +728,6 @@ namespace Engine.OpenFL
                 }
             }
         }
-
 
 
         /// <summary>
@@ -740,10 +763,10 @@ namespace Engine.OpenFL
 
             return lines;
         }
+
         #endregion
 
         #region Public Functions
-
 
         /// <summary>
         /// Returns the currently active buffer
@@ -766,7 +789,7 @@ namespace Engine.OpenFL
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CLAPI.ReadBuffer<T>(_currentBuffer.Buffer, (int)_currentBuffer.Buffer.Size);
+            return CLAPI.ReadBuffer<T>(_currentBuffer.Buffer, (int) _currentBuffer.Buffer.Size);
         }
 
         /// <summary>
@@ -799,7 +822,77 @@ namespace Engine.OpenFL
 
         #endregion
 
-        
+        //public FLScript Precompile(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, OpenCL.TypeEnums.DataTypes type)
+        //{
+        //    List<string> source = LoadSource(file, channelCount);
+        //    FLScript script = new FLScript(width, height, depth, channelCount);
+        //    Dictionary<string, CLBufferInfo> defines = new Dictionary<string, CLBufferInfo>();
+        //    KernelDatabase db = new KernelDatabase("kernel", type);
+        //    ParseDefines(DefineKey, DefineTexture, source, defines, width, height, depth, channelCount, db);
+        //    Dictionary<string, int> jumps = ParseJumpLocations(source);
+        //    foreach (var line in source)
+        //    {
+        //        script.Instructions.Add(PrecompileLine(line, db, jumps));
+        //    }
+        //}
 
+        //private Instruction PrecompileLine(string line, KernelDatabase db, Dictionary<string, CLBufferInfo> defines, Dictionary<string, int > jumps)
+        //{
+        //    string[] code = SplitLine(SanitizeLine(line));
+        //    Instruction inst = new Instruction();
+        //    ExecResult res = GetExec(code[0], db);
+        //    inst.Exec = res.Exec;
+        //    inst.IsFLFunction = res.IsFLFunction;
+        //    inst.LeaveStack = res.LeaveStack;
+
+        //    for (int i = 1; i < code.Length; i++)
+        //    {
+        //        if (jumps.ContainsKey(code[i]))
+        //        {
+        //            inst.Args.Push(new Argument(){IsJump = true, Value = cmd_jump});
+        //        }
+        //        else if (defines.ContainsKey(code[i]))
+        //        {
+
+        //        }
+        //    }
+
+        //}
+
+        //private struct ExecResult
+        //{
+        //    public object Exec;
+        //    public bool IsFLFunction;
+        //    public bool LeaveStack;
+        //}
+
+        //private ExecResult GetExec(string instruction, KernelDatabase db)
+        //{
+        //    CLKernel kernel = null;
+        //    bool isBakedFunction = _flFunctions.ContainsKey(instruction);
+        //    bool keepBuffer = isBakedFunction && _flFunctions[instruction].LeaveStack;
+        //    if (!isBakedFunction && !db.TryGetCLKernel(instruction, out kernel))
+        //    {
+        //        Logger.Crash(new FLParseError(instruction), true);
+        //    }
+
+        //    object exec = null;
+        //    if (isBakedFunction)
+        //    {
+        //        exec = _flFunctions[instruction].Function;
+        //    }
+        //    else if(kernel != null)
+        //    {
+        //        exec = kernel;
+        //    }
+
+        //    return new ExecResult
+        //    {
+        //        Exec = exec,
+        //        IsFLFunction = isBakedFunction,
+        //        LeaveStack = keepBuffer
+        //    };
+
+        //}
     }
 }

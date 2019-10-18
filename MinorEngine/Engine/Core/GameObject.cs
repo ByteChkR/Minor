@@ -78,7 +78,10 @@ namespace Engine.Core
             {
                 Matrix4 mat = Matrix4.Identity;
                 if (Scale != Physics.BEPUutilities.Vector3.Zero)
+                {
                     mat *= Matrix4.CreateScale(Scale);
+                }
+
                 mat *= Matrix4.CreateFromQuaternion(Rotation);
                 mat *= Matrix4.CreateTranslation(LocalPosition);
                 return mat;
@@ -162,7 +165,7 @@ namespace Engine.Core
         [XmlElement(Order = 3)]
         public Engine.Physics.BEPUutilities.Vector4 AxisAngle
         {
-            get => ((Quaternion)Rotation).ToAxisAngle();
+            get => ((Quaternion) Rotation).ToAxisAngle();
             set => Rotation =
                 Physics.BEPUutilities.Quaternion.CreateFromAxisAngle(
                     new Physics.BEPUutilities.Vector3(value.X, value.Y, value.Z), value.W);
@@ -295,7 +298,7 @@ namespace Engine.Core
                 {
                     applyRenderHierarchy(true);
                     ObjsWithAttachedRenderers.Add(this);
-                    RenderingComponent = (IRenderingComponent)component;
+                    RenderingComponent = (IRenderingComponent) component;
                 }
                 else if (component is Collider collider)
                 {
@@ -406,7 +409,7 @@ namespace Engine.Core
             {
                 if (typeof(T).IsAssignableFrom(abstractComponent.Key))
                 {
-                    return (T)abstractComponent.Value;
+                    return (T) abstractComponent.Value;
                 }
             }
 
@@ -422,7 +425,7 @@ namespace Engine.Core
         {
             if (_components.ContainsKey(typeof(T)))
             {
-                return (T)_components[typeof(T)];
+                return (T) _components[typeof(T)];
             }
 
             return null;
@@ -546,9 +549,12 @@ namespace Engine.Core
             child.SetParent(null);
         }
 
-        public  void DestroyAllChildren()
+        /// <summary>
+        /// Destroys all child objects while leaving the current one intact(useful for container objects)
+        /// </summary>
+        public void DestroyAllChildren()
         {
-            foreach (var child in _children)
+            foreach (GameObject child in _children)
             {
                 child.Destroy();
             }

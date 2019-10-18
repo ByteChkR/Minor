@@ -2,6 +2,7 @@ var class_engine_1_1_i_o_1_1_texture_loader =
 [
     [ "AssimpEmbeddedToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#af4cd77d484ad4dc9c32b8d07830af3b9", null ],
     [ "AssimpSceneToTextures", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#af4ecaaf9202135b4f8b6d25f61185f64", null ],
+    [ "BitmapToBytes", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a1e02771a29b381c71552c6dde8c0e8a6", null ],
     [ "BitmapToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a8fc124f5f83b87a07f96f7d634c08857", null ],
     [ "BytesToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a854dfaa421219e83a3d012dce0b3f70c", null ],
     [ "BytesToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a548559110b795d8cce708030c7b9ce01", null ],

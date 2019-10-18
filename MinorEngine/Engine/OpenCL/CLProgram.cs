@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common;
+using Engine.Common;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Kernels;
 using Engine.OpenCL.DotNetCore.Programs;
@@ -95,7 +95,7 @@ namespace Engine.OpenCL
             int vnum = GetVectorNum(_genType);
             string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
                 vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
-            Dictionary<string, bool> defs = new Dictionary<string, bool> { { "V_" + vnum, true } };
+            Dictionary<string, bool> defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
             string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
             string[] kernelNames = FindKernelNames(source);
 

@@ -6,9 +6,11 @@ using Engine.OpenCL;
 
 namespace Engine.OpenFL
 {
+    /// <summary>
+    /// Partial Class that Contains the Baked FL Functions
+    /// </summary>
     public partial class Interpreter
     {
-
         /// <summary>
         /// The implementation of the command setactive
         /// </summary>
@@ -31,7 +33,7 @@ namespace Engine.OpenFL
                     val = 0;
                 }
 
-                byte channel = (byte)Convert.ChangeType(val, typeof(byte));
+                byte channel = (byte) Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
                 {
                     Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
@@ -52,12 +54,12 @@ namespace Engine.OpenFL
 
             if (_currentArgStack.Peek() is decimal)
             {
-                byte channel = (byte)Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
+                byte channel = (byte) Convert.ChangeType(_currentArgStack.Pop(), typeof(byte));
                 temp[channel] = 1;
             }
             else
             {
-                _currentBuffer = (CLBufferInfo)_currentArgStack.Pop();
+                _currentBuffer = (CLBufferInfo) _currentArgStack.Pop();
             }
 
             bool needCopy = false;
@@ -84,7 +86,7 @@ namespace Engine.OpenFL
         /// <returns>a random byte</returns>
         private static byte randombytesource()
         {
-            return (byte)rnd.Next();
+            return (byte) rnd.Next();
         }
 
         /// <summary>
@@ -178,6 +180,5 @@ namespace Engine.OpenFL
                 Logger.Crash(new FLInvalidFunctionUseException("Break", "only one or zero arguments"), true);
             }
         }
-
     }
 }
