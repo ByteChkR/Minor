@@ -20,7 +20,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// The currently loaded kernels
         /// </summary>
-        private readonly Dictionary<string, CLKernel> _loadedKernels;
+        public readonly Dictionary<string, CLKernel> LoadedKernels;
 
         /// <summary>
         /// Public constructor
@@ -40,7 +40,7 @@ namespace Engine.OpenCL
             }
 
             _folderName = folderName;
-            _loadedKernels = new Dictionary<string, CLKernel>();
+            LoadedKernels = new Dictionary<string, CLKernel>();
             Initialize();
         }
 
@@ -79,9 +79,9 @@ namespace Engine.OpenCL
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {
-                if (!_loadedKernels.ContainsKey(containedKernel.Key))
+                if (!LoadedKernels.ContainsKey(containedKernel.Key))
                 {
-                    _loadedKernels.Add(containedKernel.Key, containedKernel.Value);
+                    LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
                 {
@@ -99,9 +99,9 @@ namespace Engine.OpenCL
         /// <returns>Returns True if the kernel has been found</returns>
         public bool TryGetCLKernel(string name, out CLKernel kernel)
         {
-            if (_loadedKernels.ContainsKey(name))
+            if (LoadedKernels.ContainsKey(name))
             {
-                kernel = _loadedKernels[name];
+                kernel = LoadedKernels[name];
                 return true;
             }
 

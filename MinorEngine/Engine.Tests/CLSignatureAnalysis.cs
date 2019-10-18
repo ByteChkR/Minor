@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Common;
@@ -7,11 +8,20 @@ using Engine.OpenCL.DotNetCore.Memory;
 using DT = Engine.OpenCL.TypeEnums.DataTypes;
 using Engine.OpenFL;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Engine.Tests
 {
     public class CLSignatureAnalysis
     {
+
+        private readonly ITestOutputHelper output;
+
+
+        public CLSignatureAnalysis(ITestOutputHelper output)
+        {
+            this.output = output;
+        }
 
         [Fact]
         public void CL_KernelSignatureAnalysis()
@@ -21,6 +31,12 @@ namespace Engine.Tests
 
             string path = "resources/kernel";
             KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
+
+            foreach (KeyValuePair<string, CLKernel> kdbLoadedKernel in kdb.LoadedKernels)
+            {
+                output.WriteLine(kdbLoadedKernel.Key);
+            }
+
 
             Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel");
 
