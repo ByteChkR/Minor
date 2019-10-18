@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
@@ -88,13 +89,13 @@ namespace Engine.OpenFL
         /// <summary>
         /// A random that is used to provide random bytes
         /// </summary>
-        private readonly Random rnd = new Random();
+        private static readonly Random rnd = new Random();
 
         /// <summary>
         /// Delegate that is used to import defines
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private delegate void DefineHandler(string[] arg);
+        private delegate void DefineHandler(string[] arg, Dictionary<string, CLBufferInfo> defines, int width, int height, int depth, int channelCount, KernelDatabase kernelDb);
 
         /// <summary>
         /// A Dictionary containing the special functions of the interpreter, indexed by name
@@ -175,12 +176,12 @@ namespace Engine.OpenFL
         /// <summary>
         /// The buffers indexed by name that were defined with the DefineKey
         /// </summary>
-        private readonly Dictionary<string, CLBufferInfo> _definedBuffers = new Dictionary<string, CLBufferInfo>();
+        private Dictionary<string, CLBufferInfo> _definedBuffers = new Dictionary<string, CLBufferInfo>();
 
         /// <summary>
         /// A list of possible jump locations
         /// </summary>
-        private readonly Dictionary<string, int> _jumpLocations = new Dictionary<string, int>();
+        private Dictionary<string, int> _jumpLocations = new Dictionary<string, int>();
 
         /// <summary>
         /// a flag that indicates if the stack should not be deleted(get used when returning from a jump)
@@ -407,11 +408,11 @@ namespace Engine.OpenFL
             //Parsing File
 
 
-            LoadSource(file);
+            _source = LoadSource(file, channelCount);
 
-            ParseDefines(ScriptDefineKey, DefineScript);
-            ParseDefines(DefineKey, DefineTexture);
-            ParseJumpLocations();
+            ParseDefines(ScriptDefineKey, DefineScript, _source, _definedBuffers, width, height, depth, channelCount, kernelDB);
+            ParseDefines(DefineKey, DefineTexture, _source, _definedBuffers, width, height, depth, channelCount, kernelDB);
+            _jumpLocations = ParseJumpLocations(_source);
 
             Reset();
         }
@@ -673,30 +674,33 @@ namespace Engine.OpenFL
         /// <summary>
         /// Finds all jump locations inside the script
         /// </summary>
-        private void ParseJumpLocations()
+        private static Dictionary<string, int> ParseJumpLocations(List<string> source)
         {
-            for (int i = _source.Count - 1; i >= 0; i--)
+            Dictionary<string, int> ret = new Dictionary<string, int>();
+            for (int i = source.Count - 1; i >= 0; i--)
             {
-                if (_source[i].EndsWith(FunctionNamePostfix) && _source.Count - 1 != i)
+                if (source[i].EndsWith(FunctionNamePostfix) && source.Count - 1 != i)
                 {
-                    _jumpLocations.Add(_source[i].Remove(_source[i].Length - 1, 1), i + 1);
+                    ret.Add(source[i].Remove(source[i].Length - 1, 1), i + 1);
                 }
             }
+
+            return ret;
         }
 
         /// <summary>
         /// Finds, Parses and Loads all define statements
         /// </summary>
-        private void ParseDefines(string key, DefineHandler handler)
+        private static void ParseDefines(string key, DefineHandler handler, List<string> source, Dictionary<string, CLBufferInfo> defines, int width, int height, int depth, int channelCount, KernelDatabase kernelDb)
         {
-            for (int i = _source.Count - 1; i >= 0; i--)
+            for (int i = source.Count - 1; i >= 0; i--)
             {
-                if (_source[i].StartsWith(key))
+                if (source[i].StartsWith(key))
                 {
-                    string[] kvp = _source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
+                    string[] kvp = source[i].Remove(0, key.Length).Split(FunctionNamePostfix);
 
-                    handler?.Invoke(kvp);
-                    _source.RemoveAt(i);
+                    handler?.Invoke(kvp, defines, width, height, depth, channelCount, kernelDb);
+                    source.RemoveAt(i);
                 }
             }
         }
@@ -707,13 +711,13 @@ namespace Engine.OpenFL
         /// Loads the source from file
         /// </summary>
         /// <param name="file"></param>
-        private void LoadSource(string file)
+        private static List<string> LoadSource(string file, int channelCount)
         {
             Logger.Log("Loading Source..", DebugChannel.Log);
 
             Dictionary<string, bool> defs = new Dictionary<string, bool>();
 
-            for (int i = 0; i < _channelCount; i++)
+            for (int i = 0; i < channelCount; i++)
             {
                 defs.Add("channel" + i, true);
             }
@@ -734,7 +738,7 @@ namespace Engine.OpenFL
                 }
             }
 
-            _source = lines;
+            return lines;
         }
         #endregion
 
@@ -794,6 +798,8 @@ namespace Engine.OpenFL
         }
 
         #endregion
+
+        
 
     }
 }

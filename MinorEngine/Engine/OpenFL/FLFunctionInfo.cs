@@ -1,4 +1,7 @@
-﻿namespace Engine.OpenFL
+﻿using System.Collections.Generic;
+using Engine.OpenCL;
+
+namespace Engine.OpenFL
 {
     public struct FLFunctionInfo
     {

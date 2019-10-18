@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Engine.Debug;
 using Engine.Exceptions;
@@ -14,7 +15,7 @@ namespace Engine.OpenFL
         /// Define handler that loads defined scripts
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private void DefineScript(string[] arg)
+        private static void DefineScript(string[] arg, Dictionary<string, CLBufferInfo> defines, int width,  int height, int depth, int channelCount, KernelDatabase kernelDb)
         {
             if (arg.Length < 2)
             {
@@ -23,10 +24,10 @@ namespace Engine.OpenFL
             }
 
             string varname = arg[0].Trim();
-            if (_definedBuffers.ContainsKey(varname))
+            if (defines.ContainsKey(varname))
             {
                 Logger.Log("Overwriting " + varname, DebugChannel.Warning);
-                _definedBuffers.Remove(varname);
+                defines.Remove(varname);
             }
 
             string[] args = arg[1].Split(' ', StringSplitOptions.RemoveEmptyEntries);
@@ -34,6 +35,7 @@ namespace Engine.OpenFL
 
             string filename = args[0].Trim();
 
+            int InputBufferSize = width * height * depth * channelCount;
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
@@ -48,8 +50,8 @@ namespace Engine.OpenFL
 
                 if (File.Exists(fn))
                 {
-                    Interpreter interpreter = new Interpreter(fn, buf, _width, _height,
-                        _depth, _channelCount, _kernelDb, true);
+                    Interpreter interpreter = new Interpreter(fn, buf, width, height,
+                        depth, channelCount, kernelDb, true);
 
                     do
                     {
@@ -58,7 +60,7 @@ namespace Engine.OpenFL
 
                     CLBufferInfo info = interpreter.GetActiveBufferInternal();
                     info.SetKey(varname);
-                    _definedBuffers.Add(varname, info);
+                    defines.Add(varname, info);
                     interpreter.ReleaseResources();
                 }
                 else
@@ -69,7 +71,7 @@ namespace Engine.OpenFL
 
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                     info.SetKey(varname);
-                    AddBufferToDefine(varname, info);
+                    defines.Add(varname, info);
                 }
             }
             else
@@ -80,7 +82,7 @@ namespace Engine.OpenFL
 
                 CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                 info.SetKey(varname);
-                AddBufferToDefine(varname, info);
+                defines.Add(varname, info);
             }
         }
 

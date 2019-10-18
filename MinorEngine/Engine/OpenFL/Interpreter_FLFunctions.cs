@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
@@ -81,7 +82,7 @@ namespace Engine.OpenFL
         /// A function used as RandomFunc of type byte>
         /// </summary>
         /// <returns>a random byte</returns>
-        private byte randombytesource()
+        private static byte randombytesource()
         {
             return (byte)rnd.Next();
         }
