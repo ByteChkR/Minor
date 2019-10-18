@@ -224,7 +224,7 @@ namespace Engine.OpenFL
                 else
                 {
                     Logger.Crash(new FLInvalidFunctionUseException(DefineKey, "Invalid Filepath", new InvalidFilePathException(fn)), true);
-                    Logger.Log("Invalid Filepath. Using empty buffer", DebugChannel.Error, 10);
+                    Logger.Log("Invalid Filepath. Using empty buffer. " + fn, DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                     info.SetKey(varname);
                     AddBufferToDefine(varname, info);

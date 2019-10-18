@@ -206,6 +206,7 @@ namespace Engine.Tests
         [Fact]
         public void FLKernels()
         {
+            DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.ApplySettings(new DebugSettings()
             {
                 Enabled = true,
@@ -220,7 +221,6 @@ namespace Engine.Tests
                "[Render]",},
                 _streams = new[] { new LogStreamSettings() { Mask = -1, StreamType = 0 } }
             });
-            DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
             string path = "resources/filter/tests";
             string[] files = Directory.GetFiles(path, "*.fl");
