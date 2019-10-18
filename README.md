@@ -4,6 +4,17 @@
 
 This is a C# Game Engine Project that is made for the specialization phase for university.
 
+## Change Log v0.2:
+* Bugfixes
+* FL Features
+* A Graph Renderer
+* Memory Optimizations
+* Refractored Classes to improve coding efficiency
+* A Config Loader that works everywhere in the codebase
+* More CL Filter
+* Texture Offset and Tiling
+* Memory Optimizations
+
 ## Features of Version 0.1
 * OpenGL Rendering (OpenTK)
 * OpenAL 3D Audio (OpenTK)
