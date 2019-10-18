@@ -31,14 +31,14 @@ namespace Engine.Tests
 
             string path = "resources/kernel";
             KernelDatabase kdb = new KernelDatabase(path, DT.UCHAR1);
-
+            string loadedKernels = "";
             foreach (KeyValuePair<string, CLKernel> kdbLoadedKernel in kdb.LoadedKernels)
             {
-                output.WriteLine(kdbLoadedKernel.Key);
+                loadedKernels += kdbLoadedKernel.Key + "\n";
             }
 
 
-            Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel");
+            Assert.True(kdb.TryGetCLKernel("addv", out CLKernel kernel), "Didnt find kernel: " + loadedKernels);
 
             Assert.True(kernel.Parameter.Count == 6, "Kernel header is not == 6");
 
