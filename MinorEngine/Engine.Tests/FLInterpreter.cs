@@ -226,12 +226,6 @@ namespace Engine.Tests
             string[] files = Directory.GetFiles(path, "*.fl");
 
             KernelDatabase db = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
-            string[] ff = Directory.GetFiles("resources/kernel");
-            Console.WriteLine("Files in Folder: " + path);
-            foreach (string s in ff)
-            {
-                Console.WriteLine(s);
-            }
             foreach (string file in files)
             {
                 Interpreter P = new Interpreter(file,

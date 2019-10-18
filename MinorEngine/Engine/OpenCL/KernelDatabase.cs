@@ -52,8 +52,10 @@ namespace Engine.OpenCL
         {
             string[] files = Directory.GetFiles(_folderName, "*.cl");
 
+            Logger.Log("Initializing: " + Path.GetFullPath(_folderName), DebugChannel.Log);
             foreach (string file in files)
             {
+                Logger.Log("Initializing File: " + Path.GetFullPath(file), DebugChannel.Log);
                 AddProgram(file);
             }
         }
@@ -81,13 +83,13 @@ namespace Engine.OpenCL
             {
                 if (!LoadedKernels.ContainsKey(containedKernel.Key))
                 {
-                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Warning);
+                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log);
                     LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
                 {
                     Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
-                        DebugChannel.Warning);
+                        DebugChannel.Log);
                 }
             }
         }
