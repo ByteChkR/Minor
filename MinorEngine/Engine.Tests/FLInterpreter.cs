@@ -14,6 +14,11 @@ namespace Engine.Tests
     public class FLInterpreter
     {
 
+        public FLInterpreter()
+        {
+            TestSetup.ApplyDebugSettings();
+        }
+
         [Fact]
         public void FLDefines()
         {

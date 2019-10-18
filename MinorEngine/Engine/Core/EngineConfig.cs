@@ -49,9 +49,7 @@ namespace Engine.Core
 
                 container.AppendChild(doc.ImportNode(cont.FirstChild, true));
 
-
-                //content.OuterXml = serializedObj.Item2;
-                Console.Write("AAAA");
+                
             }
 
             TextWriter tw = new StringWriter();

@@ -53,6 +53,9 @@
     <None Update="resources\codeanalysistest.cl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="resources\engine.settings.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="resources\filter\comments\test.fl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

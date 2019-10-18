@@ -8,6 +8,12 @@ namespace Engine.Tests
 {
     public class ConfigurationLoader
     {
+
+        public ConfigurationLoader()
+        {
+            TestSetup.ApplyDebugSettings();
+        }
+
         [Serializable]
         public struct TestStruct
         {

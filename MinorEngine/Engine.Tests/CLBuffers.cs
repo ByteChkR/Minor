@@ -3,12 +3,18 @@ using Common;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Xunit;
+using Xunit.Sdk;
 
 namespace Engine.Tests
 {
 #if !NO_CL
     public class CLBuffers
     {
+        public CLBuffers()
+        {
+            TestSetup.ApplyDebugSettings();
+        }
+
         [Fact]
         public void CreateBuffer()
         {

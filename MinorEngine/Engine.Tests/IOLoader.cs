@@ -6,6 +6,10 @@ namespace Engine.Tests
 {
     public class IOLoader
     {
+        public IOLoader()
+        {
+            TestSetup.ApplyDebugSettings();
+        }
 
         [Fact]
         public void LoadTexture()
