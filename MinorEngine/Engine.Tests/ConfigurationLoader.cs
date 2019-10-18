@@ -41,7 +41,7 @@ namespace Engine.Tests
 
             string created = File.ReadAllText("resources/ConfigTest_Save.xml");
             string original = File.ReadAllText("resources/io/test_struct_original.xml");
-            System.Diagnostics.Debug.Assert(original == created);
+            Assert.True(original == created);
         }
 
         [Fact]
@@ -57,10 +57,10 @@ namespace Engine.Tests
             EngineConfig.LoadConfig("resources/io/test_struct_original.xml", ref container);
 
             TestContainer c = (TestContainer) container;
-            System.Diagnostics.Debug.Assert(reference.ContainerName == c.ContainerName);
-            System.Diagnostics.Debug.Assert(reference.Data.TestString == c.Data.TestString);
-            System.Diagnostics.Debug.Assert(reference.Data.TestInt == c.Data.TestInt);
-            System.Diagnostics.Debug.Assert(reference.Data.Position == c.Data.Position);
+            Assert.True(reference.ContainerName == c.ContainerName);
+            Assert.True(reference.Data.TestString == c.Data.TestString);
+            Assert.True(reference.Data.TestInt == c.Data.TestInt);
+            Assert.True(reference.Data.Position == c.Data.Position);
         }
     }
 }
