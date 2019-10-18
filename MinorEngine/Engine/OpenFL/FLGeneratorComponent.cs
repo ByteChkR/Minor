@@ -198,7 +198,7 @@ namespace Engine.OpenFL
                 return "Not in an active Debugging Session";
             }
 
-            Interpreter.InterpreterStepResult stepResult = _stepInterpreter.Step();
+            InterpreterStepResult stepResult = _stepInterpreter.Step();
             MemoryBuffer res = _stepInterpreter.GetActiveBufferInternal().Buffer;
             if (_stepInterpreter.Terminated)
             {

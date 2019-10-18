@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using Common;
-using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.DataTypes;
@@ -31,7 +30,7 @@ namespace Engine.Tests
                 1,
                 4, db);
 
-            Interpreter.InterpreterStepResult ret = P.Step();
+            InterpreterStepResult ret = P.Step();
 
 
             Assert.True(ret.DefinedBuffers.Count == 5);
@@ -59,8 +58,6 @@ namespace Engine.Tests
                 DebugHelper.ThrowOnAllExceptions = i == 0;
                 foreach (string file in files)
                 {
-
-
                     try
                     {
                         Interpreter P = new Interpreter(file,
