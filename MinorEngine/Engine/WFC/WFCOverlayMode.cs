@@ -227,6 +227,9 @@ namespace Engine.WFC
             Bitmap result = new Bitmap(Fmx, Fmy);
             int[] bitmapData = new int[result.Height * result.Width];
 
+
+            Success = true;
+
             if (Observed != null)
             {
                 for (int y = 0; y < Fmy; y++)
@@ -304,7 +307,6 @@ namespace Engine.WFC
         protected override void Clear()
         {
             base.Clear();
-            Success = true;
 
             if (_ground != 0)
             {

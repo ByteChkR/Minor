@@ -252,8 +252,9 @@ namespace Engine.OpenFL
                 info.SetKey(varname);
                 AddBufferToDefine(varname, info);
             }
-            else if (filename == "wfc")
+            else if (filename == "wfc" || filename == "wfcf")
             {
+                bool force = filename == "wfcf";
                 if (args.Length < 10)
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
@@ -331,12 +332,21 @@ namespace Engine.OpenFL
                     string fn = args[1].Trim().Replace(FilepathIndicator, "");
                     if (File.Exists(fn))
                     {
-                        WaveFunctionCollapse wfc = new WFCOverlayMode(fn, n, width,
+                        Bitmap bmp;
+                        WFCOverlayMode wfc = new WFCOverlayMode(fn, n, width,
                             height, periodicInput, periodicOutput, symmetry, ground);
+                        if (force)
+                            do
+                            {
+                                wfc.Run(limit);
+                                bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
+                            } while (!wfc.Success);
+                        else
+                        {
+                            bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
+                            wfc.Run(limit);
+                        }
 
-                        wfc.Run(limit);
-
-                        Bitmap bmp = new Bitmap(wfc.Graphics(), new Size(_width, _height)); //Apply scaling
                         CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(bmp,
                             MemoryFlag.CopyHostPointer | flags), true);
                         info.SetKey(varname);
