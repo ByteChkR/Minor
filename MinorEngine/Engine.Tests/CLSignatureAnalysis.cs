@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Common;
+using Engine.Debug;
 using Engine.OpenCL;
 using DT = Engine.OpenCL.TypeEnums.DataTypes;
 using Xunit;
@@ -24,11 +25,14 @@ namespace Engine.Tests
         [Fact]
         public void CL_KernelSignatureAnalysis()
         {
+
+            DebugHelper.ApplySettings(new DebugSettings(){_streams= new []{new LogStreamSettings(){Mask = -1, StreamType = 0}}});
             DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
 
             string path = "resources/kernel";
             string[] ff = Directory.GetFiles("resources/kernel");
+            Console.WriteLine("Files in Folder: " + path);
             foreach (string s in ff)
             {
                 Console.WriteLine(s);

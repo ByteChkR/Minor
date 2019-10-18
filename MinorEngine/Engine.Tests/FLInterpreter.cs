@@ -205,6 +205,7 @@ namespace Engine.Tests
         [Fact]
         public void FLKernels()
         {
+            DebugHelper.ApplySettings(new DebugSettings() { _streams = new[] { new LogStreamSettings() { Mask = -1, StreamType = 0 } } });
             DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
             string path = "resources/filter/tests";
