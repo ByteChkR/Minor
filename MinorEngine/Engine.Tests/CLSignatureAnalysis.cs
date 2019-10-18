@@ -25,21 +25,6 @@ namespace Engine.Tests
         [Fact]
         public void CL_KernelSignatureAnalysis()
         {
-            DebugHelper.ApplySettings(new DebugSettings()
-            {
-                Enabled = true,
-                StageNames = new[]{
-                    "[Startup]",
-                    "[Init]",
-                    "[SceneInit]",
-                    "[General]",
-                    "[Update]",
-                    "[Physics]",
-                    "[CleanUp]",
-                    "[Render]",},
-                _streams = new[] { new LogStreamSettings() { Mask = -1, StreamType = 0 } }
-            });
-
             DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
 

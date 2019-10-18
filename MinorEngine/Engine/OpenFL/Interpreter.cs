@@ -1273,7 +1273,14 @@ namespace Engine.OpenFL
         {
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
             _stepResult.HasJumped = true;
+
+#if NO_CL
+            int size = 1;
+#else
             int size = (int)_currentBuffer.Buffer.Size;
+#endif
+
+
             if (!leaveBuffer)
             {
                 _currentBuffer = new CLBufferInfo(CLAPI.CreateEmpty<byte>(size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer), true);
