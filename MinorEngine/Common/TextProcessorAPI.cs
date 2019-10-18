@@ -80,10 +80,10 @@ namespace Common
                     definitions = new Definitions(defs);
                 }
 
-                string[] ret = {"FILE NOT FOUND"};
+                string[] ret = { "FILE NOT FOUND" };
                 try
                 {
-                    ret = pp.Run(new[] {filename}, new Settings(), definitions);
+                    ret = pp.Run(new[] { filename }, new Settings(), definitions);
                 }
                 catch (ProcessorException ex)
                 {
@@ -103,14 +103,15 @@ namespace Common
 
             public override string GetGenericInclude(string filename, string[] genType)
             {
-                _sb.Clear();
+                _sb.Append(" ");
                 foreach (string gt in genType)
                 {
                     _sb.Append(gt);
                     _sb.Append(' ');
                 }
 
-                return "#include " + filename + " " + _sb;
+                string gens = _sb.Length == 0 ? "" : _sb.ToString();
+                return "#include " + filename + " " + gens;
             }
 
             protected override List<AbstractPlugin> Plugins =>
@@ -139,7 +140,8 @@ namespace Common
                 }
 
 
-                return "#include " + filename + " " + _sb;
+                string gens = _sb.Length == 0 ? "" : _sb.ToString();
+                return "#include " + filename + " " + gens;
             }
 
             protected override List<AbstractPlugin> Plugins =>
@@ -168,7 +170,8 @@ namespace Common
                     _sb.Append(' ');
                 }
 
-                return "pp_include: " + filename + " " + _sb;
+                string gens = _sb.Length == 0 ? "" : _sb.ToString();
+                return "#pp_include: " + filename + " " + gens;
             }
 
             protected override List<AbstractPlugin> Plugins
@@ -209,7 +212,7 @@ namespace Common
 
         public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
         {
-            return new[] {_configs[ext].GetGenericInclude(file, genType)};
+            return new[] { _configs[ext].GetGenericInclude(file, genType) };
         }
 
         public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
