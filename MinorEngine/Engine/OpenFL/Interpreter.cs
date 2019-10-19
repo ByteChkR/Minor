@@ -667,8 +667,6 @@ namespace Engine.OpenFL
             return lines;
         }
 
-        #endregion
-
         private static FLScriptData LoadScriptData(string file, CLBufferInfo inBuffer, int width, int height, int depth, int channelCount,
             KernelDatabase db, Dictionary<string, FLFunctionInfo> funcs)
         {
@@ -762,6 +760,8 @@ namespace Engine.OpenFL
             return ret;
 
         }
+
+        #endregion
 
         #region Public Functions
 
