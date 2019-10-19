@@ -1,22 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection.PortableExecutable;
-using System.Text;
 using Engine.Common;
-using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.DataTypes;
 using Engine.OpenCL.DotNetCore.Memory;
-using Engine.OpenCL.TypeEnums;
-using Engine.WFC;
-using Image = System.Drawing.Image;
+using Engine.OpenFL.FLDataObjects;
 
 namespace Engine.OpenFL
 {
@@ -86,6 +78,8 @@ namespace Engine.OpenFL
 
         #region Private Properties
 
+        private FLScriptData Data;
+
         /// <summary>
         /// A random that is used to provide random bytes
         /// </summary>
@@ -107,11 +101,6 @@ namespace Engine.OpenFL
         /// The kernel database that provides the Interpreter with kernels to execute
         /// </summary>
         private KernelDatabase _kernelDb;
-
-        /// <summary>
-        /// The Source of the script in lines
-        /// </summary>
-        private List<string> _source;
 
         /// <summary>
         /// The current index in the program source
@@ -175,16 +164,6 @@ namespace Engine.OpenFL
         private MemoryBuffer _activeChannelBuffer;
 
         /// <summary>
-        /// The buffers indexed by name that were defined with the DefineKey
-        /// </summary>
-        private Dictionary<string, CLBufferInfo> _definedBuffers = new Dictionary<string, CLBufferInfo>();
-
-        /// <summary>
-        /// A list of possible jump locations
-        /// </summary>
-        private Dictionary<string, int> _jumpLocations = new Dictionary<string, int>();
-
-        /// <summary>
         /// a flag that indicates if the stack should not be deleted(get used when returning from a jump)
         /// </summary>
         private bool _leaveStack;
@@ -207,8 +186,8 @@ namespace Engine.OpenFL
         {
             get
             {
-                int idx = _source.IndexOf(EntrySignature + FunctionNamePostfix);
-                if (idx == -1 || _source.Count - 1 == idx)
+                int idx = Data.Source.IndexOf(EntrySignature + FunctionNamePostfix);
+                if (idx == -1 || Data.Source.Count - 1 == idx)
                 {
                     Logger.Crash(new FLInvalidEntryPointException("There needs to be a main function."), true);
                     return 0;
@@ -325,7 +304,7 @@ namespace Engine.OpenFL
         private void Reset()
         {
             _currentIndex = EntryIndex;
-            _currentWord = 1;
+            _currentWord = 0;
         }
 
         /// <summary>
@@ -348,9 +327,9 @@ namespace Engine.OpenFL
         {
             _activeChannelBuffer?.Dispose();
 
-            if (_definedBuffers != null)
+            if (Data.Defines != null)
             {
-                foreach (KeyValuePair<string, CLBufferInfo> memoryBuffer in _definedBuffers)
+                foreach (KeyValuePair<string, CLBufferInfo> memoryBuffer in Data.Defines)
                 {
                     if (memoryBuffer.Value.IsInternal)
                     {
@@ -362,8 +341,8 @@ namespace Engine.OpenFL
 
 
             _jumpStack?.Clear();
-            _definedBuffers?.Clear();
-            _jumpLocations?.Clear();
+            Data.Defines?.Clear();
+            Data.JumpLocations?.Clear();
         }
 
         /// <summary>
@@ -387,7 +366,6 @@ namespace Engine.OpenFL
             //Setting variables
             _currentBuffer = new CLBufferInfo(input, false);
             _currentBuffer.SetKey(InputBufferName);
-            AddBufferToDefine(InputBufferName, _currentBuffer);
 
             _ignoreDebug = ignoreDebug;
             _width = width;
@@ -406,32 +384,10 @@ namespace Engine.OpenFL
                 CLAPI.CreateBuffer(_activeChannels, MemoryFlag.ReadOnly | MemoryFlag.CopyHostPointer);
 
             //Parsing File
-
-
-            _source = LoadSource(file, channelCount);
-
-            ParseDefines(ScriptDefineKey, DefineScript, _source, _definedBuffers, width, height, depth, channelCount,
-                kernelDB);
-            ParseDefines(DefineKey, DefineTexture, _source, _definedBuffers, width, height, depth, channelCount,
-                kernelDB);
-            _jumpLocations = ParseJumpLocations(_source);
+            _currentBuffer.SetKey(InputBufferName);
+            Data = LoadScriptData(file, _currentBuffer, width, height, depth, channelCount, _kernelDb, _flFunctions);
 
             Reset();
-        }
-
-        #endregion
-
-        #region Private Functions
-
-        /// <summary>
-        /// Adds a buffer to the Defined Buffer Dictionary
-        /// </summary>
-        /// <param name="key">The key of the buffer</param>
-        /// <param name="info">The buffer to be stored</param>
-        private void AddBufferToDefine(string key, CLBufferInfo info)
-        {
-            info.SetKey(key);
-            _definedBuffers.Add(key, info);
         }
 
         #endregion
@@ -478,48 +434,29 @@ namespace Engine.OpenFL
         /// </summary>
         private void Execute()
         {
-            string code = SanitizeLine(_source[_currentIndex]);
-            string[] cd = SplitLine(code);
-            if (cd.Length == 0)
+            FLInstructionData data = Data.ParsedSource[_currentIndex];
+            if (data.InstructionType == FLInstructionType.NOP || data.InstructionType == FLInstructionType.Unknown)
             {
-                _currentIndex++; //Next Line since this one is emtpy
-                _currentWord = 1;
+                _currentIndex++;
+                _currentWord = 0;
             }
             else
             {
-                LineAnalysisResult ret = AnalyzeLine(cd);
-                if (ret == LineAnalysisResult.IncreasePC)
+                LineAnalysisResult ret = AnalyzeLine(data);
+                if (ret != LineAnalysisResult.Jump)
                 {
                     _currentIndex++;
-                    _currentWord = 1;
-                }
-                else if (ret == LineAnalysisResult.ParseError)
-                {
-                    //Error Ocurred. We fix the error by pretending it didnt happen and we treat the failed instruction as a NOP
-                    _currentIndex++;
-                    _currentWord = 1;
+                    _currentWord = 0;
                 }
             }
-
             DetectEnd();
         }
 
-        /// <summary>
-        /// Analyzes a line of code
-        /// </summary>
-        /// <param name="code">the line to analyze</param>
-        /// <returns>True if the program counter should be increased</returns>
-        private LineAnalysisResult AnalyzeLine(string[] words)
+        private LineAnalysisResult AnalyzeLine(FLInstructionData data)
         {
-            string function = words[0];
-            CLKernel kernel = null;
-
-            bool isBakedFunction = _flFunctions.ContainsKey(function);
-            bool keepBuffer = isBakedFunction && _flFunctions[function].LeaveStack;
-
-            if (!isBakedFunction && !_kernelDb.TryGetCLKernel(function, out kernel))
+            if (data.InstructionType != FLInstructionType.FLFunction && data.InstructionType != FLInstructionType.CLKernel)
             {
-                Logger.Crash(new FLParseError(_source[_currentIndex]), true);
+                Logger.Crash(new FLParseError(Data.Source[_currentIndex]), true);
                 return LineAnalysisResult.ParseError;
             }
 
@@ -534,94 +471,60 @@ namespace Engine.OpenFL
 
             LineAnalysisResult ret = LineAnalysisResult.IncreasePC;
             for (;
-                _currentWord < words.Length;
+                _currentWord < data.Arguments.Count;
                 _currentWord++) //loop through the words. start value can be != 0 when returning from a function specified as an argument to a kernel
             {
-                if (AnalyzeWord(words[_currentWord], out object val))
+                if (data.Arguments[_currentWord].argType == FLArgumentType.Function)
                 {
-                    JumpTo(_jumpLocations[words[_currentWord]], keepBuffer);
+                    bool KeepBuffer = data.InstructionType == FLInstructionType.FLFunction && ((FLFunctionInfo)data.Instruction).LeaveStack;
+                    JumpTo((int)data.Arguments[_currentWord].value, KeepBuffer);
                     ret = LineAnalysisResult.Jump; //We Jumped to another point in the code.
                     _currentArgStack
                         .Push(null); //Push null to signal the interpreter that he returned before assigning the right value.
                     break;
                 }
-                else
+                if (data.Arguments[_currentWord].argType != FLArgumentType.Unknown)
                 {
-                    _currentArgStack.Push(val); //push the value to the stack
+                    _currentArgStack.Push(data.Arguments[_currentWord].value);
                 }
             }
 
-            if (_currentWord == words.Length && ret != LineAnalysisResult.Jump
-            ) //We finished parsing the line and we didnt jump.
+
+            if (_currentWord == data.Arguments.Count && ret != LineAnalysisResult.Jump)
             {
-                if (isBakedFunction)
+                if (data.InstructionType == FLInstructionType.FLFunction)
                 {
-                    _flFunctions[function].Run(); //Execute baked function
+                    ((FLFunctionInfo)data.Instruction).Run();
+                    return LineAnalysisResult.IncreasePC;
                 }
-                else if (kernel == null || words.Length - 1 != kernel.Parameter.Count - FLHeaderArgCount)
+
+                CLKernel K = (CLKernel)data.Instruction;
+                if (K == null || data.Arguments.Count != K.Parameter.Count - FLHeaderArgCount)
                 {
-                    Logger.Crash(new FLInvalidFunctionUseException(function, "Not the right amount of arguments."),
+                    Logger.Crash(new FLInvalidFunctionUseException(Data.Source[_currentIndex], "Not the right amount of arguments."),
                         true);
                     return LineAnalysisResult.ParseError;
                 }
-                else
-                {
-                    //Execute filter
-                    for (int i = kernel.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
-                    {
-                        object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
-                        if (obj is CLBufferInfo buf) //Unpack the Buffer from the CLBuffer Object.
-                        {
-                            obj = buf.Buffer;
-                        }
 
-                        kernel.SetArg(i, obj);
+                //Execute filter
+                for (int i = K.Parameter.Count - 1; i >= FLHeaderArgCount; i--)
+                {
+                    object obj = _currentArgStack.Pop(); //Get the arguments and set them to the kernel
+                    if (obj is CLBufferInfo buf) //Unpack the Buffer from the CLBuffer Object.
+                    {
+                        obj = buf.Buffer;
                     }
 
-                    Logger.Log("Running kernel: " + function, DebugChannel.Log);
-                    CLAPI.Run(kernel, _currentBuffer.Buffer, new int3(_width, _height, _depth),
-                        KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer,
-                        _channelCount); //Running the kernel
+                    K.SetArg(i, obj);
                 }
-            }
 
+                Logger.Log("Running kernel: " + K.Name, DebugChannel.Log);
+                CLAPI.Run(K, _currentBuffer.Buffer, new int3(_width, _height, _depth),
+                    KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer,
+                    _channelCount); //Running the kernel
+
+            }
             return ret;
-        }
-
-        /// <summary>
-        /// Analyzes a single word of a line
-        /// </summary>
-        /// <param name="word">The input word</param>
-        /// <param name="val">the parsed output</param>
-        /// <returns>if the word could be parsed</returns>
-        private bool AnalyzeWord(string word, out object val)
-        {
-            if (_jumpLocations.ContainsKey(word))
-            {
-                Logger.Log("Jumping to location: " + word, DebugChannel.Log);
-
-                val = null;
-                return true;
-            }
-
-            val = null;
-            if (_definedBuffers.ContainsKey(word))
-            {
-                val = _definedBuffers[word];
-            }
-            else if (decimal.TryParse(word, NumberStyles.Any, NumberParsingHelper, out decimal numberDecimal))
-            {
-                val = numberDecimal;
-            }
-
-#if !NO_CL
-            if (val == null)
-            {
-                Logger.Crash(new FLInvalidArgumentType(word, "Number or Defined buffer."), true);
-            }
-#endif
-            val = val ?? "PLACEHOLDER";
-            return false;
         }
 
         /// <summary>
@@ -629,7 +532,7 @@ namespace Engine.OpenFL
         /// </summary>
         private void DetectEnd()
         {
-            if (_currentIndex == _source.Count || _source[_currentIndex].EndsWith(FunctionNamePostfix))
+            if (_currentIndex == Data.ParsedSource.Count || Data.ParsedSource[_currentIndex].InstructionType == FLInstructionType.FunctionHeader)
             {
                 if (_jumpStack.Count == 0)
                 {
@@ -641,7 +544,7 @@ namespace Engine.OpenFL
                 {
                     InterpreterState lastState = _jumpStack.Pop();
 
-                    Logger.Log("Returning to location: " + _source[lastState.Line], DebugChannel.Log);
+                    Logger.Log("Returning to location: " + Data.Source[lastState.Line], DebugChannel.Log);
                     _currentIndex = lastState.Line;
 
 
@@ -655,7 +558,7 @@ namespace Engine.OpenFL
                     _currentArgStack = lastState.ArgumentStack;
                     _currentBuffer = lastState.ActiveBuffer;
 
-                    _currentWord = lastState.ArgumentStack.Count + 1;
+                    _currentWord = lastState.ArgumentStack.Count;
                 }
             }
         }
@@ -673,7 +576,7 @@ namespace Engine.OpenFL
 #if NO_CL
             int size = 1;
 #else
-            int size = (int) _currentBuffer.Buffer.Size;
+            int size = (int)_currentBuffer.Buffer.Size;
 #endif
 
 
@@ -686,7 +589,7 @@ namespace Engine.OpenFL
             }
 
             _currentIndex = index;
-            _currentWord = 1;
+            _currentWord = 0;
         }
 
         #endregion
@@ -703,7 +606,7 @@ namespace Engine.OpenFL
             {
                 if (source[i].EndsWith(FunctionNamePostfix) && source.Count - 1 != i)
                 {
-                    ret.Add(source[i].Remove(source[i].Length - 1, 1), i + 1);
+                    ret.Add(source[i].Remove(source[i].Length - 1, 1), i);
                 }
             }
 
@@ -766,6 +669,100 @@ namespace Engine.OpenFL
 
         #endregion
 
+        private static FLScriptData LoadScriptData(string file, CLBufferInfo inBuffer, int width, int height, int depth, int channelCount,
+            KernelDatabase db, Dictionary<string, FLFunctionInfo> funcs)
+        {
+            Logger.Log("Loading Script Data for File: " + file, DebugChannel.Log);
+
+            FLScriptData ret = new FLScriptData(LoadSource(file, channelCount));
+
+
+            Logger.Log("Parsing JumpLocations for File: " + file, DebugChannel.Log);
+            ret.JumpLocations = ParseJumpLocations(ret.Source);
+
+            ret.Defines.Add(InputBufferName, inBuffer);
+
+            Logger.Log("Parsing Texture Defines for File: " + file, DebugChannel.Log);
+            ParseDefines(DefineKey, DefineTexture, ret.Source, ret.Defines, width, height, depth, channelCount, db);
+
+            Logger.Log("Parsing Script Defines for File: " + file, DebugChannel.Log);
+            ParseDefines(ScriptDefineKey, DefineScript, ret.Source, ret.Defines, width, height, depth, channelCount, db);
+
+
+            Logger.Log("Parsing Instruction Data for File: " + file, DebugChannel.Log);
+            foreach (string line in ret.Source)
+            {
+                Logger.Log("Parsing Instruction Data for Line: " + line, DebugChannel.Log);
+                FLInstructionData data = GetInstructionData(line, ret.Defines, ret.JumpLocations, funcs, db);
+
+                Logger.Log("Parsed Instruction Data: " + Enum.GetName(typeof(FLInstructionType), data.InstructionType), DebugChannel.Log);
+
+                ret.ParsedSource.Add(data);
+            }
+
+
+            return ret;
+        }
+
+        private static FLInstructionData GetInstructionData(string line, Dictionary<string, CLBufferInfo> defines,
+            Dictionary<string, int> jumpLocations, Dictionary<string, FLFunctionInfo> funcs, KernelDatabase db)
+        {
+
+            string[] code = SplitLine(SanitizeLine(line));
+
+            if (code.Length == 0)
+            {
+                return new FLInstructionData() { InstructionType = FLInstructionType.NOP };
+            }
+            if (code[0].Trim().EndsWith(FunctionNamePostfix))
+            {
+                return new FLInstructionData() { InstructionType = FLInstructionType.FunctionHeader };
+            }
+
+            bool isBakedFunction = funcs.ContainsKey(code[0]);
+
+            FLInstructionData ret = new FLInstructionData();
+
+            if (isBakedFunction)
+            {
+                ret.InstructionType = FLInstructionType.FLFunction;
+                ret.Instruction = funcs[code[0]];
+            }
+            else if (db.TryGetCLKernel(code[0], out CLKernel kernel))
+            {
+                ret.Instruction = kernel;
+                ret.InstructionType = FLInstructionType.CLKernel;
+            }
+
+            List<FLArgumentData> argData = new List<FLArgumentData>();
+            for (int i = 1; i < code.Length; i++)
+            {
+                if (defines.ContainsKey(code[i]))
+                {
+                    argData.Add(new FLArgumentData() { value = defines[code[i]], argType = FLArgumentType.Buffer });
+                }
+                else if (jumpLocations.ContainsKey(code[i]))
+                {
+                    argData.Add(new FLArgumentData() { value = jumpLocations[code[i]], argType = FLArgumentType.Function });
+                }
+                else if (decimal.TryParse(code[i], NumberStyles.Any, NumberParsingHelper, out decimal valResult))
+                {
+                    argData.Add(new FLArgumentData() { value = valResult, argType = FLArgumentType.Number });
+                }
+                else
+                {
+                    argData.Add(new FLArgumentData() { value = null, argType = FLArgumentType.Unknown });
+#if !NO_CL
+                    Logger.Crash(new FLInvalidArgumentType(code[i], "Number or Defined buffer."), true);
+#endif
+                }
+            }
+
+            ret.Arguments = argData;
+            return ret;
+
+        }
+
         #region Public Functions
 
         /// <summary>
@@ -789,7 +786,7 @@ namespace Engine.OpenFL
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CLAPI.ReadBuffer<T>(_currentBuffer.Buffer, (int) _currentBuffer.Buffer.Size);
+            return CLAPI.ReadBuffer<T>(_currentBuffer.Buffer, (int)_currentBuffer.Buffer.Size);
         }
 
         /// <summary>
@@ -800,7 +797,7 @@ namespace Engine.OpenFL
         {
             _stepResult = new InterpreterStepResult
             {
-                SourceLine = _source[_currentIndex]
+                SourceLine = Data.Source[_currentIndex]
             };
 
             if (Terminated)
@@ -814,85 +811,12 @@ namespace Engine.OpenFL
 
             _stepResult.DebugBufferName = _currentBuffer.ToString();
             _stepResult.ActiveChannels = _activeChannels;
-            _stepResult.DefinedBuffers = _definedBuffers.Select(x => x.Value.ToString()).ToList();
+            _stepResult.DefinedBuffers = Data.Defines.Select(x => x.Value.ToString()).ToList();
             _stepResult.BuffersInJumpStack = _jumpStack.Select(x => x.ActiveBuffer.ToString()).ToList();
 
             return _stepResult;
         }
 
         #endregion
-
-        //public FLScript Precompile(string file, MemoryBuffer input, int width, int height, int depth, int channelCount, OpenCL.TypeEnums.DataTypes type)
-        //{
-        //    List<string> source = LoadSource(file, channelCount);
-        //    FLScript script = new FLScript(width, height, depth, channelCount);
-        //    Dictionary<string, CLBufferInfo> defines = new Dictionary<string, CLBufferInfo>();
-        //    KernelDatabase db = new KernelDatabase("kernel", type);
-        //    ParseDefines(DefineKey, DefineTexture, source, defines, width, height, depth, channelCount, db);
-        //    Dictionary<string, int> jumps = ParseJumpLocations(source);
-        //    foreach (var line in source)
-        //    {
-        //        script.Instructions.Add(PrecompileLine(line, db, jumps));
-        //    }
-        //}
-
-        //private Instruction PrecompileLine(string line, KernelDatabase db, Dictionary<string, CLBufferInfo> defines, Dictionary<string, int > jumps)
-        //{
-        //    string[] code = SplitLine(SanitizeLine(line));
-        //    Instruction inst = new Instruction();
-        //    ExecResult res = GetExec(code[0], db);
-        //    inst.Exec = res.Exec;
-        //    inst.IsFLFunction = res.IsFLFunction;
-        //    inst.LeaveStack = res.LeaveStack;
-
-        //    for (int i = 1; i < code.Length; i++)
-        //    {
-        //        if (jumps.ContainsKey(code[i]))
-        //        {
-        //            inst.Args.Push(new Argument(){IsJump = true, Value = cmd_jump});
-        //        }
-        //        else if (defines.ContainsKey(code[i]))
-        //        {
-
-        //        }
-        //    }
-
-        //}
-
-        //private struct ExecResult
-        //{
-        //    public object Exec;
-        //    public bool IsFLFunction;
-        //    public bool LeaveStack;
-        //}
-
-        //private ExecResult GetExec(string instruction, KernelDatabase db)
-        //{
-        //    CLKernel kernel = null;
-        //    bool isBakedFunction = _flFunctions.ContainsKey(instruction);
-        //    bool keepBuffer = isBakedFunction && _flFunctions[instruction].LeaveStack;
-        //    if (!isBakedFunction && !db.TryGetCLKernel(instruction, out kernel))
-        //    {
-        //        Logger.Crash(new FLParseError(instruction), true);
-        //    }
-
-        //    object exec = null;
-        //    if (isBakedFunction)
-        //    {
-        //        exec = _flFunctions[instruction].Function;
-        //    }
-        //    else if(kernel != null)
-        //    {
-        //        exec = kernel;
-        //    }
-
-        //    return new ExecResult
-        //    {
-        //        Exec = exec,
-        //        IsFLFunction = isBakedFunction,
-        //        LeaveStack = keepBuffer
-        //    };
-
-        //}
     }
 }
