@@ -29,7 +29,7 @@ namespace Engine.OpenFL
             string varname = arg[0].Trim();
             if (defines.ContainsKey(varname))
             {
-                Logger.Log("Overwriting " + varname, DebugChannel.Warning);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFL, 10);
                 defines.Remove(varname);
             }
 
@@ -42,7 +42,7 @@ namespace Engine.OpenFL
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Logger.Log("Loading SubScript...", DebugChannel.Log);
+                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFL,10);
 
                 MemoryBuffer buf =
                     CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
@@ -72,7 +72,6 @@ namespace Engine.OpenFL
                         new FLInvalidFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument.",
                             new InvalidFilePathException(fn)),
                         true);
-                    Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
 
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
@@ -84,7 +83,6 @@ namespace Engine.OpenFL
             {
                 Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."),
                     true);
-                Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
 
                 CLBufferInfo info =
                     new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);

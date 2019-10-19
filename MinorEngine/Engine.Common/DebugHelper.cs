@@ -14,7 +14,6 @@ namespace Engine.Common
     public static class DebugHelper
     {
         public static int SeverityFilter = 0;
-        private static int Stage = 1;
         public static bool ThrowOnAllExceptions = false;
 
         public static void ApplySettings(IDebugSettings settings)
@@ -22,8 +21,9 @@ namespace Engine.Common
             Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
 
-            Debug.PrefixLookupMode = (PrefixLookupSettings) settings.PrefixLookupFlags;
+            Debug.PrefixLookupMode = (PrefixLookupSettings)settings.PrefixLookupFlags;
 
+            SeverityFilter = settings.SeverityFilter;
 
             Debug.AdlEnabled = settings.Enabled;
             Debug.AdlWarningMask = 0;
@@ -34,8 +34,7 @@ namespace Engine.Common
 
             Debug.SetAllPrefixes(settings.StageNames);
 
-            Debug.AddPrefixForMask(0, "[NONE]");
-            Debug.AddPrefixForMask(-1, "[EXCEPTION]");
+            Debug.AddPrefixForMask(0, "[Silent]");
 
             foreach (ILogStreamSettings logStreamSettings in settings.Streams)
             {
@@ -49,10 +48,6 @@ namespace Engine.Common
             CrashHandler.Initialize(cconf);
         }
 
-        public static void SetStage(int stage)
-        {
-            Stage = stage;
-        }
 
         private static LogStream OpenFileStream(ILogStreamSettings settings)
         {
@@ -62,19 +57,19 @@ namespace Engine.Common
             }
 
             return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask,
-                (MatchType) settings.MatchMode, settings.Timestamp);
+                (MatchType)settings.MatchMode, settings.Timestamp);
         }
 
         private static LogStream OpenConsoleStream(ILogStreamSettings settings)
         {
-            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType) settings.MatchMode,
+            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType)settings.MatchMode,
                 settings.Timestamp);
         }
 
         private static LogStream OpenNetworkStream(ILogStreamSettings settings)
         {
             NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
-                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType) settings.MatchMode,
+                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType)settings.MatchMode,
                 settings.Timestamp);
             return nls;
         }
@@ -112,20 +107,7 @@ namespace Engine.Common
                 return;
             }
 
-            switch (channel)
-            {
-                case 1:
-                    message = "[Log " + severity + "]" + message;
-                    break;
-                case 2:
-                    message = "[Warning " + severity + "]" + message;
-                    break;
-                case 4:
-                    message = "[Error " + severity + "]" + message;
-                    break;
-            }
-
-            Debug.Log(Stage, message);
+            Debug.Log(channel, $"[S:{severity}]\t" + message);
         }
     }
 }

@@ -86,7 +86,7 @@ namespace Engine.Rendering
             List<int> shaders = new List<int>();
             foreach (KeyValuePair<ShaderType, string> shader in subshaders)
             {
-                Logger.Log("Compiling Shader: " + shader.Key, DebugChannel.Log);
+                Logger.Log("Compiling Shader: " + shader.Key, DebugChannel.Log | DebugChannel.EngineRendering, 5);
 
                 bool r = TryCompileShader(shader.Key, shader.Value, out int id);
                 ret &= r;
@@ -99,17 +99,18 @@ namespace Engine.Rendering
 
             for (int i = 0; i < shaders.Count; i++)
             {
-                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i).Key, DebugChannel.Log);
+                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i).Key, DebugChannel.Log | DebugChannel.EngineRendering, 6);
                 GL.AttachShader(program._prgId, shaders[i]);
             }
 
-            Logger.Log("Linking Program...", DebugChannel.Log);
+            Logger.Log("Linking Program...", DebugChannel.Log | DebugChannel.EngineRendering, 5);
             GL.LinkProgram(program._prgId);
 
             GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out int success);
             if (success == 0)
             {
-                Logger.Log(GL.GetProgramInfoLog(program._prgId), DebugChannel.Error);
+
+                Logger.Crash(new OpenGLShaderException(GL.GetProgramInfoLog(program._prgId)), true);
                 return false;
             }
 
@@ -127,7 +128,7 @@ namespace Engine.Rendering
             Dictionary<ShaderType, string> ret = new Dictionary<ShaderType, string>();
             foreach (KeyValuePair<ShaderType, string> subshader in subshaders)
             {
-                Logger.Log("Loading Shader: " + subshader.Value, DebugChannel.Log);
+                Logger.Log("Loading Shader: " + subshader.Value, DebugChannel.Log | DebugChannel.EngineRendering, 7);
                 ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
             }
 
@@ -187,7 +188,8 @@ namespace Engine.Rendering
             GL.GetShader(shaderID, ShaderParameter.CompileStatus, out int success);
             if (success == 0)
             {
-                Logger.Log(GL.GetShaderInfoLog(shaderID), DebugChannel.Error);
+
+                Logger.Crash(new OpenGLShaderException(GL.GetShaderInfoLog(shaderID)), true);
 
                 return false;
             }

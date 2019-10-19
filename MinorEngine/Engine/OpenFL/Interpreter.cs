@@ -333,7 +333,7 @@ namespace Engine.OpenFL
                 {
                     if (memoryBuffer.Value.IsInternal)
                     {
-                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value.ToString(), DebugChannel.Log);
+                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value.ToString(), DebugChannel.Log | DebugChannel.OpenFL, 5);
                         memoryBuffer.Value.Buffer.Dispose();
                     }
                 }
@@ -518,7 +518,7 @@ namespace Engine.OpenFL
                     K.SetArg(i, obj);
                 }
 
-                Logger.Log("Running kernel: " + K.Name, DebugChannel.Log);
+                Logger.Log("Running kernel: " + K.Name, DebugChannel.Log | DebugChannel.OpenFL, 8);
                 CLAPI.Run(K, _currentBuffer.Buffer, new int3(_width, _height, _depth),
                     KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer,
                     _channelCount); //Running the kernel
@@ -536,7 +536,7 @@ namespace Engine.OpenFL
             {
                 if (_jumpStack.Count == 0)
                 {
-                    Logger.Log("Reached End of Code", DebugChannel.Log);
+                    Logger.Log("Reached End of Code", DebugChannel.Log | DebugChannel.OpenFL, 9);
 
                     Terminated = true;
                 }
@@ -544,7 +544,7 @@ namespace Engine.OpenFL
                 {
                     InterpreterState lastState = _jumpStack.Pop();
 
-                    Logger.Log("Returning to location: " + Data.Source[lastState.Line], DebugChannel.Log);
+                    Logger.Log("Returning to location: " + Data.Source[lastState.Line], DebugChannel.Log | DebugChannel.OpenFL, 6);
                     _currentIndex = lastState.Line;
 
 
@@ -570,6 +570,7 @@ namespace Engine.OpenFL
         /// <param name="leaveBuffer">a flag to optionally keep the current buffer</param>
         private void JumpTo(int index, bool leaveBuffer = false)
         {
+            Logger.Log("Jumping To Function: " + Data.Source[index], DebugChannel.OpenFL | DebugChannel.Log, 6);
             _jumpStack.Push(new InterpreterState(_currentIndex, _currentBuffer, _currentArgStack));
             _stepResult.HasJumped = true;
 
@@ -588,7 +589,7 @@ namespace Engine.OpenFL
                 _currentBuffer.SetKey("Internal_JumpBuffer_Stack_Index" + (_jumpStack.Count - 1));
             }
 
-            _currentIndex = index;
+            _currentIndex = index+1; //+1 because the index is the function header
             _currentWord = 0;
         }
 
@@ -639,7 +640,7 @@ namespace Engine.OpenFL
         /// <param name="file"></param>
         private static List<string> LoadSource(string file, int channelCount)
         {
-            Logger.Log("Loading Source..", DebugChannel.Log);
+            Logger.Log("Loading Source..", DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 9);
 
             Dictionary<string, bool> defs = new Dictionary<string, bool>();
 
@@ -670,30 +671,29 @@ namespace Engine.OpenFL
         private static FLScriptData LoadScriptData(string file, CLBufferInfo inBuffer, int width, int height, int depth, int channelCount,
             KernelDatabase db, Dictionary<string, FLFunctionInfo> funcs)
         {
-            Logger.Log("Loading Script Data for File: " + file, DebugChannel.Log);
+            Logger.Log("Loading Script Data for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 6);
 
             FLScriptData ret = new FLScriptData(LoadSource(file, channelCount));
 
 
-            Logger.Log("Parsing JumpLocations for File: " + file, DebugChannel.Log);
-            ret.JumpLocations = ParseJumpLocations(ret.Source);
-
             ret.Defines.Add(InputBufferName, inBuffer);
 
-            Logger.Log("Parsing Texture Defines for File: " + file, DebugChannel.Log);
+            Logger.Log("Parsing Texture Defines for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
             ParseDefines(DefineKey, DefineTexture, ret.Source, ret.Defines, width, height, depth, channelCount, db);
 
-            Logger.Log("Parsing Script Defines for File: " + file, DebugChannel.Log);
+            Logger.Log("Parsing Script Defines for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
             ParseDefines(ScriptDefineKey, DefineScript, ret.Source, ret.Defines, width, height, depth, channelCount, db);
 
+            Logger.Log("Parsing JumpLocations for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
+            ret.JumpLocations = ParseJumpLocations(ret.Source);
 
-            Logger.Log("Parsing Instruction Data for File: " + file, DebugChannel.Log);
+            Logger.Log("Parsing Instruction Data for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
             foreach (string line in ret.Source)
             {
-                Logger.Log("Parsing Instruction Data for Line: " + line, DebugChannel.Log);
+                Logger.Log("Parsing Instruction Data for Line: " + line, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 3);
                 FLInstructionData data = GetInstructionData(line, ret.Defines, ret.JumpLocations, funcs, db);
 
-                Logger.Log("Parsed Instruction Data: " + Enum.GetName(typeof(FLInstructionType), data.InstructionType), DebugChannel.Log);
+                Logger.Log("Parsed Instruction Data: " + Enum.GetName(typeof(FLInstructionType), data.InstructionType), DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 2);
 
                 ret.ParsedSource.Add(data);
             }

@@ -12,6 +12,20 @@ namespace Engine.Core
     {
         [ConfigVariable] public static EngineSettings Settings;
 
+
+        public static EngineSettings DefaultSettings => new EngineSettings()
+        {
+            DebugSettings = DebugSettings.GetDefault(),
+            Depth = 8,
+            Stencil = 0,
+            Samples = 16,
+            InitHeight = 720,
+            InitWidth = 1280,
+            Title = "GameTitle",
+            PhysicsThreadCount = 1,
+            VSync = VSyncMode.On,
+            WindowFlags = GameWindowFlags.Default,
+        };
         /// <summary>
         /// The Graphics Mode of the Window
         /// </summary>

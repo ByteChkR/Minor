@@ -179,7 +179,7 @@ namespace Engine.Core
             if (!Destroyed)
             {
                 Logger.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
-                    DebugChannel.Warning);
+                    DebugChannel.Warning | DebugChannel.EngineCore, 10);
             }
         }
 
@@ -353,7 +353,7 @@ namespace Engine.Core
         /// </summary>
         private void RemoveFromRenderLoop()
         {
-            Logger.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log);
+            Logger.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log | DebugChannel.EngineRendering, 7);
             RemoveComponent(typeof(IRenderingComponent));
             ObjsWithAttachedRenderers.Remove(this);
         }

@@ -77,7 +77,7 @@ namespace Engine.Core
         /// <summary>
         /// Default Settings
         /// </summary>
-        private DebugSettings EngineDefault => DebugSettings.Default;
+        private DebugSettings EngineDefault => DebugSettings.GetDefault();
 
         /// <summary>
         /// Public constructor
@@ -85,7 +85,6 @@ namespace Engine.Core
         /// <param name="settings">Settings to be used</param>
         public GameEngine(EngineSettings settings)
         {
-            Logger.SetDebugStage(DebugStage.Startup);
 
             Instance = this;
             Settings = settings;
@@ -98,9 +97,8 @@ namespace Engine.Core
         /// </summary>
         public void Initialize()
         {
-            Logger.SetDebugStage(DebugStage.Init);
 
-            Logger.Log("Init started..", DebugChannel.Log);
+            Logger.Log("Init started..", DebugChannel.Log | DebugChannel.EngineCore, 10);
             initializeWindow();
             initializeRenderer();
 
@@ -115,10 +113,10 @@ namespace Engine.Core
         /// </summary>
         private void initializeWindow()
         {
-            Logger.Log("Initializing Window..", DebugChannel.Log);
+            Logger.Log("Initializing Window..", DebugChannel.Log | DebugChannel.EngineCore, 10);
             Logger.Log(
                 $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}",
-                DebugChannel.Log);
+                DebugChannel.Log | DebugChannel.EngineCore, 9);
             Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title,
                 Settings.WindowFlags);
 
@@ -141,7 +139,7 @@ namespace Engine.Core
         {
             //TODO
 
-            Logger.Log("Initializing Renderer..", DebugChannel.Log);
+            Logger.Log("Initializing Renderer..", DebugChannel.Log | DebugChannel.EngineCore, 10);
             Renderer = new Renderer();
             Window.RenderFrame += OnRender;
             Window.MouseMove += Window_MouseMove;
@@ -165,7 +163,7 @@ namespace Engine.Core
         {
             _changeScene = true;
             _nextScene = typeof(T);
-            Logger.Log("Initializing Scene..", DebugChannel.Log);
+            Logger.Log("Initializing Scene..", DebugChannel.Log | DebugChannel.EngineCore, 9);
         }
 
         /// <summary>
@@ -191,8 +189,7 @@ namespace Engine.Core
         /// </summary>
         public void Run()
         {
-            Logger.SetDebugStage(DebugStage.General);
-            Logger.Log("Running GameEngine Loop..", DebugChannel.Log);
+            Logger.Log("Running GameEngine Loop..", DebugChannel.Log | DebugChannel.EngineCore, 10);
             Window.VSync = VSyncMode.Off;
             Window.Run(0, 0);
         }
@@ -260,7 +257,6 @@ namespace Engine.Core
         protected virtual void Update(object sender, FrameEventArgs e)
         {
             FrameCounter++;
-            Logger.SetDebugStage(DebugStage.Update);
 
             MemoryTracer.NextStage("Update Frame: " + FrameCounter);
 
@@ -268,14 +264,12 @@ namespace Engine.Core
             CurrentScene?.Update((float) e.Time);
             MemoryTracer.NextStage("World Update");
             CurrentScene?.Update((float) e.Time);
-
-            Logger.SetDebugStage(DebugStage.Physics);
+            
             MemoryTracer.NextStage("Physics Update");
             PhysicsEngine.Update((float) e.Time);
 
             if (_changeScene)
             {
-                Logger.SetDebugStage(DebugStage.SceneInit);
                 MemoryTracer.NextStage("Scene Intialization");
                 _changeScene = false;
 
@@ -302,8 +296,7 @@ namespace Engine.Core
                 MemoryTracer.ReturnFromSubStage();
             }
 
-
-            Logger.SetDebugStage(DebugStage.CleanUp);
+            
             //Cleanup
             MemoryTracer.NextStage("Clean up Destroyed Objects");
             CurrentScene?.RemoveDestroyedObjects();
@@ -329,8 +322,6 @@ namespace Engine.Core
         private void OnRender(object o, EventArgs e)
         {
             RenderFrameCounter++;
-            Logger.SetDebugStage(DebugStage.Render);
-
 
             MemoryTracer.NextStage("Render Frame: " + RenderFrameCounter);
 

@@ -36,7 +36,7 @@ namespace Engine.OpenCL
             {
                 Logger.Crash(new InvalidFolderPathException(folderName), true);
 
-                Logger.Log("Creating Folder: " + folderName, DebugChannel.Warning);
+                Logger.Log("Creating Folder: " + folderName, DebugChannel.Warning | DebugChannel.OpenCL, 10);
 
                 Directory.CreateDirectory(folderName);
             }
@@ -76,20 +76,20 @@ namespace Engine.OpenCL
 
             string path = Path.GetFullPath(file);
 
-            Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Warning);
+            Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Log | DebugChannel.OpenCL, 7);
             CLProgram program = new CLProgram(path, GenDataType);
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {
                 if (!LoadedKernels.ContainsKey(containedKernel.Key))
                 {
-                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log);
+                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log | DebugChannel.OpenCL, 6);
                     LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
                 {
                     Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
-                        DebugChannel.Log);
+                        DebugChannel.Log | DebugChannel.OpenCL, 7);
                 }
             }
         }

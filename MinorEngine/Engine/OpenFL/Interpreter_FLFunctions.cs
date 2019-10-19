@@ -36,7 +36,7 @@ namespace Engine.OpenFL
                 byte channel = (byte) Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
                 {
-                    Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning);
+                    Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning| DebugChannel.OpenFL, 10);
                 }
                 else
                 {
@@ -74,9 +74,14 @@ namespace Engine.OpenFL
 
             if (needCopy)
             {
-                Logger.Log("Updating Channel Buffer", DebugChannel.Log);
+                Logger.Log("Updating Channel Buffer", DebugChannel.Log | DebugChannel.OpenFL, 6);
                 _activeChannels = temp;
                 CLAPI.WriteToBuffer(_activeChannelBuffer, _activeChannels);
+            }
+            else
+            {
+
+                Logger.Log("Skipping Updating Channel Buffer", DebugChannel.Log | DebugChannel.OpenFL, 6);
             }
         }
 
@@ -144,7 +149,7 @@ namespace Engine.OpenFL
         /// </summary>
         private void cmd_jump() //Dummy function. Implementation in AnalyzeLine(code) function(look for isDirectExecute)
         {
-            Logger.Log("Jumping.", DebugChannel.Log);
+            Logger.Log("Jumping.", DebugChannel.Log | DebugChannel.OpenFL, 6);
         }
 
         /// <summary>

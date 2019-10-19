@@ -1,15 +1,15 @@
 <Settings>
   <Engine.Core.EngineSettings.Settings>
-    <EngineSettings>
+    <EngineSettings  >
       <Depth>8</Depth>
       <Stencil>0</Stencil>
       <Samples>16</Samples>
       <InitWidth>1280</InitWidth>
       <InitHeight>720</InitHeight>
       <PhysicsThreadCount>1</PhysicsThreadCount>
+      <Title>GameTitle</Title>
       <VSync>On</VSync>
       <WindowFlags>Default</WindowFlags>
-      <Title>TestTitle</Title>
       <DebugSettings>
         <LogStreamConfig>
           <StreamType>0</StreamType>
@@ -23,16 +23,40 @@
         <SendInternalWarnings>true</SendInternalWarnings>
         <SearchForUpdates>false</SearchForUpdates>
         <InternalUpdateMask>0</InternalUpdateMask>
+        <SeverityFilter>6</SeverityFilter>
         <PrefixLookupFlags>11</PrefixLookupFlags>
         <StageNames>
-          <string>[Startup]</string>
-          <string>[Init]</string>
-          <string>[SceneInit]</string>
-          <string>[General]</string>
-          <string>[Update]</string>
+          <string>[Log]</string>
+          <string>[Warning]</string>
+          <string>[Error]</string>
+          <string>[Game]</string>
+          <string>[UNNAMED_CHANNEL0]</string>
+          <string>[UNNAMED_CHANNEL1]</string>
+          <string>[UNNAMED_CHANNEL2]</string>
+          <string>[UNNAMED_CHANNEL3]</string>
+          <string>[UNNAMED_CHANNEL4]</string>
+          <string>[UNNAMED_CHANNEL5]</string>
+          <string>[UNNAMED_CHANNEL6]</string>
+          <string>[UNNAMED_CHANNEL7]</string>
+          <string>[UNNAMED_CHANNEL8]</string>
+          <string>[UNNAMED_CHANNEL9]</string>
+          <string>[UNNAMED_CHANNEL10]</string>
+          <string>[UNNAMED_CHANNEL11]</string>
+          <string>[UNNAMED_CHANNEL12]</string>
           <string>[Physics]</string>
-          <string>[CleanUp]</string>
-          <string>[Render]</string>
+          <string>[Exception]</string>
+          <string>[Core]</string>
+          <string>[Rendering]</string>
+          <string>[TextProcessor]</string>
+          <string>[OpenFL]</string>
+          <string>[OpenCL]</string>
+          <string>[OpenGL]</string>
+          <string>[UI]</string>
+          <string>[Audio]</string>
+          <string>[Engine]</string>
+          <string>[Debug]</string>
+          <string>[IO]</string>
+          <string>[WFC]</string>
         </StageNames>
       </DebugSettings>
     </EngineSettings>

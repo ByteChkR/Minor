@@ -34,7 +34,7 @@ namespace Engine.OpenFL
 
             if (defines.ContainsKey(varname))
             {
-                Logger.Log("Overwriting " + varname, DebugChannel.Warning);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFL, 10);
                 defines.Remove(varname);
             }
 
@@ -82,7 +82,6 @@ namespace Engine.OpenFL
                     Logger.Crash(
                         new FLInvalidFunctionUseException(DefineKey, "Invalid Filepath",
                             new InvalidFilePathException(fn)), true);
-                    Logger.Log("Invalid Filepath. Using empty buffer. " + fn, DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -119,7 +118,6 @@ namespace Engine.OpenFL
                 if (args.Length < 10)
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -128,7 +126,6 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[2], out int n))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -137,7 +134,6 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[3], out int widh))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -146,7 +142,6 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[4], out int heigt))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -155,7 +150,6 @@ namespace Engine.OpenFL
                 else if (!bool.TryParse(args[5], out bool periodicInput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -164,7 +158,6 @@ namespace Engine.OpenFL
                 else if (!bool.TryParse(args[6], out bool periodicOutput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -173,7 +166,6 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[7], out int symmetry))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -182,7 +174,6 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[8], out int ground))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -191,7 +182,6 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[9], out int limit))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    Logger.Log("Invalid WFC Define statement. Using empty buffer", DebugChannel.Error, 10);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
@@ -203,20 +193,20 @@ namespace Engine.OpenFL
                     if (File.Exists(fn))
                     {
                         Bitmap bmp;
-                        WFCOverlayMode wfc = new WFCOverlayMode(fn, n, width,
-                            height, periodicInput, periodicOutput, symmetry, ground);
+                        WFCOverlayMode wfc = new WFCOverlayMode(fn, n, widh,
+                            heigt, periodicInput, periodicOutput, symmetry, ground);
                         if (force)
                         {
                             do
                             {
                                 wfc.Run(limit);
-                                bmp = new Bitmap(wfc.Graphics(), new Size(widh, heigt)); //Apply scaling
+                                bmp = new Bitmap(wfc.Graphics(), new Size(width, height)); //Apply scaling
                             } while (!wfc.Success);
                         }
                         else
                         {
                             wfc.Run(limit);
-                            bmp = new Bitmap(wfc.Graphics(), new Size(widh, heigt)); //Apply scaling
+                            bmp = new Bitmap(wfc.Graphics(), new Size(width, height)); //Apply scaling
                         }
 
                         CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(bmp,
@@ -229,7 +219,6 @@ namespace Engine.OpenFL
                         Logger.Crash(
                             new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement",
                                 new InvalidFilePathException(fn)), true);
-                        Logger.Log("Invalid Image statement. Using empty buffer", DebugChannel.Error, 10);
                         CLBufferInfo info =
                             new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                         info.SetKey(varname);
@@ -247,7 +236,6 @@ namespace Engine.OpenFL
                 }
 
                 Logger.Crash(new FLInvalidFunctionUseException(DefineKey, "Define statement wrong: " + s), true);
-                Logger.Log("Invalid Define statement. Using empty buffer", DebugChannel.Error, 10);
                 CLBufferInfo info =
                     new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
                 info.SetKey(varname);

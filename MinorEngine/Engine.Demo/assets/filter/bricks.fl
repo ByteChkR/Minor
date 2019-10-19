@@ -30,4 +30,3 @@ Main:
   jmp Red #make the bricks red
   setactive inverseMask 0 1 2
   add in #make the cement slightly gray
-  

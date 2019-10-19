@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -36,6 +37,12 @@ namespace Engine.Debug
         public int InternalUpdateMask { get; set; }
 
         /// <summary>
+        /// The mask that the DebugFramework uses to filter out less important logs
+        /// </summary>
+        public int SeverityFilter { get; set; }
+        
+
+        /// <summary>
         /// Flags to govern how the Prefixes for the messages get assembled and computed
         /// </summary>
         public int PrefixLookupFlags { get; set; }
@@ -57,18 +64,29 @@ namespace Engine.Debug
         }
 
         /// <summary>
-        /// Property that returns the default settings for debug logging.
+        /// Funcction that returns the default settings for debug logging.
         /// </summary>
-        public static DebugSettings Default => new DebugSettings
+        public static DebugSettings GetDefault()
         {
-            Enabled = true,
-            SendInternalWarnings = true,
-            SearchForUpdates = false,
-            InternalUpdateMask = 0,
-            StageNames = Enum.GetNames(typeof(DebugStage)).Select(x => "[" + x + "]").ToArray(),
-            PrefixLookupFlags = 1 | 2 | 8,
-            Streams = new[] {new LogStreamSettings {Mask = -1, Timestamp = true}}
-                .Cast<ILogStreamSettings>().ToArray()
-        };
+            List<string> stageNames = new List<string>();
+            for (int i = 0; i < 31; i++)
+            {
+                stageNames.Add("[" + Enum.GetName(typeof(DebugChannel), 1 << i) + "]");
+            }
+
+            return new DebugSettings
+            {
+                Enabled = true,
+                SendInternalWarnings = true,
+                SearchForUpdates = false,
+                InternalUpdateMask = 0,
+                SeverityFilter = 6,
+                StageNames = stageNames.ToArray(),
+                PrefixLookupFlags = 1 | 2 | 8,
+                Streams = new[] { new LogStreamSettings { Mask = -1, Timestamp = true } }
+                    .Cast<ILogStreamSettings>().ToArray()
+            };
+        }
+        
     }
 }

@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using Assimp;
 using Engine.DataTypes;
 using Engine.Debug;
+using Engine.Exceptions;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.TypeEnums;
@@ -221,7 +222,7 @@ namespace Engine.IO
         {
             if (!File.Exists(file))
             {
-                Logger.Log("Could not Find Texture with Path: " + file, DebugChannel.Log);
+                Logger.Crash(new InvalidFilePathException(file), true);
                 return Texture.DefaultTexture;
             }
 
@@ -265,7 +266,7 @@ namespace Engine.IO
             List<Texture> ret = new List<Texture>();
 
             Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
-                DebugChannel.Log);
+                DebugChannel.Log | DebugChannel.IO, 1);
             for (int i = 0; i < m.GetMaterialTextureCount((Assimp.TextureType) texType); i++)
             {
                 TextureSlot s;

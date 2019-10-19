@@ -60,7 +60,7 @@ namespace Engine.WFC
                 sample[x, y] = (byte) i;
             }
 
-            Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log);
+            Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log | DebugChannel.WFC, 3);
             int C = _colors.Count;
             long W = WaveCollapseUtils.Power(C, N * N);
 
@@ -287,7 +287,6 @@ namespace Engine.WFC
                     if (contributors == 0)
                     {
                         Success = false;
-                        Logger.Log("Pixel: " + i + " has no match", DebugChannel.Warning);
                         continue;
                     }
 

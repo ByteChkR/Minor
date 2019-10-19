@@ -121,7 +121,7 @@ namespace Engine.IO
         {
             if (!File.Exists(path))
             {
-                Logger.Log("Could not load model file.", DebugChannel.Error);
+                Logger.Crash(new InvalidFolderPathException(path), true);
                 return new List<Mesh> {Mesh.DefaultMesh};
             }
 
@@ -140,7 +140,7 @@ namespace Engine.IO
         {
             if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
             {
-                Logger.Log("Loading Model File failed.", DebugChannel.Error);
+                Logger.Crash(new InvalidFolderPathException(path), true);
                 return new List<Mesh>();
             }
 
@@ -151,9 +151,9 @@ namespace Engine.IO
             }
 
 
-            Logger.Log("Loading Model Finished.", DebugChannel.Log);
+            Logger.Log("Loading Assimp Scene Finished.", DebugChannel.Log | DebugChannel.IO, 5);
 
-            Logger.Log("Processing Nodes...", DebugChannel.Log);
+            Logger.Log("Processing Nodes...", DebugChannel.Log | DebugChannel.IO, 6);
 
             List<Mesh> ret = new List<Mesh>();
 
@@ -171,10 +171,10 @@ namespace Engine.IO
         /// <param name="dir">The Relative directory of the Mesh File</param>
         private static void processNode(Node node, Scene s, List<Mesh> meshes, string dir)
         {
-            Logger.Log("Processing Node: " + node.Name, DebugChannel.Log);
+            Logger.Log("Processing Node: " + node.Name, DebugChannel.Log | DebugChannel.IO, 4);
             if (node.HasMeshes)
             {
-                Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log);
+                Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log | DebugChannel.IO, 4);
                 for (int i = 0; i < node.MeshCount; i++)
                 {
                     meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir));
@@ -205,10 +205,10 @@ namespace Engine.IO
             List<Texture> textures = new List<Texture>();
 
 
-            Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log);
+            Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log | DebugChannel.IO, 3);
 
 
-            Logger.Log("Copying Vertex Data...", DebugChannel.Log);
+            Logger.Log("Copying Vertex Data...", DebugChannel.Log | DebugChannel.IO, 2);
             for (int i = 0; i < mesh.VertexCount; i++)
             {
                 Vector3D vert = mesh.Vertices[i];
@@ -230,7 +230,7 @@ namespace Engine.IO
             }
 
 
-            Logger.Log("Calculating Indices...", DebugChannel.Log);
+            Logger.Log("Calculating Indices...", DebugChannel.Log | DebugChannel.IO, 2);
 
             for (int i = 0; i < mesh.FaceCount; i++)
             {
@@ -241,7 +241,7 @@ namespace Engine.IO
 
             Material m = s.Materials[mesh.MaterialIndex];
 
-            Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log);
+            Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log | DebugChannel.IO, 2);
 
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Diffuse, dir));
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Specular, dir));

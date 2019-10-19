@@ -224,7 +224,7 @@ namespace Engine.Rendering
         protected override void Awake()
         {
             Logger.Log($"Mesh Info:{Owner.Name} (IDs: VAO: {Model._vao}, VBO: {Model._vbo}, EBO: {Model._ebo})..",
-                DebugChannel.Log);
+                DebugChannel.Log | DebugChannel.EngineRendering, 3);
         }
     }
 }

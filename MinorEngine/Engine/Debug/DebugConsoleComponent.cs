@@ -528,7 +528,7 @@ namespace Engine.Debug
                 ret += "Command Not found";
             }
 
-            Logger.Log(ret, DebugChannel.Log);
+            Logger.Log(ret, DebugChannel.Log | DebugChannel.Debug, int.MaxValue);
 
             return "Success";
         }

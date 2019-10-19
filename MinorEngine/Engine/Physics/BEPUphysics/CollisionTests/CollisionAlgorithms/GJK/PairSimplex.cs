@@ -997,36 +997,36 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 case SimplexState.Point:
                     if (Vector3.Distance(SimplexA.A - SimplexB.A, A) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     break;
                 case SimplexState.Segment:
                     if (Vector3.Distance(SimplexA.A - SimplexB.A, A) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     if (Vector3.Distance(SimplexA.B - SimplexB.B, B) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     break;
                 case SimplexState.Triangle:
                     if (Vector3.Distance(SimplexA.A - SimplexB.A, A) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     if (Vector3.Distance(SimplexA.B - SimplexB.B, B) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     if (Vector3.Distance(SimplexA.C - SimplexB.C, C) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     break;
@@ -1034,22 +1034,22 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK
                 case SimplexState.Tetrahedron:
                     if (Vector3.Distance(SimplexA.A - SimplexB.A, A) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     if (Vector3.Distance(SimplexA.B - SimplexB.B, B) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     if (Vector3.Distance(SimplexA.C - SimplexB.C, C) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     if (Vector3.Distance(SimplexA.D - SimplexB.D, D) > .0001f)
                     {
-                        Logger.Log("break.", DebugChannel.Log);
+                        Logger.Log("break.", DebugChannel.Log | DebugChannel.Physics, 3);
                     }
 
                     break;
