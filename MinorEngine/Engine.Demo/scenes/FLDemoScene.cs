@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Resources;
 using Assimp;
+using Engine.Audio;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -111,8 +112,8 @@ namespace Engine.Demo.scenes
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/texture.fs"},
-                {ShaderType.VertexShader, "shader/texture.vs"}
+                {ShaderType.FragmentShader, "shader/lit/point.fs"},
+                {ShaderType.VertexShader, "shader/lit/point.vs"}
             }, out ShaderProgram shader);
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
@@ -123,15 +124,22 @@ namespace Engine.Demo.scenes
             GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
             objQuad.AddComponent(new MeshRendererComponent(shader, plane,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
-            objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(90));
+            objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(45));
 
+            GameObject _sourceCube = new GameObject(new Vector3(0, 10, 10), "Light Source");
+
+            Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
+            _sourceCube.AddComponent(new RotateAroundComponent(){Slow = 0.15f});
+            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube,
+                TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
+            _sourceCube.AddComponent(new LightComponent());
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
             uiText.AddComponent(new FLGeneratorComponent(new List<MeshRendererComponent>
                     {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()},
                 512,
                 512));
 
-
+            Add(_sourceCube);
             GameEngine.Instance.CurrentScene.Add(uiText);
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);

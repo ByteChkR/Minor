@@ -17,6 +17,8 @@ namespace Engine.Rendering
         /// </summary>
         private readonly List<RenderTarget> Targets = new List<RenderTarget>();
 
+        internal static List<LightComponent> Lights = new List<LightComponent>();
+
         /// <summary>
         /// Current target id
         /// </summary>

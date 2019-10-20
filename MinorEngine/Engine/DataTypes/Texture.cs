@@ -66,6 +66,8 @@ namespace Engine.DataTypes
         /// </summary>
         private bool _disposed;
 
+        private bool _dontDispose;
+
         /// <summary>
         /// Convenient Wrapper to query the texture width
         /// </summary>
@@ -105,11 +107,25 @@ namespace Engine.DataTypes
         }
 
         /// <summary>
+        /// Returns a Copy of this Mesh(It Does not copy the buffers on the GPU)
+        /// It is save to Dispose the copied object.
+        /// BUT NEVER DISPOSE THE SOURCE OBJECT BEFORE ALL COPIES HAVE BEEN DISPOSED, otherwise they become unusable and will probably crash the engine once interacted with
+        /// </summary>
+        /// <returns>A Copy of this Mesh Object</returns>
+        public Texture Copy()
+        {
+            return new Texture(TextureId)
+            {
+                _dontDispose = true
+            };
+        }
+
+        /// <summary>
         /// Disposed Implementation to free the texture memory when it is no longer in use.
         /// </summary>
         public void Dispose()
         {
-            if (_disposed)
+            if (_disposed || _dontDispose)
             {
                 return;
             }

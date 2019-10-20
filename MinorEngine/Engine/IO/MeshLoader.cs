@@ -24,53 +24,7 @@ namespace Engine.IO
     /// </summary>
     public class MeshLoader
     {
-        /// <summary>
-        /// static Class providing frequently used objects
-        /// </summary>
-        public static class Prefabs
-        {
-            /// <summary>
-            /// Backing field of the Public Property Cube
-            /// </summary>
-            private static Mesh _cube = null;
-
-            /// <summary>
-            /// Backing field of the Public Property Sphere
-            /// </summary>
-            private static Mesh _sphere = null;
-
-            /// <summary>
-            /// Returns an instance of a Cube
-            /// </summary>
-            public static Mesh Cube
-            {
-                get
-                {
-                    if (_cube == null)
-                    {
-                        _cube = FileToMesh("models/cube_flat.obj");
-                    }
-
-                    return _cube.Copy();
-                }
-            }
-
-            /// <summary>
-            /// Returns an instance of a Sphere
-            /// </summary>
-            public static Mesh Sphere
-            {
-                get
-                {
-                    if (_sphere == null)
-                    {
-                        _sphere = FileToMesh("models/cube_flat.obj");
-                    }
-
-                    return _sphere.Copy();
-                }
-            }
-        }
+        
 
 
         /// <summary>

@@ -14,7 +14,7 @@ namespace Engine.Rendering
         /// <summary>
         /// The Context Backing field
         /// </summary>
-        private MeshRenderContext _context;
+        private LitMeshRenderContext _context;
 
         /// <summary>
         /// A flag that indicates if the context needs to be updated
@@ -44,7 +44,12 @@ namespace Engine.Rendering
         /// <summary>
         /// The Texture Backing Field
         /// </summary>
-        private Texture _texture;
+        private Texture _diffuseTexture;
+
+        /// <summary>
+        /// The Texture Backing Field
+        /// </summary>
+        private Texture _specularTexture;
 
         /// <summary>
         /// The render type backing field
@@ -61,7 +66,7 @@ namespace Engine.Rendering
                 if (_context == null)
                 {
                     _contextInvalid = false;
-                    _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] {Model}, new[] {Texture},
+                    _context = new LitMeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, new[] { DiffuseTexture, SpecularTexture },
                         RenderType, Offset, Tiling);
                 }
                 else if (_contextInvalid || Owner._worldTransformCache != _context.ModelMat)
@@ -70,8 +75,8 @@ namespace Engine.Rendering
 
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.Program = Shader;
-                    _context.Meshes = new[] {Model};
-                    _context.Textures = new[] {Texture};
+                    _context.Meshes = new[] { Model };
+                    _context.Textures = new[] { DiffuseTexture, SpecularTexture };
                     _context.ModelMat = Owner._worldTransformCache;
                     _context.RenderType = RenderType;
                     _context.Offset = Offset;
@@ -155,14 +160,27 @@ namespace Engine.Rendering
         /// <summary>
         /// The Texture that is used to Render the Mesh
         /// </summary>
-        public Texture Texture
+        public Texture DiffuseTexture
         {
-            get => _texture;
+            get => _diffuseTexture;
             set
             {
-                if (_texture != value)
+                if (_diffuseTexture != value)
                 {
-                    _texture = value;
+                    _diffuseTexture = value;
+                    _contextInvalid = true;
+                }
+            }
+        }
+
+        public Texture SpecularTexture
+        {
+            get => _specularTexture;
+            set
+            {
+                if (_specularTexture != value)
+                {
+                    _specularTexture = value;
                     _contextInvalid = true;
                 }
             }
@@ -194,14 +212,14 @@ namespace Engine.Rendering
         /// </summary>
         /// <param name="shader">The Shader to be used</param>
         /// <param name="model">The mesh to be drawn</param>
-        /// <param name="texture">The Texture to drawn on the mesh</param>
+        /// <param name="diffuseTexture">The Texture to drawn on the mesh</param>
         /// <param name="renderMask">The render mask</param>
         /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
-        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture texture, int renderMask,
+        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
             bool disposeOnDestroy = true)
         {
             Shader = shader;
-            Texture = texture;
+            DiffuseTexture = diffuseTexture;
             Model = model;
             RenderMask = renderMask;
             DisposeMeshOnDestroy = disposeOnDestroy;
@@ -216,6 +234,12 @@ namespace Engine.Rendering
             {
                 Model.Dispose();
             }
+        }
+
+        protected override void Update(float deltaTime)
+        {
+            if (_context != null)
+                _context.TempTime += deltaTime;
         }
 
         /// <summary>

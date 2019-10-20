@@ -589,7 +589,7 @@ namespace Engine.OpenFL
                 _currentBuffer.SetKey("Internal_JumpBuffer_Stack_Index" + (_jumpStack.Count - 1));
             }
 
-            _currentIndex = index+1; //+1 because the index is the function header
+            _currentIndex = index + 1; //+1 because the index is the function header
             _currentWord = 0;
         }
 
@@ -773,6 +773,13 @@ namespace Engine.OpenFL
         {
             _currentBuffer.SetInternalState(false);
             return _currentBuffer.Buffer;
+        }
+
+        public CLBufferInfo GetBuffer(string name)
+        {
+            if (Data.Defines.ContainsKey(name))
+                return Data.Defines[name];
+            return null;
         }
 
         internal CLBufferInfo GetActiveBufferInternal()
