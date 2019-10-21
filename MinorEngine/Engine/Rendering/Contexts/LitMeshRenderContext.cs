@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Drawing.Drawing2D;
 using Assimp;
+using Engine.Core;
 using Engine.DataTypes;
 using Engine.IO;
 using OpenTK;
@@ -44,6 +45,7 @@ namespace Engine.Rendering.Contexts
             Program.AddUniformCache("offset");
             Program.AddUniformCache("shininess");
             Program.AddUniformCache("lightCount");
+            Program.AddUniformCache("cameraPos");
             string s = "lights[{0}].{1}";
             for (int i = 0; i < 8; i++)
             {
@@ -87,6 +89,7 @@ namespace Engine.Rendering.Contexts
             GL.UniformMatrix4(Program.GetUniformLocation("mvpMatrix"), false, ref mvp);
             GL.Uniform2(Program.GetUniformLocation("tiling"), Tiling);
             GL.Uniform2(Program.GetUniformLocation("offset"), Offset);
+            GL.Uniform3(Program.GetUniformLocation("cameraPos"), GameEngine.Instance.CurrentScene.Camera.LocalPosition);
             GL.Uniform1(Program.GetUniformLocation("shininess"), 15f);
 
 

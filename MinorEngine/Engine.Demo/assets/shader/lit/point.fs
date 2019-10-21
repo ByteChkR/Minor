@@ -15,6 +15,7 @@ uniform sampler2D texture_specular1;
 uniform int lightCount;
 uniform LightSource lights[8];
 uniform float shininess;
+uniform vec3 cameraPos;
 
 in vec3 worldNormal;
 in vec3 eye;
@@ -49,14 +50,14 @@ vec3 CalculateLight(LightSource source, vec3 normal, vec3 lightdir)
 
 
 	float spec = 0.0;
-	if(false)
+	if(true)
 	{
-		vec3 viewdir = normalize(eye - fragPos);
+		vec3 viewdir = normalize(cameraPos - fragPos);
 		//Specular(Blinn)
 		vec3 halfDir = normalize(lightdir + viewdir);
 		//the dotproduct of the reflected light dir and the light dir.
 		//if the angle is big, there is little to no shininess.
-		spec = pow(max(dot(normal, halfDir), 0.0), shininess*2);
+		spec = pow(max(dot(normal, halfDir), 0.0), shininess*4);
 	}
 	else
 	{
