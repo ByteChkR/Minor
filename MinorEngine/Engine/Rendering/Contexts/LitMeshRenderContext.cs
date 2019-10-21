@@ -106,7 +106,7 @@ namespace Engine.Rendering.Contexts
                     float ambientContrib = Renderer.Lights[i].AmbientContribution;
                     GL.Uniform1(Program.GetUniformLocation(string.Format(s, i, "ambientContribution")), ambientContrib);
 
-                    Vector3 pos = Renderer.Lights[i].Owner.GetWorldPosition();
+                    Vector3 pos = Renderer.Lights[i].Owner.GetLocalPosition();
                     GL.Uniform3(Program.GetUniformLocation(string.Format(s, i, "position")), pos);
                     Vector3 att = Renderer.Lights[i].Attenuation;
                     GL.Uniform3(Program.GetUniformLocation(string.Format(s, i, "attenuation")), att);

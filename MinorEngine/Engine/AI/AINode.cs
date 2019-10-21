@@ -14,7 +14,7 @@ namespace Engine.AI
         //Search Specific
         public AINode ParentNode;
         public bool Walkable;
-        public float WalkCostMultiplier;
+        public float WalkCostMultiplier = 1;
         public AINodeState NodeState;
 
 

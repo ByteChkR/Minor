@@ -1,0 +1,27 @@
+<Settings>
+  <Engine.Rendering.BasicCamera.LocalPosition>
+    <Vector3>
+      <X>0</X>
+      <Y>55</Y>
+      <Z>-25</Z>
+    </Vector3>
+  </Engine.Rendering.BasicCamera.LocalPosition>
+  <Engine.Rendering.BasicCamera.Scale>
+    <Vector3>
+      <X>1</X>
+      <Y>1</Y>
+      <Z>1</Z>
+    </Vector3>
+  </Engine.Rendering.BasicCamera.Scale>
+  <Engine.Rendering.BasicCamera.Name>
+    <string>Camera</string>
+  </Engine.Rendering.BasicCamera.Name>
+  <Engine.Rendering.BasicCamera.AxisAngle>
+    <Vector4>
+      <X>-1</X>
+      <Y>0</Y>
+      <Z>0</Z>
+      <W>1.5</W>
+    </Vector4>
+  </Engine.Rendering.BasicCamera.AxisAngle>
+</Settings>

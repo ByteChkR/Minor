@@ -46,7 +46,7 @@ namespace Engine.IO
             {
                 if (_sphere == null)
                 {
-                    _sphere = MeshLoader.FileToMesh("models/cube_flat.obj");
+                    _sphere = MeshLoader.FileToMesh("models/sphere_smooth.obj");
                 }
 
                 return _sphere.Copy();

@@ -129,10 +129,11 @@ namespace Engine.Demo.scenes
             GameObject _sourceCube = new GameObject(new Vector3(0, 10, 10), "Light Source");
 
             Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
+            _sourceCube.AddComponent(new LightComponent());
             _sourceCube.AddComponent(new RotateAroundComponent(){Slow = 0.15f});
             _sourceCube.AddComponent(new MeshRendererComponent(shader, true, sourceCube,
                 TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
-            _sourceCube.AddComponent(new LightComponent());
+            
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
             uiText.AddComponent(new FLGeneratorComponent(new List<MeshRendererComponent>
                     {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()},

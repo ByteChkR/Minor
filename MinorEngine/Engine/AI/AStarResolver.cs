@@ -42,7 +42,7 @@ namespace Engine.AI
 
                         if (!connection.Walkable || connection.NodeState == AINodeState.Closed) continue;
 
-                        float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length;
+                        float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length * connection.WalkCostMultiplier;
                         if (connection.NodeState == AINodeState.Unconsidered)
                         {
                             connection.ParentNode = current;
