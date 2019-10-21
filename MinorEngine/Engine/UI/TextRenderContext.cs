@@ -39,6 +39,7 @@ namespace Engine.UI
         /// </summary>
         protected static bool _init;
 
+        private bool cached;
 
         /// <summary>
         /// The Length of a single \t in UV coordinates
@@ -68,7 +69,7 @@ namespace Engine.UI
         /// <summary>
         /// Initialization Method that sets up the Screen Quad buffers
         /// </summary>
-        private void SetUpTextResources()
+        private static void SetUpTextResources()
         {
 
             _init = true;
@@ -87,9 +88,6 @@ namespace Engine.UI
             GL.BindVertexArray(0);
 
 
-            Program.AddUniformCache("transform");
-            Program.AddUniformCache("textColor");
-            Program.AddUniformCache("sourceTexture");
         }
 
         /// <summary>
@@ -102,6 +100,15 @@ namespace Engine.UI
             if (!_init)
             {
                 SetUpTextResources();
+            }
+
+
+            if (!cached)
+            {
+                cached = true;
+                Program.AddUniformCache("transform");
+                Program.AddUniformCache("textColor");
+                Program.AddUniformCache("sourceTexture");
             }
 
             int scrW = GameEngine.Instance.Width;
