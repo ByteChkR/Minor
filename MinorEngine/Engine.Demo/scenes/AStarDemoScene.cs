@@ -117,6 +117,16 @@ namespace Engine.Demo.scenes
             Random rnd = new Random();
             AINode startNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
             AINode endNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
+            while (!startNode.Walkable)
+            {
+                startNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
+            }
+
+            while (!endNode.Walkable)
+            {
+                endNode= nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
+                
+            }
             path = AStarResolver.FindPath(startNode, endNode, out bool found);
 
             for (int i = 0; i < path.Count; i++)
