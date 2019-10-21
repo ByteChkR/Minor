@@ -85,6 +85,11 @@ namespace Engine.Debug
 
             GL.BindVertexArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+
+
+            Program.AddUniformCache("transform");
+            Program.AddUniformCache("lineColor");
+
         }
 
         /// <summary>

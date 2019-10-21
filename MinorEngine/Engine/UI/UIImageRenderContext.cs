@@ -74,6 +74,11 @@ namespace Engine.UI
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+
+
+            Program.AddUniformCache("transform");
+            Program.AddUniformCache("alpha");
+            Program.AddUniformCache("uiTexture");
         }
 
         /// <summary>

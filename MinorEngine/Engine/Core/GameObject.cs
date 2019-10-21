@@ -69,6 +69,9 @@ namespace Engine.Core
         /// </summary>
         public IRenderingComponent RenderingComponent { get; private set; }
 
+        private bool transformChanged = true;
+        private Matrix4 _transform = Matrix4.Identity;
+
         /// <summary>
         /// The Transform component
         /// </summary>
@@ -76,15 +79,19 @@ namespace Engine.Core
         {
             get
             {
-                Matrix4 mat = Matrix4.Identity;
-                if (Scale != Physics.BEPUutilities.Vector3.Zero)
+                if(transformChanged)
                 {
-                    mat *= Matrix4.CreateScale(Scale);
-                }
+                    _transform = Matrix4.Identity;
+                    if (Scale != Physics.BEPUutilities.Vector3.Zero)
+                    {
+                        _transform *= Matrix4.CreateScale(Scale);
+                    }
 
-                mat *= Matrix4.CreateFromQuaternion(Rotation);
-                mat *= Matrix4.CreateTranslation(LocalPosition);
-                return mat;
+                    _transform *= Matrix4.CreateFromQuaternion(Rotation);
+                    _transform *= Matrix4.CreateTranslation(LocalPosition);
+                    transformChanged = false;
+                }
+                return _transform;
             }
         }
 
@@ -93,19 +100,43 @@ namespace Engine.Core
         /// </summary>
         [ConfigVariable]
         [XmlElement(Order = 1)]
-        public Engine.Physics.BEPUutilities.Vector3 LocalPosition { get; set; }
+        public Engine.Physics.BEPUutilities.Vector3 LocalPosition
+        {
+            get => _localPosition;
+            set
+            {
+                transformChanged = true;
+                _localPosition = value;
+            }
+        }
 
         /// <summary>
         /// The Scale
         /// </summary>
         [ConfigVariable]
         [XmlElement(Order = 2)]
-        public Engine.Physics.BEPUutilities.Vector3 Scale { get; set; } = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
+        public Engine.Physics.BEPUutilities.Vector3 Scale
+        {
+            get => _scale;
+            set
+            {
+                transformChanged = true;
+                _scale = value;
+            }
+        }
 
         /// <summary>
         /// The Rotation
         /// </summary>
-        public Engine.Physics.BEPUutilities.Quaternion Rotation { get; set; } = Quaternion.Identity;
+        public Engine.Physics.BEPUutilities.Quaternion Rotation
+        {
+            get => _rotation;
+            set
+            {
+                transformChanged = true;
+                _rotation = value;
+            }
+        }
 
         /// <summary>
         /// The Current Scene the object belongs to
@@ -159,6 +190,10 @@ namespace Engine.Core
         /// Private flag that indicates that the object has been destroyed but is not yet removed from the systems
         /// </summary>
         private bool _destructionPending;
+
+        private Physics.BEPUutilities.Vector3 _localPosition;
+        private Physics.BEPUutilities.Vector3 _scale = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
+        private Physics.BEPUutilities.Quaternion _rotation = Quaternion.Identity;
 
 
         [ConfigVariable]
@@ -245,6 +280,8 @@ namespace Engine.Core
         /// <param name="parent">The parent of the object</param>
         public GameObject(Vector3 localPosition, string name, GameObject parent)
         {
+            _worldTransformCache=Matrix4.Identity;
+            
             LocalPosition = localPosition;
             Parent = parent;
 
@@ -443,7 +480,7 @@ namespace Engine.Core
             {
                 if (gameObject._hasRendererInHierarchy) //We only need to update the worldspace cache when we need to
                 {
-                    gameObject.ComputeWorldTransformCache(parentTransform);
+                    gameObject.ComputeWorldTransformCache(Transform);
                 }
             }
         }
@@ -886,7 +923,7 @@ namespace Engine.Core
             {
                 return Transform;
             }
-
+            
             return Parent.GetWorldTransform() * Transform;
         }
 

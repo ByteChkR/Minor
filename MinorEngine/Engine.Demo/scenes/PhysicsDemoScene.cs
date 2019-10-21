@@ -134,14 +134,14 @@ namespace Engine.Demo.scenes
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(250, 1, 250);
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox,
+            bgObj.AddComponent(new MeshRendererComponent(shader, true, bgBox,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             Collider groundCol = new Collider(new Box(Vector3.Zero, 500, 1, 500), hybLayer);
             bgObj.AddComponent(groundCol);
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
             GameObject boxO = new GameObject(Vector3.UnitY * 3, "Box");
-            boxO.AddComponent(new MeshRendererComponent(shader, bgBox,
+            boxO.AddComponent(new MeshRendererComponent(shader, true, bgBox,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             boxO.AddComponent(new Collider(new Box(Vector3.Zero, 1, 1, 1), physicsLayer));
             boxO.Translate(new Vector3(55, 0, 35));
@@ -150,7 +150,7 @@ namespace Engine.Demo.scenes
 
             GameObject mouseTarget = new GameObject(Vector3.UnitY * -3, "BG");
             mouseTarget.Scale = new Vector3(1, 1, 1);
-            mouseTarget.AddComponent(new MeshRendererComponent(shader, sphere,
+            mouseTarget.AddComponent(new MeshRendererComponent(shader, true, sphere,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
 
             GameEngine.Instance.CurrentScene.Add(mouseTarget);

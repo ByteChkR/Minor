@@ -41,6 +41,17 @@ namespace Engine.Rendering.Contexts
         /// <returns></returns>
         public int CompareTo(RenderContext other)
         {
+            return -CmpTo(other);
+        }
+
+        /// <summary>
+        /// CompareTo Implementation
+        /// If both transparent and in camera space
+        /// </summary>
+        /// <param name="other">The Object to compare against</param>
+        /// <returns></returns>
+        private int CmpTo(RenderContext other)
+        {
             if (RenderType == Renderer.RenderType.Transparent && other.RenderType == Renderer.RenderType.Transparent)
             {
                 if (WorldSpace && other.WorldSpace)

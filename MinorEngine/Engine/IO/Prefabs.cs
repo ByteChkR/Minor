@@ -60,7 +60,7 @@ namespace Engine.IO
         {
             get
             {
-                if (_sphere == null)
+                if (_white == null)
                 {
                     Bitmap bmp = new Bitmap(1, 1);
                     bmp.SetPixel(0, 0, Color.White);

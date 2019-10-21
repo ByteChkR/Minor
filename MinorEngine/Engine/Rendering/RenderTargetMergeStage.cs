@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.Debug;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -69,7 +70,7 @@ namespace Engine.Rendering
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -84,6 +85,8 @@ namespace Engine.Rendering
                 Console.ReadLine();
             }
 
+            _mergeAddShader.AddUniformCache("destinationTexture"); 
+            _mergeAddShader.AddUniformCache("otherTexture");
             _mergeTypes.Add(RenderTargetMergeType.Additive, _mergeAddShader);
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
@@ -94,6 +97,9 @@ namespace Engine.Rendering
             {
                 Console.ReadLine();
             }
+
+            _mergeMulShader.AddUniformCache("destinationTexture");
+            _mergeMulShader.AddUniformCache("otherTexture");
 
             _mergeTypes.Add(RenderTargetMergeType.Multiplikative, _mergeMulShader);
 
@@ -106,6 +112,7 @@ namespace Engine.Rendering
             {
                 Console.ReadLine();
             }
+            _screenShader.AddUniformCache("sourceTexture");
         }
 
         /// <summary>
@@ -151,6 +158,7 @@ namespace Engine.Rendering
             }
 
 
+            MemoryTracer.AddSubStage("Merge Framebuffers");
             int divideCount = targets.Count;
 
             //GL.Enable(EnableCap.ScissorTest);
@@ -162,6 +170,7 @@ namespace Engine.Rendering
             //GL.Enable(EnableCap.ScissorTest);
             foreach (RenderTarget renderTarget in targets)
             {
+                MemoryTracer.NextStage("Merge Framebuffer: " + renderTarget.PassMask);
                 RenderTarget dst = GetTarget();
                 RenderTarget src = GetSource();
 
@@ -195,8 +204,9 @@ namespace Engine.Rendering
 
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
             }
+            MemoryTracer.ReturnFromSubStage();
 
-
+            MemoryTracer.NextStage("Rendering To Screen");
             GL.Disable(EnableCap.Blend);
 
             Ping();

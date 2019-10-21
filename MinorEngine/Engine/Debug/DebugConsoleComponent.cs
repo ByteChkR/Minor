@@ -156,17 +156,17 @@ namespace Engine.Debug
         /// Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues)
         /// I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0
         /// </summary>
-        private static RenderTarget rt, rt2;
+       // private static RenderTarget rt, rt2;
 
         /// <summary>
         /// OnDestroy Implementation that will remove the two render targets from the system
         /// </summary>
         protected override void OnDestroy()
         {
-            GameEngine.Instance.RemoveRenderTarget(rt);
-            rt.Dispose();
-            GameEngine.Instance.RemoveRenderTarget(rt2);
-            rt2.Dispose();
+            //GameEngine.Instance.RemoveRenderTarget(rt);
+            //rt.Dispose();
+            //GameEngine.Instance.RemoveRenderTarget(rt2);
+            //rt2.Dispose();
         }
 
         /// <summary>
@@ -210,11 +210,11 @@ namespace Engine.Debug
             obj.Add(_bgOutObj);
             obj.Add(_graph);
 
-            rt = new RenderTarget(null, 1 << 29, new Color(0, 0, 0, 0));
-            GameEngine.Instance.AddRenderTarget(rt);
+            //rt = new RenderTarget(null, 1 << 29, new Color(0, 0, 0, 0));
+            //GameEngine.Instance.AddRenderTarget(rt);
 
-            rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
-            GameEngine.Instance.AddRenderTarget(rt2);
+            //rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
+            //GameEngine.Instance.AddRenderTarget(rt2);
 
             Bitmap bmp = new Bitmap(1, 1);
             bmp.SetPixel(0, 0, System.Drawing.Color.Black);
@@ -643,12 +643,22 @@ namespace Engine.Debug
             }
         }
 
+        private int fps;
+        private float time;
+        private float frames;
         /// <summary>
         /// Update Function
         /// </summary>
         /// <param name="deltaTime">Delta Time in Seconds</param>
         protected override void Update(float deltaTime)
         {
+            time += deltaTime;
+            fps++;
+            if (time >= 1)
+            {
+                frames = fps;
+                time = fps = 0;
+            }
             _blinkTime += deltaTime;
             if (_blinkTime >= _blinkMaxTime)
             {
@@ -732,7 +742,7 @@ namespace Engine.Debug
             _consoleOutputImage.Alpha = _showConsole ? 0.75f : 0;
 
 
-            _hintText.Text = _showConsole ? "" : HelpText;
+            _hintText.Text = _showConsole ? "FPS: " + frames : HelpText;
 
             _title.Text = _showConsole ? ConsoleTitle : "";
 

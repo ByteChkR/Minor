@@ -233,7 +233,10 @@ namespace Engine.IO
                 return Texture.DefaultTexture;
             }
 
-            return BitmapToTexture(new Bitmap(file));
+            Bitmap bmp = new Bitmap(file);
+            Texture t = BitmapToTexture(bmp);
+            bmp.Dispose();
+            return t;
         }
 
         /// <summary>

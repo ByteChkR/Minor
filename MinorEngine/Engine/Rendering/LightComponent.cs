@@ -25,7 +25,6 @@ namespace Engine.Rendering
 
 
         private float time;
-        private float dt;
         private bool last;
         private float slow = 0.075f;
         protected override void Update(float deltaTime)

@@ -117,12 +117,12 @@ namespace Engine.Demo.scenes
             }, out ShaderProgram shader);
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
-            objSphere.AddComponent(new MeshRendererComponent(shader, sphere,
+            objSphere.AddComponent(new MeshRendererComponent(shader, true, sphere,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             objSphere.AddComponent(new RotatingComponent());
 
             GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
-            objQuad.AddComponent(new MeshRendererComponent(shader, plane,
+            objQuad.AddComponent(new MeshRendererComponent(shader, true, plane,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
             objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(45));
 
@@ -130,7 +130,7 @@ namespace Engine.Demo.scenes
 
             Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
             _sourceCube.AddComponent(new RotateAroundComponent(){Slow = 0.15f});
-            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube,
+            _sourceCube.AddComponent(new MeshRendererComponent(shader, true, sourceCube,
                 TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
             _sourceCube.AddComponent(new LightComponent());
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
@@ -157,7 +157,7 @@ namespace Engine.Demo.scenes
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
 
 
-            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox, bgTex, 1));
+            bgObj.AddComponent(new MeshRendererComponent(shader, true, bgBox, bgTex, 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
 

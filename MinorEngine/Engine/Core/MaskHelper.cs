@@ -22,52 +22,10 @@ namespace Engine.Core
             {
                 return (mask & flag) == flag;
             }
-
-            List<int> a = GetUniqueMasksSet(flag);
-            foreach (int f in a)
+            else
             {
-                if ((mask & f) == f)
-                {
-                    return true;
-                }
+                return (mask & flag) != 0;
             }
-
-            return false;
-        }
-
-        /// <summary>
-        ///     Splits up parameter mask into Unique Flags(power of 2 numbers)
-        /// </summary>
-        /// <param name="mask">the mask you want to split</param>
-        /// <returns></returns>
-        public static List<int> GetUniqueMasksSet(int mask)
-        {
-            if (IsUniqueMask(mask))
-            {
-                return new List<int> {mask};
-            }
-
-            List<int> ret = new List<int>();
-            for (int i = 0; i < sizeof(int) * sizeof(byte); i++)
-            {
-                int f = 1 << i;
-                if (IsContainedInMask(mask, f, true))
-                {
-                    ret.Add(f);
-                }
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        ///     Checks if the specified mask is unique(e.g. a power of 2 number)
-        /// </summary>
-        /// <param name="mask">mask to test</param>
-        /// <returns></returns>
-        public static bool IsUniqueMask(int mask)
-        {
-            return mask != 0 && (mask & (mask - 1)) == 0;
         }
     }
 }

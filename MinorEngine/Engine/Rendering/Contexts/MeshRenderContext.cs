@@ -1,6 +1,7 @@
 ﻿using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.IO;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -51,6 +52,31 @@ namespace Engine.Rendering.Contexts
             Meshes = meshes;
         }
 
+        private void Init()
+        {
+            _init = true;
+            Program.AddUniformCache("modelMatrix");
+            Program.AddUniformCache("viewMatrix");
+            Program.AddUniformCache("projectionMatrix");
+            Program.AddUniformCache("mvpMatrix");
+            Program.AddUniformCache("tiling");
+            Program.AddUniformCache("offset");
+
+
+
+            for (int i = 0; i < 8; i++)
+            {
+                Program.AddUniformCache("texture_diffuse" + i);
+                Program.AddUniformCache("texture_normal" + i);
+                Program.AddUniformCache("texture_specular" + i);
+                Program.AddUniformCache("texture_height" + i);
+            }
+
+        }
+
+
+        protected bool _init = false;
+
         /// <summary>
         /// The Code for rendering a Mesh
         /// </summary>
@@ -59,6 +85,11 @@ namespace Engine.Rendering.Contexts
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
             Program.Use();
+
+            if (!_init)
+            {
+                Init();
+            }
             Matrix4 mat = ModelMat;
             GL.UniformMatrix4(Program.GetUniformLocation("modelMatrix"), false, ref mat);
             GL.UniformMatrix4(Program.GetUniformLocation("viewMatrix"), false, ref viewMat);
@@ -68,11 +99,19 @@ namespace Engine.Rendering.Contexts
             GL.Uniform2(Program.GetUniformLocation("tiling"), Tiling);
             GL.Uniform2(Program.GetUniformLocation("offset"), Offset);
 
+
+
+
+            RenderMeshes();
+        }
+
+        protected void RenderMeshes()
+        {
             foreach (Mesh gameMesh in Meshes)
             {
                 uint diff, spec, norm, hegt, unknown;
                 diff = spec = norm = hegt = unknown = 1;
-
+                bool hasSpec = false;
                 for (int i = 0; i < Textures.Length; i++)
                 {
                     if (Textures[i] == null)
@@ -94,6 +133,7 @@ namespace Engine.Rendering.Contexts
                         case TextureType.Specular:
                             name = "texture_specular";
                             number = (spec++).ToString();
+                            hasSpec = true;
                             break;
                         case TextureType.Normals:
                             name = "texture_normal";
@@ -104,7 +144,7 @@ namespace Engine.Rendering.Contexts
                             number = (hegt++).ToString();
                             break;
                         default:
-                            name = "texture";
+                            name = "texture_diffuse";
                             number = (unknown++).ToString();
                             break;
                     }
@@ -112,6 +152,14 @@ namespace Engine.Rendering.Contexts
                     GL.Uniform1(Program.GetUniformLocation(name + number), i);
                     GL.BindTexture(TextureTarget.Texture2D, Textures[i].TextureId);
                 }
+                if (!hasSpec)
+                {
+                    int loc = Program.GetUniformLocation("texture_specular1");
+                    GL.ActiveTexture(TextureUnit.Texture0 + Textures.Length);
+                    GL.Uniform1(loc, Textures.Length);
+                    GL.BindTexture(TextureTarget.Texture2D, Prefabs.White.TextureId);
+                }
+
 
 
                 GL.BindVertexArray(gameMesh._vao);

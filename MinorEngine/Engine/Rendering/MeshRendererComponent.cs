@@ -11,10 +11,13 @@ namespace Engine.Rendering
     /// </summary>
     public class MeshRendererComponent : AbstractComponent, IRenderingComponent
     {
+
+        private bool Lit = false;
+
         /// <summary>
         /// The Context Backing field
         /// </summary>
-        private LitMeshRenderContext _context;
+        private MeshRenderContext _context;
 
         /// <summary>
         /// A flag that indicates if the context needs to be updated
@@ -66,11 +69,20 @@ namespace Engine.Rendering
                 if (_context == null)
                 {
                     _contextInvalid = false;
-                    _context = new LitMeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, new[] { DiffuseTexture, SpecularTexture },
-                        RenderType, Offset, Tiling);
+                    if (Lit)
+                    {
+                        _context = new LitMeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, new[] { DiffuseTexture, SpecularTexture },
+                            RenderType, Offset, Tiling);
+                    }
+                    else
+                    {
+                        _context = new MeshRenderContext(Shader, Owner._worldTransformCache, new[] { Model }, new[] { DiffuseTexture, SpecularTexture },
+                            RenderType, Offset, Tiling);
+                    }
                 }
                 else if (_contextInvalid || Owner._worldTransformCache != _context.ModelMat)
                 {
+
                     _contextInvalid = false;
 
                     _context.ModelMat = Owner._worldTransformCache;
@@ -215,9 +227,10 @@ namespace Engine.Rendering
         /// <param name="diffuseTexture">The Texture to drawn on the mesh</param>
         /// <param name="renderMask">The render mask</param>
         /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
-        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
+        public MeshRendererComponent(ShaderProgram shader, bool lit, Mesh model, Texture diffuseTexture, int renderMask,
             bool disposeOnDestroy = true)
         {
+            Lit = lit;
             Shader = shader;
             DiffuseTexture = diffuseTexture;
             Model = model;
@@ -234,12 +247,6 @@ namespace Engine.Rendering
             {
                 Model.Dispose();
             }
-        }
-
-        protected override void Update(float deltaTime)
-        {
-            if (_context != null)
-                _context.TempTime += deltaTime;
         }
 
         /// <summary>

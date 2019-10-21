@@ -49,7 +49,7 @@ vec3 CalculateLight(LightSource source, vec3 normal, vec3 lightdir)
 
 
 	float spec = 0.0;
-	if(true)
+	if(false)
 	{
 		vec3 viewdir = normalize(eye - fragPos);
 		//Specular(Blinn)

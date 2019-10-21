@@ -19,6 +19,7 @@ namespace Engine.Rendering
     /// </summary>
     public class ShaderProgram : IDisposable
     {
+        private Dictionary<string, int> uniformCache = new Dictionary<string, int>();
         /// <summary>
         /// Backing field of the Default shader
         /// </summary>
@@ -36,7 +37,7 @@ namespace Engine.Rendering
         private static ShaderProgram GetDefaultShader()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
-            string[] paths = {"._DefaultResources.DefaultShader.vs", "._DefaultResources.DefaultShader.fs"};
+            string[] paths = { "._DefaultResources.DefaultShader.vs", "._DefaultResources.DefaultShader.fs" };
             Dictionary<ShaderType, string> shaderSource = new Dictionary<ShaderType, string>();
             for (int i = 0; i < paths.Length; i++)
             {
@@ -70,6 +71,7 @@ namespace Engine.Rendering
         /// </summary>
         private readonly int _prgId;
 
+        private static int _lastUsedPrgID = -1;
 
         /// <summary>
         /// Private constructor
@@ -148,6 +150,8 @@ namespace Engine.Rendering
         /// </summary>
         public void Use()
         {
+            if (_lastUsedPrgID == _prgId) return;
+            _lastUsedPrgID = _prgId;
             GL.UseProgram(_prgId);
         }
 
@@ -162,6 +166,13 @@ namespace Engine.Rendering
             return loc;
         }
 
+        public void AddUniformCache(string name)
+        {
+            if (uniformCache.ContainsKey(name)) return;
+            int loc = GL.GetUniformLocation(_prgId, name);
+            uniformCache.Add(name, loc);
+        }
+
         /// <summary>
         /// Returns the Uniform location by name
         /// </summary>
@@ -169,8 +180,16 @@ namespace Engine.Rendering
         /// <returns>Uniform Location</returns>
         public int GetUniformLocation(string name)
         {
-            int loc = GL.GetUniformLocation(_prgId, name);
-            return loc;
+            return uniformCache[name];
+            //int loc = GL.GetUniformLocation(_prgId, name);
+            //uniformCache.Add(name, loc);
+            //return loc;
+        }
+
+        public int GetUniformLocationUncached(string name)
+
+        {
+            return GL.GetUniformLocation(_prgId, name);
         }
 
         /// <summary>

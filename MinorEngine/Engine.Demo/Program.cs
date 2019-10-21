@@ -60,7 +60,7 @@ namespace Engine.Demo
 
             GameEngine engine = new GameEngine(EngineSettings.Settings);
             engine.Initialize();
-            engine.InitializeScene<FLDemoScene>();
+            engine.InitializeScene<AStarDemoScene>();
             engine.Run();
         }
     }

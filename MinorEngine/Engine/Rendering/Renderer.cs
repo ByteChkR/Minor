@@ -1,6 +1,9 @@
 using System.Collections.Generic;
+using System.Drawing.Drawing2D;
 using System.Linq;
+using Engine.AI;
 using Engine.Core;
+using Engine.Debug;
 using Engine.Rendering.Contexts;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -119,7 +122,6 @@ namespace Engine.Rendering
                     Contexts.Add(context);
                 }
             }
-
             Contexts.Sort();
             return Contexts;
         }
@@ -133,9 +135,11 @@ namespace Engine.Rendering
             scene.ComputeWorldTransformCache(Matrix4.Identity); //Compute all the World transforms and cache them
 
 
+            MemoryTracer.AddSubStage("Render Target loop");
             //GL.Enable(EnableCap.ScissorTest);
             for (int i = 0; i < Targets.Count; i++)
             {
+                MemoryTracer.NextStage("Rendering Render Target: " + i);
                 CurrentTarget = i;
                 RenderTarget target = Targets[i];
 
@@ -151,12 +155,13 @@ namespace Engine.Rendering
 
                     GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+                    Matrix4 vmat = c.ViewMatrix;
 
-                    List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Opaque);
-                    Render(_opaque, c);
+                    List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, vmat, RenderType.Opaque);
+                    Render(_opaque, vmat, c);
                     List<RenderContext> _transparent =
-                        CreateRenderQueue(target.PassMask, c.ViewMatrix, RenderType.Transparent);
-                    Render(_transparent, c);
+                        CreateRenderQueue(target.PassMask, vmat, RenderType.Transparent);
+                    Render(_transparent, vmat, c);
 
 
                     //Render(target.PassMask, c);
@@ -166,6 +171,8 @@ namespace Engine.Rendering
                     //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
                 }
             }
+            MemoryTracer.ReturnFromSubStage();
+
 
             //GL.Disable(EnableCap.ScissorTest);
             RenderTargetMergeStage.MergeAndDisplayTargets(Targets.Where(x => x.MergeType != RenderTargetMergeType.None)
@@ -180,12 +187,15 @@ namespace Engine.Rendering
         /// </summary>
         /// <param name="contexts">The Queue of Render Contexts</param>
         /// <param name="cam">The ICamera</param>
-        public static void Render(List<RenderContext> contexts, ICamera cam)
+        public static void Render(List<RenderContext> contexts, Matrix4 viewM, ICamera cam)
         {
-            foreach (RenderContext renderContext in contexts)
+
+            for (int i = 0; i < contexts.Count; i++)
             {
-                renderContext.Render(cam.ViewMatrix, cam.Projection);
+                contexts[i].Render(viewM, cam.Projection);
+                
             }
+ 
         }
 
         public enum RenderType
