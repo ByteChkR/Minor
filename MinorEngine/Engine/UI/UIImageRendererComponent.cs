@@ -1,8 +1,9 @@
-﻿using System.Resources;
+﻿using System;
 using Engine.DataTypes;
 using Engine.IO;
 using Engine.Rendering;
-using Engine.Rendering.Contexts;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
 
 namespace Engine.UI
 {
@@ -11,61 +12,34 @@ namespace Engine.UI
     /// </summary>
     public class UIImageRendererComponent : UIElement
     {
-        /// <summary>
-        /// The backing field of the context
-        /// </summary>
-        private UIImageRenderContext _context;
-
 
         /// <summary>
-        /// the context property for IRenderingComponent
+        /// Screen space quad
         /// </summary>
-        public override RenderContext Context
+        private static float[] _screenQuadVertexData =
         {
-            get
-            {
-                if (_context == null)
-                {
-                    _context = new UIImageRenderContext(Position, Scale, Owner._worldTransformCache, Texture,
-                        WorldSpace, Alpha, Shader, RenderQueue);
-                }
-                else if (ContextInvalid)
-                {
-                    ContextInvalid = false;
-                    _context.ModelMat = Owner._worldTransformCache;
-                    _context.Position = Position;
-                    _context.Scale = Scale;
-                    _context.Texture = Texture;
-                    _context.WorldSpace = WorldSpace;
-                    _context.Alpha = Alpha;
-                    _context.RenderQueue = RenderQueue;
-                }
+            // positions   // texCoords
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            -1.0f, -1.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
 
-                return _context;
-            }
-        }
+            -1.0f, 1.0f, 0.0f, 1.0f,
+            1.0f, -1.0f, 1.0f, 0.0f,
+            1.0f, 1.0f, 1.0f, 1.0f
+        };
 
         /// <summary>
-        /// Backing field for the texture
+        /// The image that will be drawn to the screen
         /// </summary>
-        private Texture _texture;
+        public Texture Texture { get; set; }
+
 
         /// <summary>
-        /// Property that represents the Texture used to draw the screen quad
+        /// Private flag if the Screen Space Quad has been loaded
         /// </summary>
-        public Texture Texture
-        {
-            get => _texture;
-            set
-            {
-                if (_texture != value)
-                {
-                    _texture = value;
-                    ContextInvalid = true;
-                }
-            }
-        }
+        private bool _init;
 
+        private int _vao;
 
         /// <summary>
         /// public contstructor
@@ -101,6 +75,76 @@ namespace Engine.UI
         protected override void OnDestroy()
         {
             Texture?.Dispose();
+        }
+
+        /// <summary>
+        /// Sets up the Screen Space Quad
+        /// </summary>
+        private void SetUpGLBuffers()
+        {
+            _init = true;
+            _vao = GL.GenVertexArray();
+            int _screenVBO = GL.GenBuffer();
+            GL.BindVertexArray(_vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
+
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+                _screenQuadVertexData, BufferUsageHint.StaticDraw);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
+            GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
+
+
+            Program.AddUniformCache("transform");
+            Program.AddUniformCache("alpha");
+            Program.AddUniformCache("uiTexture");
+        }
+
+        /// <summary>
+        /// renders the image on the screen
+        /// </summary>
+        /// <param name="viewMat"></param>
+        /// <param name="projMat"></param>
+        public override void Render(Matrix4 viewMat, Matrix4 projMat)
+        {
+            if (!_init)
+            {
+                SetUpGLBuffers();
+            }
+
+            GL.Enable(EnableCap.Blend);
+            GL.Disable(EnableCap.DepthTest);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
+            Program.Use();
+
+            Matrix4 mat = Matrix4.Identity;
+
+            if (WorldSpace)
+            {
+                mat = Owner._worldTransformCache * viewMat * projMat;
+            }
+            else
+            {
+                mat = Owner._worldTransformCache;
+            }
+
+            GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref mat);
+            GL.Uniform1(Program.GetUniformLocation("alpha"), Alpha);
+
+            GL.Uniform1(Program.GetUniformLocation("uiTexture"), 0);
+            GL.ActiveTexture(TextureUnit.Texture0);
+            GL.BindVertexArray(_vao);
+            GL.BindTexture(TextureTarget.Texture2D, Texture.TextureId);
+
+            GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+
+            GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            GL.BindVertexArray(0);
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+            GL.Enable(EnableCap.DepthTest);
+
+            GL.Disable(EnableCap.Blend);
         }
     }
 }

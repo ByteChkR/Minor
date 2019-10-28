@@ -117,13 +117,19 @@ namespace Engine.Demo.scenes
             }, out ShaderProgram shader);
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
-            objSphere.AddComponent(new MeshRendererComponent(shader, true, sphere,
+            objSphere.AddComponent(new LitMeshRendererComponent(shader,  sphere,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+            objSphere.GetComponent<LitMeshRendererComponent>().Textures = new[]
+                {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
+
             objSphere.AddComponent(new RotatingComponent());
 
             GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
-            objQuad.AddComponent(new MeshRendererComponent(shader, true, plane,
+            objQuad.AddComponent(new LitMeshRendererComponent(shader,  plane,
                 TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+            objQuad.GetComponent<LitMeshRendererComponent>().Textures = new[]
+                {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
+
             objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(45));
 
             GameObject _sourceCube = new GameObject(new Vector3(0, 10, 10), "Light Source");
@@ -131,12 +137,12 @@ namespace Engine.Demo.scenes
             Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
             _sourceCube.AddComponent(new RotateAroundComponent(){Slow = 0.15f});
-            _sourceCube.AddComponent(new MeshRendererComponent(shader, true, sourceCube,
+            _sourceCube.AddComponent(new LitMeshRendererComponent(shader,  sourceCube,
                 TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
             
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
-            uiText.AddComponent(new FLGeneratorComponent(new List<MeshRendererComponent>
-                    {objSphere.GetComponent<MeshRendererComponent>(), objQuad.GetComponent<MeshRendererComponent>()},
+            uiText.AddComponent(new FLGeneratorComponent(new List<LitMeshRendererComponent>
+                    {objSphere.GetComponent<LitMeshRendererComponent>(), objQuad.GetComponent<LitMeshRendererComponent>()},
                 512,
                 512));
 
@@ -158,7 +164,7 @@ namespace Engine.Demo.scenes
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
 
 
-            bgObj.AddComponent(new MeshRendererComponent(shader, true, bgBox, bgTex, 1));
+            bgObj.AddComponent(new LitMeshRendererComponent(shader, bgBox, bgTex, 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
 

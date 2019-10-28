@@ -62,12 +62,14 @@ namespace Engine.Demo.scenes
 
             Collider groundCol = new Collider(new Box(Vector3.Zero, 64, 1, 64), hybLayer);
             Texture bgTex = TextureLoader.FileToTexture("textures/ground4k.png");
+            bgTex.TexType = TextureType.Diffuse;
             bgObj.AddComponent(groundCol);
 
             tex = TextureLoader.ColorToTexture(System.Drawing.Color.Green);
             beginTex = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
             endTex = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
             blockTex = TextureLoader.ColorToTexture(System.Drawing.Color.DarkMagenta);
+            tex.TexType = beginTex.TexType = endTex.TexType = blockTex.TexType = TextureType.Diffuse;
 
             DebugConsoleComponent c = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
 
@@ -76,7 +78,7 @@ namespace Engine.Demo.scenes
 
             Add(c.Owner);
 
-            bgObj.AddComponent(new MeshRendererComponent(litShader, true, Prefabs.Cube, bgTex, 1));
+            bgObj.AddComponent(new LitMeshRendererComponent(litShader,  Prefabs.Cube, bgTex, 1));
             Add(bgObj);
             Add(mainCamera);
             SetCamera(mainCamera);
@@ -91,7 +93,7 @@ namespace Engine.Demo.scenes
                     if (rnd.Next(0, 6) == 0)
                     {
                         nodes[i, j].Walkable = false;
-                        nodes[i, j].Owner.AddComponent(new MeshRendererComponent(litShader, true, Prefabs.Sphere, blockTex, 1));
+                        nodes[i, j].Owner.AddComponent(new LitMeshRendererComponent(litShader,  Prefabs.Sphere, blockTex, 1));
                     }
                     nodes[i, j].Owner.Scale *= 0.3f;
 
@@ -131,11 +133,11 @@ namespace Engine.Demo.scenes
 
             for (int i = 0; i < path.Count; i++)
             {
-                path[i].Owner.AddComponent(new MeshRendererComponent(litShader, true, Prefabs.Cube, tex, 1));
+                path[i].Owner.AddComponent(new LitMeshRendererComponent(litShader,  Prefabs.Cube, tex, 1));
             }
 
-            startNode.Owner.GetComponent<MeshRendererComponent>().DiffuseTexture = beginTex;
-            endNode.Owner.GetComponent<MeshRendererComponent>().DiffuseTexture = endTex;
+            startNode.Owner.GetComponent<LitMeshRendererComponent>().Textures[0] = beginTex;
+            endNode.Owner.GetComponent<LitMeshRendererComponent>().Textures[0] = endTex;
             return "Success: " + found;
         }
 

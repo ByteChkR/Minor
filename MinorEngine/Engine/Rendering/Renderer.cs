@@ -1,10 +1,7 @@
 using System.Collections.Generic;
-using System.Drawing.Drawing2D;
 using System.Linq;
-using Engine.AI;
 using Engine.Core;
 using Engine.Debug;
-using Engine.Rendering.Contexts;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -109,13 +106,13 @@ namespace Engine.Rendering
         /// <param name="view">The View Matrix of the Camera Associated with the Render Target</param>
         /// <param name="type">The Render Type</param>
         /// <returns>A sorted list of renderer contexts</returns>
-        private static List<RenderContext> CreateRenderQueue(int renderTarget, Matrix4 view, RenderType type)
+        private static List<RenderingComponent> CreateRenderQueue(int renderTarget, Matrix4 view, RenderType type)
         {
-            List<RenderContext> Contexts = new List<RenderContext>();
+            List<RenderingComponent> Contexts = new List<RenderingComponent>();
             foreach (GameObject renderer in GameObject.ObjsWithAttachedRenderers)
             {
-                RenderContext context = renderer.RenderingComponent.Context;
-                if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderMask, renderTarget, false) &&
+                RenderingComponent context = renderer.RenderingComponent;
+                if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderQueue, renderTarget, false) &&
                     context.RenderType == type)
                 {
                     context.PrecalculateMV(view);
@@ -157,9 +154,9 @@ namespace Engine.Rendering
 
                     Matrix4 vmat = c.ViewMatrix;
 
-                    List<RenderContext> _opaque = CreateRenderQueue(target.PassMask, vmat, RenderType.Opaque);
+                    List<RenderingComponent> _opaque = CreateRenderQueue(target.PassMask, vmat, RenderType.Opaque);
                     Render(_opaque, vmat, c);
-                    List<RenderContext> _transparent =
+                    List<RenderingComponent> _transparent =
                         CreateRenderQueue(target.PassMask, vmat, RenderType.Transparent);
                     Render(_transparent, vmat, c);
 
@@ -187,7 +184,7 @@ namespace Engine.Rendering
         /// </summary>
         /// <param name="contexts">The Queue of Render Contexts</param>
         /// <param name="cam">The ICamera</param>
-        public static void Render(List<RenderContext> contexts, Matrix4 viewM, ICamera cam)
+        public static void Render(List<RenderingComponent> contexts, Matrix4 viewM, ICamera cam)
         {
 
             for (int i = 0; i < contexts.Count; i++)

@@ -18,7 +18,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// List of previews
         /// </summary>
-        private readonly List<MeshRendererComponent> _previews;
+        private readonly List<LitMeshRendererComponent> _previews;
 
         /// <summary>
         /// the texture that is beeing used to update the previews
@@ -60,7 +60,7 @@ namespace Engine.OpenFL
         /// <param name="previews">List of previews</param>
         /// <param name="width">Width/height of the output texture</param>
         /// <param name="height"></param>
-        public FLGeneratorComponent(List<MeshRendererComponent> previews, int width, int height)
+        public FLGeneratorComponent(List<LitMeshRendererComponent> previews, int width, int height)
         {
             this.width = width;
             this.height = height;
@@ -99,7 +99,7 @@ namespace Engine.OpenFL
             SpecularTex.TexType = TextureType.Specular;
             for (int i = 0; i < _previews.Count; i++)
             {
-                _previews[i].DiffuseTexture = Tex;
+                _previews[i].Textures[0] = Tex;
             }
 
             _stepInterpreter.ReleaseResources();
@@ -117,8 +117,8 @@ namespace Engine.OpenFL
             SpecularTex.TexType = TextureType.Specular;
             for (int i = 0; i < _previews.Count; i++)
             {
-                _previews[i].DiffuseTexture = Tex;
-                _previews[i].SpecularTexture = SpecularTex;
+                _previews[i].Textures[0] = Tex;
+                _previews[i].Textures[1] = SpecularTex;
             }
 
 

@@ -368,7 +368,7 @@ namespace Engine.Debug
             _bgImage = Owner.GetChildWithName("BackgroundImage").GetComponent<UIImageRendererComponent>();
             _hintText = Owner.GetChildWithName("HintText").GetComponent<UITextRendererComponent>();
             _graph = Owner.GetChildWithName("Graph").GetComponent<GraphDrawingComponent>();
-            (_graph.Context as GraphDrawingContext).Enabled = false;
+            _graph.Enabled = false;
             _consoleOutputImage =
                 Owner.GetChildWithName("BackgroundOutputImage").GetComponent<UIImageRendererComponent>();
             _sb = new StringBuilder();
@@ -395,9 +395,8 @@ namespace Engine.Debug
         /// <returns>Result of Command</returns>
         private string cmd_ToggleGraph(string[] args)
         {
-            GraphDrawingContext c = _graph.Context as GraphDrawingContext;
-            c.Enabled = !c.Enabled;
-            return "Enabled Graph: " + c.Enabled;
+            _graph.Enabled = !_graph.Enabled;
+            return "Enabled Graph: " + _graph.Enabled;
         }
 
         /// <summary>

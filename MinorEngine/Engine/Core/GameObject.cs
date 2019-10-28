@@ -67,7 +67,7 @@ namespace Engine.Core
         /// <summary>
         /// The IRenderingComponent that will be set to a value when a renderer is added and set to null when a renderer is removed
         /// </summary>
-        public IRenderingComponent RenderingComponent { get; private set; }
+        public RenderingComponent RenderingComponent { get; private set; }
 
         private bool transformChanged = true;
         private Matrix4 _transform = Matrix4.Identity;
@@ -331,11 +331,11 @@ namespace Engine.Core
             Type t = component.GetType();
             if (!_components.ContainsKey(t))
             {
-                if (typeof(IRenderingComponent).IsAssignableFrom(t))
+                if (typeof(RenderingComponent).IsAssignableFrom(t))
                 {
                     applyRenderHierarchy(true);
                     ObjsWithAttachedRenderers.Add(this);
-                    RenderingComponent = (IRenderingComponent) component;
+                    RenderingComponent = (RenderingComponent) component;
                 }
                 else if (component is Collider collider)
                 {
@@ -391,7 +391,7 @@ namespace Engine.Core
         private void RemoveFromRenderLoop()
         {
             Logger.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log | DebugChannel.EngineRendering, 7);
-            RemoveComponent(typeof(IRenderingComponent));
+            RemoveComponent(typeof(RenderingComponent));
             ObjsWithAttachedRenderers.Remove(this);
         }
 
@@ -404,7 +404,7 @@ namespace Engine.Core
             Type t = componentType;
             if (_components.ContainsKey(t))
             {
-                if (typeof(IRenderingComponent).IsAssignableFrom(t))
+                if (typeof(RenderingComponent).IsAssignableFrom(t))
                 {
                     applyRenderHierarchy(false);
                     RemoveFromRenderLoop();
