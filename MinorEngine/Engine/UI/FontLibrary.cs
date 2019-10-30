@@ -33,10 +33,10 @@ namespace Engine.UI
         public FontLibrary(string folderPath)
         {
             _fonts = new Dictionary<string, Tuple<string, GameFont>>();
-
-            List<string> files = Directory.GetFiles(folderPath, ".ttf").ToList();
-            files.AddRange(ManifestReader.GetFiles(folderPath, "*.ttf"));
-
+            List<string> files = new List<string>();
+            if (Directory.Exists(folderPath)) files.AddRange(Directory.GetFiles(folderPath, "*.ttf"));
+            files.AddRange(ManifestReader.GetFiles(folderPath, ".ttf"));
+            
             foreach (string file in files)
             {
                 LoadFont(file);
@@ -59,12 +59,14 @@ namespace Engine.UI
         /// <param name="pixelSize"></param>
         public void LoadFont(string filename, int pixelSize)
         {
-            if (File.Exists(filename))
+            if (IOManager.Exists(filename))
             {
-                LoadFont(File.OpenRead(filename), pixelSize, filename);
+                Logger.Log("Adding File: " + filename, DebugChannel.Log, 10);
+                LoadFont(IOManager.GetStream(filename), pixelSize, filename);
             }
             else
             {
+                Logger.Log("Not found File: " + filename, DebugChannel.Log, 10);
                 Logger.Crash(new InvalidFilePathException(filename), true);
             }
         }

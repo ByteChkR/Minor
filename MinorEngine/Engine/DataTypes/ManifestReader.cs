@@ -131,6 +131,11 @@ namespace Engine.DataTypes
         {
             string p = SanitizeFilename(filepath);
             Logger.Log("Searching for File: " + p, DebugChannel.Log, 10);
+            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in AssemblyFiles)
+            {
+
+                //Logger.Log("File: " + assemblyFile.Key, DebugChannel.Log, 10);
+            }
             return AssemblyFiles.ContainsKey(p);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.Debug;
 using Engine.Rendering;
 using OpenTK.Graphics.OpenGL;
 
@@ -36,8 +37,8 @@ namespace Engine.UI
         /// </summary>
         private UIHelper()
         {
+            FontLibrary = new FontLibrary("assets/fonts/");
             Initialize();
-            FontLibrary = new FontLibrary("fonts/");
         }
 
         /// <summary>
@@ -59,8 +60,8 @@ namespace Engine.UI
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"}
+                {ShaderType.FragmentShader, "assets/shader/ScreenRenderer.fs"},
+                {ShaderType.VertexShader, "assets/shader/UIRender.vs"}
             }, out ShaderProgram shader))
             {
                 Console.ReadLine();
