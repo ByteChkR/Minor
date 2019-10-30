@@ -1,0 +1,1 @@
+D:\Users\Tim\Documents\Minor\MinorEngine\Engine.Demo\assets;*.png;*.jpg;*.obj;*.wav;*.vs;*.fs

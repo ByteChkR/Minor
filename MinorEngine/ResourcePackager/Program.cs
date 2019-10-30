@@ -9,9 +9,17 @@ namespace ResourcePackager
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
 
             string csfile = args[0];
+
+            if (csfile.EndsWith(".backup"))
+            {
+                if (!File.Exists(csfile)) throw new ArgumentException("Invalid Filepath");
+                if (File.Exists(csfile.Replace(".backup", ""))) File.Delete(csfile.Replace(".backup", ""));
+                File.Move(csfile, csfile.Replace(".backup", ""));
+                return;
+            }
+
             string dir = Path.GetDirectoryName(csfile);
             List<Tuple<string, string>> files = ParseFileList(args);
             List<string> f = new List<string>();
@@ -30,7 +38,8 @@ namespace ResourcePackager
             }
 
             XmlDocument doc = new XmlDocument();
-            string filename = csfile + "." + DateTime.UtcNow.ToString("MM-dd-hh-mm-ss") + ".backup";
+            string filename = csfile + ".backup";
+            if (File.Exists(filename)) File.Delete(filename);
             File.Copy(csfile, filename);
 
             doc.Load(csfile);
@@ -41,11 +50,14 @@ namespace ResourcePackager
             {
                 string cont = Path.GetRelativePath(dir, f[i]);
                 string entry = GenerateFileEntry(cont);
+
+                Console.WriteLine("Adding File: " + cont);
                 if (!n.InnerXml.Contains(entry))
                     n.InnerXml += "\n" + entry;
             }
-            if(File.Exists(dir + "/embedded_" + Path.GetFileName(args[0])))File.Delete(dir + "/embedded_" + Path.GetFileName(args[0]));
-            doc.Save(dir + "/embedded_" + Path.GetFileName(args[0]));
+            File.Delete(csfile);
+            doc.Save(csfile);
+
         }
 
         static List<Tuple<string, string>> ParseFileList(string[] args)
@@ -53,6 +65,7 @@ namespace ResourcePackager
             string[] lines;
             if (args[1].StartsWith("@"))
             {
+                Console.WriteLine("Reading File: " + args[1].Replace("@", ""));
                 lines = File.ReadAllLines(args[1].Replace("@", ""));
             }
             else

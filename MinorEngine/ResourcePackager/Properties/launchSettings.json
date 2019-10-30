@@ -2,7 +2,7 @@
   "profiles": {
     "ResourcePackager": {
       "commandName": "Project",
-      "commandLineArgs": "D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine.Demo\\Engine.Demo.csproj D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine.Demo\\assets;*.png;*.jpg;*.obj;*.wav;*.fs;*.vs"
+      "commandLineArgs": "D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine.Demo\\Engine.Demo.csproj @filelist.txt"
     }
   }
 }
