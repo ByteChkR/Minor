@@ -75,7 +75,7 @@ namespace Engine.OpenCL
         public void SetBuffer(int index, MemoryObject obj)
         {
 #if NO_CL
-            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
+            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning, 10);
 #else
             Kernel.SetKernelArgument(index, obj);
 #endif
@@ -97,7 +97,7 @@ namespace Engine.OpenCL
 
 
 #if NO_CL
-            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning);
+            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning, 10);
 #else
             Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
 #endif

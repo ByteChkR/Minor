@@ -18,12 +18,6 @@ using Engine.OpenCL.DotNetCore.Programs;
 using Engine.OpenCL.TypeEnums;
 using OpenTK.Platform.Windows;
 
-
-#if NO_CL
-using Engine.Debug;
-
-#endif
-
 namespace Engine.OpenCL
 {
     /// <summary>
@@ -83,7 +77,7 @@ namespace Engine.OpenCL
         private void InitializeOpenCL()
         {
 #if NO_CL
-            Logger.Log("Starting in NO_CL Mode", DebugChannel.Warning);
+            Logger.Log("Starting in NO_CL Mode", DebugChannel.Warning, 10);
 #else
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
@@ -103,7 +97,7 @@ namespace Engine.OpenCL
         internal static Program CreateCLProgramFromSource(string source)
         {
 #if NO_CL
-            Logger.Log("Creating CL Program", DebugChannel.Warning);
+            Logger.Log("Creating CL Program", DebugChannel.Warning, 10);
             return null;
 #else
             try
@@ -126,7 +120,7 @@ namespace Engine.OpenCL
         internal static Program CreateCLProgramFromSource(string[] source)
         {
 #if NO_CL
-            Logger.Log("Creating CL Program", DebugChannel.Warning);
+            Logger.Log("Creating CL Program", DebugChannel.Warning, 10);
             return null;
 #else
             return Instance._context.CreateAndBuildProgramFromString(source);
@@ -142,7 +136,7 @@ namespace Engine.OpenCL
         internal static Kernel CreateKernelFromName(Program program, string name)
         {
 #if NO_CL
-            Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning);
+            Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning, 10);
             return null;
 #else
             if (program == null)
@@ -190,7 +184,7 @@ namespace Engine.OpenCL
         public static MemoryBuffer CreateBuffer(object[] data, Type t, MemoryFlag flags)
         {
 #if NO_CL
-            Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning);
+            Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning, 10);
             return null;
 #else
 
@@ -218,7 +212,7 @@ namespace Engine.OpenCL
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
 #if NO_CL
-            Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning);
+            Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning, 10);
             return null;
 #else
             MemoryBuffer mb = CreateBuffer(buffer, flags);
@@ -327,7 +321,7 @@ namespace Engine.OpenCL
             WriteRandom(data, enabledChannels, rnd, uniform);
 
 #if NO_CL
-            Logger.Log("Writing Random Data to Buffer", DebugChannel.Warning);
+            Logger.Log("Writing Random Data to Buffer", DebugChannel.Warning, 10);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buffer, data);
 #endif
@@ -356,7 +350,7 @@ namespace Engine.OpenCL
         public static void WriteToBuffer<T>(MemoryBuffer buf, T[] values) where T : struct
         {
 #if NO_CL
-            Logger.Log("Writing To Buffer..", DebugChannel.Warning);
+            Logger.Log("Writing To Buffer..", DebugChannel.Warning, 10);
 #else
             Instance._commandQueue.EnqueueWriteBuffer(buf, values);
 #endif
@@ -372,7 +366,7 @@ namespace Engine.OpenCL
         public static T[] ReadBuffer<T>(MemoryBuffer buf, int size) where T : struct
         {
 #if NO_CL
-            Logger.Log("Reading From Buffer..", DebugChannel.Warning);
+            Logger.Log("Reading From Buffer..", DebugChannel.Warning, 10);
             return new T[size];
 #else
             return Instance._commandQueue.EnqueueReadBuffer<T>(buf, size);
@@ -393,7 +387,7 @@ namespace Engine.OpenCL
             int channelCount)
         {
 #if NO_CL
-            Logger.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning);
+            Logger.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning, 10);
 #else
             kernel.Run(Instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
 #endif
