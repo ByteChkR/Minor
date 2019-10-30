@@ -137,7 +137,7 @@ namespace Engine.Rendering
                 }
                 else if(IOManager.Exists(subshader.Value))
                 {
-                    TextReader tr = new StreamReader(ManifestReader.GetStreamByPath(Assembly.GetEntryAssembly(), subshader.Value));
+                    TextReader tr = new StreamReader(ManifestReader.GetStreamByPath(subshader.Value));
 
                     ret.Add(subshader.Key, tr.ReadToEnd());
                     tr.Close();

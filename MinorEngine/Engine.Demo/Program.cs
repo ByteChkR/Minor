@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Engine.Core;
+using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Demo.scenes;
 
@@ -31,7 +32,7 @@ namespace Engine.Demo
 
         private static void Main(string[] args)
         {
-            
+            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
             EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");

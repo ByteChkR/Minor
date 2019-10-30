@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Xml;
 
 namespace ResourcePackager
@@ -14,6 +15,7 @@ namespace ResourcePackager
 
             if (csfile.EndsWith(".backup"))
             {
+                Thread.Sleep(250);
                 if (!File.Exists(csfile)) throw new ArgumentException("Invalid Filepath");
                 if (File.Exists(csfile.Replace(".backup", ""))) File.Delete(csfile.Replace(".backup", ""));
                 File.Move(csfile, csfile.Replace(".backup", ""));

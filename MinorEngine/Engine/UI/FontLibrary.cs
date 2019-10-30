@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -32,7 +33,10 @@ namespace Engine.UI
         public FontLibrary(string folderPath)
         {
             _fonts = new Dictionary<string, Tuple<string, GameFont>>();
-            string[] files = Directory.GetFiles(Path.GetFullPath(folderPath), "*.ttf");
+
+            List<string> files = Directory.GetFiles(folderPath, ".ttf").ToList();
+            files.AddRange(ManifestReader.GetFiles(folderPath, "*.ttf"));
+
             foreach (string file in files)
             {
                 LoadFont(file);

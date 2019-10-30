@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Reflection;
 using Engine.Common;
 using Engine.Audio;
+using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Physics;
 using Engine.Rendering;
@@ -90,6 +92,7 @@ namespace Engine.Core
             Settings = settings;
 
             DebugHelper.ApplySettings(settings?.DebugSettings ?? EngineDefault);
+            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>

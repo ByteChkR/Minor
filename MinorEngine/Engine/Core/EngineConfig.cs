@@ -14,6 +14,7 @@ using System.Xml.Serialization;
 using Assimp;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.IO;
 
 namespace Engine.Core
 {
@@ -117,7 +118,7 @@ namespace Engine.Core
         /// <param name="obj">The object that contains the CustomAttribute on one or more fields/properties</param>
         public static void LoadConfig(string configName, ref object obj)
         {
-            if (!File.Exists(configName))
+            if (!IOManager.Exists(configName))
             {
                 Logger.Crash(new InvalidFilePathException(configName), true);
                 return;
@@ -126,7 +127,7 @@ namespace Engine.Core
             List<Tuple<string, MemberInfo>> serializedObjs =
                 GetPropertiesWithAttribute(obj.GetType(), BindingFlags.Instance | BindingFlags.Public).ToList();
             XmlDocument doc = new XmlDocument();
-            doc.Load(configName);
+            doc.Load(IOManager.GetStream(configName));
             foreach (Tuple<string, MemberInfo> serializedObj in serializedObjs)
             {
                 XmlNode node = GetObject(doc, serializedObj.Item1 + "." + serializedObj.Item2.Name);
@@ -148,7 +149,7 @@ namespace Engine.Core
         /// <param name="nameSpace">The namespace</param>
         public static void LoadConfig(string configName, Assembly asm, string nameSpace)
         {
-            if (!File.Exists(configName))
+            if (!IOManager.Exists(configName))
             {
                 Logger.Crash(new InvalidFilePathException(configName), true);
                 return;
@@ -157,7 +158,7 @@ namespace Engine.Core
             List<Tuple<string, MemberInfo>> serializedObjs =
                 GetPropertiesWithAttribute<ConfigVariable>(asm, nameSpace).ToList();
             XmlDocument doc = new XmlDocument();
-            doc.Load(configName);
+            doc.Load(IOManager.GetStream(configName));
             foreach (Tuple<string, MemberInfo> serializedObj in serializedObjs)
             {
                 XmlNode node = GetObject(doc, serializedObj.Item1 + "." + serializedObj.Item2.Name);
