@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ResourcePackager": {
+      "commandName": "Project",
+      "commandLineArgs": "D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine\\Engine.csproj D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine\\_DefaultResources"
+    }
+  }
+}
