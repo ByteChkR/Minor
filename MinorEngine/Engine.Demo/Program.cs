@@ -32,11 +32,7 @@ namespace Engine.Demo
 
         private static void Main(string[] args)
         {
-            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
-            //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
-            EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
-                "Engine.Core");
-            DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
+            
 #if COLLECT_LOGS
             if (AskForDebugLogSending())
             {
@@ -59,7 +55,14 @@ namespace Engine.Demo
 #endif
 
 
-            GameEngine engine = new GameEngine(EngineSettings.Settings);
+            GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
+            
+            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
+            //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
+            EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
+                "Engine.Core");
+            DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
+            engine.SetSettings(EngineSettings.Settings);
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();

@@ -13,7 +13,6 @@ xcopy ..\assets\kernel ..\bin\Debug\netcoreapp2.1\assets\kernel /s /e
 mkdir ..\bin\Debug\netcoreapp2.1\assets\filter
 xcopy ..\assets\filter ..\bin\Debug\netcoreapp2.1\assets\filter /s /e
 
-pause
 cd ..\bin\Debug\netcoreapp2.1\
 
 echo Running Demo Project:

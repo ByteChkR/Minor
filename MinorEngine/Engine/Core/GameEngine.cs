@@ -29,7 +29,7 @@ namespace Engine.Core
         /// <summary>
         /// The Settings the engine has been started with
         /// </summary>
-        public EngineSettings Settings { get; }
+        public EngineSettings Settings { get; private set; }
 
         /// <summary>
         /// Static Singleton Instance
@@ -89,10 +89,15 @@ namespace Engine.Core
         {
 
             Instance = this;
+            if(settings!= null)SetSettings(settings);
+            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public void SetSettings(EngineSettings settings)
+        {
             Settings = settings;
 
             DebugHelper.ApplySettings(settings?.DebugSettings ?? EngineDefault);
-            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
         }
 
         /// <summary>
