@@ -20,14 +20,14 @@ namespace Engine.IO.audioformats
         /// <returns></returns>
         public bool TryLoadFile(string file, out byte[] data, out int channel, out int bits, out int bitRate)
         {
-            if (!File.Exists(file))
+            if (!IOManager.Exists(file))
             {
                 data = new byte[0];
                 channel = bitRate = bits = 0;
                 return false;
             }
 
-            Stream s = File.Open(file, FileMode.Open);
+            Stream s = IOManager.GetStream(file);
 
             bool ret = TryLoadFile(s, out data, out channel, out bits, out bitRate);
             s.Close();

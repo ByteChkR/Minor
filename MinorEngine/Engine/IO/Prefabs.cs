@@ -30,7 +30,7 @@ namespace Engine.IO
             {
                 if (_cube == null)
                 {
-                    _cube = MeshLoader.FileToMesh("models/cube_flat.obj");
+                    _cube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
                 }
 
                 return _cube.Copy();
@@ -46,7 +46,7 @@ namespace Engine.IO
             {
                 if (_sphere == null)
                 {
-                    _sphere = MeshLoader.FileToMesh("models/sphere_smooth.obj");
+                    _sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
                 }
 
                 return _sphere.Copy();

@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.IO;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.WFC;
@@ -190,7 +191,7 @@ namespace Engine.OpenFL
                 else
                 {
                     string fn = args[1].Trim().Replace(FilepathIndicator, "");
-                    if (File.Exists(fn))
+                    if (IOManager.Exists(fn))
                     {
                         Bitmap bmp;
                         WFCOverlayMode wfc = new WFCOverlayMode(fn, n, widh,

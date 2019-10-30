@@ -99,26 +99,26 @@ namespace Engine.Demo.scenes
 
         protected override void InitializeScene()
         {
-            Mesh sphere = MeshLoader.FileToMesh("models/sphere_smooth.obj");
-            Mesh plane = MeshLoader.FileToMesh("models/plane.obj");
-            Mesh bgBox = MeshLoader.FileToMesh("models/cube_flat.obj");
+            Mesh sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
+            Mesh plane = MeshLoader.FileToMesh("assets/models/plane.obj");
+            Mesh bgBox = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UITextRender.vs"}
+                {ShaderType.FragmentShader, "assets/shader/UITextRender.fs"},
+                {ShaderType.VertexShader, "assets/shader/UITextRender.vs"}
             }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/lit/point.fs"},
-                {ShaderType.VertexShader, "shader/lit/point.vs"}
+                {ShaderType.FragmentShader, "assets/shader/lit/point.fs"},
+                {ShaderType.VertexShader, "assets/shader/lit/point.vs"}
             }, out ShaderProgram shader);
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
             objSphere.AddComponent(new LitMeshRendererComponent(shader,  sphere,
-                TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+                TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             objSphere.GetComponent<LitMeshRendererComponent>().Textures = new[]
                 {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
 
@@ -126,7 +126,7 @@ namespace Engine.Demo.scenes
 
             GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
             objQuad.AddComponent(new LitMeshRendererComponent(shader,  plane,
-                TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+                TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             objQuad.GetComponent<LitMeshRendererComponent>().Textures = new[]
                 {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
 
@@ -134,7 +134,7 @@ namespace Engine.Demo.scenes
 
             GameObject _sourceCube = new GameObject(new Vector3(0, 10, 10), "Light Source");
 
-            Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
+            Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
             _sourceCube.AddComponent(new RotateAroundComponent(){Slow = 0.15f});
             _sourceCube.AddComponent(new LitMeshRendererComponent(shader,  sourceCube,
@@ -160,7 +160,7 @@ namespace Engine.Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(25, 1, 25);
 
-            Texture bgTex = TextureLoader.FileToTexture("textures/ground4k.png");
+            Texture bgTex = TextureLoader.FileToTexture("assets/textures/ground4k.png");
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
 
 
@@ -175,7 +175,7 @@ namespace Engine.Demo.scenes
 
             object mc = mainCamera;
 
-            EngineConfig.LoadConfig("configs/camera_fldemo.xml", ref mc);
+            EngineConfig.LoadConfig("assets/configs/camera_fldemo.xml", ref mc);
 
 
             GameEngine.Instance.CurrentScene.Add(mainCamera);

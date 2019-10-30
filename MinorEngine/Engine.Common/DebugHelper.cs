@@ -14,7 +14,7 @@ namespace Engine.Common
     public static class DebugHelper
     {
         public static int SeverityFilter = 0;
-        public static bool ThrowOnAllExceptions = false;
+        public static bool ThrowOnAllExceptions = true;
 
         public static void ApplySettings(IDebugSettings settings)
         {

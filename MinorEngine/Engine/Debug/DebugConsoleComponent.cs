@@ -177,20 +177,20 @@ namespace Engine.Debug
         {
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UITextRender.vs"}
+                {ShaderType.FragmentShader, "assets/shader/UITextRender.fs"},
+                {ShaderType.VertexShader, "assets/shader/UITextRender.vs"}
             }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/UIRender.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"}
+                {ShaderType.FragmentShader, "assets/shader/UIRender.fs"},
+                {ShaderType.VertexShader, "assets/shader/UIRender.vs"}
             }, out ShaderProgram uiShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/graph.fs"},
-                {ShaderType.VertexShader, "shader/graph.vs"}
+                {ShaderType.FragmentShader, "assets/shader/graph.fs"},
+                {ShaderType.VertexShader, "assets/shader/graph.vs"}
             }, out ShaderProgram graphShader);
 
             GameObject obj = new GameObject("Console");

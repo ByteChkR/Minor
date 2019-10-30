@@ -1,5 +1,5 @@
---define texture wood: "textures/wood1.jpg"
---define texture stone: "textures/stone1.jpg"
+--define texture wood: "assets/textures/wood1.jpg"
+--define texture stone: "assets/textures/stone1.jpg"
 
 CreateMask:
   setactive 3

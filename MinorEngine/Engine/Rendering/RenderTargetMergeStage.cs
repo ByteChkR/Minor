@@ -78,8 +78,8 @@ namespace Engine.Rendering
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/MergeRenderer_Add.fs"},
-                {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
+                {ShaderType.FragmentShader, "assets/shader/MergeRenderer_Add.fs"},
+                {ShaderType.VertexShader, "assets/shader/MergeRenderer.vs"}
             }, out ShaderProgram _mergeAddShader))
             {
                 Console.ReadLine();
@@ -91,8 +91,8 @@ namespace Engine.Rendering
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/MergeRenderer_Mul.fs"},
-                {ShaderType.VertexShader, "shader/MergeRenderer.vs"}
+                {ShaderType.FragmentShader, "assets/shader/MergeRenderer_Mul.fs"},
+                {ShaderType.VertexShader, "assets/shader/MergeRenderer.vs"}
             }, out ShaderProgram _mergeMulShader))
             {
                 Console.ReadLine();
@@ -106,8 +106,8 @@ namespace Engine.Rendering
 
             if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/ScreenRenderer.fs"},
-                {ShaderType.VertexShader, "shader/ScreenRenderer.vs"}
+                {ShaderType.FragmentShader, "assets/shader/ScreenRenderer.fs"},
+                {ShaderType.VertexShader, "assets/shader/ScreenRenderer.vs"}
             }, out _screenShader))
             {
                 Console.ReadLine();

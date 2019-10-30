@@ -1,4 +1,4 @@
---define texture maintexture: "textures/TEST.png"
+--define texture maintexture: "assets/textures/TEST.png"
 
 
 PlainPerlin:

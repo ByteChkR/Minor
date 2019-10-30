@@ -34,8 +34,8 @@ namespace Engine.Demo.scenes
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/lit/point.fs"},
-                {ShaderType.VertexShader, "shader/lit/point.vs"}
+                {ShaderType.FragmentShader, "assets/shader/lit/point.fs"},
+                {ShaderType.VertexShader, "assets/shader/lit/point.vs"}
             }, out litShader);
 
             BasicCamera mainCamera =
@@ -45,13 +45,13 @@ namespace Engine.Demo.scenes
 
             object mc = mainCamera;
 
-            EngineConfig.LoadConfig("configs/camera_astardemo.xml", ref mc);
+            EngineConfig.LoadConfig("assets/configs/camera_astardemo.xml", ref mc);
 
             GameObject _sourceCube = new GameObject(new Vector3(0, 0,0), "Light Source");
             GameObject _hackCube = new GameObject(new Vector3(0, 8, -50),"Workaround");
             Add(_sourceCube);
             Add(_hackCube);
-            Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
+            Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
 
 
@@ -61,7 +61,7 @@ namespace Engine.Demo.scenes
             bgObj.Scale = new Vector3(32, 1, 32);
 
             Collider groundCol = new Collider(new Box(Vector3.Zero, 64, 1, 64), hybLayer);
-            Texture bgTex = TextureLoader.FileToTexture("textures/ground4k.png");
+            Texture bgTex = TextureLoader.FileToTexture("assets/textures/ground4k.png");
             bgTex.TexType = TextureType.Diffuse;
             bgObj.AddComponent(groundCol);
 

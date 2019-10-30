@@ -111,19 +111,19 @@ namespace Engine.Demo.scenes
 
         protected override void InitializeScene()
         {
-            Mesh bgBox = MeshLoader.FileToMesh("models/cube_flat.obj");
+            Mesh bgBox = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "shader/UIRender.vs"}
+                {ShaderType.FragmentShader, "assets/shader/UITextRender.fs"},
+                {ShaderType.VertexShader, "assets/shader/UIRender.vs"}
             }, out ShaderProgram textShader);
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
-                {ShaderType.FragmentShader, "shader/texture.fs"},
-                {ShaderType.VertexShader, "shader/texture.vs"}
+                {ShaderType.FragmentShader, "assets/shader/texture.fs"},
+                {ShaderType.VertexShader, "assets/shader/texture.vs"}
             }, out ShaderProgram shader);
 
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
@@ -137,7 +137,7 @@ namespace Engine.Demo.scenes
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(25, 1, 25);
             bgObj.AddComponent(new MeshRendererComponent(shader,  bgBox,
-                TextureLoader.FileToTexture("textures/ground4k.png"), 1));
+                TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
             BasicCamera c = new BasicCamera(
@@ -150,13 +150,13 @@ namespace Engine.Demo.scenes
 
             _sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
 
-            Mesh sourceCube = MeshLoader.FileToMesh("models/cube_flat.obj");
+            Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             AudioSourceComponent source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
             _sourceCube.AddComponent(new RotateAroundComponent());
             _sourceCube.AddComponent(new MeshRendererComponent(shader,  sourceCube,
-                TextureLoader.FileToTexture("textures/ground4k.png"), 1));
-            if (!AudioLoader.TryLoad("sounds/test_mono_16.wav", out AudioFile clip))
+                TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
+            if (!AudioLoader.TryLoad("assets/sounds/test_mono_16.wav", out AudioFile clip))
             {
                 Console.ReadLine();
             }

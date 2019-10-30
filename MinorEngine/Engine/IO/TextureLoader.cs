@@ -227,13 +227,13 @@ namespace Engine.IO
         /// <returns>The GL Texture</returns>
         public static Texture FileToTexture(string file)
         {
-            if (!File.Exists(file))
+            if (!IOManager.Exists(file))
             {
                 Logger.Crash(new InvalidFilePathException(file), true);
                 return Texture.DefaultTexture;
             }
 
-            Bitmap bmp = new Bitmap(file);
+            Bitmap bmp = new Bitmap(IOManager.GetStream(file));
             Texture t = BitmapToTexture(bmp);
             bmp.Dispose();
             return t;

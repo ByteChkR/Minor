@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Engine.Debug;
+using Engine.IO;
 
 namespace Engine.WFC
 {
@@ -22,7 +23,7 @@ namespace Engine.WFC
         private readonly int _ground;
         public bool Success { get; private set; }
 
-        public WFCOverlayMode(string filename, int N, int width, int height, bool periodicInput, bool periodicOutput,
+        public WFCOverlayMode(Bitmap bitmap, int N, int width, int height, bool periodicInput, bool periodicOutput,
             int symmetry, int ground)
             : base(width, height)
         {
@@ -31,34 +32,33 @@ namespace Engine.WFC
 
             Success = true;
 
-            Bitmap bitmap = new Bitmap(filename);
             int SMX = bitmap.Width, SMY = bitmap.Height;
             byte[,] sample = new byte[SMX, SMY];
             _colors = new List<Color>();
 
             for (int y = 0; y < SMY; y++)
-            for (int x = 0; x < SMX; x++)
-            {
-                Color color = bitmap.GetPixel(x, y);
-
-                int i = 0;
-                foreach (Color c in _colors)
+                for (int x = 0; x < SMX; x++)
                 {
-                    if (c == color)
+                    Color color = bitmap.GetPixel(x, y);
+
+                    int i = 0;
+                    foreach (Color c in _colors)
                     {
-                        break;
+                        if (c == color)
+                        {
+                            break;
+                        }
+
+                        i++;
                     }
 
-                    i++;
-                }
+                    if (i == _colors.Count)
+                    {
+                        _colors.Add(color);
+                    }
 
-                if (i == _colors.Count)
-                {
-                    _colors.Add(color);
+                    sample[x, y] = (byte)i;
                 }
-
-                sample[x, y] = (byte) i;
-            }
 
             Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log | DebugChannel.WFC, 3);
             int C = _colors.Count;
@@ -68,10 +68,10 @@ namespace Engine.WFC
             {
                 byte[] result = new byte[N * N];
                 for (int y = 0; y < N; y++)
-                for (int x = 0; x < N; x++)
-                {
-                    result[x + y * N] = f(x, y);
-                }
+                    for (int x = 0; x < N; x++)
+                    {
+                        result[x + y * N] = f(x, y);
+                    }
 
                 return result;
             }
@@ -124,7 +124,7 @@ namespace Engine.WFC
                         count++;
                     }
 
-                    result[i] = (byte) (count % _colors.Count);
+                    result[i] = (byte)(count % _colors.Count);
                 }
 
                 return result;
@@ -134,33 +134,33 @@ namespace Engine.WFC
             List<long> ordering = new List<long>();
 
             for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
-            for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
-            {
-                byte[][] ps = new byte[8][];
-
-                ps[0] = patternFromSample(x, y);
-                ps[1] = reflect(ps[0]);
-                ps[2] = rotate(ps[0]);
-                ps[3] = reflect(ps[2]);
-                ps[4] = rotate(ps[2]);
-                ps[5] = reflect(ps[4]);
-                ps[6] = rotate(ps[4]);
-                ps[7] = reflect(ps[6]);
-
-                for (int k = 0; k < symmetry; k++)
+                for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
                 {
-                    long ind = index(ps[k]);
-                    if (weights.ContainsKey(ind))
+                    byte[][] ps = new byte[8][];
+
+                    ps[0] = patternFromSample(x, y);
+                    ps[1] = reflect(ps[0]);
+                    ps[2] = rotate(ps[0]);
+                    ps[3] = reflect(ps[2]);
+                    ps[4] = rotate(ps[2]);
+                    ps[5] = reflect(ps[4]);
+                    ps[6] = rotate(ps[4]);
+                    ps[7] = reflect(ps[6]);
+
+                    for (int k = 0; k < symmetry; k++)
                     {
-                        weights[ind]++;
-                    }
-                    else
-                    {
-                        weights.Add(ind, 1);
-                        ordering.Add(ind);
+                        long ind = index(ps[k]);
+                        if (weights.ContainsKey(ind))
+                        {
+                            weights[ind]++;
+                        }
+                        else
+                        {
+                            weights.Add(ind, 1);
+                            ordering.Add(ind);
+                        }
                     }
                 }
-            }
 
             T = weights.Count;
             _ground = (ground + T) % T;
@@ -182,13 +182,13 @@ namespace Engine.WFC
                     ymin = dy < 0 ? 0 : dy,
                     ymax = dy < 0 ? dy + N : N;
                 for (int y = ymin; y < ymax; y++)
-                for (int x = xmin; x < xmax; x++)
-                {
-                    if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
+                    for (int x = xmin; x < xmax; x++)
                     {
-                        return false;
+                        if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
+                        {
+                            return false;
+                        }
                     }
-                }
 
                 return true;
             }
@@ -217,6 +217,13 @@ namespace Engine.WFC
             }
         }
 
+        public WFCOverlayMode(string filename, int N, int width, int height, bool periodicInput, bool periodicOutput,
+            int symmetry, int ground)
+            : this(new Bitmap(IOManager.GetStream(filename)), N, width, height, periodicInput, periodicOutput, symmetry, ground)
+        {
+
+        }
+
         protected override bool OnBoundary(int x, int y)
         {
             return !Periodic && (x + _n > Fmx || y + _n > Fmy || x < 0 || y < 0);
@@ -239,7 +246,7 @@ namespace Engine.WFC
                     {
                         int dx = x < Fmx - _n + 1 ? 0 : _n - 1;
                         Color c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
-                        bitmapData[x + y * Fmx] = unchecked((int) 0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
+                        bitmapData[x + y * Fmx] = unchecked((int)0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
                     }
                 }
             }
@@ -251,38 +258,38 @@ namespace Engine.WFC
                     int x = i % Fmx, y = i / Fmx;
 
                     for (int dy = 0; dy < _n; dy++)
-                    for (int dx = 0; dx < _n; dx++)
-                    {
-                        int sx = x - dx;
-                        if (sx < 0)
+                        for (int dx = 0; dx < _n; dx++)
                         {
-                            sx += Fmx;
-                        }
-
-                        int sy = y - dy;
-                        if (sy < 0)
-                        {
-                            sy += Fmy;
-                        }
-
-                        int s = sx + sy * Fmx;
-                        if (OnBoundary(sx, sy))
-                        {
-                            continue;
-                        }
-
-                        for (int t = 0; t < T; t++)
-                        {
-                            if (Wave[s][t])
+                            int sx = x - dx;
+                            if (sx < 0)
                             {
-                                contributors++;
-                                Color color = _colors[_patterns[t][dx + dy * _n]];
-                                r += color.R;
-                                g += color.G;
-                                b += color.B;
+                                sx += Fmx;
+                            }
+
+                            int sy = y - dy;
+                            if (sy < 0)
+                            {
+                                sy += Fmy;
+                            }
+
+                            int s = sx + sy * Fmx;
+                            if (OnBoundary(sx, sy))
+                            {
+                                continue;
+                            }
+
+                            for (int t = 0; t < T; t++)
+                            {
+                                if (Wave[s][t])
+                                {
+                                    contributors++;
+                                    Color color = _colors[_patterns[t][dx + dy * _n]];
+                                    r += color.R;
+                                    g += color.G;
+                                    b += color.B;
+                                }
                             }
                         }
-                    }
 
                     if (contributors == 0)
                     {
@@ -290,7 +297,7 @@ namespace Engine.WFC
                         continue;
                     }
 
-                    bitmapData[i] = unchecked((int) 0xff000000 | ((r / contributors) << 16) |
+                    bitmapData[i] = unchecked((int)0xff000000 | ((r / contributors) << 16) |
                                               ((g / contributors) << 8) | (b / contributors));
                 }
             }

@@ -129,7 +129,7 @@ namespace Engine.OpenFL
             console?.AddCommand("step", cmd_FLStep);
             console?.AddCommand("r", cmd_FLReset);
             console?.AddCommand("dbgstop", cmd_FLStop);
-            _db = new KernelDatabase("kernel/", OpenCL.TypeEnums.DataTypes.UCHAR1);
+            _db = new KernelDatabase("assets/kernel/", OpenCL.TypeEnums.DataTypes.UCHAR1);
         }
 
         /// <summary>

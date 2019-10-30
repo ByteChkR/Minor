@@ -33,7 +33,7 @@ namespace Engine.Demo
         {
             
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
-            EngineConfig.LoadConfig("configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
+            EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");
             DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
 #if COLLECT_LOGS
@@ -60,7 +60,7 @@ namespace Engine.Demo
 
             GameEngine engine = new GameEngine(EngineSettings.Settings);
             engine.Initialize();
-            engine.InitializeScene<AStarDemoScene>();
+            engine.InitializeScene<FLDemoScene>();
             engine.Run();
         }
     }

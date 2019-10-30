@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -12,24 +13,74 @@ namespace ResourcePackager
 
             string csfile = args[0];
             string dir = Path.GetDirectoryName(csfile);
-            string folder = args[1];
-            string[] files = Directory.GetFiles(folder, "*", SearchOption.AllDirectories);
+            List<Tuple<string, string>> files = ParseFileList(args);
+            List<string> f = new List<string>();
+            for (int i = 0; i < files.Count; i++)
+            {
+                if (File.Exists(files[i].Item1))
+                {
+                    f.Add(files[i].Item1);
+                }
+                else
+                {
+                    string pattern = files[i].Item2;
+                    string path = files[i].Item1;
+                    f.AddRange(Directory.GetFiles(path, pattern, SearchOption.AllDirectories));
+                }
+            }
 
             XmlDocument doc = new XmlDocument();
+            string filename = csfile + "." + DateTime.UtcNow.ToString("MM-dd-hh-mm-ss") + ".backup";
+            File.Copy(csfile, filename);
 
-            File.Move(csfile, csfile + ".backup");
-
-            doc.Load(csfile + ".backup");
+            doc.Load(csfile);
             XmlNode n = FindTag(doc);
 
 
-            for (int i = 0; i < files.Length; i++)
+            for (int i = 0; i < f.Count; i++)
             {
-                string cont = Path.GetRelativePath(dir, files[i]);
-                n.InnerXml += "\n" + GenerateFileEntry(cont);
+                string cont = Path.GetRelativePath(dir, f[i]);
+                string entry = GenerateFileEntry(cont);
+                if (!n.InnerXml.Contains(entry))
+                    n.InnerXml += "\n" + entry;
+            }
+            if(File.Exists(dir + "/embedded_" + Path.GetFileName(args[0])))File.Delete(dir + "/embedded_" + Path.GetFileName(args[0]));
+            doc.Save(dir + "/embedded_" + Path.GetFileName(args[0]));
+        }
+
+        static List<Tuple<string, string>> ParseFileList(string[] args)
+        {
+            string[] lines;
+            if (args[1].StartsWith("@"))
+            {
+                lines = File.ReadAllLines(args[1].Replace("@", ""));
+            }
+            else
+            {
+                List<string> l = new List<string>();
+                for (int i = 1; i < args.Length; i++)
+                {
+                    l.Add(args[i]);
+                }
+
+                lines = l.ToArray();
             }
 
-            doc.Save(csfile);
+
+            List<Tuple<string, string>> ret = new List<Tuple<string, string>>();
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string[] kvp = lines[i].Split(";");
+                if (kvp.Length == 1)
+                    ret.Add(new Tuple<string, string>(kvp[0], "*"));
+                else
+                    for (int j = 1; j < kvp.Length; j++)
+                    {
+                        ret.Add(new Tuple<string, string>(kvp[0], kvp[j]));
+                    }
+            }
+
+            return ret;
         }
 
         static XmlNode FindTag(XmlDocument doc)

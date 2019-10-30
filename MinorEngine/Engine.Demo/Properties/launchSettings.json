@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Demo": {
-      "commandName": "Project",
-      "workingDirectory": "assets"
+      "commandName": "Project"
     }
   }
 }

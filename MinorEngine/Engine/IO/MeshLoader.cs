@@ -59,11 +59,11 @@ namespace Engine.IO
         /// </summary>
         /// <param name="stream">the input stream for assimp</param>
         /// <returns></returns>
-        internal static List<Mesh> LoadModel(Stream stream)
+        internal static List<Mesh> LoadModel(Stream stream, string hint="", string path = "")
         {
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
-            return LoadAssimpScene(context.ImportFileFromStream(stream), "");
+            return LoadAssimpScene(context.ImportFileFromStream(stream, hint), path);
         }
 
         /// <summary>
@@ -73,15 +73,13 @@ namespace Engine.IO
         /// <returns>The loaded AssimpModel</returns>
         private static List<Mesh> LoadModel(string path)
         {
-            if (!File.Exists(path))
+            if (!IOManager.Exists(path))
             {
                 Logger.Crash(new InvalidFolderPathException(path), true);
                 return new List<Mesh> {Mesh.DefaultMesh};
             }
 
-            AssimpContext context = new AssimpContext();
-            context.SetConfig(new NormalSmoothingAngleConfig(66));
-            return LoadAssimpScene(context.ImportFile(path), path);
+            return LoadModel(IOManager.GetStream(path), Path.GetExtension(path), path);
         }
 
         /// <summary>

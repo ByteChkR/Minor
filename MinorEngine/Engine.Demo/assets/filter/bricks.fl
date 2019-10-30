@@ -1,5 +1,5 @@
 --define texture random: urnd
---define texture mask: wfc "WFCTiles/brick.png" 3 32 32 false true 1 0 0 
+--define texture mask: wfc "assets/WFCTiles/brick.png" 3 32 32 false true 1 0 0 
 --define texture inverseMask: empty #Temporary Texture that is used to store a result
 --define texture specularOut: empty
 
