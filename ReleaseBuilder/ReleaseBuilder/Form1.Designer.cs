@@ -46,6 +46,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.tbPackagedFiles = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnOpenProject
@@ -156,10 +158,11 @@
             // rtbBuildOutput
             // 
             this.rtbBuildOutput.BackColor = System.Drawing.Color.Black;
+            this.rtbBuildOutput.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbBuildOutput.ForeColor = System.Drawing.Color.White;
-            this.rtbBuildOutput.Location = new System.Drawing.Point(12, 148);
+            this.rtbBuildOutput.Location = new System.Drawing.Point(0, 0);
             this.rtbBuildOutput.Name = "rtbBuildOutput";
-            this.rtbBuildOutput.Size = new System.Drawing.Size(876, 378);
+            this.rtbBuildOutput.Size = new System.Drawing.Size(900, 375);
             this.rtbBuildOutput.TabIndex = 10;
             this.rtbBuildOutput.Text = "";
             // 
@@ -197,16 +200,25 @@
             this.tbPackagedFiles.TabIndex = 14;
             this.tbPackagedFiles.Text = ".cl+.fl";
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.rtbBuildOutput);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 163);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(900, 375);
+            this.panel1.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 538);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbPackagedFiles);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbUnpackagedFiles);
-            this.Controls.Add(this.rtbBuildOutput);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lblOutputFolder);
             this.Controls.Add(this.tbOutputFolder);
@@ -217,8 +229,10 @@
             this.Controls.Add(this.lblProject);
             this.Controls.Add(this.tbProject);
             this.Controls.Add(this.btnOpenProject);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "Release Builder";
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -244,6 +258,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbPackagedFiles;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 
