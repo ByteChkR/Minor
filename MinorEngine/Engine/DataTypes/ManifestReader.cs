@@ -43,7 +43,7 @@ namespace Engine.DataTypes
                 DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 10);
             for (int i = 0; i < files.Length; i++)
             {
-                string file = files[i].Replace(asm.GetName().Name + ".", "");
+                string file = files[i].Remove(0, (asm.GetName().Name + ".").Length);
                 if (AssemblyFiles.ContainsKey(file))
                 {
                     Logger.Log("Overwriting File: " + file + " with version from assembly: " + asm.GetName().Name,
@@ -59,7 +59,7 @@ namespace Engine.DataTypes
                 }
             }
 
-            Unpack(GetFiles("pack", "*"));
+            Unpack(GetFiles(asm.GetName().Name + "/packs", "*"), asm.GetName().Name);
         }
 
         private static int HasPackageFiles(string[] files)
@@ -76,7 +76,7 @@ namespace Engine.DataTypes
             return id;
         }
 
-        private static void Unpack(string[] files)
+        private static void Unpack(string[] files, string packPrefix)
         {
             int id = HasPackageFiles(files);
             bool hasPackedFiles = id != -1;
@@ -84,7 +84,7 @@ namespace Engine.DataTypes
             Logger.Log("Has Packed Files: " + hasPackedFiles, DebugChannel.Log, 10);
             if (hasPackedFiles)
             {
-                string[] f = GetFiles("packs", ".pack");
+                string[] f = GetFiles(packPrefix + "/packs", ".pack");
                 Stream[] s = new Stream[f.Length];
                 for (int i = 0; i < f.Length; i++)
                 {
@@ -94,12 +94,13 @@ namespace Engine.DataTypes
 
                 Stream indexStream = GetStreamByPath(files[id]);
                 Dictionary<string, Tuple<int, MemoryStream>> ret = AssetPacker.UnpackAssets(indexStream, s);
-                Logger.Log($"Unpacking {ret.Count} Assets.. ", DebugChannel.Log, 10);
+                Logger.Log($"Parparing to unpack {ret.Count} Assets.. ", DebugChannel.Log, 10);
                 foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in ret)
                 {
 
                     if (!File.Exists(memoryStream.Key))
                     {
+                        Logger.Log($"Unpacking: " + memoryStream.Key, DebugChannel.Log, 10);
                         byte[] buf = new byte[memoryStream.Value.Item1];
                         memoryStream.Value.Item2.Position = 0;
                         memoryStream.Value.Item2.Read(buf, 0, buf.Length);
@@ -110,7 +111,6 @@ namespace Engine.DataTypes
                         while (curFolder.Trim() != "\\")
                         {
                             if (string.IsNullOrEmpty(curFolder)) break;
-                            Logger.Log(curFolder, DebugChannel.Log, 10);
                             folders.Add(curFolder);
                             curFolder = Path.GetDirectoryName(curFolder);
                         }
@@ -219,6 +219,7 @@ namespace Engine.DataTypes
         {
             for (int i = 0; i < UnpackedFiles.Count; i++)
             {
+                Logger.Log("Removing File from Filesystem: "+ UnpackedFiles[i], DebugChannel.Log, 10);
                 File.Delete(UnpackedFiles[i]);
             }
         }

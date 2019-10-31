@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,38 +55,66 @@ namespace ReleaseBuilder
             BuildProject();
         }
 
-
-        private bool isFile(string file, string[] ext)
+        private T GetAssemblyAttrib<T>(Assembly asm) where T : Attribute
         {
-            for (int i = 0; i < ext.Length; i++)
-            {
-                if (file.EndsWith(ext[i])) return true;
-            }
+            // Get attributes of this type.
+            object[] attributes =
+                asm.GetCustomAttributes(typeof(T), true);
 
-            return false;
+            // If we didn't get anything, return null.
+            if (attributes.Length == 0)
+                return null;
+
+            // Convert the first attribute value into
+            // the desired type and return it.
+            return (T)attributes[0];
         }
+
+        private void WriteInfo()
+        {
+            Assembly asm = Assembly.GetExecutingAssembly();
+
+            AssemblyCopyrightAttribute attrib = GetAssemblyAttrib<AssemblyCopyrightAttribute>(asm);
+
+            string info = asm.GetName().Name + "(" +
+                          asm.GetName().Version + ")\n" +
+                          attrib.Copyright;
+                
+            WriteLine(info);
+        }
+
         private void PackAssets()
         {
-            string[] files = Directory.GetFiles(tbAssetFolder.Text, "*", SearchOption.AllDirectories).Where(x => isFile(x, tbPackagedFiles.Text.Split('+'))).ToArray();
-            string[] packFiles = new string[files.Length];
-            Uri p2 = new Uri(Path.GetDirectoryName(tbProject.Text));
-            for (int i = 0; i < files.Length; i++)
+            WriteLine("Parsing File info...");
+
+            AssetPackageInfo info = new AssetPackageInfo();
+            string[] unpackExts = tbPackagedFiles.Text.Split('+');
+            for (int i = 0; i < unpackExts.Length; i++)
             {
-                Uri p1 = new Uri(files[i]);
-                Uri p3 = p2.MakeRelativeUri(p1);
-                packFiles[i] = p3.ToString().Replace(Path.GetFileName(Path.GetDirectoryName(tbProject.Text)) + "/", "");
-                WriteLine("Packing File: " + packFiles[i]);
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
             }
 
-            AssetPacker.PackAssets(files, packFiles, Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
+            WriteLine("Creating Asset Pack(" + tbAssetFolder.Text + ")...");
+            AssetResult ret = AssetPacker.PackAssets(tbAssetFolder.Text, info);
+            WriteLine("Packaging " + ret.indexList.Count +" Assets in "+ ret.packs.Count + " Packs.");
+
+            WriteLine("Saving Asset Pack to "+ Path.GetDirectoryName(tbProject.Text)+"\\"+ Path.GetFileNameWithoutExtension(tbProject.Text));
+            ret.Save(Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
+
+            WriteLine("Packaging Assets Finished.");
         }
 
         private void BuildProject()
         {
 
+            WriteLine("Starting Build Process.");
+
             CheckForIllegalCrossThreadCalls = false;
             string command =
-                $"{tbProject.Text} {Path.GetDirectoryName(tbProject.Text)+"\\"+ Path.GetFileNameWithoutExtension(tbProject.Text) + "\\packs\\+*.xml+*.pack"} {tbAssetFolder.Text}\\+{tbUnpackagedFiles.Text} { Path.GetDirectoryName(tbProject.Text)}\\bin\\Release\\netcoreapp2.1\\publish {tbOutputFolder.Text} {Path.GetDirectoryName(tbProject.Text)} {Path.GetFileNameWithoutExtension(tbProject.Text)}";
+                $"{tbProject.Text} {Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text) + "\\packs\\+*.xml+*.pack"} {tbAssetFolder.Text}\\+{tbUnpackagedFiles.Text} { Path.GetDirectoryName(tbProject.Text)}\\bin\\Release\\netcoreapp2.1\\publish {tbOutputFolder.Text} {Path.GetDirectoryName(tbProject.Text)} {Path.GetFileNameWithoutExtension(tbProject.Text)}";
+
+
+
             ProcessStartInfo psi = new ProcessStartInfo("resources/Build.bat", command);
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
@@ -124,5 +153,9 @@ namespace ReleaseBuilder
 
         }
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            WriteInfo();
+        }
     }
 }

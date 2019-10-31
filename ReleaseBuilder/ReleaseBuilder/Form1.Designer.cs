@@ -66,7 +66,7 @@
             this.tbProject.Name = "tbProject";
             this.tbProject.Size = new System.Drawing.Size(746, 20);
             this.tbProject.TabIndex = 1;
-            this.tbProject.Text = "D:\\Users\\Tim\\Documents\\MinorGame\\HorrorOfBindings\\HorrorOfBindings.csproj";
+            this.tbProject.Text = "D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine.Demo\\Engine.Demo.csproj";
             // 
             // lblProject
             // 
@@ -92,7 +92,7 @@
             this.tbAssetFolder.Name = "tbAssetFolder";
             this.tbAssetFolder.Size = new System.Drawing.Size(746, 20);
             this.tbAssetFolder.TabIndex = 4;
-            this.tbAssetFolder.Text = "D:\\Users\\Tim\\Documents\\MinorGame\\HorrorOfBindings\\assets";
+            this.tbAssetFolder.Text = "D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine.Demo\\assets";
             // 
             // btnOpenAssetFolder
             // 
@@ -198,7 +198,7 @@
             this.tbPackagedFiles.Name = "tbPackagedFiles";
             this.tbPackagedFiles.Size = new System.Drawing.Size(328, 20);
             this.tbPackagedFiles.TabIndex = 14;
-            this.tbPackagedFiles.Text = ".cl+.fl";
+            this.tbPackagedFiles.Text = "*.cl+*.fl";
             // 
             // panel1
             // 
@@ -232,6 +232,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "Form1";
             this.Text = "Release Builder";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();

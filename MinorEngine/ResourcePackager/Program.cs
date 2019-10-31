@@ -22,7 +22,7 @@ namespace ResourcePackager
                 return;
             }
 
-            string dir = Path.GetDirectoryName(csfile);
+            string projectDir = Path.GetDirectoryName(csfile);
             List<Tuple<string, string>> files = ParseFileList(args);
             List<string> f = new List<string>();
             for (int i = 0; i < files.Count; i++)
@@ -50,7 +50,7 @@ namespace ResourcePackager
 
             for (int i = 0; i < f.Count; i++)
             {
-                string cont = Path.GetRelativePath(dir, f[i]);
+                string cont = Path.GetRelativePath(projectDir, f[i]);
                 string entry = GenerateFileEntry(cont);
 
                 Console.WriteLine("Adding File to csproj File: " + cont);
@@ -90,15 +90,12 @@ namespace ResourcePackager
                 if (kvp.Length == 1)
                 {
                     ret.Add(new Tuple<string, string>(kvp[0], "*"));
-
-                    Console.WriteLine("Added File Ext: " + kvp[0] + ": *");
                 }
 
                 else
                     for (int j = 1; j < kvp.Length; j++)
                     {
                         ret.Add(new Tuple<string, string>(kvp[0], kvp[j]));
-                        Console.WriteLine("Added File Ext: " + kvp[0] + ": " + kvp[j]);
                     }
 
             }

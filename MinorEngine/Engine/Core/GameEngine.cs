@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reflection;
 using Engine.Common;
 using Engine.Audio;
@@ -54,7 +55,7 @@ namespace Engine.Core
         /// <summary>
         /// Property that returns the current AspectRatio
         /// </summary>
-        public float AspectRatio => Width / (float) Height;
+        public float AspectRatio => Width / (float)Height;
 
         /// <summary>
         /// Private flag if the there is a scene change in progress
@@ -89,9 +90,11 @@ namespace Engine.Core
         {
 
             Instance = this;
-            if(settings!= null)SetSettings(settings);
+            if (settings != null) SetSettings(settings);
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
         }
+
+        
 
         public void SetSettings(EngineSettings settings)
         {
@@ -135,8 +138,14 @@ namespace Engine.Core
             Window.KeyDown += GameObject._KeyDown;
             Window.KeyUp += GameObject._KeyUp;
             Window.KeyPress += GameObject._KeyPress;
+            AppDomain.CurrentDomain.ProcessExit += CurrentDomainOnProcessExit;
 
             #endregion
+        }
+
+        private void CurrentDomainOnProcessExit(object sender, EventArgs e)
+        {
+            ManifestReader.ClearUnpackedFiles();
         }
 
 
@@ -269,12 +278,12 @@ namespace Engine.Core
             MemoryTracer.NextStage("Update Frame: " + FrameCounter);
 
             MemoryTracer.AddSubStage("Scene Update");
-            CurrentScene?.Update((float) e.Time);
+            CurrentScene?.Update((float)e.Time);
             MemoryTracer.NextStage("World Update");
-            CurrentScene?.Update((float) e.Time);
-            
+            CurrentScene?.Update((float)e.Time);
+
             MemoryTracer.NextStage("Physics Update");
-            PhysicsEngine.Update((float) e.Time);
+            PhysicsEngine.Update((float)e.Time);
 
             if (_changeScene)
             {
@@ -295,7 +304,7 @@ namespace Engine.Core
 
                 MemoryTracer.NextStage("Create New Scene");
 
-                CurrentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
+                CurrentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
 
                 MemoryTracer.NextStage("Initialize New Scene");
 
@@ -304,7 +313,7 @@ namespace Engine.Core
                 MemoryTracer.ReturnFromSubStage();
             }
 
-            
+
             //Cleanup
             MemoryTracer.NextStage("Clean up Destroyed Objects");
             CurrentScene?.RemoveDestroyedObjects();

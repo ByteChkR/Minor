@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Principal;
 using System.Xml.Serialization;
 
 namespace AssetPackaging
@@ -13,7 +14,7 @@ namespace AssetPackaging
         [XmlIgnore]
         public List<AssetPack> packs = new List<AssetPack>();
 
-        public void AddFile(string file, string packPath)
+        public void AddFile(string file, string packPath, AssetPackageType type)
         {
             FileStream fs = new FileStream(file, FileMode.Open);
 
@@ -22,7 +23,8 @@ namespace AssetPackaging
             ap.PackageID = assetPack;
             ap.Offset = packs[assetPack].content.Count;
             ap.Length = (int)fs.Length;
-            ap.Path = packPath;
+            ap.Path = packPath; //assets/textures/texture.png
+            ap.PackageType = type;
 
             indexList.Add(ap);
 

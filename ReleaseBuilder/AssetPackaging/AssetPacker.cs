@@ -16,17 +16,25 @@ namespace AssetPackaging
         public const int KILOBYTE = 1024;
         public const int MAXSIZE_KILOBYTES = 1024;
 
-        public static void PackAssets(string[] files, string[] packFiles, string outputFolder)
+        public static AssetResult PackAssets(string assetFolder, AssetPackageInfo info) // [...]/assets
         {
-            AssetResult catalog = new AssetResult();
-
-            for (int i = 0; i < files.Length; i++)
+            AssetResult ret = new AssetResult();
+            Uri assetPath = new Uri(assetFolder);
+            foreach (KeyValuePair<string, AssetFileInfo> assetFileInfo in info.FileInfos)
             {
-                catalog.AddFile(files[i], packFiles[i]);
+                string[] files = Directory.GetFiles(assetFolder, assetFileInfo.Key, SearchOption.AllDirectories);
+                AssetPackageType type = assetFileInfo.Value.packageType;
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    Uri file = new Uri(files[i]);
+                    Uri packPath = assetPath.MakeRelativeUri(file);
+                    ret.AddFile(files[i], packPath.ToString(), type);
+                }
+
             }
 
-            catalog.Save(outputFolder);
-
+            return ret;
 
         }
 
@@ -37,9 +45,10 @@ namespace AssetPackaging
             Dictionary<string, Tuple<int, MemoryStream>> assetList = new Dictionary<string, Tuple<int, MemoryStream>>();
             for (int i = 0; i < r.indexList.Count; i++)
             {
+                if(r.indexList[i].PackageType== AssetPackageType.Memory)continue;
+                
                 MemoryStream ms = new MemoryStream(r.indexList[i].Length);
-
-                Console.WriteLine("Unpacking File: "+ r.indexList[i]);
+                
                 byte[] buf = new byte[packs[r.indexList[i].PackageID].Length];
                 packs[r.indexList[i].PackageID].Position = r.indexList[i].Offset;
                 packs[r.indexList[i].PackageID].Read(buf, 0, buf.Length);

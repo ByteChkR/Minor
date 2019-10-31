@@ -9,6 +9,7 @@ namespace AssetPackaging
         public int PackageID;
         public int Offset;
         public int Length;
+        public AssetPackageType PackageType;
 
         public override string ToString()
         {
