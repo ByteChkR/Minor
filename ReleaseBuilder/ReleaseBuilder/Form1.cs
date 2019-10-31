@@ -87,7 +87,7 @@ namespace ReleaseBuilder
             string command =
                 $"{tbProject.Text} {Path.GetDirectoryName(tbProject.Text) + "\\packs\\+*.xml+*.pack"} {tbAssetFolder.Text}\\+{tbUnpackagedFiles.Text} { Path.GetDirectoryName(tbProject.Text)}\\bin\\Release\\netcoreapp2.1\\publish {tbOutputFolder.Text} {Path.GetDirectoryName(tbProject.Text)}";
             WriteLine(command);
-            ProcessStartInfo psi = new ProcessStartInfo("Build.bat", command);
+            ProcessStartInfo psi = new ProcessStartInfo("resources/Build.bat", command);
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.CreateNoWindow = true;
