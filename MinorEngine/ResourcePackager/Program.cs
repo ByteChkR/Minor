@@ -35,6 +35,7 @@ namespace ResourcePackager
                 {
                     string pattern = files[i].Item2;
                     string path = files[i].Item1;
+                    Console.WriteLine("Adding File: " + path + " with pattern: " + pattern);
                     f.AddRange(Directory.GetFiles(path, pattern, SearchOption.AllDirectories));
                 }
             }
@@ -75,6 +76,7 @@ namespace ResourcePackager
                 List<string> l = new List<string>();
                 for (int i = 1; i < args.Length; i++)
                 {
+                    Console.WriteLine("Adding File: " + args[i]);
                     l.Add(args[i]);
                 }
 
@@ -85,14 +87,21 @@ namespace ResourcePackager
             List<Tuple<string, string>> ret = new List<Tuple<string, string>>();
             for (int i = 0; i < lines.Length; i++)
             {
-                string[] kvp = lines[i].Split(";");
+                string[] kvp = lines[i].Split("+");
                 if (kvp.Length == 1)
+                {
                     ret.Add(new Tuple<string, string>(kvp[0], "*"));
+
+                    Console.WriteLine("Added File Ext: " + kvp[0] + ": *");
+                }
+
                 else
                     for (int j = 1; j < kvp.Length; j++)
                     {
                         ret.Add(new Tuple<string, string>(kvp[0], kvp[j]));
+                        Console.WriteLine("Added File Ext: " + kvp[0] + ": " + kvp[j]);
                     }
+
             }
 
             return ret;
