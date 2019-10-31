@@ -35,7 +35,6 @@ namespace ResourcePackager
                 {
                     string pattern = files[i].Item2;
                     string path = files[i].Item1;
-                    Console.WriteLine("Adding File: " + path + " with pattern: " + pattern);
                     f.AddRange(Directory.GetFiles(path, pattern, SearchOption.AllDirectories));
                 }
             }
@@ -54,7 +53,7 @@ namespace ResourcePackager
                 string cont = Path.GetRelativePath(dir, f[i]);
                 string entry = GenerateFileEntry(cont);
 
-                Console.WriteLine("Adding File: " + cont);
+                Console.WriteLine("Adding File to csproj File: " + cont);
                 if (!n.InnerXml.Contains(entry))
                     n.InnerXml += "\n" + entry;
             }

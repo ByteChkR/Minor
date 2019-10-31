@@ -18,7 +18,7 @@ echo Building Project:
 dotnet build %1 -c Release
 dotnet publish %1 -c Release
 
-@RD %6\packs /S /Q
+@RD %6\%7 /S /Q
 
 echo Copying %4 to %5
 xcopy %4 %5 /s /e /y /i

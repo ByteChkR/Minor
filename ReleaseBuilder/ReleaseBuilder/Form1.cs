@@ -66,7 +66,7 @@ namespace ReleaseBuilder
         }
         private void PackAssets()
         {
-            string[] files = Directory.GetFiles(tbAssetFolder.Text, "*", SearchOption.AllDirectories).Where(x=>isFile(x, tbPackagedFiles.Text.Split('+'))).ToArray();
+            string[] files = Directory.GetFiles(tbAssetFolder.Text, "*", SearchOption.AllDirectories).Where(x => isFile(x, tbPackagedFiles.Text.Split('+'))).ToArray();
             string[] packFiles = new string[files.Length];
             Uri p2 = new Uri(Path.GetDirectoryName(tbProject.Text));
             for (int i = 0; i < files.Length; i++)
@@ -77,7 +77,7 @@ namespace ReleaseBuilder
                 WriteLine("Packing File: " + packFiles[i]);
             }
 
-            AssetPacker.PackAssets(files, packFiles, Path.GetDirectoryName(tbProject.Text));
+            AssetPacker.PackAssets(files, packFiles, Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
         }
 
         private void BuildProject()
@@ -85,8 +85,7 @@ namespace ReleaseBuilder
 
             CheckForIllegalCrossThreadCalls = false;
             string command =
-                $"{tbProject.Text} {Path.GetDirectoryName(tbProject.Text) + "\\packs\\+*.xml+*.pack"} {tbAssetFolder.Text}\\+{tbUnpackagedFiles.Text} { Path.GetDirectoryName(tbProject.Text)}\\bin\\Release\\netcoreapp2.1\\publish {tbOutputFolder.Text} {Path.GetDirectoryName(tbProject.Text)}";
-            WriteLine(command);
+                $"{tbProject.Text} {Path.GetDirectoryName(tbProject.Text)+"\\"+ Path.GetFileNameWithoutExtension(tbProject.Text) + "\\packs\\+*.xml+*.pack"} {tbAssetFolder.Text}\\+{tbUnpackagedFiles.Text} { Path.GetDirectoryName(tbProject.Text)}\\bin\\Release\\netcoreapp2.1\\publish {tbOutputFolder.Text} {Path.GetDirectoryName(tbProject.Text)} {Path.GetFileNameWithoutExtension(tbProject.Text)}";
             ProcessStartInfo psi = new ProcessStartInfo("resources/Build.bat", command);
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
@@ -103,6 +102,10 @@ namespace ReleaseBuilder
 
             while (!p.HasExited)
             {
+                lock (rtbBuildOutput)
+                {
+                    Application.DoEvents();
+                }
             }
             redir.StopThreads();
             CheckForIllegalCrossThreadCalls = true;
@@ -111,11 +114,13 @@ namespace ReleaseBuilder
         private void WriteLine(string line)
         {
             lock (rtbBuildOutput)
+            {
                 if (line != null)
                 {
                     rtbBuildOutput.AppendText(line + "\n");
                 }
-            Application.DoEvents();
+
+            }
 
         }
 

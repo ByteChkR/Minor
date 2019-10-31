@@ -62,19 +62,25 @@ namespace Engine.DataTypes
             Unpack(GetFiles("pack", "*"));
         }
 
-        private static void Unpack(string[] files)
+        private static int HasPackageFiles(string[] files)
         {
-            bool hasPackedFiles = false;
             int id = -1;
             for (int i = 0; i < files.Length; i++)
             {
-                Logger.Log("Searching Index List: " + files[i], DebugChannel.Log, 10);
                 if (files[i].EndsWith("index.xml"))
                 {
                     id = i;
-                    hasPackedFiles = true;
                 }
             }
+
+            return id;
+        }
+
+        private static void Unpack(string[] files)
+        {
+            int id = HasPackageFiles(files);
+            bool hasPackedFiles = id != -1;
+
             Logger.Log("Has Packed Files: " + hasPackedFiles, DebugChannel.Log, 10);
             if (hasPackedFiles)
             {
@@ -82,7 +88,7 @@ namespace Engine.DataTypes
                 Stream[] s = new Stream[f.Length];
                 for (int i = 0; i < f.Length; i++)
                 {
-                    Logger.Log($"Creating Stream: {f[i]}", DebugChannel.Log, 10);
+                    Logger.Log("Creating Stream from " + f[i], DebugChannel.Log, 10);
                     s[i] = GetStreamByPath(f[i]);
                 }
 
@@ -92,11 +98,9 @@ namespace Engine.DataTypes
                 foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in ret)
                 {
 
-                    Logger.Log("File Exsists:" + memoryStream.Key + " : " + File.Exists(memoryStream.Key), DebugChannel.Log, 10);
                     if (!File.Exists(memoryStream.Key))
                     {
                         byte[] buf = new byte[memoryStream.Value.Item1];
-                        Logger.Log("BufLength: " + buf.Length, DebugChannel.Log, 10);
                         memoryStream.Value.Item2.Position = 0;
                         memoryStream.Value.Item2.Read(buf, 0, buf.Length);
 
@@ -115,7 +119,6 @@ namespace Engine.DataTypes
                         {
                             if (!Directory.Exists(folders[i]))
                             {
-                                Logger.Log("Creating Folder: " + folders[i], DebugChannel.Log, 10);
                                 Directory.CreateDirectory(".\\" + folders[i]);
                             }
                         }

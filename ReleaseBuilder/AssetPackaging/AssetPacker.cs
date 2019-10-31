@@ -32,7 +32,6 @@ namespace AssetPackaging
 
         public static Dictionary<string, Tuple<int, MemoryStream>> UnpackAssets(Stream indexList, Stream[] packs)
         {
-            Console.WriteLine("Unpacking File..");
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
             AssetResult r = (AssetResult)xs.Deserialize(indexList);
             Dictionary<string, Tuple<int, MemoryStream>> assetList = new Dictionary<string, Tuple<int, MemoryStream>>();
@@ -44,8 +43,7 @@ namespace AssetPackaging
                 byte[] buf = new byte[packs[r.indexList[i].PackageID].Length];
                 packs[r.indexList[i].PackageID].Position = r.indexList[i].Offset;
                 packs[r.indexList[i].PackageID].Read(buf, 0, buf.Length);
-
-                Console.WriteLine("BufLength: " + buf.Length);
+                
                 ms.Write(buf, 0, buf.Length);
                 assetList.Add(r.indexList[i].Path, new Tuple<int, MemoryStream>(r.indexList[i].Length, ms));
             }
