@@ -100,7 +100,12 @@ namespace Engine.Common
             }
         }
 
-        public static void Log(string message, int channel, int severity = 0)
+        public static void Log(string message, int channel)
+        {
+            Log(message, channel, 0);
+        }
+
+        public static void Log(string message, int channel, int severity)
         {
             if (severity < SeverityFilter)
             {

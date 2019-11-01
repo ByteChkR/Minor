@@ -19,7 +19,7 @@ namespace Engine.Rendering
     /// </summary>
     public class ShaderProgram : IDisposable
     {
-        private Dictionary<string, int> uniformCache = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> uniformCache = new Dictionary<string, int>();
 
         /// <summary>
         /// Backing field of the Default shader

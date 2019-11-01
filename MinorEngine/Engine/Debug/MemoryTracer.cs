@@ -37,7 +37,7 @@ namespace Engine.Debug
         /// <summary>
         /// The maximum history of informations that is kept
         /// </summary>
-        public static int MaxTraceCount = 10;
+        public static readonly int MaxTraceCount = 10;
 
 
         /// <summary>

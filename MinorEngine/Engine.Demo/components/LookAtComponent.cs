@@ -7,10 +7,6 @@ namespace Engine.Demo.components
         private GameObject target;
         public bool IsLooking => target != null;
 
-        protected override void Awake()
-        {
-        }
-
         public void SetTarget(GameObject target)
         {
             this.target = target;

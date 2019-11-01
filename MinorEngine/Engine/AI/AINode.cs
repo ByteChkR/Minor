@@ -8,7 +8,7 @@ namespace Engine.AI
 {
     public class AINode : AbstractComponent, IComparable<AINode>
     {
-        private List<AINode> Connections;
+        private readonly List<AINode> Connections;
 
 
         //Search Specific

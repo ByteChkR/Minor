@@ -99,12 +99,12 @@ namespace Engine.Core
         /// <summary>
         /// The Maximum amount of items allowed
         /// </summary>
-        private int _maxItems;
+        private readonly int _maxItems;
 
         /// <summary>
         /// The Factory that is creating new instances of type T
         /// </summary>
-        private CreateNew _Factory;
+        private readonly CreateNew _factory;
 
         /// <summary>
         /// Public Constructor
@@ -125,7 +125,7 @@ namespace Engine.Core
             }
 
 
-            _Factory = factory;
+            _factory = factory;
 
             _maxItems = Math.Min(maxSize, size);
             InitializeSize(size);
@@ -147,7 +147,7 @@ namespace Engine.Core
         {
             for (int i = 0; i < size; i++)
             {
-                T ret = _Factory();
+                T ret = _factory();
 
                 _InternalList.Add(new PooledObject<T>(ret, this, i));
             }
@@ -197,7 +197,7 @@ namespace Engine.Core
             if (id == -1 && _InternalList.Count < _maxItems) //No free objects found
             {
                 id = _InternalList.Count;
-                _InternalList.Add(new PooledObject<T>(_Factory(), this, id));
+                _InternalList.Add(new PooledObject<T>(_factory(), this, id));
             }
 
             return id;
@@ -228,7 +228,7 @@ namespace Engine.Core
             {
                 Logger.Log("Object Pool is full, returning Unmanaged Instance.",
                     DebugChannel.Warning | DebugChannel.EngineCore, 10);
-                PooledObject<T> item = new PooledObject<T>(_Factory(), null, -1);
+                PooledObject<T> item = new PooledObject<T>(_factory(), null, -1);
 
                 return item;
             }

@@ -33,19 +33,19 @@ namespace Engine.Demo.scenes
         }
 
 
-        private string cmd_ReLoadScene(string[] args)
+        private static string cmd_ReLoadScene(string[] args)
         {
             GameEngine.Instance.InitializeScene<AudioDemoScene>();
             return "Reloaded";
         }
 
-        private string cmd_NextScene(string[] args)
+        private static string cmd_NextScene(string[] args)
         {
             GameEngine.Instance.InitializeScene<PhysicsDemoScene>();
             return "Loading Physics Demo Scene";
         }
 
-        private string cmd_ChangeCameraPos(string[] args)
+        private static string cmd_ChangeCameraPos(string[] args)
         {
             if (args.Length != 3)
             {
@@ -74,7 +74,7 @@ namespace Engine.Demo.scenes
             return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
         }
 
-        private string cmd_ChangeCameraRot(string[] args)
+        private static string cmd_ChangeCameraRot(string[] args)
         {
             if (args.Length != 4)
             {

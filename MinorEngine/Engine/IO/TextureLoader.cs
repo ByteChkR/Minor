@@ -18,7 +18,7 @@ using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace Engine.IO
 {
-    public class TextureLoader
+    public static class TextureLoader
     {
         /// <summary>
         /// Creates a 4 Channel Texture from a pointer and width/height
