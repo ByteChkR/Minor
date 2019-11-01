@@ -51,7 +51,7 @@ namespace ReleaseBuilder
         private void button1_Click(object sender, EventArgs e)
         {
             rtbBuildOutput.Text = "";
-            PackAssets();
+            PackAssets(Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
             BuildProject("resources/Build.bat");
         }
 
@@ -59,7 +59,7 @@ namespace ReleaseBuilder
         private void button2_Click(object sender, EventArgs e)
         {
             rtbBuildOutput.Text = "";
-            PackAssets();
+            PackAssets(Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
             BuildProject("resources/Build_NoDelete.bat");
         }
 
@@ -91,10 +91,14 @@ namespace ReleaseBuilder
             WriteLine(info);
         }
 
-        private void PackAssets()
+        private void PackAssets(string outputFolder)
         {
+
+
             if (!cbOnlyEmbed.Checked)
             {
+                AssetPacker.MAXSIZE_KILOBYTES = (int)nudPackSize.Value;
+
                 WriteLine("Parsing File info...");
 
                 AssetPackageInfo info = new AssetPackageInfo();
@@ -113,8 +117,8 @@ namespace ReleaseBuilder
                 AssetResult ret = AssetPacker.PackAssets(tbAssetFolder.Text, info);
                 WriteLine("Packaging " + ret.indexList.Count + " Assets in " + ret.packs.Count + " Packs.");
 
-                WriteLine("Saving Asset Pack to " + Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
-                ret.Save(Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
+                WriteLine("Saving Asset Pack to "+ outputFolder);
+                ret.Save(outputFolder);
 
                 WriteLine("Packaging Assets Finished.");
             }
@@ -185,5 +189,21 @@ namespace ReleaseBuilder
             WriteInfo();
         }
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+            bool orig = cbOnlyEmbed.Checked;
+            cbOnlyEmbed.Checked = false;
+
+            if (fbdOutputFolder.ShowDialog() == DialogResult.OK)
+            {
+                string output = fbdOutputFolder.SelectedPath;
+                if (Directory.Exists(output + "/packs"))Directory.Delete(output+"/packs", true);
+                PackAssets(output);
+            }
+
+            cbOnlyEmbed.Checked = orig;
+        }
+
+       
     }
 }

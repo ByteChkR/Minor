@@ -14,7 +14,7 @@ namespace AssetPackaging
     public static class AssetPacker
     {
         public const int KILOBYTE = 1024;
-        public const int MAXSIZE_KILOBYTES = 1024;
+        public static int MAXSIZE_KILOBYTES = 1024;
 
         public static AssetResult PackAssets(string assetFolder, AssetPackageInfo info) // [...]/assets
         {
@@ -29,6 +29,7 @@ namespace AssetPackaging
                 {
                     Uri file = new Uri(files[i]);
                     Uri packPath = assetPath.MakeRelativeUri(file);
+
                     ret.AddFile(files[i], packPath.ToString(), type);
                 }
 
@@ -53,10 +54,20 @@ namespace AssetPackaging
             for (int i = 0; i < r.indexList.Count; i++)
             {
                 if (r.indexList[i].PackageType == AssetPackageType.Unpack) continue;
-                assetList.Add(new Tuple<string, AssetPointer>(packPaths[r.indexList[i].PackageID], r.indexList[i]));
+                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetID(packPaths, r.indexList[i].PackageID)], r.indexList[i]));
             }
 
             return assetList;
+        }
+
+        private static int GetID(string[] path, int id)
+        {
+            for (int i = 0; i < path.Length; i++)
+            {
+                if (Path.GetFileNameWithoutExtension(path[i]) == id.ToString()) return i;
+            }
+
+            return -1;
         }
 
         public static Dictionary<string, Tuple<int, MemoryStream>> UnpackAssets(Stream indexList, Stream[] packs)
@@ -82,6 +93,7 @@ namespace AssetPackaging
             {
                 packs[i].Close();
             }
+            indexList.Close();
             return assetList;
 
         }

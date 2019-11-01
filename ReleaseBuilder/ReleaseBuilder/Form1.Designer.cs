@@ -49,7 +49,11 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.cbOnlyEmbed = new System.Windows.Forms.CheckBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.nudPackSize = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPackSize)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOpenProject
@@ -149,7 +153,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 151);
+            this.button1.Location = new System.Drawing.Point(12, 167);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(876, 22);
             this.button1.TabIndex = 9;
@@ -164,7 +168,7 @@
             this.rtbBuildOutput.ForeColor = System.Drawing.Color.White;
             this.rtbBuildOutput.Location = new System.Drawing.Point(0, 0);
             this.rtbBuildOutput.Name = "rtbBuildOutput";
-            this.rtbBuildOutput.Size = new System.Drawing.Size(900, 331);
+            this.rtbBuildOutput.Size = new System.Drawing.Size(900, 315);
             this.rtbBuildOutput.TabIndex = 10;
             this.rtbBuildOutput.Text = "";
             // 
@@ -206,14 +210,14 @@
             // 
             this.panel1.Controls.Add(this.rtbBuildOutput);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 207);
+            this.panel1.Location = new System.Drawing.Point(0, 223);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(900, 331);
+            this.panel1.Size = new System.Drawing.Size(900, 315);
             this.panel1.TabIndex = 15;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 179);
+            this.button2.Location = new System.Drawing.Point(12, 195);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(876, 22);
             this.button2.TabIndex = 16;
@@ -224,18 +228,63 @@
             // cbOnlyEmbed
             // 
             this.cbOnlyEmbed.AutoSize = true;
-            this.cbOnlyEmbed.Location = new System.Drawing.Point(15, 128);
+            this.cbOnlyEmbed.Location = new System.Drawing.Point(15, 144);
             this.cbOnlyEmbed.Name = "cbOnlyEmbed";
             this.cbOnlyEmbed.Size = new System.Drawing.Size(117, 17);
             this.cbOnlyEmbed.TabIndex = 17;
             this.cbOnlyEmbed.Text = "Only Embed Assets";
             this.cbOnlyEmbed.UseVisualStyleBackColor = true;
             // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(138, 140);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(750, 22);
+            this.button3.TabIndex = 18;
+            this.button3.Text = "Pack Only";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // nudPackSize
+            // 
+            this.nudPackSize.Location = new System.Drawing.Point(111, 114);
+            this.nudPackSize.Maximum = new decimal(new int[] {
+            1048576,
+            0,
+            0,
+            0});
+            this.nudPackSize.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.nudPackSize.Name = "nudPackSize";
+            this.nudPackSize.Size = new System.Drawing.Size(74, 20);
+            this.nudPackSize.TabIndex = 19;
+            this.nudPackSize.ThousandsSeparator = true;
+            this.nudPackSize.Value = new decimal(new int[] {
+            1024,
+            0,
+            0,
+            0});
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 116);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(78, 13);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Pack Size(KB):";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 538);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.nudPackSize);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.cbOnlyEmbed);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.panel1);
@@ -258,6 +307,7 @@
             this.Text = "Release Builder";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.nudPackSize)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,6 +336,9 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.CheckBox cbOnlyEmbed;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.NumericUpDown nudPackSize;
+        private System.Windows.Forms.Label label3;
     }
 }
 

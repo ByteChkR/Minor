@@ -58,7 +58,7 @@ namespace Engine.Demo
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
             
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
-            ManifestReader.PrepareManifestFiles();
+            ManifestReader.PrepareManifestFiles(true);
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
             EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");

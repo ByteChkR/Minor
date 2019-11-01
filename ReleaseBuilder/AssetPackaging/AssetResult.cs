@@ -19,6 +19,9 @@ namespace AssetPackaging
             FileStream fs = new FileStream(file, FileMode.Open);
 
             int assetPack = FindAssetPackWithSpace((int)fs.Length);
+
+            Console.WriteLine("Adding file: " + file + " To pack: " + (assetPack + 1));
+
             AssetPointer ap = new AssetPointer();
             ap.PackageID = assetPack;
             ap.Offset = packs[assetPack].content.Count;

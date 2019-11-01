@@ -16,61 +16,6 @@ namespace Engine.DataTypes
 {
     public static class ManifestReader
     {
-        private class AssemblyFile
-        {
-            public readonly Assembly Assembly;
-
-            public readonly string ManifestFilepath;
-
-
-            public AssemblyFile(string manifestFilepath, Assembly assembly)
-            {
-                ManifestFilepath = manifestFilepath;
-                Assembly = assembly;
-            }
-
-            public virtual Stream GetFileStream()
-            {
-                using (Stream resourceStream = Assembly.GetManifestResourceStream(ManifestFilepath))
-                {
-                    if (resourceStream == null)
-                    {
-                        Logger.Crash(new EngineException("Could not load Manifest File: " + ManifestFilepath), false);
-                        return null;
-                    }
-
-                    byte[] buf = new byte[resourceStream.Length];
-                    resourceStream.Read(buf, 0, (int)resourceStream.Length);
-
-                    MemoryStream ms = new MemoryStream(buf);
-                    Logger.Log("Loaded Stream Length: " + ms.Length, DebugChannel.Log, 10);
-                    resourceStream.Close();
-                    return ms;
-                }
-
-            }
-        }
-
-        private class PackedAssemblyFile : AssemblyFile
-        {
-            private AssetPointer ptr;
-            public PackedAssemblyFile(string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(manifestFilepath, assembly)
-            {
-                this.ptr = ptr;
-            }
-
-
-            public override Stream GetFileStream()
-            {
-                Stream s = base.GetFileStream();
-                s.Position = ptr.Offset;
-                byte[] buf = new byte[ptr.Length];
-                s.Read(buf, 0, ptr.Length);
-                s.Close();
-                return new MemoryStream(buf);
-            }
-        }
-
         private static Dictionary<string, AssemblyFile> AssemblyFiles = new Dictionary<string, AssemblyFile>();
         private static List<Assembly> LoadedAssemblies = new List<Assembly>();
         private static List<string> UnpackedFiles = new List<string>();
@@ -100,55 +45,71 @@ namespace Engine.DataTypes
                 }
             }
 
-            //Unpack(GetFiles(asm.GetName().Name + "/packs", "*"), asm.GetName().Name);
-
-
-
         }
 
-        public static void PrepareManifestFiles()
+        private delegate AssemblyFile AssemblyFileFactory(string file, Assembly asm, AssetPointer ptr);
+        private static AssemblyFile FileFactory(string file, Assembly asm, AssetPointer ptr)
         {
+            if (asm == null) return new IOPackedAssemblyFile(UnSanitizeFilename(file), ptr);
+            return new PackedAssemblyFile(file, asm, ptr);
+        }
+
+        private static void PrepareAssemblyFiles(string packPrefix, string[] files, Assembly asm, AssemblyFileFactory factory)
+        {
+            int indexList = HasPackageFiles(files);
+            if (indexList == -1) return;
+
+            Logger.Log("Found Packed Files in Assembly: " + packPrefix, DebugChannel.Log, 10);
+
+            string dir = packPrefix + "/packs";
+            if (dir.StartsWith("/")) dir = dir.Remove(0, 1);
+            string[] packs = IOManager.GetFiles(dir, "*.pack"); //Get only *.pack files
+            Stream[] s = new Stream[packs.Length];
+            for (int i = 0; i < packs.Length; i++)
+            {
+                Logger.Log("Creating Stream from " + packs[i], DebugChannel.Log, 10);
+                s[i] = IOManager.GetStream(packs[i]);
+            }
+
+            Stream indexStream = IOManager.GetStream(files[indexList]);
+            Dictionary<string, Tuple<int, MemoryStream>> filesToUnpack = AssetPacker.UnpackAssets(indexStream, s); //Get Files in the Packs that need to be unpacked to file system
+            if (filesToUnpack.Count > 0) UnpackAssets(filesToUnpack);
+
+
+            Stream idxStream = IOManager.GetStream(files[indexList]);
+            List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs);
+
+            foreach (Tuple<string, AssetPointer> assetPointer in packedFiles)
+            {
+                string assemblyPath = SanitizeFilename(packPrefix + "/" + assetPointer.Item1);
+                string virtualPath = SanitizeFilename(assetPointer.Item2.Path);
+                Logger.Log("Parsing Packed File " + assetPointer.Item2.Path + " from " + assemblyPath, DebugChannel.Log, 10);
+                if (AssemblyFiles.ContainsKey(virtualPath))
+                {
+                    Logger.Log("Overwriting File..", DebugChannel.Log, 10);
+                    AssemblyFiles[virtualPath] = factory(assemblyPath, asm, assetPointer.Item2); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2);
+                }
+                else
+                {
+                    AssemblyFiles.Add(virtualPath, factory(assemblyPath, asm, assetPointer.Item2)); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2)
+                }
+            }
+        }
+
+        public static void PrepareManifestFiles(bool searchFileSystem)
+        {
+
             foreach (Assembly loadedAssembly in LoadedAssemblies)
             {
-                string packPrefix = loadedAssembly.GetName().Name;
-                string[] files = GetFiles(packPrefix + "/packs", "*"); //Get All files
-                int indexList = HasPackageFiles(files);
-                if (indexList == -1) continue;
+                if (IOManager.FolderExists(loadedAssembly.GetName().Name + "/packs"))
+                    PrepareAssemblyFiles(loadedAssembly.GetName().Name, IOManager.GetFiles(loadedAssembly.GetName().Name + "/packs", "*"), loadedAssembly, FileFactory);
 
-                Logger.Log("Found Packed Files in Assembly: " + loadedAssembly.GetName().Name, DebugChannel.Log, 10);
+            }
 
-                string[] packs = GetFiles(packPrefix + "/packs", ".pack"); //Get only *.pack files
-                Stream[] s = new Stream[packs.Length];
-                for (int i = 0; i < packs.Length; i++)
-                {
-                    Logger.Log("Creating Stream from " + packs[i], DebugChannel.Log, 10);
-                    s[i] = GetStreamByPath(packs[i]);
-                }
-
-                Stream indexStream = GetStreamByPath(files[indexList]);
-                Dictionary<string, Tuple<int, MemoryStream>> filesToUnpack = AssetPacker.UnpackAssets(indexStream, s); //Get Files in the Packs that need to be unpacked to file system
-                if (filesToUnpack.Count > 0) UnpackAssets(filesToUnpack);
-
-
-                Stream idxStream = GetStreamByPath(files[indexList]);
-                List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs);
-
-                foreach (Tuple<string, AssetPointer> assetPointer in packedFiles)
-                {
-                    string assemblyPath = SanitizeFilename(packPrefix + "/" + assetPointer.Item1);
-                    string virtualPath = SanitizeFilename(assetPointer.Item2.Path);
-                    Logger.Log("Parsing Packed File " + assetPointer.Item2.Path + " from " + assemblyPath, DebugChannel.Log, 10);
-                    if (AssemblyFiles.ContainsKey(virtualPath))
-                    {
-                        Logger.Log("Overwriting File..", DebugChannel.Log, 10);
-                        AssemblyFiles[virtualPath] = new PackedAssemblyFile(assemblyPath, loadedAssembly, assetPointer.Item2);
-                    }
-                    else
-                    {
-                        AssemblyFiles.Add(virtualPath, new PackedAssemblyFile(assemblyPath, loadedAssembly, assetPointer.Item2));
-                    }
-                }
-
+            if (searchFileSystem)
+            {
+                if (IOManager.FolderExists("packs"))
+                    PrepareAssemblyFiles("", IOManager.GetFiles("packs", "*"), null, FileFactory);
             }
         }
 
@@ -217,24 +178,6 @@ namespace Engine.DataTypes
 
             return AssemblyFiles[path].GetFileStream();
 
-
-            Assembly asm = AssemblyFiles[path].Assembly;
-            using (Stream resourceStream = asm.GetManifestResourceStream(AssemblyFiles[path].ManifestFilepath))
-            {
-                if (resourceStream == null)
-                {
-                    Logger.Crash(new EngineException("Could not load default Texture"), false);
-                    return null;
-                }
-
-                byte[] buf = new byte[resourceStream.Length];
-                resourceStream.Read(buf, 0, (int)resourceStream.Length);
-
-                MemoryStream ms = new MemoryStream(buf);
-                Logger.Log("Loaded Stream Length: " + ms.Length, DebugChannel.Log, 10);
-                resourceStream.Close();
-                return ms;
-            }
         }
 
         public static bool DirectoryExists(string path)
@@ -282,12 +225,6 @@ namespace Engine.DataTypes
         public static bool Exists(string filepath)
         {
             string p = SanitizeFilename(filepath);
-            Logger.Log("Searching for File: " + p, DebugChannel.Log, 10);
-            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in AssemblyFiles)
-            {
-                //Logger.Log("File: " + assemblyFile.Key, DebugChannel.Log, 10);
-            }
-
             return AssemblyFiles.ContainsKey(p);
         }
 

@@ -29,7 +29,7 @@ namespace Engine.IO
             if (Directory.Exists(foldername))
             {
                 Logger.Log("File Found in File System.", DebugChannel.Log, 10);
-                return Directory.GetFiles(foldername);
+                return Directory.GetFiles(foldername, searchPattern);
             }
 
             if (ManifestReader.DirectoryExists(foldername))
