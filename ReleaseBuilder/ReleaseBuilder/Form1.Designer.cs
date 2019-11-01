@@ -47,6 +47,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.tbPackagedFiles = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
+            this.cbOnlyEmbed = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -147,7 +149,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 120);
+            this.button1.Location = new System.Drawing.Point(12, 151);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(876, 22);
             this.button1.TabIndex = 9;
@@ -162,7 +164,7 @@
             this.rtbBuildOutput.ForeColor = System.Drawing.Color.White;
             this.rtbBuildOutput.Location = new System.Drawing.Point(0, 0);
             this.rtbBuildOutput.Name = "rtbBuildOutput";
-            this.rtbBuildOutput.Size = new System.Drawing.Size(900, 375);
+            this.rtbBuildOutput.Size = new System.Drawing.Size(900, 331);
             this.rtbBuildOutput.TabIndex = 10;
             this.rtbBuildOutput.Text = "";
             // 
@@ -179,18 +181,18 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(12, 88);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 13);
+            this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 12;
-            this.label1.Text = "UnpackagedFiles:";
+            this.label1.Text = "Packed Files:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(471, 88);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(83, 13);
+            this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 13;
-            this.label2.Text = "Packaged Files:";
+            this.label2.Text = "Unpacked Files:";
             // 
             // tbPackagedFiles
             // 
@@ -204,16 +206,38 @@
             // 
             this.panel1.Controls.Add(this.rtbBuildOutput);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 163);
+            this.panel1.Location = new System.Drawing.Point(0, 207);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(900, 375);
+            this.panel1.Size = new System.Drawing.Size(900, 331);
             this.panel1.TabIndex = 15;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 179);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(876, 22);
+            this.button2.TabIndex = 16;
+            this.button2.Text = "Build and Deploy (NO DELETE/BACKUP)";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // cbOnlyEmbed
+            // 
+            this.cbOnlyEmbed.AutoSize = true;
+            this.cbOnlyEmbed.Location = new System.Drawing.Point(15, 128);
+            this.cbOnlyEmbed.Name = "cbOnlyEmbed";
+            this.cbOnlyEmbed.Size = new System.Drawing.Size(117, 17);
+            this.cbOnlyEmbed.TabIndex = 17;
+            this.cbOnlyEmbed.Text = "Only Embed Assets";
+            this.cbOnlyEmbed.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 538);
+            this.Controls.Add(this.cbOnlyEmbed);
+            this.Controls.Add(this.button2);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.tbPackagedFiles);
             this.Controls.Add(this.label2);
@@ -260,6 +284,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox tbPackagedFiles;
         private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.CheckBox cbOnlyEmbed;
     }
 }
 

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.IO;
+using System.Security.Policy;
 using System.Threading;
 
 namespace ReleaseBuilder
@@ -58,6 +59,26 @@ namespace ReleaseBuilder
             if (_thread == null && _errThread == null) return;
             if (_thread != null) _thread.Abort();
             if (_errThread != null) _errThread.Abort();
+            
+            
+
+        }
+
+        public string GetRemainingLogs()
+        {
+
+            string ret = "";
+            if (!(_cOut as StreamReader).EndOfStream)
+            {
+                ret += _cOut.ReadToEnd();
+            }
+            if (!(_cEOut as StreamReader).EndOfStream)
+            {
+                ret += _cEOut.ReadToEnd();
+            }
+
+            return ret;
+
         }
 
         public void Start(TextReader cout)

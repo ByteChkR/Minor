@@ -18,15 +18,56 @@ namespace Engine.DataTypes
     {
         private class AssemblyFile
         {
-            public Assembly Assembly;
+            public readonly Assembly Assembly;
 
-            public string File;
+            public readonly string ManifestFilepath;
 
 
-            public AssemblyFile(string file, Assembly assembly)
+            public AssemblyFile(string manifestFilepath, Assembly assembly)
             {
-                File = file;
+                ManifestFilepath = manifestFilepath;
                 Assembly = assembly;
+            }
+
+            public virtual Stream GetFileStream()
+            {
+                using (Stream resourceStream = Assembly.GetManifestResourceStream(ManifestFilepath))
+                {
+                    if (resourceStream == null)
+                    {
+                        Logger.Crash(new EngineException("Could not load Manifest File: " + ManifestFilepath), false);
+                        return null;
+                    }
+
+                    byte[] buf = new byte[resourceStream.Length];
+                    resourceStream.Read(buf, 0, (int)resourceStream.Length);
+
+                    MemoryStream ms = new MemoryStream(buf);
+                    Logger.Log("Loaded Stream Length: " + ms.Length, DebugChannel.Log, 10);
+                    resourceStream.Close();
+                    return ms;
+                }
+
+            }
+        }
+
+        private class PackedAssemblyFile : AssemblyFile
+        {
+            private AssetPointer ptr;
+            public PackedAssemblyFile(string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(manifestFilepath, assembly)
+            {
+                this.ptr = ptr;
+            }
+
+
+            public override Stream GetFileStream()
+            {
+                Stream s = base.GetFileStream();
+                s.Position = ptr.Offset;
+                byte[] buf = new byte[ptr.Length];
+                s.Read(buf, 0, ptr.Length);
+                s.Close();
+                return new MemoryStream(buf);
             }
         }
 
@@ -59,7 +100,94 @@ namespace Engine.DataTypes
                 }
             }
 
-            Unpack(GetFiles(asm.GetName().Name + "/packs", "*"), asm.GetName().Name);
+            //Unpack(GetFiles(asm.GetName().Name + "/packs", "*"), asm.GetName().Name);
+
+
+
+        }
+
+        public static void PrepareManifestFiles()
+        {
+            foreach (Assembly loadedAssembly in LoadedAssemblies)
+            {
+                string packPrefix = loadedAssembly.GetName().Name;
+                string[] files = GetFiles(packPrefix + "/packs", "*"); //Get All files
+                int indexList = HasPackageFiles(files);
+                if (indexList == -1) continue;
+
+                Logger.Log("Found Packed Files in Assembly: " + loadedAssembly.GetName().Name, DebugChannel.Log, 10);
+
+                string[] packs = GetFiles(packPrefix + "/packs", ".pack"); //Get only *.pack files
+                Stream[] s = new Stream[packs.Length];
+                for (int i = 0; i < packs.Length; i++)
+                {
+                    Logger.Log("Creating Stream from " + packs[i], DebugChannel.Log, 10);
+                    s[i] = GetStreamByPath(packs[i]);
+                }
+
+                Stream indexStream = GetStreamByPath(files[indexList]);
+                Dictionary<string, Tuple<int, MemoryStream>> filesToUnpack = AssetPacker.UnpackAssets(indexStream, s); //Get Files in the Packs that need to be unpacked to file system
+                if (filesToUnpack.Count > 0) UnpackAssets(filesToUnpack);
+
+
+                Stream idxStream = GetStreamByPath(files[indexList]);
+                List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs);
+
+                foreach (Tuple<string, AssetPointer> assetPointer in packedFiles)
+                {
+                    string assemblyPath = SanitizeFilename(packPrefix + "/" + assetPointer.Item1);
+                    string virtualPath = SanitizeFilename(assetPointer.Item2.Path);
+                    Logger.Log("Parsing Packed File " + assetPointer.Item2.Path + " from " + assemblyPath, DebugChannel.Log, 10);
+                    if (AssemblyFiles.ContainsKey(virtualPath))
+                    {
+                        Logger.Log("Overwriting File..", DebugChannel.Log, 10);
+                        AssemblyFiles[virtualPath] = new PackedAssemblyFile(assemblyPath, loadedAssembly, assetPointer.Item2);
+                    }
+                    else
+                    {
+                        AssemblyFiles.Add(virtualPath, new PackedAssemblyFile(assemblyPath, loadedAssembly, assetPointer.Item2));
+                    }
+                }
+
+            }
+        }
+
+        private static void UnpackAssets(Dictionary<string, Tuple<int, MemoryStream>> files)
+        {
+            Logger.Log($"Parparing to unpack {files.Count} Assets.. ", DebugChannel.Log, 10);
+            foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in files)
+            {
+
+                if (!File.Exists(memoryStream.Key))
+                {
+                    Logger.Log($"Unpacking: " + memoryStream.Key, DebugChannel.Log, 10);
+                    byte[] buf = new byte[memoryStream.Value.Item1];
+                    memoryStream.Value.Item2.Position = 0;
+                    memoryStream.Value.Item2.Read(buf, 0, buf.Length);
+
+                    List<string> folders = new List<string>();
+                    string curFolder = Path.GetDirectoryName(memoryStream.Key);
+                    folders.Add(curFolder);
+                    while (curFolder.Trim() != "\\")
+                    {
+                        if (string.IsNullOrEmpty(curFolder)) break;
+                        folders.Add(curFolder);
+                        curFolder = Path.GetDirectoryName(curFolder);
+                    }
+
+                    for (int i = 0; i < folders.Count; i++)
+                    {
+                        if (!Directory.Exists(folders[i]))
+                        {
+                            Directory.CreateDirectory(".\\" + folders[i]);
+                        }
+                    }
+                    UnpackedFiles.Add(memoryStream.Key);
+                    File.WriteAllBytes(memoryStream.Key, buf);
+                }
+
+
+            }
         }
 
         private static int HasPackageFiles(string[] files)
@@ -76,61 +204,6 @@ namespace Engine.DataTypes
             return id;
         }
 
-        private static void Unpack(string[] files, string packPrefix)
-        {
-            int id = HasPackageFiles(files);
-            bool hasPackedFiles = id != -1;
-
-            Logger.Log("Has Packed Files: " + hasPackedFiles, DebugChannel.Log, 10);
-            if (hasPackedFiles)
-            {
-                string[] f = GetFiles(packPrefix + "/packs", ".pack");
-                Stream[] s = new Stream[f.Length];
-                for (int i = 0; i < f.Length; i++)
-                {
-                    Logger.Log("Creating Stream from " + f[i], DebugChannel.Log, 10);
-                    s[i] = GetStreamByPath(f[i]);
-                }
-
-                Stream indexStream = GetStreamByPath(files[id]);
-                Dictionary<string, Tuple<int, MemoryStream>> ret = AssetPacker.UnpackAssets(indexStream, s);
-                Logger.Log($"Parparing to unpack {ret.Count} Assets.. ", DebugChannel.Log, 10);
-                foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in ret)
-                {
-
-                    if (!File.Exists(memoryStream.Key))
-                    {
-                        Logger.Log($"Unpacking: " + memoryStream.Key, DebugChannel.Log, 10);
-                        byte[] buf = new byte[memoryStream.Value.Item1];
-                        memoryStream.Value.Item2.Position = 0;
-                        memoryStream.Value.Item2.Read(buf, 0, buf.Length);
-
-                        List<string> folders = new List<string>();
-                        string curFolder = Path.GetDirectoryName(memoryStream.Key);
-                        folders.Add(curFolder);
-                        while (curFolder.Trim() != "\\")
-                        {
-                            if (string.IsNullOrEmpty(curFolder)) break;
-                            folders.Add(curFolder);
-                            curFolder = Path.GetDirectoryName(curFolder);
-                        }
-
-                        for (int i = 0; i < folders.Count; i++)
-                        {
-                            if (!Directory.Exists(folders[i]))
-                            {
-                                Directory.CreateDirectory(".\\" + folders[i]);
-                            }
-                        }
-                        UnpackedFiles.Add(memoryStream.Key);
-                        File.WriteAllBytes(memoryStream.Key, buf);
-                    }
-
-
-                }
-            }
-        }
-
 
         public static Stream GetStreamByPath(string filepath)
         {
@@ -142,8 +215,11 @@ namespace Engine.DataTypes
                 return null;
             }
 
+            return AssemblyFiles[path].GetFileStream();
+
+
             Assembly asm = AssemblyFiles[path].Assembly;
-            using (Stream resourceStream = asm.GetManifestResourceStream(AssemblyFiles[path].File))
+            using (Stream resourceStream = asm.GetManifestResourceStream(AssemblyFiles[path].ManifestFilepath))
             {
                 if (resourceStream == null)
                 {
@@ -219,7 +295,7 @@ namespace Engine.DataTypes
         {
             for (int i = 0; i < UnpackedFiles.Count; i++)
             {
-                Logger.Log("Removing File from Filesystem: "+ UnpackedFiles[i], DebugChannel.Log, 10);
+                Logger.Log("Removing File from Filesystem: " + UnpackedFiles[i], DebugChannel.Log, 10);
                 File.Delete(UnpackedFiles[i]);
             }
         }

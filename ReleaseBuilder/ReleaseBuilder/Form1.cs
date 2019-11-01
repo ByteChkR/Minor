@@ -52,7 +52,15 @@ namespace ReleaseBuilder
         {
             rtbBuildOutput.Text = "";
             PackAssets();
-            BuildProject();
+            BuildProject("resources/Build.bat");
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            rtbBuildOutput.Text = "";
+            PackAssets();
+            BuildProject("resources/Build_NoDelete.bat");
         }
 
         private T GetAssemblyAttrib<T>(Assembly asm) where T : Attribute
@@ -79,43 +87,57 @@ namespace ReleaseBuilder
             string info = asm.GetName().Name + "(" +
                           asm.GetName().Version + ")\n" +
                           attrib.Copyright;
-                
+
             WriteLine(info);
         }
 
         private void PackAssets()
         {
-            WriteLine("Parsing File info...");
-
-            AssetPackageInfo info = new AssetPackageInfo();
-            string[] unpackExts = tbPackagedFiles.Text.Split('+');
-            for (int i = 0; i < unpackExts.Length; i++)
+            if (!cbOnlyEmbed.Checked)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
+                WriteLine("Parsing File info...");
+
+                AssetPackageInfo info = new AssetPackageInfo();
+                List<string> unpackExts = tbPackagedFiles.Text.Split('+').ToList();
+                for (int i = 0; i < unpackExts.Count; i++)
+                {
+                    info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
+                }
+                List<string> packExts = tbUnpackagedFiles.Text.Split('+').ToList();
+                for (int i = 0; i < packExts.Count; i++)
+                {
+                    info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
+                }
+
+                WriteLine("Creating Asset Pack(" + tbAssetFolder.Text + ")...");
+                AssetResult ret = AssetPacker.PackAssets(tbAssetFolder.Text, info);
+                WriteLine("Packaging " + ret.indexList.Count + " Assets in " + ret.packs.Count + " Packs.");
+
+                WriteLine("Saving Asset Pack to " + Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
+                ret.Save(Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
+
+                WriteLine("Packaging Assets Finished.");
             }
-
-            WriteLine("Creating Asset Pack(" + tbAssetFolder.Text + ")...");
-            AssetResult ret = AssetPacker.PackAssets(tbAssetFolder.Text, info);
-            WriteLine("Packaging " + ret.indexList.Count +" Assets in "+ ret.packs.Count + " Packs.");
-
-            WriteLine("Saving Asset Pack to "+ Path.GetDirectoryName(tbProject.Text)+"\\"+ Path.GetFileNameWithoutExtension(tbProject.Text));
-            ret.Save(Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text));
-
-            WriteLine("Packaging Assets Finished.");
         }
 
-        private void BuildProject()
+        private void BuildProject(string buildFile)
         {
 
             WriteLine("Starting Build Process.");
 
-            CheckForIllegalCrossThreadCalls = false;
+            string incdir = cbOnlyEmbed.Checked ? 
+                tbAssetFolder.Text + "\\+" + tbUnpackagedFiles.Text : //Normal Asset Folder
+                Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text) + "\\packs\\+*.xml+*.pack";
+            string publishDir = Path.GetDirectoryName(tbProject.Text) + "\\bin\\Release\\netcoreapp2.1\\publish";
+            string projectDir = Path.GetDirectoryName(tbProject.Text);
+            string plainProjectName = Path.GetFileNameWithoutExtension(tbProject.Text);
             string command =
-                $"{tbProject.Text} {Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text) + "\\packs\\+*.xml+*.pack"} {tbAssetFolder.Text}\\+{tbUnpackagedFiles.Text} { Path.GetDirectoryName(tbProject.Text)}\\bin\\Release\\netcoreapp2.1\\publish {tbOutputFolder.Text} {Path.GetDirectoryName(tbProject.Text)} {Path.GetFileNameWithoutExtension(tbProject.Text)}";
+                $"{tbProject.Text} {incdir} {publishDir} {tbOutputFolder.Text} {projectDir} {plainProjectName}";
 
 
+            CheckForIllegalCrossThreadCalls = false;
 
-            ProcessStartInfo psi = new ProcessStartInfo("resources/Build.bat", command);
+            ProcessStartInfo psi = new ProcessStartInfo(buildFile, command);
             psi.RedirectStandardOutput = true;
             psi.RedirectStandardError = true;
             psi.CreateNoWindow = true;
@@ -136,7 +158,12 @@ namespace ReleaseBuilder
                     Application.DoEvents();
                 }
             }
+
+
             redir.StopThreads();
+
+            WriteLine(redir.GetRemainingLogs());
+
             CheckForIllegalCrossThreadCalls = true;
         }
 
@@ -157,5 +184,6 @@ namespace ReleaseBuilder
         {
             WriteInfo();
         }
+
     }
 }

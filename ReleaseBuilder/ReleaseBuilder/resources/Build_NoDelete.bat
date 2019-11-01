@@ -31,22 +31,10 @@ dotnet publish %1 -c Release
 echo _________________
 
 echo Copying Published Content:
-xcopy %3 %4 /s /e /y /i /c
+xcopy %3 %4 /s /e /y /i
 
 cd resources/packager
 
 echo _________________
-
-echo Restoring Project:
-
-dotnet ResourcePackager.dll %1.backup
-
-echo _________________
-
-echo Removing Packed Files from Folder: %5\%6
-
-@RD %5\%6 /S /Q
-
-cd ..\..
 
 echo Build Finished

@@ -27,6 +27,7 @@ namespace ResourcePackager
             List<string> f = new List<string>();
             for (int i = 0; i < files.Count; i++)
             {
+                Console.WriteLine("Trying to open File: " + files[i].Item1);
                 if (File.Exists(files[i].Item1))
                 {
                     f.Add(files[i].Item1);
@@ -35,6 +36,8 @@ namespace ResourcePackager
                 {
                     string pattern = files[i].Item2;
                     string path = files[i].Item1;
+                    Console.WriteLine("Searching Folder: " + path);
+                    Console.WriteLine("Adding Files with Pattern: " + pattern);
                     f.AddRange(Directory.GetFiles(path, pattern, SearchOption.AllDirectories));
                 }
             }
@@ -95,6 +98,8 @@ namespace ResourcePackager
                 else
                     for (int j = 1; j < kvp.Length; j++)
                     {
+                        string pattern = kvp[j];
+                        if (pattern.StartsWith("*")) pattern = pattern.Remove(0, 1);
                         ret.Add(new Tuple<string, string>(kvp[0], kvp[j]));
                     }
 

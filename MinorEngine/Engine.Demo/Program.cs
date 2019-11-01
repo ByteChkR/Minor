@@ -58,11 +58,14 @@ namespace Engine.Demo
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
             
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
+            ManifestReader.PrepareManifestFiles();
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
             EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");
             DebugSettings dbgSettings = EngineSettings.Settings.DebugSettings;
             engine.SetSettings(EngineSettings.Settings);
+
+
             engine.Initialize();
             engine.InitializeScene<FLDemoScene>();
             engine.Run();
