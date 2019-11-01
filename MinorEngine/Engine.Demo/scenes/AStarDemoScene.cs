@@ -26,7 +26,6 @@ namespace Engine.Demo.scenes
 
         protected override void InitializeScene()
         {
-
             int rayLayer = LayerManager.RegisterLayer("raycast", new Layer(1, 2));
             int hybLayer = LayerManager.RegisterLayer("hybrid", new Layer(1, 1 | 2));
             int physicsLayer = LayerManager.RegisterLayer("physics", new Layer(1, 1));
@@ -41,14 +40,14 @@ namespace Engine.Demo.scenes
             BasicCamera mainCamera =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                        GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                        GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
 
             object mc = mainCamera;
 
             EngineConfig.LoadConfig("assets/configs/camera_astardemo.xml", ref mc);
 
-            GameObject _sourceCube = new GameObject(new Vector3(0, 0,0), "Light Source");
-            GameObject _hackCube = new GameObject(new Vector3(0, 8, -50),"Workaround");
+            GameObject _sourceCube = new GameObject(new Vector3(0, 0, 0), "Light Source");
+            GameObject _hackCube = new GameObject(new Vector3(0, 8, -50), "Workaround");
             Add(_sourceCube);
             Add(_hackCube);
             Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
@@ -78,7 +77,7 @@ namespace Engine.Demo.scenes
 
             Add(c.Owner);
 
-            bgObj.AddComponent(new LitMeshRendererComponent(litShader,  Prefabs.Cube, bgTex, 1));
+            bgObj.AddComponent(new LitMeshRendererComponent(litShader, Prefabs.Cube, bgTex, 1));
             Add(bgObj);
             Add(mainCamera);
             SetCamera(mainCamera);
@@ -89,19 +88,18 @@ namespace Engine.Demo.scenes
             {
                 for (int j = 0; j < nodes.GetLength(1); j++)
                 {
-
                     if (rnd.Next(0, 6) == 0)
                     {
                         nodes[i, j].Walkable = false;
-                        nodes[i, j].Owner.AddComponent(new LitMeshRendererComponent(litShader,  Prefabs.Sphere, blockTex, 1));
+                        nodes[i, j].Owner
+                            .AddComponent(new LitMeshRendererComponent(litShader, Prefabs.Sphere, blockTex, 1));
                     }
+
                     nodes[i, j].Owner.Scale *= 0.3f;
 
                     Add(nodes[i, j].Owner);
                 }
             }
-
-
         }
 
 
@@ -112,10 +110,14 @@ namespace Engine.Demo.scenes
                 foreach (AINode aiNode in path)
                 {
                     if (aiNode.Walkable)
+                    {
                         aiNode.Owner.RemoveComponent<MeshRendererComponent>();
+                    }
                 }
+
                 path.Clear();
             }
+
             Random rnd = new Random();
             AINode startNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
             AINode endNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
@@ -126,14 +128,14 @@ namespace Engine.Demo.scenes
 
             while (!endNode.Walkable)
             {
-                endNode= nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
-                
+                endNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
             }
+
             path = AStarResolver.FindPath(startNode, endNode, out bool found);
 
             for (int i = 0; i < path.Count; i++)
             {
-                path[i].Owner.AddComponent(new LitMeshRendererComponent(litShader,  Prefabs.Cube, tex, 1));
+                path[i].Owner.AddComponent(new LitMeshRendererComponent(litShader, Prefabs.Cube, tex, 1));
             }
 
             startNode.Owner.GetComponent<LitMeshRendererComponent>().Textures[0] = beginTex;
@@ -150,7 +152,7 @@ namespace Engine.Demo.scenes
                 for (int j = 0; j < length; j++)
                 {
                     GameObject obj = new GameObject("NodeW" + i + "L:" + j);
-                    obj.LocalPosition = new Physics.BEPUutilities.Vector3(i - (width / 2), 0, -j);
+                    obj.LocalPosition = new Physics.BEPUutilities.Vector3(i - width / 2, 0, -j);
                     AINode node = new AINode(true);
                     obj.AddComponent(node);
                     nodes[i, j] = node;
@@ -166,7 +168,10 @@ namespace Engine.Demo.scenes
                     {
                         for (int s = -1; s < 1; s++)
                         {
-                            if (i + k < 0 || i + k >= width || j + s < 0 || j + s >= length || (k == 0 && s == 0)) continue;
+                            if (i + k < 0 || i + k >= width || j + s < 0 || j + s >= length || k == 0 && s == 0)
+                            {
+                                continue;
+                            }
 
                             current.AddConnection(nodes[i + k, j + s]);
                         }

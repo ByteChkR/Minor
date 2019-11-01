@@ -34,9 +34,13 @@ namespace Engine.UI
         {
             _fonts = new Dictionary<string, Tuple<string, GameFont>>();
             List<string> files = new List<string>();
-            if (Directory.Exists(folderPath)) files.AddRange(Directory.GetFiles(folderPath, "*.ttf"));
+            if (Directory.Exists(folderPath))
+            {
+                files.AddRange(Directory.GetFiles(folderPath, "*.ttf"));
+            }
+
             files.AddRange(ManifestReader.GetFiles(folderPath, ".ttf"));
-            
+
             foreach (string file in files)
             {
                 LoadFont(file);
@@ -136,13 +140,13 @@ namespace Engine.UI
                     GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.R8, g.RenderWidth, g.RenderHeight,
                         0, PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapS,
-                        (int)TextureWrapMode.ClampToEdge);
+                        (int) TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureWrapT,
-                        (int)TextureWrapMode.ClampToEdge);
+                        (int) TextureWrapMode.ClampToEdge);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMinFilter,
-                        (int)TextureMinFilter.Linear);
+                        (int) TextureMinFilter.Linear);
                     GL.TextureParameter(tex.TextureId, TextureParameterName.TextureMagFilter,
-                        (int)TextureMagFilter.Linear);
+                        (int) TextureMagFilter.Linear);
 
                     bmp.UnlockBits(data);
                 }
@@ -160,7 +164,7 @@ namespace Engine.UI
                     BearingX = g.HorizontalMetrics.Bearing.X,
                     BearingY = g.HorizontalMetrics.Bearing.Y
                 };
-                fontAtlas.Add((char)i, c);
+                fontAtlas.Add((char) i, c);
             }
 
             GameFont font = new GameFont(ff, pixelSize, fontAtlas);

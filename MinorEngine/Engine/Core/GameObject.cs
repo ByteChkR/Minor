@@ -79,7 +79,7 @@ namespace Engine.Core
         {
             get
             {
-                if(transformChanged)
+                if (transformChanged)
                 {
                     _transform = Matrix4.Identity;
                     if (Scale != Physics.BEPUutilities.Vector3.Zero)
@@ -91,6 +91,7 @@ namespace Engine.Core
                     _transform *= Matrix4.CreateTranslation(LocalPosition);
                     transformChanged = false;
                 }
+
                 return _transform;
             }
         }
@@ -280,8 +281,8 @@ namespace Engine.Core
         /// <param name="parent">The parent of the object</param>
         public GameObject(Vector3 localPosition, string name, GameObject parent)
         {
-            _worldTransformCache=Matrix4.Identity;
-            
+            _worldTransformCache = Matrix4.Identity;
+
             LocalPosition = localPosition;
             Parent = parent;
 
@@ -390,7 +391,8 @@ namespace Engine.Core
         /// </summary>
         private void RemoveFromRenderLoop()
         {
-            Logger.Log("Removing Object: " + Name + " from Rendering Loop", DebugChannel.Log | DebugChannel.EngineRendering, 7);
+            Logger.Log("Removing Object: " + Name + " from Rendering Loop",
+                DebugChannel.Log | DebugChannel.EngineRendering, 7);
             RemoveComponent(typeof(RenderingComponent));
             ObjsWithAttachedRenderers.Remove(this);
         }
@@ -923,7 +925,7 @@ namespace Engine.Core
             {
                 return Transform;
             }
-            
+
             return Parent.GetWorldTransform() * Transform;
         }
 

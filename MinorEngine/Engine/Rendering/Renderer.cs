@@ -119,6 +119,7 @@ namespace Engine.Rendering
                     Contexts.Add(context);
                 }
             }
+
             Contexts.Sort();
             return Contexts;
         }
@@ -168,6 +169,7 @@ namespace Engine.Rendering
                     //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
                 }
             }
+
             MemoryTracer.ReturnFromSubStage();
 
 
@@ -186,13 +188,10 @@ namespace Engine.Rendering
         /// <param name="cam">The ICamera</param>
         public static void Render(List<RenderingComponent> contexts, Matrix4 viewM, ICamera cam)
         {
-
             for (int i = 0; i < contexts.Count; i++)
             {
                 contexts[i].Render(viewM, cam.Projection);
-                
             }
- 
         }
 
         public enum RenderType

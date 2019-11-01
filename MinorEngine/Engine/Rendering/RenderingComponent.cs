@@ -34,6 +34,7 @@ namespace Engine.Rendering
         {
             Render(viewMat, projMat);
         }
+
         public virtual void Render(Matrix4 viewMat, Matrix4 projMat, ShaderProgram prog)
         {
             Render(viewMat, projMat);

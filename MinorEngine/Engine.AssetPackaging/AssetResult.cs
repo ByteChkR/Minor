@@ -4,30 +4,33 @@ using System.IO;
 using System.Security.Principal;
 using System.Xml.Serialization;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
     [Serializable]
     public class AssetResult
     {
         [XmlElement(ElementName = "AssetIndexList")]
         public List<AssetPointer> indexList = new List<AssetPointer>();
-        [XmlIgnore]
-        public List<AssetPack> packs = new List<AssetPack>();
+
+        [XmlIgnore] public List<AssetPack> packs = new List<AssetPack>();
 
         public void AddFile(string file, string packPath, AssetPackageType type)
         {
             FileStream fs = new FileStream(file, FileMode.Open);
 
-            int assetPack = FindAssetPackWithSpace((int)fs.Length);
+            int assetPack = FindAssetPackWithSpace((int) fs.Length);
 
             Console.WriteLine("Adding file: " + file + " To pack: " + (assetPack + 1));
 
-            AssetPointer ap = new AssetPointer();
-            ap.PackageID = assetPack;
-            ap.Offset = packs[assetPack].content.Count;
-            ap.Length = (int)fs.Length;
-            ap.Path = packPath; //assets/textures/texture.png
-            ap.PackageType = type;
+            AssetPointer ap = new AssetPointer
+            {
+                PackageID = assetPack,
+                Offset = packs[assetPack].content.Count,
+                Length = (int) fs.Length,
+                Path = packPath,
+                PackageType = type
+            };
+            //assets/textures/texture.png
 
             indexList.Add(ap);
 
@@ -48,14 +51,23 @@ namespace AssetPackaging
                     return i;
                 }
             }
+
             packs.Add(new AssetPack());
             return packs.Count - 1;
         }
 
         public void Save(string outputFolder)
         {
-            if (!Directory.Exists(outputFolder)) Directory.CreateDirectory(outputFolder);
-            if (!Directory.Exists(outputFolder + "\\packs")) Directory.CreateDirectory(outputFolder + "\\packs");
+            if (!Directory.Exists(outputFolder))
+            {
+                Directory.CreateDirectory(outputFolder);
+            }
+
+            if (!Directory.Exists(outputFolder + "\\packs"))
+            {
+                Directory.CreateDirectory(outputFolder + "\\packs");
+            }
+
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
             FileStream fs = new FileStream(outputFolder + "\\packs\\index.xml", FileMode.Create);
             xs.Serialize(fs, this);
@@ -68,6 +80,5 @@ namespace AssetPackaging
                 packstream.Close();
             }
         }
-
     }
 }

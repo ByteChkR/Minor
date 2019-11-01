@@ -8,7 +8,8 @@ namespace Engine.Exceptions
         /// Constructor
         /// </summary>
         /// <param name="inner">Inner exeption</param>
-        public ItemNotFoundExeption(string itemType, string desc, Exception inner) : base($"The Item {itemType} could not be Found.\n Description: {desc}", inner)
+        public ItemNotFoundExeption(string itemType, string desc, Exception inner) : base(
+            $"The Item {itemType} could not be Found.\n Description: {desc}", inner)
         {
         }
 

@@ -8,7 +8,6 @@ namespace Engine.Debug
     [Flags]
     public enum DebugChannel : int
     {
-
         /// <summary>
         /// Used to Write Logs to the Debug System
         /// </summary>
@@ -60,7 +59,5 @@ namespace Engine.Debug
 
         EngineCore = Engine | Core,
         EngineRendering = Engine | Rendering,
-
-
     }
 }

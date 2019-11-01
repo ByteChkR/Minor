@@ -4,13 +4,8 @@ using System.IO;
 using System.Xml.Linq;
 using System.Xml.Serialization;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
-
-
-
-
-
     public static class AssetPacker
     {
         public const int KILOBYTE = 1024;
@@ -32,17 +27,15 @@ namespace AssetPackaging
 
                     ret.AddFile(files[i], packPath.ToString(), type);
                 }
-
             }
 
             return ret;
-
         }
 
         private static AssetResult ParseResult(Stream s)
         {
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
-            AssetResult ret = (AssetResult)xs.Deserialize(s);
+            AssetResult ret = (AssetResult) xs.Deserialize(s);
             s.Close();
             return ret;
         }
@@ -53,8 +46,13 @@ namespace AssetPackaging
             List<Tuple<string, AssetPointer>> assetList = new List<Tuple<string, AssetPointer>>();
             for (int i = 0; i < r.indexList.Count; i++)
             {
-                if (r.indexList[i].PackageType == AssetPackageType.Unpack) continue;
-                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetID(packPaths, r.indexList[i].PackageID)], r.indexList[i]));
+                if (r.indexList[i].PackageType == AssetPackageType.Unpack)
+                {
+                    continue;
+                }
+
+                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetID(packPaths, r.indexList[i].PackageID)],
+                    r.indexList[i]));
             }
 
             return assetList;
@@ -64,7 +62,10 @@ namespace AssetPackaging
         {
             for (int i = 0; i < path.Length; i++)
             {
-                if (Path.GetFileNameWithoutExtension(path[i]) == id.ToString()) return i;
+                if (Path.GetFileNameWithoutExtension(path[i]) == id.ToString())
+                {
+                    return i;
+                }
             }
 
             return -1;
@@ -76,7 +77,10 @@ namespace AssetPackaging
             Dictionary<string, Tuple<int, MemoryStream>> assetList = new Dictionary<string, Tuple<int, MemoryStream>>();
             for (int i = 0; i < r.indexList.Count; i++)
             {
-                if (r.indexList[i].PackageType == AssetPackageType.Memory) continue;
+                if (r.indexList[i].PackageType == AssetPackageType.Memory)
+                {
+                    continue;
+                }
 
                 MemoryStream ms = new MemoryStream(r.indexList[i].Length);
 
@@ -93,12 +97,9 @@ namespace AssetPackaging
             {
                 packs[i].Close();
             }
+
             indexList.Close();
             return assetList;
-
         }
-
     }
-
-
 }

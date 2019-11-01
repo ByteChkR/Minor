@@ -215,8 +215,8 @@ namespace Engine.IO
 
         public static Texture ColorToTexture(Color c)
         {
-            Bitmap bmp = new Bitmap(1,1);
-            bmp.SetPixel(0,0, c);
+            Bitmap bmp = new Bitmap(1, 1);
+            bmp.SetPixel(0, 0, c);
             return BitmapToTexture(bmp);
         }
 

@@ -42,7 +42,7 @@ namespace Engine.OpenFL
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFL,10);
+                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFL, 10);
 
                 MemoryBuffer buf =
                     CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);

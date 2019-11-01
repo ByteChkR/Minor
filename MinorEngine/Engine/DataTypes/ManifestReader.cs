@@ -4,7 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using AssetPackaging;
+using Engine.AssetPackaging;
 using Assimp;
 using Engine.Debug;
 using Engine.Exceptions;
@@ -19,9 +19,32 @@ namespace Engine.DataTypes
         private static Dictionary<string, AssemblyFile> AssemblyFiles = new Dictionary<string, AssemblyFile>();
         private static List<Assembly> LoadedAssemblies = new List<Assembly>();
         private static List<string> UnpackedFiles = new List<string>();
+
+        public static void LoadAssemblyList(Stream data)
+        {
+            TextReader tr = new StreamReader(data);
+
+            string list = tr.ReadToEnd();
+            tr.Close();
+            string[] files = list.Split("\n", StringSplitOptions.RemoveEmptyEntries);
+
+            for (int i = 0; i < files.Length; i++)
+            {
+                Assembly asm = Assembly.Load(files[i].Replace("\r", "")); //Why windows. Why?
+                if (asm != null)
+                {
+                    Logger.Log("Loading Assembly " + asm.GetName().Name, DebugChannel.Log, 10);
+                    RegisterAssembly(asm);
+                }
+            }
+        }
+
         public static void RegisterAssembly(Assembly asm)
         {
-            if (LoadedAssemblies.Contains(asm)) return;
+            if (LoadedAssemblies.Contains(asm))
+            {
+                return;
+            }
 
             LoadedAssemblies.Add(asm);
             string[] files = asm.GetManifestResourceNames();
@@ -44,25 +67,37 @@ namespace Engine.DataTypes
                     AssemblyFiles.Add(file, new AssemblyFile(files[i], asm));
                 }
             }
-
         }
 
         private delegate AssemblyFile AssemblyFileFactory(string file, Assembly asm, AssetPointer ptr);
+
         private static AssemblyFile FileFactory(string file, Assembly asm, AssetPointer ptr)
         {
-            if (asm == null) return new IOPackedAssemblyFile(UnSanitizeFilename(file), ptr);
+            if (asm == null)
+            {
+                return new IOPackedAssemblyFile(UnSanitizeFilename(file), ptr);
+            }
+
             return new PackedAssemblyFile(file, asm, ptr);
         }
 
-        private static void PrepareAssemblyFiles(string packPrefix, string[] files, Assembly asm, AssemblyFileFactory factory)
+        private static void PrepareAssemblyFiles(string packPrefix, string[] files, Assembly asm,
+            AssemblyFileFactory factory)
         {
             int indexList = HasPackageFiles(files);
-            if (indexList == -1) return;
+            if (indexList == -1)
+            {
+                return;
+            }
 
             Logger.Log("Found Packed Files in Assembly: " + packPrefix, DebugChannel.Log, 10);
 
             string dir = packPrefix + "/packs";
-            if (dir.StartsWith("/")) dir = dir.Remove(0, 1);
+            if (dir.StartsWith("/"))
+            {
+                dir = dir.Remove(0, 1);
+            }
+
             string[] packs = IOManager.GetFiles(dir, "*.pack"); //Get only *.pack files
             Stream[] s = new Stream[packs.Length];
             for (int i = 0; i < packs.Length; i++)
@@ -72,8 +107,14 @@ namespace Engine.DataTypes
             }
 
             Stream indexStream = IOManager.GetStream(files[indexList]);
-            Dictionary<string, Tuple<int, MemoryStream>> filesToUnpack = AssetPacker.UnpackAssets(indexStream, s); //Get Files in the Packs that need to be unpacked to file system
-            if (filesToUnpack.Count > 0) UnpackAssets(filesToUnpack);
+            Dictionary<string, Tuple<int, MemoryStream>>
+                filesToUnpack =
+                    AssetPacker.UnpackAssets(indexStream,
+                        s); //Get Files in the Packs that need to be unpacked to file system
+            if (filesToUnpack.Count > 0)
+            {
+                UnpackAssets(filesToUnpack);
+            }
 
 
             Stream idxStream = IOManager.GetStream(files[indexList]);
@@ -83,33 +124,41 @@ namespace Engine.DataTypes
             {
                 string assemblyPath = SanitizeFilename(packPrefix + "/" + assetPointer.Item1);
                 string virtualPath = SanitizeFilename(assetPointer.Item2.Path);
-                Logger.Log("Parsing Packed File " + assetPointer.Item2.Path + " from " + assemblyPath, DebugChannel.Log, 10);
+                Logger.Log("Parsing Packed File " + assetPointer.Item2.Path + " from " + assemblyPath, DebugChannel.Log,
+                    10);
                 if (AssemblyFiles.ContainsKey(virtualPath))
                 {
                     Logger.Log("Overwriting File..", DebugChannel.Log, 10);
-                    AssemblyFiles[virtualPath] = factory(assemblyPath, asm, assetPointer.Item2); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2);
+                    AssemblyFiles[virtualPath] =
+                        factory(assemblyPath, asm,
+                            assetPointer.Item2); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2);
                 }
                 else
                 {
-                    AssemblyFiles.Add(virtualPath, factory(assemblyPath, asm, assetPointer.Item2)); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2)
+                    AssemblyFiles.Add(virtualPath,
+                        factory(assemblyPath, asm,
+                            assetPointer.Item2)); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2)
                 }
             }
         }
 
         public static void PrepareManifestFiles(bool searchFileSystem)
         {
-
             foreach (Assembly loadedAssembly in LoadedAssemblies)
             {
                 if (IOManager.FolderExists(loadedAssembly.GetName().Name + "/packs"))
-                    PrepareAssemblyFiles(loadedAssembly.GetName().Name, IOManager.GetFiles(loadedAssembly.GetName().Name + "/packs", "*"), loadedAssembly, FileFactory);
-
+                {
+                    PrepareAssemblyFiles(loadedAssembly.GetName().Name,
+                        IOManager.GetFiles(loadedAssembly.GetName().Name + "/packs", "*"), loadedAssembly, FileFactory);
+                }
             }
 
             if (searchFileSystem)
             {
                 if (IOManager.FolderExists("packs"))
+                {
                     PrepareAssemblyFiles("", IOManager.GetFiles("packs", "*"), null, FileFactory);
+                }
             }
         }
 
@@ -118,7 +167,6 @@ namespace Engine.DataTypes
             Logger.Log($"Parparing to unpack {files.Count} Assets.. ", DebugChannel.Log, 10);
             foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in files)
             {
-
                 if (!File.Exists(memoryStream.Key))
                 {
                     Logger.Log($"Unpacking: " + memoryStream.Key, DebugChannel.Log, 10);
@@ -131,7 +179,11 @@ namespace Engine.DataTypes
                     folders.Add(curFolder);
                     while (curFolder.Trim() != "\\")
                     {
-                        if (string.IsNullOrEmpty(curFolder)) break;
+                        if (string.IsNullOrEmpty(curFolder))
+                        {
+                            break;
+                        }
+
                         folders.Add(curFolder);
                         curFolder = Path.GetDirectoryName(curFolder);
                     }
@@ -143,11 +195,10 @@ namespace Engine.DataTypes
                             Directory.CreateDirectory(".\\" + folders[i]);
                         }
                     }
+
                     UnpackedFiles.Add(memoryStream.Key);
                     File.WriteAllBytes(memoryStream.Key, buf);
                 }
-
-
             }
         }
 
@@ -177,7 +228,6 @@ namespace Engine.DataTypes
             }
 
             return AssemblyFiles[path].GetFileStream();
-
         }
 
         public static bool DirectoryExists(string path)
@@ -185,7 +235,10 @@ namespace Engine.DataTypes
             string p = SanitizeFilename(path);
             foreach (KeyValuePair<string, AssemblyFile> assemblyFile in AssemblyFiles)
             {
-                if (assemblyFile.Key.StartsWith(p)) return true;
+                if (assemblyFile.Key.StartsWith(p))
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -199,7 +252,10 @@ namespace Engine.DataTypes
             List<string> ret = new List<string>();
             for (int i = 0; i < files.Length; i++)
             {
-                if (files[i].StartsWith(p) && (files[i].EndsWith(searchPattern) || searchPattern == "*")) ret.Add(UnSanitizeFilename(files[i]));
+                if (files[i].StartsWith(p) && (files[i].EndsWith(searchPattern) || searchPattern == "*"))
+                {
+                    ret.Add(UnSanitizeFilename(files[i]));
+                }
             }
 
             return ret.ToArray();
@@ -218,7 +274,11 @@ namespace Engine.DataTypes
 
         public static string SanitizeFilename(string filepath)
         {
-            if (filepath[0] == '/' || filepath[0] == '\\') filepath = filepath.Remove(0, 1);
+            if (filepath[0] == '/' || filepath[0] == '\\')
+            {
+                filepath = filepath.Remove(0, 1);
+            }
+
             return filepath.Replace("/", ".").Replace("\\", ".");
         }
 

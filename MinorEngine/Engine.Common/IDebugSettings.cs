@@ -10,7 +10,7 @@ namespace Engine.Common
         int InternalUpdateMask { get; set; }
         int PrefixLookupFlags { get; set; }
         int SeverityFilter { get; set; }
-        
+
         string[] StageNames { get; set; }
         ILogStreamSettings[] Streams { get; set; }
     }

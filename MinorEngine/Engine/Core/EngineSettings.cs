@@ -26,6 +26,7 @@ namespace Engine.Core
             VSync = VSyncMode.On,
             WindowFlags = GameWindowFlags.Default,
         };
+
         /// <summary>
         /// The Graphics Mode of the Window
         /// </summary>

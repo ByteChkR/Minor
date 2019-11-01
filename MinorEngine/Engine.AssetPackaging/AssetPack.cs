@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
     public class AssetPack
     {

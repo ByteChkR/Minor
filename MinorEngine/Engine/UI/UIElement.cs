@@ -66,7 +66,6 @@ namespace Engine.UI
         }
 
 
-
         /// <summary>
         /// Alpha value of the texture
         /// </summary>
@@ -87,7 +86,8 @@ namespace Engine.UI
         /// <param name="shader">The Shader to be used</param>
         /// <param name="worldSpace">Is the Element in world space?</param>
         /// <param name="alpha">Initial ALpha value(0 = transparent; 1 = opaque)</param>
-        protected UIElement(ShaderProgram shader, bool worldSpace, float alpha) : base(shader, worldSpace, Renderer.RenderType.Transparent, 1 << 30)
+        protected UIElement(ShaderProgram shader, bool worldSpace, float alpha) : base(shader, worldSpace,
+            Renderer.RenderType.Transparent, 1 << 30)
         {
             Alpha = alpha;
             WorldSpace = worldSpace;
@@ -101,6 +101,5 @@ namespace Engine.UI
                 Program = UIHelper.Instance.DefaultUIShader;
             }
         }
-
     }
 }

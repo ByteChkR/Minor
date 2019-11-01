@@ -13,8 +13,6 @@ namespace Engine.UI
     /// </summary>
     public class UITextRendererComponent : UIElement
     {
-
-
         /// <summary>
         /// The VBO of the Quad used to draw each character
         /// </summary>
@@ -95,7 +93,6 @@ namespace Engine.UI
         /// </summary>
         private static void SetUpTextResources()
         {
-
             _init = true;
             _vao = GL.GenVertexArray();
             _vbo = GL.GenBuffer();
@@ -110,8 +107,6 @@ namespace Engine.UI
 
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
             GL.BindVertexArray(0);
-
-
         }
 
         /// <summary>
@@ -187,8 +182,8 @@ namespace Engine.UI
                 float xpos = x + chr.BearingX / scrW * Scale.X;
                 float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                float w = chr.Width / (float)scrW * Scale.X;
-                float h = chr.Height / (float)scrH * Scale.Y;
+                float w = chr.Width / (float) scrW * Scale.X;
+                float h = chr.Height / (float) scrH * Scale.Y;
 
                 //Remove Scale And initial position(start at (x,y) = 0)
                 //Add Translation to Make text be centered at origin(-TotalTextWidth/2,-TotalTextHeight/2)
@@ -209,7 +204,7 @@ namespace Engine.UI
                 {
                     GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
+                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
                         verts);
 
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

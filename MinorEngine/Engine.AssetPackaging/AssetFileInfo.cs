@@ -1,4 +1,4 @@
-﻿namespace AssetPackaging
+﻿namespace Engine.AssetPackaging
 {
     public class AssetFileInfo
     {

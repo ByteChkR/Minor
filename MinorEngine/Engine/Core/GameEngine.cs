@@ -1,10 +1,11 @@
 ﻿using System;
-using System.ComponentModel;
+using System.IO;
 using System.Reflection;
 using Engine.Common;
 using Engine.Audio;
 using Engine.DataTypes;
 using Engine.Debug;
+using Engine.IO;
 using Engine.Physics;
 using Engine.Rendering;
 using OpenTK;
@@ -55,7 +56,7 @@ namespace Engine.Core
         /// <summary>
         /// Property that returns the current AspectRatio
         /// </summary>
-        public float AspectRatio => Width / (float)Height;
+        public float AspectRatio => Width / (float) Height;
 
         /// <summary>
         /// Private flag if the there is a scene change in progress
@@ -88,13 +89,23 @@ namespace Engine.Core
         /// <param name="settings">Settings to be used</param>
         public GameEngine(EngineSettings settings)
         {
-
             Instance = this;
-            if (settings != null) SetSettings(settings);
+            if (settings != null)
+            {
+                SetSettings(settings);
+            }
+
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
+
+            if (IOManager.Exists("assemblyList.txt"))
+            {
+                Logger.Log("Loading Assembly List", DebugChannel.Log, 10);
+                ManifestReader.LoadAssemblyList(new FileStream("assemblyList.txt", FileMode.Open));
+            }
+
+            ManifestReader.PrepareManifestFiles(true);
         }
 
-        
 
         public void SetSettings(EngineSettings settings)
         {
@@ -108,10 +119,9 @@ namespace Engine.Core
         /// </summary>
         public void Initialize()
         {
-
             Logger.Log("Init started..", DebugChannel.Log | DebugChannel.EngineCore, 10);
-            initializeWindow();
-            initializeRenderer();
+            InitializeWindow();
+            InitializeRenderer();
 
             AudioManager.Initialize();
 
@@ -122,7 +132,7 @@ namespace Engine.Core
         /// <summary>
         /// Initializes the OpenGL Window and registers some handles
         /// </summary>
-        private void initializeWindow()
+        private void InitializeWindow()
         {
             Logger.Log("Initializing Window..", DebugChannel.Log | DebugChannel.EngineCore, 10);
             Logger.Log(
@@ -152,7 +162,7 @@ namespace Engine.Core
         /// <summary>
         /// Initializes the renderer
         /// </summary>
-        private void initializeRenderer()
+        private void InitializeRenderer()
         {
             //TODO
 
@@ -278,12 +288,12 @@ namespace Engine.Core
             MemoryTracer.NextStage("Update Frame: " + FrameCounter);
 
             MemoryTracer.AddSubStage("Scene Update");
-            CurrentScene?.Update((float)e.Time);
+            CurrentScene?.Update((float) e.Time);
             MemoryTracer.NextStage("World Update");
-            CurrentScene?.Update((float)e.Time);
+            CurrentScene?.Update((float) e.Time);
 
             MemoryTracer.NextStage("Physics Update");
-            PhysicsEngine.Update((float)e.Time);
+            PhysicsEngine.Update((float) e.Time);
 
             if (_changeScene)
             {
@@ -304,7 +314,7 @@ namespace Engine.Core
 
                 MemoryTracer.NextStage("Create New Scene");
 
-                CurrentScene = (AbstractScene)Activator.CreateInstance(_nextScene);
+                CurrentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
 
                 MemoryTracer.NextStage("Initialize New Scene");
 

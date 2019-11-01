@@ -156,7 +156,7 @@ namespace Engine.Debug
         /// Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues)
         /// I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0
         /// </summary>
-       // private static RenderTarget rt, rt2;
+        // private static RenderTarget rt, rt2;
 
         /// <summary>
         /// OnDestroy Implementation that will remove the two render targets from the system
@@ -645,6 +645,7 @@ namespace Engine.Debug
         private int fps;
         private float time;
         private float frames;
+
         /// <summary>
         /// Update Function
         /// </summary>
@@ -658,6 +659,7 @@ namespace Engine.Debug
                 frames = fps;
                 time = fps = 0;
             }
+
             _blinkTime += deltaTime;
             if (_blinkTime >= _blinkMaxTime)
             {

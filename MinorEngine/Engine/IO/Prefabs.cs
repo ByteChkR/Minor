@@ -70,6 +70,7 @@ namespace Engine.IO
                 return _white.Copy();
             }
         }
+
         /// <summary>
         /// Returns an instance of a Sphere
         /// </summary>
@@ -79,13 +80,12 @@ namespace Engine.IO
             {
                 if (_black == null)
                 {
-                    Bitmap bmp = new Bitmap(1,1);
+                    Bitmap bmp = new Bitmap(1, 1);
                     _black = TextureLoader.BitmapToTexture(bmp);
                 }
 
                 return _black.Copy();
             }
         }
-
     }
 }

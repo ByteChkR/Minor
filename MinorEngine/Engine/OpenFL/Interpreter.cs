@@ -333,7 +333,8 @@ namespace Engine.OpenFL
                 {
                     if (memoryBuffer.Value.IsInternal)
                     {
-                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value.ToString(), DebugChannel.Log | DebugChannel.OpenFL, 5);
+                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value.ToString(),
+                            DebugChannel.Log | DebugChannel.OpenFL, 5);
                         memoryBuffer.Value.Buffer.Dispose();
                     }
                 }
@@ -449,12 +450,14 @@ namespace Engine.OpenFL
                     _currentWord = 0;
                 }
             }
+
             DetectEnd();
         }
 
         private LineAnalysisResult AnalyzeLine(FLInstructionData data)
         {
-            if (data.InstructionType != FLInstructionType.FLFunction && data.InstructionType != FLInstructionType.CLKernel)
+            if (data.InstructionType != FLInstructionType.FLFunction &&
+                data.InstructionType != FLInstructionType.CLKernel)
             {
                 Logger.Crash(new FLParseError(Data.Source[_currentIndex]), true);
                 return LineAnalysisResult.ParseError;
@@ -476,13 +479,15 @@ namespace Engine.OpenFL
             {
                 if (data.Arguments[_currentWord].argType == FLArgumentType.Function)
                 {
-                    bool KeepBuffer = data.InstructionType == FLInstructionType.FLFunction && ((FLFunctionInfo)data.Instruction).LeaveStack;
-                    JumpTo((int)data.Arguments[_currentWord].value, KeepBuffer);
+                    bool KeepBuffer = data.InstructionType == FLInstructionType.FLFunction &&
+                                      ((FLFunctionInfo) data.Instruction).LeaveStack;
+                    JumpTo((int) data.Arguments[_currentWord].value, KeepBuffer);
                     ret = LineAnalysisResult.Jump; //We Jumped to another point in the code.
                     _currentArgStack
                         .Push(null); //Push null to signal the interpreter that he returned before assigning the right value.
                     break;
                 }
+
                 if (data.Arguments[_currentWord].argType != FLArgumentType.Unknown)
                 {
                     _currentArgStack.Push(data.Arguments[_currentWord].value);
@@ -494,14 +499,16 @@ namespace Engine.OpenFL
             {
                 if (data.InstructionType == FLInstructionType.FLFunction)
                 {
-                    ((FLFunctionInfo)data.Instruction).Run();
+                    ((FLFunctionInfo) data.Instruction).Run();
                     return LineAnalysisResult.IncreasePC;
                 }
 
-                CLKernel K = (CLKernel)data.Instruction;
+                CLKernel K = (CLKernel) data.Instruction;
                 if (K == null || data.Arguments.Count != K.Parameter.Count - FLHeaderArgCount)
                 {
-                    Logger.Crash(new FLInvalidFunctionUseException(Data.Source[_currentIndex], "Not the right amount of arguments."),
+                    Logger.Crash(
+                        new FLInvalidFunctionUseException(Data.Source[_currentIndex],
+                            "Not the right amount of arguments."),
                         true);
                     return LineAnalysisResult.ParseError;
                 }
@@ -522,8 +529,8 @@ namespace Engine.OpenFL
                 CLAPI.Run(K, _currentBuffer.Buffer, new int3(_width, _height, _depth),
                     KernelParameter.GetDataMaxSize(_kernelDb.GenDataType), _activeChannelBuffer,
                     _channelCount); //Running the kernel
-
             }
+
             return ret;
         }
 
@@ -532,7 +539,8 @@ namespace Engine.OpenFL
         /// </summary>
         private void DetectEnd()
         {
-            if (_currentIndex == Data.ParsedSource.Count || Data.ParsedSource[_currentIndex].InstructionType == FLInstructionType.FunctionHeader)
+            if (_currentIndex == Data.ParsedSource.Count ||
+                Data.ParsedSource[_currentIndex].InstructionType == FLInstructionType.FunctionHeader)
             {
                 if (_jumpStack.Count == 0)
                 {
@@ -544,7 +552,8 @@ namespace Engine.OpenFL
                 {
                     InterpreterState lastState = _jumpStack.Pop();
 
-                    Logger.Log("Returning to location: " + Data.Source[lastState.Line], DebugChannel.Log | DebugChannel.OpenFL, 6);
+                    Logger.Log("Returning to location: " + Data.Source[lastState.Line],
+                        DebugChannel.Log | DebugChannel.OpenFL, 6);
                     _currentIndex = lastState.Line;
 
 
@@ -577,7 +586,7 @@ namespace Engine.OpenFL
 #if NO_CL
             int size = 1;
 #else
-            int size = (int)_currentBuffer.Buffer.Size;
+            int size = (int) _currentBuffer.Buffer.Size;
 #endif
 
 
@@ -668,32 +677,41 @@ namespace Engine.OpenFL
             return lines;
         }
 
-        private static FLScriptData LoadScriptData(string file, CLBufferInfo inBuffer, int width, int height, int depth, int channelCount,
+        private static FLScriptData LoadScriptData(string file, CLBufferInfo inBuffer, int width, int height, int depth,
+            int channelCount,
             KernelDatabase db, Dictionary<string, FLFunctionInfo> funcs)
         {
-            Logger.Log("Loading Script Data for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 6);
+            Logger.Log("Loading Script Data for File: " + file,
+                DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 6);
 
             FLScriptData ret = new FLScriptData(LoadSource(file, channelCount));
 
 
             ret.Defines.Add(InputBufferName, inBuffer);
 
-            Logger.Log("Parsing Texture Defines for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
+            Logger.Log("Parsing Texture Defines for File: " + file,
+                DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
             ParseDefines(DefineKey, DefineTexture, ret.Source, ret.Defines, width, height, depth, channelCount, db);
 
-            Logger.Log("Parsing Script Defines for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
-            ParseDefines(ScriptDefineKey, DefineScript, ret.Source, ret.Defines, width, height, depth, channelCount, db);
+            Logger.Log("Parsing Script Defines for File: " + file,
+                DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
+            ParseDefines(ScriptDefineKey, DefineScript, ret.Source, ret.Defines, width, height, depth, channelCount,
+                db);
 
-            Logger.Log("Parsing JumpLocations for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
+            Logger.Log("Parsing JumpLocations for File: " + file,
+                DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
             ret.JumpLocations = ParseJumpLocations(ret.Source);
 
-            Logger.Log("Parsing Instruction Data for File: " + file, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
+            Logger.Log("Parsing Instruction Data for File: " + file,
+                DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
             foreach (string line in ret.Source)
             {
-                Logger.Log("Parsing Instruction Data for Line: " + line, DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 3);
+                Logger.Log("Parsing Instruction Data for Line: " + line,
+                    DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 3);
                 FLInstructionData data = GetInstructionData(line, ret.Defines, ret.JumpLocations, funcs, db);
 
-                Logger.Log("Parsed Instruction Data: " + Enum.GetName(typeof(FLInstructionType), data.InstructionType), DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 2);
+                Logger.Log("Parsed Instruction Data: " + Enum.GetName(typeof(FLInstructionType), data.InstructionType),
+                    DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 2);
 
                 ret.ParsedSource.Add(data);
             }
@@ -705,16 +723,16 @@ namespace Engine.OpenFL
         private static FLInstructionData GetInstructionData(string line, Dictionary<string, CLBufferInfo> defines,
             Dictionary<string, int> jumpLocations, Dictionary<string, FLFunctionInfo> funcs, KernelDatabase db)
         {
-
             string[] code = SplitLine(SanitizeLine(line));
 
             if (code.Length == 0)
             {
-                return new FLInstructionData() { InstructionType = FLInstructionType.NOP };
+                return new FLInstructionData() {InstructionType = FLInstructionType.NOP};
             }
+
             if (code[0].Trim().EndsWith(FunctionNamePostfix))
             {
-                return new FLInstructionData() { InstructionType = FLInstructionType.FunctionHeader };
+                return new FLInstructionData() {InstructionType = FLInstructionType.FunctionHeader};
             }
 
             bool isBakedFunction = funcs.ContainsKey(code[0]);
@@ -737,19 +755,20 @@ namespace Engine.OpenFL
             {
                 if (defines.ContainsKey(code[i]))
                 {
-                    argData.Add(new FLArgumentData() { value = defines[code[i]], argType = FLArgumentType.Buffer });
+                    argData.Add(new FLArgumentData() {value = defines[code[i]], argType = FLArgumentType.Buffer});
                 }
                 else if (jumpLocations.ContainsKey(code[i]))
                 {
-                    argData.Add(new FLArgumentData() { value = jumpLocations[code[i]], argType = FLArgumentType.Function });
+                    argData.Add(
+                        new FLArgumentData() {value = jumpLocations[code[i]], argType = FLArgumentType.Function});
                 }
                 else if (decimal.TryParse(code[i], NumberStyles.Any, NumberParsingHelper, out decimal valResult))
                 {
-                    argData.Add(new FLArgumentData() { value = valResult, argType = FLArgumentType.Number });
+                    argData.Add(new FLArgumentData() {value = valResult, argType = FLArgumentType.Number});
                 }
                 else
                 {
-                    argData.Add(new FLArgumentData() { value = null, argType = FLArgumentType.Unknown });
+                    argData.Add(new FLArgumentData() {value = null, argType = FLArgumentType.Unknown});
 #if !NO_CL
                     Logger.Crash(new FLInvalidArgumentType(code[i], "Number or Defined buffer."), true);
 #endif
@@ -758,7 +777,6 @@ namespace Engine.OpenFL
 
             ret.Arguments = argData;
             return ret;
-
         }
 
         #endregion
@@ -778,7 +796,10 @@ namespace Engine.OpenFL
         public CLBufferInfo GetBuffer(string name)
         {
             if (Data.Defines.ContainsKey(name))
+            {
                 return Data.Defines[name];
+            }
+
             return null;
         }
 
@@ -793,7 +814,7 @@ namespace Engine.OpenFL
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CLAPI.ReadBuffer<T>(_currentBuffer.Buffer, (int)_currentBuffer.Buffer.Size);
+            return CLAPI.ReadBuffer<T>(_currentBuffer.Buffer, (int) _currentBuffer.Buffer.Size);
         }
 
         /// <summary>

@@ -20,6 +20,7 @@ namespace Engine.Rendering
     public class ShaderProgram : IDisposable
     {
         private Dictionary<string, int> uniformCache = new Dictionary<string, int>();
+
         /// <summary>
         /// Backing field of the Default shader
         /// </summary>
@@ -37,7 +38,7 @@ namespace Engine.Rendering
         private static ShaderProgram GetDefaultShader()
         {
             Assembly asm = Assembly.GetExecutingAssembly();
-            string[] paths = { "._DefaultResources.DefaultShader.vs", "._DefaultResources.DefaultShader.fs" };
+            string[] paths = {"._DefaultResources.DefaultShader.vs", "._DefaultResources.DefaultShader.fs"};
             Dictionary<ShaderType, string> shaderSource = new Dictionary<ShaderType, string>();
             for (int i = 0; i < paths.Length; i++)
             {
@@ -101,7 +102,8 @@ namespace Engine.Rendering
 
             for (int i = 0; i < shaders.Count; i++)
             {
-                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i).Key, DebugChannel.Log | DebugChannel.EngineRendering, 6);
+                Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i).Key,
+                    DebugChannel.Log | DebugChannel.EngineRendering, 6);
                 GL.AttachShader(program._prgId, shaders[i]);
             }
 
@@ -111,7 +113,6 @@ namespace Engine.Rendering
             GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out int success);
             if (success == 0)
             {
-
                 Logger.Crash(new OpenGLShaderException(GL.GetProgramInfoLog(program._prgId)), true);
                 return false;
             }
@@ -135,7 +136,7 @@ namespace Engine.Rendering
                 {
                     ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
                 }
-                else if(IOManager.Exists(subshader.Value))
+                else if (IOManager.Exists(subshader.Value))
                 {
                     TextReader tr = new StreamReader(ManifestReader.GetStreamByPath(subshader.Value));
 
@@ -160,7 +161,11 @@ namespace Engine.Rendering
         /// </summary>
         public void Use()
         {
-            if (_lastUsedPrgID == _prgId) return;
+            if (_lastUsedPrgID == _prgId)
+            {
+                return;
+            }
+
             _lastUsedPrgID = _prgId;
             GL.UseProgram(_prgId);
         }
@@ -178,7 +183,11 @@ namespace Engine.Rendering
 
         public void AddUniformCache(string name)
         {
-            if (uniformCache.ContainsKey(name)) return;
+            if (uniformCache.ContainsKey(name))
+            {
+                return;
+            }
+
             int loc = GL.GetUniformLocation(_prgId, name);
             uniformCache.Add(name, loc);
         }
@@ -217,7 +226,6 @@ namespace Engine.Rendering
             GL.GetShader(shaderID, ShaderParameter.CompileStatus, out int success);
             if (success == 0)
             {
-
                 Logger.Crash(new OpenGLShaderException(GL.GetShaderInfoLog(shaderID)), true);
 
                 return false;

@@ -24,9 +24,6 @@ namespace Engine.IO
     /// </summary>
     public class MeshLoader
     {
-        
-
-
         /// <summary>
         /// Loads a Mesh From File
         /// </summary>
@@ -59,7 +56,7 @@ namespace Engine.IO
         /// </summary>
         /// <param name="stream">the input stream for assimp</param>
         /// <returns></returns>
-        internal static List<Mesh> LoadModel(Stream stream, string hint="", string path = "")
+        internal static List<Mesh> LoadModel(Stream stream, string hint = "", string path = "")
         {
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
@@ -157,7 +154,8 @@ namespace Engine.IO
             List<Texture> textures = new List<Texture>();
 
 
-            Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure", DebugChannel.Log | DebugChannel.IO, 3);
+            Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure",
+                DebugChannel.Log | DebugChannel.IO, 3);
 
 
             Logger.Log("Copying Vertex Data...", DebugChannel.Log | DebugChannel.IO, 2);

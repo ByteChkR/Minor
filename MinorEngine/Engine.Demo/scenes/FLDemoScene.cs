@@ -117,7 +117,7 @@ namespace Engine.Demo.scenes
             }, out ShaderProgram shader);
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
-            objSphere.AddComponent(new LitMeshRendererComponent(shader,  sphere,
+            objSphere.AddComponent(new LitMeshRendererComponent(shader, sphere,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             objSphere.GetComponent<LitMeshRendererComponent>().Textures = new[]
                 {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
@@ -125,7 +125,7 @@ namespace Engine.Demo.scenes
             objSphere.AddComponent(new RotatingComponent());
 
             GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
-            objQuad.AddComponent(new LitMeshRendererComponent(shader,  plane,
+            objQuad.AddComponent(new LitMeshRendererComponent(shader, plane,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             objQuad.GetComponent<LitMeshRendererComponent>().Textures = new[]
                 {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
@@ -136,13 +136,15 @@ namespace Engine.Demo.scenes
 
             Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
-            _sourceCube.AddComponent(new RotateAroundComponent(){Slow = 0.15f});
-            _sourceCube.AddComponent(new LitMeshRendererComponent(shader,  sourceCube,
+            _sourceCube.AddComponent(new RotateAroundComponent() {Slow = 0.15f});
+            _sourceCube.AddComponent(new LitMeshRendererComponent(shader, sourceCube,
                 TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
-            
+
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
             uiText.AddComponent(new FLGeneratorComponent(new List<LitMeshRendererComponent>
-                    {objSphere.GetComponent<LitMeshRendererComponent>(), objQuad.GetComponent<LitMeshRendererComponent>()},
+                {
+                    objSphere.GetComponent<LitMeshRendererComponent>(), objQuad.GetComponent<LitMeshRendererComponent>()
+                },
                 512,
                 512));
 

@@ -6,12 +6,11 @@ namespace Engine.Core
 {
     public static class Interpolations
     {
-
         public static float FakePow(float basis, float exp)
         {
-            float pow = IntPow(basis, (int)exp);
+            float pow = IntPow(basis, (int) exp);
             float powPlus1 = pow * basis;
-            return Mix(pow, powPlus1, (int)exp - exp); //Mix by the remainder: 99% accurate in range [0, 1]
+            return Mix(pow, powPlus1, (int) exp - exp); //Mix by the remainder: 99% accurate in range [0, 1]
         }
 
         public static float IntPow(float basis, int exp)
@@ -27,7 +26,11 @@ namespace Engine.Core
 
         public static float InverseLerp(float min, float max, float value)
         {
-            if (Math.Abs(max - min) < float.Epsilon) return min;
+            if (Math.Abs(max - min) < float.Epsilon)
+            {
+                return min;
+            }
+
             return (value - min) / (max - min);
         }
 
@@ -64,7 +67,7 @@ namespace Engine.Core
 
         public static float SmoothStart(float t, float smoothness = 1)
         {
-            int pow = (int)smoothness;
+            int pow = (int) smoothness;
             return Mix(SmoothStart(t, pow), SmoothStart(t, pow + 1), smoothness - pow);
         }
 
@@ -75,7 +78,7 @@ namespace Engine.Core
 
         public static float SmoothStop(float t, float smoothness = 1)
         {
-            int pow = (int)smoothness;
+            int pow = (int) smoothness;
             return Mix(SmoothStop(t, pow), SmoothStop(t, pow + 1), smoothness - pow);
         }
 
@@ -87,7 +90,6 @@ namespace Engine.Core
 
         public static float Arch2(float t)
         {
-
             return Flip(t) * t;
         }
 
@@ -118,18 +120,22 @@ namespace Engine.Core
             float t2 = t * t;
             float s2 = s * s;
             float t3 = t2 * t;
-            return (3f * B * s2 * t) + (3f * C * s * t2) + t3;
+            return 3f * B * s2 * t + 3f * C * s * t2 + t3;
         }
 
         public static Vector3[] Chaikin(Vector3[] pts, int smoothness)
         {
-            if (smoothness < 1) return pts;
+            if (smoothness < 1)
+            {
+                return pts;
+            }
 
             Vector3[] ret = pts;
             for (int i = 0; i < smoothness; i++)
             {
                 ret = Chaikin(ret);
             }
+
             return ret;
         }
 
@@ -152,11 +158,15 @@ namespace Engine.Core
 
         public static List<Vector3> SmoothLine(List<Vector3> cornerPoints, float smoothness)
         {
-            if (smoothness < 1) smoothness = 1;
+            if (smoothness < 1)
+            {
+                smoothness = 1;
+            }
+
             List<Vector3> smoothedPoints;
             List<Vector3> ret;
             int cornerCount = cornerPoints.Count;
-            int curvedLength = (int)(Math.Round((cornerCount * smoothness))) - 1;
+            int curvedLength = (int) Math.Round(cornerCount * smoothness) - 1;
             ret = new List<Vector3>(curvedLength);
             float t = 0;
             for (int pointOnCurve = 0; pointOnCurve < curvedLength + 1; pointOnCurve++)
@@ -170,8 +180,10 @@ namespace Engine.Core
                         smoothedPoints[i] = (1 - t) * smoothedPoints[i] + t * smoothedPoints[i + 1];
                     }
                 }
+
                 ret.Add(smoothedPoints[0]);
             }
+
             return ret;
         }
     }

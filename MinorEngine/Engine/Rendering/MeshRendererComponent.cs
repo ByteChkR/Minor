@@ -9,26 +9,21 @@ namespace Engine.Rendering
     /// Implements A mesh Renderer component that can be used to add 3D Objects to the game world
     /// </summary>
     public class MeshRendererComponent : RenderingComponent
-    {/// <summary>
-     /// The property that implements the render mask requirement of IRendereringComponent
-     /// </summary>
+    {
+        /// <summary>
+        /// The property that implements the render mask requirement of IRendereringComponent
+        /// </summary>
         public int RenderMask { get; set; }
 
-     /// <summary>
+        /// <summary>
         /// The Tiling of the Diffuse Texture
         /// </summary>
-        public Vector2 Tiling
-        {
-            get; set;
-        } = Vector2.One;
+        public Vector2 Tiling { get; set; } = Vector2.One;
 
         /// <summary>
         /// The Offset of the Diffuse Texture
         /// </summary>
-        public Vector2 Offset
-        {
-            get; set;
-        }
+        public Vector2 Offset { get; set; }
 
         /// <summary>
         /// The meshes that are drawn to the screen
@@ -55,10 +50,10 @@ namespace Engine.Rendering
         /// <param name="renderMask">The render mask</param>
         /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
         public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
-            bool disposeOnDestroy = true):base(shader, true, Renderer.RenderType.Opaque, renderMask)
+            bool disposeOnDestroy = true) : base(shader, true, Renderer.RenderType.Opaque, renderMask)
         {
             Textures = new[] {diffuseTexture};
-            Meshes = new []{ model };
+            Meshes = new[] {model};
             RenderMask = renderMask;
             DisposeMeshOnDestroy = disposeOnDestroy;
         }
@@ -73,7 +68,6 @@ namespace Engine.Rendering
                 foreach (Mesh mesh in Meshes)
                 {
                     mesh.Dispose();
-
                 }
             }
         }
@@ -90,7 +84,6 @@ namespace Engine.Rendering
             Program.AddUniformCache("offset");
 
 
-
             for (int i = 1; i <= 8; i++)
             {
                 Program.AddUniformCache("texture_diffuse" + i);
@@ -98,7 +91,6 @@ namespace Engine.Rendering
                 Program.AddUniformCache("texture_specular" + i);
                 Program.AddUniformCache("texture_height" + i);
             }
-
         }
 
 
@@ -117,6 +109,7 @@ namespace Engine.Rendering
             {
                 Init();
             }
+
             Matrix4 mat = Owner._worldTransformCache;
             GL.UniformMatrix4(Program.GetUniformLocation("modelMatrix"), false, ref mat);
             GL.UniformMatrix4(Program.GetUniformLocation("viewMatrix"), false, ref viewMat);
@@ -125,8 +118,6 @@ namespace Engine.Rendering
             GL.UniformMatrix4(Program.GetUniformLocation("mvpMatrix"), false, ref mvp);
             GL.Uniform2(Program.GetUniformLocation("tiling"), Tiling);
             GL.Uniform2(Program.GetUniformLocation("offset"), Offset);
-
-
 
 
             RenderMeshes();
@@ -179,6 +170,7 @@ namespace Engine.Rendering
                     GL.Uniform1(Program.GetUniformLocation(name + number), i);
                     GL.BindTexture(TextureTarget.Texture2D, Textures[i].TextureId);
                 }
+
                 if (!hasSpec)
                 {
                     int loc = Program.GetUniformLocation("texture_specular1");
@@ -186,7 +178,6 @@ namespace Engine.Rendering
                     GL.Uniform1(loc, Textures.Length);
                     GL.BindTexture(TextureTarget.Texture2D, Prefabs.White.TextureId);
                 }
-
 
 
                 GL.BindVertexArray(gameMesh._vao);

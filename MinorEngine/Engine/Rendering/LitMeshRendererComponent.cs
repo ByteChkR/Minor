@@ -19,14 +19,11 @@ namespace Engine.Rendering
         /// The property that implements the render mask requirement of IRendereringComponent
         /// </summary>
         public int RenderMask { get; set; }
-        
+
         /// <summary>
         /// The Tiling of the Diffuse Texture
         /// </summary>
-        public Vector2 Tiling
-        {
-            get; set;
-        } = Vector2.One;
+        public Vector2 Tiling { get; set; } = Vector2.One;
 
         /// <summary>
         /// The Offset of the Diffuse Texture
@@ -60,8 +57,8 @@ namespace Engine.Rendering
         public LitMeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
             bool disposeOnDestroy = true) : base(shader, true, Renderer.RenderType.Opaque, renderMask)
         {
-            Textures = new[] { diffuseTexture };
-            Meshes = new[] { model };
+            Textures = new[] {diffuseTexture};
+            Meshes = new[] {model};
             RenderMask = renderMask;
             DisposeMeshOnDestroy = disposeOnDestroy;
         }
@@ -76,10 +73,10 @@ namespace Engine.Rendering
                 foreach (Mesh mesh in Meshes)
                 {
                     mesh.Dispose();
-
                 }
             }
         }
+
         private void Init()
         {
             _init = true;
@@ -95,7 +92,6 @@ namespace Engine.Rendering
             string s = "lights[{0}].{1}";
             for (int i = 0; i < 8; i++)
             {
-
                 Program.AddUniformCache(string.Format(s, i, "intensity"));
                 Program.AddUniformCache(string.Format(s, i, "type"));
                 Program.AddUniformCache(string.Format(s, i, "ambientContribution"));
@@ -111,7 +107,6 @@ namespace Engine.Rendering
                 Program.AddUniformCache("texture_specular" + i);
                 Program.AddUniformCache("texture_height" + i);
             }
-
         }
 
         /// <summary>
@@ -121,14 +116,12 @@ namespace Engine.Rendering
         /// <param name="projMat">Projection Matrix</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
-
             Program.Use();
             Render(viewMat, projMat, Program);
         }
 
         public override void Render(Matrix4 viewMat, Matrix4 projMat, int depthMap)
         {
-
             Program.Use();
 
 
@@ -147,6 +140,7 @@ namespace Engine.Rendering
             {
                 Init();
             }
+
             Matrix4 mat = Owner._worldTransformCache;
             GL.UniformMatrix4(prog.GetUniformLocation("modelMatrix"), false, ref mat);
             GL.UniformMatrix4(prog.GetUniformLocation("viewMatrix"), false, ref viewMat);
@@ -180,9 +174,8 @@ namespace Engine.Rendering
                     Vector3 att = Renderer.Lights[i].Attenuation;
                     GL.Uniform3(prog.GetUniformLocation(string.Format(s, i, "attenuation")), att);
                     Vector3 col = new Vector3(Renderer.Lights[i].LightColor.R, Renderer.Lights[i].LightColor.G,
-                        Renderer.Lights[i].LightColor.B) / 255f;
+                                      Renderer.Lights[i].LightColor.B) / 255f;
                     GL.Uniform3(prog.GetUniformLocation(string.Format(s, i, "color")), col);
-
                 }
             }
             else
@@ -204,15 +197,14 @@ namespace Engine.Rendering
                 Vector3 att = lc.Attenuation;
                 GL.Uniform3(prog.GetUniformLocation(string.Format(s, 0, "attenuation")), att);
                 Vector3 col = new Vector3(lc.LightColor.R, lc.LightColor.G,
-                    lc.LightColor.B) / 255f;
+                                  lc.LightColor.B) / 255f;
                 GL.Uniform3(prog.GetUniformLocation(string.Format(s, 0, "color")), col);
             }
 
 
-
             RenderMeshes();
         }
-        
+
 
         protected void RenderMeshes()
         {
@@ -261,6 +253,7 @@ namespace Engine.Rendering
                     GL.Uniform1(Program.GetUniformLocation(name + number), i);
                     GL.BindTexture(TextureTarget.Texture2D, Textures[i].TextureId);
                 }
+
                 if (!hasSpec)
                 {
                     int loc = Program.GetUniformLocation("texture_specular1");
@@ -268,7 +261,6 @@ namespace Engine.Rendering
                     GL.Uniform1(loc, Textures.Length);
                     GL.BindTexture(TextureTarget.Texture2D, Prefabs.White.TextureId);
                 }
-
 
 
                 GL.BindVertexArray(gameMesh._vao);

@@ -4,20 +4,27 @@ using System.IO;
 using System.Threading;
 using System.Xml;
 
-namespace ResourcePackager
+namespace Engine.ResourcePackager
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-
             string csfile = args[0];
 
             if (csfile.EndsWith(".backup"))
             {
                 Thread.Sleep(250);
-                if (!File.Exists(csfile)) throw new ArgumentException("Invalid Filepath");
-                if (File.Exists(csfile.Replace(".backup", ""))) File.Delete(csfile.Replace(".backup", ""));
+                if (!File.Exists(csfile))
+                {
+                    throw new ArgumentException("Invalid Filepath");
+                }
+
+                if (File.Exists(csfile.Replace(".backup", "")))
+                {
+                    File.Delete(csfile.Replace(".backup", ""));
+                }
+
                 File.Move(csfile, csfile.Replace(".backup", ""));
                 return;
             }
@@ -44,7 +51,11 @@ namespace ResourcePackager
 
             XmlDocument doc = new XmlDocument();
             string filename = csfile + ".backup";
-            if (File.Exists(filename)) File.Delete(filename);
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
             File.Copy(csfile, filename);
 
             doc.Load(csfile);
@@ -58,14 +69,16 @@ namespace ResourcePackager
 
                 Console.WriteLine("Adding File to csproj File: " + cont);
                 if (!n.InnerXml.Contains(entry))
+                {
                     n.InnerXml += "\n" + entry;
+                }
             }
+
             File.Delete(csfile);
             doc.Save(csfile);
-
         }
 
-        static List<Tuple<string, string>> ParseFileList(string[] args)
+        private static List<Tuple<string, string>> ParseFileList(string[] args)
         {
             string[] lines;
             if (args[1].StartsWith("@"))
@@ -96,19 +109,24 @@ namespace ResourcePackager
                 }
 
                 else
+                {
                     for (int j = 1; j < kvp.Length; j++)
                     {
                         string pattern = kvp[j];
-                        if (pattern.StartsWith("*")) pattern = pattern.Remove(0, 1);
+                        if (pattern.StartsWith("*"))
+                        {
+                            pattern = pattern.Remove(0, 1);
+                        }
+
                         ret.Add(new Tuple<string, string>(kvp[0], kvp[j]));
                     }
-
+                }
             }
 
             return ret;
         }
 
-        static XmlNode FindTag(XmlDocument doc)
+        private static XmlNode FindTag(XmlDocument doc)
         {
             string s1 = doc.Name;
             XmlNode s = doc.FirstChild;

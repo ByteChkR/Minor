@@ -1,11 +1,11 @@
 ﻿using System.IO;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
     public class IOPackedAssemblyFile : AssemblyFile
     {
-
         private AssetPointer ptr;
+
         public IOPackedAssemblyFile(string packFilepath, AssetPointer ptr) : base(packFilepath, null)
         {
             this.ptr = ptr;
@@ -13,16 +13,12 @@ namespace AssetPackaging
 
         public override Stream GetFileStream()
         {
-
-            FileStream s = new FileStream(ManifestFilepath, FileMode.Open);
-            s.Position = ptr.Offset;
+            FileStream s = new FileStream(ManifestFilepath, FileMode.Open) {Position = ptr.Offset};
             byte[] buf = new byte[ptr.Length];
             s.Read(buf, 0, buf.Length);
             MemoryStream ms = new MemoryStream(buf);
             s.Close();
             return new MemoryStream(buf);
-
-
         }
     }
 }

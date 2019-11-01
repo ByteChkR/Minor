@@ -11,11 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Demo", "Engine.Demo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine", "Engine\Engine.csproj", "{CEBD35C6-24A4-4AF2-BF49-845276905FC7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ResourcePackager", "ResourcePackager\ResourcePackager.csproj", "{B7164F49-D715-4B63-8A28-30348EA7A3B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.ResourcePackager", "Engine.ResourcePackager\Engine.ResourcePackager.csproj", "{B7164F49-D715-4B63-8A28-30348EA7A3B0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AssetPackaging", "..\ReleaseBuilder\AssetPackaging\AssetPackaging.csproj", "{D841B763-849D-4EEE-BCAF-AAE7BD87B145}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.AssetPackaging", "Engine.AssetPackaging\Engine.AssetPackaging.csproj", "{D841B763-849D-4EEE-BCAF-AAE7BD87B145}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReleaseBuilder", "..\ReleaseBuilder\ReleaseBuilder\ReleaseBuilder.csproj", "{C720BBA6-C7B6-4C38-AE87-5E7A0532D1B5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.ReleaseBuilder", "Engine.ReleaseBuilder\Engine.ReleaseBuilder.csproj", "{C720BBA6-C7B6-4C38-AE87-5E7A0532D1B5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

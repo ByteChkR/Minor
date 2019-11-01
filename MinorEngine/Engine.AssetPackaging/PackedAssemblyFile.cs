@@ -1,12 +1,14 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
     public class PackedAssemblyFile : AssemblyFile
     {
         private AssetPointer ptr;
-        public PackedAssemblyFile(string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(manifestFilepath, assembly)
+
+        public PackedAssemblyFile(string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(manifestFilepath,
+            assembly)
         {
             this.ptr = ptr;
         }

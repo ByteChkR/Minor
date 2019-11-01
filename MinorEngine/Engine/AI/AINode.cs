@@ -34,7 +34,8 @@ namespace Engine.AI
         {
             if (index < 0 || index >= Connections.Count)
             {
-                Logger.Crash(new ItemNotFoundExeption("AI Node", "Could not find the AI Node at index: " + index), true);
+                Logger.Crash(new ItemNotFoundExeption("AI Node", "Could not find the AI Node at index: " + index),
+                    true);
                 return null;
             }
 
@@ -43,7 +44,6 @@ namespace Engine.AI
 
         public void AddConnection(AINode other, bool addReverse = true)
         {
-
             if (Connections.Contains(other))
             {
                 Logger.Log("Connection already established in AI node.", DebugChannel.Warning, 10);
@@ -51,8 +51,10 @@ namespace Engine.AI
             }
 
             Connections.Add(other);
-            if (addReverse) other.AddConnection(this, false); //Add the other way around
-
+            if (addReverse)
+            {
+                other.AddConnection(this, false); //Add the other way around
+            }
         }
 
 
@@ -66,7 +68,9 @@ namespace Engine.AI
 
             Connections.Remove(other);
             if (removeReverse)
+            {
                 other.RemoveConnection(this, false);
+            }
         }
 
         public int CompareTo(AINode other)

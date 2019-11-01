@@ -81,7 +81,7 @@
 </ItemGroup>
 
 <ItemGroup>
-  <ProjectReference Include="..\..\ReleaseBuilder\AssetPackaging\AssetPackaging.csproj" />
+  <ProjectReference Include="..\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
   <ProjectReference Include="..\Engine.Common\Engine.Common.csproj" />
 </ItemGroup>
 </Project>

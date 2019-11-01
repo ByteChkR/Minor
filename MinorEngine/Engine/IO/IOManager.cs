@@ -9,7 +9,6 @@ namespace Engine.IO
 {
     public static class IOManager
     {
-
         public static bool Exists(string filename)
         {
             bool isFile = File.Exists(filename);
@@ -40,12 +39,10 @@ namespace Engine.IO
 
             Logger.Crash(new InvalidFilePathException(foldername), false);
             return null;
-
         }
 
         public static Stream GetStream(string filename)
         {
-
             if (File.Exists(filename))
             {
                 Logger.Log("File Found in File System.", DebugChannel.Log, 10);

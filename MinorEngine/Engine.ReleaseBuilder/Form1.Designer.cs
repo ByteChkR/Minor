@@ -1,4 +1,4 @@
-﻿namespace ReleaseBuilder
+﻿namespace Engine.ReleaseBuilder
 {
     partial class Form1
     {

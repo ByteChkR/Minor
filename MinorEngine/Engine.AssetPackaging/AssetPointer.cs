@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
     [Serializable]
     public class AssetPointer

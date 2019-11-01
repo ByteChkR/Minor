@@ -226,7 +226,8 @@ namespace Engine.Core
             int id = GetFreeID();
             if (id == -1)
             {
-                Logger.Log("Object Pool is full, returning Unmanaged Instance.", DebugChannel.Warning | DebugChannel.EngineCore, 10);
+                Logger.Log("Object Pool is full, returning Unmanaged Instance.",
+                    DebugChannel.Warning | DebugChannel.EngineCore, 10);
                 PooledObject<T> item = new PooledObject<T>(_Factory(), null, -1);
 
                 return item;

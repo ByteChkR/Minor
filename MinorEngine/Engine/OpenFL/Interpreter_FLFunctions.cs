@@ -36,7 +36,8 @@ namespace Engine.OpenFL
                 byte channel = (byte) Convert.ChangeType(val, typeof(byte));
                 if (channel >= _channelCount)
                 {
-                    Logger.Log("Script is enabling channels beyond channel count. Ignoring...", DebugChannel.Warning| DebugChannel.OpenFL, 10);
+                    Logger.Log("Script is enabling channels beyond channel count. Ignoring...",
+                        DebugChannel.Warning | DebugChannel.OpenFL, 10);
                 }
                 else
                 {
@@ -80,7 +81,6 @@ namespace Engine.OpenFL
             }
             else
             {
-
                 Logger.Log("Skipping Updating Channel Buffer", DebugChannel.Log | DebugChannel.OpenFL, 6);
             }
         }

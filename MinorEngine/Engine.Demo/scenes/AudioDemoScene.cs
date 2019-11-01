@@ -136,7 +136,7 @@ namespace Engine.Demo.scenes
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(25, 1, 25);
-            bgObj.AddComponent(new MeshRendererComponent(shader,  bgBox,
+            bgObj.AddComponent(new MeshRendererComponent(shader, bgBox,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
@@ -154,7 +154,7 @@ namespace Engine.Demo.scenes
             AudioSourceComponent source = new AudioSourceComponent();
             _sourceCube.AddComponent(source);
             _sourceCube.AddComponent(new RotateAroundComponent());
-            _sourceCube.AddComponent(new MeshRendererComponent(shader,  sourceCube,
+            _sourceCube.AddComponent(new MeshRendererComponent(shader, sourceCube,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             if (!AudioLoader.TryLoad("assets/sounds/test_mono_16.wav", out AudioFile clip))
             {

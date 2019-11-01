@@ -13,6 +13,7 @@ namespace Engine.Rendering
         public Vector3 Attenuation { get; set; } = new Vector3(1, 0, 0);
         public float AmbientContribution { get; set; } = 0.15f;
         public float Intensity { get; set; } = 1;
+
         protected override void Awake()
         {
             Renderer.Lights.Add(this);
@@ -27,9 +28,9 @@ namespace Engine.Rendering
         private float time;
         private bool last;
         private float slow = 0.075f;
+
         protected override void Update(float deltaTime)
         {
-
             float dt = deltaTime * slow;
             if (time <= 0)
             {
@@ -43,11 +44,10 @@ namespace Engine.Rendering
             }
             else
             {
-
                 time += last ? -dt : dt;
             }
-            LightColor = new Color( (int)(255 * time), (int)(255 * time), 255, 255);
 
+            LightColor = new Color((int) (255 * time), (int) (255 * time), 255, 255);
         }
     }
 }

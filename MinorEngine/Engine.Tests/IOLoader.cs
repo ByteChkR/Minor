@@ -18,7 +18,7 @@ namespace Engine.Tests
 
             for (int i = 0; i < buf.Length; i++)
             {
-               Assert.True(buf[i] == 255 || buf[i] == 0);
+                Assert.True(buf[i] == 255 || buf[i] == 0);
             }
         }
     }

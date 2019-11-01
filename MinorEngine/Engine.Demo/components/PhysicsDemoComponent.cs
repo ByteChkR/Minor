@@ -118,7 +118,7 @@ namespace Engine.Demo.components
                 obj.Scale = new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
-                    obj.AddComponent(new MeshRendererComponent(_objShader,  Box.Copy(),
+                    obj.AddComponent(new MeshRendererComponent(_objShader, Box.Copy(),
                         TextureLoader.FileToTexture("textures/TEST.png"), 1));
 
 
@@ -127,7 +127,7 @@ namespace Engine.Demo.components
                 }
                 else
                 {
-                    obj.AddComponent(new MeshRendererComponent(_objShader,  Sphere.Copy(),
+                    obj.AddComponent(new MeshRendererComponent(_objShader, Sphere.Copy(),
                         TextureLoader.FileToTexture("textures/TEST.png"), 1));
                     Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
                     obj.AddComponent(coll);

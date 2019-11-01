@@ -40,7 +40,7 @@ namespace Engine.Debug
         /// The mask that the DebugFramework uses to filter out less important logs
         /// </summary>
         public int SeverityFilter { get; set; }
-        
+
 
         /// <summary>
         /// Flags to govern how the Prefixes for the messages get assembled and computed
@@ -83,10 +83,9 @@ namespace Engine.Debug
                 SeverityFilter = 6,
                 StageNames = stageNames.ToArray(),
                 PrefixLookupFlags = 1 | 2 | 8,
-                Streams = new[] { new LogStreamSettings { Mask = -1, Timestamp = true } }
+                Streams = new[] {new LogStreamSettings {Mask = -1, Timestamp = true}}
                     .Cast<ILogStreamSettings>().ToArray()
             };
         }
-        
     }
 }

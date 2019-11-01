@@ -20,6 +20,11 @@
     <DefineConstants>TRACE;LEAK_TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Engine.Demo\**" />
+    <EmbeddedResource Remove="Engine.Demo\**" />
+    <None Remove="Engine.Demo\**" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
 </Project>

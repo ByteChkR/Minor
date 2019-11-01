@@ -7,7 +7,7 @@ namespace Engine.AI
     {
         //The underlying structure.
         private List<T> list;
-        public int Count { get { return list.Count; } }
+        public int Count => list.Count;
         public readonly bool IsDescending;
 
         public PriorityQueue()
@@ -22,11 +22,13 @@ namespace Engine.AI
 
         public PriorityQueue(int capacity)
             : this(capacity, false)
-        { }
+        {
+        }
 
         public PriorityQueue(IEnumerable<T> collection)
             : this(collection, false)
-        { }
+        {
+        }
 
         public PriorityQueue(int capacity, bool isdesc)
         {
@@ -38,32 +40,38 @@ namespace Engine.AI
             : this()
         {
             IsDescending = isdesc;
-            foreach (var item in collection)
+            foreach (T item in collection)
+            {
                 Enqueue(item);
+            }
         }
 
 
         public void Enqueue(T x)
         {
-
             list.Add(x);
             int i = Count - 1; //Position of x
 
             while (i > 0)
             {
                 int p = (i - 1) / 2; //Start at half of i
-                if ((IsDescending ? -1 : 1) * list[p].CompareTo(x) <= 0) break; //
+                if ((IsDescending ? -1 : 1) * list[p].CompareTo(x) <= 0)
+                {
+                    break; //
+                }
 
-                list[i] = list[p];//Put P to position of i
-                i = p;//I = (I-1)/2
+                list[i] = list[p]; //Put P to position of i
+                i = p; //I = (I-1)/2
             }
 
-            if (Count > 0) list[i] = x; //If while loop way executed at least once(X got replaced by some p), add it to the list
+            if (Count > 0)
+            {
+                list[i] = x; //If while loop way executed at least once(X got replaced by some p), add it to the list
+            }
         }
 
         public T Dequeue()
         {
-
             T target = Peek(); //Get first in list
             T root = list[Count - 1]; //Hold last of the list
             list.RemoveAt(Count - 1); //But remove it from the list
@@ -71,22 +79,36 @@ namespace Engine.AI
             int i = 0;
             while (i * 2 + 1 < Count)
             {
-                int a = i * 2 + 1;//Every second entry starting by 1
-                int b = i * 2 + 2;//Every second entries neighbour
-                int c = b < Count && (IsDescending ? -1 : 1) * list[b].CompareTo(list[a]) < 0 ? b : a; //Wether B(B is in range && B is smaller than A) or A
+                int a = i * 2 + 1; //Every second entry starting by 1
+                int b = i * 2 + 2; //Every second entries neighbour
+                int c = b < Count && (IsDescending ? -1 : 1) * list[b].CompareTo(list[a]) < 0
+                    ? b
+                    : a; //Wether B(B is in range && B is smaller than A) or A
 
-                if ((IsDescending ? -1 : 1) * list[c].CompareTo(root) >= 0) break; //
+                if ((IsDescending ? -1 : 1) * list[c].CompareTo(root) >= 0)
+                {
+                    break; //
+                }
+
                 list[i] = list[c];
                 i = c;
             }
 
-            if (Count > 0) list[i] = root;
+            if (Count > 0)
+            {
+                list[i] = root;
+            }
+
             return target;
         }
 
         public T Peek()
         {
-            if (Count == 0) throw new InvalidOperationException("Queue is empty.");
+            if (Count == 0)
+            {
+                throw new InvalidOperationException("Queue is empty.");
+            }
+
             return list[0];
         }
 

@@ -5,7 +5,6 @@ namespace Engine.AI
 {
     public class AStarResolver
     {
-
         public static List<AINode> FindPath(AINode startPoint, AINode endPoint,
             out bool foundPath)
         {
@@ -31,7 +30,7 @@ namespace Engine.AI
                     foundPath = true;
                     List<AINode> ret = GeneratePath(endPoint);
                     ResetNodes(todo, doneList);
-                    
+
                     return ret;
                 }
                 else
@@ -40,16 +39,21 @@ namespace Engine.AI
                     {
                         AINode connection = current.GetConnection(i);
 
-                        if (!connection.Walkable || connection.NodeState == AINodeState.Closed) continue;
+                        if (!connection.Walkable || connection.NodeState == AINodeState.Closed)
+                        {
+                            continue;
+                        }
 
-                        float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length * connection.WalkCostMultiplier;
+                        float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length *
+                                      connection.WalkCostMultiplier;
                         if (connection.NodeState == AINodeState.Unconsidered)
                         {
                             connection.ParentNode = current;
 
                             connection.CurrentCost = current.CurrentCost + connD;
 
-                            connection.EstimatedCost = (connection.Owner.GetWorldPosition() - endPoint.Owner.GetWorldPosition()).Length;
+                            connection.EstimatedCost =
+                                (connection.Owner.GetWorldPosition() - endPoint.Owner.GetWorldPosition()).Length;
                             connection.NodeState = AINodeState.Open;
                             todo.Enqueue(connection);
                         }
@@ -65,14 +69,12 @@ namespace Engine.AI
                         }
                     }
                 }
-
             }
 
 
             ResetNodes(todo, doneList);
             foundPath = false;
             return new List<AINode>();
-
         }
 
         private static List<AINode> GeneratePath(AINode endNode)
@@ -84,6 +86,7 @@ namespace Engine.AI
                 ret.Add(current);
                 current = current.ParentNode;
             }
+
             ret.Reverse();
             return ret;
         }
@@ -109,7 +112,5 @@ namespace Engine.AI
             node.EstimatedCost = 0;
             node.NodeState = AINodeState.Unconsidered;
         }
-
-
     }
 }

@@ -8,7 +8,6 @@ namespace Engine.Debug
     /// </summary>
     public static class Logger
     {
-
         /// <summary>
         /// A static extension to receive logs from every point in the code base.
         /// </summary>

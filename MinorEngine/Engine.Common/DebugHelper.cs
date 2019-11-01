@@ -21,7 +21,7 @@ namespace Engine.Common
             Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
 
-            Debug.PrefixLookupMode = (PrefixLookupSettings)settings.PrefixLookupFlags;
+            Debug.PrefixLookupMode = (PrefixLookupSettings) settings.PrefixLookupFlags;
 
             SeverityFilter = settings.SeverityFilter;
 
@@ -57,19 +57,19 @@ namespace Engine.Common
             }
 
             return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask,
-                (MatchType)settings.MatchMode, settings.Timestamp);
+                (MatchType) settings.MatchMode, settings.Timestamp);
         }
 
         private static LogStream OpenConsoleStream(ILogStreamSettings settings)
         {
-            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType)settings.MatchMode,
+            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType) settings.MatchMode,
                 settings.Timestamp);
         }
 
         private static LogStream OpenNetworkStream(ILogStreamSettings settings)
         {
             NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
-                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType)settings.MatchMode,
+                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType) settings.MatchMode,
                 settings.Timestamp);
             return nls;
         }

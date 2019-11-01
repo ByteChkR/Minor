@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {
-      "ResourcePackager/1.0.0": {
+      "Engine.ResourcePackager/1.0.0": {
         "runtime": {
-          "ResourcePackager.dll": {}
+          "Engine.ResourcePackager.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "ResourcePackager/1.0.0": {
+    "Engine.ResourcePackager/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

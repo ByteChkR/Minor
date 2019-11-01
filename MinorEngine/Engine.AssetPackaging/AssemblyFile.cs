@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Reflection;
 
-namespace AssetPackaging
+namespace Engine.AssetPackaging
 {
     public class AssemblyFile
     {
@@ -26,13 +26,12 @@ namespace AssetPackaging
                 }
 
                 byte[] buf = new byte[resourceStream.Length];
-                resourceStream.Read(buf, 0, (int)resourceStream.Length);
+                resourceStream.Read(buf, 0, (int) resourceStream.Length);
 
                 MemoryStream ms = new MemoryStream(buf);
                 resourceStream.Close();
                 return ms;
             }
-
         }
     }
 }

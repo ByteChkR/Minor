@@ -70,7 +70,7 @@ namespace Engine.Rendering
             GL.BindVertexArray(_screenVAO);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -85,7 +85,7 @@ namespace Engine.Rendering
                 Console.ReadLine();
             }
 
-            _mergeAddShader.AddUniformCache("destinationTexture"); 
+            _mergeAddShader.AddUniformCache("destinationTexture");
             _mergeAddShader.AddUniformCache("otherTexture");
             _mergeTypes.Add(RenderTargetMergeType.Additive, _mergeAddShader);
 
@@ -112,6 +112,7 @@ namespace Engine.Rendering
             {
                 Console.ReadLine();
             }
+
             _screenShader.AddUniformCache("sourceTexture");
         }
 
@@ -204,6 +205,7 @@ namespace Engine.Rendering
 
                 //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
             }
+
             MemoryTracer.ReturnFromSubStage();
 
             MemoryTracer.NextStage("Rendering To Screen");
