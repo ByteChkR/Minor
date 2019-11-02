@@ -20,6 +20,14 @@ namespace Engine.DataTypes
         private static List<Assembly> LoadedAssemblies = new List<Assembly>();
         private static List<string> UnpackedFiles = new List<string>();
 
+        public static void LoadAssemblyListFromFile(string filepath)
+        {
+            if (IOManager.Exists(filepath))
+            {
+                LoadAssemblyList(IOManager.GetStream(filepath));
+            }
+        }
+
         public static void LoadAssemblyList(Stream data)
         {
             TextReader tr = new StreamReader(data);
@@ -56,17 +64,17 @@ namespace Engine.DataTypes
                 if (AssemblyFiles.ContainsKey(file))
                 {
                     Logger.Log("Overwriting File: " + file + " with version from assembly: " + asm.GetName().Name,
-                        DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 10);
+                        DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 8);
                     AssemblyFiles[file] = new AssemblyFile(files[i], asm);
                 }
                 else
                 {
-                    Logger.Log("Add File: " + file + " from assembly: " + asm.GetName().Name,
-                        DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 10);
 
                     AssemblyFiles.Add(file, new AssemblyFile(files[i], asm));
                 }
             }
+
+            PrepareManifestFiles(asm);
         }
 
         private delegate AssemblyFile AssemblyFileFactory(string file, Assembly asm, AssetPointer ptr);
@@ -102,7 +110,6 @@ namespace Engine.DataTypes
             Stream[] s = new Stream[packs.Length];
             for (int i = 0; i < packs.Length; i++)
             {
-                Logger.Log("Creating Stream from " + packs[i], DebugChannel.Log, 10);
                 s[i] = IOManager.GetStream(packs[i]);
             }
 
@@ -119,16 +126,15 @@ namespace Engine.DataTypes
 
             Stream idxStream = IOManager.GetStream(files[indexList]);
             List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs);
+            Logger.Log("Parsing " + packedFiles.Count + " File from " + files[indexList] + " in " + packs.Length + " Packages.", DebugChannel.Log, 10);
 
             foreach (Tuple<string, AssetPointer> assetPointer in packedFiles)
             {
                 string assemblyPath = SanitizeFilename(packPrefix + "/" + assetPointer.Item1);
                 string virtualPath = SanitizeFilename(assetPointer.Item2.Path);
-                Logger.Log("Parsing Packed File " + assetPointer.Item2.Path + " from " + assemblyPath, DebugChannel.Log,
-                    10);
                 if (AssemblyFiles.ContainsKey(virtualPath))
                 {
-                    Logger.Log("Overwriting File..", DebugChannel.Log, 10);
+                    Logger.Log("Overwriting File: " + assemblyPath + " => " + virtualPath, DebugChannel.Log, 10);
                     AssemblyFiles[virtualPath] =
                         factory(assemblyPath, asm,
                             assetPointer.Item2); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2);
@@ -142,22 +148,30 @@ namespace Engine.DataTypes
             }
         }
 
+
+        private static void PrepareManifestFiles(Assembly loadedAssembly)
+        {
+            if (IOManager.FolderExists(loadedAssembly.GetName().Name + "/packs"))
+            {
+                PrepareAssemblyFiles(loadedAssembly.GetName().Name,
+                    IOManager.GetFiles(loadedAssembly.GetName().Name + "/packs", "*"), loadedAssembly, FileFactory);
+            }
+        }
+
         public static void PrepareManifestFiles(bool searchFileSystem)
         {
-            foreach (Assembly loadedAssembly in LoadedAssemblies)
-            {
-                if (IOManager.FolderExists(loadedAssembly.GetName().Name + "/packs"))
-                {
-                    PrepareAssemblyFiles(loadedAssembly.GetName().Name,
-                        IOManager.GetFiles(loadedAssembly.GetName().Name + "/packs", "*"), loadedAssembly, FileFactory);
-                }
-            }
-
             if (searchFileSystem)
             {
                 if (IOManager.FolderExists("packs"))
                 {
                     PrepareAssemblyFiles("", IOManager.GetFiles("packs", "*"), null, FileFactory);
+                }
+            }
+            else
+            {
+                foreach (Assembly loadedAssembly in LoadedAssemblies)
+                {
+                    PrepareManifestFiles(loadedAssembly);
                 }
             }
         }
@@ -167,9 +181,11 @@ namespace Engine.DataTypes
             Logger.Log($"Parparing to unpack {files.Count} Assets.. ", DebugChannel.Log, 10);
             foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in files)
             {
-                if (!File.Exists(memoryStream.Key))
+                bool hasUnpackedVersion = UnpackedFiles.Contains(memoryStream.Key);
+                if (hasUnpackedVersion) File.Delete(memoryStream.Key);
+                bool shouldWrite = hasUnpackedVersion || !File.Exists(memoryStream.Key);
+                if (shouldWrite)
                 {
-                    Logger.Log($"Unpacking: " + memoryStream.Key, DebugChannel.Log, 10);
                     byte[] buf = new byte[memoryStream.Value.Item1];
                     memoryStream.Value.Item2.Position = 0;
                     memoryStream.Value.Item2.Read(buf, 0, buf.Length);
@@ -192,11 +208,13 @@ namespace Engine.DataTypes
                     {
                         if (!Directory.Exists(folders[i]))
                         {
+                            Logger.Log($"Creating folder {folders[i]} on disk.", DebugChannel.Log, 8);
                             Directory.CreateDirectory(".\\" + folders[i]);
                         }
                     }
 
-                    UnpackedFiles.Add(memoryStream.Key);
+                    if (!hasUnpackedVersion)
+                        UnpackedFiles.Add(memoryStream.Key);
                     File.WriteAllBytes(memoryStream.Key, buf);
                 }
             }
@@ -223,7 +241,7 @@ namespace Engine.DataTypes
 
             if (!AssemblyFiles.ContainsKey(path))
             {
-                Logger.Crash(new EngineException("Could not load default Texture"), false);
+                Logger.Crash(new EngineException("Could not load file: " + filepath), false);
                 return null;
             }
 
@@ -292,7 +310,7 @@ namespace Engine.DataTypes
         {
             for (int i = 0; i < UnpackedFiles.Count; i++)
             {
-                Logger.Log("Removing File from Filesystem: " + UnpackedFiles[i], DebugChannel.Log, 10);
+                Logger.Log("Removing File from Filesystem: " + UnpackedFiles[i], DebugChannel.Log, 8);
                 File.Delete(UnpackedFiles[i]);
             }
         }

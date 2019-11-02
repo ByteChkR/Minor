@@ -97,13 +97,6 @@ namespace Engine.Core
 
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
 
-            if (IOManager.Exists("assemblyList.txt"))
-            {
-                Logger.Log("Loading Assembly List", DebugChannel.Log, 10);
-                ManifestReader.LoadAssemblyList(new FileStream("assemblyList.txt", FileMode.Open));
-            }
-
-            ManifestReader.PrepareManifestFiles(true);
         }
 
 

@@ -36,7 +36,6 @@
 
   <ItemGroup>
     <Folder Include="OpenCL\DotNetCore\" />
-    <Folder Include="Properties\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,6 +45,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="libs\ext_pp.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="libs\ext_pp_base.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="libs\ext_pp_plugins.dll">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
     <None Update="OpenCL\DotNetCore\DataTypes\VectorTypes.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>VectorTypes.cs</LastGenOutput>
@@ -61,6 +69,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>VectorTypes.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
 
@@ -84,4 +97,5 @@
   <ProjectReference Include="..\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
   <ProjectReference Include="..\Engine.Common\Engine.Common.csproj" />
 </ItemGroup>
+
 </Project>

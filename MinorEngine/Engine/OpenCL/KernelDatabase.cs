@@ -34,11 +34,7 @@ namespace Engine.OpenCL
             GenDataType = KernelParameter.GetDataString(genDataType);
             if (!Directory.Exists(folderName))
             {
-                Logger.Crash(new InvalidFolderPathException(folderName), true);
-
-                Logger.Log("Creating Folder: " + folderName, DebugChannel.Warning | DebugChannel.OpenCL, 10);
-
-                Directory.CreateDirectory(folderName);
+                Logger.Crash(new InvalidFolderPathException(folderName), false);
             }
 
             _folderName = folderName;

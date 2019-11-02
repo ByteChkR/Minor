@@ -4,6 +4,7 @@ using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Demo.scenes;
+using Engine.IO;
 
 namespace Engine.Demo
 {
@@ -32,6 +33,7 @@ namespace Engine.Demo
 
         private static void Main(string[] args)
         {
+
 #if COLLECT_LOGS
             if (AskForDebugLogSending())
             {
@@ -52,9 +54,18 @@ namespace Engine.Demo
                 streams.Add(network);
             }
 #endif
+            ManifestReader.PrepareManifestFiles(true); //Load eventual packs from disk
+            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly()); //Register This Assembly
+            if (IOManager.Exists("assemblyList.txt")) //Alternative, load assembly list to register from text file.
+            {
+                Logger.Log("Loading Assembly List", DebugChannel.Log, 10);
 
-            ManifestReader.RegisterAssembly(Assembly
-                .GetExecutingAssembly()); //Not needed anymore since now its possible to load the assemblies from file.
+                ManifestReader.LoadAssemblyListFromFile("assemblyList");
+            }
+            EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
+                "Engine.Core");
+
+
 
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
 
@@ -62,8 +73,7 @@ namespace Engine.Demo
 
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
 
-            EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
-                "Engine.Core");
+            
             engine.SetSettings(EngineSettings.Settings);
 
 

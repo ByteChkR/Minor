@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -25,33 +26,41 @@ namespace Engine.IO
 
         public static string[] GetFiles(string foldername, string searchPattern)
         {
+            bool folderExists = FolderExists(foldername);
+
+            if (!folderExists)
+            {
+                Logger.Crash(new InvalidFilePathException(foldername), false);
+                return null;
+            }
+
+            List<string> files = new List<string>();
             if (Directory.Exists(foldername))
             {
-                Logger.Log("File Found in File System.", DebugChannel.Log, 10);
-                return Directory.GetFiles(foldername, searchPattern);
+                Logger.Log(foldername + " Found in File System.", DebugChannel.Log, 5);
+                files = Directory.GetFiles(foldername, searchPattern).ToList();
             }
 
             if (ManifestReader.DirectoryExists(foldername))
             {
-                Logger.Log("File Found in Assembly Manifest.", DebugChannel.Log, 10);
-                return ManifestReader.GetFiles(foldername, searchPattern.Replace("*", ""));
+                Logger.Log(foldername + " Found in Assembly Manifest.", DebugChannel.Log, 5);
+                files.AddRange(ManifestReader.GetFiles(foldername, searchPattern.Replace("*", "")));
             }
 
-            Logger.Crash(new InvalidFilePathException(foldername), false);
-            return null;
+            return files.ToArray();
         }
 
         public static Stream GetStream(string filename)
         {
             if (File.Exists(filename))
             {
-                Logger.Log("File Found in File System.", DebugChannel.Log, 10);
+                Logger.Log(filename+" Found in File System.", DebugChannel.Log, 5);
                 return File.OpenRead(filename);
             }
 
             if (ManifestReader.Exists(filename))
             {
-                Logger.Log("File Found in Assembly Manifest.", DebugChannel.Log, 10);
+                Logger.Log(filename + " Found in Assembly Manifest.", DebugChannel.Log, 5);
                 return ManifestReader.GetStreamByPath(filename);
             }
 

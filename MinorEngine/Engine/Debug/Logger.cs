@@ -15,6 +15,10 @@ namespace Engine.Debug
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
         public static void Log(string message, DebugChannel channel, int importance)
         {
+            if (!DebugHelper.Init)
+            {
+                DebugHelper.ApplySettings(DebugSettings.GetDefault());
+            }
             DebugHelper.Log(message, (int) channel, importance);
         }
 

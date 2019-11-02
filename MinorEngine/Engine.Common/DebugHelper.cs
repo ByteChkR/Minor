@@ -15,9 +15,11 @@ namespace Engine.Common
     {
         public static int SeverityFilter = 0;
         public static bool ThrowOnAllExceptions = true;
+        public static bool Init { get; private set; }
 
         public static void ApplySettings(IDebugSettings settings)
         {
+            Init = true;
             Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
 

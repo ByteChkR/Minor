@@ -16,7 +16,7 @@ echo _________________
 cd resources\packager
 
 echo Running Packager for Packs and Asset Folder:
-dotnet ResourcePackager.dll %1 %2
+dotnet Engine.ResourcePackager.dll %1 %2
 
 cd ..\..
 
@@ -39,7 +39,7 @@ echo _________________
 
 echo Restoring Project:
 
-dotnet ResourcePackager.dll %1.backup
+dotnet Engine.ResourcePackager.dll %1.backup
 
 echo _________________
 

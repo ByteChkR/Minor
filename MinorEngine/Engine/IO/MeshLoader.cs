@@ -223,7 +223,7 @@ namespace Engine.IO
         /// <param name="vao">vertex array object</param>
         /// <param name="vbo">vertex buffer object</param>
         /// <param name="ebo">element buffer object</param>
-        private static void setupMesh(uint[] indices, Vertex[] vertices, out int vao, out int vbo, out int ebo)
+        internal static void setupMesh(uint[] indices, Vertex[] vertices, out int vao, out int vbo, out int ebo)
         {
             GL.GenVertexArrays(1, out vao);
             GL.GenBuffers(1, out vbo);
