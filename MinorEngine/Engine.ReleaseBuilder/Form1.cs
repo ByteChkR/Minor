@@ -135,7 +135,7 @@ namespace Engine.ReleaseBuilder
                 info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
             }
 
-            List<string> packExts = unpackedFileExts.Split('+').ToList();
+            List<string> packExts = unpackedFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries).ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
                 info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
