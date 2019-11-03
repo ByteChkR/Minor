@@ -11,9 +11,10 @@ namespace Engine.AssetPackaging
         public const int KILOBYTE = 1024;
         public static int MAXSIZE_KILOBYTES = 1024;
 
-        public static AssetResult PackAssets(string assetFolder, AssetPackageInfo info) // [...]/assets
+        public static AssetResult PackAssets(string assetFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
         {
             AssetResult ret = new AssetResult();
+            ret.Compression = compression;
             Uri assetPath = new Uri(assetFolder);
             foreach (KeyValuePair<string, AssetFileInfo> assetFileInfo in info.FileInfos)
             {
@@ -40,7 +41,7 @@ namespace Engine.AssetPackaging
             return ret;
         }
 
-        public static List<Tuple<string, AssetPointer>> GetPointers(Stream indexList, string[] packPaths)
+        public static List<Tuple<string, AssetPointer>> GetPointers(Stream indexList, string[] packPaths, out bool compression)
         {
             AssetResult r = ParseResult(indexList);
             List<Tuple<string, AssetPointer>> assetList = new List<Tuple<string, AssetPointer>>();
@@ -55,6 +56,7 @@ namespace Engine.AssetPackaging
                     r.indexList[i]));
             }
 
+            compression = r.Compression;
             return assetList;
         }
 

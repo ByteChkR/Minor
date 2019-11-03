@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.IO.Compression;
 using System.Reflection;
 
 namespace Engine.AssetPackaging
@@ -10,8 +11,12 @@ namespace Engine.AssetPackaging
         public readonly string ManifestFilepath;
 
 
-        public AssemblyFile(string manifestFilepath, Assembly assembly)
+        public bool Compression;
+
+
+        public AssemblyFile(bool compression , string manifestFilepath, Assembly assembly)
         {
+            Compression = compression;
             ManifestFilepath = manifestFilepath;
             Assembly = assembly;
         }
@@ -25,13 +30,30 @@ namespace Engine.AssetPackaging
                     return null;
                 }
 
-                byte[] buf = new byte[resourceStream.Length];
-                resourceStream.Read(buf, 0, (int) resourceStream.Length);
+                Stream rstream = Compression ? UncompressZip(resourceStream) : resourceStream;
+                
+                byte[] buf = new byte[rstream.Length];
+                rstream.Read(buf, 0, (int)rstream.Length);
 
                 MemoryStream ms = new MemoryStream(buf);
-                resourceStream.Close();
+                rstream.Close();
                 return ms;
             }
+        }
+
+        public static Stream UncompressZip(Stream inStream)
+        {
+            return new GZipStream(inStream, CompressionMode.Decompress);
+            //ZipArchive za = new ZipArchive(inStream);
+            //inStream.Close();
+            //BinaryReader sr = new BinaryReader(za.GetEntry("data").Open());
+            //byte[] buf = new byte[sr.BaseStream.Length];
+            //sr.Read(buf, 0, buf.Length);
+            //sr.Close();
+            //MemoryStream ms = new MemoryStream(buf);
+
+            //return ms;
+
         }
     }
 }

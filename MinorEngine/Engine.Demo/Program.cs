@@ -60,7 +60,7 @@ namespace Engine.Demo
             {
                 Logger.Log("Loading Assembly List", DebugChannel.Log, 10);
 
-                ManifestReader.LoadAssemblyListFromFile("assemblyList");
+                ManifestReader.LoadAssemblyListFromFile("assemblyList.txt");
             }
             EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");

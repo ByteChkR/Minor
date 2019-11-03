@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 using Engine.AssetPackaging;
+using ReleaseBuilder;
 
 namespace Engine.ReleaseBuilder
 {
@@ -57,7 +58,7 @@ namespace Engine.ReleaseBuilder
             {
                 PackAssets(
                     Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text),
-                    (int) nudPackSize.Value, tbPackagedFiles.Text, tbUnpackagedFiles.Text, tbAssetFolder.Text);
+                    (int)nudPackSize.Value, tbPackagedFiles.Text, tbUnpackagedFiles.Text, tbAssetFolder.Text, cbCompression.Checked);
             }
 
             BuildProject("resources/Build.bat", tbAssetFolder.Text, tbPackagedFiles.Text, tbUnpackagedFiles.Text,
@@ -72,7 +73,7 @@ namespace Engine.ReleaseBuilder
             {
                 PackAssets(
                     Path.GetDirectoryName(tbProject.Text) + "\\" + Path.GetFileNameWithoutExtension(tbProject.Text),
-                    (int) nudPackSize.Value, tbPackagedFiles.Text, tbUnpackagedFiles.Text, tbAssetFolder.Text);
+                    (int)nudPackSize.Value, tbPackagedFiles.Text, tbUnpackagedFiles.Text, tbAssetFolder.Text, cbCompression.Checked);
             }
 
             BuildProject("resources/Build_NoDelete.bat", tbAssetFolder.Text, tbPackagedFiles.Text,
@@ -89,8 +90,8 @@ namespace Engine.ReleaseBuilder
                     Directory.Delete(output + "/packs", true);
                 }
 
-                PackAssets(output, (int) nudPackSize.Value, tbPackagedFiles.Text, tbUnpackagedFiles.Text,
-                    tbAssetFolder.Text);
+                PackAssets(output, (int)nudPackSize.Value, tbPackagedFiles.Text, tbUnpackagedFiles.Text,
+                    tbAssetFolder.Text, cbCompression.Checked);
             }
         }
 
@@ -104,7 +105,7 @@ namespace Engine.ReleaseBuilder
                 return null;
             }
 
-            return (T) attributes[0];
+            return (T)attributes[0];
         }
 
         private static void WriteInfo()
@@ -121,7 +122,7 @@ namespace Engine.ReleaseBuilder
         }
 
         private static void PackAssets(string outputFolder, int packSize, string packedFileExts,
-            string unpackedFileExts, string assetFolder)
+            string unpackedFileExts, string assetFolder, bool compression)
         {
             AssetPacker.MAXSIZE_KILOBYTES = packSize;
 
@@ -131,17 +132,17 @@ namespace Engine.ReleaseBuilder
             List<string> unpackExts = packedFileExts.Split('+').ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() {packageType = AssetPackageType.Unpack});
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
             }
 
             List<string> packExts = unpackedFileExts.Split('+').ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo() {packageType = AssetPackageType.Memory});
+                info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
             }
 
             Instance.WriteLine("Creating Asset Pack(" + assetFolder + ")...");
-            AssetResult ret = AssetPacker.PackAssets(assetFolder, info);
+            AssetResult ret = AssetPacker.PackAssets(assetFolder, info, compression);
             Instance.WriteLine("Packaging " + ret.indexList.Count + " Assets in " + ret.packs.Count + " Packs.");
 
             Instance.WriteLine("Saving Asset Pack to " + outputFolder);
@@ -178,7 +179,7 @@ namespace Engine.ReleaseBuilder
             };
 
 
-            Process p = new Process {StartInfo = psi};
+            Process p = new Process { StartInfo = psi };
 
             p.Start();
             ConsoleRedirector redir =
@@ -209,6 +210,49 @@ namespace Engine.ReleaseBuilder
                 {
                     rtbBuildOutput.AppendText(line + "\n");
                 }
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            PackageCreator c = new PackageCreator();
+            if (c.ShowDialog() == DialogResult.OK)
+            {
+                Console.ReadLine();
+                AssetPackageInfo info = new AssetPackageInfo();
+                Dictionary<string, AssetFileInfo> fileinfos = new Dictionary<string, AssetFileInfo>();
+                foreach (KeyValuePair<string, string> keyValuePair in c.fileMap)
+                {
+                    List<string> folders = new List<string>();
+                    string curFolder = Path.GetDirectoryName(keyValuePair.Value);
+                    folders.Add(curFolder);
+                    while (curFolder.Trim() != "\\")
+                    {
+                        if (string.IsNullOrEmpty(curFolder))
+                        {
+                            break;
+                        }
+
+                        folders.Add(curFolder);
+                        curFolder = Path.GetDirectoryName(curFolder);
+                    }
+
+                    for (int i = 0; i < folders.Count; i++)
+                    {
+                        if (!Directory.Exists(folders[i]))
+                        {
+                            Directory.CreateDirectory(".\\" + folders[i]);
+                        }
+                    }
+
+                    if (!File.Exists(keyValuePair.Value))
+                        File.Copy(keyValuePair.Key, keyValuePair.Value);
+                    AssetFileInfo afi = new AssetFileInfo() { packageType = AssetPackageType.Memory };
+                    info.FileInfos.Add(keyValuePair.Value, afi);
+                }
+
+                AssetResult s = AssetPacker.PackAssets(Path.GetFullPath(".\\"), info, cbCompression.Checked);
+                s.Save("./packs");
             }
         }
     }

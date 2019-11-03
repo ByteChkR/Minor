@@ -7,7 +7,7 @@ namespace Engine.AssetPackaging
     {
         private AssetPointer ptr;
 
-        public PackedAssemblyFile(string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(manifestFilepath,
+        public PackedAssemblyFile(bool compression, string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(compression, manifestFilepath,
             assembly)
         {
             this.ptr = ptr;
@@ -16,7 +16,8 @@ namespace Engine.AssetPackaging
 
         public override Stream GetFileStream()
         {
-            Stream s = base.GetFileStream();
+            Stream fs = base.GetFileStream();
+            Stream s = Compression ? UncompressZip(fs) : fs;
             s.Position = ptr.Offset;
             byte[] buf = new byte[ptr.Length];
             s.Read(buf, 0, ptr.Length);

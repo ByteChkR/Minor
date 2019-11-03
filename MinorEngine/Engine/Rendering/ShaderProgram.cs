@@ -132,17 +132,19 @@ namespace Engine.Rendering
             foreach (KeyValuePair<ShaderType, string> subshader in subshaders)
             {
                 Logger.Log("Loading Shader: " + subshader.Value, DebugChannel.Log | DebugChannel.EngineRendering, 7);
-                if (File.Exists(subshader.Value))
-                {
-                    ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
-                }
-                else if (IOManager.Exists(subshader.Value))
-                {
-                    TextReader tr = new StreamReader(ManifestReader.GetStreamByPath(subshader.Value));
 
-                    ret.Add(subshader.Key, tr.ReadToEnd());
-                    tr.Close();
-                }
+                ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
+                //if (File.Exists(subshader.Value))
+                //{
+                //    ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
+                //}
+                //else if (IOManager.Exists(subshader.Value))
+                //{
+                //    TextReader tr = new StreamReader(ManifestReader.GetStreamByPath(subshader.Value));
+
+                //    ret.Add(subshader.Key, tr.ReadToEnd());
+                //    tr.Close();
+                //}
             }
 
             return TryCreateFromSource(ret, out program);

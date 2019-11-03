@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Security.Principal;
 using System.Xml.Serialization;
 
@@ -12,11 +13,15 @@ namespace Engine.AssetPackaging
         [XmlElement(ElementName = "AssetIndexList")]
         public List<AssetPointer> indexList = new List<AssetPointer>();
 
+        [XmlElement(ElementName = "Compression")]
+        public bool Compression = false;
+
         [XmlIgnore] public List<AssetPack> packs = new List<AssetPack>();
 
         public void AddFile(string file, string packPath, AssetPackageType type)
         {
             FileStream fs = new FileStream(file, FileMode.Open);
+
 
             int assetPack = FindAssetPackWithSpace((int) fs.Length);
 
@@ -75,8 +80,22 @@ namespace Engine.AssetPackaging
             for (int i = 0; i < packs.Count; i++)
             {
                 string path = outputFolder + "\\packs\\" + i + ".pack";
+                byte[] buf = packs[i].content.ToArray();
+                if (Compression)
+                {
+                    MemoryStream ms = new MemoryStream();
+                    GZipStream gzs = new GZipStream(ms, CompressionLevel.Optimal);
+                    gzs.Write(buf, 0, buf.Length);
+                    buf =  new byte[ms.Length];
+                    ms.Position = 0;
+                    ms.Read(buf, 0, buf.Length);
+                    gzs.Close();
+                    ms.Close();
+                    
+                }
+
                 FileStream packstream = new FileStream(path, FileMode.Create);
-                packstream.Write(packs[i].content.ToArray(), 0, packs[i].content.Count);
+                packstream.Write(buf, 0, buf.Length);
                 packstream.Close();
             }
         }

@@ -11,8 +11,10 @@ using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Engine.Rendering;
+using Engine.UI.EventSystems;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using TKColor = OpenTK.Color;
 using Mesh = Engine.DataTypes.Mesh;
 
 namespace Engine.Demo.scenes
@@ -221,8 +223,25 @@ namespace Engine.Demo.scenes
 
             GameEngine.Instance.CurrentScene.Add(camContainer);
             GameEngine.Instance.AddRenderTarget(splitCam);
-        }
 
+            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
+            {
+                {ShaderType.FragmentShader, "assets/shader/UIRender.fs"},
+                {ShaderType.VertexShader, "assets/shader/UIRender.vs"}
+            }, out ShaderProgram uiShader);
+
+            GameObject obj = new GameObject("Button");
+            Texture btnIdle = TextureLoader.ColorToTexture(System.Drawing.Color.Green);
+            Texture btnHover = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
+            Texture btnClick = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
+            Button btn = new Button(new EventSystem(), btnIdle, uiShader, 1, btnClick, btnHover);
+            obj.AddComponent(btn);
+            Add(obj);
+            btn.Scale = Vector2.One * 0.3f;
+
+
+        }
+        
         public override void OnDestroy()
         {
             GameEngine.Instance.RemoveRenderTarget(splitCam);

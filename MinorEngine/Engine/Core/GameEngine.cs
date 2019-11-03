@@ -53,6 +53,8 @@ namespace Engine.Core
         /// </summary>
         public int Height => Window.Height;
 
+        public Vector2 WindowSize => new Vector2(Width, Height);
+
         /// <summary>
         /// Property that returns the current AspectRatio
         /// </summary>
@@ -90,6 +92,9 @@ namespace Engine.Core
         public GameEngine(EngineSettings settings)
         {
             Instance = this;
+
+            TextProcessorAPI.PPCallback = new PPIOCallbacks();
+
             if (settings != null)
             {
                 SetSettings(settings);
@@ -135,7 +140,7 @@ namespace Engine.Core
                 Settings.WindowFlags);
 
             #region WindowHandles
-
+            Input.Initialize(Window);
             Window.UpdateFrame += Update;
             Window.Resize += OnResize;
             Window.KeyDown += GameObject._KeyDown;

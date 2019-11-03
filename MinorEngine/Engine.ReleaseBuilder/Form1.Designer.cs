@@ -52,6 +52,8 @@
             this.button3 = new System.Windows.Forms.Button();
             this.nudPackSize = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
+            this.button4 = new System.Windows.Forms.Button();
+            this.cbCompression = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPackSize)).BeginInit();
             this.SuspendLayout();
@@ -277,11 +279,33 @@
             this.label3.TabIndex = 20;
             this.label3.Text = "Pack Size(KB):";
             // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(708, 111);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(180, 22);
+            this.button4.TabIndex = 21;
+            this.button4.Text = "Pack Creator";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // cbCompression
+            // 
+            this.cbCompression.AutoSize = true;
+            this.cbCompression.Location = new System.Drawing.Point(201, 117);
+            this.cbCompression.Name = "cbCompression";
+            this.cbCompression.Size = new System.Drawing.Size(86, 17);
+            this.cbCompression.TabIndex = 22;
+            this.cbCompression.Text = "Compression";
+            this.cbCompression.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(900, 538);
+            this.Controls.Add(this.cbCompression);
+            this.Controls.Add(this.button4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.nudPackSize);
             this.Controls.Add(this.button3);
@@ -339,6 +363,8 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.NumericUpDown nudPackSize;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox cbCompression;
     }
 }
 

@@ -30,7 +30,7 @@ namespace Engine.UI
         /// <summary>
         /// The image that will be drawn to the screen
         /// </summary>
-        public Texture Texture { get; set; }
+        public virtual Texture Texture { get; set; }
 
 
         /// <summary>

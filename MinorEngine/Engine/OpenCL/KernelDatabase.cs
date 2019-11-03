@@ -4,6 +4,7 @@ using System.IO;
 using System.Security.Cryptography;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.IO;
 
 namespace Engine.OpenCL
 {
@@ -32,7 +33,7 @@ namespace Engine.OpenCL
         public KernelDatabase(string folderName, TypeEnums.DataTypes genDataType)
         {
             GenDataType = KernelParameter.GetDataString(genDataType);
-            if (!Directory.Exists(folderName))
+            if (!IOManager.FolderExists(folderName))
             {
                 Logger.Crash(new InvalidFolderPathException(folderName), false);
             }
@@ -48,7 +49,7 @@ namespace Engine.OpenCL
         /// </summary>
         private void Initialize()
         {
-            string[] files = Directory.GetFiles(_folderName, "*.cl");
+            string[] files = IOManager.GetFiles(_folderName, "*.cl");
 
             foreach (string file in files)
             {
@@ -63,7 +64,7 @@ namespace Engine.OpenCL
         /// <param name="file">Path fo the file</param>
         public void AddProgram(string file)
         {
-            if (!File.Exists(file))
+            if (!IOManager.Exists(file))
             {
                 Logger.Crash(new InvalidFilePathException(file), true);
                 return;

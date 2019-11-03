@@ -7,6 +7,7 @@ using ADL.Crash;
 using ADL.Network.Client;
 using ADL.Network.Streams;
 using ADL.Streams;
+using ext_pp_base;
 using MatchType = ADL.MatchType;
 
 namespace Engine.Common
@@ -22,6 +23,8 @@ namespace Engine.Common
             Init = true;
             Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
+
+            IOCallbacks.Callback = new PPCallbacks();
 
             Debug.PrefixLookupMode = (PrefixLookupSettings) settings.PrefixLookupFlags;
 

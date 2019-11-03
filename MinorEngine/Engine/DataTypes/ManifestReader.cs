@@ -65,28 +65,28 @@ namespace Engine.DataTypes
                 {
                     Logger.Log("Overwriting File: " + file + " with version from assembly: " + asm.GetName().Name,
                         DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 8);
-                    AssemblyFiles[file] = new AssemblyFile(files[i], asm);
+                    AssemblyFiles[file] = new AssemblyFile(false,files[i], asm);
                 }
                 else
                 {
 
-                    AssemblyFiles.Add(file, new AssemblyFile(files[i], asm));
+                    AssemblyFiles.Add(file, new AssemblyFile(false, files[i], asm));
                 }
             }
 
             PrepareManifestFiles(asm);
         }
 
-        private delegate AssemblyFile AssemblyFileFactory(string file, Assembly asm, AssetPointer ptr);
+        private delegate AssemblyFile AssemblyFileFactory(string file, bool compression, Assembly asm, AssetPointer ptr);
 
-        private static AssemblyFile FileFactory(string file, Assembly asm, AssetPointer ptr)
+        private static AssemblyFile FileFactory(string file,bool compression, Assembly asm, AssetPointer ptr)
         {
             if (asm == null)
             {
-                return new IOPackedAssemblyFile(UnSanitizeFilename(file), ptr);
+                return new IOPackedAssemblyFile(compression,UnSanitizeFilename(file), ptr);
             }
 
-            return new PackedAssemblyFile(file, asm, ptr);
+            return new PackedAssemblyFile(compression,file, asm, ptr);
         }
 
         private static void PrepareAssemblyFiles(string packPrefix, string[] files, Assembly asm,
@@ -125,7 +125,7 @@ namespace Engine.DataTypes
 
 
             Stream idxStream = IOManager.GetStream(files[indexList]);
-            List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs);
+            List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs, out bool compression);
             Logger.Log("Parsing " + packedFiles.Count + " File from " + files[indexList] + " in " + packs.Length + " Packages.", DebugChannel.Log, 10);
 
             foreach (Tuple<string, AssetPointer> assetPointer in packedFiles)
@@ -136,13 +136,13 @@ namespace Engine.DataTypes
                 {
                     Logger.Log("Overwriting File: " + assemblyPath + " => " + virtualPath, DebugChannel.Log, 10);
                     AssemblyFiles[virtualPath] =
-                        factory(assemblyPath, asm,
+                        factory(assemblyPath, compression, asm,
                             assetPointer.Item2); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2);
                 }
                 else
                 {
                     AssemblyFiles.Add(virtualPath,
-                        factory(assemblyPath, asm,
+                        factory(assemblyPath, compression, asm,
                             assetPointer.Item2)); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2)
                 }
             }
