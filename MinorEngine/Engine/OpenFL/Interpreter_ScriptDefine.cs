@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.IO;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 
@@ -51,7 +52,7 @@ namespace Engine.OpenFL
                 string fn = filename.Replace(FilepathIndicator, "");
 
 
-                if (File.Exists(fn))
+                if (IOManager.Exists(fn))
                 {
                     Interpreter interpreter = new Interpreter(fn, buf, width, height,
                         depth, channelCount, kernelDb, true);

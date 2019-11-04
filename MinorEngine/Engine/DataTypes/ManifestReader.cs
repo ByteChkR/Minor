@@ -4,12 +4,11 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Engine.AssetPackaging;
 using Assimp;
+using Engine.AssetPackaging;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.IO;
-using OpenTK.Graphics.OpenGL;
 using Buffer = System.Buffer;
 
 namespace Engine.DataTypes
