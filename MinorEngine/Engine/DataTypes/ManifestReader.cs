@@ -64,7 +64,7 @@ namespace Engine.DataTypes
                 {
                     Logger.Log("Overwriting File: " + file + " with version from assembly: " + asm.GetName().Name,
                         DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 8);
-                    AssemblyFiles[file] = new AssemblyFile(false,files[i], asm);
+                    AssemblyFiles[file] = new AssemblyFile(false, files[i], asm);
                 }
                 else
                 {
@@ -78,14 +78,29 @@ namespace Engine.DataTypes
 
         private delegate AssemblyFile AssemblyFileFactory(string file, bool compression, Assembly asm, AssetPointer ptr);
 
-        private static AssemblyFile FileFactory(string file,bool compression, Assembly asm, AssetPointer ptr)
+        private static AssemblyFile FileFactory(string file, bool compression, Assembly asm, AssetPointer ptr)
         {
+            
             if (asm == null)
             {
-                return new IOPackedAssemblyFile(compression,UnSanitizeFilename(file), ptr);
+                string[] files = new string[AssetPointer.GetPackageCount(ptr.Offset, ptr.Length, ptr.PackageSize)];
+                string dir = Path.GetDirectoryName(UnSanitizeFilename(file));
+                for (int i = 0; i < files.Length; i++)
+                {
+                    files[i] = dir + "/" + (ptr.PackageID + i) + ".pack";
+                }
+
+                return new IOPackedAssemblyFile(compression, files, ptr);
             }
 
-            return new PackedAssemblyFile(compression,file, asm, ptr);
+            string[] f = new string[AssetPointer.GetPackageCount(ptr.Offset, ptr.Length, ptr.PackageSize)];
+            string d = Path.GetDirectoryName(UnSanitizeFilename(file));
+            for (int i = 0; i < f.Length; i++)
+            {
+                f[i] = SanitizeFilename(d + "/" + (ptr.PackageID + i) + ".pack");
+            }
+
+            return new PackedAssemblyFile(compression, f, asm, ptr);
         }
 
         private static void PrepareAssemblyFiles(string packPrefix, string[] files, Assembly asm,

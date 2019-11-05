@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 namespace Engine.AssetPackaging
@@ -7,17 +8,26 @@ namespace Engine.AssetPackaging
     {
         private AssetPointer ptr;
 
-        public PackedAssemblyFile(bool compression, string manifestFilepath, Assembly assembly, AssetPointer ptr) : base(compression, manifestFilepath,
+        public PackedAssemblyFile(bool compression, string manifestFilepath, Assembly assembly, AssetPointer ptr) :
+            base(compression, manifestFilepath,
+                assembly)
+        {
+            this.ptr = ptr;
+        }
+
+        public PackedAssemblyFile(bool compression, string[] manifestFilepaths, Assembly assembly, AssetPointer ptr) : base(compression, manifestFilepaths,
             assembly)
         {
             this.ptr = ptr;
         }
 
-
+        
         public override Stream GetFileStream()
         {
-            Stream fs = base.GetFileStream();
-            Stream s = Compression ? UncompressZip(fs) : fs;
+
+            if (ManifestFilepaths.Length > 1) return ReadSplittedFile(ptr);
+
+            Stream s = GetResourceStream(0);
             s.Position = ptr.Offset;
             byte[] buf = new byte[ptr.Length];
             s.Read(buf, 0, ptr.Length);
@@ -25,4 +35,7 @@ namespace Engine.AssetPackaging
             return new MemoryStream(buf);
         }
     }
+
+
+
 }

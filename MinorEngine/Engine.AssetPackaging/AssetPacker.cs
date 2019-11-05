@@ -10,6 +10,7 @@ namespace Engine.AssetPackaging
     {
         public const int KILOBYTE = 1024;
         public static int MAXSIZE_KILOBYTES = 1024;
+        public static int PACK_SIZE => KILOBYTE * MAXSIZE_KILOBYTES;
 
         public static AssetResult PackAssets(string assetFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
         {

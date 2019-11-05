@@ -11,8 +11,10 @@ using Engine.Rendering;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
+
 namespace Engine.Core
 {
+
     /// <summary>
     /// Central class that is the "heart" of the Engine
     /// </summary>
@@ -151,6 +153,11 @@ namespace Engine.Core
             #endregion
         }
 
+        public void Exit()
+        {
+            Window.Close();
+        }
+
         private void CurrentDomainOnProcessExit(object sender, EventArgs e)
         {
             ManifestReader.ClearUnpackedFiles();
@@ -186,8 +193,14 @@ namespace Engine.Core
         /// <typeparam name="T"></typeparam>
         public void InitializeScene<T>() where T : AbstractScene
         {
+            InitializeScene(typeof(T));
+        }
+
+        public void InitializeScene(Type sceneType)
+        {
+            if (!typeof(AbstractScene).IsAssignableFrom(sceneType)) return;
             _changeScene = true;
-            _nextScene = typeof(T);
+            _nextScene = sceneType;
             Logger.Log("Initializing Scene..", DebugChannel.Log | DebugChannel.EngineCore, 9);
         }
 
