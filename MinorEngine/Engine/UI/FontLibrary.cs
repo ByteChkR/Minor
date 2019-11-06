@@ -34,15 +34,12 @@ namespace Engine.UI
         {
             _fonts = new Dictionary<string, Tuple<string, GameFont>>();
             List<string> files = new List<string>();
-            if (Directory.Exists(folderPath))
-            {
-                files.AddRange(Directory.GetFiles(folderPath, "*.ttf"));
-            }
 
-            files.AddRange(ManifestReader.GetFiles(folderPath, ".ttf"));
+            files.AddRange(IOManager.GetFiles(folderPath, "*.ttf"));
 
             foreach (string file in files)
             {
+                Logger.Log("Loading Font: " + file, DebugChannel.Log, 10);
                 LoadFont(file);
             }
         }
@@ -202,6 +199,9 @@ namespace Engine.UI
                     return font.Value.Item2;
                 }
             }
+
+
+            ManifestReader.ListAllFiles();
 
             Logger.Crash(new ItemNotFoundExeption("Font", "The Font " + name + " was not found."), true);
 

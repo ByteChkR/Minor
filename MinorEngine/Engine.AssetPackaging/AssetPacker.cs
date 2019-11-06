@@ -51,6 +51,7 @@ namespace Engine.AssetPackaging
             {
                 if (r.indexList[i].PackageType == AssetPackageType.Unpack)
                 {
+                    Console.WriteLine("Skipping File Parsing");
                     continue;
                 }
 

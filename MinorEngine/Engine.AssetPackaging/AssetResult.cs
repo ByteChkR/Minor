@@ -91,7 +91,7 @@ namespace Engine.AssetPackaging
                 if (bytesLeft != 0)
                     packid = FindAssetPackWithSpace(0);
             } while (bytesLeft != 0);
-
+            s.Close();
             return firstPack;
         }
 

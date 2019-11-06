@@ -27,6 +27,14 @@ namespace Engine.DataTypes
             }
         }
 
+        public static void ListAllFiles()
+        {
+            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in AssemblyFiles)
+            {
+                Logger.Log(assemblyFile.Key, DebugChannel.Log, 10);
+            }
+        }
+
         public static void LoadAssemblyList(Stream data)
         {
             TextReader tr = new StreamReader(data);
