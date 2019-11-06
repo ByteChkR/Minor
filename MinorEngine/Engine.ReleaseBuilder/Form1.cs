@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using System.Xml.Serialization;
 using Engine.AssetPackaging;
 using ReleaseBuilder;
 
@@ -13,9 +14,10 @@ namespace Engine.ReleaseBuilder
     public partial class Form1 : Form
     {
         private static Form1 Instance;
-
-        public Form1()
+        private BuildSettings Settings;
+        public Form1(BuildSettings settings = null)
         {
+            Settings = settings;
             Instance = this;
             InitializeComponent();
         }
@@ -24,6 +26,35 @@ namespace Engine.ReleaseBuilder
         {
             DoubleBuffered = true;
             WriteInfo();
+            
+        }
+
+        private void InvalidateForm()
+        {
+            if (Settings != null)
+            {
+                tbAssetFolder.Text = Settings.AssetFolder;
+                tbProject.Text = Settings.Project;
+                tbPackagedFiles.Text = Settings.UnpackFiles;
+                tbUnpackagedFiles.Text = Settings.MemoryFiles;
+                tbOutputFolder.Text = Settings.OutputFolder;
+                cbOnlyEmbed.Checked = Settings.BuildFlags == BuildType.Embed;
+                nudPackSize.Value = Settings.PackSize;
+            }
+        }
+
+        private void InvalidateSettings()
+        {
+            Settings = new BuildSettings();
+            Settings.AssetFolder = tbAssetFolder.Text;
+            Settings.Project = tbProject.Text;
+            if (cbOnlyEmbed.Checked) Settings.BuildFlags = BuildType.Embed;
+            else if (cbPacksOnDisk.Checked) Settings.BuildFlags = BuildType.PackOnly;
+            else Settings.BuildFlags = BuildType.PackEmbed;
+            Settings.UnpackFiles = tbPackagedFiles.Text;
+            Settings.MemoryFiles = tbUnpackagedFiles.Text;
+            Settings.OutputFolder = tbOutputFolder.Text;
+            Settings.PackSize = (int)nudPackSize.Value;
         }
 
         private void btnOpenProject_Click(object sender, EventArgs e)
@@ -95,6 +126,40 @@ namespace Engine.ReleaseBuilder
             }
         }
 
+        public static void RunConfig(BuildSettings settings)
+        {
+            if (settings.BuildFlags == BuildType.PackOnly)
+            {
+                if (Directory.Exists(settings.OutputFolder + "/packs"))
+                {
+                    Directory.Delete(settings.OutputFolder + "/packs", true);
+                }
+                PackAssets(settings.OutputFolder, settings.PackSize, settings.UnpackFiles, settings.MemoryFiles,
+                   settings.AssetFolder, false);
+                //???
+                BuildProject("resources/Build.bat", settings.AssetFolder, "", "",
+                    settings.Project, settings.OutputFolder, false);
+            }
+            else if (settings.BuildFlags == BuildType.Embed)
+            {
+                BuildProject("resources/Build.bat", settings.AssetFolder, settings.UnpackFiles, settings.MemoryFiles,
+                    settings.Project, settings.OutputFolder, true);
+            }
+            else if (settings.BuildFlags == BuildType.PackEmbed)
+            {
+                string dir = Path.GetDirectoryName(settings.Project);
+                if (Directory.Exists(dir + "/packs"))
+                {
+                    Directory.Delete(dir + "/packs", true);
+                }
+                PackAssets(
+                    dir + "\\" + Path.GetFileNameWithoutExtension(settings.Project),
+                    settings.PackSize, settings.UnpackFiles, settings.MemoryFiles, settings.AssetFolder, false);
+                BuildProject("resources/Build.bat", settings.AssetFolder, settings.MemoryFiles, settings.UnpackFiles,
+                    settings.Project, settings.OutputFolder, settings.BuildFlags == BuildType.Embed);
+            }
+        }
+
         private static T GetAssemblyAttribute<T>(Assembly asm) where T : Attribute
         {
             object[] attributes =
@@ -118,7 +183,7 @@ namespace Engine.ReleaseBuilder
                           asm.GetName().Version + ")\n" +
                           attrib.Copyright;
 
-            Instance.WriteLine(info);
+            Instance?.WriteLine(info);
         }
 
         private static void PackAssets(string outputFolder, int packSize, string packedFileExts,
@@ -126,7 +191,7 @@ namespace Engine.ReleaseBuilder
         {
             AssetPacker.MAXSIZE_KILOBYTES = packSize;
 
-            Instance.WriteLine("Parsing File info...");
+            Instance?.WriteLine("Parsing File info...");
 
             AssetPackageInfo info = new AssetPackageInfo();
             List<string> unpackExts = packedFileExts.Split('+').ToList();
@@ -141,20 +206,20 @@ namespace Engine.ReleaseBuilder
                 info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
             }
 
-            Instance.WriteLine("Creating Asset Pack(" + assetFolder + ")...");
+            Instance?.WriteLine("Creating Asset Pack(" + assetFolder + ")...");
             AssetResult ret = AssetPacker.PackAssets(assetFolder, info, compression);
-            Instance.WriteLine("Packaging " + ret.indexList.Count + " Assets in " + ret.packs.Count + " Packs.");
+            Instance?.WriteLine("Packaging " + ret.indexList.Count + " Assets in " + ret.packs.Count + " Packs.");
 
-            Instance.WriteLine("Saving Asset Pack to " + outputFolder);
+            Instance?.WriteLine("Saving Asset Pack to " + outputFolder);
             ret.Save(outputFolder);
 
-            Instance.WriteLine("Packaging Assets Finished.");
+            Instance?.WriteLine("Packaging Assets Finished.");
         }
 
         private static void BuildProject(string buildFile, string assetFolder, string packedFilesExt,
             string unpackedFilesExt, string projectFile, string outputFolder, bool onlyEmbed)
         {
-            Instance.WriteLine("Starting Build Process.");
+            Instance?.WriteLine("Starting Build Process.");
 
             string incdir = onlyEmbed
                 ? assetFolder + "\\+" + unpackedFilesExt
@@ -168,38 +233,72 @@ namespace Engine.ReleaseBuilder
                 $"{projectFile} {incdir} {publishDir} {outputFolder} {projectDir} {plainProjectName}";
 
 
-            CheckForIllegalCrossThreadCalls = false;
-
-            ProcessStartInfo psi = new ProcessStartInfo(buildFile, command)
+            if (Instance != null)
             {
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                CreateNoWindow = true,
-                UseShellExecute = false
-            };
 
+                CheckForIllegalCrossThreadCalls = false;
 
-            Process p = new Process { StartInfo = psi };
-
-            p.Start();
-            ConsoleRedirector redir =
-                ConsoleRedirector.CreateRedirector(p.StandardOutput, p.StandardError, p, Instance.WriteLine);
-            redir.StartThreads();
-
-            while (!p.HasExited)
-            {
-                lock (Instance.rtbBuildOutput)
+                ProcessStartInfo psi = new ProcessStartInfo(buildFile, command)
                 {
-                    Application.DoEvents();
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
+
+
+                Process p = new Process { StartInfo = psi };
+
+                p.Start();
+                ConsoleRedirector redir;
+                redir = ConsoleRedirector.CreateRedirector(p.StandardOutput, p.StandardError, p, Instance.WriteLine);
+
+                redir.StartThreads();
+
+                while (!p.HasExited)
+                {
+                    lock (Instance?.rtbBuildOutput)
+                    {
+                        Application.DoEvents();
+                    }
                 }
+
+
+                redir.StopThreads();
+
+                Instance?.WriteLine(redir.GetRemainingLogs());
+
+                CheckForIllegalCrossThreadCalls = true;
             }
+            else
+            {
+                ProcessStartInfo psi = new ProcessStartInfo(buildFile, command)
+                {
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
+                    CreateNoWindow = true,
+                    UseShellExecute = false
+                };
 
 
-            redir.StopThreads();
+                Process p = new Process { StartInfo = psi };
 
-            Instance.WriteLine(redir.GetRemainingLogs());
+                p.Start();
+                ConsoleRedirector redir;
+                redir = ConsoleRedirector.CreateRedirector(p.StandardOutput, p.StandardError, p, Console.WriteLine);
 
-            CheckForIllegalCrossThreadCalls = true;
+                redir.StartThreads();
+
+                while (!p.HasExited)
+                {
+                    
+                }
+
+
+                redir.StopThreads();
+
+                Console.WriteLine(redir.GetRemainingLogs());
+            }
         }
 
         private void WriteLine(string line)
@@ -253,6 +352,33 @@ namespace Engine.ReleaseBuilder
 
                 AssetResult s = AssetPacker.PackAssets(Path.GetFullPath(".\\"), info, cbCompression.Checked);
                 s.Save("./packs");
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (sfdProjectSettings.ShowDialog() == DialogResult.OK)
+            {
+
+                InvalidateSettings();
+                XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
+                if (File.Exists(sfdProjectSettings.FileName)) File.Delete(sfdProjectSettings.FileName);
+                FileStream fs = new FileStream(sfdProjectSettings.FileName, FileMode.Create);
+                xs.Serialize(fs, Settings);
+                fs.Close();
+            }
+        }
+
+        private void btnLoadSettings_Click(object sender, EventArgs e)
+        {
+
+            if (ofdProjectSettings.ShowDialog() == DialogResult.OK)
+            {
+                XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
+                FileStream fs = new FileStream(ofdProjectSettings.FileName, FileMode.Create);
+                Settings = (BuildSettings)xs.Deserialize(fs);
+                fs.Close();
+                InvalidateForm();
             }
         }
     }

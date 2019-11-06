@@ -39,11 +39,11 @@ namespace Engine.ResourcePackager
                 {
                     f.Add(files[i].Item1);
                 }
-                else
+                else if(Directory.Exists(files[i].Item1))
                 {
                     string pattern = files[i].Item2;
                     string path = files[i].Item1;
-                    Console.WriteLine("Searching Folder: " + path);
+                    Console.WriteLine("Searching Folder Path: " + path);
                     Console.WriteLine("Adding Files with Pattern: " + pattern);
                     f.AddRange(Directory.GetFiles(path, pattern, SearchOption.AllDirectories));
                 }

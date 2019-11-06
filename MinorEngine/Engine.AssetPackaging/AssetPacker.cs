@@ -19,6 +19,7 @@ namespace Engine.AssetPackaging
             Uri assetPath = new Uri(assetFolder);
             foreach (KeyValuePair<string, AssetFileInfo> assetFileInfo in info.FileInfos)
             {
+                Console.WriteLine("Checking Folder: " + assetFolder + " with pattern: " + assetFileInfo.Key);
                 string[] files = Directory.GetFiles(assetFolder, assetFileInfo.Key, SearchOption.AllDirectories);
                 AssetPackageType type = assetFileInfo.Value.packageType;
 
@@ -37,7 +38,7 @@ namespace Engine.AssetPackaging
         private static AssetResult ParseResult(Stream s)
         {
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
-            AssetResult ret = (AssetResult) xs.Deserialize(s);
+            AssetResult ret = (AssetResult)xs.Deserialize(s);
             s.Close();
             return ret;
         }

@@ -54,13 +54,18 @@
             this.label3 = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.cbCompression = new System.Windows.Forms.CheckBox();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.cbPacksOnDisk = new System.Windows.Forms.CheckBox();
+            this.sfdProjectSettings = new System.Windows.Forms.SaveFileDialog();
+            this.btnLoadSettings = new System.Windows.Forms.Button();
+            this.ofdProjectSettings = new System.Windows.Forms.OpenFileDialog();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPackSize)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOpenProject
             // 
-            this.btnOpenProject.Location = new System.Drawing.Point(813, 4);
+            this.btnOpenProject.Location = new System.Drawing.Point(813, 41);
             this.btnOpenProject.Name = "btnOpenProject";
             this.btnOpenProject.Size = new System.Drawing.Size(75, 23);
             this.btnOpenProject.TabIndex = 0;
@@ -70,7 +75,7 @@
             // 
             // tbProject
             // 
-            this.tbProject.Location = new System.Drawing.Point(61, 6);
+            this.tbProject.Location = new System.Drawing.Point(61, 43);
             this.tbProject.Name = "tbProject";
             this.tbProject.Size = new System.Drawing.Size(746, 20);
             this.tbProject.TabIndex = 1;
@@ -79,7 +84,7 @@
             // lblProject
             // 
             this.lblProject.AutoSize = true;
-            this.lblProject.Location = new System.Drawing.Point(12, 9);
+            this.lblProject.Location = new System.Drawing.Point(12, 46);
             this.lblProject.Name = "lblProject";
             this.lblProject.Size = new System.Drawing.Size(43, 13);
             this.lblProject.TabIndex = 2;
@@ -88,7 +93,7 @@
             // lblAssetFolder
             // 
             this.lblAssetFolder.AutoSize = true;
-            this.lblAssetFolder.Location = new System.Drawing.Point(12, 35);
+            this.lblAssetFolder.Location = new System.Drawing.Point(12, 72);
             this.lblAssetFolder.Name = "lblAssetFolder";
             this.lblAssetFolder.Size = new System.Drawing.Size(41, 13);
             this.lblAssetFolder.TabIndex = 5;
@@ -96,7 +101,7 @@
             // 
             // tbAssetFolder
             // 
-            this.tbAssetFolder.Location = new System.Drawing.Point(61, 32);
+            this.tbAssetFolder.Location = new System.Drawing.Point(61, 69);
             this.tbAssetFolder.Name = "tbAssetFolder";
             this.tbAssetFolder.Size = new System.Drawing.Size(746, 20);
             this.tbAssetFolder.TabIndex = 4;
@@ -104,7 +109,7 @@
             // 
             // btnOpenAssetFolder
             // 
-            this.btnOpenAssetFolder.Location = new System.Drawing.Point(813, 30);
+            this.btnOpenAssetFolder.Location = new System.Drawing.Point(813, 67);
             this.btnOpenAssetFolder.Name = "btnOpenAssetFolder";
             this.btnOpenAssetFolder.Size = new System.Drawing.Size(75, 23);
             this.btnOpenAssetFolder.TabIndex = 3;
@@ -115,7 +120,7 @@
             // lblOutputFolder
             // 
             this.lblOutputFolder.AutoSize = true;
-            this.lblOutputFolder.Location = new System.Drawing.Point(12, 61);
+            this.lblOutputFolder.Location = new System.Drawing.Point(12, 98);
             this.lblOutputFolder.Name = "lblOutputFolder";
             this.lblOutputFolder.Size = new System.Drawing.Size(42, 13);
             this.lblOutputFolder.TabIndex = 8;
@@ -123,7 +128,7 @@
             // 
             // tbOutputFolder
             // 
-            this.tbOutputFolder.Location = new System.Drawing.Point(61, 58);
+            this.tbOutputFolder.Location = new System.Drawing.Point(61, 95);
             this.tbOutputFolder.Name = "tbOutputFolder";
             this.tbOutputFolder.Size = new System.Drawing.Size(746, 20);
             this.tbOutputFolder.TabIndex = 7;
@@ -131,7 +136,7 @@
             // 
             // btnOpenOutputFolder
             // 
-            this.btnOpenOutputFolder.Location = new System.Drawing.Point(813, 56);
+            this.btnOpenOutputFolder.Location = new System.Drawing.Point(813, 93);
             this.btnOpenOutputFolder.Name = "btnOpenOutputFolder";
             this.btnOpenOutputFolder.Size = new System.Drawing.Size(75, 23);
             this.btnOpenOutputFolder.TabIndex = 6;
@@ -155,7 +160,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(12, 167);
+            this.button1.Location = new System.Drawing.Point(12, 204);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(876, 22);
             this.button1.TabIndex = 9;
@@ -176,7 +181,7 @@
             // 
             // tbUnpackagedFiles
             // 
-            this.tbUnpackagedFiles.Location = new System.Drawing.Point(111, 85);
+            this.tbUnpackagedFiles.Location = new System.Drawing.Point(111, 122);
             this.tbUnpackagedFiles.Name = "tbUnpackagedFiles";
             this.tbUnpackagedFiles.Size = new System.Drawing.Size(328, 20);
             this.tbUnpackagedFiles.TabIndex = 11;
@@ -185,7 +190,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 88);
+            this.label1.Location = new System.Drawing.Point(12, 125);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 13);
             this.label1.TabIndex = 12;
@@ -194,7 +199,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(471, 88);
+            this.label2.Location = new System.Drawing.Point(471, 125);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 13);
             this.label2.TabIndex = 13;
@@ -202,7 +207,7 @@
             // 
             // tbPackagedFiles
             // 
-            this.tbPackagedFiles.Location = new System.Drawing.Point(560, 85);
+            this.tbPackagedFiles.Location = new System.Drawing.Point(560, 122);
             this.tbPackagedFiles.Name = "tbPackagedFiles";
             this.tbPackagedFiles.Size = new System.Drawing.Size(328, 20);
             this.tbPackagedFiles.TabIndex = 14;
@@ -212,14 +217,14 @@
             // 
             this.panel1.Controls.Add(this.rtbBuildOutput);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 223);
+            this.panel1.Location = new System.Drawing.Point(0, 260);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(900, 315);
             this.panel1.TabIndex = 15;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(12, 195);
+            this.button2.Location = new System.Drawing.Point(12, 232);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(876, 22);
             this.button2.TabIndex = 16;
@@ -230,7 +235,7 @@
             // cbOnlyEmbed
             // 
             this.cbOnlyEmbed.AutoSize = true;
-            this.cbOnlyEmbed.Location = new System.Drawing.Point(15, 144);
+            this.cbOnlyEmbed.Location = new System.Drawing.Point(15, 181);
             this.cbOnlyEmbed.Name = "cbOnlyEmbed";
             this.cbOnlyEmbed.Size = new System.Drawing.Size(117, 17);
             this.cbOnlyEmbed.TabIndex = 17;
@@ -239,7 +244,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(138, 140);
+            this.button3.Location = new System.Drawing.Point(138, 177);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(750, 22);
             this.button3.TabIndex = 18;
@@ -249,7 +254,7 @@
             // 
             // nudPackSize
             // 
-            this.nudPackSize.Location = new System.Drawing.Point(111, 114);
+            this.nudPackSize.Location = new System.Drawing.Point(111, 151);
             this.nudPackSize.Maximum = new decimal(new int[] {
             1048576,
             0,
@@ -273,7 +278,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 116);
+            this.label3.Location = new System.Drawing.Point(12, 153);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(78, 13);
             this.label3.TabIndex = 20;
@@ -281,7 +286,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(708, 111);
+            this.button4.Location = new System.Drawing.Point(708, 148);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(180, 22);
             this.button4.TabIndex = 21;
@@ -292,18 +297,62 @@
             // cbCompression
             // 
             this.cbCompression.AutoSize = true;
-            this.cbCompression.Location = new System.Drawing.Point(201, 117);
+            this.cbCompression.Location = new System.Drawing.Point(201, 154);
             this.cbCompression.Name = "cbCompression";
             this.cbCompression.Size = new System.Drawing.Size(86, 17);
             this.cbCompression.TabIndex = 22;
             this.cbCompression.Text = "Compression";
             this.cbCompression.UseVisualStyleBackColor = true;
             // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(15, 12);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 23;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // cbPacksOnDisk
+            // 
+            this.cbPacksOnDisk.AutoSize = true;
+            this.cbPacksOnDisk.Location = new System.Drawing.Point(111, 16);
+            this.cbPacksOnDisk.Name = "cbPacksOnDisk";
+            this.cbPacksOnDisk.Size = new System.Drawing.Size(95, 17);
+            this.cbPacksOnDisk.TabIndex = 24;
+            this.cbPacksOnDisk.Text = "Packs on Disk";
+            this.cbPacksOnDisk.UseVisualStyleBackColor = true;
+            // 
+            // sfdProjectSettings
+            // 
+            this.sfdProjectSettings.FileName = "BuildSettings";
+            this.sfdProjectSettings.Filter = "XML File|*.xml";
+            this.sfdProjectSettings.Title = "Save Build Settings";
+            // 
+            // btnLoadSettings
+            // 
+            this.btnLoadSettings.Location = new System.Drawing.Point(813, 10);
+            this.btnLoadSettings.Name = "btnLoadSettings";
+            this.btnLoadSettings.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadSettings.TabIndex = 25;
+            this.btnLoadSettings.Text = "Load";
+            this.btnLoadSettings.UseVisualStyleBackColor = true;
+            this.btnLoadSettings.Click += new System.EventHandler(this.btnLoadSettings_Click);
+            // 
+            // ofdProjectSettings
+            // 
+            this.ofdProjectSettings.Filter = "XML File|*.xml";
+            this.ofdProjectSettings.Title = "Open Build Settings";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(900, 538);
+            this.ClientSize = new System.Drawing.Size(900, 575);
+            this.Controls.Add(this.btnLoadSettings);
+            this.Controls.Add(this.cbPacksOnDisk);
+            this.Controls.Add(this.btnSave);
             this.Controls.Add(this.cbCompression);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.label3);
@@ -365,6 +414,11 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.CheckBox cbCompression;
+        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.CheckBox cbPacksOnDisk;
+        private System.Windows.Forms.SaveFileDialog sfdProjectSettings;
+        private System.Windows.Forms.Button btnLoadSettings;
+        private System.Windows.Forms.OpenFileDialog ofdProjectSettings;
     }
 }
 
