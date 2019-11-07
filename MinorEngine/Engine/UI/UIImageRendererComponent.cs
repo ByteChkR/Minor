@@ -87,7 +87,7 @@ namespace Engine.UI
             GL.BindVertexArray(_vao);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
 
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
@@ -98,6 +98,8 @@ namespace Engine.UI
             Program.AddUniformCache("transform");
             Program.AddUniformCache("alpha");
             Program.AddUniformCache("uiTexture");
+            Program.AddUniformCache("tiling");
+            Program.AddUniformCache("offset");
         }
 
         /// <summary>
@@ -130,6 +132,9 @@ namespace Engine.UI
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref mat);
             GL.Uniform1(Program.GetUniformLocation("alpha"), Alpha);
+
+            GL.Uniform2(Program.GetUniformLocation("tiling"), Tiling);
+            GL.Uniform2(Program.GetUniformLocation("offset"), Offset);
 
             GL.Uniform1(Program.GetUniformLocation("uiTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);

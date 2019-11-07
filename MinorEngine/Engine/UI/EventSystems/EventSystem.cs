@@ -27,6 +27,9 @@ namespace Engine.UI.EventSystems
             Vector2 mpos = GameEngine.Instance.MousePosition - GameEngine.Instance.WindowSize / 2;
             mpos.X /= GameEngine.Instance.Width;
             mpos.Y /= GameEngine.Instance.Height;
+            mpos.Y *= -1;
+            mpos *= 2;
+            //Logger.Log("MousePos: "+ mpos, DebugChannel.Log, 10);
             for (int i = 0; i < selectables.Count; i++)
             {
                 if (selectables[i].BoundingBox.Contains(mpos))
@@ -40,7 +43,6 @@ namespace Engine.UI.EventSystems
                     else
                     {
                         selectables[i].SetState(SelectableState.Hovered);
-                        Logger.Log("Hovering", DebugChannel.Log, 10);
 
                     }
                 }

@@ -28,12 +28,14 @@ namespace Engine.UI
         /// </summary>
         protected static bool _init;
 
+        public bool Center = false;
+
         private bool cached;
 
         /// <summary>
         /// The Length of a single \t in UV coordinates
         /// </summary>
-        private static float TabToSpaceCount = 0.1f;
+        public static float TabToSpaceCount = 0.1f;
 
         /// <summary>
         /// the Font that is used to draw
@@ -141,7 +143,7 @@ namespace Engine.UI
 
 
             Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
-            Matrix4 m = trmat;
+            Matrix4 m = Matrix4.Identity;
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref m);
 
@@ -150,14 +152,25 @@ namespace Engine.UI
             GL.Uniform1(Program.GetUniformLocation("sourceTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindVertexArray(_vao);
-            float x = Position.X;
-            float y = Position.Y;
+            Vector2 pos = Position;//Hacked
+
+            if (Center)
+            {
+                Vector2 v = Font.GetRenderBounds(Text);
+                v.X *= Scale.X;
+                v.Y *= Scale.Y;
+                pos = Position - v / 2;
+
+            }
+
+            float x = pos.X;
+            float y = pos.Y;
             for (int i = 0; i < Text.Length; i++)
             {
                 if (Text[i] == '\n')
                 {
                     FaceMetrics fm = Font.Metrics;
-                    x = Position.X;
+                    x = pos.X;
                     y -= fm.LineHeight / scrH * Scale.Y;
                     continue;
                 }
@@ -165,7 +178,7 @@ namespace Engine.UI
 
                 if (Text[i] == '\t')
                 {
-                    float len = x - Position.X;
+                    float len = x - pos.X;
                     float count = TabToSpaceCount - len % TabToSpaceCount;
                     float val = count;
                     x += val;
@@ -182,8 +195,10 @@ namespace Engine.UI
                 float xpos = x + chr.BearingX / scrW * Scale.X;
                 float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                float w = chr.Width / (float) scrW * Scale.X;
-                float h = chr.Height / (float) scrH * Scale.Y;
+                float w = chr.Width / (float)scrW * Scale.X;
+                float h = chr.Height / (float)scrH * Scale.Y;
+
+
 
                 //Remove Scale And initial position(start at (x,y) = 0)
                 //Add Translation to Make text be centered at origin(-TotalTextWidth/2,-TotalTextHeight/2)
@@ -204,7 +219,7 @@ namespace Engine.UI
                 {
                     GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
+                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
                         verts);
 
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

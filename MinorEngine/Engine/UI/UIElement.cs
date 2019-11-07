@@ -65,6 +65,9 @@ namespace Engine.UI
             }
         }
 
+        public Vector2 Tiling { get; set; } = Vector2.One;
+        public Vector2 Offset { get; set; } = Vector2.Zero;
+
 
         /// <summary>
         /// Alpha value of the texture

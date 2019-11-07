@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Net.Mime;
 using System.Reflection;
+using Engine.Core;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.Physics.BEPUutilities;
 using Engine.UI;
 using OpenTK.Input;
 using SharpFont;
@@ -84,6 +88,47 @@ namespace Engine.DataTypes
             _fontFace = ff;
             _fontAtlas = fontAtlas;
         }
+
+        public Vector2 GetRenderBounds(string stringValue)
+        {
+            int scrW = GameEngine.Instance.Width;
+            int scrH = GameEngine.Instance.Height;
+            Vector2 pos = Vector2.Zero;//Hacked
+            float x = pos.X;
+            float y = pos.Y;
+            for (int i = 0; i < stringValue.Length; i++)
+            {
+                if (stringValue[i] == '\n')
+                {
+                    FaceMetrics fm = Metrics;
+                    x = pos.X;
+                    y -= fm.LineHeight / scrH;
+                    continue;
+                }
+
+
+                if (stringValue[i] == '\t')
+                {
+                    float len = x - pos.X;
+                    float count = UITextRendererComponent.TabToSpaceCount - len % UITextRendererComponent.TabToSpaceCount;
+                    float val = count;
+                    x += val;
+                    continue;
+                }
+                //x-pos.x
+
+
+                if (!TryGetCharacter(stringValue[i], out TextCharacter chr))
+                {
+                    TryGetCharacter('?', out chr);
+                }
+
+                x += chr.Advance / scrW;
+            }
+
+            return new Vector2(x, y+ Metrics.LineHeight / scrH / 2);
+        }
+
 
         /// <summary>
         /// A function to get a Text Character from a System Char.

@@ -8,6 +8,7 @@ using Engine.Debug;
 using Engine.IO;
 using Engine.Physics;
 using Engine.Rendering;
+using Engine.UI.EventSystems;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -24,6 +25,8 @@ namespace Engine.Core
         /// The Window used to render
         /// </summary>
         private GameWindow Window;
+
+        public EventSystem UISystem { get; private set; }
 
         /// <summary>
         /// Renderer Instance
@@ -126,6 +129,7 @@ namespace Engine.Core
             AudioManager.Initialize();
 
             PhysicsEngine.Initialize();
+            UISystem = new EventSystem();
         }
 
 
@@ -298,9 +302,10 @@ namespace Engine.Core
 
             MemoryTracer.NextStage("Update Frame: " + FrameCounter);
 
+
+            UISystem.Update();
+
             MemoryTracer.AddSubStage("Scene Update");
-            CurrentScene?.Update((float) e.Time);
-            MemoryTracer.NextStage("World Update");
             CurrentScene?.Update((float) e.Time);
 
             MemoryTracer.NextStage("Physics Update");

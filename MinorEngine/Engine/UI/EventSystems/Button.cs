@@ -12,36 +12,13 @@ namespace Engine.UI.EventSystems
         public int TabStop { get; set; }
         private SelectableState state;
         public EventSystem System { get; }
-        private Vector2 size
-        {
-            get
-            {
-                Vector2 sz = new Vector2();
-                sz.X = GameEngine.Instance.Width * Scale.X / GameEngine.Instance.Width;
-                sz.Y = GameEngine.Instance.Height * Scale.Y / GameEngine.Instance.Height;
-                return sz;
-            }
-        }
 
-        private Vector2 intSize;
         private Texture btnIdle;
         private Texture btnHover;
         private Texture btnClick;
+        private Action OnClick;
 
-        public Box2 BoundingBox
-        {
-            get
-            {
-                return new Box2(Position - size / 2, Position + size / 2);
-            }
-            set
-            {
-                Vector2 center = Vector2.Lerp(new Vector2(value.Left, value.Top),
-                    new Vector2(value.Right, value.Bottom), 0.5f);
-                Position = center;
-                Scale = new Vector2((value.Right - value.Left) / GameEngine.Instance.Width, (value.Bottom - value.Top) / GameEngine.Instance.Height);
-            }
-        }
+        public Box2 BoundingBox => new Box2(Position - Scale, Position + Scale);
 
 
         public override Texture Texture
@@ -54,16 +31,15 @@ namespace Engine.UI.EventSystems
             }
         }
 
-        public Button(EventSystem system, Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null, Texture btnHover = null) : base(btnIdle, false, alpha, shader)
+        public Button(Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null, Texture btnHover = null, Action onClick = null) : base(btnIdle, false, alpha, shader)
         {
             this.btnIdle = btnIdle;
             if (btnClick != null) this.btnClick = btnClick;
             else this.btnClick = btnIdle;
             if (btnHover != null) this.btnHover = btnHover;
             else this.btnHover = btnIdle;
-            System = system;
-            intSize = new Vector2(btnIdle.Width, btnIdle.Height);
-
+            System = GameEngine.Instance.UISystem;
+            OnClick = onClick;
         }
 
         protected override void Awake()
@@ -78,14 +54,12 @@ namespace Engine.UI.EventSystems
             System.Unregister(this);
         }
 
-        protected override void Update(float deltaTime)
-        {
-            base.Update(deltaTime);
-            System.Update(); //Hack
-        }
-
         public void SetState(SelectableState newState)
         {
+            if (newState == SelectableState.Selected && state != SelectableState.Selected)
+            {
+                OnClick?.Invoke();
+            }
             state = newState;
         }
     }

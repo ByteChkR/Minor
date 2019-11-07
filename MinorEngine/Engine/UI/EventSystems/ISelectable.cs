@@ -7,7 +7,7 @@ namespace Engine.UI.EventSystems
     {
         int TabStop { get; set; }
         void SetState(SelectableState state);
-        Box2 BoundingBox { get; set; }
+        Box2 BoundingBox { get; }
     }
 
     

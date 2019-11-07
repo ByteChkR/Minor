@@ -265,17 +265,17 @@ namespace Engine.Debug
                 new Vector2(1f, 1f),
             };
 
-            _tText.Position = new Vector2(-0.39f, 0.353f);
+            _tText.Position = new Vector2(-0.39f, 0.353f) * 2;
             _tText.Scale = new Vector2(2f, 2f);
 
-            _tOut.Position = new Vector2(-0.33f, 0.31f);
+            _tOut.Position = new Vector2(-0.33f, 0.31f) * 2;
             _tOut.Scale = new Vector2(0.8f, 0.8f);
 
-            _tIn.Position = new Vector2(-0.39f, -0.39f);
+            _tIn.Position = new Vector2(-0.39f, -0.39f) * 2;
             _tIn.Scale = new Vector2(1.5f, 1.5f);
 
 
-            _tHint.Position = new Vector2(-0.46f, -0.46f);
+            _tHint.Position = new Vector2(-0.46f, -0.46f) * 2;
             _tHint.Scale = new Vector2(1.5f, 1.5f);
 
 
