@@ -6,6 +6,7 @@ using Engine.Debug;
 using Engine.IO;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
+using Engine.OpenCL.Runner;
 using Engine.Rendering;
 using OpenTK;
 using OpenTK.Graphics;
@@ -19,6 +20,7 @@ namespace Engine.OpenFL
     {
         private bool MultiThread = false;
 
+        private FLRunner _flRunner;
         /// <summary>
         /// List of previews
         /// </summary>
@@ -39,10 +41,6 @@ namespace Engine.OpenFL
         /// </summary>
         private Interpreter _stepInterpreter;
 
-        /// <summary>
-        /// The Kernel Database that is used to provide the kernels that the interpreter uses
-        /// </summary>
-        private KernelDatabase _db;
 
         /// <summary>
         /// Flag to indicate that an active debugging session is running.
@@ -69,6 +67,7 @@ namespace Engine.OpenFL
         public FLGeneratorComponent(List<LitMeshRendererComponent> previews, int width, int height, bool multiThread = false)
         {
             MultiThread = multiThread;
+            
             this.width = width;
             this.height = height;
             _previews = previews;
@@ -128,10 +127,16 @@ namespace Engine.OpenFL
                 _previews[i].Textures[1] = SpecularTex;
             }
 
-            if(MultiThread)
-                _threadInstance = CLAPI.GetInstance();
-            else _threadInstance = CLAPI.MainThread;
-            
+
+            if (MultiThread)
+            {
+                _flRunner = new FLMultiThreadRunner(null);
+            }
+            else
+            {
+                _flRunner = new FLRunner(CLAPI.MainThread, null);
+            }
+
 
 
             DebugConsoleComponent console =
@@ -141,7 +146,6 @@ namespace Engine.OpenFL
             console?.AddCommand("step", cmd_FLStep);
             console?.AddCommand("r", cmd_FLReset);
             console?.AddCommand("dbgstop", cmd_FLStop);
-            _db = new KernelDatabase(_threadInstance, "assets/kernel/", OpenCL.TypeEnums.DataTypes.UCHAR1);
         }
 
         /// <summary>
@@ -166,53 +170,14 @@ namespace Engine.OpenFL
             {
                 return;
             }
+            Dictionary<string, Texture> otherTex = new Dictionary<string, Texture>();
+            otherTex.Add("specularOut", SpecularTex);
+            FLExecutionContext exec = new FLExecutionContext(filename, Tex, otherTex, null);
 
-            if (MultiThread)
-                ThreadManager<Interpreter>.RunInThread(() => MultiThreadTest(filename), MultiThreadTestResult);
-            else
-            {
-                MultiThreadTest(filename);
-            }
+            _flRunner.Enqueue(exec);
+            _flRunner.Process();
+            
 
-        }
-        private CLAPI _threadInstance;
-        private GameWindow _threadGLContext;
-        private Interpreter MultiThreadTest(string filename)
-        {
-            if (MultiThread)
-            {
-                _threadGLContext = new GameWindow(256, 128, GraphicsMode.Default, "TEST");
-                _threadGLContext.MakeCurrent();
-            }
-
-            MemoryBuffer buf = TextureLoader.TextureToMemoryBuffer(_threadInstance, Tex);
-            Interpreter ret = new Interpreter(_threadInstance, filename, buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, true);
-
-
-            do
-            {
-                ret.Step();
-            } while (!ret.Terminated);
-
-            byte[] buffer = ret.GetResult<byte>();
-            CLBufferInfo spe = ret.GetBuffer("specularOut");
-            if (spe != null)
-            {
-                byte[] spec = CLAPI.ReadBuffer<byte>(_threadInstance, spe.Buffer, (int)spe.Buffer.Size);
-
-                TextureLoader.Update(SpecularTex, spec, (int)SpecularTex.Width, (int)SpecularTex.Height);
-            }
-
-            TextureLoader.Update(Tex, buffer, (int)Tex.Width, (int)Tex.Height);
-
-            return ret;
-        }
-
-        private void MultiThreadTestResult(Interpreter result)
-        {
-            _threadGLContext.Dispose();
-            if (!MultiThread) return;
-            _threadInstance.Dispose();
         }
 
         /// <summary>
@@ -284,7 +249,7 @@ namespace Engine.OpenFL
 
             _isInStepMode = true;
             _stepInterpreter?.ReleaseResources();
-            _stepInterpreter = new Interpreter(_threadInstance, args[0], buf, (int)Tex.Width, (int)Tex.Height, 1, 4, _db, false);
+            _stepInterpreter = new Interpreter(CLAPI.MainThread, args[0], OpenCL.TypeEnums.DataTypes.UCHAR1, buf, (int)Tex.Width, (int)Tex.Height, 1, 4,"assets/kernel/", false);
 
             return "Debugging Session Started.";
         }
