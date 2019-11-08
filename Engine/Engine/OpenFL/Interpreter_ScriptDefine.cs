@@ -18,7 +18,7 @@ namespace Engine.OpenFL
         /// Define handler that loads defined scripts
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private static void DefineScript(string[] arg, Dictionary<string, CLBufferInfo> defines, int width, int height,
+        private static void DefineScript(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines, int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)
         {
             if (arg.Length < 2)
@@ -46,7 +46,7 @@ namespace Engine.OpenFL
                 Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFL, 10);
 
                 MemoryBuffer buf =
-                    CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite);
+                    CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite);
 
 
                 string fn = filename.Replace(FilepathIndicator, "");
@@ -54,7 +54,7 @@ namespace Engine.OpenFL
 
                 if (IOManager.Exists(fn))
                 {
-                    Interpreter interpreter = new Interpreter(fn, buf, width, height,
+                    Interpreter interpreter = new Interpreter(instance, fn, buf, width, height,
                         depth, channelCount, kernelDb, true);
 
                     do
@@ -74,7 +74,7 @@ namespace Engine.OpenFL
                             new InvalidFilePathException(fn)),
                         true);
 
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -86,7 +86,7 @@ namespace Engine.OpenFL
                     true);
 
                 CLBufferInfo info =
-                    new CLBufferInfo(CLAPI.CreateEmpty<byte>(InputBufferSize, MemoryFlag.ReadWrite), true);
+                    new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite), true);
                 info.SetKey(varname);
                 defines.Add(varname, info);
             }

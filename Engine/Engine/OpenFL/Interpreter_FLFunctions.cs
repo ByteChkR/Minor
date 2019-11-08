@@ -77,7 +77,7 @@ namespace Engine.OpenFL
             {
                 Logger.Log("Updating Channel Buffer", DebugChannel.Log | DebugChannel.OpenFL, 6);
                 _activeChannels = temp;
-                CLAPI.WriteToBuffer(_activeChannelBuffer, _activeChannels);
+                CLAPI.WriteToBuffer(_instance,_activeChannelBuffer, _activeChannels);
             }
             else
             {
@@ -101,7 +101,7 @@ namespace Engine.OpenFL
         {
             if (_currentArgStack.Count == 0)
             {
-                CLAPI.WriteRandom(_currentBuffer.Buffer, randombytesource, _activeChannels, false);
+                CLAPI.WriteRandom(_instance, _currentBuffer.Buffer, randombytesource, _activeChannels, false);
             }
 
             while (_currentArgStack.Count != 0)
@@ -115,7 +115,7 @@ namespace Engine.OpenFL
                     continue;
                 }
 
-                CLAPI.WriteRandom((obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, false);
+                CLAPI.WriteRandom(_instance, (obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, false);
             }
         }
 
@@ -126,7 +126,7 @@ namespace Engine.OpenFL
         {
             if (_currentArgStack.Count == 0)
             {
-                CLAPI.WriteRandom(_currentBuffer.Buffer, randombytesource, _activeChannels, true);
+                CLAPI.WriteRandom(_instance, _currentBuffer.Buffer, randombytesource, _activeChannels, true);
             }
 
             while (_currentArgStack.Count != 0)
@@ -140,7 +140,7 @@ namespace Engine.OpenFL
                     continue;
                 }
 
-                CLAPI.WriteRandom((obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, true);
+                CLAPI.WriteRandom(_instance, (obj as CLBufferInfo).Buffer, randombytesource, _activeChannels, true);
             }
         }
 

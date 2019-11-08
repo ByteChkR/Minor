@@ -37,14 +37,14 @@ namespace Engine.OpenCL
         /// Public constructor
         /// </summary>
         /// <param name="FilePath">The FilePath where the source is located</param>
-        public CLProgram(string FilePath, string genType)
+        public CLProgram(CLAPI instance,string FilePath, string genType)
         {
             _filePath = FilePath;
             _genType = genType;
 
             ContainedKernels = new Dictionary<string, CLKernel>();
 
-            Initialize();
+            Initialize(instance);
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Loads the source and initializes the CLProgram
         /// </summary>
-        private void Initialize()
+        private void Initialize(CLAPI instance)
         {
             int vnum = GetVectorNum(_genType);
             string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
@@ -99,7 +99,7 @@ namespace Engine.OpenCL
             string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
             string[] kernelNames = FindKernelNames(source);
 
-            ClProgramHandle = CLAPI.CreateCLProgramFromSource(source);
+            ClProgramHandle = CLAPI.CreateCLProgramFromSource(instance, source);
 
 
             foreach (string kernelName in kernelNames)
@@ -114,11 +114,11 @@ namespace Engine.OpenCL
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
                 if (k == null)
                 {
-                    ContainedKernels.Add(kernelName, new CLKernel(null, kernelName, parameter));
+                    ContainedKernels.Add(kernelName, new CLKernel(instance,null, kernelName, parameter));
                 }
                 else
                 {
-                    ContainedKernels.Add(kernelName, new CLKernel(k, kernelName, parameter));
+                    ContainedKernels.Add(kernelName, new CLKernel(instance,k, kernelName, parameter));
                 }
             }
         }

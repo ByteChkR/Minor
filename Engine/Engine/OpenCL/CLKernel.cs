@@ -23,6 +23,8 @@ namespace Engine.OpenCL
         /// </summary>
         public Dictionary<string, KernelParameter> Parameter { get; }
 
+        private CLAPI _instance;
+
         /// <summary>
         /// The Compiled and Linked OpenCL Kernel
         /// </summary>
@@ -39,8 +41,9 @@ namespace Engine.OpenCL
         /// <param name="k">The Compiled and Linked Kernel</param>
         /// <param name="name">The name of the kernel</param>
         /// <param name="parameter">The parsed KernelParameter</param>
-        public CLKernel(Kernel k, string name, KernelParameter[] parameter)
+        public CLKernel(CLAPI instance, Kernel k, string name, KernelParameter[] parameter)
         {
+            _instance = instance;
             Kernel = k;
             Name = name;
             Parameter = new Dictionary<string, KernelParameter>(parameter.Select(x =>
@@ -64,7 +67,7 @@ namespace Engine.OpenCL
         /// <param name="value">The value to be set</param>
         public void SetArg(string parameterName, object value)
         {
-            SetArg(Parameter[parameterName].Id, Parameter[parameterName].CastToType(value));
+            SetArg(Parameter[parameterName].Id, Parameter[parameterName].CastToType(_instance,value));
         }
 
         /// <summary>
@@ -99,7 +102,7 @@ namespace Engine.OpenCL
 #if NO_CL
             Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning, 10);
 #else
-            Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(value));
+            Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(_instance, value));
 #endif
         }
 

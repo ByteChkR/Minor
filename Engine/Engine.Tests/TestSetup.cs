@@ -16,7 +16,7 @@ namespace Engine.Tests
             {
                 if (kernelDB == null)
                 {
-                    kernelDB = new KernelDatabase("resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+                    kernelDB = new KernelDatabase(CLAPI.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
                 }
 
                 return kernelDB;

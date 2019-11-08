@@ -105,18 +105,18 @@ namespace Engine.Demo.scenes
             Mesh plane = MeshLoader.FileToMesh("assets/models/plane.obj");
             Mesh bgBox = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
-            MeshBuilder mb = new MeshBuilder();
+            //MeshBuilder mb = new MeshBuilder();
 
-            mb.AddTriangle(
-                new Vector3(-1, 0, -1),
-                new Vector3(1, 0, 1),
-                new Vector3(1, 0, -1));
-            mb.AddTriangle(
-                new Vector3(-1, 0, 1),
-                new Vector3(1, 0, 1),
-                new Vector3(-1, 0, -1));
-            plane.Dispose();
-            plane = mb.ToMesh();
+            //mb.AddTriangle(
+            //    new Vector3(-1, 0, -1),
+            //    new Vector3(1, 0, 1),
+            //    new Vector3(1, 0, -1));
+            //mb.AddTriangle(
+            //    new Vector3(-1, 0, 1),
+            //    new Vector3(1, 0, 1),
+            //    new Vector3(-1, 0, -1));
+            //plane.Dispose();
+            //plane = mb.ToMesh();
 
             ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
             {
@@ -160,7 +160,7 @@ namespace Engine.Demo.scenes
                     objSphere.GetComponent<LitMeshRendererComponent>(), objQuad.GetComponent<LitMeshRendererComponent>()
                 },
                 512,
-                512));
+                512, true));
 
             Add(_sourceCube);
             GameEngine.Instance.CurrentScene.Add(uiText);

@@ -171,13 +171,13 @@ namespace Engine.OpenCL
         /// </summary>
         /// <param name="value">the value casted to the required type for the parameter</param>
         /// <returns></returns>
-        public object CastToType(object value)
+        public object CastToType(CLAPI instance, object value)
         {
             if (IsArray)
             {
                 object[] data = (object[]) value;
 
-                return CLAPI.CreateBuffer(Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
+                return CLAPI.CreateBuffer(instance, Array.ConvertAll(data, x => CastToType(Converters[(int) DataType], x)),
                     Converters[(int) DataType], MemoryFlag.CopyHostPointer | MemoryFlag.ReadOnly);
             }
 

@@ -107,7 +107,10 @@ namespace Engine.Core
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
         }
 
-
+        public void MakeCurrent()
+        {
+            Window.MakeCurrent();
+        }
         public void SetSettings(EngineSettings settings)
         {
             Settings = settings;
