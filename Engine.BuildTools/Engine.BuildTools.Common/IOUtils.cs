@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Engine.Player.Common
+namespace Engine.BuildTools.Common
 {
     public static class IOUtils
     {

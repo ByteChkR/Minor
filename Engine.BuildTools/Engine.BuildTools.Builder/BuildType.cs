@@ -1,4 +1,4 @@
-﻿namespace Engine.Player.Builder
+﻿namespace Engine.BuildTools.Builder
 {
     public enum BuildType
     {

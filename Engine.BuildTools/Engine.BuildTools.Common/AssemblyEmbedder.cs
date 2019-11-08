@@ -4,7 +4,7 @@ using System.IO;
 using System.Threading;
 using System.Xml;
 
-namespace Engine.Player.Common
+namespace Engine.BuildTools.Common
 {
     public static class AssemblyEmbedder
     {

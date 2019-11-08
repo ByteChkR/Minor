@@ -4,7 +4,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Reflection;
 
-namespace Engine.Player.PackageCreator
+namespace Engine.BuildTools.PackageCreator
 {
     public static class Creator
     {

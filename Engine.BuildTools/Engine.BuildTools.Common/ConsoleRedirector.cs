@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Data.SqlTypes;
+using System.Diagnostics;
 using System.IO;
-using System.Security.Policy;
 using System.Threading;
 
-namespace Engine.ReleaseBuilder
+namespace Engine.BuildTools.Common
 {
     public class ConsoleRedirector
     {
@@ -12,27 +13,31 @@ namespace Engine.ReleaseBuilder
         private TextReader _cOut;
         private TextReader _cEOut;
         private Process _proc;
-        private WriteLine _del;
-
+        private Action<string> _del;
+        private object lockObj = new object();
+        private bool quitFlag = false;
         public ConsoleRedirector()
         {
             //SHIT
         }
 
-        public delegate void WriteLine(string line);
 
         public static ConsoleRedirector CreateRedirector(StreamReader consoleOut, StreamReader errorConsoleOut,
-            Process proc, WriteLine del = null)
+            Process proc, Action<string> del = null)
         {
             ConsoleRedirector gcr = new ConsoleRedirector
             {
-                _proc = proc, _cEOut = errorConsoleOut, _cOut = consoleOut, _del = del
+                _proc = proc,
+                _cEOut = errorConsoleOut,
+                _cOut = consoleOut,
+                _del = del
             };
             return gcr;
         }
 
         public void StartThreads()
         {
+            quitFlag = false;
             if (_thread == null)
             {
                 _thread = new Thread(() => Start(_cOut));
@@ -57,20 +62,8 @@ namespace Engine.ReleaseBuilder
 
         public void StopThreads()
         {
-            if (_thread == null && _errThread == null)
-            {
-                return;
-            }
-
-            if (_thread != null)
-            {
-                _thread.Abort();
-            }
-
-            if (_errThread != null)
-            {
-                _errThread.Abort();
-            }
+            lock (lockObj)
+                quitFlag = true;
         }
 
         public string GetRemainingLogs()
@@ -94,6 +87,15 @@ namespace Engine.ReleaseBuilder
             string txt = "";
             while (!_proc.HasExited)
             {
+                lock (lockObj)
+                {
+
+                    if (quitFlag)
+                    {
+                        Console.WriteLine("Quitting From Loop");
+                        return;
+                    }
+                }
                 txt = cout.ReadLine();
                 if (txt != "")
                 {

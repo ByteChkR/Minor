@@ -80,12 +80,6 @@
     <Content Include="icons8_apple_arcade_480_2jC_icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Engine.Player.Common\Engine.Player.Common.csproj">
-      <Project>{e4802a9d-bdcc-4055-ab7c-a9fa35f6894b}</Project>
-      <Name>Engine.Player.Common</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
@@ -96,6 +90,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj">
+      <Project>{94a1fe92-60c7-44ad-9f80-2ed2f7a0e899}</Project>
+      <Name>Engine.BuildTools.Common</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('..\packages\Fody.4.2.1\build\Fody.targets')" />

@@ -8,7 +8,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using Engine.Player.Common;
+using Engine.BuildTools.Common;
 using Microsoft.Win32;
 namespace Engine.Player
 {

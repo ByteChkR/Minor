@@ -3,12 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Version>0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
-    <ProjectReference Include="..\Engine.Player.Common\Engine.Player.Common.csproj" />
-    <ProjectReference Include="..\Engine.Player.PackageCreator\Engine.Player.PackageCreator.csproj" />
+    <ProjectReference Include="..\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj" />
+    <ProjectReference Include="..\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj" />
   </ItemGroup>
 
   <ItemGroup>

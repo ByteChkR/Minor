@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "ResourcePackager": {
-      "commandName": "Project",
-      "commandLineArgs": "D:\\Users\\Tim\\Documents\\Minor\\MinorEngine\\Engine.Demo\\Engine.Demo.csproj @filelist.txt"
-    }
-  }
-}

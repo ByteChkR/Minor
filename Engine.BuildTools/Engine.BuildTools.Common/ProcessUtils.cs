@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Engine.Player.Common
+namespace Engine.BuildTools.Common
 {
     public static class ProcessUtils
     {

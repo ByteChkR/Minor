@@ -8,10 +8,10 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml.Serialization;
 using Engine.AssetPackaging;
-using Engine.Player.Common;
-using Engine.Player.PackageCreator;
+using Engine.BuildTools.Common;
+using Engine.BuildTools.PackageCreator;
 
-namespace Engine.Player.Builder
+namespace Engine.BuildTools.Builder
 {
     class Program
     {
