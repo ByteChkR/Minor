@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Player.BuildTools", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Player.Builder", "Engine.Player.Builder\Engine.Player.Builder.csproj", "{3533597A-EAB4-4B4D-A221-82C6ADBC447A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.AssetPackaging", "..\MinorEngine\Engine.AssetPackaging\Engine.AssetPackaging.csproj", "{DF0E975F-F7CE-4E13-A5E1-C05FB23F5F06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.AssetPackaging", "..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj", "{DF0E975F-F7CE-4E13-A5E1-C05FB23F5F06}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

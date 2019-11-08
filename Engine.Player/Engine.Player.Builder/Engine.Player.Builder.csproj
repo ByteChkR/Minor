@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\MinorEngine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
+    <ProjectReference Include="..\..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
     <ProjectReference Include="..\Engine.Player.BuildTools\Engine.Player.BuildTools.csproj" />
     <ProjectReference Include="..\Engine.Player.Common\Engine.Player.Common.csproj" />
     <ProjectReference Include="..\Engine.Player.PackageCreator\Engine.Player.PackageCreator.csproj" />
