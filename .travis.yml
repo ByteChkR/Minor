@@ -6,7 +6,7 @@ matrix:
   include:
     - dotnet: 2.2
       env:
-        - SOLUTION="MinorEngine/Engine.sln"
+        - SOLUTION="Engine/Engine.sln"
         - BUILDCONFIG="Release"
 
 #Restore the Submodules and the Project
@@ -16,7 +16,7 @@ install:
   #Restore Projects
   - dotnet restore ADL/ADL/
   - dotnet restore ext-pp/
-  - dotnet restore MinorEngine/ #<-- The Project
+  - dotnet restore Engine/ #<-- The Project
 
 
 #Build the projects

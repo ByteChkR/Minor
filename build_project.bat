@@ -6,14 +6,14 @@ echo Setting up Submodules:
 
 call build_submodules.bat
 
-echo Setting up MinorEngine:
+echo Setting up Engine:
 
-dotnet restore MinorEngine/
+dotnet restore Engine/
 
-echo Building MinorEngine:
+echo Building Engine:
 
-dotnet build MinorEngine/ -c Release
+dotnet build Engine/ -c Release
 
-echo Running Tests on MinorEngine:
+echo Running Tests on Engine:
 
-dotnet test MinorEngine/ -p:Configuration=Debug
+dotnet test Engine/ -p:Configuration=Debug

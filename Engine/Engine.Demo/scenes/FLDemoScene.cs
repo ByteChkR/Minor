@@ -234,7 +234,7 @@ namespace Engine.Demo.scenes
             Texture btnIdle = TextureLoader.ColorToTexture(System.Drawing.Color.Green);
             Texture btnHover = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
             Texture btnClick = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
-            Button btn = new Button(new EventSystem(), btnIdle, uiShader, 1, btnClick, btnHover);
+            Button btn = new Button( btnIdle, uiShader, 1, btnClick, btnHover);
             obj.AddComponent(btn);
             Add(obj);
             btn.Scale = Vector2.One * 0.3f;
