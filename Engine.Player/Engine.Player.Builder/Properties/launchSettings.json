@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Engine.Player.Builder": {
+      "commandName": "Project",
+      "commandLineArgs": "example_pack_on_disk.xml",
+      "workingDirectory": ".\\"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\MinorEngine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
+    <ProjectReference Include="..\Engine.Player.BuildTools\Engine.Player.BuildTools.csproj" />
+    <ProjectReference Include="..\Engine.Player.Common\Engine.Player.Common.csproj" />
+    <ProjectReference Include="..\Engine.Player.PackageCreator\Engine.Player.PackageCreator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="MinorGame\Minor\MinorEngine\Engine\OpenCL\DotNetCore\DataTypes\VectorTypes.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+    </None>
+    <None Update="resources\project_build.bat">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
