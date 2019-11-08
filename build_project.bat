@@ -25,4 +25,3 @@ echo Running Tests on Engine:
 dotnet test Engine/ -p:Configuration=Debug
 dotnet test Engine.BuildTools/ -p:Configuration=Debug
 dotnet test Engine.Player/ -p:Configuration=Debug
-pause
