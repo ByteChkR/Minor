@@ -9,7 +9,6 @@ namespace Engine.BuildTools.Builder
     {
         public bool CreateGamePackage;
         public string GamePackageFileList;
-        public bool CreateEnginePackage;
 
         public string Project;
         public string AssetFolder;

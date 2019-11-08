@@ -35,10 +35,10 @@ namespace Engine.BuildTools.PackageCreator
             fs.Close();
         }
 
-        public static void CreateEnginePackage(string outputFolder, string workingDir, string[] files)
+        public static void CreateEnginePackage(string outputFile, string workingDir, string[] files)
         {
-            File.WriteAllBytes(outputFolder, new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-            FileStream fs = new FileStream(outputFolder, FileMode.Open);
+            File.WriteAllBytes(outputFile, new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            FileStream fs = new FileStream(outputFile, FileMode.Open);
 
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
             Uri wdir = new Uri(workingDir);

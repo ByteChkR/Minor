@@ -103,8 +103,48 @@ namespace Engine.BuildTools.Builder
                 _CreateGamePackage(info.GetValues("--create-package").ToArray());
             }
 
+            if (info.HasValueFlag("--create-engine-package"))
+            {
+                _CreateEnginePackage(info.GetValues("--create-engine-package").ToArray());
+            }
+
         }
 
+        static void _CreateEnginePackage(string[] args)
+        {
+            //1 Directory of unpacked game build
+            //2 The Project Name(Must have the same name as the dll that is used to start)
+            //3 The OutputFile
+            //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
+            //5 Optional File List
+
+
+            try
+            {
+                Console.WriteLine(Path.GetFullPath(args[0]));
+                Console.WriteLine(Path.GetFullPath(args[2]));
+                string fileList;
+                if (args.Length > 4)
+                {
+                    fileList = Path.GetFullPath(args[4]);
+                    Console.WriteLine(Path.GetFullPath(args[4]));
+                }
+                else
+                {
+                    fileList = "";
+                }
+
+                string[] files = ParseEngineFileList(fileList, Path.GetFullPath(args[0]));
+                Creator.CreateEnginePackage(Path.GetFullPath(args[2]), Path.GetFullPath(args[0]), files);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not Create Engine Package. Wrong Arguments?");
+                Console.WriteLine("Arguments: <DirectoryOfEngineBuild> <TheOutputFile> <optional: file list.>");
+                Console.WriteLine(e);
+                throw;
+            }
+        }
         static void _CreateGamePackage(string[] args)
         {
             //1 Directory of unpacked game build
@@ -416,6 +456,32 @@ namespace Engine.BuildTools.Builder
                 f.Add(projectFolder + "/" + projectName + ".dll");
                 f.Add(projectFolder + "/" + projectName + ".runtimeconfig.json");
                 f.Add(projectFolder + "/" + projectName + ".deps.json");
+                files = f.ToArray();
+            }
+
+            return files;
+        }
+
+        private static string[] ParseEngineFileList(string fileList, string projectFolder)
+        {
+            string[] files;
+            if (fileList != null && File.Exists(fileList))
+            {
+                files = File.ReadAllLines(fileList);
+                for (int i = 0; i < files.Length; i++)
+                {
+                    files[i] = Path.GetFullPath(files[i]);
+                }
+            }
+            else
+            {
+                Console.WriteLine(
+                    "Warning. No Game Package File list. Using /asset /pack folder as well as projectname.dll");
+                List<string> f = new List<string>();
+
+                f.AddRange(Directory.GetFiles(projectFolder + "/runtimes", "*", SearchOption.AllDirectories));
+                f.AddRange(Directory.GetFiles(projectFolder, "*.dll", SearchOption.TopDirectoryOnly));
+
                 files = f.ToArray();
             }
 
