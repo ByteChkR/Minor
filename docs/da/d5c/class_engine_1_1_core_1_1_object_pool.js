@@ -10,8 +10,8 @@ var class_engine_1_1_core_1_1_object_pool =
     [ "Give", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#ada24fd474581cb59637eff603b996459", null ],
     [ "InitializeSize", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#a57e0314c4ed527cbeac9421a940ffee1", null ],
     [ "Take", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#a8be3f9b24c995b4e7c21266e3bf30ad3", null ],
-    [ "_Factory", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#a00d1d01ab70493895dc127276e661e45", null ],
+    [ "_factory", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#ab790221ad3cdb7eb60c7043bb08f3d32", null ],
     [ "_InternalList", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#ad579adc75441130a6f73136a1ca02ee4", null ],
-    [ "_maxItems", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#a4460cf16c3f18e6bec17c5fa5e15e9ae", null ],
+    [ "_maxItems", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#a2b1f9f17c5eb1ad0170e9ea085b93049", null ],
     [ "_nextID", "da/d5c/class_engine_1_1_core_1_1_object_pool.html#a305c3f5f34c4cc6a9bc4aeeca1627d6f", null ]
 ];

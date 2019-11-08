@@ -6,6 +6,7 @@ var class_engine_1_1_i_o_1_1_texture_loader =
     [ "BitmapToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a8fc124f5f83b87a07f96f7d634c08857", null ],
     [ "BytesToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a854dfaa421219e83a3d012dce0b3f70c", null ],
     [ "BytesToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a548559110b795d8cce708030c7b9ce01", null ],
+    [ "ColorToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#aaab21c1cba8d7a8fe86694ba65da91a2", null ],
     [ "Copy", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a9e4e5fecc7aca5e77ac553acba0fd5dc", null ],
     [ "DefaultTexParameter", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a5b2adaeb9aee841f0b33e9504ba2f26c", null ],
     [ "FileToTexture", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#ac018b8c3823425c5f81bf1471bf1c89b", null ],

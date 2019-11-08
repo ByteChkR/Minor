@@ -40,9 +40,10 @@ var class_engine_1_1_debug_1_1_debug_console_component =
     [ "_showConsole", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a8a6cad121bcf44af001c83447d9d6604", null ],
     [ "_title", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#aee4fbb0b5b748969d4283f85e2d933ca", null ],
     [ "ConsoleTitle", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a51a39db125d7e3465c28638acc39dbd0", null ],
+    [ "fps", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a513e0efa3ab94863c19278a1c7016e95", null ],
+    [ "frames", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a0f19404cfbfd419bad979a0970e9dc85", null ],
     [ "HelpText", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#ac6aaefc2c99e790d0e079596b1a26453", null ],
     [ "inputIndex", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a6adca345d8b3f35b931a07a9a9078df9", null ],
     [ "MaxConsoleLines", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#ad8f969bbf9f4e5c2969b333333c7a9c1", null ],
-    [ "rt", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a17d9b11b0e24146bc245351e13241a98", null ],
-    [ "rt2", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a8c7e2dfcb3580a1fcb8562bd8e97d553", null ]
+    [ "time", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a6a55684b681efae4e2cb06fd682ebb68", null ]
 ];

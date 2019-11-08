@@ -113,6 +113,9 @@ Inheritance diagram for Engine.DataTypes.Texture:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
+<tr class="memitem:abb856021578d64de0a6716635f3553ad"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html#abb856021578d64de0a6716635f3553ad">Copy</a> ()</td></tr>
+<tr class="memdesc:abb856021578d64de0a6716635f3553ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a Copy of this Mesh(It Does not copy the buffers on the GPU) It is save to Dispose the copied object. BUT NEVER DISPOSE THE SOURCE OBJECT BEFORE ALL COPIES HAVE BEEN DISPOSED, otherwise they become unusable and will probably crash the engine once interacted with  <a href="#abb856021578d64de0a6716635f3553ad">More...</a><br /></td></tr>
+<tr class="separator:abb856021578d64de0a6716635f3553ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6cd4567810c11c22298fd6ce94ce18e3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html#a6cd4567810c11c22298fd6ce94ce18e3">Dispose</a> ()</td></tr>
 <tr class="memdesc:a6cd4567810c11c22298fd6ce94ce18e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disposed Implementation to free the texture memory when it is no longer in use.  <a href="#a6cd4567810c11c22298fd6ce94ce18e3">More...</a><br /></td></tr>
 <tr class="separator:a6cd4567810c11c22298fd6ce94ce18e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -155,6 +158,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:af6944bdd0daedb421c7aca824ce580d1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html#af6944bdd0daedb421c7aca824ce580d1">_disposed</a></td></tr>
 <tr class="memdesc:af6944bdd0daedb421c7aca824ce580d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private flag to keep from disposing the texture twice  <a href="#af6944bdd0daedb421c7aca824ce580d1">More...</a><br /></td></tr>
 <tr class="separator:af6944bdd0daedb421c7aca824ce580d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5854c0da056e903e8b9c2d9eb1ff0952"><td class="memItemLeft" align="right" valign="top"><a id="a5854c0da056e903e8b9c2d9eb1ff0952"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>_dontDispose</b></td></tr>
+<tr class="separator:a5854c0da056e903e8b9c2d9eb1ff0952"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
@@ -200,6 +206,26 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="abb856021578d64de0a6716635f3553ad"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb856021578d64de0a6716635f3553ad">&#9670;&nbsp;</a></span>Copy()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> Engine.DataTypes.Texture.Copy </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a Copy of this Mesh(It Does not copy the buffers on the GPU) It is save to Dispose the copied object. BUT NEVER DISPOSE THE SOURCE OBJECT BEFORE ALL COPIES HAVE BEEN DISPOSED, otherwise they become unusable and will probably crash the engine once interacted with </p>
+<dl class="section return"><dt>Returns</dt><dd>A Copy of this <a class="el" href="../../d8/d39/class_engine_1_1_data_types_1_1_mesh.html" title="A Data Type that is containing the information that is needed to store a Mesh in OpenGL ...">Mesh</a> Object</dd></dl>
+
+</div>
+</div>
 <a id="a6cd4567810c11c22298fd6ce94ce18e3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6cd4567810c11c22298fd6ce94ce18e3">&#9670;&nbsp;</a></span>Dispose()</h2>
 
@@ -394,7 +420,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>MinorEngine/Engine/DataTypes/Texture.cs</li>
+<li>Engine/Engine/DataTypes/Texture.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

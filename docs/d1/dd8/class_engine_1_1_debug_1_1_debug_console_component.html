@@ -140,7 +140,7 @@ Static Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a758e732504bbae2b63988a2553503663"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a758e732504bbae2b63988a2553503663">OnDestroy</a> ()</td></tr>
-<tr class="memdesc:a758e732504bbae2b63988a2553503663"><td class="mdescLeft">&#160;</td><td class="mdescRight">OnDestroy Implementation that will remove the two render targets from the system  <a href="#a758e732504bbae2b63988a2553503663">More...</a><br /></td></tr>
+<tr class="memdesc:a758e732504bbae2b63988a2553503663"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues) I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0  <a href="#a758e732504bbae2b63988a2553503663">More...</a><br /></td></tr>
 <tr class="separator:a758e732504bbae2b63988a2553503663"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77422cd58cddfe5d729c59c35a56c596"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a77422cd58cddfe5d729c59c35a56c596">Awake</a> ()</td></tr>
 <tr class="memdesc:a77422cd58cddfe5d729c59c35a56c596"><td class="mdescLeft">&#160;</td><td class="mdescRight">Awake function getting all the references in need and also adding a few basic commands  <a href="#a77422cd58cddfe5d729c59c35a56c596">More...</a><br /></td></tr>
@@ -272,18 +272,21 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:ab0c54d2ff522a435c5525a284680d1f3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#ab0c54d2ff522a435c5525a284680d1f3">_invalidate</a></td></tr>
 <tr class="memdesc:ab0c54d2ff522a435c5525a284680d1f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag used to indicate that the console window has changed and we need to redraw it  <a href="#ab0c54d2ff522a435c5525a284680d1f3">More...</a><br /></td></tr>
 <tr class="separator:ab0c54d2ff522a435c5525a284680d1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a513e0efa3ab94863c19278a1c7016e95"><td class="memItemLeft" align="right" valign="top"><a id="a513e0efa3ab94863c19278a1c7016e95"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>fps</b></td></tr>
+<tr class="separator:a513e0efa3ab94863c19278a1c7016e95"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a55684b681efae4e2cb06fd682ebb68"><td class="memItemLeft" align="right" valign="top"><a id="a6a55684b681efae4e2cb06fd682ebb68"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>time</b></td></tr>
+<tr class="separator:a6a55684b681efae4e2cb06fd682ebb68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f19404cfbfd419bad979a0970e9dc85"><td class="memItemLeft" align="right" valign="top"><a id="a0f19404cfbfd419bad979a0970e9dc85"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>frames</b></td></tr>
+<tr class="separator:a0f19404cfbfd419bad979a0970e9dc85"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
 Static Private Attributes</h2></td></tr>
 <tr class="memitem:ad8f969bbf9f4e5c2969b333333c7a9c1"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#ad8f969bbf9f4e5c2969b333333c7a9c1">MaxConsoleLines</a> =&gt; (GameEngine.Instance.Height - 100) / 20</td></tr>
 <tr class="memdesc:ad8f969bbf9f4e5c2969b333333c7a9c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Maximum Amount of console lines that is <em>roughly</em> working for the usecase  <a href="#ad8f969bbf9f4e5c2969b333333c7a9c1">More...</a><br /></td></tr>
 <tr class="separator:ad8f969bbf9f4e5c2969b333333c7a9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17d9b11b0e24146bc245351e13241a98"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d2/d7d/class_engine_1_1_rendering_1_1_render_target.html">RenderTarget</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a17d9b11b0e24146bc245351e13241a98">rt</a></td></tr>
-<tr class="memdesc:a17d9b11b0e24146bc245351e13241a98"><td class="mdescLeft">&#160;</td><td class="mdescRight">Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues) I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0  <a href="#a17d9b11b0e24146bc245351e13241a98">More...</a><br /></td></tr>
-<tr class="separator:a17d9b11b0e24146bc245351e13241a98"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c7e2dfcb3580a1fcb8562bd8e97d553"><td class="memItemLeft" align="right" valign="top"><a id="a8c7e2dfcb3580a1fcb8562bd8e97d553"></a>
-static <a class="el" href="../../d2/d7d/class_engine_1_1_rendering_1_1_render_target.html">RenderTarget</a>&#160;</td><td class="memItemRight" valign="bottom"><b>rt2</b></td></tr>
-<tr class="separator:a8c7e2dfcb3580a1fcb8562bd8e97d553"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -702,6 +705,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
+<p>Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues) I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0 </p>
 <p>OnDestroy Implementation that will remove the two render targets from the system </p>
 
 <p>Reimplemented from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a78b50a4571affc1c1b2d071a1984930d">Engine.Core.AbstractComponent</a>.</p>
@@ -1530,32 +1534,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a17d9b11b0e24146bc245351e13241a98"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17d9b11b0e24146bc245351e13241a98">&#9670;&nbsp;</a></span>rt</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d2/d7d/class_engine_1_1_rendering_1_1_render_target.html">RenderTarget</a> Engine.Debug.DebugConsoleComponent.rt</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues) I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0 </p>
-
-</div>
-</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>MinorEngine/Engine/Debug/DebugConsoleComponent.cs</li>
+<li>Engine/Engine/Debug/DebugConsoleComponent.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

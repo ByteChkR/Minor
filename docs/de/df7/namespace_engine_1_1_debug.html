@@ -108,9 +108,6 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html">GraphDrawingComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Graph Drawing Component  <a href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dd7/class_engine_1_1_debug_1_1_graph_drawing_context.html">GraphDrawingContext</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Graph Drawing Context that uses GL.Lines  <a href="../../df/dd7/class_engine_1_1_debug_1_1_graph_drawing_context.html#details">More...</a><br /></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html">Logger</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logging Class that binds the ADL Debugging framework and is used for all Console Output/Crashes.  <a href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -123,35 +120,56 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a6b25a16804f9bf5c7b7f0d7a40a9a4a7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">DebugChannel</a> { <br />
-&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7ab1c94ca2fbc3e78fc30069c8d0f01680">DebugChannel.All</a> = -1, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a6adf97f83acf6453d4a6a4b1070f3754">DebugChannel.None</a> = 0, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7ace0be71e33226e4c1db2bcea5959f16b">DebugChannel.Log</a> = 1, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a0eaadb4fcb48a0a0ed7bc9868be9fbaa">DebugChannel.Warning</a> = 2, 
+<tr class="memitem:a05b1dc162a9a39654ddb4d4361b3f133"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">DebugChannel</a> : int { <br />
+&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133ace0be71e33226e4c1db2bcea5959f16b">DebugChannel.Log</a> = 1, 
+<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133a0eaadb4fcb48a0a0ed7bc9868be9fbaa">DebugChannel.Warning</a> = 1 &lt;&lt; 1, 
+<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133a902b0d55fddef6f8d651fe1035b7d4bd">DebugChannel.Error</a> = 1 &lt;&lt; 2, 
+<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133a63d72051e901c069f8aa1b32aa0c43bb">DebugChannel.Game</a> = 1 &lt;&lt; 3, 
 <br />
-&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a902b0d55fddef6f8d651fe1035b7d4bd">DebugChannel.Error</a> = 4
+&#160;&#160;<b>UNNAMED_CHANNEL0</b> = 1 &lt;&lt; 4, 
+<b>UNNAMED_CHANNEL1</b> = 1 &lt;&lt; 5, 
+<b>UNNAMED_CHANNEL2</b> = 1 &lt;&lt; 6, 
+<b>UNNAMED_CHANNEL3</b> = 1 &lt;&lt; 7, 
+<br />
+&#160;&#160;<b>UNNAMED_CHANNEL4</b> = 1 &lt;&lt; 8, 
+<b>UNNAMED_CHANNEL5</b> = 1 &lt;&lt; 9, 
+<b>UNNAMED_CHANNEL6</b> = 1 &lt;&lt; 10, 
+<b>UNNAMED_CHANNEL7</b> = 1 &lt;&lt; 11, 
+<br />
+&#160;&#160;<b>UNNAMED_CHANNEL8</b> = 1 &lt;&lt; 12, 
+<b>UNNAMED_CHANNEL9</b> = 1 &lt;&lt; 13, 
+<b>UNNAMED_CHANNEL10</b> = 1 &lt;&lt; 14, 
+<b>UNNAMED_CHANNEL11</b> = 1 &lt;&lt; 15, 
+<br />
+&#160;&#160;<b>UNNAMED_CHANNEL12</b> = 1 &lt;&lt; 16, 
+<b>Physics</b> = 1 &lt;&lt; 17, 
+<b>Exception</b> = 1 &lt;&lt; 18, 
+<b>Core</b> = 1 &lt;&lt; 19, 
+<br />
+&#160;&#160;<b>Rendering</b> = 1 &lt;&lt; 20, 
+<b>TextProcessor</b> = 1 &lt;&lt; 21, 
+<b>OpenFL</b> = 1 &lt;&lt; 22, 
+<b>OpenCL</b> = 1 &lt;&lt; 23, 
+<br />
+&#160;&#160;<b>OpenGL</b> = 1 &lt;&lt; 24, 
+<b>UI</b> = 1 &lt;&lt; 25, 
+<b>Audio</b> = 1 &lt;&lt; 26, 
+<b>Engine</b> = 1 &lt;&lt; 27, 
+<br />
+&#160;&#160;<b>Debug</b> = 1 &lt;&lt; 28, 
+<b>IO</b> = 1 &lt;&lt; 29, 
+<b>WFC</b> = 1 &lt;&lt; 30, 
+<b>EngineCore</b> = Engine | Core, 
+<br />
+&#160;&#160;<b>EngineRendering</b> = Engine | Rendering
 <br />
  }</td></tr>
-<tr class="memdesc:a6b25a16804f9bf5c7b7f0d7a40a9a4a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of Channels that can be used to send logs  <a href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">More...</a><br /></td></tr>
-<tr class="separator:a6b25a16804f9bf5c7b7f0d7a40a9a4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e457b8c37f7b1a905dbc358e41224f0"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0">DebugStage</a> { <br />
-&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a13e685964c2548aa748f7ea263bad4e5">DebugStage.Startup</a> = 1, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a95b19f7739b0b7ea7d6b07586be54f36">DebugStage.Init</a> = 2, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a44e0daaf3d6fc4cd66c3560428f23f31">DebugStage.SceneInit</a> = 4, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a0db377921f4ce762c62526131097968f">DebugStage.General</a> = 8, 
-<br />
-&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a06933067aafd48425d67bcb01bba5cb6">DebugStage.Update</a> = 16, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a50ae99e9c35446c2580e4b540b0fd104">DebugStage.Physics</a> = 32, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a568ef5cf90a0dc8965f75bb66225f2e1">DebugStage.CleanUp</a> = 64, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a5e520da5341f2fec6d3bbfe7ef357922">DebugStage.Render</a> = 128
-<br />
- }</td></tr>
-<tr class="memdesc:a8e457b8c37f7b1a905dbc358e41224f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The List of DebugStages used to Divide the Debug Logs and Data Statistics by.  <a href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0">More...</a><br /></td></tr>
-<tr class="separator:a8e457b8c37f7b1a905dbc358e41224f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a05b1dc162a9a39654ddb4d4361b3f133"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of Channels that can be used to send logs  <a href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">More...</a><br /></td></tr>
+<tr class="separator:a05b1dc162a9a39654ddb4d4361b3f133"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">&#9670;&nbsp;</a></span>DebugChannel</h2>
+<a id="a05b1dc162a9a39654ddb4d4361b3f133"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05b1dc162a9a39654ddb4d4361b3f133">&#9670;&nbsp;</a></span>DebugChannel</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -160,7 +178,7 @@ Enumerations</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">Engine.Debug.DebugChannel</a></td>
+          <td class="memname">enum <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">Engine.Debug.DebugChannel</a> : int</td>
         </tr>
       </table>
   </td>
@@ -172,57 +190,13 @@ Enumerations</h2></td></tr>
 
 <p>An enum of Channels that can be used to send logs </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7ab1c94ca2fbc3e78fc30069c8d0f01680"></a>All&#160;</td><td class="fielddoc"><p>Wildcard. This Sends to all Channels at once </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133ace0be71e33226e4c1db2bcea5959f16b"></a>Log&#160;</td><td class="fielddoc"><p>Used to Write Logs to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a6adf97f83acf6453d4a6a4b1070f3754"></a>None&#160;</td><td class="fielddoc"><p>Everything that will be sent over this channel is ONLY reachable when creating another log stream with mask = 0 because of the nature of bitwise operations </p>
+<tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133a0eaadb4fcb48a0a0ed7bc9868be9fbaa"></a>Warning&#160;</td><td class="fielddoc"><p>Used to Write Warnings to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7ace0be71e33226e4c1db2bcea5959f16b"></a>Log&#160;</td><td class="fielddoc"><p>Used to Write Logs to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
+<tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Used to Write Errors to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a0eaadb4fcb48a0a0ed7bc9868be9fbaa"></a>Warning&#160;</td><td class="fielddoc"><p>Used to Write Warnings to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Used to Write Errors to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
-</td></tr>
-</table>
-
-</div>
-</div>
-<a id="a8e457b8c37f7b1a905dbc358e41224f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e457b8c37f7b1a905dbc358e41224f0">&#9670;&nbsp;</a></span>DebugStage</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0">Engine.Debug.DebugStage</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The List of DebugStages used to Divide the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> Logs and Data Statistics by. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a13e685964c2548aa748f7ea263bad4e5"></a>Startup&#160;</td><td class="fielddoc"><p>Is used when the engine is starting up(before any user code has been executed. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a95b19f7739b0b7ea7d6b07586be54f36"></a>Init&#160;</td><td class="fielddoc"><p>Is used when the engine is initializing itself(e.g. Audio/Physics/Rendering/etc..) </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a44e0daaf3d6fc4cd66c3560428f23f31"></a>SceneInit&#160;</td><td class="fielddoc"><p>Is used when loading a Scene </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a0db377921f4ce762c62526131097968f"></a>General&#160;</td><td class="fielddoc"><p>Used Between the Init Stage and the Scene Init Stage </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a06933067aafd48425d67bcb01bba5cb6"></a>Update&#160;</td><td class="fielddoc"><p>Is used for the Update Loop of the engine </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a50ae99e9c35446c2580e4b540b0fd104"></a>Physics&#160;</td><td class="fielddoc"><p>Is used for the physics update in the loop </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a568ef5cf90a0dc8965f75bb66225f2e1"></a>CleanUp&#160;</td><td class="fielddoc"><p>Is Used when Cleaning up destroyed objects after the Update Frame </p>
-</td></tr>
-<tr><td class="fieldname"><a id="a8e457b8c37f7b1a905dbc358e41224f0a5e520da5341f2fec6d3bbfe7ef357922"></a>Render&#160;</td><td class="fielddoc"><p>Is used during the render stages. </p>
+<tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133a63d72051e901c069f8aa1b32aa0c43bb"></a>Game&#160;</td><td class="fielddoc"><p>Used to Write Logs from Game Code to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
 </table>
 

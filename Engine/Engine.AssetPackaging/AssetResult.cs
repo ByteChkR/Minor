@@ -97,7 +97,7 @@ namespace Engine.AssetPackaging
 
         private int FindAssetPackWithSpace(int space)
         {
-            if (packs.Count == 0 || packs[packs.Count - 1].SpaceLeft < 10)
+            if (packs.Count == 0 || packs[packs.Count - 1].SpaceLeft > 0)
             {
                 packs.Add(new AssetPack());
             }

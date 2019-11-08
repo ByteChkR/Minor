@@ -10,5 +10,5 @@ var class_engine_1_1_debug_1_1_memory_tracer =
     [ "_console", "d4/de2/class_engine_1_1_debug_1_1_memory_tracer.html#a333ec701340a8f3a68de4daca5393221", null ],
     [ "_current", "d4/de2/class_engine_1_1_debug_1_1_memory_tracer.html#a940a8c3261ee9d4664cbb64ef1ede765", null ],
     [ "_informationCollection", "d4/de2/class_engine_1_1_debug_1_1_memory_tracer.html#a51cfee20d2f9e27fa94b406dc7821ede", null ],
-    [ "MaxTraceCount", "d4/de2/class_engine_1_1_debug_1_1_memory_tracer.html#a77316b590e221f17423c358caf4f0fd4", null ]
+    [ "MaxTraceCount", "d4/de2/class_engine_1_1_debug_1_1_memory_tracer.html#a7a54f5c2ce5cd9cdc56f32160a13e4d5", null ]
 ];

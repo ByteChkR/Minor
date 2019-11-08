@@ -123,9 +123,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1b3437779f8471cbf78ae7151931b773"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html#a1b3437779f8471cbf78ae7151931b773">GetAttribLocation</a> (string name)</td></tr>
 <tr class="memdesc:a1b3437779f8471cbf78ae7151931b773"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Attribute location by name  <a href="#a1b3437779f8471cbf78ae7151931b773">More...</a><br /></td></tr>
 <tr class="separator:a1b3437779f8471cbf78ae7151931b773"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62b44d2f2ad17a6e7992ac1c44a6e0ca"><td class="memItemLeft" align="right" valign="top"><a id="a62b44d2f2ad17a6e7992ac1c44a6e0ca"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddUniformCache</b> (string name)</td></tr>
+<tr class="separator:a62b44d2f2ad17a6e7992ac1c44a6e0ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad84966082caca2ca5db5a59e704cc656"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html#ad84966082caca2ca5db5a59e704cc656">GetUniformLocation</a> (string name)</td></tr>
 <tr class="memdesc:ad84966082caca2ca5db5a59e704cc656"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the Uniform location by name  <a href="#ad84966082caca2ca5db5a59e704cc656">More...</a><br /></td></tr>
 <tr class="separator:ad84966082caca2ca5db5a59e704cc656"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad891aa2ff1c286e1641769b708c56449"><td class="memItemLeft" align="right" valign="top"><a id="ad891aa2ff1c286e1641769b708c56449"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetUniformLocationUncached</b> (string name)</td></tr>
+<tr class="separator:ad891aa2ff1c286e1641769b708c56449"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -162,6 +168,9 @@ Static Private Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
+<tr class="memitem:aadbd55e643dd713d6d006685e3db28b8"><td class="memItemLeft" align="right" valign="top"><a id="aadbd55e643dd713d6d006685e3db28b8"></a>
+readonly Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>uniformCache</b> = new Dictionary&lt;string, int&gt;()</td></tr>
+<tr class="separator:aadbd55e643dd713d6d006685e3db28b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91351bbaa293055fdce351c2d04e856d"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html#a91351bbaa293055fdce351c2d04e856d">_prgId</a></td></tr>
 <tr class="memdesc:a91351bbaa293055fdce351c2d04e856d"><td class="mdescLeft">&#160;</td><td class="mdescRight">The program id of the shader  <a href="#a91351bbaa293055fdce351c2d04e856d">More...</a><br /></td></tr>
 <tr class="separator:a91351bbaa293055fdce351c2d04e856d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -171,6 +180,9 @@ Static Private Attributes</h2></td></tr>
 <tr class="memitem:af97361c5cc92749b81115a298fa84f1e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html#af97361c5cc92749b81115a298fa84f1e">_defaultShader</a></td></tr>
 <tr class="memdesc:af97361c5cc92749b81115a298fa84f1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backing field of the Default shader  <a href="#af97361c5cc92749b81115a298fa84f1e">More...</a><br /></td></tr>
 <tr class="separator:af97361c5cc92749b81115a298fa84f1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ab4141b6291798892a5f3b4ced000a8"><td class="memItemLeft" align="right" valign="top"><a id="a2ab4141b6291798892a5f3b4ced000a8"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>_lastUsedPrgID</b> = -1</td></tr>
+<tr class="separator:a2ab4141b6291798892a5f3b4ced000a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Implements a Wrapper for Loading Building and compiling OpenGL Shaders </p>
@@ -496,7 +508,7 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>MinorEngine/Engine/Rendering/ShaderProgram.cs</li>
+<li>Engine/Engine/Rendering/ShaderProgram.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

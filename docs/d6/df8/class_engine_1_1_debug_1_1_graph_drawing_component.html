@@ -90,6 +90,7 @@ $(document).ready(function(){initNavTree('d6/df8/class_engine_1_1_debug_1_1_grap
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
+<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../dc/d1b/class_engine_1_1_debug_1_1_graph_drawing_component-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -105,9 +106,9 @@ Inheritance diagram for Engine.Debug.GraphDrawingComponent:</div>
  <div class="center">
   <img src="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.png" usemap="#Engine.Debug.GraphDrawingComponent_map" alt=""/>
   <map id="Engine.Debug.GraphDrawingComponent_map" name="Engine.Debug.GraphDrawingComponent_map">
-<area href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html" title="Implements Common Properties between UI Elements " alt="Engine.UI.UIElement" shape="rect" coords="125,112,366,136"/>
+<area href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html" title="Implements Common Properties between UI Elements " alt="Engine.UI.UIElement" shape="rect" coords="125,168,366,192"/>
+<area href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html" alt="Engine.Rendering.RenderingComponent" shape="rect" coords="125,112,366,136"/>
 <area href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html" title="Base class of every component " alt="Engine.Core.AbstractComponent" shape="rect" coords="0,56,241,80"/>
-<area href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html" title="Defines the Properties of an object that can be used for rendering " alt="Engine.Rendering.IRenderingComponent" shape="rect" coords="251,56,492,80"/>
 <area href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html" title="Interface used by Objects in the engine that have to be removed from some kind of system ..." alt="Engine.Core.IDestroyable" shape="rect" coords="0,0,241,24"/>
 </map>
  </div></div>
@@ -117,6 +118,22 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3b9fa264c6bb7850f2a98bf3bd3d913a"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a3b9fa264c6bb7850f2a98bf3bd3d913a">GraphDrawingComponent</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader, bool worldSpace, float alpha)</td></tr>
 <tr class="memdesc:a3b9fa264c6bb7850f2a98bf3bd3d913a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public constructor  <a href="#a3b9fa264c6bb7850f2a98bf3bd3d913a">More...</a><br /></td></tr>
 <tr class="separator:a3b9fa264c6bb7850f2a98bf3bd3d913a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a3f192118e4150d247f100ec7fb9308"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a4a3f192118e4150d247f100ec7fb9308">Render</a> (Matrix4 viewMat, Matrix4 projMat)</td></tr>
+<tr class="memdesc:a4a3f192118e4150d247f100ec7fb9308"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renders the Graph  <a href="#a4a3f192118e4150d247f100ec7fb9308">More...</a><br /></td></tr>
+<tr class="separator:a4a3f192118e4150d247f100ec7fb9308"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_engine_1_1_rendering_1_1_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">Engine.Rendering.RenderingComponent</a></td></tr>
+<tr class="memitem:ae3b9acab1f3f4a000f200fa162ff3f17 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a id="ae3b9acab1f3f4a000f200fa162ff3f17"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Render</b> (Matrix4 viewMat, Matrix4 projMat, int depthMap)</td></tr>
+<tr class="separator:ae3b9acab1f3f4a000f200fa162ff3f17 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8c8660178b58c5b282a0ac0b762ba9b inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a id="ac8c8660178b58c5b282a0ac0b762ba9b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Render</b> (Matrix4 viewMat, Matrix4 projMat, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> prog)</td></tr>
+<tr class="separator:ac8c8660178b58c5b282a0ac0b762ba9b inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a75d1c7d1b294dc94a626dff965a8d7e0">CompareTo</a> (<a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">RenderingComponent</a> other)</td></tr>
+<tr class="memdesc:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">CompareTo Implementation If both transparent and in camera space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a75d1c7d1b294dc94a626dff965a8d7e0">More...</a><br /></td></tr>
+<tr class="separator:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9519ae68cdcd5b8283641eb0ed6dff5d inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a9519ae68cdcd5b8283641eb0ed6dff5d">PrecalculateMV</a> (Matrix4 view)</td></tr>
+<tr class="memdesc:a9519ae68cdcd5b8283641eb0ed6dff5d inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Precalculates the ModelView Matrix  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a9519ae68cdcd5b8283641eb0ed6dff5d">More...</a><br /></td></tr>
+<tr class="separator:a9519ae68cdcd5b8283641eb0ed6dff5d inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
 <tr class="memitem:a471df664279bf736164c6cb689de0b7c inherit pub_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a471df664279bf736164c6cb689de0b7c">Destroy</a> ()</td></tr>
 <tr class="memdesc:a471df664279bf736164c6cb689de0b7c inherit pub_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this component to the list of components that will be removed at the end of the frame  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a471df664279bf736164c6cb689de0b7c">More...</a><br /></td></tr>
@@ -124,19 +141,13 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a84cfc9efa3f11861af26ffb63b037a2a"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="../../d0/d8a/class_engine_1_1_rendering_1_1_contexts_1_1_render_context.html">RenderContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a84cfc9efa3f11861af26ffb63b037a2a">Context</a><code> [get]</code></td></tr>
-<tr class="memdesc:a84cfc9efa3f11861af26ffb63b037a2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The context that renders the graph data  <a href="#a84cfc9efa3f11861af26ffb63b037a2a">More...</a><br /></td></tr>
-<tr class="separator:a84cfc9efa3f11861af26ffb63b037a2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a65a340123be4eac60417f1f1fbc74d"><td class="memItemLeft" align="right" valign="top">Vector2 []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a5a65a340123be4eac60417f1f1fbc74d">Points</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a5a65a340123be4eac60417f1f1fbc74d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Array of points containing the data to be drawn  <a href="#a5a65a340123be4eac60417f1f1fbc74d">More...</a><br /></td></tr>
+<tr class="memdesc:a5a65a340123be4eac60417f1f1fbc74d"><td class="mdescLeft">&#160;</td><td class="mdescRight">the point data that will get drawn  <a href="#a5a65a340123be4eac60417f1f1fbc74d">More...</a><br /></td></tr>
 <tr class="separator:a5a65a340123be4eac60417f1f1fbc74d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfa6d16b58b634278da047e8a6439b5b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#abfa6d16b58b634278da047e8a6439b5b">Enabled</a> = true<code> [get, set]</code></td></tr>
+<tr class="memdesc:abfa6d16b58b634278da047e8a6439b5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag that enables or disables the graph rendering  <a href="#abfa6d16b58b634278da047e8a6439b5b">More...</a><br /></td></tr>
+<tr class="separator:abfa6d16b58b634278da047e8a6439b5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_engine_1_1_u_i_1_1_u_i_element"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_u_i_1_1_u_i_element')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html">Engine.UI.UIElement</a></td></tr>
-<tr class="memitem:a374bb16979d94e8d7c8fd0a169c48dbc inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">abstract <a class="el" href="../../d0/d8a/class_engine_1_1_rendering_1_1_contexts_1_1_render_context.html">RenderContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a374bb16979d94e8d7c8fd0a169c48dbc">Context</a><code> [get]</code></td></tr>
-<tr class="memdesc:a374bb16979d94e8d7c8fd0a169c48dbc inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Render Context  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a374bb16979d94e8d7c8fd0a169c48dbc">More...</a><br /></td></tr>
-<tr class="separator:a374bb16979d94e8d7c8fd0a169c48dbc inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a09ce701899acadf36794f5c665510f81 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a09ce701899acadf36794f5c665510f81">Shader</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a09ce701899acadf36794f5c665510f81 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Shader program that is used  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a09ce701899acadf36794f5c665510f81">More...</a><br /></td></tr>
-<tr class="separator:a09ce701899acadf36794f5c665510f81 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a336f378b3d3e6f0aa80ca147a157d54c inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a336f378b3d3e6f0aa80ca147a157d54c">RenderMask</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a336f378b3d3e6f0aa80ca147a157d54c inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The render mask that this element belongs to  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a336f378b3d3e6f0aa80ca147a157d54c">More...</a><br /></td></tr>
 <tr class="separator:a336f378b3d3e6f0aa80ca147a157d54c inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -146,15 +157,34 @@ Properties</h2></td></tr>
 <tr class="memitem:a4b87669fea889c01da9ec873af5450eb inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a4b87669fea889c01da9ec873af5450eb">Scale</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a4b87669fea889c01da9ec873af5450eb inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> element  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a4b87669fea889c01da9ec873af5450eb">More...</a><br /></td></tr>
 <tr class="separator:a4b87669fea889c01da9ec873af5450eb inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78df75cfd4f46eee4d82f92daef409f1 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a78df75cfd4f46eee4d82f92daef409f1">WorldSpace</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a78df75cfd4f46eee4d82f92daef409f1 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag if the Element is positioned in world space  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a78df75cfd4f46eee4d82f92daef409f1">More...</a><br /></td></tr>
-<tr class="separator:a78df75cfd4f46eee4d82f92daef409f1 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d610d1a1bf48e8748dfb48f0fdf60b6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a4d610d1a1bf48e8748dfb48f0fdf60b6"></a>
+Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Tiling</b> = Vector2.One<code> [get, set]</code></td></tr>
+<tr class="separator:a4d610d1a1bf48e8748dfb48f0fdf60b6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c1ba89b0e14a98f75b1e462c6f54717 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a8c1ba89b0e14a98f75b1e462c6f54717"></a>
+Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Offset</b> = Vector2.Zero<code> [get, set]</code></td></tr>
+<tr class="separator:a8c1ba89b0e14a98f75b1e462c6f54717 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8083350d855886ba24a8d337cfbe7ee6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a8083350d855886ba24a8d337cfbe7ee6">Alpha</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8083350d855886ba24a8d337cfbe7ee6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alpha value of the texture  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a8083350d855886ba24a8d337cfbe7ee6">More...</a><br /></td></tr>
 <tr class="separator:a8083350d855886ba24a8d337cfbe7ee6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d38ea065a38849014bf2828eb2f1a04 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a8d38ea065a38849014bf2828eb2f1a04">RenderQueue</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a8d38ea065a38849014bf2828eb2f1a04 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Render queue  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a8d38ea065a38849014bf2828eb2f1a04">More...</a><br /></td></tr>
-<tr class="separator:a8d38ea065a38849014bf2828eb2f1a04 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_engine_1_1_rendering_1_1_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_rendering_1_1_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">Engine.Rendering.RenderingComponent</a></td></tr>
+<tr class="memitem:a169e1e0a84eb0d9820b31af717a81393 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a169e1e0a84eb0d9820b31af717a81393">Program</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a169e1e0a84eb0d9820b31af717a81393 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">the shader program that is used  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a169e1e0a84eb0d9820b31af717a81393">More...</a><br /></td></tr>
+<tr class="separator:a169e1e0a84eb0d9820b31af717a81393 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac105a75478b227dbba14425ae35180f2 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac105a75478b227dbba14425ae35180f2">RenderQueue</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ac105a75478b227dbba14425ae35180f2 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">the render queue that determines the order in which the objects are drawn This only applies to Screen space Render Contexts. For World space the ordering is worked out by the distance to the camera.  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac105a75478b227dbba14425ae35180f2">More...</a><br /></td></tr>
+<tr class="separator:ac105a75478b227dbba14425ae35180f2 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a590f098662bf9eb6a4776ce61df26733 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a590f098662bf9eb6a4776ce61df26733">MV</a><code> [get, private set]</code></td></tr>
+<tr class="memdesc:a590f098662bf9eb6a4776ce61df26733 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached version of the ModelView Matrix(is used for ordered rendering  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a590f098662bf9eb6a4776ce61df26733">More...</a><br /></td></tr>
+<tr class="separator:a590f098662bf9eb6a4776ce61df26733 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f41ee3ae2240540bbdafb7ea207ec17 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a0f41ee3ae2240540bbdafb7ea207ec17">MVPosition</a><code> [get, private set]</code></td></tr>
+<tr class="memdesc:a0f41ee3ae2240540bbdafb7ea207ec17 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the Object in ModelView Space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a0f41ee3ae2240540bbdafb7ea207ec17">More...</a><br /></td></tr>
+<tr class="separator:a0f41ee3ae2240540bbdafb7ea207ec17 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Renderer.RenderType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ab3b7a7685806cc343b504797488fd5ef">RenderType</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Render type of the context  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ab3b7a7685806cc343b504797488fd5ef">More...</a><br /></td></tr>
+<tr class="separator:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5967dd878cb2a81fc938497172edd728 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a5967dd878cb2a81fc938497172edd728">WorldSpace</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a5967dd878cb2a81fc938497172edd728 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag that indicates if the object is meant to be drawn in screen space or world space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a5967dd878cb2a81fc938497172edd728">More...</a><br /></td></tr>
+<tr class="separator:a5967dd878cb2a81fc938497172edd728 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
 <tr class="memitem:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">Owner</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Owner of the component(null if not attached to any Game object)  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">More...</a><br /></td></tr>
@@ -162,28 +192,39 @@ Properties</h2></td></tr>
 <tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get, private set]</code></td></tr>
 <tr class="memdesc:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">A public flag that is set to true when the object has been truely removed from the systems  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">More...</a><br /></td></tr>
 <tr class="separator:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_engine_1_1_rendering_1_1_i_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html">Engine.Rendering.IRenderingComponent</a></td></tr>
-<tr class="memitem:ab6700f5931fd070fa806dd5dfb1f15d5 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d8a/class_engine_1_1_rendering_1_1_contexts_1_1_render_context.html">RenderContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html#ab6700f5931fd070fa806dd5dfb1f15d5">Context</a><code> [get]</code></td></tr>
-<tr class="memdesc:ab6700f5931fd070fa806dd5dfb1f15d5 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Context that the Component is using  <a href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html#ab6700f5931fd070fa806dd5dfb1f15d5">More...</a><br /></td></tr>
-<tr class="separator:ab6700f5931fd070fa806dd5dfb1f15d5 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5789181977c0c1f3ca7ed6f793d4cf46 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html#a5789181977c0c1f3ca7ed6f793d4cf46">RenderMask</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a5789181977c0c1f3ca7ed6f793d4cf46 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Render mask  <a href="../../da/dac/interface_engine_1_1_rendering_1_1_i_rendering_component.html#a5789181977c0c1f3ca7ed6f793d4cf46">More...</a><br /></td></tr>
-<tr class="separator:a5789181977c0c1f3ca7ed6f793d4cf46 inherit properties_interface_engine_1_1_rendering_1_1_i_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
-<tr class="memitem:a93b871368a072c797dcae06f4489ed55"><td class="memItemLeft" align="right" valign="top">Vector2 []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a93b871368a072c797dcae06f4489ed55">ComputeUVPos</a> ()</td></tr>
-<tr class="memdesc:a93b871368a072c797dcae06f4489ed55"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the UVs of the Quad that will contain the graph data  <a href="#a93b871368a072c797dcae06f4489ed55">More...</a><br /></td></tr>
-<tr class="separator:a93b871368a072c797dcae06f4489ed55"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbe500e83f78945b7facdea41553485a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#adbe500e83f78945b7facdea41553485a">Initialize</a> ()</td></tr>
+<tr class="memdesc:adbe500e83f78945b7facdea41553485a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializer of the Screen quad  <a href="#adbe500e83f78945b7facdea41553485a">More...</a><br /></td></tr>
+<tr class="separator:adbe500e83f78945b7facdea41553485a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0006e4683d406f235128b5bbc41e2702"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a0006e4683d406f235128b5bbc41e2702">UpdateBuffer</a> ()</td></tr>
+<tr class="memdesc:a0006e4683d406f235128b5bbc41e2702"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the point data to the gpu  <a href="#a0006e4683d406f235128b5bbc41e2702">More...</a><br /></td></tr>
+<tr class="separator:a0006e4683d406f235128b5bbc41e2702"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
+Static Private Member Functions</h2></td></tr>
+<tr class="memitem:aa2f9253c61dff1c5db6bc5358dcd89ae"><td class="memItemLeft" align="right" valign="top">static Vector2 []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#aa2f9253c61dff1c5db6bc5358dcd89ae">ComputeUVPos</a> (Vector2 position, Vector2 scale, Vector2[] points)</td></tr>
+<tr class="memdesc:aa2f9253c61dff1c5db6bc5358dcd89ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the UVs of the Quad that will contain the graph data  <a href="#aa2f9253c61dff1c5db6bc5358dcd89ae">More...</a><br /></td></tr>
+<tr class="separator:aa2f9253c61dff1c5db6bc5358dcd89ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
 <tr class="memitem:a6852749fcad837733084a292c8001a48"><td class="memItemLeft" align="right" valign="top">Vector2 []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a6852749fcad837733084a292c8001a48">_points</a></td></tr>
 <tr class="memdesc:a6852749fcad837733084a292c8001a48"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backing field of the graph data  <a href="#a6852749fcad837733084a292c8001a48">More...</a><br /></td></tr>
 <tr class="separator:a6852749fcad837733084a292c8001a48"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab473fd251247495e12db1aa2d9c942ae"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/dd7/class_engine_1_1_debug_1_1_graph_drawing_context.html">GraphDrawingContext</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#ab473fd251247495e12db1aa2d9c942ae">_context</a></td></tr>
-<tr class="memdesc:ab473fd251247495e12db1aa2d9c942ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The backing field of the graphics context  <a href="#ab473fd251247495e12db1aa2d9c942ae">More...</a><br /></td></tr>
-<tr class="separator:ab473fd251247495e12db1aa2d9c942ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab06f6f8f1e2a4d912be84e28f89b06f5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#ab06f6f8f1e2a4d912be84e28f89b06f5">_vbo</a></td></tr>
+<tr class="memdesc:ab06f6f8f1e2a4d912be84e28f89b06f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The VBO of the screen quad  <a href="#ab06f6f8f1e2a4d912be84e28f89b06f5">More...</a><br /></td></tr>
+<tr class="separator:ab06f6f8f1e2a4d912be84e28f89b06f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4481b55cb5dc297af50304c9cb5e0704"><td class="memItemLeft" align="right" valign="top"><a id="a4481b55cb5dc297af50304c9cb5e0704"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>_vao</b></td></tr>
+<tr class="separator:a4481b55cb5dc297af50304c9cb5e0704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a0415be435c962e144ed1c16887cfbc"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a1a0415be435c962e144ed1c16887cfbc">_bufferDirty</a> = true</td></tr>
+<tr class="memdesc:a1a0415be435c962e144ed1c16887cfbc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A flag that indicates if we need to push the points to the gpu  <a href="#a1a0415be435c962e144ed1c16887cfbc">More...</a><br /></td></tr>
+<tr class="separator:a1a0415be435c962e144ed1c16887cfbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44f85151d5ae86a87569fa4205193575"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#a44f85151d5ae86a87569fa4205193575">_init</a> = false</td></tr>
+<tr class="memdesc:a44f85151d5ae86a87569fa4205193575"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag that is used to initialize things on creation  <a href="#a44f85151d5ae86a87569fa4205193575">More...</a><br /></td></tr>
+<tr class="separator:a44f85151d5ae86a87569fa4205193575"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -191,6 +232,10 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a1745514f5df8b5a2f7136a8d5e398479 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a1745514f5df8b5a2f7136a8d5e398479">UIElement</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader, bool worldSpace, float alpha)</td></tr>
 <tr class="memdesc:a1745514f5df8b5a2f7136a8d5e398479 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> Element Constructor  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a1745514f5df8b5a2f7136a8d5e398479">More...</a><br /></td></tr>
 <tr class="separator:a1745514f5df8b5a2f7136a8d5e398479 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_rendering_1_1_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">Engine.Rendering.RenderingComponent</a></td></tr>
+<tr class="memitem:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ae4a10ed234a13d95b19518aa02b01948">RenderingComponent</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> program, bool worldSpace, Renderer.RenderType renderType, int renderQueue)</td></tr>
+<tr class="memdesc:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a render context  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ae4a10ed234a13d95b19518aa02b01948">More...</a><br /></td></tr>
+<tr class="separator:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
 <tr class="memitem:ac08030b2dc64ba2616e2f0169783ac94 inherit pro_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac08030b2dc64ba2616e2f0169783ac94">Awake</a> ()</td></tr>
 <tr class="memdesc:ac08030b2dc64ba2616e2f0169783ac94 inherit pro_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual Function that gets called when the script is used by the system for the first time  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac08030b2dc64ba2616e2f0169783ac94">More...</a><br /></td></tr>
@@ -307,8 +352,8 @@ Additional Inherited Members</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a93b871368a072c797dcae06f4489ed55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a93b871368a072c797dcae06f4489ed55">&#9670;&nbsp;</a></span>ComputeUVPos()</h2>
+<a id="aa2f9253c61dff1c5db6bc5358dcd89ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa2f9253c61dff1c5db6bc5358dcd89ae">&#9670;&nbsp;</a></span>ComputeUVPos()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -317,7 +362,52 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Vector2 [] Engine.Debug.GraphDrawingComponent.ComputeUVPos </td>
+          <td class="memname">static Vector2 [] Engine.Debug.GraphDrawingComponent.ComputeUVPos </td>
+          <td>(</td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>position</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2&#160;</td>
+          <td class="paramname"><em>scale</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Vector2 []&#160;</td>
+          <td class="paramname"><em>points</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Computes the UVs of the Quad that will contain the graph data </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="adbe500e83f78945b7facdea41553485a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbe500e83f78945b7facdea41553485a">&#9670;&nbsp;</a></span>Initialize()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Debug.GraphDrawingComponent.Initialize </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -330,14 +420,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Computes the UVs of the Quad that will contain the graph data </p>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+<p>Initializer of the Screen quad </p>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab473fd251247495e12db1aa2d9c942ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab473fd251247495e12db1aa2d9c942ae">&#9670;&nbsp;</a></span>_context</h2>
+<a id="a4a3f192118e4150d247f100ec7fb9308"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a3f192118e4150d247f100ec7fb9308">&#9670;&nbsp;</a></span>Render()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -346,7 +434,57 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../df/dd7/class_engine_1_1_debug_1_1_graph_drawing_context.html">GraphDrawingContext</a> Engine.Debug.GraphDrawingComponent._context</td>
+          <td class="memname">override void Engine.Debug.GraphDrawingComponent.Render </td>
+          <td>(</td>
+          <td class="paramtype">Matrix4&#160;</td>
+          <td class="paramname"><em>viewMat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Matrix4&#160;</td>
+          <td class="paramname"><em>projMat</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Renders the Graph </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">viewMat</td><td>View matrix</td></tr>
+    <tr><td class="paramname">projMat</td><td>Project Matrix</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac0164e745005687f592edc759082fd06">Engine.Rendering.RenderingComponent</a>.</p>
+
+</div>
+</div>
+<a id="a0006e4683d406f235128b5bbc41e2702"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0006e4683d406f235128b5bbc41e2702">&#9670;&nbsp;</a></span>UpdateBuffer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Debug.GraphDrawingComponent.UpdateBuffer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
@@ -356,7 +494,56 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The backing field of the graphics context </p>
+<p>Copies the point data to the gpu </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a1a0415be435c962e144ed1c16887cfbc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1a0415be435c962e144ed1c16887cfbc">&#9670;&nbsp;</a></span>_bufferDirty</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.Debug.GraphDrawingComponent._bufferDirty = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A flag that indicates if we need to push the points to the gpu </p>
+
+</div>
+</div>
+<a id="a44f85151d5ae86a87569fa4205193575"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a44f85151d5ae86a87569fa4205193575">&#9670;&nbsp;</a></span>_init</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.Debug.GraphDrawingComponent._init = false</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag that is used to initialize things on creation </p>
 
 </div>
 </div>
@@ -384,9 +571,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a84cfc9efa3f11861af26ffb63b037a2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a84cfc9efa3f11861af26ffb63b037a2a">&#9670;&nbsp;</a></span>Context</h2>
+<a id="ab06f6f8f1e2a4d912be84e28f89b06f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab06f6f8f1e2a4d912be84e28f89b06f5">&#9670;&nbsp;</a></span>_vbo</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -395,17 +581,42 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">override <a class="el" href="../../d0/d8a/class_engine_1_1_rendering_1_1_contexts_1_1_render_context.html">RenderContext</a> Engine.Debug.GraphDrawingComponent.Context</td>
+          <td class="memname">int Engine.Debug.GraphDrawingComponent._vbo</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The context that renders the graph data </p>
+<p>The VBO of the screen quad </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="abfa6d16b58b634278da047e8a6439b5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfa6d16b58b634278da047e8a6439b5b">&#9670;&nbsp;</a></span>Enabled</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.Debug.GraphDrawingComponent.Enabled = true</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Flag that enables or disables the graph rendering </p>
 
 </div>
 </div>
@@ -429,12 +640,12 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Array of points containing the data to be drawn </p>
+<p>the point data that will get drawn </p>
 
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>MinorEngine/Engine/Debug/GraphDrawingComponent.cs</li>
+<li>Engine/Engine/Debug/GraphDrawingComponent.cs</li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

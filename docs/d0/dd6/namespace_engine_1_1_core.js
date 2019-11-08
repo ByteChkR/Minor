@@ -8,6 +8,8 @@ var namespace_engine_1_1_core =
     [ "GameEngine", "da/d95/class_engine_1_1_core_1_1_game_engine.html", "da/d95/class_engine_1_1_core_1_1_game_engine" ],
     [ "GameObject", "d3/dbf/class_engine_1_1_core_1_1_game_object.html", "d3/dbf/class_engine_1_1_core_1_1_game_object" ],
     [ "IDestroyable", "dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html", "dc/d1f/interface_engine_1_1_core_1_1_i_destroyable" ],
+    [ "Input", "d7/db3/class_engine_1_1_core_1_1_input.html", "d7/db3/class_engine_1_1_core_1_1_input" ],
+    [ "Interpolations", "da/d21/class_engine_1_1_core_1_1_interpolations.html", "da/d21/class_engine_1_1_core_1_1_interpolations" ],
     [ "MaskHelper", "d4/d6a/class_engine_1_1_core_1_1_mask_helper.html", "d4/d6a/class_engine_1_1_core_1_1_mask_helper" ],
     [ "ObjectPool", "da/d5c/class_engine_1_1_core_1_1_object_pool.html", "da/d5c/class_engine_1_1_core_1_1_object_pool" ],
     [ "PooledObject", "d4/d3d/struct_engine_1_1_core_1_1_pooled_object.html", "d4/d3d/struct_engine_1_1_core_1_1_pooled_object" ]

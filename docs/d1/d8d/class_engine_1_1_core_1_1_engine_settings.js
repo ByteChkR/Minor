@@ -1,5 +1,6 @@
 var class_engine_1_1_core_1_1_engine_settings =
 [
+    [ "DefaultSettings", "d1/d8d/class_engine_1_1_core_1_1_engine_settings.html#a86087b42e62c13e44fc616ea650c1bbe", null ],
     [ "Mode", "d1/d8d/class_engine_1_1_core_1_1_engine_settings.html#a16ef606c0a096980968cebc46af9ae13", null ],
     [ "Settings", "d1/d8d/class_engine_1_1_core_1_1_engine_settings.html#af6b5041721a07bf8b3bad81c40039999", null ],
     [ "DebugSettings", "d1/d8d/class_engine_1_1_core_1_1_engine_settings.html#aa90e3c9a4176085f6b14ffd72c60e2aa", null ],

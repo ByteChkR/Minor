@@ -1,7 +1,6 @@
 var searchData=
 [
   ['sbgra',['Sbgra',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a2cb3dd2a32bd8c164a2f2eb2b3c4f3d6a9ee277b6ac72218301861c8257648bf3',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
-  ['sceneinit',['SceneInit',['../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a44e0daaf3d6fc4cd66c3560428f23f31',1,'Engine::Debug']]],
   ['servomechanism',['Servomechanism',['../dc/dce/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_motors.html#afbd0a886d0abca5f382f3579a35d26adaaa3b4998432b654f62ed0b57fc5197cc',1,'Engine::Physics::BEPUphysics::Constraints::TwoEntity::Motors']]],
   ['shininess',['Shininess',['../d2/df0/namespace_engine_1_1_data_types.html#aaf0c48e251c4afa5d02fbee1f816fc39a03797db1908e94ea1363fa7c668d0893',1,'Engine::DataTypes']]],
   ['signedinteger16',['SignedInteger16',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a16a161d5d8d440f3b3e89da39ce8158aaab1a07f6815b1278fd3f1bdd8a552ecc',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
@@ -20,7 +19,6 @@ var searchData=
   ['srgba',['Srgba',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a2cb3dd2a32bd8c164a2f2eb2b3c4f3d6aef378bf47ac802deac40d434a7bd5d1a',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
   ['srgbx',['Srgbx',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a2cb3dd2a32bd8c164a2f2eb2b3c4f3d6a094ffcee420d2a15b41632f22e0c35d0',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
   ['standing',['Standing',['../d2/d03/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character.html#a7b9ac93d651debd78ee0e66063d8dd3faa66b284e632fb96f19e27dca96b78fd7',1,'Engine::Physics::BEPUphysics::Character']]],
-  ['startup',['Startup',['../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a13e685964c2548aa748f7ea263bad4e5',1,'Engine::Debug']]],
   ['status',['Status',['../da/db3/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_programs.html#a18dbcd05ff66f21b45848f9143ff2a86aec53a8c4f07baed5d8825072c89799be',1,'Engine::OpenCL::DotNetCore::Interop::Programs']]],
   ['subgroupcountforndrange',['SubGroupCountForNDRange',['../da/d5d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_kernels.html#a4dc1293bc7dae3bf4872d11efa4d9b7ea128e5f56690b531e3327674085568655',1,'Engine::OpenCL::DotNetCore::Interop::Kernels']]],
   ['subgroupindependentforwardprogress',['SubGroupIndependentForwardProgress',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#a986e54e88189c0c49d5d85f89ea49302a761a28c4ed7e5f5490ab68cb56152d52',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],

@@ -21,7 +21,6 @@ var searchData=
   ['imagesupport',['ImageSupport',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#a986e54e88189c0c49d5d85f89ea49302a5ff05975cbd885b824026680f398c261',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],
   ['increasepc',['IncreasePC',['../de/d5c/namespace_engine_1_1_open_f_l.html#ab309d1168d414cc13f3412792cd88e0ca2b33ecb7cb13b56597acdecfef03a76d',1,'Engine::OpenFL']]],
   ['infinityandnotanumber',['InfinityAndNotANumber',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#abc54c921f4cfb0b969d1fb7d757e67a6ad860657e7554afffd96fb78ea4b1f93f',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],
-  ['init',['Init',['../de/df7/namespace_engine_1_1_debug.html#a8e457b8c37f7b1a905dbc358e41224f0a95b19f7739b0b7ea7d6b07586be54f36',1,'Engine::Debug']]],
   ['intensity',['Intensity',['../d6/d7d/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory.html#a2cb3dd2a32bd8c164a2f2eb2b3c4f3d6a71bb6e4d1fa40e68f8c45ea97acae945',1,'Engine::OpenCL::DotNetCore::Interop::Memory']]],
   ['intermediatelanguageversion',['IntermediateLanguageVersion',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#a986e54e88189c0c49d5d85f89ea49302a7a5a0924b16eb5d70aae5b5c2f9d902a',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],
   ['intersects',['Intersects',['../d8/deb/namespace_engine_1_1_physics_1_1_b_e_p_uutilities.html#a23e729780bee5215679d0da1507118b0ae88aac75f6bd75c22fc2a120348559e9',1,'Engine::Physics::BEPUutilities']]],

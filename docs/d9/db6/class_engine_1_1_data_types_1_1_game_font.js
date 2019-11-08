@@ -3,6 +3,7 @@ var class_engine_1_1_data_types_1_1_game_font =
     [ "GameFont", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#a61a42dcab1b2335eccf1931ffe719b69", null ],
     [ "Dispose", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#ab4baef47753e108432e256fd79325ada", null ],
     [ "GetDefaultFont", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#a34afa43aebdd8d144cdc7bc6866365ec", null ],
+    [ "GetRenderBounds", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#adb1b9aae3444b2f43a33473f54037d5c", null ],
     [ "TryGetCharacter", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#a4eb7de1b6cd27a0cb518daabfd8df08c", null ],
     [ "_defaultFont", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#a266c34cf5de643768aa861afc159b7e5", null ],
     [ "_fontAtlas", "d9/db6/class_engine_1_1_data_types_1_1_game_font.html#a5747ffa6b5c23f885e2376a4f09f6eaa", null ],
