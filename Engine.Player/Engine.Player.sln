@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Player.PackageCreato
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Player.Common", "Engine.Player.Common\Engine.Player.Common.csproj", "{E4802A9D-BDCC-4055-AB7C-A9FA35F6894B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Player.BuildTools", "Engine.Player.BuildTools\Engine.Player.BuildTools.csproj", "{7DAEAD5F-1795-46FE-A159-5705BE175275}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.Player.Builder", "Engine.Player.Builder\Engine.Player.Builder.csproj", "{3533597A-EAB4-4B4D-A221-82C6ADBC447A}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.AssetPackaging", "..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj", "{DF0E975F-F7CE-4E13-A5E1-C05FB23F5F06}"
@@ -33,10 +31,6 @@ Global
 		{E4802A9D-BDCC-4055-AB7C-A9FA35F6894B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4802A9D-BDCC-4055-AB7C-A9FA35F6894B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4802A9D-BDCC-4055-AB7C-A9FA35F6894B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7DAEAD5F-1795-46FE-A159-5705BE175275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7DAEAD5F-1795-46FE-A159-5705BE175275}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7DAEAD5F-1795-46FE-A159-5705BE175275}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7DAEAD5F-1795-46FE-A159-5705BE175275}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3533597A-EAB4-4B4D-A221-82C6ADBC447A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3533597A-EAB4-4B4D-A221-82C6ADBC447A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3533597A-EAB4-4B4D-A221-82C6ADBC447A}.Release|Any CPU.ActiveCfg = Release|Any CPU

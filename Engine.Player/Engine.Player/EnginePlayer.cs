@@ -1,5 +1,7 @@
 ﻿using System;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
@@ -29,7 +31,8 @@ namespace Engine.Player
         [DllImport("kernel32.dll", ExactSpelling = true)]
         private static extern IntPtr GetConsoleWindow();
 
-        
+        public static WebClient wc= new WebClient();
+
         private static void RegisterExtension(string ext)
         {
             RegistryKey key = Registry.ClassesRoot.CreateSubKey(ext);
@@ -128,6 +131,10 @@ namespace Engine.Player
 
         static void Main(string[] args)
         {
+
+            wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
+            wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
+
             Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
             Console.CancelKeyPress += ConsoleOnCancelKeyPress;
             if (!Directory.Exists("engine")) Directory.CreateDirectory("engine");
@@ -294,7 +301,6 @@ namespace Engine.Player
         static void CheckUpdates()
         {
             Console.WriteLine("Checking for Updates...");
-            WebClient wc = new WebClient();
             string s = wc.DownloadString(
                 "http://213.109.162.193/apps/EngineArchives/newest.version");
             if (Version.TryParse(s, out Version ret))
@@ -319,10 +325,32 @@ namespace Engine.Player
         {
             if (IsVersionURLCorrect(version))
             {
-                WebClient wc = new WebClient();
                 Console.WriteLine("Downloading Version: " + version);
-                wc.DownloadFile(new Uri("http://213.109.162.193/apps/EngineArchives/"+version+".engine"), "engine/" + version + ".engine");
+                wc.DownloadFile(new Uri("http://213.109.162.193/apps/EngineArchives/" + version + ".engine"), "engine/" + version + ".engine");
 
+            }
+        }
+
+        private static void WcOnDownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            Console.WriteLine("");
+            Console.WriteLine("Success: " + !e.Cancelled);
+        }
+
+        private static int last = 0;
+        private static void WcOnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            if (last < e.ProgressPercentage)
+            {
+                int d = e.ProgressPercentage - last;
+                float m = Console.WindowWidth / 100f;
+                int fd = (int)(m * d);
+                for (int j = 0; j < fd; j++)
+                {
+                    Console.Write("#");
+                }
+
+                last = e.ProgressPercentage;
             }
         }
 

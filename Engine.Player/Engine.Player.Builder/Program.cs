@@ -8,7 +8,6 @@ using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Xml.Serialization;
 using Engine.AssetPackaging;
-using Engine.Player.BuildTools;
 using Engine.Player.Common;
 using Engine.Player.PackageCreator;
 
@@ -178,7 +177,7 @@ namespace Engine.Player.Builder
         {
             try
             {
-                ProjectBuilder.BuildProject(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", args[0], null);
+                ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", args[0], null);
 
 
                 string projectFolder = Path.GetDirectoryName(args[0]);
@@ -304,7 +303,7 @@ namespace Engine.Player.Builder
 
                             AssemblyEmbedder.EmbedFilesIntoProject(projectFile, files);
                         }
-                        ProjectBuilder.BuildProject(homeDir + "resources/project_build.bat", projectFile, null);
+                        ProcessUtils.RunProcess(homeDir + "resources/project_build.bat", projectFile, null);
 
                         if (Directory.Exists(buildOutput)) Directory.Delete(buildOutput, true);
                         Thread.Sleep(500);
