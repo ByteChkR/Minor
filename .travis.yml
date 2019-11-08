@@ -8,7 +8,6 @@ matrix:
       env:
         - SOLUTION="Engine/Engine.sln"
         - BUILDCONFIG="Release"
-        - BUILDTOOLS="Engine.BuildTools/Engine.BuildTools.sln"
 
 #Restore the Submodules and the Project
 install:
@@ -30,11 +29,9 @@ script:
   - dotnet build ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c $BUILDCONFIG
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
-  - dotnet build $BUILDTOOLS -c $BUILDCONFIG
   - dotnet build $SOLUTION -c $BUILDCONFIG
 
 #Testing all included projects.
 after_script:
-  - dotnet test $BUILDTOOLS --collect:"XPlat Code Coverage" -c $BUILDCONFIG -p:DefineConstants=NO_CL
   - dotnet test $SOLUTION --collect:"XPlat Code Coverage" -c $BUILDCONFIG -p:DefineConstants=NO_CL
   - bash <(curl -s https://codecov.io/bash) #Uploading the coverage report to Codecov.
