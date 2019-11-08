@@ -70,6 +70,7 @@ namespace Engine.OpenCL.Runner
             foreach (KeyValuePair<string, Texture> keyValuePair in context.TexturesToUpdate)
             {
                 CLBufferInfo mbuf = ret.GetBuffer(keyValuePair.Key);
+                if (mbuf == null) continue;
                 byte[] spec = CLAPI.ReadBuffer<byte>(_instance, mbuf.Buffer, (int)mbuf.Buffer.Size);
 
                 TextureLoader.Update(keyValuePair.Value, spec, (int)keyValuePair.Value.Width, (int)keyValuePair.Value.Height);
