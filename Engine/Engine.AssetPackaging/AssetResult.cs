@@ -24,7 +24,7 @@ namespace Engine.AssetPackaging
             int assetPack;
             if (false)
             {
-                assetPack = FindAssetPackWithSpace((int)fs.Length);
+                assetPack = FindAssetPackWithSpace((int) fs.Length);
 
 
                 Console.WriteLine("Adding file: " + file + " To pack: " + (assetPack + 1));
@@ -33,7 +33,7 @@ namespace Engine.AssetPackaging
                 {
                     PackageID = assetPack,
                     Offset = packs[assetPack].content.Count,
-                    Length = (int)fs.Length,
+                    Length = (int) fs.Length,
                     Path = packPath,
                     PackageType = type
                 };
@@ -46,16 +46,15 @@ namespace Engine.AssetPackaging
                 packs[assetPack].content.AddRange(buffer);
 
                 fs.Close();
-
             }
             else
+            {
                 assetPack = StoreInPackages(fs, file, packPath, type);
-
+            }
         }
 
         private int StoreInPackages(Stream s, string file, string packPath, AssetPackageType type)
         {
-            
             int firstPack = FindAssetPackWithSpace(0);
 
 
@@ -66,7 +65,7 @@ namespace Engine.AssetPackaging
                 PackageID = firstPack,
                 Offset = packs[firstPack].content.Count,
                 PackageSize = AssetPacker.PACK_SIZE,
-                Length = (int)s.Length,
+                Length = (int) s.Length,
                 Path = packPath,
                 PackageType = type
             };
@@ -82,15 +81,19 @@ namespace Engine.AssetPackaging
                 int write = bytesLeft;
                 if (write > packs[packid].SpaceLeft)
                 {
-                    write=packs[packid].SpaceLeft;
+                    write = packs[packid].SpaceLeft;
                 }
+
                 byte[] b = new byte[write];
                 s.Read(b, 0, write);
                 packs[packid].content.AddRange(b);
                 bytesLeft -= write;
                 if (bytesLeft != 0)
+                {
                     packid = FindAssetPackWithSpace(0);
+                }
             } while (bytesLeft != 0);
+
             s.Close();
             return firstPack;
         }

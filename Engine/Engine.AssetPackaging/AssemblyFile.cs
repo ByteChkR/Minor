@@ -16,7 +16,8 @@ namespace Engine.AssetPackaging
 
         public bool Compression;
 
-        public AssemblyFile(bool compression, string manifestFilepath, Assembly assembly) : this(compression, new[] { manifestFilepath }, assembly)
+        public AssemblyFile(bool compression, string manifestFilepath, Assembly assembly) : this(compression,
+            new[] {manifestFilepath}, assembly)
         {
         }
 
@@ -45,7 +46,7 @@ namespace Engine.AssetPackaging
                 Stream rstream = Compression ? UncompressZip(resourceStream) : resourceStream;
 
                 byte[] buf = new byte[rstream.Length];
-                rstream.Read(buf, 0, (int)rstream.Length);
+                rstream.Read(buf, 0, (int) rstream.Length);
 
                 MemoryStream ms = new MemoryStream(buf);
                 rstream.Close();
@@ -72,15 +73,13 @@ namespace Engine.AssetPackaging
                 {
                     ret.AddRange(chunk);
                 }
-
             } while (read == 1024);
+
             return new MemoryStream(ret.ToArray());
         }
 
         protected Stream ReadSplittedFile(AssetPointer ptr)
         {
-
-
             List<byte> ret = new List<byte>();
             int bytesRead = ptr.Offset;
             int readEndPosition = ptr.Offset + ptr.Length;
@@ -97,14 +96,18 @@ namespace Engine.AssetPackaging
                 else
                 {
                     int readLength = readEndPosition - bytesRead;
-                    if (readLength > ptr.PackageSize) readLength = ptr.PackageSize;
+                    if (readLength > ptr.PackageSize)
+                    {
+                        readLength = ptr.PackageSize;
+                    }
+
                     byte[] rbuf = new byte[readLength];
                     str.Read(rbuf, 0, readLength);
                     ret.AddRange(rbuf);
                     bytesRead += readLength;
                 }
-                str.Close();
 
+                str.Close();
             }
 
             return new MemoryStream(ret.ToArray());

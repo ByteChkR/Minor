@@ -23,6 +23,7 @@ namespace Engine.Demo.scenes.testing
         private Random Rnd;
         private int ObjCount = 1000;
         private int StaticObjCount = 7500;
+
         protected override void InitializeScene()
         {
             Tex = TextureLoader.ColorToTexture(Color.Red);
@@ -45,7 +46,8 @@ namespace Engine.Demo.scenes.testing
             BasicCamera mainCamera =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(OpenTK.MathHelper.DegreesToRadians(75f),
-                        GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), OpenTK.Vector3.Zero);
+                        GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f),
+                    OpenTK.Vector3.Zero);
 
             object mc = mainCamera;
 
@@ -53,11 +55,12 @@ namespace Engine.Demo.scenes.testing
 
             Add(mainCamera);
             SetCamera(mainCamera);
-            PhysicsEngine.Gravity = -OpenTK.Vector3.UnitY*9.81f;
+            PhysicsEngine.Gravity = -OpenTK.Vector3.UnitY * 9.81f;
             GameObject ground = new GameObject("Ground");
             Collider c = new Collider(new Box(Vector3.Zero, 1000, 100, 1000), "physics");
             ground.AddComponent(c);
-            MeshRendererComponent mrc = new MeshRendererComponent(shader, Box, TextureLoader.ColorToTexture(Color.Blue), 1);
+            MeshRendererComponent mrc =
+                new MeshRendererComponent(shader, Box, TextureLoader.ColorToTexture(Color.Blue), 1);
             ground.AddComponent(mrc);
             Add(ground);
             ground.Scale = new Vector3(500, 50, 500);
@@ -68,22 +71,27 @@ namespace Engine.Demo.scenes.testing
                 GameObject obj = new GameObject("StaticColl");
                 Collider objColl = new Collider(new Sphere(Vector3.Zero, 1), "physics");
                 obj.AddComponent(objColl);
-                LitMeshRendererComponent objMrc = new LitMeshRendererComponent(litShader, Sphere, TextureLoader.ColorToTexture(Color.Green), 1);
+                LitMeshRendererComponent objMrc =
+                    new LitMeshRendererComponent(litShader, Sphere, TextureLoader.ColorToTexture(Color.Green), 1);
                 obj.AddComponent(objMrc);
                 Add(obj);
-                obj.LocalPosition = new Vector3((float)((Rnd.NextDouble() * 100) - 50), (float)((Rnd.NextDouble() * 25) + 1), (float)((Rnd.NextDouble() * 100) - 50));
+                obj.LocalPosition = new Vector3((float) (Rnd.NextDouble() * 100 - 50),
+                    (float) (Rnd.NextDouble() * 25 + 1), (float) (Rnd.NextDouble() * 100 - 50));
             }
 
 
             for (int i = 0; i < ObjCount; i++)
             {
                 GameObject obj = new GameObject("DynamicColl");
-                Collider objColl = new Collider(new Box(Vector3.Zero, 2, 2, 2, (float)Rnd.NextDouble()*2+1), "physics");
+                Collider objColl = new Collider(new Box(Vector3.Zero, 2, 2, 2, (float) Rnd.NextDouble() * 2 + 1),
+                    "physics");
                 obj.AddComponent(objColl);
-                LitMeshRendererComponent objMrc = new LitMeshRendererComponent(litShader, Box, TextureLoader.ColorToTexture(Color.Red), 1);
+                LitMeshRendererComponent objMrc =
+                    new LitMeshRendererComponent(litShader, Box, TextureLoader.ColorToTexture(Color.Red), 1);
                 obj.AddComponent(objMrc);
                 Add(obj);
-                obj.LocalPosition = new Vector3((float)((Rnd.NextDouble() * 100) - 50), (float)((Rnd.NextDouble() * 10) + 25), (float)((Rnd.NextDouble() * 100) - 50));
+                obj.LocalPosition = new Vector3((float) (Rnd.NextDouble() * 100 - 50),
+                    (float) (Rnd.NextDouble() * 10 + 25), (float) (Rnd.NextDouble() * 100 - 50));
             }
 
             GameObject helper = new GameObject("SceneHelper");

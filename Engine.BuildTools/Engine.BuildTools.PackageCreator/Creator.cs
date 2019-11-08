@@ -10,7 +10,8 @@ namespace Engine.BuildTools.PackageCreator
     {
         public static void CreateGamePackage(string outputFile, string workingDir, string[] files, string version)
         {
-            File.WriteAllBytes(outputFile, new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            File.WriteAllBytes(outputFile,
+                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
             FileStream fs = new FileStream(outputFile, FileMode.Open);
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
             Uri wdir = new Uri(workingDir);
@@ -37,7 +38,8 @@ namespace Engine.BuildTools.PackageCreator
 
         public static void CreateEnginePackage(string outputFile, string workingDir, string[] files)
         {
-            File.WriteAllBytes(outputFile, new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+            File.WriteAllBytes(outputFile,
+                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
             FileStream fs = new FileStream(outputFile, FileMode.Open);
 
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
@@ -55,6 +57,7 @@ namespace Engine.BuildTools.PackageCreator
                 s.Write(content, 0, content.Length);
                 s.Close();
             }
+
             ZipArchiveEntry engVersion = a.CreateEntry("EngineVersion");
             TextWriter tw = new StreamWriter(engVersion.Open());
             tw.WriteLine(version);
@@ -63,12 +66,11 @@ namespace Engine.BuildTools.PackageCreator
             fs.Close();
         }
 
-        static string GetEngineVersion(string workingDir)
+        private static string GetEngineVersion(string workingDir)
         {
             FileVersionInfo v = FileVersionInfo.GetVersionInfo(workingDir + "/Engine.dll");
 
             return v.FileVersion;
         }
-
     }
 }

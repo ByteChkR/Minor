@@ -93,7 +93,7 @@ namespace Engine.DataTypes
         {
             int scrW = GameEngine.Instance.Width;
             int scrH = GameEngine.Instance.Height;
-            Vector2 pos = Vector2.Zero;//Hacked
+            Vector2 pos = Vector2.Zero; //Hacked
             float x = pos.X;
             float y = pos.Y;
             for (int i = 0; i < stringValue.Length; i++)
@@ -110,7 +110,8 @@ namespace Engine.DataTypes
                 if (stringValue[i] == '\t')
                 {
                     float len = x - pos.X;
-                    float count = UITextRendererComponent.TabToSpaceCount - len % UITextRendererComponent.TabToSpaceCount;
+                    float count = UITextRendererComponent.TabToSpaceCount -
+                                  len % UITextRendererComponent.TabToSpaceCount;
                     float val = count;
                     x += val;
                     continue;
@@ -126,7 +127,7 @@ namespace Engine.DataTypes
                 x += chr.Advance / scrW;
             }
 
-            return new Vector2(x, y+ Metrics.LineHeight / scrH / 2);
+            return new Vector2(x, y + Metrics.LineHeight / scrH / 2);
         }
 
 

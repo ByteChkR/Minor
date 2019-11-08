@@ -169,7 +169,7 @@ namespace Engine.Debug
             //GameEngine.Instance.RemoveRenderTarget(rt2);
             //rt2.Dispose();
         }
-        
+
         /// <summary>
         /// Static function that will assemble the Console
         /// </summary>
@@ -221,7 +221,7 @@ namespace Engine.Debug
             bmp.SetPixel(0, 0, System.Drawing.Color.Black);
 
             UIImageRendererComponent _bgImage =
-                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp),false, 0.65f, uiShader);
+                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f, uiShader);
 
             UIImageRendererComponent _bgOutImage =
                 new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.4f,

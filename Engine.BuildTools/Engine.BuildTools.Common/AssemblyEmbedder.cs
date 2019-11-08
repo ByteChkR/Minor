@@ -24,10 +24,9 @@ namespace Engine.BuildTools.Common
 
             File.Move(file, csFile);
         }
+
         public static void EmbedFilesIntoProject(string csFile, string[] fileList)
         {
-
-
             List<Tuple<string, string>> files = ParseFileList(fileList);
             List<string> f = new List<string>();
             for (int i = 0; i < files.Count; i++)
@@ -152,6 +151,5 @@ namespace Engine.BuildTools.Common
         {
             return "  <EmbeddedResource Include=\"" + filepath.Replace("\\", "/") + "\" />";
         }
-
     }
 }

@@ -76,7 +76,6 @@ namespace Engine.DataTypes
                 }
                 else
                 {
-
                     AssemblyFiles.Add(file, new AssemblyFile(false, files[i], asm));
                 }
             }
@@ -84,11 +83,11 @@ namespace Engine.DataTypes
             PrepareManifestFiles(asm);
         }
 
-        private delegate AssemblyFile AssemblyFileFactory(string file, bool compression, Assembly asm, AssetPointer ptr);
+        private delegate AssemblyFile
+            AssemblyFileFactory(string file, bool compression, Assembly asm, AssetPointer ptr);
 
         private static AssemblyFile FileFactory(string file, bool compression, Assembly asm, AssetPointer ptr)
         {
-            
             if (asm == null)
             {
                 string[] files = new string[AssetPointer.GetPackageCount(ptr.Offset, ptr.Length, ptr.PackageSize)];
@@ -147,8 +146,11 @@ namespace Engine.DataTypes
 
 
             Stream idxStream = IOManager.GetStream(files[indexList]);
-            List<Tuple<string, AssetPointer>> packedFiles = AssetPacker.GetPointers(idxStream, packs, out bool compression);
-            Logger.Log("Parsing " + packedFiles.Count + " File from " + files[indexList] + " in " + packs.Length + " Packages.", DebugChannel.Log, 10);
+            List<Tuple<string, AssetPointer>> packedFiles =
+                AssetPacker.GetPointers(idxStream, packs, out bool compression);
+            Logger.Log(
+                "Parsing " + packedFiles.Count + " File from " + files[indexList] + " in " + packs.Length +
+                " Packages.", DebugChannel.Log, 10);
 
             foreach (Tuple<string, AssetPointer> assetPointer in packedFiles)
             {
@@ -204,7 +206,11 @@ namespace Engine.DataTypes
             foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in files)
             {
                 bool hasUnpackedVersion = UnpackedFiles.Contains(memoryStream.Key);
-                if (hasUnpackedVersion) File.Delete(memoryStream.Key);
+                if (hasUnpackedVersion)
+                {
+                    File.Delete(memoryStream.Key);
+                }
+
                 bool shouldWrite = hasUnpackedVersion || !File.Exists(memoryStream.Key);
                 if (shouldWrite)
                 {
@@ -236,7 +242,10 @@ namespace Engine.DataTypes
                     }
 
                     if (!hasUnpackedVersion)
+                    {
                         UnpackedFiles.Add(memoryStream.Key);
+                    }
+
                     File.WriteAllBytes(memoryStream.Key, buf);
                 }
             }

@@ -5,7 +5,6 @@ namespace Engine.BuildTools.Common
 {
     public static class ProcessUtils
     {
-
         public static int RunProcess(string file, string args, Action waitAction)
         {
             ProcessStartInfo psi = new ProcessStartInfo(file, args)
@@ -17,7 +16,7 @@ namespace Engine.BuildTools.Common
             };
 
 
-            Process p = new Process { StartInfo = psi };
+            Process p = new Process {StartInfo = psi};
 
             p.Start();
 
@@ -37,6 +36,5 @@ namespace Engine.BuildTools.Common
 
             return p.ExitCode;
         }
-
     }
 }

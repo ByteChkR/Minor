@@ -7,18 +7,20 @@ namespace Engine.Demo.scenes.testing
 {
     public class SceneRunner
     {
-        private List<Type> Scenes=new List<Type>();
+        private List<Type> Scenes = new List<Type>();
         public static SceneRunner Instance = null;
         private GameEngine Engine;
-        private int CurrrentScene=0;
+        private int CurrrentScene = 0;
         public bool Finished { get; private set; }
         private bool TerminateOnFinish = true;
+
         public SceneRunner(GameEngine engine, Assembly asm, string nameSpace)
         {
             Engine = engine;
             Instance = this;
             Scenes = GetScenesFromNamespace(asm, nameSpace);
         }
+
         public SceneRunner(GameEngine engine, Assembly asm, string[] nameSpaces)
         {
             Engine = engine;
@@ -28,7 +30,7 @@ namespace Engine.Demo.scenes.testing
                 Scenes.AddRange(GetScenesFromNamespace(asm, nameSpaces[i]));
             }
         }
-        
+
         private List<Type> GetScenesFromNamespace(Assembly asm, string nameSpace)
         {
             List<Type> ret = new List<Type>();
@@ -61,7 +63,5 @@ namespace Engine.Demo.scenes.testing
             Engine.InitializeScene(Scenes[CurrrentScene]);
             CurrrentScene++;
         }
-
-        
     }
 }

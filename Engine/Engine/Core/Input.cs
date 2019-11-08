@@ -15,7 +15,6 @@ namespace Engine.Core
         public static bool LeftMB { get; private set; }
 
 
-
         internal static void Initialize(GameWindow window)
         {
             window.KeyDown += Window_KeyDown;
@@ -28,7 +27,9 @@ namespace Engine.Core
             {
                 Key k = Enum.Parse<Key>(keynames[i]);
                 if (!keymap.ContainsKey(k))
+                {
                     keymap.Add(k, false);
+                }
             }
         }
 
@@ -37,8 +38,6 @@ namespace Engine.Core
             RightMB = e.Mouse.RightButton == ButtonState.Pressed;
             LeftMB = e.Mouse.LeftButton == ButtonState.Pressed;
         }
-
-
 
 
         private static void Window_KeyUp(object sender, KeyboardKeyEventArgs e)
@@ -53,10 +52,7 @@ namespace Engine.Core
 
         public static bool GetKey(Key key)
         {
-
             return keymap[key];
         }
-
-
     }
 }

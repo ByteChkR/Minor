@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Rendering;
@@ -25,19 +24,42 @@ namespace Engine.UI.EventSystems
         {
             get
             {
-                if (state == SelectableState.Hovered) return btnHover;
-                if (state == SelectableState.Selected) return btnClick;
+                if (state == SelectableState.Hovered)
+                {
+                    return btnHover;
+                }
+
+                if (state == SelectableState.Selected)
+                {
+                    return btnClick;
+                }
+
                 return btnIdle;
             }
         }
 
-        public Button(Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null, Texture btnHover = null, Action onClick = null) : base(btnIdle, false, alpha, shader)
+        public Button(Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null,
+            Texture btnHover = null, Action onClick = null) : base(btnIdle, false, alpha, shader)
         {
             this.btnIdle = btnIdle;
-            if (btnClick != null) this.btnClick = btnClick;
-            else this.btnClick = btnIdle;
-            if (btnHover != null) this.btnHover = btnHover;
-            else this.btnHover = btnIdle;
+            if (btnClick != null)
+            {
+                this.btnClick = btnClick;
+            }
+            else
+            {
+                this.btnClick = btnIdle;
+            }
+
+            if (btnHover != null)
+            {
+                this.btnHover = btnHover;
+            }
+            else
+            {
+                this.btnHover = btnIdle;
+            }
+
             System = GameEngine.Instance.UISystem;
             OnClick = onClick;
         }
@@ -60,6 +82,7 @@ namespace Engine.UI.EventSystems
             {
                 OnClick?.Invoke();
             }
+
             state = newState;
         }
     }

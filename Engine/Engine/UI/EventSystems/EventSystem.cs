@@ -12,13 +12,17 @@ namespace Engine.UI.EventSystems
         public void Register(ISelectable element)
         {
             if (!selectables.Contains(element))
+            {
                 selectables.Add(element);
+            }
         }
 
         public void Unregister(ISelectable element)
         {
             if (selectables.Contains(element))
+            {
                 selectables.Remove(element);
+            }
         }
 
 
@@ -36,20 +40,17 @@ namespace Engine.UI.EventSystems
                 {
                     if (Input.LeftMB)
                     {
-
                         selectables[i].SetState(SelectableState.Selected);
                         Logger.Log("Clicking", DebugChannel.Log, 10);
                     }
                     else
                     {
                         selectables[i].SetState(SelectableState.Hovered);
-
                     }
                 }
                 else
                 {
                     selectables[i].SetState(SelectableState.None);
-
                 }
             }
         }

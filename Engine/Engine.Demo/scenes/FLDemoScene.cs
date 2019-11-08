@@ -150,7 +150,7 @@ namespace Engine.Demo.scenes
 
             Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
-            _sourceCube.AddComponent(new RotateAroundComponent() { Slow = 0.15f });
+            _sourceCube.AddComponent(new RotateAroundComponent() {Slow = 0.15f});
             _sourceCube.AddComponent(new LitMeshRendererComponent(shader, sourceCube,
                 TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
 
@@ -187,7 +187,7 @@ namespace Engine.Demo.scenes
             BasicCamera mainCamera =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                        GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                        GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
 
             object mc = mainCamera;
 
@@ -202,7 +202,7 @@ namespace Engine.Demo.scenes
             BasicCamera inPicCam =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                        GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                        GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             inPicCam.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(0));
             inPicCam.Translate(new Vector3(0, 2, 4));
             inPicCam.AddComponent(new RotateAroundComponent());
@@ -217,8 +217,8 @@ namespace Engine.Demo.scenes
             splitCam = new RenderTarget(inPicCam, 1, new Color(0, 0, 0, 0))
             {
                 MergeType = RenderTargetMergeType.Additive,
-                ViewPort = new Rectangle(0, 0, (int)(GameEngine.Instance.Width * 0.3f),
-                    (int)(GameEngine.Instance.Height * 0.3f))
+                ViewPort = new Rectangle(0, 0, (int) (GameEngine.Instance.Width * 0.3f),
+                    (int) (GameEngine.Instance.Height * 0.3f))
             };
 
             GameEngine.Instance.CurrentScene.Add(camContainer);
@@ -234,14 +234,12 @@ namespace Engine.Demo.scenes
             Texture btnIdle = TextureLoader.ColorToTexture(System.Drawing.Color.Green);
             Texture btnHover = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
             Texture btnClick = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
-            Button btn = new Button( btnIdle, uiShader, 1, btnClick, btnHover);
+            Button btn = new Button(btnIdle, uiShader, 1, btnClick, btnHover);
             obj.AddComponent(btn);
             Add(obj);
             btn.Scale = Vector2.One * 0.3f;
-
-
         }
-        
+
         public override void OnDestroy()
         {
             GameEngine.Instance.RemoveRenderTarget(splitCam);

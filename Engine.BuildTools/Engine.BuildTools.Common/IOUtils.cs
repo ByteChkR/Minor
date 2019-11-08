@@ -29,7 +29,6 @@ namespace Engine.BuildTools.Common
                     Directory.CreateDirectory(folders[i]);
                 }
             }
-
         }
     }
 }

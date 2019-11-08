@@ -14,7 +14,8 @@ namespace Engine.AssetPackaging
             this.ptr = ptr;
         }
 
-        public IOPackedAssemblyFile(bool compressed, string[] packFilepaths, AssetPointer ptr) : base(compressed, packFilepaths, null)
+        public IOPackedAssemblyFile(bool compressed, string[] packFilepaths, AssetPointer ptr) : base(compressed,
+            packFilepaths, null)
         {
             this.ptr = ptr;
         }
@@ -26,15 +27,17 @@ namespace Engine.AssetPackaging
 
         public override Stream GetFileStream()
         {
-
-            if (ManifestFilepaths.Length > 1) return ReadSplittedFile(ptr);
+            if (ManifestFilepaths.Length > 1)
+            {
+                return ReadSplittedFile(ptr);
+            }
 
 
             FileStream fs = new FileStream(ManifestFilepaths[0], FileMode.Open);
             Stream s = Compression ? UncompressZip(fs) : fs;
             s.Position = ptr.Offset;
             byte[] buf = new byte[ptr.Length];
-            int r =s.Read(buf, 0, buf.Length);
+            int r = s.Read(buf, 0, buf.Length);
             MemoryStream ms = new MemoryStream(buf);
             s.Close();
             return new MemoryStream(buf);

@@ -19,6 +19,7 @@ namespace Engine.Debug
             {
                 DebugHelper.ApplySettings(DebugSettings.GetDefault());
             }
+
             DebugHelper.Log(message, (int) channel, importance);
         }
 

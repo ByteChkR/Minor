@@ -14,9 +14,13 @@ namespace Engine.AssetPackaging
 
         public static int GetPackageCount(int offset, int length, int packageSize)
         {
-            if (offset + length <= packageSize) return 1;
+            if (offset + length <= packageSize)
+            {
+                return 1;
+            }
+
             int leftBytes = length - (packageSize - offset);
-            int ceil = (int)Math.Ceiling(1 + (leftBytes / (float)packageSize));
+            int ceil = (int) Math.Ceiling(1 + leftBytes / (float) packageSize);
             return ceil;
         }
 

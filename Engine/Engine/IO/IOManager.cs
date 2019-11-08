@@ -54,7 +54,7 @@ namespace Engine.IO
         {
             if (File.Exists(filename))
             {
-                Logger.Log(filename+" Found in File System.", DebugChannel.Log, 5);
+                Logger.Log(filename + " Found in File System.", DebugChannel.Log, 5);
                 return File.OpenRead(filename);
             }
 

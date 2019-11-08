@@ -3,8 +3,6 @@ using Engine.Common;
 
 namespace Engine.IO
 {
-
-    
     public class PPIOCallbacks : IIOCallback
     {
         public bool FileExists(string file)
@@ -24,6 +22,5 @@ namespace Engine.IO
         {
             return IOManager.GetFiles(path, searchPattern);
         }
-        
     }
 }

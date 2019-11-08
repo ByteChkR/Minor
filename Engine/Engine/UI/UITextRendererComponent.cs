@@ -152,7 +152,7 @@ namespace Engine.UI
             GL.Uniform1(Program.GetUniformLocation("sourceTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindVertexArray(_vao);
-            Vector2 pos = Position;//Hacked
+            Vector2 pos = Position; //Hacked
 
             if (Center)
             {
@@ -160,7 +160,6 @@ namespace Engine.UI
                 v.X *= Scale.X;
                 v.Y *= Scale.Y;
                 pos = Position - v / 2;
-
             }
 
             float x = pos.X;
@@ -195,9 +194,8 @@ namespace Engine.UI
                 float xpos = x + chr.BearingX / scrW * Scale.X;
                 float ypos = y - (chr.Height - chr.BearingY) / scrH * Scale.Y;
 
-                float w = chr.Width / (float)scrW * Scale.X;
-                float h = chr.Height / (float)scrH * Scale.Y;
-
+                float w = chr.Width / (float) scrW * Scale.X;
+                float h = chr.Height / (float) scrH * Scale.Y;
 
 
                 //Remove Scale And initial position(start at (x,y) = 0)
@@ -219,7 +217,7 @@ namespace Engine.UI
                 {
                     GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
                     GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr)(sizeof(float) * verts.Length),
+                    GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
                         verts);
 
                     GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

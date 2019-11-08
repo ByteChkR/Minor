@@ -50,7 +50,9 @@ namespace Engine.Debug
             {
                 _bufferDirty = true;
                 if (Owner != null)
+                {
                     _points = ComputeUVPos(Position, Scale, value);
+                }
             }
         }
 
@@ -116,7 +118,7 @@ namespace Engine.Debug
         {
             GL.BindVertexArray(_vao);
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(Points.Length * sizeof(float) * 2),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (Points.Length * sizeof(float) * 2),
                 Points, BufferUsageHint.StaticDraw);
             GL.BindVertexArray(0);
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);

@@ -2,8 +2,6 @@
 
 namespace Engine.BuildTools.Builder
 {
-    
-
     [Serializable]
     public class BuildSettings
     {
@@ -17,6 +15,5 @@ namespace Engine.BuildTools.Builder
         public string UnpackFiles;
         public int PackSize;
         public BuildType BuildFlags;
-        
     }
 }

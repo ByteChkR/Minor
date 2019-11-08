@@ -15,17 +15,20 @@ namespace Engine.AssetPackaging
             this.ptr = ptr;
         }
 
-        public PackedAssemblyFile(bool compression, string[] manifestFilepaths, Assembly assembly, AssetPointer ptr) : base(compression, manifestFilepaths,
-            assembly)
+        public PackedAssemblyFile(bool compression, string[] manifestFilepaths, Assembly assembly, AssetPointer ptr) :
+            base(compression, manifestFilepaths,
+                assembly)
         {
             this.ptr = ptr;
         }
 
-        
+
         public override Stream GetFileStream()
         {
-
-            if (ManifestFilepaths.Length > 1) return ReadSplittedFile(ptr);
+            if (ManifestFilepaths.Length > 1)
+            {
+                return ReadSplittedFile(ptr);
+            }
 
             Stream s = GetResourceStream(0);
             s.Position = ptr.Offset;
@@ -35,7 +38,4 @@ namespace Engine.AssetPackaging
             return new MemoryStream(buf);
         }
     }
-
-
-
 }

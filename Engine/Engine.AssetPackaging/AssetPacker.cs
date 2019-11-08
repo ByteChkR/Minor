@@ -12,7 +12,8 @@ namespace Engine.AssetPackaging
         public static int MAXSIZE_KILOBYTES = 1024;
         public static int PACK_SIZE => KILOBYTE * MAXSIZE_KILOBYTES;
 
-        public static AssetResult PackAssets(string assetFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
+        public static AssetResult
+            PackAssets(string assetFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
         {
             AssetResult ret = new AssetResult();
             ret.Compression = compression;
@@ -38,12 +39,13 @@ namespace Engine.AssetPackaging
         private static AssetResult ParseResult(Stream s)
         {
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
-            AssetResult ret = (AssetResult)xs.Deserialize(s);
+            AssetResult ret = (AssetResult) xs.Deserialize(s);
             s.Close();
             return ret;
         }
 
-        public static List<Tuple<string, AssetPointer>> GetPointers(Stream indexList, string[] packPaths, out bool compression)
+        public static List<Tuple<string, AssetPointer>> GetPointers(Stream indexList, string[] packPaths,
+            out bool compression)
         {
             AssetResult r = ParseResult(indexList);
             List<Tuple<string, AssetPointer>> assetList = new List<Tuple<string, AssetPointer>>();

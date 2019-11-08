@@ -12,24 +12,35 @@ namespace Engine.Common
 {
     public class PPCallbacks : IOCallbacks
     {
-
         public override bool FileExists(string file)
         {
-            if (TextProcessorAPI.PPCallback == null) return base.FileExists(file);
+            if (TextProcessorAPI.PPCallback == null)
+            {
+                return base.FileExists(file);
+            }
+
             string p = Path.GetRelativePath(Directory.GetCurrentDirectory(), file);
             return TextProcessorAPI.PPCallback.FileExists(p);
         }
 
         public override string[] ReadAllLines(string file)
         {
-            if (TextProcessorAPI.PPCallback == null) return base.ReadAllLines(file);
+            if (TextProcessorAPI.PPCallback == null)
+            {
+                return base.ReadAllLines(file);
+            }
+
             string p = Path.GetRelativePath(Directory.GetCurrentDirectory(), file);
             return TextProcessorAPI.PPCallback.ReadAllLines(p);
         }
 
         public override string[] GetFiles(string path, string searchPattern = "*")
         {
-            if (TextProcessorAPI.PPCallback == null) return base.GetFiles(path, searchPattern);
+            if (TextProcessorAPI.PPCallback == null)
+            {
+                return base.GetFiles(path, searchPattern);
+            }
+
             string p = Path.GetRelativePath(Directory.GetCurrentDirectory(), path);
             return TextProcessorAPI.PPCallback.GetFiles(p, searchPattern);
         }
@@ -40,8 +51,8 @@ namespace Engine.Common
     /// </summary>
     public static class TextProcessorAPI
     {
-
         public static IIOCallback PPCallback = null;
+
         public class FileContent : IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
             private readonly string[] _lines;

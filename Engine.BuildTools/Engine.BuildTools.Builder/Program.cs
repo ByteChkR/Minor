@@ -13,11 +13,12 @@ using Engine.BuildTools.PackageCreator;
 
 namespace Engine.BuildTools.Builder
 {
-    class Program
+    internal class Program
     {
         private class StartupInfo
         {
             private Dictionary<string, List<string>> values = new Dictionary<string, List<string>>();
+
             public StartupInfo(string[] args)
             {
                 for (int i = 0; i < args.Length; i++)
@@ -27,7 +28,11 @@ namespace Engine.BuildTools.Builder
                         List<string> argValues = new List<string>();
                         for (int j = i + 1; j < args.Length; j++)
                         {
-                            if (args[j].StartsWith("--")) break;
+                            if (args[j].StartsWith("--"))
+                            {
+                                break;
+                            }
+
                             argValues.Add(args[j]);
                         }
 
@@ -41,13 +46,13 @@ namespace Engine.BuildTools.Builder
                         }
                     }
                 }
-
             }
 
             public List<string> GetValues(string flag)
             {
                 return values[flag];
             }
+
             public bool HasFlag(string flag)
             {
                 return values.ContainsKey(flag);
@@ -60,22 +65,26 @@ namespace Engine.BuildTools.Builder
 
             public static List<string> ResolveFileReferences(string arg)
             {
-                if (arg.StartsWith('@')) return File.ReadAllLines(arg.Remove(0, 1)).ToList();
-                return new List<string>() { arg };
+                if (arg.StartsWith('@'))
+                {
+                    return File.ReadAllLines(arg.Remove(0, 1)).ToList();
+                }
+
+                return new List<string>() {arg};
             }
         }
+
         private static BuildSettings LoadSettings(string path)
         {
             XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
             FileStream fs = new FileStream(path, FileMode.Open);
-            BuildSettings bs = (BuildSettings)xs.Deserialize(fs);
+            BuildSettings bs = (BuildSettings) xs.Deserialize(fs);
             fs.Close();
             return bs;
         }
 
-        static void _Main(StartupInfo info)
+        private static void _Main(StartupInfo info)
         {
-
             if (info.HasValueFlag("--packer"))
             {
                 _PackAssets(info.GetValues("--packer").ToArray());
@@ -89,13 +98,11 @@ namespace Engine.BuildTools.Builder
             if (info.HasValueFlag("--build"))
             {
                 _Build(info.GetValues("--build").ToArray());
-
             }
 
             if (info.HasValueFlag("--unembed"))
             {
                 _UnembedFiles(info.GetValues("--unembed").ToArray());
-
             }
 
             if (info.HasValueFlag("--create-package"))
@@ -107,10 +114,9 @@ namespace Engine.BuildTools.Builder
             {
                 _CreateEnginePackage(info.GetValues("--create-engine-package").ToArray());
             }
-
         }
 
-        static void _CreateEnginePackage(string[] args)
+        private static void _CreateEnginePackage(string[] args)
         {
             //1 Directory of unpacked game build
             //2 The Project Name(Must have the same name as the dll that is used to start)
@@ -142,13 +148,15 @@ namespace Engine.BuildTools.Builder
                     Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                     Directory.Delete(folder + "/bin", true);
                 }
+
                 if (Directory.Exists(folder + "/obj"))
                 {
                     Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                     Directory.Delete(folder + "/obj", true);
                 }
 
-                ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", csF, null);
+                ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", csF,
+                    null);
                 string[] files = ParseEngineFileList(fileList, folder);
                 Creator.CreateEnginePackage(Path.GetFullPath(args[1]), folder, files);
             }
@@ -160,7 +168,8 @@ namespace Engine.BuildTools.Builder
                 throw;
             }
         }
-        static void _CreateGamePackage(string[] args)
+
+        private static void _CreateGamePackage(string[] args)
         {
             //1 Directory of unpacked game build
             //2 The Project Name(Must have the same name as the dll that is used to start)
@@ -185,19 +194,21 @@ namespace Engine.BuildTools.Builder
                     fileList = "";
                 }
 
-                string[] files = ParseFileList(fileList, Path.GetFullPath(args[0]), args[1], bool.Parse(args[3]), bool.Parse(args[4]));
+                string[] files = ParseFileList(fileList, Path.GetFullPath(args[0]), args[1], bool.Parse(args[3]),
+                    bool.Parse(args[4]));
                 Creator.CreateGamePackage(Path.GetFullPath(args[2]), Path.GetFullPath(args[0]), files, fvi.FileVersion);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Could not Create Game Package. Wrong Arguments?");
-                Console.WriteLine("Arguments: <DirectoryOfUnpackedBuild> <ProjectName> <TheOutputFile> <CopyAssetsOnError(bool)> <CopyPacksOnError(bool)> <optional: file list.>");
+                Console.WriteLine(
+                    "Arguments: <DirectoryOfUnpackedBuild> <ProjectName> <TheOutputFile> <CopyAssetsOnError(bool)> <CopyPacksOnError(bool)> <optional: file list.>");
                 Console.WriteLine(e);
                 throw;
             }
         }
 
-        static void _EmbedFiles(string[] args)
+        private static void _EmbedFiles(string[] args)
         {
             try
             {
@@ -207,13 +218,14 @@ namespace Engine.BuildTools.Builder
             catch (Exception e)
             {
                 Console.WriteLine("Could not Embed Folder into Project. Wrong Arguments?");
-                Console.WriteLine("Arguments: <ProjectFile(.csproj)> <DirectoryToEmbed(Has to be in subdirectories of the ProjectFile>");
+                Console.WriteLine(
+                    "Arguments: <ProjectFile(.csproj)> <DirectoryToEmbed(Has to be in subdirectories of the ProjectFile>");
                 Console.WriteLine(e);
                 throw;
             }
         }
 
-        static void _UnembedFiles(string[] args)
+        private static void _UnembedFiles(string[] args)
         {
             try
             {
@@ -228,7 +240,7 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        static void _Build(string[] args)
+        private static void _Build(string[] args)
         {
             try
             {
@@ -240,26 +252,27 @@ namespace Engine.BuildTools.Builder
                     Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                     Directory.Delete(projectFolder + "/bin", true);
                 }
+
                 if (Directory.Exists(projectFolder + "/obj"))
                 {
                     Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                     Directory.Delete(projectFolder + "/obj", true);
                 }
 
-                ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", args[0], null);
+                ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", args[0],
+                    null);
 
                 //Making sure that the root path Path is existing
                 IOUtils.CreateDirectoryPath(Path.GetFullPath(args[1]));
                 Directory.Delete(Path.GetFullPath(args[1]), true);
 
                 Directory.Move(publishFolder, Path.GetFullPath(args[1]));
-                string[] debugFiles = Directory.GetFiles(Path.GetFullPath(args[1]), "*.pdb", SearchOption.AllDirectories);
+                string[] debugFiles =
+                    Directory.GetFiles(Path.GetFullPath(args[1]), "*.pdb", SearchOption.AllDirectories);
                 for (int i = 0; i < debugFiles.Length; i++)
                 {
                     File.Delete(debugFiles[i]);
                 }
-
-
             }
             catch (Exception e)
             {
@@ -270,7 +283,7 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        static void _PackAssets(string[] args)
+        private static void _PackAssets(string[] args)
         {
             try
             {
@@ -284,11 +297,10 @@ namespace Engine.BuildTools.Builder
                 Console.WriteLine(e);
                 throw;
             }
-
         }
 
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             StartupInfo info = new StartupInfo(args);
             if (!info.HasFlag("noflag"))
@@ -300,10 +312,11 @@ namespace Engine.BuildTools.Builder
                     Console.WriteLine("--embed -> Embeds Files into the .csproj File of the game.");
                     Console.WriteLine("--build -> Builds the specified .csproj File");
                     Console.WriteLine("--unembed -> Restores the Project when previously embedded with --embed.");
-                    Console.WriteLine("--create-package -> Creates a Game Package that is executable by the Engine.Player");
+                    Console.WriteLine(
+                        "--create-package -> Creates a Game Package that is executable by the Engine.Player");
                 }
-                _Main(info);
 
+                _Main(info);
             }
             else
             {
@@ -314,14 +327,16 @@ namespace Engine.BuildTools.Builder
                         BuildSettings bs = LoadSettings(args[0]);
 
 
-
                         string homeDir = AppDomain.CurrentDomain.BaseDirectory;
 
                         Directory.SetCurrentDirectory(Path.GetDirectoryName(Path.GetFullPath(args[0])));
 
 
                         string outFolder = Path.GetFullPath(bs.OutputFolder);
-                        if (!Directory.Exists(outFolder)) Directory.CreateDirectory(outFolder);
+                        if (!Directory.Exists(outFolder))
+                        {
+                            Directory.CreateDirectory(outFolder);
+                        }
 
                         string buildOutput = bs.CreateGamePackage ? outFolder + "/build" : outFolder;
 
@@ -338,11 +353,12 @@ namespace Engine.BuildTools.Builder
 
                         string publishFolder = projectFolder + "/bin/Release/netcoreapp2.1/publish";
 
-                        if (Directory.Exists(projectFolder+"/bin"))
+                        if (Directory.Exists(projectFolder + "/bin"))
                         {
                             Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                             Directory.Delete(projectFolder + "/bin", true);
                         }
+
                         if (Directory.Exists(projectFolder + "/obj"))
                         {
                             Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
@@ -358,7 +374,6 @@ namespace Engine.BuildTools.Builder
                         bool packsCreated = false;
                         if (bs.BuildFlags == BuildType.PackEmbed || bs.BuildFlags == BuildType.PackOnly)
                         {
-
                             PackAssets(packFolder, bs.PackSize, bs.MemoryFiles, bs.UnpackFiles,
                                 assetFolder, false);
 
@@ -383,9 +398,14 @@ namespace Engine.BuildTools.Builder
 
                             AssemblyEmbedder.EmbedFilesIntoProject(projectFile, files);
                         }
+
                         ProcessUtils.RunProcess(homeDir + "resources/project_build.bat", projectFile, null);
 
-                        if (Directory.Exists(buildOutput)) Directory.Delete(buildOutput, true);
+                        if (Directory.Exists(buildOutput))
+                        {
+                            Directory.Delete(buildOutput, true);
+                        }
+
                         Thread.Sleep(500);
                         Directory.Move(publishFolder, buildOutput);
                         string[] debugFiles = Directory.GetFiles(buildOutput, "*.pdb", SearchOption.AllDirectories);
@@ -410,13 +430,7 @@ namespace Engine.BuildTools.Builder
                         {
                             Console.WriteLine("Deleting Generated Pack Folder.");
                             Directory.Delete(projectFolder + outputPackFolder, true);
-
                         }
-
-
-
-
-
 
 
                         if (bs.CreateGamePackage)
@@ -424,15 +438,12 @@ namespace Engine.BuildTools.Builder
                             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                             string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
                                 bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly);
-                            Creator.CreateGamePackage(outputFolder + "/" + projectName + ".game", buildOutput, files, fvi.FileVersion);
+                            Creator.CreateGamePackage(outputFolder + "/" + projectName + ".game", buildOutput, files,
+                                fvi.FileVersion);
                         }
                     }
                 }
             }
-
-
-
-
         }
 
         public static string[] CreateFileList(string path, string searchPatterns, char separator = '+')
@@ -453,14 +464,14 @@ namespace Engine.BuildTools.Builder
             List<string> unpackExts = unpackedFileExts.Split('+', StringSplitOptions.RemoveEmptyEntries).ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() {packageType = AssetPackageType.Unpack});
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
+                info.FileInfos.Add(packExts[i], new AssetFileInfo() {packageType = AssetPackageType.Memory});
             }
 
             return info;
@@ -485,7 +496,8 @@ namespace Engine.BuildTools.Builder
             Console.WriteLine("Packaging Assets Finished.");
         }
 
-        private static string[] ParseFileList(string fileList, string projectFolder, string projectName, bool copyAssetsWhenError, bool copyPacksWhenError)
+        private static string[] ParseFileList(string fileList, string projectFolder, string projectName,
+            bool copyAssetsWhenError, bool copyPacksWhenError)
         {
             string[] files;
             if (fileList != null && File.Exists(fileList))
@@ -504,9 +516,15 @@ namespace Engine.BuildTools.Builder
                 string packFolder = projectFolder + "/packs";
                 string assetFolder = projectFolder + "/assets";
                 if (Directory.Exists(assetFolder) && copyAssetsWhenError)
+                {
                     f.AddRange(Directory.GetFiles(assetFolder, "*", SearchOption.AllDirectories));
+                }
+
                 if (Directory.Exists(packFolder) && copyPacksWhenError)
+                {
                     f.AddRange(Directory.GetFiles(packFolder, "*", SearchOption.AllDirectories));
+                }
+
                 f.Add(projectFolder + "/" + projectName + ".dll");
                 f.Add(projectFolder + "/" + projectName + ".runtimeconfig.json");
                 f.Add(projectFolder + "/" + projectName + ".deps.json");

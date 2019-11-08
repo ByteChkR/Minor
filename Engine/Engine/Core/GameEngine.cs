@@ -15,7 +15,6 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Core
 {
-
     /// <summary>
     /// Central class that is the "heart" of the Engine
     /// </summary>
@@ -106,7 +105,6 @@ namespace Engine.Core
             }
 
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
-
         }
 
 
@@ -146,6 +144,7 @@ namespace Engine.Core
                 Settings.WindowFlags);
 
             #region WindowHandles
+
             Input.Initialize(Window);
             Window.UpdateFrame += Update;
             Window.Resize += OnResize;
@@ -202,7 +201,11 @@ namespace Engine.Core
 
         public void InitializeScene(Type sceneType)
         {
-            if (!typeof(AbstractScene).IsAssignableFrom(sceneType)) return;
+            if (!typeof(AbstractScene).IsAssignableFrom(sceneType))
+            {
+                return;
+            }
+
             _changeScene = true;
             _nextScene = sceneType;
             Logger.Log("Initializing Scene..", DebugChannel.Log | DebugChannel.EngineCore, 9);

@@ -43,13 +43,13 @@ namespace Engine.Demo
 
                 ManifestReader.LoadAssemblyListFromFile("assemblyList.txt");
             }
+
             EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");
 
 
-
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
-            SceneRunner sr = new SceneRunner(engine,asm, scenes);
+            SceneRunner sr = new SceneRunner(engine, asm, scenes);
 
             //ManifestReader.PrepareManifestFiles(true);
 
@@ -62,7 +62,7 @@ namespace Engine.Demo
             engine.Initialize();
 
             sr.NextScene();
-            
+
             engine.Run();
         }
 
@@ -99,9 +99,9 @@ namespace Engine.Demo
 
                 ManifestReader.LoadAssemblyListFromFile("assemblyList.txt");
             }
+
             EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");
-
 
 
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
@@ -110,7 +110,7 @@ namespace Engine.Demo
 
             //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
 
-            
+
             engine.SetSettings(EngineSettings.Settings);
 
 

@@ -1,5 +1,4 @@
-﻿
-using OpenTK;
+﻿using OpenTK;
 
 namespace Engine.UI.EventSystems
 {
@@ -9,6 +8,4 @@ namespace Engine.UI.EventSystems
         void SetState(SelectableState state);
         Box2 BoundingBox { get; }
     }
-
-    
 }

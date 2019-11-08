@@ -16,6 +16,7 @@ namespace Engine.BuildTools.Common
         private Action<string> _del;
         private object lockObj = new object();
         private bool quitFlag = false;
+
         public ConsoleRedirector()
         {
             //SHIT
@@ -63,7 +64,9 @@ namespace Engine.BuildTools.Common
         public void StopThreads()
         {
             lock (lockObj)
+            {
                 quitFlag = true;
+            }
         }
 
         public string GetRemainingLogs()
@@ -89,13 +92,13 @@ namespace Engine.BuildTools.Common
             {
                 lock (lockObj)
                 {
-
                     if (quitFlag)
                     {
                         Console.WriteLine("Quitting From Loop");
                         return;
                     }
                 }
+
                 txt = cout.ReadLine();
                 if (txt != "")
                 {
