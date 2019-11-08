@@ -1,4 +1,6 @@
 ﻿using System;
+using Engine.DataTypes;
+using Engine.Debug;
 
 namespace Engine.Exceptions
 {
@@ -23,6 +25,8 @@ namespace Engine.Exceptions
         /// <param name="Filepath">The File that was not found</param>
         public InvalidFilePathException(string filePath) : this(filePath, null)
         {
+            Logger.Log("Files:", DebugChannel.Error, 10);
+            ManifestReader.ListAllFiles();
         }
     }
 }
