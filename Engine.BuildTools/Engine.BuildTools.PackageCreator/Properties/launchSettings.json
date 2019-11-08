@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Engine.BuildTools.PackageCreator": {
+      "commandName": "Project"
+    }
+  }
+}

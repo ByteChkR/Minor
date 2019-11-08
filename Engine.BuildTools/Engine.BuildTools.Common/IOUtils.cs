@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Engine.BuildTools.Common
@@ -9,14 +10,14 @@ namespace Engine.BuildTools.Common
         {
             List<string> folders = new List<string>();
             string curFolder = dirPath;
-            folders.Add(curFolder);
-            while (!string.IsNullOrEmpty(curFolder) && curFolder.Trim() != "\\")
+            while (!string.IsNullOrEmpty(curFolder) && curFolder.Trim() != "\\" && curFolder.Trim() != "/")
             {
                 if (string.IsNullOrEmpty(curFolder))
                 {
                     break;
                 }
 
+                Console.WriteLine("Adding Folder to Create List:" + curFolder);
                 folders.Add(curFolder);
                 curFolder = Path.GetDirectoryName(curFolder);
             }
@@ -25,7 +26,7 @@ namespace Engine.BuildTools.Common
             {
                 if (!Directory.Exists(folders[i]))
                 {
-                    Directory.CreateDirectory(".\\" + folders[i]);
+                    Directory.CreateDirectory(folders[i]);
                 }
             }
 
