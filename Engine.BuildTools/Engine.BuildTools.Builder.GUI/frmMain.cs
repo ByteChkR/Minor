@@ -434,10 +434,17 @@ namespace Engine.BuildTools.Builder.GUI
             OpenBuildFolder();
         }
 
+
         private void btnCreateEnginePackage_Click(object sender, EventArgs e)
         {
+            string outputPath = $"{FullPath(SaveLocation, tbOutputFolder.Text)}";
+
+            string outputFile = $"{outputPath + "/" + Path.GetFileNameWithoutExtension(tbProject.Text)}.engine";
+            if (!Directory.Exists(outputPath))
+                Directory.CreateDirectory(outputPath);
             CheckForIllegalCrossThreadCalls = false;
-            CreateEnginePackage(FullPath(SaveLocation, tbEngineProject.Text), $"{FullPath(SaveLocation, tbOutputFolder.Text + "/" + Path.GetFileNameWithoutExtension(tbProject.Text))}.engine");
+
+            CreateEnginePackage(FullPath(SaveLocation, tbEngineProject.Text), outputFile);
 
             CheckForIllegalCrossThreadCalls = true;
 
