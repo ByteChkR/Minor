@@ -5,8 +5,9 @@ namespace Engine.BuildTools.Common
 {
     public static class ProcessUtils
     {
-        public static int RunProcess(string file, string args, Action waitAction)
+        public static int RunProcess(string file, string args, Action waitAction, Action<string> writeLine = null)
         {
+            if (writeLine == null) writeLine = Console.WriteLine;
             ProcessStartInfo psi = new ProcessStartInfo(file, args)
             {
                 RedirectStandardOutput = true,
@@ -15,13 +16,14 @@ namespace Engine.BuildTools.Common
                 UseShellExecute = false
             };
 
+            writeLine(file + " " + args);
 
-            Process p = new Process {StartInfo = psi};
+            Process p = new Process { StartInfo = psi };
 
             p.Start();
 
             ConsoleRedirector redir;
-            redir = ConsoleRedirector.CreateRedirector(p.StandardOutput, p.StandardError, p, Console.WriteLine);
+            redir = ConsoleRedirector.CreateRedirector(p.StandardOutput, p.StandardError, p, writeLine);
 
             redir.StartThreads();
 
@@ -32,7 +34,7 @@ namespace Engine.BuildTools.Common
 
 
             redir.StopThreads();
-            Console.WriteLine(redir.GetRemainingLogs());
+            writeLine?.Invoke(redir.GetRemainingLogs());
 
             return p.ExitCode;
         }

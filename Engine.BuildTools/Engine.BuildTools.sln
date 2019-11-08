@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.BuildTools.Builder",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.AssetPackaging", "..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj", "{5837BD64-264F-47F8-AFB9-6EA07CA0DEAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Engine.BuildTools.Builder.GUI", "Engine.BuildTools.Builder.GUI\Engine.BuildTools.Builder.GUI.csproj", "{33953ED7-5B87-45D9-B405-98E9F9DB087A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{5837BD64-264F-47F8-AFB9-6EA07CA0DEAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5837BD64-264F-47F8-AFB9-6EA07CA0DEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5837BD64-264F-47F8-AFB9-6EA07CA0DEAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33953ED7-5B87-45D9-B405-98E9F9DB087A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33953ED7-5B87-45D9-B405-98E9F9DB087A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33953ED7-5B87-45D9-B405-98E9F9DB087A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33953ED7-5B87-45D9-B405-98E9F9DB087A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

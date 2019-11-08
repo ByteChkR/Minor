@@ -1,4 +1,4 @@
-﻿namespace Engine.BuildTools.Builder
+﻿namespace Engine.BuildTools.Common
 {
     public enum BuildType
     {
