@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<BuildSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CreateGamePackage>true</CreateGamePackage>
+  <CreateEnginePackage>true</CreateEnginePackage>
+  <GamePackageFileList />
+  <Project>Engine.Demo.csproj</Project>
+  <EngineProject>../Engine/Engine.csproj</EngineProject>
+  <AssetFolder>assets</AssetFolder>
+  <OutputFolder>Build</OutputFolder>
+  <MemoryFiles>*.png+*.jpg+*.obj+*.wav+*.vs+*.fs+*.xml+*.ttf+*.cl+*.fl</MemoryFiles>
+  <UnpackFiles />
+  <PackSize>1024</PackSize>
+  <BuildFlags>PackOnly</BuildFlags>
+</BuildSettings>
