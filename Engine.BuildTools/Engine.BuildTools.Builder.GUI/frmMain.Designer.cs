@@ -30,19 +30,21 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.gbBuildSettings = new System.Windows.Forms.GroupBox();
+            this.pbError = new System.Windows.Forms.PictureBox();
+            this.pbidle = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbCreateGamePackage = new System.Windows.Forms.CheckBox();
+            this.btnCreateEnginePackage = new System.Windows.Forms.Button();
             this.cbExperimentalPackaging = new System.Windows.Forms.CheckBox();
             this.cbCreateEnginePackage = new System.Windows.Forms.CheckBox();
             this.btnSelectGamePackageFileList = new System.Windows.Forms.Button();
+            this.btnSelectEngineProject = new System.Windows.Forms.Button();
             this.tbFileList = new System.Windows.Forms.TextBox();
+            this.tbEngineProject = new System.Windows.Forms.TextBox();
             this.lblGameFileList = new System.Windows.Forms.Label();
-            this.btnCreateEnginePackage = new System.Windows.Forms.Button();
+            this.lblEngineProject = new System.Windows.Forms.Label();
             this.btnRun = new System.Windows.Forms.Button();
             this.btnNew = new System.Windows.Forms.Button();
-            this.btnSelectEngineProject = new System.Windows.Forms.Button();
-            this.tbEngineProject = new System.Windows.Forms.TextBox();
-            this.lblEngineProject = new System.Windows.Forms.Label();
             this.gbUnpackFileExtensions = new System.Windows.Forms.GroupBox();
             this.rtbUnpackedExts = new System.Windows.Forms.RichTextBox();
             this.gbPackFileExtensions = new System.Windows.Forms.GroupBox();
@@ -63,6 +65,7 @@
             this.nudPackageSize = new System.Windows.Forms.NumericUpDown();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
+            this.pbBusy = new System.Windows.Forms.PictureBox();
             this.ofdBuildSettings = new System.Windows.Forms.OpenFileDialog();
             this.sfdBuildSettings = new System.Windows.Forms.SaveFileDialog();
             this.gbOutput = new System.Windows.Forms.GroupBox();
@@ -72,15 +75,19 @@
             this.fbdAssetFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.fbdOutputFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.gbBuildSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbidle)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.gbUnpackFileExtensions.SuspendLayout();
             this.gbPackFileExtensions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPackageSize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBusy)).BeginInit();
             this.gbOutput.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbBuildSettings
             // 
+            this.gbBuildSettings.Controls.Add(this.pbidle);
             this.gbBuildSettings.Controls.Add(this.groupBox1);
             this.gbBuildSettings.Controls.Add(this.btnRun);
             this.gbBuildSettings.Controls.Add(this.btnNew);
@@ -102,6 +109,8 @@
             this.gbBuildSettings.Controls.Add(this.nudPackageSize);
             this.gbBuildSettings.Controls.Add(this.btnLoad);
             this.gbBuildSettings.Controls.Add(this.btnSave);
+            this.gbBuildSettings.Controls.Add(this.pbBusy);
+            this.gbBuildSettings.Controls.Add(this.pbError);
             this.gbBuildSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbBuildSettings.Location = new System.Drawing.Point(0, 0);
             this.gbBuildSettings.Name = "gbBuildSettings";
@@ -109,6 +118,26 @@
             this.gbBuildSettings.TabIndex = 0;
             this.gbBuildSettings.TabStop = false;
             this.gbBuildSettings.Text = "Build Settings:";
+            // 
+            // pbError
+            // 
+            this.pbError.Image = global::Engine.BuildTools.Builder.GUI.Properties.Resources.procbusy;
+            this.pbError.Location = new System.Drawing.Point(1001, 48);
+            this.pbError.Name = "pbError";
+            this.pbError.Size = new System.Drawing.Size(60, 60);
+            this.pbError.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbError.TabIndex = 36;
+            this.pbError.TabStop = false;
+            // 
+            // pbidle
+            // 
+            this.pbidle.Image = global::Engine.BuildTools.Builder.GUI.Properties.Resources.procidle;
+            this.pbidle.Location = new System.Drawing.Point(1001, 48);
+            this.pbidle.Name = "pbidle";
+            this.pbidle.Size = new System.Drawing.Size(60, 60);
+            this.pbidle.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbidle.TabIndex = 33;
+            this.pbidle.TabStop = false;
             // 
             // groupBox1
             // 
@@ -140,6 +169,16 @@
             this.cbCreateGamePackage.Text = "Create .game Package";
             this.cbCreateGamePackage.UseVisualStyleBackColor = true;
             this.cbCreateGamePackage.CheckedChanged += new System.EventHandler(this.cbCreateGamePackage_CheckedChanged);
+            // 
+            // btnCreateEnginePackage
+            // 
+            this.btnCreateEnginePackage.Location = new System.Drawing.Point(908, 63);
+            this.btnCreateEnginePackage.Name = "btnCreateEnginePackage";
+            this.btnCreateEnginePackage.Size = new System.Drawing.Size(147, 23);
+            this.btnCreateEnginePackage.TabIndex = 30;
+            this.btnCreateEnginePackage.Text = "Create Engine Package";
+            this.btnCreateEnginePackage.UseVisualStyleBackColor = true;
+            this.btnCreateEnginePackage.Click += new System.EventHandler(this.btnCreateEnginePackage_Click);
             // 
             // cbExperimentalPackaging
             // 
@@ -175,6 +214,17 @@
             this.btnSelectGamePackageFileList.UseVisualStyleBackColor = true;
             this.btnSelectGamePackageFileList.Click += new System.EventHandler(this.btnSelectGamePackageFileList_Click);
             // 
+            // btnSelectEngineProject
+            // 
+            this.btnSelectEngineProject.Enabled = false;
+            this.btnSelectEngineProject.Location = new System.Drawing.Point(863, 63);
+            this.btnSelectEngineProject.Name = "btnSelectEngineProject";
+            this.btnSelectEngineProject.Size = new System.Drawing.Size(39, 23);
+            this.btnSelectEngineProject.TabIndex = 24;
+            this.btnSelectEngineProject.Text = "...";
+            this.btnSelectEngineProject.UseVisualStyleBackColor = true;
+            this.btnSelectEngineProject.Click += new System.EventHandler(this.btnSelectEngineProject_Click);
+            // 
             // tbFileList
             // 
             this.tbFileList.Enabled = false;
@@ -185,6 +235,15 @@
             this.tbFileList.Text = "autodetect";
             this.tbFileList.TextChanged += new System.EventHandler(this.tbFileList_TextChanged);
             // 
+            // tbEngineProject
+            // 
+            this.tbEngineProject.Enabled = false;
+            this.tbEngineProject.Location = new System.Drawing.Point(131, 65);
+            this.tbEngineProject.Name = "tbEngineProject";
+            this.tbEngineProject.Size = new System.Drawing.Size(726, 20);
+            this.tbEngineProject.TabIndex = 23;
+            this.tbEngineProject.TextChanged += new System.EventHandler(this.tbEngineProject_TextChanged);
+            // 
             // lblGameFileList
             // 
             this.lblGameFileList.AutoSize = true;
@@ -194,15 +253,14 @@
             this.lblGameFileList.TabIndex = 27;
             this.lblGameFileList.Text = "FileList:";
             // 
-            // btnCreateEnginePackage
+            // lblEngineProject
             // 
-            this.btnCreateEnginePackage.Location = new System.Drawing.Point(908, 63);
-            this.btnCreateEnginePackage.Name = "btnCreateEnginePackage";
-            this.btnCreateEnginePackage.Size = new System.Drawing.Size(147, 23);
-            this.btnCreateEnginePackage.TabIndex = 30;
-            this.btnCreateEnginePackage.Text = "Create Engine Package";
-            this.btnCreateEnginePackage.UseVisualStyleBackColor = true;
-            this.btnCreateEnginePackage.Click += new System.EventHandler(this.btnCreateEnginePackage_Click);
+            this.lblEngineProject.AutoSize = true;
+            this.lblEngineProject.Location = new System.Drawing.Point(12, 68);
+            this.lblEngineProject.Name = "lblEngineProject";
+            this.lblEngineProject.Size = new System.Drawing.Size(116, 13);
+            this.lblEngineProject.TabIndex = 22;
+            this.lblEngineProject.Text = "Engine Project(.csproj):";
             // 
             // btnRun
             // 
@@ -224,35 +282,6 @@
             this.btnNew.Text = "New";
             this.btnNew.UseVisualStyleBackColor = true;
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
-            // 
-            // btnSelectEngineProject
-            // 
-            this.btnSelectEngineProject.Enabled = false;
-            this.btnSelectEngineProject.Location = new System.Drawing.Point(863, 63);
-            this.btnSelectEngineProject.Name = "btnSelectEngineProject";
-            this.btnSelectEngineProject.Size = new System.Drawing.Size(39, 23);
-            this.btnSelectEngineProject.TabIndex = 24;
-            this.btnSelectEngineProject.Text = "...";
-            this.btnSelectEngineProject.UseVisualStyleBackColor = true;
-            this.btnSelectEngineProject.Click += new System.EventHandler(this.btnSelectEngineProject_Click);
-            // 
-            // tbEngineProject
-            // 
-            this.tbEngineProject.Enabled = false;
-            this.tbEngineProject.Location = new System.Drawing.Point(131, 65);
-            this.tbEngineProject.Name = "tbEngineProject";
-            this.tbEngineProject.Size = new System.Drawing.Size(726, 20);
-            this.tbEngineProject.TabIndex = 23;
-            this.tbEngineProject.TextChanged += new System.EventHandler(this.tbEngineProject_TextChanged);
-            // 
-            // lblEngineProject
-            // 
-            this.lblEngineProject.AutoSize = true;
-            this.lblEngineProject.Location = new System.Drawing.Point(12, 68);
-            this.lblEngineProject.Name = "lblEngineProject";
-            this.lblEngineProject.Size = new System.Drawing.Size(116, 13);
-            this.lblEngineProject.TabIndex = 22;
-            this.lblEngineProject.Text = "Engine Project(.csproj):";
             // 
             // gbUnpackFileExtensions
             // 
@@ -465,6 +494,16 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // pbBusy
+            // 
+            this.pbBusy.Image = global::Engine.BuildTools.Builder.GUI.Properties.Resources.loading_pac;
+            this.pbBusy.Location = new System.Drawing.Point(1001, 48);
+            this.pbBusy.Name = "pbBusy";
+            this.pbBusy.Size = new System.Drawing.Size(60, 60);
+            this.pbBusy.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbBusy.TabIndex = 35;
+            this.pbBusy.TabStop = false;
+            // 
             // ofdBuildSettings
             // 
             this.ofdBuildSettings.DefaultExt = "xml";
@@ -535,11 +574,14 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.gbBuildSettings.ResumeLayout(false);
             this.gbBuildSettings.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbidle)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.gbUnpackFileExtensions.ResumeLayout(false);
             this.gbPackFileExtensions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudPackageSize)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBusy)).EndInit();
             this.gbOutput.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -589,6 +631,9 @@
         private System.Windows.Forms.Button btnCreateEnginePackage;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox cbExperimentalPackaging;
+        private System.Windows.Forms.PictureBox pbidle;
+        private System.Windows.Forms.PictureBox pbBusy;
+        private System.Windows.Forms.PictureBox pbError;
     }
 }
 

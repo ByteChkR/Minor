@@ -1,10 +1,38 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace Engine.BuildTools.Common
 {
     public static class ProcessUtils
     {
+        public static void RunActionAsCommand(Action<string[]> action, string args, Action<Exception> onEnd)
+        {
+            string[] a = args.Split(new[] {' ', '\n'});
+            RunActionAsCommand(action, a, onEnd);
+        }
+        public static void RunActionAsCommand(Action<string[]> action, string[] args, Action<Exception> onEnd)
+        {
+            Thread t = new Thread(() => RunThread(action, args, onEnd));
+            t.Start();
+        }
+        
+
+        private static void RunThread(Action<string[]> action, string[] args, Action<Exception> onEnd)
+        {
+            try
+            {
+                action(args);
+                onEnd?.Invoke(null);
+            }
+            catch (Exception e)
+            {
+                onEnd?.Invoke(e);
+            }
+
+
+        }
+
         public static int RunProcess(string file, string args, Action waitAction, Action<string> writeLine = null)
         {
             if (writeLine == null) writeLine = Console.WriteLine;

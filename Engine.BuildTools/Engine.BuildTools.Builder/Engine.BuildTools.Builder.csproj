@@ -1,24 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
-    <Version>0.1</Version>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
     <ProjectReference Include="..\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj" />
     <ProjectReference Include="..\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="MinorGame\Minor\MinorEngine\Engine\OpenCL\DotNetCore\DataTypes\VectorTypes.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-    </None>
-    <None Update="resources\project_build.bat">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>

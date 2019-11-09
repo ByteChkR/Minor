@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Engine.Player.Builder": {
-      "commandName": "Project",
-      "commandLineArgs": "BuildSettings.xml --packager-version v1",
-      "workingDirectory": ".\\"
-    }
-  }
-}

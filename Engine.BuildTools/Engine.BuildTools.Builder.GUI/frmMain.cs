@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting.Messaging;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -20,6 +22,7 @@ namespace Engine.BuildTools.Builder.GUI
         private XmlSerializer xs;
         private string SaveLocation;
         private bool Initialized;
+
         public frmMain()
         {
             InitializeComponent();
@@ -30,6 +33,9 @@ namespace Engine.BuildTools.Builder.GUI
             bs = new BuildSettings();
             SaveLocation = "";
             xs = new XmlSerializer(typeof(BuildSettings));
+
+            CheckForIllegalCrossThreadCalls = false;
+            
         }
 
         private void Initialize()
@@ -39,9 +45,18 @@ namespace Engine.BuildTools.Builder.GUI
             SetGlobalState(true);
             InvalidateFormOnContent();
         }
+
+        private void SetAllState(bool state)
+        {
+            SetGlobalState(state);
+
+            btnLoad.Enabled = state;
+            btnNew.Enabled = state;
+            btnCreateEnginePackage.Enabled = state;
+        }
+
         private void SetGlobalState(bool state)
         {
-
             tbAssetFolder.Enabled = state;
             tbEngineProject.Enabled = state;
             tbFileList.Enabled = state;
@@ -65,7 +80,7 @@ namespace Engine.BuildTools.Builder.GUI
             cbCreateGamePackage.Enabled = state;
             cbExperimentalPackaging.Enabled = state;
 
-
+            nudPackageSize.Enabled = state;
         }
 
         private void SaveFile(string fileName)
@@ -122,6 +137,7 @@ namespace Engine.BuildTools.Builder.GUI
                 }
             }
         }
+
         private void btnNew_Click(object sender, EventArgs e)
         {
             if (sfdBuildSettings.ShowDialog() == DialogResult.OK)
@@ -168,6 +184,7 @@ namespace Engine.BuildTools.Builder.GUI
             {
                 nudPackageSize.Enabled = true;
             }
+
             tbEngineProject.Enabled = cbCreateEnginePackage.Checked;
             btnSelectEngineProject.Enabled = cbCreateEnginePackage.Checked;
 
@@ -412,10 +429,46 @@ namespace Engine.BuildTools.Builder.GUI
         {
             WriteOutput("Creating Engine Package...");
 
-            string useExperimental = cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
-            ProcessUtils.RunProcess("cmd.exe", $"/C dotnet Engine.BuildTools.Builder.dll {useExperimental} --create-engine-package {engineProjectFile} {outputPath}", Application.DoEvents, WriteOutput);
+            string useExperimental =
+                cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+            SetState(State.Busy);
+
+            buildFailed = false;
+            ProcessUtils.RunActionAsCommand(Lib.Builder.RunCommand, $"{useExperimental} --create-engine-package {engineProjectFile} {outputPath}", EnginePackagerFinished);
+            //ProcessUtils.RunProcess("cmd.exe",
+            //  $"/C dotnet Engine.BuildTools.Builder.dll {useExperimental} --create-engine-package {engineProjectFile} {outputPath}",
+            //   Application.DoEvents, WriteOutput);
         }
 
+        private enum State
+        {
+            Idle, Busy, Error
+        }
+
+        private void SetState(State state)
+        {
+            SetAllState(state != State.Busy); //Disable and enable controls based on if not busy
+
+            if (state == State.Busy)
+            {
+                pbBusy.Visible = true;
+                pbidle.Visible = false;
+                pbError.Visible = false;
+            }
+            else if (state == State.Idle)
+            {
+                pbBusy.Visible = false;
+                pbidle.Visible = true;
+                pbError.Visible = false;
+            }
+            else if (state == State.Error)
+            {
+                pbBusy.Visible = false;
+                pbidle.Visible = false;
+                pbError.Visible = true;
+            }
+        }
+        
         private void btnRun_Click(object sender, EventArgs e)
         {
             if (cbAskOutputFolderOnBuild.Checked)
@@ -423,34 +476,73 @@ namespace Engine.BuildTools.Builder.GUI
                 AskBuildOutput();
             }
 
-            SaveFile(SaveLocation);
-            CheckForIllegalCrossThreadCalls = false;
-            WriteOutput("Running Build Settings...");
-            string useExperimental = cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
-            ProcessUtils.RunProcess("cmd.exe", "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents, WriteOutput);
+            SetState(State.Busy);
 
+            SaveFile(SaveLocation);
+            WriteOutput("Running Build Settings...");
+            string useExperimental =
+                cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+
+            buildFailed = false;
+            ProcessUtils.RunActionAsCommand(Lib.Builder.RunCommand, SaveLocation + " " + useExperimental, XMLBuildFinished);
+            //Lib.Builder.RunCommand(SaveLocation + " " + useExperimental);
+            //ProcessUtils.RunProcess("cmd.exe",
+            //   "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents,
+            //   WriteOutput);
+
+        }
+
+        private bool buildFailed = false;
+
+        private void XMLBuildFinished(Exception ex)
+        {
+            if (buildFailed) return;
+            if (ex != null)
+            {
+                buildFailed = true;
+                WriteOutput(ex.ToString());
+                SetState(State.Error);
+                return;
+            }
             if (cbCreateEnginePackage.Checked)
             {
-                CreateEnginePackage($"{FullPath(SaveLocation, tbEngineProject.Text)}", $"{FullPath(SaveLocation, tbOutputFolder.Text + "/" + Path.GetFileNameWithoutExtension(tbProject.Text))}.engine");
+                CreateEnginePackage($"{FullPath(SaveLocation, tbEngineProject.Text)}",
+                    $"{FullPath(SaveLocation, tbOutputFolder.Text + "/" + Path.GetFileNameWithoutExtension(tbProject.Text))}.engine");
+            }
+            else
+            {
+                SetState(State.Idle);
+                OpenBuildFolder();
             }
 
-            CheckForIllegalCrossThreadCalls = true;
+        }
+
+        private void EnginePackagerFinished(Exception ex)
+        {
+            if (buildFailed) return;
+            if (ex != null)
+            {
+                buildFailed = true;
+                WriteOutput(ex.ToString());
+                SetState(State.Error);
+                return;
+            }
+
+            SetState(State.Idle);
             OpenBuildFolder();
         }
 
 
         private void btnCreateEnginePackage_Click(object sender, EventArgs e)
         {
+            SetState(State.Busy);
             string outputPath = $"{FullPath(SaveLocation, tbOutputFolder.Text)}";
 
             string outputFile = $"{outputPath + "/" + Path.GetFileNameWithoutExtension(tbProject.Text)}.engine";
             if (!Directory.Exists(outputPath))
                 Directory.CreateDirectory(outputPath);
-            CheckForIllegalCrossThreadCalls = false;
 
             CreateEnginePackage(FullPath(SaveLocation, tbEngineProject.Text), outputFile);
-
-            CheckForIllegalCrossThreadCalls = true;
 
             OpenBuildFolder();
         }
@@ -460,7 +552,6 @@ namespace Engine.BuildTools.Builder.GUI
             if (DirectoryExists(SaveLocation, tbOutputFolder.Text))
                 Process.Start("explorer.exe", FullPath(SaveLocation, tbOutputFolder.Text));
         }
-
-
+        
     }
 }
