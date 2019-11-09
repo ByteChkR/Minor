@@ -96,6 +96,10 @@
       <Project>{94a1fe92-60c7-44ad-9f80-2ed2f7a0e899}</Project>
       <Name>Engine.BuildTools.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj">
+      <Project>{10ff8554-36b7-4bc4-928d-9137a9196c2a}</Project>
+      <Name>Engine.BuildTools.PackageCreator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.4.2.1\build\Fody.targets" Condition="Exists('..\packages\Fody.4.2.1\build\Fody.targets')" />

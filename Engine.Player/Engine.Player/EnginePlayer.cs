@@ -5,17 +5,20 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Engine.BuildTools.Common;
+using Engine.BuildTools.PackageCreator;
 using Microsoft.Win32;
 
 namespace Engine.Player
 {
     internal class EnginePlayer
     {
-        private static List<Version> engineversions = new List<Version>();
+        private static List<string> engineversions = new List<string>();
         private static Process p;
         private static bool DontReadLine;
         private static bool Run;
@@ -138,13 +141,16 @@ namespace Engine.Player
             wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
             wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
 
+
             Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
             Console.CancelKeyPress += ConsoleOnCancelKeyPress;
             if (!Directory.Exists("engine"))
             {
                 Directory.CreateDirectory("engine");
             }
 
+            engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly).Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
             ParseArgs(args);
             if (!Run)
             {
@@ -155,19 +161,6 @@ namespace Engine.Player
                 }
 
                 return;
-            }
-
-            string[] enginefiles = Directory.GetFiles("engine", "*.engine", SearchOption.AllDirectories);
-            foreach (string enginefile in enginefiles)
-            {
-                if (Version.TryParse(Path.GetFileNameWithoutExtension(enginefile), out Version ret))
-                {
-                    engineversions.Add(Version.Parse(Path.GetFileNameWithoutExtension(enginefile)));
-                }
-                else
-                {
-                    File.Delete(enginefile);
-                }
             }
 
             if (args.Length == 0 || !File.Exists(args[0]))
@@ -217,13 +210,13 @@ namespace Engine.Player
                 _di.Attributes |= FileAttributes.Hidden;
             }
 
+            PackageManifest pm = new PackageManifest();
             try
             {
-                ZipArchive za = ZipFile.OpenRead(args[0]);
-                string ver = GetRequiredEngineVersion(za);
-                za.Dispose();
-                LoadEngine(ver);
-                ZipFile.ExtractToDirectory(args[0], "_game");
+                pm = Creator.ReadManifest(args[0]);
+                Console.Title = pm.Title;
+                LoadEngine(pm.Version);
+                Creator.UnpackPackage(args[0], "_game", pm.PackageVersion);
                 string[] files = Directory.GetFiles("_game", "*", SearchOption.AllDirectories);
                 foreach (string file in files)
                 {
@@ -252,7 +245,7 @@ namespace Engine.Player
             }
 
 
-            string fileToStart = Path.GetFileNameWithoutExtension(args[0]);
+            string fileToStart = pm.Executable;
             DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
             p = new Process();
 
@@ -262,7 +255,7 @@ namespace Engine.Player
             psi.RedirectStandardOutput = true;
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
-            psi.Arguments = $"/C dotnet {fileToStart}.dll";
+            psi.Arguments = $"/C dotnet {fileToStart}";
             psi.WorkingDirectory = Directory.GetCurrentDirectory() + "/game";
             p.StartInfo = psi;
             p.Start();
@@ -274,6 +267,7 @@ namespace Engine.Player
 
             while (!p.HasExited)
             {
+                Thread.Sleep(150);
             }
 
             crd.StopThreads();
@@ -324,20 +318,14 @@ namespace Engine.Player
             Console.WriteLine("Checking for Updates...");
             string s = wc.DownloadString(
                 "http://213.109.162.193/apps/EngineArchives/newest.version");
-            if (Version.TryParse(s, out Version ret))
+
+            if (!engineversions.Contains(s))
             {
-                if (!engineversions.Contains(ret))
-                {
-                    Console.WriteLine("Newest Version is not on Disk...");
-                    engineversions.Add(ret);
-                    engineversions.Sort();
-                    int index = engineversions.IndexOf(ret);
-                    if (index == engineversions.Count - 1)
-                    {
-                        DownloadEngineVersion(ret.ToString());
-                    }
-                }
+                Console.WriteLine("Newest Version is not on Disk...");
+                engineversions.Add(s);
+                DownloadEngineVersion(s);
             }
+
 
             Console.WriteLine("Newest Engine Version Installed.");
         }
@@ -366,7 +354,7 @@ namespace Engine.Player
             {
                 int d = e.ProgressPercentage - last;
                 float m = Console.WindowWidth / 100f;
-                int fd = (int) (m * d);
+                int fd = (int)(m * d);
                 for (int j = 0; j < fd; j++)
                 {
                     Console.Write("#");
@@ -381,14 +369,12 @@ namespace Engine.Player
         {
             try
             {
-                ZipArchive za = ZipFile.OpenRead(path);
-                TextReader tr = new StreamReader(za.GetEntry("EngineVersion").Open());
-                Version ver = Version.Parse(tr.ReadToEnd().Replace("\r\n", ""));
-                if (!engineversions.Contains(ver))
+                PackageManifest pm = Creator.ReadManifest(path);
+                if (!engineversions.Contains(pm.Version))
                 {
-                    Console.WriteLine("Adding Engine Version: " + ver);
-                    engineversions.Add(ver);
-                    File.Copy(path, "engine/" + ver + ".engine");
+                    Console.WriteLine("Adding Engine: " + pm);
+                    engineversions.Add(pm.Version);
+                    File.Copy(path, "engine/" + pm.Version + ".engine");
                 }
             }
             catch (Exception e)
@@ -432,13 +418,13 @@ namespace Engine.Player
         {
             string addr = $"http://213.109.162.193/apps/EngineArchives/{version}.engine";
             HttpWebResponse response = null;
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(addr);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(addr);
             request.Method = "HEAD";
 
             bool ret = false;
             try
             {
-                response = (HttpWebResponse) request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
                 ret = true;
             }
             catch (WebException ex)

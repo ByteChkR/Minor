@@ -70,7 +70,7 @@ namespace Engine.BuildTools.Builder
                     return File.ReadAllLines(arg.Remove(0, 1)).ToList();
                 }
 
-                return new List<string>() {arg};
+                return new List<string>() { arg };
             }
         }
 
@@ -78,7 +78,7 @@ namespace Engine.BuildTools.Builder
         {
             XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
             FileStream fs = new FileStream(path, FileMode.Open);
-            BuildSettings bs = (BuildSettings) xs.Deserialize(fs);
+            BuildSettings bs = (BuildSettings)xs.Deserialize(fs);
             fs.Close();
             return bs;
         }
@@ -154,11 +154,16 @@ namespace Engine.BuildTools.Builder
                     Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                     Directory.Delete(folder + "/obj", true);
                 }
+                string packagerVersion = Creator.DEFAULT_VERSION;
+                if (info.HasValueFlag("--packager-version"))
+                {
+                    packagerVersion = info.GetValues("--packager-version")[0];
+                }
 
                 ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", csF,
                     null);
                 string[] files = ParseEngineFileList(fileList, folder);
-                Creator.CreateEnginePackage(Path.GetFullPath(args[1]), folder, files);
+                Creator.CreateEnginePackage(Path.GetFullPath(args[1]), folder, files, packagerVersion);
             }
             catch (Exception e)
             {
@@ -194,9 +199,15 @@ namespace Engine.BuildTools.Builder
                     fileList = "";
                 }
 
+                string packagerVersion = Creator.DEFAULT_VERSION;
+                if (info.HasValueFlag("--packager-version"))
+                {
+                    packagerVersion = info.GetValues("--packager-version")[0];
+                }
+
                 string[] files = ParseFileList(fileList, Path.GetFullPath(args[0]), args[1], bool.Parse(args[3]),
                     bool.Parse(args[4]));
-                Creator.CreateGamePackage(Path.GetFullPath(args[2]), Path.GetFullPath(args[0]), files, fvi.FileVersion);
+                Creator.CreateGamePackage(args[1], args[1] + ".dll", Path.GetFullPath(args[2]), Path.GetFullPath(args[0]), files, fvi.FileVersion, packagerVersion);
             }
             catch (Exception e)
             {
@@ -299,10 +310,10 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-
+        private static StartupInfo info;
         private static void Main(string[] args)
         {
-            StartupInfo info = new StartupInfo(args);
+            info = new StartupInfo(args);
             if (!info.HasFlag("noflag"))
             {
                 if (info.HasFlag("--help"))
@@ -435,11 +446,17 @@ namespace Engine.BuildTools.Builder
 
                         if (bs.CreateGamePackage)
                         {
+                            string packagerVersion = Creator.DEFAULT_VERSION;
+                            if (info.HasValueFlag("--packager-version"))
+                            {
+                                packagerVersion = info.GetValues("--packager-version")[0];
+                            }
+
                             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                             string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
                                 bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly);
-                            Creator.CreateGamePackage(outputFolder + "/" + projectName + ".game", buildOutput, files,
-                                fvi.FileVersion);
+                            Creator.CreateGamePackage(projectName, projectName + ".dll", outputFolder + "/" + projectName + ".game", buildOutput, files,
+                                fvi.FileVersion, packagerVersion);
                         }
                     }
                 }
@@ -464,14 +481,14 @@ namespace Engine.BuildTools.Builder
             List<string> unpackExts = unpackedFileExts.Split('+', StringSplitOptions.RemoveEmptyEntries).ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() {packageType = AssetPackageType.Unpack});
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo() {packageType = AssetPackageType.Memory});
+                info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
             }
 
             return info;

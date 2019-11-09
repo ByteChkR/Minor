@@ -410,7 +410,9 @@ namespace Engine.BuildTools.Builder.GUI
         private void CreateEnginePackage(string engineProjectFile, string outputPath)
         {
             WriteOutput("Creating Engine Package...");
-            ProcessUtils.RunProcess("cmd.exe", $"/C dotnet Engine.BuildTools.Builder.dll --create-engine-package {engineProjectFile} {outputPath}", Application.DoEvents, WriteOutput);
+
+            string useExperimental = cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+            ProcessUtils.RunProcess("cmd.exe", $"/C dotnet Engine.BuildTools.Builder.dll {useExperimental} --create-engine-package {engineProjectFile} {outputPath}", Application.DoEvents, WriteOutput);
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -423,7 +425,8 @@ namespace Engine.BuildTools.Builder.GUI
             SaveFile(SaveLocation);
             CheckForIllegalCrossThreadCalls = false;
             WriteOutput("Running Build Settings...");
-            ProcessUtils.RunProcess("cmd.exe", "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation, Application.DoEvents, WriteOutput);
+            string useExperimental = cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+            ProcessUtils.RunProcess("cmd.exe", "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents, WriteOutput);
 
             if (cbCreateEnginePackage.Checked)
             {
@@ -456,5 +459,7 @@ namespace Engine.BuildTools.Builder.GUI
             if (DirectoryExists(SaveLocation, tbOutputFolder.Text))
                 Process.Start("explorer.exe", FullPath(SaveLocation, tbOutputFolder.Text));
         }
+
+
     }
 }

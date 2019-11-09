@@ -1,72 +1,70 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
+using System.Xml.Serialization;
+using Engine.BuildTools.PackageCreator.Versions;
+using Engine.BuildTools.PackageCreator.Versions.v1;
 
 namespace Engine.BuildTools.PackageCreator
 {
     public static class Creator
     {
-        public static void CreateGamePackage(string outputFile, string workingDir, string[] files, string version)
+        public const string DEFAULT_VERSION = "legacy";
+        private static Dictionary<string, IPackageVersion> _packageVersions = new Dictionary<string, IPackageVersion>
         {
-            File.WriteAllBytes(outputFile,
-                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-            FileStream fs = new FileStream(outputFile, FileMode.Open);
-            ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
-            Uri wdir = new Uri(workingDir);
-            string wdirname = Path.GetFileName(workingDir);
-            foreach (string file in files)
+            { "legacy", new Legacy() },
+            { "v1", new Version1() }
+        };
+        public static PackageManifest ReadManifest(string path)
+        {
+            ZipArchive archive = ZipFile.OpenRead(path);
+            foreach (KeyValuePair<string, IPackageVersion> packageVersion in _packageVersions)
             {
-                Uri f = new Uri(file);
-                string fname = wdir.MakeRelativeUri(f).ToString().Remove(0, wdirname.Length + 1);
-                ZipArchiveEntry e = a.CreateEntry(fname);
-
-                byte[] content = File.ReadAllBytes(file);
-                Stream s = e.Open();
-                s.Write(content, 0, content.Length);
-                s.Close();
+                for (int i = 0; i < archive.Entries.Count; i++)
+                {
+                    if (archive.Entries[i].FullName == packageVersion.Value.ManifestPath)
+                    {
+                        archive.Dispose();
+                        return packageVersion.Value.GetPackageManifest(path);
+                    }
+                }
             }
-
-            ZipArchiveEntry engVersion = a.CreateEntry("EngineVersion");
-            TextWriter tw = new StreamWriter(engVersion.Open());
-            tw.WriteLine(version);
-            tw.Close();
-            a.Dispose();
-            fs.Close();
+            throw new IOException("The file is not a supported format.");
         }
 
-        public static void CreateEnginePackage(string outputFile, string workingDir, string[] files)
+        public static PackageManifest ReadManifest(Stream s)
         {
-            File.WriteAllBytes(outputFile,
-                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
-            FileStream fs = new FileStream(outputFile, FileMode.Open);
-
-            ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
-            Uri wdir = new Uri(workingDir);
-            string wdirname = Path.GetFileName(workingDir);
-            string version = GetEngineVersion(workingDir);
-            foreach (string file in files)
-            {
-                Uri f = new Uri(file);
-                string fname = wdir.MakeRelativeUri(f).ToString().Remove(0, wdirname.Length + 1);
-                ZipArchiveEntry e = a.CreateEntry(fname);
-
-                byte[] content = File.ReadAllBytes(file);
-                Stream s = e.Open();
-                s.Write(content, 0, content.Length);
-                s.Close();
-            }
-
-            ZipArchiveEntry engVersion = a.CreateEntry("EngineVersion");
-            TextWriter tw = new StreamWriter(engVersion.Open());
-            tw.WriteLine(version);
-            tw.Close();
-            a.Dispose();
-            fs.Close();
+            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
+            return (PackageManifest)xs.Deserialize(s);
         }
 
-        private static string GetEngineVersion(string workingDir)
+        public static void WriteManifest(Stream s, object o)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
+            xs.Serialize(s, o);
+        }
+
+        public static void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version, string packageVersion = DEFAULT_VERSION)
+        {
+            _packageVersions[packageVersion].CreateGamePackage(packageName, executable, outputFile, workingDir, files, version);
+        }
+
+        public static void CreateEnginePackage(string outputFile, string workingDir, string[] files, string packageVersion = DEFAULT_VERSION)
+        {
+            _packageVersions[packageVersion].CreateEnginePackage( outputFile, workingDir, files);
+        }
+
+        public static void UnpackPackage(string file, string outPutDir, string packageVersion = DEFAULT_VERSION)
+        {
+            _packageVersions[packageVersion].UnpackPackage(file, outPutDir);
+        }
+
+        public static string GetEngineVersion(string workingDir)
         {
             FileVersionInfo v = FileVersionInfo.GetVersionInfo(workingDir + "/Engine.dll");
 
