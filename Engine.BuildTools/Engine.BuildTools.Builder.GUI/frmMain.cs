@@ -63,6 +63,7 @@ namespace Engine.BuildTools.Builder.GUI
             cbBuildFlags.Enabled = state;
             cbCreateEnginePackage.Enabled = state;
             cbCreateGamePackage.Enabled = state;
+            cbExperimentalPackaging.Enabled = state;
 
 
         }

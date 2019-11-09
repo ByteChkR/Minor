@@ -48,7 +48,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
 
             ZipArchiveEntry engVersion = a.CreateEntry(ManifestPath);
             Stream str = engVersion.Open();
-            PackageManifest pm = new PackageManifest( packageName, executable, version, PackageVersion);
+            PackageManifest pm = new PackageManifest(packageName, executable, version, PackageVersion);
             Creator.WriteManifest(str, pm);
             str.Close();
             a.Dispose();
@@ -64,7 +64,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
             Uri wdir = new Uri(workingDir);
             string wdirname = Path.GetFileName(workingDir);
-            if (version != null)
+            if (string.IsNullOrEmpty(version))
             {
                 version = Creator.GetEngineVersion(workingDir);
             }
@@ -82,7 +82,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
 
             ZipArchiveEntry engVersion = a.CreateEntry(ManifestPath);
             Stream str = engVersion.Open();
-            PackageManifest pm = new PackageManifest("Engine", "", version, Creator.DEFAULT_VERSION );
+            PackageManifest pm = new PackageManifest("Engine", "", version, PackageVersion);
             Creator.WriteManifest(str, pm);
             str.Close();
             a.Dispose();
