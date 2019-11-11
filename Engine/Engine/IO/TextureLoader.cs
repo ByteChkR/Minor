@@ -141,12 +141,14 @@ namespace Engine.IO
         /// <returns>The GL Texture</returns>
         public static Texture BitmapToTexture(Bitmap bmp)
         {
+            bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
             BitmapData data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
                 System.Drawing.Imaging.PixelFormat.Format32bppArgb);
 
             Texture tex = BytesToTexture(data.Scan0, bmp.Width, bmp.Height);
 
             bmp.UnlockBits(data);
+            bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
             return tex;
         }
 
