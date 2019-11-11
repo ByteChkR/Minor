@@ -100,7 +100,7 @@ namespace Engine.Demo
                 ManifestReader.LoadAssemblyListFromFile("assemblyList.txt");
             }
 
-            EngineConfig.LoadConfig("assets/configs/engine.settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
+            EngineConfig.LoadConfig("assets/configs/engine_settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
                 "Engine.Core");
 
 

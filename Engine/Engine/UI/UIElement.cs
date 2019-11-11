@@ -1,4 +1,5 @@
 ﻿using Engine.Core;
+using Engine.DataTypes;
 using Engine.Rendering;
 using OpenTK;
 
@@ -101,7 +102,7 @@ namespace Engine.UI
             }
             else
             {
-                Program = UIHelper.Instance.DefaultUIShader;
+                Program = DefaultFilepaths.DefaultUIImageShader;
             }
         }
     }

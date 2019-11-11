@@ -75,7 +75,7 @@ namespace Engine.UI
         public UITextRendererComponent(string fontName, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {
-            Font = UIHelper.Instance.FontLibrary.GetFont("Arial");
+            Font = DefaultFilepaths.DefaultFont;
         }
 
 

@@ -16,7 +16,6 @@ namespace Engine.Demo.scenes
 {
     public class AStarDemoScene : AbstractScene
     {
-        private ShaderProgram litShader;
         private AINode[,] nodes;
         private Texture tex;
         private Texture beginTex;
@@ -30,13 +29,7 @@ namespace Engine.Demo.scenes
             int hybLayer = LayerManager.RegisterLayer("hybrid", new Layer(1, 1 | 2));
             int physicsLayer = LayerManager.RegisterLayer("physics", new Layer(1, 1));
             LayerManager.DisableCollisions(rayLayer, physicsLayer);
-
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/lit/point.fs"},
-                {ShaderType.VertexShader, "assets/shader/lit/point.vs"}
-            }, out litShader);
-
+            
             BasicCamera mainCamera =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
@@ -77,7 +70,7 @@ namespace Engine.Demo.scenes
 
             Add(c.Owner);
 
-            bgObj.AddComponent(new LitMeshRendererComponent(litShader, Prefabs.Cube, bgTex, 1));
+            bgObj.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Prefabs.Cube, bgTex, 1));
             Add(bgObj);
             Add(mainCamera);
             SetCamera(mainCamera);
@@ -92,7 +85,7 @@ namespace Engine.Demo.scenes
                     {
                         nodes[i, j].Walkable = false;
                         nodes[i, j].Owner
-                            .AddComponent(new LitMeshRendererComponent(litShader, Prefabs.Sphere, blockTex, 1));
+                            .AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Prefabs.Sphere, blockTex, 1));
                     }
 
                     nodes[i, j].Owner.Scale *= 0.3f;
@@ -135,7 +128,7 @@ namespace Engine.Demo.scenes
 
             for (int i = 0; i < path.Count; i++)
             {
-                path[i].Owner.AddComponent(new LitMeshRendererComponent(litShader, Prefabs.Cube, tex, 1));
+                path[i].Owner.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Prefabs.Cube, tex, 1));
             }
 
             startNode.Owner.GetComponent<LitMeshRendererComponent>().Textures[0] = beginTex;

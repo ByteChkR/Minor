@@ -232,7 +232,7 @@ namespace Engine.IO
             if (!IOManager.Exists(file))
             {
                 Logger.Crash(new InvalidFilePathException(file), true);
-                return Texture.DefaultTexture;
+                return DefaultFilepaths.DefaultTexture;
             }
 
             Bitmap bmp = new Bitmap(IOManager.GetStream(file));

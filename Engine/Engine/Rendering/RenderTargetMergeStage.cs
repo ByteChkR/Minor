@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Engine.DataTypes;
 using Engine.Debug;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
@@ -49,11 +50,6 @@ namespace Engine.Rendering
             new RenderTarget(new ScreenCamera(), int.MaxValue, new Color(0, 0, 0, 0));
 
         /// <summary>
-        /// The Shader used to directly draw to the back buffer of the OpenGL window
-        /// </summary>
-        private static ShaderProgram _screenShader;
-
-        /// <summary>
         /// The shaders used for the different merge types
         /// </summary>
         private static Dictionary<RenderTargetMergeType, ShaderProgram> _mergeTypes =
@@ -76,44 +72,19 @@ namespace Engine.Rendering
             GL.VertexAttribPointer(0, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), IntPtr.Zero);
             GL.EnableVertexAttribArray(1);
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
-            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/MergeRenderer_Add.fs"},
-                {ShaderType.VertexShader, "assets/shader/MergeRenderer.vs"}
-            }, out ShaderProgram _mergeAddShader))
-            {
-                Console.ReadLine();
-            }
-
-            _mergeAddShader.AddUniformCache("destinationTexture");
-            _mergeAddShader.AddUniformCache("otherTexture");
-            _mergeTypes.Add(RenderTargetMergeType.Additive, _mergeAddShader);
-
-            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/MergeRenderer_Mul.fs"},
-                {ShaderType.VertexShader, "assets/shader/MergeRenderer.vs"}
-            }, out ShaderProgram _mergeMulShader))
-            {
-                Console.ReadLine();
-            }
-
-            _mergeMulShader.AddUniformCache("destinationTexture");
-            _mergeMulShader.AddUniformCache("otherTexture");
-
-            _mergeTypes.Add(RenderTargetMergeType.Multiplikative, _mergeMulShader);
 
 
-            if (!ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/ScreenRenderer.fs"},
-                {ShaderType.VertexShader, "assets/shader/ScreenRenderer.vs"}
-            }, out _screenShader))
-            {
-                Console.ReadLine();
-            }
+            DefaultFilepaths.DefaultMergeAddShader.AddUniformCache("destinationTexture");
+            DefaultFilepaths.DefaultMergeAddShader.AddUniformCache("otherTexture");
+            _mergeTypes.Add(RenderTargetMergeType.Additive, DefaultFilepaths.DefaultMergeAddShader);
 
-            _screenShader.AddUniformCache("sourceTexture");
+            DefaultFilepaths.DefaultMergeMulShader.AddUniformCache("destinationTexture");
+            DefaultFilepaths.DefaultMergeMulShader.AddUniformCache("otherTexture");
+
+            _mergeTypes.Add(RenderTargetMergeType.Multiplikative, DefaultFilepaths.DefaultMergeMulShader);
+
+
+            DefaultFilepaths.DefaultScreenShader.AddUniformCache("sourceTexture");
         }
 
         /// <summary>
@@ -212,7 +183,7 @@ namespace Engine.Rendering
             GL.Disable(EnableCap.Blend);
 
             Ping();
-            _screenShader.Use();
+            DefaultFilepaths.DefaultScreenShader.Use();
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             //GL.Disable(EnableCap.DepthTest);
@@ -224,7 +195,7 @@ namespace Engine.Rendering
 
 
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.Uniform1(_screenShader.GetUniformLocation("sourceTexture"), 0);
+            GL.Uniform1(DefaultFilepaths.DefaultScreenShader.GetUniformLocation("sourceTexture"), 0);
             GL.BindTexture(TextureTarget.Texture2D, GetTarget().RenderedTexture);
 
             //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);

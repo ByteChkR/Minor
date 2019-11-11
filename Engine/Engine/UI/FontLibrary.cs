@@ -205,7 +205,7 @@ namespace Engine.UI
 
             Logger.Crash(new ItemNotFoundExeption("Font", "The Font " + name + " was not found."), true);
 
-            return GameFont.DefaultFont;
+            return DefaultFilepaths.DefaultFont;
         }
 
         /// <summary>
@@ -218,7 +218,7 @@ namespace Engine.UI
             if (!_fonts.ContainsKey(path))
             {
                 Logger.Crash(new ItemNotFoundExeption("Font", "There is no font loaded with this path: " + path), true);
-                return GameFont.DefaultFont;
+                return DefaultFilepaths.DefaultFont;
             }
 
             return _fonts[path].Item2;

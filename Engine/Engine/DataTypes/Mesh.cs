@@ -14,43 +14,6 @@ namespace Engine.DataTypes
     public class Mesh : IDisposable
     {
         /// <summary>
-        /// The Backing field of the default mesh
-        /// </summary>
-        private static Mesh _defaultMesh;
-
-        /// <summary>
-        /// The Default Mesh
-        /// </summary>
-        public static Mesh DefaultMesh => _defaultMesh ?? (_defaultMesh = GetDefaultMesh());
-
-        /// <summary>
-        /// Creates the default mesh from embedded program resources
-        /// </summary>
-        /// <returns>The Default mesh</returns>
-        private static Mesh GetDefaultMesh()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            string path = asm.GetName().Name + "._DefaultResources.DefaultMesh.obj";
-            using (Stream resourceStream = asm.GetManifestResourceStream(path))
-            {
-                if (resourceStream == null)
-                {
-                    Logger.Crash(new EngineException("Could not load default mesh"), false);
-                    return null;
-                }
-
-                byte[] buf = new byte[resourceStream.Length];
-                resourceStream.Read(buf, 0, (int) resourceStream.Length);
-
-                MemoryStream ms = new MemoryStream(buf);
-
-                Mesh f = MeshLoader.LoadModel(ms)[0];
-                resourceStream.Close();
-                return f;
-            }
-        }
-
-        /// <summary>
         /// Element Buffer Object used to store the Indices of the Mesh Vertexes
         /// </summary>
         public readonly int _ebo;

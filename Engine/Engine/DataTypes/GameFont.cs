@@ -7,6 +7,7 @@ using System.Reflection;
 using Engine.Core;
 using Engine.Debug;
 using Engine.Exceptions;
+using Engine.IO;
 using Engine.Physics.BEPUutilities;
 using Engine.UI;
 using OpenTK.Input;
@@ -19,33 +20,7 @@ namespace Engine.DataTypes
     /// </summary>
     public class GameFont : IDisposable
     {
-        /// <summary>
-        /// The default font
-        /// </summary>
-        public static GameFont DefaultFont => _defaultFont ?? (_defaultFont = GetDefaultFont());
-
-        /// <summary>
-        /// Creates the default font from embedded program resources
-        /// </summary>
-        /// <returns>The Default font</returns>
-        private static GameFont GetDefaultFont()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            string[] paths = asm.GetManifestResourceNames();
-            string path = asm.GetName().Name + "._DefaultResources.DefaultFont.ttf";
-            using (Stream resourceStream = asm.GetManifestResourceStream(path))
-            {
-                if (resourceStream == null)
-                {
-                    Logger.Crash(new EngineException("Could not load default font"), false);
-                    return null;
-                }
-
-                GameFont f = FontLibrary.LoadFontInternal(resourceStream, 32, out string name);
-                resourceStream.Close();
-                return f;
-            }
-        }
+        
 
         /// <summary>
         /// The Name of the Font. This is the key you can load Fonts by.
@@ -61,11 +36,6 @@ namespace Engine.DataTypes
         /// Private field for the font this GameFont has been loaded from. Not needed perse, but it is convenient
         /// </summary>
         private readonly FontFace _fontFace;
-
-        /// <summary>
-        /// Backing field for the default font
-        /// </summary>
-        private static GameFont _defaultFont;
 
         /// <summary>
         /// The Pixel size that has been used to Load the font into the GPU Memory

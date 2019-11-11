@@ -15,7 +15,6 @@ namespace Engine.Demo.components
 {
     public class PhysicsDemoComponent : AbstractComponent
     {
-        private static ShaderProgram _objShader;
         private int game;
 
         public PhysicsDemoComponent()
@@ -23,8 +22,8 @@ namespace Engine.Demo.components
             game = LayerManager.NameToLayer("physics");
         }
 
-        private Mesh Box = MeshLoader.FileToMesh("models/cube_flat.obj");
-        private Mesh Sphere = MeshLoader.FileToMesh("models/sphere_smooth.obj");
+        private Mesh Box = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
+        private Mesh Sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
 
         protected override void Awake()
         {
@@ -94,14 +93,7 @@ namespace Engine.Demo.components
                 return "Not a number.";
             }
 
-            if (_objShader == null)
-            {
-                ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-                {
-                    {ShaderType.FragmentShader, "shader/texture.fs"},
-                    {ShaderType.VertexShader, "shader/texture.vs"}
-                }, out _objShader);
-            }
+            
 
             Random rnd = new Random();
             for (int i = 0; i < nmbrs; i++)
@@ -118,8 +110,8 @@ namespace Engine.Demo.components
                 obj.Scale = new Vector3(radius / 2);
                 if (rnd.Next(0, 2) == 1)
                 {
-                    obj.AddComponent(new MeshRendererComponent(_objShader, Box.Copy(),
-                        TextureLoader.FileToTexture("textures/TEST.png"), 1));
+                    obj.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Box.Copy(),
+                        TextureLoader.FileToTexture("assets/textures/TEST.png"), 1));
 
 
                     Collider coll = new Collider(new Box(Vector3.Zero, radius, radius, radius, 1), game);
@@ -127,8 +119,8 @@ namespace Engine.Demo.components
                 }
                 else
                 {
-                    obj.AddComponent(new MeshRendererComponent(_objShader, Sphere.Copy(),
-                        TextureLoader.FileToTexture("textures/TEST.png"), 1));
+                    obj.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Sphere.Copy(),
+                        TextureLoader.FileToTexture("assets/textures/TEST.png"), 1));
                     Collider coll = new Collider(new Sphere(Vector3.Zero, radius, 1), game);
                     obj.AddComponent(coll);
                 }

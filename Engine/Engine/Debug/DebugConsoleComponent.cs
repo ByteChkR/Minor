@@ -176,23 +176,6 @@ namespace Engine.Debug
         /// <returns>A gameobject ready to be added to the game</returns>
         public static GameObject CreateConsole()
         {
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "assets/shader/UITextRender.vs"}
-            }, out ShaderProgram textShader);
-
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/UIRender.fs"},
-                {ShaderType.VertexShader, "assets/shader/UIRender.vs"}
-            }, out ShaderProgram uiShader);
-
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/graph.fs"},
-                {ShaderType.VertexShader, "assets/shader/graph.vs"}
-            }, out ShaderProgram graphShader);
 
             GameObject obj = new GameObject("Console");
             GameObject _in = new GameObject("ConsoleInput");
@@ -221,33 +204,33 @@ namespace Engine.Debug
             bmp.SetPixel(0, 0, System.Drawing.Color.Black);
 
             UIImageRendererComponent _bgImage =
-                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f, uiShader);
+                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f, DefaultFilepaths.DefaultUIImageShader);
 
             UIImageRendererComponent _bgOutImage =
                 new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.4f,
-                    uiShader);
+                    DefaultFilepaths.DefaultUIImageShader);
 
 
-            UITextRendererComponent _tText = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
+            UITextRendererComponent _tText = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
             {
                 Text = "GameEngine Console:"
             };
-            UITextRendererComponent _tHint = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
+            UITextRendererComponent _tHint = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
             {
                 Text = "GameEngine Console:"
             };
 
-            UITextRendererComponent _tIn = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
+            UITextRendererComponent _tIn = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
             {
                 Text = ""
             };
 
-            UITextRendererComponent _tOut = new UITextRendererComponent(GameFont.DefaultFont, false, 1f, textShader)
+            UITextRendererComponent _tOut = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
             {
                 Text = "Console Initialized.."
             };
 
-            GraphDrawingComponent _gDraw = new GraphDrawingComponent(graphShader, false, 1f);
+            GraphDrawingComponent _gDraw = new GraphDrawingComponent(DefaultFilepaths.DefaultUIGraphShader, false, 1f);
 
             _bgOutObj.AddComponent(_bgOutImage);
             _bgObj.AddComponent(_bgImage);

@@ -171,6 +171,7 @@ namespace Engine.OpenFL
                 return;
             }
             Dictionary<string, Texture> otherTex = new Dictionary<string, Texture>();
+            otherTex.Add("result", Tex);
             otherTex.Add("specularOut", SpecularTex);
             MemoryBuffer b = TextureLoader.TextureToMemoryBuffer(CLAPI.MainThread, Tex);
 

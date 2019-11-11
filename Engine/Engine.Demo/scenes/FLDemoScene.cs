@@ -121,32 +121,22 @@ namespace Engine.Demo.scenes
             //    new Vector3(-1, 0, -1));
             //plane.Dispose();
             //plane = mb.ToMesh();
-
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/UITextRender.fs"},
-                {ShaderType.VertexShader, "assets/shader/UITextRender.vs"}
-            }, out ShaderProgram textShader);
-
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/lit/point.fs"},
-                {ShaderType.VertexShader, "assets/shader/lit/point.vs"}
-            }, out ShaderProgram shader);
+            
+            
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");
-            objSphere.AddComponent(new LitMeshRendererComponent(shader, sphere,
+            objSphere.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, sphere,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             objSphere.GetComponent<LitMeshRendererComponent>().Textures = new[]
-                {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
+                {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], DefaultFilepaths.DefaultTexture};
 
             objSphere.AddComponent(new RotatingComponent());
 
             GameObject objQuad = new GameObject(new Vector3(-1, 1, 0), "QuadDisplay");
-            objQuad.AddComponent(new LitMeshRendererComponent(shader, plane,
+            objQuad.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, plane,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             objQuad.GetComponent<LitMeshRendererComponent>().Textures = new[]
-                {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], Texture.DefaultTexture};
+                {objSphere.GetComponent<LitMeshRendererComponent>().Textures[0], DefaultFilepaths.DefaultTexture};
 
             objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(45));
 
@@ -155,7 +145,7 @@ namespace Engine.Demo.scenes
             Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
             _sourceCube.AddComponent(new RotateAroundComponent() { Slow = 0.15f });
-            _sourceCube.AddComponent(new LitMeshRendererComponent(shader, sourceCube,
+            _sourceCube.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, sourceCube,
                 TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
 
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
@@ -184,7 +174,7 @@ namespace Engine.Demo.scenes
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
 
 
-            bgObj.AddComponent(new LitMeshRendererComponent(shader, bgBox, bgTex, 1));
+            bgObj.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, bgBox, bgTex, 1));
             GameEngine.Instance.CurrentScene.Add(bgObj);
 
 
@@ -227,18 +217,12 @@ namespace Engine.Demo.scenes
 
             GameEngine.Instance.CurrentScene.Add(camContainer);
             GameEngine.Instance.AddRenderTarget(splitCam);
-
-            ShaderProgram.TryCreate(new Dictionary<ShaderType, string>
-            {
-                {ShaderType.FragmentShader, "assets/shader/UIRender.fs"},
-                {ShaderType.VertexShader, "assets/shader/UIRender.vs"}
-            }, out ShaderProgram uiShader);
-
+            
             GameObject obj = new GameObject("Button");
             Texture btnIdle = TextureLoader.ColorToTexture(System.Drawing.Color.Green);
             Texture btnHover = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
             Texture btnClick = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
-            Button btn = new Button(btnIdle, uiShader, 1, btnClick, btnHover);
+            Button btn = new Button(btnIdle, DefaultFilepaths.DefaultUIImageShader, 1, btnClick, btnHover);
             LinearAnimation loadAnim = new LinearAnimation();
             loadAnim.Interpolator = new SmoothInterpolator();
             loadAnim.StartPos = Vector2.Zero + Vector2.UnitY * 1;
@@ -254,7 +238,7 @@ namespace Engine.Demo.scenes
             clickAnim.MaxAnimationTime = 1;
             clickAnim.Trigger = AnimationTrigger.OnClick;
 
-            Animator anim = new Animator(btn, new List<Animation> { loadAnim, clickAnim });
+            Animator anim = new Animator(new List<Animation> { loadAnim, clickAnim }, btn);
 
             obj.AddComponent(anim);
             obj.AddComponent(btn);

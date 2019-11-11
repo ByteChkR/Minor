@@ -21,51 +21,6 @@ namespace Engine.Rendering
     {
         private readonly Dictionary<string, int> uniformCache = new Dictionary<string, int>();
 
-        /// <summary>
-        /// Backing field of the Default shader
-        /// </summary>
-        private static ShaderProgram _defaultShader;
-
-        /// <summary>
-        /// The default shader
-        /// </summary>
-        public static ShaderProgram DefaultShader => _defaultShader ?? (_defaultShader = GetDefaultShader());
-
-        /// <summary>
-        /// Creates the default Shader from embedded program resources
-        /// </summary>
-        /// <returns>The Default Shader</returns>
-        private static ShaderProgram GetDefaultShader()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            string[] paths = {"._DefaultResources.DefaultShader.vs", "._DefaultResources.DefaultShader.fs"};
-            Dictionary<ShaderType, string> shaderSource = new Dictionary<ShaderType, string>();
-            for (int i = 0; i < paths.Length; i++)
-            {
-                using (Stream resourceStream = asm.GetManifestResourceStream(asm.GetName().Name + paths[i]))
-                {
-                    if (resourceStream == null)
-                    {
-                        Logger.Crash(new EngineException("Could not load default shader"), false);
-                        return null;
-                    }
-
-                    TextReader tr = new StreamReader(resourceStream);
-                    string source = tr.ReadToEnd();
-
-                    resourceStream.Close();
-                    shaderSource.Add(i == 0 ? ShaderType.VertexShader : ShaderType.FragmentShader, source);
-                }
-            }
-
-            if (TryCreateFromSource(shaderSource, out ShaderProgram shader))
-            {
-                return shader;
-            }
-
-            Logger.Crash(new EngineException("Could not compile default shader"), false);
-            return null;
-        }
 
         /// <summary>
         /// The program id of the shader
@@ -132,19 +87,18 @@ namespace Engine.Rendering
             foreach (KeyValuePair<ShaderType, string> subshader in subshaders)
             {
                 Logger.Log("Loading Shader: " + subshader.Value, DebugChannel.Log | DebugChannel.EngineRendering, 7);
-
-                ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
-                //if (File.Exists(subshader.Value))
-                //{
-                //    ret.Add(subshader.Key, TextProcessorAPI.PreprocessSource(subshader.Value, null));
-                //}
-                //else if (IOManager.Exists(subshader.Value))
-                //{
-                //    TextReader tr = new StreamReader(ManifestReader.GetStreamByPath(subshader.Value));
-
-                //    ret.Add(subshader.Key, tr.ReadToEnd());
-                //    tr.Close();
-                //}
+                Stream s = IOManager.GetStream(subshader.Value);
+                TextReader tr = new StreamReader(s);
+                string dirName = Path.GetDirectoryName(subshader.Value);
+                string src = "";
+                string[] lines = TextProcessorAPI.PreprocessLines(tr.ReadToEnd().Split('\n'), dirName, null);
+                tr.Close();
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    src += lines[i]+'\n';
+                }
+                ret.Add(subshader.Key, src);
+                
             }
 
             return TryCreateFromSource(ret, out program);

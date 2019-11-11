@@ -16,41 +16,6 @@ namespace Engine.DataTypes
     public class Texture : IDisposable
     {
         /// <summary>
-        /// Backing field for the default texture
-        /// </summary>
-        private static Texture _defaultTexture;
-
-        public static Texture DefaultTexture => _defaultTexture ?? (_defaultTexture = GetDefaultTexture());
-
-        /// <summary>
-        /// Creates the default Texture from embedded program resources
-        /// </summary>
-        /// <returns>The Default Texture</returns>
-        private static Texture GetDefaultTexture()
-        {
-            Assembly asm = Assembly.GetExecutingAssembly();
-            string[] paths = asm.GetManifestResourceNames();
-            string path = asm.GetName().Name + "._DefaultResources.DefaultTexture.bmp";
-            using (Stream resourceStream = asm.GetManifestResourceStream(path))
-            {
-                if (resourceStream == null)
-                {
-                    Logger.Crash(new EngineException("Could not load default Texture"), false);
-                    return null;
-                }
-
-                Texture f = TextureLoader.BitmapToTexture(new Bitmap(resourceStream));
-                GL.BindTexture(TextureTarget.Texture2D, f.TextureId);
-                GL.TextureParameter(f.TextureId, TextureParameterName.TextureMinFilter, (int) TextureMinFilter.Nearest);
-                GL.TextureParameter(f.TextureId, TextureParameterName.TextureMagFilter, (int) TextureMagFilter.Nearest);
-                GL.BindTexture(TextureTarget.Texture2D, 0);
-
-                resourceStream.Close();
-                return f;
-            }
-        }
-
-        /// <summary>
         /// The Texture type used to automatically bind textures to the right Uniforms in the shader
         /// None -> Diffuse
         /// </summary>

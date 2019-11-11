@@ -73,7 +73,7 @@ namespace Engine.IO
             if (!IOManager.Exists(path))
             {
                 Logger.Crash(new InvalidFolderPathException(path), true);
-                return new List<Mesh> {Mesh.DefaultMesh};
+                return new List<Mesh> { DefaultFilepaths.DefaultMesh};
             }
 
             return LoadModel(IOManager.GetStream(path), Path.GetExtension(path), path);
