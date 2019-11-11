@@ -11,6 +11,7 @@ using Engine.Rendering;
 using Engine.UI.EventSystems;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using OpenTK.Platform;
 
 
 namespace Engine.Core
@@ -58,6 +59,7 @@ namespace Engine.Core
         public int Height => Window.Height;
 
         public Vector2 WindowSize => new Vector2(Width, Height);
+        public IWindowInfo WindowInfo => Window.WindowInfo;
 
         /// <summary>
         /// Property that returns the current AspectRatio
@@ -315,7 +317,10 @@ namespace Engine.Core
             CurrentScene?.Update((float) e.Time);
 
             MemoryTracer.NextStage("Physics Update");
-            PhysicsEngine.Update((float) e.Time);
+            PhysicsEngine.Update((float)e.Time);
+
+            MemoryTracer.NextStage("ThreadManager Update");
+            ThreadManager.CheckManagerStates();
 
             if (_changeScene)
             {

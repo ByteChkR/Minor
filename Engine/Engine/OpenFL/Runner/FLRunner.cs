@@ -11,34 +11,49 @@ namespace Engine.OpenCL.Runner
     public struct FLExecutionContext
     {
         public string Filename;
-        public Action OnFinishCallback;
-        public Texture Input;
-        public Dictionary<string, Texture> TexturesToUpdate;
-
-        public FLExecutionContext(string filename, Texture input, Dictionary<string, Texture> texturesToUpdate,
-            Action onFinishCallback)
+        public Action<Dictionary<Texture, byte[]>> OnFinishCallback;
+        public byte[] Input;
+        public int Width;
+        public int Height;
+        public Dictionary<string, Texture> TextureMap;
+        public FLExecutionContext(string filename, Texture tex, Dictionary<string, Texture> textureMap,
+            Action<Dictionary<Texture, byte[]>> onFinishCallback)
         {
+            Width = (int)tex.Width;
+            Height = (int)tex.Height;
+            Filename = filename;
+            MemoryBuffer buf = TextureLoader.TextureToMemoryBuffer(CLAPI.MainThread, tex);
+            Input = CLAPI.ReadBuffer<byte>(CLAPI.MainThread, buf, (int)buf.Size);
+            buf.Dispose();
+            TextureMap = textureMap;
+            OnFinishCallback = onFinishCallback;
+        }
+        public FLExecutionContext(string filename, byte[] input, int width, int height, Dictionary<string, Texture> textureMap,
+            Action<Dictionary<Texture, byte[]>> onFinishCallback)
+        {
+            Width = width;
+            Height = height;
             Filename = filename;
             Input = input;
-            TexturesToUpdate = texturesToUpdate;
+            TextureMap = textureMap;
             OnFinishCallback = onFinishCallback;
         }
     }
     public class FLRunner
     {
         protected Queue<FLExecutionContext> _processQueue;
-        protected Action _onFinishQueueCallback;
+        //protected Action<FLExecutionContext, Dictionary<Texture, byte[]>> _onFinishQueueCallback;
         protected CLAPI _instance;
         protected KernelDatabase _db;
-        public FLRunner(CLAPI instance, Action onFinishQueueCallback, TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.UCHAR1, string kernelFolder = "assets/kernel/")
+        public FLRunner(CLAPI instance, /*Action<FLExecutionContext, Dictionary<string, byte[]>> onFinishQueueCallback,*/ TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.UCHAR1, string kernelFolder = "assets/kernel/")
         {
-            _onFinishQueueCallback = onFinishQueueCallback;
+            //_onFinishQueueCallback = onFinishQueueCallback;
             _instance = instance;
             _db = new KernelDatabase(instance, kernelFolder, dataTypes);
             _processQueue = new Queue<FLExecutionContext>();
         }
 
-        public void Enqueue(FLExecutionContext context)
+        public virtual void Enqueue(FLExecutionContext context)
         {
             _processQueue.Enqueue(context);
         }
@@ -47,16 +62,32 @@ namespace Engine.OpenCL.Runner
         {
             while (_processQueue.Count != 0)
             {
-                Process(_processQueue.Dequeue());
+                FLExecutionContext fle = _processQueue.Dequeue();
+                Dictionary<string, byte[]> ret = Process(fle);
+                Dictionary<Texture, byte[]> texMap = new Dictionary<Texture, byte[]>();
+                foreach (var bytese in ret)
+                {
+                    if (fle.TextureMap.ContainsKey(bytese.Key))
+                    {
+                        texMap.Add(fle.TextureMap[bytese.Key], bytese.Value);
+                    }
+                }
+                foreach (var textureUpdate in texMap)
+                {
+
+                    TextureLoader.Update(textureUpdate.Key, textureUpdate.Value, (int)textureUpdate.Key.Width, (int)textureUpdate.Key.Height);
+
+                }
+                fle.OnFinishCallback?.Invoke(texMap);
             }
-            _onFinishQueueCallback?.Invoke();
+            //_onFinishQueueCallback?.Invoke();
         }
 
-        private void Process(FLExecutionContext context)
+        protected Dictionary<string, byte[]> Process(FLExecutionContext context)
         {
 
-            MemoryBuffer buf = TextureLoader.TextureToMemoryBuffer(_instance, context.Input);
-            Interpreter ret = new Interpreter(_instance, context.Filename, buf, (int)context.Input.Width, (int)context.Input.Height, 1, 4, _db, true);
+            MemoryBuffer buf = CLAPI.CreateBuffer(_instance, context.Input, MemoryFlag.ReadWrite);
+            Interpreter ret = new Interpreter(_instance, context.Filename, buf, (int)context.Width, (int)context.Height, 1, 4, _db, true);
 
             do
             {
@@ -65,19 +96,21 @@ namespace Engine.OpenCL.Runner
 
 
             byte[] buffer = ret.GetResult<byte>();
-            TextureLoader.Update(context.Input, buffer, (int)context.Input.Width, (int)context.Input.Height);
+            Dictionary<string, byte[]> result = new Dictionary<string, byte[]>();
+            result.Add("result", buffer);
+            //TextureLoader.Update(context.Input, buffer, context.Width, context.Height);
 
-            foreach (KeyValuePair<string, Texture> keyValuePair in context.TexturesToUpdate)
+            foreach (KeyValuePair<string, Texture> keyValuePair in context.TextureMap)
             {
                 CLBufferInfo mbuf = ret.GetBuffer(keyValuePair.Key);
                 if (mbuf == null) continue;
                 byte[] spec = CLAPI.ReadBuffer<byte>(_instance, mbuf.Buffer, (int)mbuf.Buffer.Size);
-
-                TextureLoader.Update(keyValuePair.Value, spec, (int)keyValuePair.Value.Width, (int)keyValuePair.Value.Height);
+                result.Add(keyValuePair.Key, spec);
+                //TextureLoader.Update(keyValuePair.Value, spec, (int)keyValuePair.Value.Width, (int)keyValuePair.Value.Height);
                 mbuf.Buffer.Dispose();
             }
 
-            context.OnFinishCallback?.Invoke();
+            return result;
         }
     }
 }

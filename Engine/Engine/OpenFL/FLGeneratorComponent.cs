@@ -134,7 +134,7 @@ namespace Engine.OpenFL
             }
             else
             {
-                _flRunner = new FLRunner(CLAPI.MainThread, null);
+                _flRunner = new FLRunner(CLAPI.MainThread);
             }
 
 
@@ -172,6 +172,9 @@ namespace Engine.OpenFL
             }
             Dictionary<string, Texture> otherTex = new Dictionary<string, Texture>();
             otherTex.Add("specularOut", SpecularTex);
+            MemoryBuffer b = TextureLoader.TextureToMemoryBuffer(CLAPI.MainThread, Tex);
+
+            byte[] buf = CLAPI.ReadBuffer<byte>(CLAPI.MainThread, b, (int) b.Size);
             FLExecutionContext exec = new FLExecutionContext(filename, Tex, otherTex, null);
 
             _flRunner.Enqueue(exec);
