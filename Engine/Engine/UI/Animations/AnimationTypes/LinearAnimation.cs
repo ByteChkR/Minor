@@ -3,7 +3,7 @@ using Engine.UI.Animations.Interpolators;
 using Engine.UI.EventSystems;
 using OpenTK;
 
-namespace Engine.UI.Animations.Animators
+namespace Engine.UI.Animations.AnimationTypes
 {
     public class LinearAnimation : Animation
     {
@@ -13,10 +13,10 @@ namespace Engine.UI.Animations.Animators
         public Interpolator Interpolator = new LinearInterpolator();
         public LinearAnimation(Button target):base(target)
         { }
-        public override bool Animate(Button target)
+        public override bool Animate(Button target, float timeSinceAnimationStart)
         {
-            target.Position = Vector2.Lerp(StartPos, EndPos, Interpolator.GetValue(TimeSinceAnimationStart / MaxAnimationTime));
-            return MaxAnimationTime <= TimeSinceAnimationStart;
+            target.Position = Vector2.Lerp(StartPos, EndPos, Interpolator.GetValue(timeSinceAnimationStart / MaxAnimationTime));
+            return MaxAnimationTime <= timeSinceAnimationStart;
         }
     }
 }

@@ -10,8 +10,9 @@ namespace Engine.UI.Animations
     public abstract class Animation
     {
         public AnimationTrigger Trigger { get; set; }
-        public string Type { get; }
-        protected float TimeSinceAnimationStart { get; private set; }
+        public string Type { get; set; }
+        public float AnimationDelay { get; set; }
+        private float TimeSinceAnimationStart { get; set; }
         public bool IsAnimating { get; private set; }
         private bool isLoaded = false;
         private int frameCount = 0;
@@ -21,7 +22,7 @@ namespace Engine.UI.Animations
         {
             Target = target;
         }
-        public abstract bool Animate(Button target);
+        public abstract bool Animate(Button target, float animationStart);
 
         public void CheckState(AnimationTrigger trigger)
         {
@@ -45,7 +46,8 @@ namespace Engine.UI.Animations
             if (IsAnimating)
             {
                 TimeSinceAnimationStart += deltaTime;
-                if (Animate(target))
+                float time = TimeSinceAnimationStart - AnimationDelay;
+                if (time >= 0 && Animate(target, time))
                 {
                     IsAnimating = false;
                     TimeSinceAnimationStart = 0;

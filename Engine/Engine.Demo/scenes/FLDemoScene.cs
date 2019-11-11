@@ -12,7 +12,7 @@ using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Engine.Rendering;
 using Engine.UI.Animations;
-using Engine.UI.Animations.Animators;
+using Engine.UI.Animations.AnimationTypes;
 using Engine.UI.Animations.Interpolators;
 using Engine.UI.EventSystems;
 using OpenTK;
@@ -245,6 +245,7 @@ namespace Engine.Demo.scenes
             loadAnim.EndPos = Vector2.Zero;
             loadAnim.MaxAnimationTime = 1;
             loadAnim.Trigger = AnimationTrigger.OnLoad;
+            loadAnim.AnimationDelay = 1f;
 
             LinearAnimation clickAnim = new LinearAnimation(btn);
             clickAnim.Interpolator = new Arc2Interpolator();
@@ -255,8 +256,8 @@ namespace Engine.Demo.scenes
 
             Animator anim = new Animator(btn, new List<Animation>{loadAnim, clickAnim});
 
-            obj.AddComponent(btn);
             obj.AddComponent(anim);
+            obj.AddComponent(btn);
             Add(obj);
             btn.Scale = Vector2.One * 0.3f;
         }
