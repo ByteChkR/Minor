@@ -16,14 +16,8 @@ namespace Engine.UI.Animations
         public bool IsAnimating { get; private set; }
         private bool isLoaded = false;
         private int frameCount = 0;
-        protected Button Target;
 
-        public void SetTarget(Button target)
-        {
-            Target = target;
-        }
-        
-        public abstract bool Animate(Button target, float animationStart);
+        public abstract bool Animate(UIElement target, float animationStart);
 
         public void CheckState(AnimationTrigger trigger)
         {
@@ -34,7 +28,7 @@ namespace Engine.UI.Animations
             }
         }
 
-        public void Update(Button target, float deltaTime)
+        public void Update(UIElement target, float deltaTime)
         {
             if (!isLoaded && frameCount > 1) //To Prevent loading lag we will call OnLoad event after 2 frames. To ensure that delta time is stable
             {

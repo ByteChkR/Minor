@@ -6,36 +6,47 @@ namespace Engine.UI.Animations
 {
     public class Animator : AbstractComponent
     {
-        protected Button Target;
-        List<Animation> animators = new List<Animation>();
-        public Animator(Button target, List<Animation> animatorList)
+        protected List<UIElement> Targets = new List<UIElement>();
+        private List<Animation> animators = new List<Animation>();
+        public Animator(List<Animation> animatorList, params UIElement[] targets)
         {
             animators = animatorList;
-            AddTarget(target);
+            AddTargets(targets);
         }
 
-        private void AddTarget(Button target)
+        public void AddTargets(params UIElement[] elements)
         {
-            Target = target;
-            Target.AddToClickEvent(OnClick);
-            Target.AddToEnterEvent(OnEnter);
-            Target.AddToHoverEvent(OnHover);
-            Target.AddToLeaveEvent(OnLeave);
+            for (int i = 0; i < elements.Length; i++)
+            {
+                AddTarget(elements[i]);
+            }
+        }
+        public void AddTarget(UIElement target)
+        {
+            Targets.Add(target);
+            if (target is Button btn)
+            {
+                btn.AddToClickEvent(OnClick);
+                btn.AddToEnterEvent(OnEnter);
+                btn.AddToHoverEvent(OnHover);
+                btn.AddToLeaveEvent(OnLeave);
+            }
         }
 
-        private void RemoveTarget()
+        private void RemoveTarget(UIElement target)
         {
-            Target.RemoveFromClickEvent(OnClick);
-            Target.RemoveFromEnterEvent(OnEnter);
-            Target.RemoveFromHoverEvent(OnHover);
-            Target.RemoveFromLeaveEvent(OnLeave);
-            Target = null;
-        }
+            if (Targets.Contains(target))
+            {
+                if (target is Button btn)
+                {
+                    btn.RemoveFromClickEvent(OnClick);
+                    btn.RemoveFromEnterEvent(OnEnter);
+                    btn.RemoveFromHoverEvent(OnHover);
+                    btn.RemoveFromLeaveEvent(OnLeave);
+                }
+                Targets.Remove(target);
+            }
 
-        private void SetTarget(Button target)
-        {
-            RemoveTarget();
-            AddTarget(target);
         }
 
         private void OnClick(Button target)
@@ -73,7 +84,10 @@ namespace Engine.UI.Animations
             base.Update(deltaTime);
             foreach (Animation animation in animators)
             {
-                animation.Update(Target, deltaTime);
+                foreach (UIElement uiElement in Targets)
+                {
+                    animation.Update(uiElement, deltaTime);
+                }
             }
         }
     }

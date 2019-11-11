@@ -63,6 +63,8 @@ namespace Engine.UI
             }
         }
 
+        public Vector3 Color = Vector3.UnitX; // RED
+
         /// <summary>
         /// Public Constructor
         /// </summary>
@@ -138,7 +140,7 @@ namespace Engine.UI
             //GL.Disable(EnableCap.Blend);
             GL.Enable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
-            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.One);
+            GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             Program.Use();
 
 
@@ -148,7 +150,7 @@ namespace Engine.UI
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref m);
 
 
-            GL.Uniform3(Program.GetUniformLocation("textColor"), 1f, 0f, 0f);
+            GL.Uniform3(Program.GetUniformLocation("textColor"), Color.X, Color.Y, Color.Z);
             GL.Uniform1(Program.GetUniformLocation("sourceTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.BindVertexArray(_vao);
