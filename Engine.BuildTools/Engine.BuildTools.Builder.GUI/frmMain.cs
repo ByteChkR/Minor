@@ -35,7 +35,7 @@ namespace Engine.BuildTools.Builder.GUI
             xs = new XmlSerializer(typeof(BuildSettings));
 
             CheckForIllegalCrossThreadCalls = false;
-            
+
         }
 
         private void Initialize()
@@ -78,7 +78,7 @@ namespace Engine.BuildTools.Builder.GUI
             cbBuildFlags.Enabled = state;
             cbCreateEnginePackage.Enabled = state;
             cbCreateGamePackage.Enabled = state;
-            cbExperimentalPackaging.Enabled = state;
+            cbLegacyPackaging.Enabled = state;
 
             nudPackageSize.Enabled = state;
         }
@@ -430,7 +430,7 @@ namespace Engine.BuildTools.Builder.GUI
             WriteOutput("Creating Engine Package...");
 
             string useExperimental =
-                cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+                cbLegacyPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
             SetState(State.Busy);
 
             buildFailed = false;
@@ -468,7 +468,7 @@ namespace Engine.BuildTools.Builder.GUI
                 pbError.Visible = true;
             }
         }
-        
+
         private void btnRun_Click(object sender, EventArgs e)
         {
             if (cbAskOutputFolderOnBuild.Checked)
@@ -481,7 +481,7 @@ namespace Engine.BuildTools.Builder.GUI
             SaveFile(SaveLocation);
             WriteOutput("Running Build Settings...");
             string useExperimental =
-                cbExperimentalPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+                cbLegacyPackaging.Checked ? "--packager-version legacy" : "--packager-version v1";
 
             buildFailed = false;
             ProcessUtils.RunActionAsCommand(Lib.Builder.RunCommand, SaveLocation + " " + useExperimental, XMLBuildFinished);
@@ -552,6 +552,6 @@ namespace Engine.BuildTools.Builder.GUI
             if (DirectoryExists(SaveLocation, tbOutputFolder.Text))
                 Process.Start("explorer.exe", FullPath(SaveLocation, tbOutputFolder.Text));
         }
-        
+
     }
 }

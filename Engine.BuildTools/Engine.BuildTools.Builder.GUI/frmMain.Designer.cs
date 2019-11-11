@@ -30,12 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             this.gbBuildSettings = new System.Windows.Forms.GroupBox();
-            this.pbError = new System.Windows.Forms.PictureBox();
             this.pbidle = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbCreateGamePackage = new System.Windows.Forms.CheckBox();
             this.btnCreateEnginePackage = new System.Windows.Forms.Button();
-            this.cbExperimentalPackaging = new System.Windows.Forms.CheckBox();
+            this.cbLegacyPackaging = new System.Windows.Forms.CheckBox();
             this.cbCreateEnginePackage = new System.Windows.Forms.CheckBox();
             this.btnSelectGamePackageFileList = new System.Windows.Forms.Button();
             this.btnSelectEngineProject = new System.Windows.Forms.Button();
@@ -66,6 +65,7 @@
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.pbBusy = new System.Windows.Forms.PictureBox();
+            this.pbError = new System.Windows.Forms.PictureBox();
             this.ofdBuildSettings = new System.Windows.Forms.OpenFileDialog();
             this.sfdBuildSettings = new System.Windows.Forms.SaveFileDialog();
             this.gbOutput = new System.Windows.Forms.GroupBox();
@@ -75,13 +75,13 @@
             this.fbdAssetFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.fbdOutputFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.gbBuildSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbError)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbidle)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.gbUnpackFileExtensions.SuspendLayout();
             this.gbPackFileExtensions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPackageSize)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBusy)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).BeginInit();
             this.gbOutput.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -119,16 +119,6 @@
             this.gbBuildSettings.TabStop = false;
             this.gbBuildSettings.Text = "Build Settings:";
             // 
-            // pbError
-            // 
-            this.pbError.Image = global::Engine.BuildTools.Builder.GUI.Properties.Resources.procbusy;
-            this.pbError.Location = new System.Drawing.Point(1001, 48);
-            this.pbError.Name = "pbError";
-            this.pbError.Size = new System.Drawing.Size(60, 60);
-            this.pbError.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbError.TabIndex = 36;
-            this.pbError.TabStop = false;
-            // 
             // pbidle
             // 
             this.pbidle.Image = global::Engine.BuildTools.Builder.GUI.Properties.Resources.procidle;
@@ -143,7 +133,7 @@
             // 
             this.groupBox1.Controls.Add(this.cbCreateGamePackage);
             this.groupBox1.Controls.Add(this.btnCreateEnginePackage);
-            this.groupBox1.Controls.Add(this.cbExperimentalPackaging);
+            this.groupBox1.Controls.Add(this.cbLegacyPackaging);
             this.groupBox1.Controls.Add(this.cbCreateEnginePackage);
             this.groupBox1.Controls.Add(this.btnSelectGamePackageFileList);
             this.groupBox1.Controls.Add(this.btnSelectEngineProject);
@@ -180,16 +170,16 @@
             this.btnCreateEnginePackage.UseVisualStyleBackColor = true;
             this.btnCreateEnginePackage.Click += new System.EventHandler(this.btnCreateEnginePackage_Click);
             // 
-            // cbExperimentalPackaging
+            // cbLegacyPackaging
             // 
-            this.cbExperimentalPackaging.AutoSize = true;
-            this.cbExperimentalPackaging.Enabled = false;
-            this.cbExperimentalPackaging.Location = new System.Drawing.Point(158, 43);
-            this.cbExperimentalPackaging.Name = "cbExperimentalPackaging";
-            this.cbExperimentalPackaging.Size = new System.Drawing.Size(162, 17);
-            this.cbExperimentalPackaging.TabIndex = 31;
-            this.cbExperimentalPackaging.Text = "Use Experimental Packaging";
-            this.cbExperimentalPackaging.UseVisualStyleBackColor = true;
+            this.cbLegacyPackaging.AutoSize = true;
+            this.cbLegacyPackaging.Enabled = false;
+            this.cbLegacyPackaging.Location = new System.Drawing.Point(158, 43);
+            this.cbLegacyPackaging.Name = "cbLegacyPackaging";
+            this.cbLegacyPackaging.Size = new System.Drawing.Size(137, 17);
+            this.cbLegacyPackaging.TabIndex = 31;
+            this.cbLegacyPackaging.Text = "Use Legacy Packaging";
+            this.cbLegacyPackaging.UseVisualStyleBackColor = true;
             // 
             // cbCreateEnginePackage
             // 
@@ -504,6 +494,16 @@
             this.pbBusy.TabIndex = 35;
             this.pbBusy.TabStop = false;
             // 
+            // pbError
+            // 
+            this.pbError.Image = global::Engine.BuildTools.Builder.GUI.Properties.Resources.procbusy;
+            this.pbError.Location = new System.Drawing.Point(1001, 48);
+            this.pbError.Name = "pbError";
+            this.pbError.Size = new System.Drawing.Size(60, 60);
+            this.pbError.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbError.TabIndex = 36;
+            this.pbError.TabStop = false;
+            // 
             // ofdBuildSettings
             // 
             this.ofdBuildSettings.DefaultExt = "xml";
@@ -574,7 +574,6 @@
             this.Load += new System.EventHandler(this.frmMain_Load);
             this.gbBuildSettings.ResumeLayout(false);
             this.gbBuildSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbidle)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -582,6 +581,7 @@
             this.gbPackFileExtensions.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.nudPackageSize)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBusy)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbError)).EndInit();
             this.gbOutput.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -630,7 +630,7 @@
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Button btnCreateEnginePackage;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox cbExperimentalPackaging;
+        private System.Windows.Forms.CheckBox cbLegacyPackaging;
         private System.Windows.Forms.PictureBox pbidle;
         private System.Windows.Forms.PictureBox pbBusy;
         private System.Windows.Forms.PictureBox pbError;
