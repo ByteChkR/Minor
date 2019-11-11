@@ -239,7 +239,7 @@ namespace Engine.Demo.scenes
             Texture btnHover = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
             Texture btnClick = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
             Button btn = new Button(btnIdle, uiShader, 1, btnClick, btnHover);
-            LinearAnimation loadAnim = new LinearAnimation(btn);
+            LinearAnimation loadAnim = new LinearAnimation();
             loadAnim.Interpolator = new SmoothInterpolator();
             loadAnim.StartPos = Vector2.Zero + Vector2.UnitY * 1;
             loadAnim.EndPos = Vector2.Zero;
@@ -247,14 +247,14 @@ namespace Engine.Demo.scenes
             loadAnim.Trigger = AnimationTrigger.OnLoad;
             loadAnim.AnimationDelay = 1f;
 
-            LinearAnimation clickAnim = new LinearAnimation(btn);
+            LinearAnimation clickAnim = new LinearAnimation();
             clickAnim.Interpolator = new Arc2Interpolator();
             clickAnim.StartPos = Vector2.Zero;
             clickAnim.EndPos = Vector2.Zero + Vector2.UnitY * 1;
             clickAnim.MaxAnimationTime = 1;
             clickAnim.Trigger = AnimationTrigger.OnClick;
 
-            Animator anim = new Animator(btn, new List<Animation>{loadAnim, clickAnim});
+            Animator anim = new Animator(btn, new List<Animation> { loadAnim, clickAnim });
 
             obj.AddComponent(anim);
             obj.AddComponent(btn);
