@@ -14,7 +14,7 @@ namespace Engine.BuildTools.PackageCreator
 {
     public static class Creator
     {
-        public const string DEFAULT_VERSION = "legacy";
+        public const string DEFAULT_VERSION = "v1";
         private static Dictionary<string, IPackageVersion> _packageVersions = new Dictionary<string, IPackageVersion>
         {
             { "legacy", new Legacy() },

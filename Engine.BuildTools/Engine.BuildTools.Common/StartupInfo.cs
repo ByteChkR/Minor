@@ -25,8 +25,9 @@ namespace Engine.BuildTools.Builder
                         argValues.Add(args[j]);
                     }
 
-                    if (i == 0 && !args[i].StartsWith("--"))
+                    if (i == 0 && !args[0].StartsWith("--"))
                     {
+                        argValues.Add(args[0]);
                         values.Add("noflag", argValues);
                     }
                     else

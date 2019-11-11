@@ -9,7 +9,7 @@ using Engine.AssetPackaging;
 using Engine.BuildTools.Common;
 using Engine.BuildTools.PackageCreator;
 
-namespace Engine.BuildTools.Builder.Lib
+namespace Engine.BuildTools.Builder
 {
     public static class Builder
     {

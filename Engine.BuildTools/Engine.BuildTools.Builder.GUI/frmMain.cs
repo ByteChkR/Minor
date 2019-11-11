@@ -430,11 +430,11 @@ namespace Engine.BuildTools.Builder.GUI
             WriteOutput("Creating Engine Package...");
 
             string useExperimental =
-                cbLegacyPackaging.Checked ? "--packager-version v1" : "--packager-version legacy";
+                cbLegacyPackaging.Checked ? "--packager-version legacy" : "--packager-version v1";
             SetState(State.Busy);
 
             buildFailed = false;
-            ProcessUtils.RunActionAsCommand(Lib.Builder.RunCommand, $"{useExperimental} --create-engine-package {engineProjectFile} {outputPath}", EnginePackagerFinished);
+            ProcessUtils.RunActionAsCommand(BuildTools.Builder.Builder.RunCommand, $"{useExperimental} --create-engine-package {engineProjectFile} {outputPath}", EnginePackagerFinished);
             //ProcessUtils.RunProcess("cmd.exe",
             //  $"/C dotnet Engine.BuildTools.Builder.dll {useExperimental} --create-engine-package {engineProjectFile} {outputPath}",
             //   Application.DoEvents, WriteOutput);
@@ -480,11 +480,11 @@ namespace Engine.BuildTools.Builder.GUI
 
             SaveFile(SaveLocation);
             WriteOutput("Running Build Settings...");
-            string useExperimental =
+            string packagerVersion =
                 cbLegacyPackaging.Checked ? "--packager-version legacy" : "--packager-version v1";
 
             buildFailed = false;
-            ProcessUtils.RunActionAsCommand(Lib.Builder.RunCommand, SaveLocation + " " + useExperimental, XMLBuildFinished);
+            ProcessUtils.RunActionAsCommand(BuildTools.Builder.Builder.RunCommand, SaveLocation + " " + packagerVersion, XMLBuildFinished);
             //Lib.Builder.RunCommand(SaveLocation + " " + useExperimental);
             //ProcessUtils.RunProcess("cmd.exe",
             //   "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents,

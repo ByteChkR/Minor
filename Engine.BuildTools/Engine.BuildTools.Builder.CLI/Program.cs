@@ -10,7 +10,7 @@ namespace Engine.BuildTools.Builder.CLI
     {
         static void Main(string[] args)
         {
-            Lib.Builder.RunCommand(args);
+            BuildTools.Builder.Builder.RunCommand(args);
         }
     }
 }
