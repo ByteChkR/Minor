@@ -11,11 +11,31 @@ namespace Engine.UI.Animations
         public Animator(Button target, List<Animation> animatorList)
         {
             animators = animatorList;
+            AddTarget(target);
+        }
+
+        private void AddTarget(Button target)
+        {
             Target = target;
             Target.AddToClickEvent(OnClick);
             Target.AddToEnterEvent(OnEnter);
             Target.AddToHoverEvent(OnHover);
             Target.AddToLeaveEvent(OnLeave);
+        }
+
+        private void RemoveTarget()
+        {
+            Target.RemoveFromClickEvent(OnClick);
+            Target.RemoveFromEnterEvent(OnEnter);
+            Target.RemoveFromHoverEvent(OnHover);
+            Target.RemoveFromLeaveEvent(OnLeave);
+            Target = null;
+        }
+
+        private void SetTarget(Button target)
+        {
+            RemoveTarget();
+            AddTarget(target);
         }
 
         private void OnClick(Button target)

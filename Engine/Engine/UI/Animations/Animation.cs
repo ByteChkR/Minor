@@ -18,10 +18,11 @@ namespace Engine.UI.Animations
         private int frameCount = 0;
         protected Button Target;
 
-        protected Animation(Button target)
+        public void SetTarget(Button target)
         {
             Target = target;
         }
+        
         public abstract bool Animate(Button target, float animationStart);
 
         public void CheckState(AnimationTrigger trigger)
