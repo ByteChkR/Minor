@@ -1,18 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;TravisTest;Debug_FullTrace;Release_CollectLogs</Configurations>
-    <AssemblyVersion>0.2.1.1</AssemblyVersion>
-    <FileVersion>0.2.1.1</FileVersion>
+    <AssemblyVersion>0.2.1.2</AssemblyVersion>
+    <FileVersion>0.2.1.2</FileVersion>
     <Version>0.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>github.com/ByteChkR/Minor</RepositoryUrl>
     <Deterministic>false</Deterministic>
   </PropertyGroup>
-
   <PropertyGroup Condition="$(Configuration) == 'Debug'">
     <BumpLabel>dev</BumpLabel>
     <BumpLabelDigits>4</BumpLabelDigits>
@@ -21,46 +19,37 @@
     <BumpRevision>True</BumpRevision>
     <BumpResetLabel>dev</BumpResetLabel>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TravisTest|AnyCPU'">
     <DefineConstants>TRACE;NO_CL</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_CollectLogs|AnyCPU'">
     <DefineConstants>TRACE;COLLECT_LOGS;FORCEINLINE</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;LEAK_TRACE;TRACE_TIME_ONLY</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_FullTrace|AnyCPU'">
     <DefineConstants>TRACE;LEAK_TRACE</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="_DefaultResources\**" />
     <EmbeddedResource Remove="_DefaultResources\**" />
     <None Remove="_DefaultResources\**" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="AssimpNet" Version="4.1.0" />
     <PackageReference Include="OpenTK.NetStandard" Version="1.0.4" />
     <PackageReference Include="SharpFontCore" Version="0.1.1" />
     <PackageReference Include="System.Drawing.Common" Version="4.6.0" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="OpenCL\DotNetCore\" />
   </ItemGroup>
-
   <ItemGroup>
     <Reference Include="System.Drawing">
       <HintPath>System.Drawing</HintPath>
     </Reference>
   </ItemGroup>
-
   <ItemGroup>
     <None Update="libs\ext_pp.dll">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -76,11 +65,9 @@
       <LastGenOutput>VectorTypes.cs</LastGenOutput>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Update="OpenCL\DotNetCore\DataTypes\VectorTypes.cs">
       <DesignTime>True</DesignTime>
@@ -93,118 +80,112 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
-
-<ItemGroup>
-  <Content Remove="_DefaultResources/DefaultFont.ttf" />
-  <Content Remove="_DefaultResources/DefaultTexture.bmp" />
-  <Content Remove="_DefaultResources/DefaultMesh.obj" />
-  <Content Remove="_DefaultResources/DefaultShader.vs" />
-  <Content Remove="_DefaultResources/DefaultShader.fs" />
-</ItemGroup>
-
-<ItemGroup>
-  <None Remove="assets\configs\adl_network_config.xml" />
-  <None Remove="assets\configs\engine_settings.xml" />
-  <None Remove="assets\fonts\default_font.ttf" />
-  <None Remove="assets\grass.fl" />
-  <None Remove="assets\kernel\add.cl" />
-  <None Remove="assets\kernel\adjustlevel.cl" />
-  <None Remove="assets\kernel\div.cl" />
-  <None Remove="assets\kernel\invert.cl" />
-  <None Remove="assets\kernel\mix.cl" />
-  <None Remove="assets\kernel\mod.cl" />
-  <None Remove="assets\kernel\mul.cl" />
-  <None Remove="assets\kernel\perlin.cl" />
-  <None Remove="assets\kernel\set.cl" />
-  <None Remove="assets\kernel\shapes.cl" />
-  <None Remove="assets\kernel\smooth.cl" />
-  <None Remove="assets\kernel\sub.cl" />
-  <None Remove="assets\kernel\utils.cl" />
-  <None Remove="assets\kernel\worley.cl" />
-  <None Remove="assets\models\default_mesh.obj" />
-  <None Remove="assets\shader\graph.fs" />
-  <None Remove="assets\shader\graph.vs" />
-  <None Remove="assets\shader\internal\merge_stage\merge_renderer.vs" />
-  <None Remove="assets\shader\internal\merge_stage\merge_renderer_add.fs" />
-  <None Remove="assets\shader\internal\merge_stage\merge_renderer_mul.fs" />
-  <None Remove="assets\shader\internal\merge_stage\merge_shader.vs" />
-  <None Remove="assets\shader\internal\merge_stage\merge_shader_add.fs" />
-  <None Remove="assets\shader\internal\merge_stage\merge_shader_mul.fs" />
-  <None Remove="assets\shader\internal\screen_stage\shader.fs" />
-  <None Remove="assets\shader\internal\screen_stage\shader.vs" />
-  <None Remove="assets\shader\lit\point.fs" />
-  <None Remove="assets\shader\lit\point.vs" />
-  <None Remove="assets\shader\lit\shader.fs" />
-  <None Remove="assets\shader\lit\shader.vs" />
-  <None Remove="assets\shader\MergeRenderer.vs" />
-  <None Remove="assets\shader\MergeRenderer_Add.fs" />
-  <None Remove="assets\shader\MergeRenderer_Mul.fs" />
-  <None Remove="assets\shader\MergeRenderer_Over.fs" />
-  <None Remove="assets\shader\OverlayRenderer.fs" />
-  <None Remove="assets\shader\OverlayRenderer.vs" />
-  <None Remove="assets\shader\ScreenRenderer.fs" />
-  <None Remove="assets\shader\ScreenRenderer.vs" />
-  <None Remove="assets\shader\texture.fs" />
-  <None Remove="assets\shader\texture.vs" />
-  <None Remove="assets\shader\UIRender.fs" />
-  <None Remove="assets\shader\UIRender.vs" />
-  <None Remove="assets\shader\UITextRender.fs" />
-  <None Remove="assets\shader\UITextRender.vs" />
-  <None Remove="assets\shader\ui\graph\shader.fs" />
-  <None Remove="assets\shader\ui\graph\shader.vs" />
-  <None Remove="assets\shader\ui\image\shader.fs" />
-  <None Remove="assets\shader\ui\image\shader.vs" />
-  <None Remove="assets\shader\ui\text\shader.fs" />
-  <None Remove="assets\shader\ui\text\shader.vs" />
-  <None Remove="assets\shader\unlit\shader.fs" />
-  <None Remove="assets\shader\unlit\shader.vs" />
-  <None Remove="assets\textures\default_texture.bmp" />
-</ItemGroup>
-
-<ItemGroup>
-  <EmbeddedResource Include="assets\grass.fl" />
-</ItemGroup>
-
-<ItemGroup>
-  <EmbeddedResource Include="assets\configs\adl_network_config.xml" />
-  <EmbeddedResource Include="assets\configs\engine_settings.xml" />
-  <EmbeddedResource Include="assets\fonts\default_font.ttf" />
-  <EmbeddedResource Include="assets\kernel\add.cl" />
-  <EmbeddedResource Include="assets\kernel\adjustlevel.cl" />
-  <EmbeddedResource Include="assets\kernel\div.cl" />
-  <EmbeddedResource Include="assets\kernel\invert.cl" />
-  <EmbeddedResource Include="assets\kernel\mix.cl" />
-  <EmbeddedResource Include="assets\kernel\mod.cl" />
-  <EmbeddedResource Include="assets\kernel\mul.cl" />
-  <EmbeddedResource Include="assets\kernel\perlin.cl" />
-  <EmbeddedResource Include="assets\kernel\set.cl" />
-  <EmbeddedResource Include="assets\kernel\shapes.cl" />
-  <EmbeddedResource Include="assets\kernel\smooth.cl" />
-  <EmbeddedResource Include="assets\kernel\sub.cl" />
-  <EmbeddedResource Include="assets\kernel\utils.cl" />
-  <EmbeddedResource Include="assets\kernel\worley.cl" />
-  <EmbeddedResource Include="assets\models\default_mesh.obj" />
-  <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader.vs" />
-  <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader_add.fs" />
-  <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader_mul.fs" />
-  <EmbeddedResource Include="assets\shader\internal\screen_stage\shader.fs" />
-  <EmbeddedResource Include="assets\shader\internal\screen_stage\shader.vs" />
-  <EmbeddedResource Include="assets\shader\lit\shader.fs" />
-  <EmbeddedResource Include="assets\shader\lit\shader.vs" />
-  <EmbeddedResource Include="assets\shader\ui\graph\shader.fs" />
-  <EmbeddedResource Include="assets\shader\ui\graph\shader.vs" />
-  <EmbeddedResource Include="assets\shader\ui\image\shader.fs" />
-  <EmbeddedResource Include="assets\shader\ui\image\shader.vs" />
-  <EmbeddedResource Include="assets\shader\ui\text\shader.fs" />
-  <EmbeddedResource Include="assets\shader\ui\text\shader.vs" />
-  <EmbeddedResource Include="assets\shader\unlit\shader.fs" />
-  <EmbeddedResource Include="assets\shader\unlit\shader.vs" />
-  <EmbeddedResource Include="assets\textures\default_texture.bmp" />
-</ItemGroup>
-
-<ItemGroup>
-  <ProjectReference Include="..\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
-  <ProjectReference Include="..\Engine.Common\Engine.Common.csproj" />
-</ItemGroup>
-
+  <ItemGroup>
+    <Content Remove="_DefaultResources/DefaultFont.ttf" />
+    <Content Remove="_DefaultResources/DefaultTexture.bmp" />
+    <Content Remove="_DefaultResources/DefaultMesh.obj" />
+    <Content Remove="_DefaultResources/DefaultShader.vs" />
+    <Content Remove="_DefaultResources/DefaultShader.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="assets\configs\adl_network_config.xml" />
+    <None Remove="assets\configs\engine_settings.xml" />
+    <None Remove="assets\fonts\default_font.ttf" />
+    <None Remove="assets\grass.fl" />
+    <None Remove="assets\kernel\add.cl" />
+    <None Remove="assets\kernel\adjustlevel.cl" />
+    <None Remove="assets\kernel\div.cl" />
+    <None Remove="assets\kernel\invert.cl" />
+    <None Remove="assets\kernel\mix.cl" />
+    <None Remove="assets\kernel\mod.cl" />
+    <None Remove="assets\kernel\mul.cl" />
+    <None Remove="assets\kernel\perlin.cl" />
+    <None Remove="assets\kernel\set.cl" />
+    <None Remove="assets\kernel\shapes.cl" />
+    <None Remove="assets\kernel\smooth.cl" />
+    <None Remove="assets\kernel\sub.cl" />
+    <None Remove="assets\kernel\utils.cl" />
+    <None Remove="assets\kernel\worley.cl" />
+    <None Remove="assets\models\default_mesh.obj" />
+    <None Remove="assets\shader\graph.fs" />
+    <None Remove="assets\shader\graph.vs" />
+    <None Remove="assets\shader\internal\merge_stage\merge_renderer.vs" />
+    <None Remove="assets\shader\internal\merge_stage\merge_renderer_add.fs" />
+    <None Remove="assets\shader\internal\merge_stage\merge_renderer_mul.fs" />
+    <None Remove="assets\shader\internal\merge_stage\merge_shader.vs" />
+    <None Remove="assets\shader\internal\merge_stage\merge_shader_add.fs" />
+    <None Remove="assets\shader\internal\merge_stage\merge_shader_mul.fs" />
+    <None Remove="assets\shader\internal\screen_stage\shader.fs" />
+    <None Remove="assets\shader\internal\screen_stage\shader.vs" />
+    <None Remove="assets\shader\lit\point.fs" />
+    <None Remove="assets\shader\lit\point.vs" />
+    <None Remove="assets\shader\lit\shader.fs" />
+    <None Remove="assets\shader\lit\shader.vs" />
+    <None Remove="assets\shader\MergeRenderer.vs" />
+    <None Remove="assets\shader\MergeRenderer_Add.fs" />
+    <None Remove="assets\shader\MergeRenderer_Mul.fs" />
+    <None Remove="assets\shader\MergeRenderer_Over.fs" />
+    <None Remove="assets\shader\OverlayRenderer.fs" />
+    <None Remove="assets\shader\OverlayRenderer.vs" />
+    <None Remove="assets\shader\ScreenRenderer.fs" />
+    <None Remove="assets\shader\ScreenRenderer.vs" />
+    <None Remove="assets\shader\texture.fs" />
+    <None Remove="assets\shader\texture.vs" />
+    <None Remove="assets\shader\UIRender.fs" />
+    <None Remove="assets\shader\UIRender.vs" />
+    <None Remove="assets\shader\UITextRender.fs" />
+    <None Remove="assets\shader\UITextRender.vs" />
+    <None Remove="assets\shader\ui\graph\shader.fs" />
+    <None Remove="assets\shader\ui\graph\shader.vs" />
+    <None Remove="assets\shader\ui\image\shader.fs" />
+    <None Remove="assets\shader\ui\image\shader.vs" />
+    <None Remove="assets\shader\ui\text\shader.fs" />
+    <None Remove="assets\shader\ui\text\shader.vs" />
+    <None Remove="assets\shader\unlit\shader.fs" />
+    <None Remove="assets\shader\unlit\shader.vs" />
+    <None Remove="assets\textures\default_texture.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="assets\grass.fl" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="assets\configs\adl_network_config.xml" />
+    <EmbeddedResource Include="assets\configs\engine_settings.xml" />
+    <EmbeddedResource Include="assets\fonts\default_font.ttf" />
+    <EmbeddedResource Include="assets\kernel\add.cl" />
+    <EmbeddedResource Include="assets\kernel\adjustlevel.cl" />
+    <EmbeddedResource Include="assets\kernel\div.cl" />
+    <EmbeddedResource Include="assets\kernel\invert.cl" />
+    <EmbeddedResource Include="assets\kernel\mix.cl" />
+    <EmbeddedResource Include="assets\kernel\mod.cl" />
+    <EmbeddedResource Include="assets\kernel\mul.cl" />
+    <EmbeddedResource Include="assets\kernel\perlin.cl" />
+    <EmbeddedResource Include="assets\kernel\set.cl" />
+    <EmbeddedResource Include="assets\kernel\shapes.cl" />
+    <EmbeddedResource Include="assets\kernel\smooth.cl" />
+    <EmbeddedResource Include="assets\kernel\sub.cl" />
+    <EmbeddedResource Include="assets\kernel\utils.cl" />
+    <EmbeddedResource Include="assets\kernel\worley.cl" />
+    <EmbeddedResource Include="assets\models\default_mesh.obj" />
+    <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader.vs" />
+    <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader_add.fs" />
+    <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader_mul.fs" />
+    <EmbeddedResource Include="assets\shader\internal\screen_stage\shader.fs" />
+    <EmbeddedResource Include="assets\shader\internal\screen_stage\shader.vs" />
+    <EmbeddedResource Include="assets\shader\lit\shader.fs" />
+    <EmbeddedResource Include="assets\shader\lit\shader.vs" />
+    <EmbeddedResource Include="assets\shader\ui\graph\shader.fs" />
+    <EmbeddedResource Include="assets\shader\ui\graph\shader.vs" />
+    <EmbeddedResource Include="assets\shader\ui\image\shader.fs" />
+    <EmbeddedResource Include="assets\shader\ui\image\shader.vs" />
+    <EmbeddedResource Include="assets\shader\ui\text\shader.fs" />
+    <EmbeddedResource Include="assets\shader\ui\text\shader.vs" />
+    <EmbeddedResource Include="assets\shader\unlit\shader.fs" />
+    <EmbeddedResource Include="assets\shader\unlit\shader.vs" />
+    <EmbeddedResource Include="assets\textures\default_texture.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
+    <ProjectReference Include="..\Engine.Common\Engine.Common.csproj" />
+  </ItemGroup>
 </Project>

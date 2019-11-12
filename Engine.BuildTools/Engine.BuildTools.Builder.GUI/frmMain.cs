@@ -62,6 +62,7 @@ namespace Engine.BuildTools.Builder.GUI
             tbFileList.Enabled = state;
             tbOutputFolder.Enabled = state;
             tbProject.Enabled = state;
+            tbStartCmd.Enabled = state;
 
             btnSelectEngineProject.Enabled = state;
             btnSelectAssetFolder.Enabled = state;
@@ -78,7 +79,11 @@ namespace Engine.BuildTools.Builder.GUI
             cbBuildFlags.Enabled = state;
             cbCreateEnginePackage.Enabled = state;
             cbCreateGamePackage.Enabled = state;
-            cbLegacyPackaging.Enabled = state;
+
+            rbUseV1.Enabled = state;
+            rbUseV2.Enabled = state;
+            rbUseLegacy.Enabled = state;
+            cbEnableStartArg.Enabled = state;
 
             nudPackageSize.Enabled = state;
         }
@@ -429,8 +434,7 @@ namespace Engine.BuildTools.Builder.GUI
         {
             WriteOutput("Creating Engine Package...");
 
-            string useExperimental =
-                cbLegacyPackaging.Checked ? "--packager-version legacy" : "--packager-version v1";
+            string useExperimental = "--packager-version " + GetPackagerVersion();
             SetState(State.Busy);
 
             buildFailed = false;
@@ -469,6 +473,14 @@ namespace Engine.BuildTools.Builder.GUI
             }
         }
 
+        private string GetPackagerVersion()
+        {
+            if (rbUseV1.Checked) return "v1";
+            if (rbUseV2.Checked) return "v2";
+            if (rbUseLegacy.Checked) return "legacy";
+            return "Unknown";
+        }
+
         private void btnRun_Click(object sender, EventArgs e)
         {
             if (cbAskOutputFolderOnBuild.Checked)
@@ -480,11 +492,16 @@ namespace Engine.BuildTools.Builder.GUI
 
             SaveFile(SaveLocation);
             WriteOutput("Running Build Settings...");
-            string packagerVersion =
-                cbLegacyPackaging.Checked ? "--packager-version legacy" : "--packager-version v1";
-
+            string packagerVersion = "--packager-version " + GetPackagerVersion();
+            string versionSpecific = "";
+            if (GetPackagerVersion() == "v2")
+            {
+                string args = tbStartCmd.Text.Replace("$ProjectName", Path.GetFileNameWithoutExtension(tbProject.Text));
+                versionSpecific += " --set-start-args " + args;
+            }
+            WriteOutput("Using packager version: " + GetPackagerVersion());
             buildFailed = false;
-            ProcessUtils.RunActionAsCommand(BuildTools.Builder.Builder.RunCommand, SaveLocation + " " + packagerVersion, XMLBuildFinished);
+            ProcessUtils.RunActionAsCommand(BuildTools.Builder.Builder.RunCommand, SaveLocation + " " + packagerVersion + versionSpecific, XMLBuildFinished);
             //Lib.Builder.RunCommand(SaveLocation + " " + useExperimental);
             //ProcessUtils.RunProcess("cmd.exe",
             //   "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents,
@@ -553,5 +570,10 @@ namespace Engine.BuildTools.Builder.GUI
                 Process.Start("explorer.exe", FullPath(SaveLocation, tbOutputFolder.Text));
         }
 
+        private void rbUseV2_CheckedChanged(object sender, EventArgs e)
+        {
+            cbEnableStartArg.Enabled = rbUseV2.Checked;
+            tbStartCmd.Enabled = rbUseV2.Checked;
+        }
     }
 }

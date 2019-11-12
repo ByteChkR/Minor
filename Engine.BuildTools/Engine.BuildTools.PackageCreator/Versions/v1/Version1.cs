@@ -2,22 +2,51 @@
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Xml;
 using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v1
 {
     public class Version1 : IPackageVersion
     {
-        public string ManifestPath => "PackageManifest.xml";
-        public string PackageVersion => "v1";
+        public  string ManifestPath => "PackageManifest.xml";
+        public  string PackageVersion => "v1";
 
-        public void UnpackPackage(string file, string outPutDir)
+        public void WriteManifest(Stream s, IPackageManifest manifest)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
+            xs.Serialize(s, manifest);
+        }
+
+        public  void UnpackPackage(string file, string outPutDir)
         {
             ZipFile.ExtractToDirectory(file, outPutDir);
             File.Delete(outPutDir + "/" + ManifestPath);
         }
 
-        public PackageManifest GetPackageManifest(string path)
+        public  bool IsVersion(string path)
+        {
+            TextReader tr = null;
+            Stream s = null;
+            string v = "";
+            try
+            {
+                ZipArchive pack = ZipFile.OpenRead(path);
+                s = pack.GetEntry(ManifestPath).Open();
+                tr = new StreamReader(s);
+                XmlSerializer xs = new XmlSerializer(typeof(PackageManifestHeader));
+                PackageManifestHeader pm = (PackageManifestHeader)xs.Deserialize(tr);
+                v = pm.PackageVersion;
+            }
+            catch (Exception)
+            {
+                tr?.Close();
+                return false;
+            }
+            return v == PackageVersion;
+        }
+
+        public IPackageManifest GetPackageManifest(string path)
         {
             ZipArchive pack = ZipFile.OpenRead(path);
             Stream s = pack.GetEntry(ManifestPath).Open();
@@ -26,7 +55,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
             return pm;
         }
 
-        public void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version)
+        public  void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version)
         {
             File.WriteAllBytes(outputFile,
                 new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -48,14 +77,14 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
 
             ZipArchiveEntry engVersion = a.CreateEntry(ManifestPath);
             Stream str = engVersion.Open();
-            PackageManifest pm = new PackageManifest(packageName, executable, version, PackageVersion);
+            PackageManifest pm = new PackageManifest(packageName, executable, version);
             Creator.WriteManifest(str, pm);
             str.Close();
             a.Dispose();
             fs.Close();
         }
 
-        public void CreateEnginePackage(string outputFile, string workingDir, string[] files, string version = null)
+        public  void CreateEnginePackage(string outputFile, string workingDir, string[] files, string version = null)
         {
             File.WriteAllBytes(outputFile,
                 new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
@@ -82,7 +111,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
 
             ZipArchiveEntry engVersion = a.CreateEntry(ManifestPath);
             Stream str = engVersion.Open();
-            PackageManifest pm = new PackageManifest("Engine", "", version, PackageVersion);
+            PackageManifest pm = new PackageManifest("Engine", "", version);
             Creator.WriteManifest(str, pm);
             str.Close();
             a.Dispose();

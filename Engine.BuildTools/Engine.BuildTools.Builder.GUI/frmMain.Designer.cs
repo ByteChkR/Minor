@@ -34,7 +34,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.cbCreateGamePackage = new System.Windows.Forms.CheckBox();
             this.btnCreateEnginePackage = new System.Windows.Forms.Button();
-            this.cbLegacyPackaging = new System.Windows.Forms.CheckBox();
             this.cbCreateEnginePackage = new System.Windows.Forms.CheckBox();
             this.btnSelectGamePackageFileList = new System.Windows.Forms.Button();
             this.btnSelectEngineProject = new System.Windows.Forms.Button();
@@ -74,6 +73,11 @@
             this.ofdProjectFile = new System.Windows.Forms.OpenFileDialog();
             this.fbdAssetFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.fbdOutputFolder = new System.Windows.Forms.FolderBrowserDialog();
+            this.rbUseV1 = new System.Windows.Forms.RadioButton();
+            this.rbUseV2 = new System.Windows.Forms.RadioButton();
+            this.rbUseLegacy = new System.Windows.Forms.RadioButton();
+            this.tbStartCmd = new System.Windows.Forms.TextBox();
+            this.cbEnableStartArg = new System.Windows.Forms.CheckBox();
             this.gbBuildSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbidle)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -114,7 +118,7 @@
             this.gbBuildSettings.Dock = System.Windows.Forms.DockStyle.Top;
             this.gbBuildSettings.Location = new System.Drawing.Point(0, 0);
             this.gbBuildSettings.Name = "gbBuildSettings";
-            this.gbBuildSettings.Size = new System.Drawing.Size(1073, 372);
+            this.gbBuildSettings.Size = new System.Drawing.Size(1073, 503);
             this.gbBuildSettings.TabIndex = 0;
             this.gbBuildSettings.TabStop = false;
             this.gbBuildSettings.Text = "Build Settings:";
@@ -131,9 +135,13 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbEnableStartArg);
+            this.groupBox1.Controls.Add(this.tbStartCmd);
+            this.groupBox1.Controls.Add(this.rbUseLegacy);
+            this.groupBox1.Controls.Add(this.rbUseV2);
+            this.groupBox1.Controls.Add(this.rbUseV1);
             this.groupBox1.Controls.Add(this.cbCreateGamePackage);
             this.groupBox1.Controls.Add(this.btnCreateEnginePackage);
-            this.groupBox1.Controls.Add(this.cbLegacyPackaging);
             this.groupBox1.Controls.Add(this.cbCreateEnginePackage);
             this.groupBox1.Controls.Add(this.btnSelectGamePackageFileList);
             this.groupBox1.Controls.Add(this.btnSelectEngineProject);
@@ -141,9 +149,9 @@
             this.groupBox1.Controls.Add(this.tbEngineProject);
             this.groupBox1.Controls.Add(this.lblGameFileList);
             this.groupBox1.Controls.Add(this.lblEngineProject);
-            this.groupBox1.Location = new System.Drawing.Point(6, 274);
+            this.groupBox1.Location = new System.Drawing.Point(0, 326);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(1061, 92);
+            this.groupBox1.Size = new System.Drawing.Size(1061, 177);
             this.groupBox1.TabIndex = 32;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Build Packaging";
@@ -162,24 +170,13 @@
             // 
             // btnCreateEnginePackage
             // 
-            this.btnCreateEnginePackage.Location = new System.Drawing.Point(908, 63);
+            this.btnCreateEnginePackage.Location = new System.Drawing.Point(905, 145);
             this.btnCreateEnginePackage.Name = "btnCreateEnginePackage";
             this.btnCreateEnginePackage.Size = new System.Drawing.Size(147, 23);
             this.btnCreateEnginePackage.TabIndex = 30;
             this.btnCreateEnginePackage.Text = "Create Engine Package";
             this.btnCreateEnginePackage.UseVisualStyleBackColor = true;
             this.btnCreateEnginePackage.Click += new System.EventHandler(this.btnCreateEnginePackage_Click);
-            // 
-            // cbLegacyPackaging
-            // 
-            this.cbLegacyPackaging.AutoSize = true;
-            this.cbLegacyPackaging.Enabled = false;
-            this.cbLegacyPackaging.Location = new System.Drawing.Point(158, 43);
-            this.cbLegacyPackaging.Name = "cbLegacyPackaging";
-            this.cbLegacyPackaging.Size = new System.Drawing.Size(137, 17);
-            this.cbLegacyPackaging.TabIndex = 31;
-            this.cbLegacyPackaging.Text = "Use Legacy Packaging";
-            this.cbLegacyPackaging.UseVisualStyleBackColor = true;
             // 
             // cbCreateEnginePackage
             // 
@@ -207,7 +204,7 @@
             // btnSelectEngineProject
             // 
             this.btnSelectEngineProject.Enabled = false;
-            this.btnSelectEngineProject.Location = new System.Drawing.Point(863, 63);
+            this.btnSelectEngineProject.Location = new System.Drawing.Point(860, 145);
             this.btnSelectEngineProject.Name = "btnSelectEngineProject";
             this.btnSelectEngineProject.Size = new System.Drawing.Size(39, 23);
             this.btnSelectEngineProject.TabIndex = 24;
@@ -228,7 +225,7 @@
             // tbEngineProject
             // 
             this.tbEngineProject.Enabled = false;
-            this.tbEngineProject.Location = new System.Drawing.Point(131, 65);
+            this.tbEngineProject.Location = new System.Drawing.Point(128, 147);
             this.tbEngineProject.Name = "tbEngineProject";
             this.tbEngineProject.Size = new System.Drawing.Size(726, 20);
             this.tbEngineProject.TabIndex = 23;
@@ -246,7 +243,7 @@
             // lblEngineProject
             // 
             this.lblEngineProject.AutoSize = true;
-            this.lblEngineProject.Location = new System.Drawing.Point(12, 68);
+            this.lblEngineProject.Location = new System.Drawing.Point(9, 150);
             this.lblEngineProject.Name = "lblEngineProject";
             this.lblEngineProject.Size = new System.Drawing.Size(116, 13);
             this.lblEngineProject.TabIndex = 22;
@@ -276,7 +273,7 @@
             // gbUnpackFileExtensions
             // 
             this.gbUnpackFileExtensions.Controls.Add(this.rtbUnpackedExts);
-            this.gbUnpackFileExtensions.Location = new System.Drawing.Point(866, 114);
+            this.gbUnpackFileExtensions.Location = new System.Drawing.Point(221, 193);
             this.gbUnpackFileExtensions.Name = "gbUnpackFileExtensions";
             this.gbUnpackFileExtensions.Size = new System.Drawing.Size(200, 127);
             this.gbUnpackFileExtensions.TabIndex = 21;
@@ -296,9 +293,9 @@
             // gbPackFileExtensions
             // 
             this.gbPackFileExtensions.Controls.Add(this.rtbPackedExts);
-            this.gbPackFileExtensions.Location = new System.Drawing.Point(675, 114);
+            this.gbPackFileExtensions.Location = new System.Drawing.Point(15, 189);
             this.gbPackFileExtensions.Name = "gbPackFileExtensions";
-            this.gbPackFileExtensions.Size = new System.Drawing.Size(161, 127);
+            this.gbPackFileExtensions.Size = new System.Drawing.Size(200, 131);
             this.gbPackFileExtensions.TabIndex = 20;
             this.gbPackFileExtensions.TabStop = false;
             this.gbPackFileExtensions.Text = "File Extensions(One per line):";
@@ -309,7 +306,7 @@
             this.rtbPackedExts.Enabled = false;
             this.rtbPackedExts.Location = new System.Drawing.Point(3, 16);
             this.rtbPackedExts.Name = "rtbPackedExts";
-            this.rtbPackedExts.Size = new System.Drawing.Size(155, 108);
+            this.rtbPackedExts.Size = new System.Drawing.Size(194, 112);
             this.rtbPackedExts.TabIndex = 19;
             this.rtbPackedExts.Text = "*";
             // 
@@ -317,7 +314,7 @@
             // 
             this.cbAskOutputFolderOnBuild.AutoSize = true;
             this.cbAskOutputFolderOnBuild.Enabled = false;
-            this.cbAskOutputFolderOnBuild.Location = new System.Drawing.Point(549, 222);
+            this.cbAskOutputFolderOnBuild.Location = new System.Drawing.Point(546, 165);
             this.cbAskOutputFolderOnBuild.Name = "cbAskOutputFolderOnBuild";
             this.cbAskOutputFolderOnBuild.Size = new System.Drawing.Size(87, 17);
             this.cbAskOutputFolderOnBuild.TabIndex = 18;
@@ -328,7 +325,7 @@
             // btnSelectOutputFolder
             // 
             this.btnSelectOutputFolder.Enabled = false;
-            this.btnSelectOutputFolder.Location = new System.Drawing.Point(504, 218);
+            this.btnSelectOutputFolder.Location = new System.Drawing.Point(501, 161);
             this.btnSelectOutputFolder.Name = "btnSelectOutputFolder";
             this.btnSelectOutputFolder.Size = new System.Drawing.Size(39, 23);
             this.btnSelectOutputFolder.TabIndex = 17;
@@ -339,7 +336,7 @@
             // tbOutputFolder
             // 
             this.tbOutputFolder.Enabled = false;
-            this.tbOutputFolder.Location = new System.Drawing.Point(131, 220);
+            this.tbOutputFolder.Location = new System.Drawing.Point(128, 163);
             this.tbOutputFolder.Name = "tbOutputFolder";
             this.tbOutputFolder.Size = new System.Drawing.Size(359, 20);
             this.tbOutputFolder.TabIndex = 16;
@@ -348,7 +345,7 @@
             // lblOutputFolder
             // 
             this.lblOutputFolder.AutoSize = true;
-            this.lblOutputFolder.Location = new System.Drawing.Point(12, 223);
+            this.lblOutputFolder.Location = new System.Drawing.Point(9, 166);
             this.lblOutputFolder.Name = "lblOutputFolder";
             this.lblOutputFolder.Size = new System.Drawing.Size(74, 13);
             this.lblOutputFolder.TabIndex = 15;
@@ -357,7 +354,7 @@
             // btnSelectAssetFolder
             // 
             this.btnSelectAssetFolder.Enabled = false;
-            this.btnSelectAssetFolder.Location = new System.Drawing.Point(549, 192);
+            this.btnSelectAssetFolder.Location = new System.Drawing.Point(546, 135);
             this.btnSelectAssetFolder.Name = "btnSelectAssetFolder";
             this.btnSelectAssetFolder.Size = new System.Drawing.Size(39, 23);
             this.btnSelectAssetFolder.TabIndex = 14;
@@ -368,7 +365,7 @@
             // tbAssetFolder
             // 
             this.tbAssetFolder.Enabled = false;
-            this.tbAssetFolder.Location = new System.Drawing.Point(131, 194);
+            this.tbAssetFolder.Location = new System.Drawing.Point(128, 137);
             this.tbAssetFolder.Name = "tbAssetFolder";
             this.tbAssetFolder.Size = new System.Drawing.Size(412, 20);
             this.tbAssetFolder.TabIndex = 13;
@@ -377,7 +374,7 @@
             // lblAssetFolder
             // 
             this.lblAssetFolder.AutoSize = true;
-            this.lblAssetFolder.Location = new System.Drawing.Point(12, 197);
+            this.lblAssetFolder.Location = new System.Drawing.Point(9, 140);
             this.lblAssetFolder.Name = "lblAssetFolder";
             this.lblAssetFolder.Size = new System.Drawing.Size(68, 13);
             this.lblAssetFolder.TabIndex = 12;
@@ -386,7 +383,7 @@
             // btnSelectProject
             // 
             this.btnSelectProject.Enabled = false;
-            this.btnSelectProject.Location = new System.Drawing.Point(549, 166);
+            this.btnSelectProject.Location = new System.Drawing.Point(546, 109);
             this.btnSelectProject.Name = "btnSelectProject";
             this.btnSelectProject.Size = new System.Drawing.Size(39, 23);
             this.btnSelectProject.TabIndex = 11;
@@ -397,7 +394,7 @@
             // tbProject
             // 
             this.tbProject.Enabled = false;
-            this.tbProject.Location = new System.Drawing.Point(131, 168);
+            this.tbProject.Location = new System.Drawing.Point(128, 111);
             this.tbProject.Name = "tbProject";
             this.tbProject.Size = new System.Drawing.Size(412, 20);
             this.tbProject.TabIndex = 10;
@@ -406,7 +403,7 @@
             // lblProject
             // 
             this.lblProject.AutoSize = true;
-            this.lblProject.Location = new System.Drawing.Point(12, 171);
+            this.lblProject.Location = new System.Drawing.Point(9, 114);
             this.lblProject.Name = "lblProject";
             this.lblProject.Size = new System.Drawing.Size(80, 13);
             this.lblProject.TabIndex = 9;
@@ -439,7 +436,7 @@
             // lblPackSize
             // 
             this.lblPackSize.AutoSize = true;
-            this.lblPackSize.Location = new System.Drawing.Point(12, 138);
+            this.lblPackSize.Location = new System.Drawing.Point(9, 81);
             this.lblPackSize.Name = "lblPackSize";
             this.lblPackSize.Size = new System.Drawing.Size(125, 13);
             this.lblPackSize.TabIndex = 6;
@@ -448,7 +445,7 @@
             // nudPackageSize
             // 
             this.nudPackageSize.Enabled = false;
-            this.nudPackageSize.Location = new System.Drawing.Point(143, 136);
+            this.nudPackageSize.Location = new System.Drawing.Point(140, 79);
             this.nudPackageSize.Maximum = new decimal(new int[] {
             4194304,
             0,
@@ -522,9 +519,9 @@
             // 
             this.gbOutput.Controls.Add(this.rtbOutput);
             this.gbOutput.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gbOutput.Location = new System.Drawing.Point(0, 372);
+            this.gbOutput.Location = new System.Drawing.Point(0, 503);
             this.gbOutput.Name = "gbOutput";
-            this.gbOutput.Size = new System.Drawing.Size(1073, 230);
+            this.gbOutput.Size = new System.Drawing.Size(1073, 227);
             this.gbOutput.TabIndex = 3;
             this.gbOutput.TabStop = false;
             this.gbOutput.Text = "Output:";
@@ -537,7 +534,7 @@
             this.rtbOutput.ForeColor = System.Drawing.SystemColors.Window;
             this.rtbOutput.Location = new System.Drawing.Point(3, 16);
             this.rtbOutput.Name = "rtbOutput";
-            this.rtbOutput.Size = new System.Drawing.Size(1067, 211);
+            this.rtbOutput.Size = new System.Drawing.Size(1067, 208);
             this.rtbOutput.TabIndex = 0;
             this.rtbOutput.Text = "Bla";
             // 
@@ -559,11 +556,66 @@
             // 
             this.fbdOutputFolder.Description = "Select the Folder Containing the Game Assets";
             // 
+            // rbUseV1
+            // 
+            this.rbUseV1.AutoSize = true;
+            this.rbUseV1.Checked = true;
+            this.rbUseV1.Enabled = false;
+            this.rbUseV1.Location = new System.Drawing.Point(6, 89);
+            this.rbUseV1.Name = "rbUseV1";
+            this.rbUseV1.Size = new System.Drawing.Size(109, 17);
+            this.rbUseV1.TabIndex = 32;
+            this.rbUseV1.Text = "Use V1 Packager";
+            this.rbUseV1.UseVisualStyleBackColor = true;
+            // 
+            // rbUseV2
+            // 
+            this.rbUseV2.AutoSize = true;
+            this.rbUseV2.Enabled = false;
+            this.rbUseV2.Location = new System.Drawing.Point(6, 112);
+            this.rbUseV2.Name = "rbUseV2";
+            this.rbUseV2.Size = new System.Drawing.Size(109, 17);
+            this.rbUseV2.TabIndex = 33;
+            this.rbUseV2.Text = "Use V2 Packager";
+            this.rbUseV2.UseVisualStyleBackColor = true;
+            this.rbUseV2.CheckedChanged += new System.EventHandler(this.rbUseV2_CheckedChanged);
+            // 
+            // rbUseLegacy
+            // 
+            this.rbUseLegacy.AutoSize = true;
+            this.rbUseLegacy.Enabled = false;
+            this.rbUseLegacy.Location = new System.Drawing.Point(6, 66);
+            this.rbUseLegacy.Name = "rbUseLegacy";
+            this.rbUseLegacy.Size = new System.Drawing.Size(131, 17);
+            this.rbUseLegacy.TabIndex = 34;
+            this.rbUseLegacy.Text = "Use Legacy Packager";
+            this.rbUseLegacy.UseVisualStyleBackColor = true;
+            // 
+            // tbStartCmd
+            // 
+            this.tbStartCmd.Enabled = false;
+            this.tbStartCmd.Location = new System.Drawing.Point(301, 112);
+            this.tbStartCmd.Name = "tbStartCmd";
+            this.tbStartCmd.Size = new System.Drawing.Size(751, 20);
+            this.tbStartCmd.TabIndex = 35;
+            this.tbStartCmd.Text = "dotnet $ProjectName.dll";
+            // 
+            // cbEnableStartArg
+            // 
+            this.cbEnableStartArg.AutoSize = true;
+            this.cbEnableStartArg.Enabled = false;
+            this.cbEnableStartArg.Location = new System.Drawing.Point(140, 114);
+            this.cbEnableStartArg.Name = "cbEnableStartArg";
+            this.cbEnableStartArg.Size = new System.Drawing.Size(150, 17);
+            this.cbEnableStartArg.TabIndex = 36;
+            this.cbEnableStartArg.Text = "Enable Custom Command:";
+            this.cbEnableStartArg.UseVisualStyleBackColor = true;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1073, 602);
+            this.ClientSize = new System.Drawing.Size(1073, 730);
             this.Controls.Add(this.gbOutput);
             this.Controls.Add(this.gbBuildSettings);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -630,10 +682,14 @@
         private System.Windows.Forms.Button btnRun;
         private System.Windows.Forms.Button btnCreateEnginePackage;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox cbLegacyPackaging;
         private System.Windows.Forms.PictureBox pbidle;
         private System.Windows.Forms.PictureBox pbBusy;
         private System.Windows.Forms.PictureBox pbError;
+        private System.Windows.Forms.RadioButton rbUseV2;
+        private System.Windows.Forms.RadioButton rbUseV1;
+        private System.Windows.Forms.RadioButton rbUseLegacy;
+        private System.Windows.Forms.CheckBox cbEnableStartArg;
+        private System.Windows.Forms.TextBox tbStartCmd;
     }
 }
 

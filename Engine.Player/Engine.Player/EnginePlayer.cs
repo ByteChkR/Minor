@@ -13,6 +13,7 @@ using System.Threading;
 using Engine.BuildTools.Builder;
 using Engine.BuildTools.Common;
 using Engine.BuildTools.PackageCreator;
+using Engine.BuildTools.PackageCreator.Versions;
 using Microsoft.Win32;
 
 namespace Engine.Player
@@ -138,7 +139,7 @@ namespace Engine.Player
             }
 
             SetUpDirectoryStructure();
-            PackageManifest pm = new PackageManifest();
+            IPackageManifest pm = null;
             try
             {
                 pm = Creator.ReadManifest(args[0]);
@@ -160,7 +161,7 @@ namespace Engine.Player
                 Console.WriteLine(e);
             }
 
-            string fileToStart = pm.Executable;
+            string startCommand = pm.StartCommand;
             DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
             p = new Process();
 
@@ -170,7 +171,7 @@ namespace Engine.Player
             psi.RedirectStandardOutput = true;
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
-            psi.Arguments = $"/C dotnet {fileToStart}";
+            psi.Arguments = "/C " + startCommand;
             psi.WorkingDirectory = Directory.GetCurrentDirectory() + "/game";
             p.StartInfo = psi;
             p.Start();
@@ -305,7 +306,7 @@ namespace Engine.Player
                 Console.WriteLine("Could not find file");
                 return;
             }
-            PackageManifest pm = Creator.ReadManifest(args[0]);
+            IPackageManifest pm = Creator.ReadManifest(args[0]);
             Console.WriteLine(pm);
         }
 
@@ -442,7 +443,7 @@ namespace Engine.Player
         {
             try
             {
-                PackageManifest pm = Creator.ReadManifest(path);
+                IPackageManifest pm = Creator.ReadManifest(path);
                 if (!engineversions.Contains(pm.Version))
                 {
                     Console.WriteLine("Adding Engine: " + pm);
@@ -463,10 +464,10 @@ namespace Engine.Player
             return File.Exists("engine/" + version + ".engine");
         }
 
-        private static void LoadGame(string gamePath, PackageManifest pm)
+        private static void LoadGame(string gamePath, IPackageManifest pm)
         {
             //Load Game
-            Creator.UnpackPackage(gamePath, "_game", pm.PackageVersion);
+            Creator.UnpackPackage(gamePath, "_game");
             string[] files = Directory.GetFiles("_game", "*", SearchOption.AllDirectories);
             foreach (string file in files)
             {
@@ -514,7 +515,7 @@ namespace Engine.Player
 
 
             Console.WriteLine("Loading Engine Version: " + version);
-            ZipFile.ExtractToDirectory(filePath, "game");
+            Creator.UnpackPackage(filePath, "game");
         }
 
         private static bool IsVersionURLCorrect(string version)
@@ -530,7 +531,7 @@ namespace Engine.Player
                 response = (HttpWebResponse)request.GetResponse();
                 ret = true;
             }
-            catch (WebException ex)
+            catch (Exception)
             {
                 ret = false;
             }

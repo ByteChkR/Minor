@@ -176,10 +176,29 @@ namespace Engine.BuildTools.Builder
                             packagerVersion = info.GetValues("--packager-version")[0];
                         }
 
+                        string startArg = projectName + ".dll";
+                        if (packagerVersion == "v2")
+                        {
+                            if (!info.HasValueFlag("--set-start-args"))
+                            {
+                                Console.WriteLine("Warning. no startup arguments specifed!");
+                                startArg = "dotnet " + projectName + ".dll";
+                            }
+                            else
+                            {
+                                string[] a = info.GetValues("--set-start-args").ToArray();
+                                startArg = a[0];
+                                for (int i = 1; i < a.Length; i++)
+                                {
+                                    startArg += " " + a[i];
+                                }
+                            }
+                        }
+
                         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                         string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
                             bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly);
-                        Creator.CreateGamePackage(projectName, projectName + ".dll", outputFolder + "/" + projectName + ".game", buildOutput, files,
+                        Creator.CreateGamePackage(projectName, startArg, outputFolder + "/" + projectName + ".game", buildOutput, files,
                             fvi.FileVersion, packagerVersion);
                     }
                 }

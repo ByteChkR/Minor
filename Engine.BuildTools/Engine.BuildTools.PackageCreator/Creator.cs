@@ -8,7 +8,9 @@ using System.Linq;
 using System.Reflection;
 using System.Xml.Serialization;
 using Engine.BuildTools.PackageCreator.Versions;
+using Engine.BuildTools.PackageCreator.Versions.Legacy;
 using Engine.BuildTools.PackageCreator.Versions.v1;
+using Engine.BuildTools.PackageCreator.Versions.v2;
 
 namespace Engine.BuildTools.PackageCreator
 {
@@ -17,36 +19,42 @@ namespace Engine.BuildTools.PackageCreator
         public const string DEFAULT_VERSION = "v1";
         private static Dictionary<string, IPackageVersion> _packageVersions = new Dictionary<string, IPackageVersion>
         {
-            { "legacy", new Legacy() },
-            { "v1", new Version1() }
+            { "legacy", new LegacyVersion() },
+            { "v1", new Version1() },
+            {"v2", new Version2() }
         };
-        public static PackageManifest ReadManifest(string path)
+        public static IPackageManifest ReadManifest(string path)
         {
             ZipArchive archive = ZipFile.OpenRead(path);
             foreach (KeyValuePair<string, IPackageVersion> packageVersion in _packageVersions)
             {
-                for (int i = 0; i < archive.Entries.Count; i++)
+                if (packageVersion.Value.IsVersion(path))
                 {
-                    if (archive.Entries[i].FullName == packageVersion.Value.ManifestPath)
-                    {
-                        archive.Dispose();
-                        return packageVersion.Value.GetPackageManifest(path);
-                    }
+                    archive.Dispose();
+                    return packageVersion.Value.GetPackageManifest(path);
                 }
             }
             throw new IOException("The file is not a supported format.");
         }
 
-        public static PackageManifest ReadManifest(Stream s)
+        private static string GetPackageVersion(string path)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
-            return (PackageManifest)xs.Deserialize(s);
+            ZipArchive archive = ZipFile.OpenRead(path);
+            foreach (KeyValuePair<string, IPackageVersion> packageVersion in _packageVersions)
+            {
+                if (packageVersion.Value.IsVersion(path))
+                {
+                    archive.Dispose();
+                    return packageVersion.Key;
+                }
+            }
+
+            return "unknown";
         }
 
-        public static void WriteManifest(Stream s, object o)
+        public static void WriteManifest(Stream s, IPackageManifest o)
         {
-            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
-            xs.Serialize(s, o);
+            _packageVersions[o.PackageVersion].WriteManifest(s, o);
         }
 
         public static void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version, string packageVersion = DEFAULT_VERSION)
@@ -56,12 +64,12 @@ namespace Engine.BuildTools.PackageCreator
 
         public static void CreateEnginePackage(string outputFile, string workingDir, string[] files, string packageVersion = DEFAULT_VERSION)
         {
-            _packageVersions[packageVersion].CreateEnginePackage( outputFile, workingDir, files);
+            _packageVersions[packageVersion].CreateEnginePackage(outputFile, workingDir, files);
         }
 
-        public static void UnpackPackage(string file, string outPutDir, string packageVersion = DEFAULT_VERSION)
+        public static void UnpackPackage(string file, string outPutDir)
         {
-            _packageVersions[packageVersion].UnpackPackage(file, outPutDir);
+            _packageVersions[GetPackageVersion(file)].UnpackPackage(file, outPutDir);
         }
 
         public static string GetEngineVersion(string workingDir)
