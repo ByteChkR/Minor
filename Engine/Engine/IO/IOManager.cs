@@ -24,6 +24,19 @@ namespace Engine.IO
             return isFile || isManifest;
         }
 
+        public static string[] ReadAllLines(string path)
+        {
+            return ReadAllText(path).Split('\n');
+        }
+
+        public static string ReadAllText(string path)
+        {
+            TextReader tr = new StreamReader(GetStream(path));
+            string ret = tr.ReadToEnd();
+            tr.Close();
+            return ret;
+        }
+
         public static string[] GetFiles(string foldername, string searchPattern)
         {
             bool folderExists = FolderExists(foldername);

@@ -32,6 +32,7 @@ namespace Engine.DataTypes
         private bool _disposed;
 
         private bool _dontDispose;
+        private long bytes;
 
         /// <summary>
         /// Convenient Wrapper to query the texture width
@@ -66,8 +67,9 @@ namespace Engine.DataTypes
         /// Internal Constructor to Create a Texture Object from a GL Texture Handle
         /// </summary>
         /// <param name="textureId"></param>
-        internal Texture(int textureId)
+        internal Texture(int textureId, long bytes)
         {
+            this.bytes = bytes;
             TextureId = textureId;
         }
 
@@ -79,7 +81,7 @@ namespace Engine.DataTypes
         /// <returns>A Copy of this Mesh Object</returns>
         public Texture Copy()
         {
-            return new Texture(TextureId)
+            return new Texture(TextureId, bytes)
             {
                 _dontDispose = true
             };
@@ -95,6 +97,7 @@ namespace Engine.DataTypes
                 return;
             }
 
+            EngineStatisticsManager.GLObjectDestroyed(bytes);
             _disposed = true;
             GL.DeleteTexture(TextureId);
         }

@@ -2,6 +2,7 @@
 
 using System;
 using System.Runtime.InteropServices;
+using Engine.Debug;
 using Engine.OpenCL.DotNetCore.Interop;
 using Engine.OpenCL.DotNetCore.Interop.Memory;
 
@@ -20,10 +21,13 @@ namespace Engine.OpenCL.DotNetCore.Memory
         /// Initializes a new <see cref="MemoryObject"/> instance.
         /// </summary>
         /// <param name="handle">The handle to the OpenCL memory object.</param>
-        internal MemoryObject(IntPtr handle)
+        internal MemoryObject(IntPtr handle, long bytes)
             : base(handle)
         {
+            this.bytes = bytes;
         }
+
+        private long bytes;
 
         #endregion
 
@@ -127,6 +131,7 @@ namespace Engine.OpenCL.DotNetCore.Memory
             // Checks if the memory object has already been disposed of, if not, then the memory object is disposed of
             if (!IsDisposed)
             {
+                EngineStatisticsManager.CLObjectDestroyed(bytes);
                 MemoryNativeApi.ReleaseMemoryObject(Handle);
             }
 

@@ -7,11 +7,22 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Debug
 {
+    public class GraphLayout
+    {
+        public string Key;
+        public Vector2 Maximum;
+        public Vector2 Minimum;
+        public int MaxPoints;
+    }
+
     /// <summary>
     /// Graph Drawing Component
     /// </summary>
     public class GraphDrawingComponent : UIElement
     {
+        //This as data object for how the graph should be oriented
+        private GraphLayout _currentLayout;
+
         /// <summary>
         /// Backing field of the graph data
         /// </summary>

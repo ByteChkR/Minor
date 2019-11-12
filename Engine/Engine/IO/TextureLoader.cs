@@ -38,8 +38,9 @@ namespace Engine.IO
 
             DefaultTexParameter();
             GL.BindTexture(TextureTarget.Texture2D, 0);
-            return new Texture(texID);
-            ;
+            long bytes = width * height * 4;
+            EngineStatisticsManager.GLObjectCreated(bytes);
+            return new Texture(texID, bytes); ;
         }
 
         /// <summary>
@@ -95,10 +96,10 @@ namespace Engine.IO
         /// </summary>
         /// <param name="tex">Input Texture</param>
         /// <returns>CL Buffer Object containing the image data</returns>
-        public static MemoryBuffer TextureToMemoryBuffer(CLAPI instance,Texture tex)
+        public static MemoryBuffer TextureToMemoryBuffer(CLAPI instance, Texture tex)
         {
             byte[] buffer = TextureToByteArray(tex);
-            return CLAPI.CreateBuffer(instance,buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            return CLAPI.CreateBuffer(instance, buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
         }
 
         /// <summary>

@@ -17,8 +17,8 @@ namespace Engine.OpenCL.DotNetCore.Memory
         /// Initializes a new <see cref="Buffer"/> instance.
         /// </summary>
         /// <param name="handle">The handle to the OpenCL memory buffer.</param>
-        public MemoryBuffer(IntPtr handle)
-            : base(handle)
+        public MemoryBuffer(IntPtr handle, long bytes)
+            : base(handle, bytes)
         {
         }
 

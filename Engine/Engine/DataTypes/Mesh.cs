@@ -44,12 +44,14 @@ namespace Engine.DataTypes
         /// </summary>
         public readonly int DrawCount;
 
+        private readonly long bytes;
 
         /// <summary>
         /// Internal Constructor to create a Mesh Data object.
         /// </summary>
-        internal Mesh(int ebo, int vbo, int vao, int drawCount)
+        internal Mesh(int ebo, int vbo, int vao, int drawCount, long bytes)
         {
+            this.bytes = bytes;
             _ebo = ebo;
             _vbo = vbo;
             _vao = vao;
@@ -64,7 +66,7 @@ namespace Engine.DataTypes
         /// <returns>A Copy of this Mesh Object</returns>
         public Mesh Copy()
         {
-            return new Mesh(_ebo, _vbo, _vao, DrawCount)
+            return new Mesh(_ebo, _vbo, _vao, DrawCount, bytes)
             {
                 _dontDispose = true
             };
@@ -80,7 +82,7 @@ namespace Engine.DataTypes
             {
                 return;
             }
-
+            EngineStatisticsManager.GLObjectDestroyed(bytes);
             _disposed = true;
             GL.DeleteBuffer(_ebo);
             GL.DeleteBuffer(_vbo);

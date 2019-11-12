@@ -319,6 +319,8 @@ namespace Engine.Core
             MemoryTracer.NextStage("Physics Update");
             PhysicsEngine.Update((float)e.Time);
 
+            EngineStatisticsManager.Update((float)e.Time);
+
             MemoryTracer.NextStage("ThreadManager Update");
             ThreadManager.CheckManagerStates();
 
@@ -373,7 +375,7 @@ namespace Engine.Core
         /// </summary>
         /// <param name="o"></param>
         /// <param name="e"></param>
-        private void OnRender(object o, EventArgs e)
+        private void OnRender(object o, FrameEventArgs e)
         {
             RenderFrameCounter++;
 
@@ -386,6 +388,8 @@ namespace Engine.Core
             MemoryTracer.NextStage("Swapping Window Buffers");
 
             Window.SwapBuffers();
+
+            EngineStatisticsManager.Render((float)e.Time);
 
             MemoryTracer.ReturnFromSubStage();
         }

@@ -58,9 +58,15 @@ namespace Engine.IO
         /// <returns></returns>
         internal static List<Mesh> LoadModel(Stream stream, string hint = "", string path = "")
         {
+
+            return LoadAssimpScene(LoadInternalAssimpScene(stream, hint), path);
+        }
+
+        internal static Scene LoadInternalAssimpScene(Stream s, string hint = "")
+        {
             AssimpContext context = new AssimpContext();
             context.SetConfig(new NormalSmoothingAngleConfig(66));
-            return LoadAssimpScene(context.ImportFileFromStream(stream, hint), path);
+            return context.ImportFileFromStream(s, hint);
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace Engine.IO
             if (!IOManager.Exists(path))
             {
                 Logger.Crash(new InvalidFolderPathException(path), true);
-                return new List<Mesh> { DefaultFilepaths.DefaultMesh};
+                return new List<Mesh> { DefaultFilepaths.DefaultMesh };
             }
 
             return LoadModel(IOManager.GetStream(path), Path.GetExtension(path), path);
@@ -85,7 +91,7 @@ namespace Engine.IO
         /// <param name="s">The scene</param>
         /// <param name="path">Path to the object that was loaded by assimp</param>
         /// <returns></returns>
-        private static List<Mesh> LoadAssimpScene(Scene s, string path)
+        internal static List<Mesh> LoadAssimpScene(Scene s, string path)
         {
             if (s == null || (s.SceneFlags & SceneFlags.Incomplete) != 0 || s.RootNode == null)
             {
@@ -185,7 +191,7 @@ namespace Engine.IO
             for (int i = 0; i < mesh.FaceCount; i++)
             {
                 Face f = mesh.Faces[i];
-                indices.AddRange(f.Indices.Select(x => (uint) x));
+                indices.AddRange(f.Indices.Select(x => (uint)x));
             }
 
 
@@ -200,8 +206,10 @@ namespace Engine.IO
 
             setupMesh(indices.ToArray(), vertices.ToArray(), out int vao, out int vbo, out int ebo);
 
+            long bytes = indices.Count * sizeof(uint) + vertices.Count * Vertex.VERTEX_BYTE_SIZE;
 
-            return new Mesh(ebo, vbo, vao, indices.Count);
+            EngineStatisticsManager.GLObjectCreated(bytes);
+            return new Mesh(ebo, vbo, vao, indices.Count, bytes);
         }
 
         /// <summary>
@@ -225,6 +233,7 @@ namespace Engine.IO
         /// <param name="ebo">element buffer object</param>
         internal static void setupMesh(uint[] indices, Vertex[] vertices, out int vao, out int vbo, out int ebo)
         {
+            
             GL.GenVertexArrays(1, out vao);
             GL.GenBuffers(1, out vbo);
             GL.GenBuffers(1, out ebo);
@@ -234,13 +243,13 @@ namespace Engine.IO
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * Vertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers

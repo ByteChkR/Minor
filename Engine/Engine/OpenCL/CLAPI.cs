@@ -161,7 +161,8 @@ namespace Engine.OpenCL
             return null;
 #else
 
-
+            long bytes = data.Length * Marshal.SizeOf(data[0]);
+            EngineStatisticsManager.CLObjectCreated(bytes);
             MemoryBuffer mb =
                 instance._context.CreateBuffer((MemoryFlag)(flags | MemoryFlag.CopyHostPointer), t, data);
 
@@ -349,7 +350,7 @@ namespace Engine.OpenCL
         /// <typeparam name="T">Type of the values</typeparam>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="values">The values to be written to the buffer</param>
-        public static void WriteToBuffer<T>(CLAPI instance,MemoryBuffer buf, T[] values) where T : struct
+        public static void WriteToBuffer<T>(CLAPI instance, MemoryBuffer buf, T[] values) where T : struct
         {
 #if NO_CL
             Logger.Log("Writing To Buffer..", DebugChannel.Warning, 10);
