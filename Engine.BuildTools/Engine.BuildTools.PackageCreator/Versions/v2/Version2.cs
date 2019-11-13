@@ -50,11 +50,13 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
 
         private string ComputeHash(Stream content)
         {
+            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
             return Convert.ToBase64String(md5.ComputeHash(content));
         }
 
         private string ComputeHash(byte[] content)
         {
+            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
             return Convert.ToBase64String(md5.ComputeHash(content));
         }
 
