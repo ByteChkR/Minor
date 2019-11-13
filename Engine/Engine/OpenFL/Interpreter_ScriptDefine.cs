@@ -18,7 +18,8 @@ namespace Engine.OpenFL
         /// Define handler that loads defined scripts
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private static void DefineScript(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines, int width, int height,
+        private static void DefineScript(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines,
+            int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)
         {
             if (arg.Length < 2)
@@ -74,7 +75,8 @@ namespace Engine.OpenFL
                             new InvalidFilePathException(fn)),
                         true);
 
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);

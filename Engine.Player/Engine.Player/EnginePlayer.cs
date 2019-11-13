@@ -121,7 +121,6 @@ namespace Engine.Player
                 //Add Hidden flag    
                 _di.Attributes |= FileAttributes.Hidden;
             }
-
         }
 
         private static string GetEnginePath(string version)
@@ -149,6 +148,7 @@ namespace Engine.Player
                 {
                     path = EngineVersion;
                 }
+
                 LoadEngine(path);
                 //Load Game
                 LoadGame(args[0], pm);
@@ -207,9 +207,8 @@ namespace Engine.Player
                 Console.WriteLine("Could not load Engine Path");
                 return;
             }
+
             AddEngine(args[0]);
-
-
         }
 
         private static void UpdateEngineCommand(StartupInfo info, string[] args)
@@ -234,6 +233,7 @@ namespace Engine.Player
         {
             DontReadLine = true;
         }
+
         private static void SetDefaultProgramCommand(StartupInfo info, string[] args)
         {
             try
@@ -301,11 +301,12 @@ namespace Engine.Player
 
         private static void ListPackageInfo(StartupInfo info, string[] args)
         {
-            if (args.Length == 0 || !File.Exists(args[0]) || (!args[0].EndsWith(".game") && !args[0].EndsWith(".engine")))
+            if (args.Length == 0 || !File.Exists(args[0]) || !args[0].EndsWith(".game") && !args[0].EndsWith(".engine"))
             {
                 Console.WriteLine("Could not find file");
                 return;
             }
+
             IPackageManifest pm = Creator.ReadManifest(args[0]);
             Console.WriteLine(pm);
         }
@@ -327,7 +328,8 @@ namespace Engine.Player
                 Directory.CreateDirectory("engine");
             }
 
-            engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly).Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
+            engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly)
+                .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 
 
             Command def = Command.CreateCommand(DefaultCommand, "--run");
@@ -351,7 +353,6 @@ namespace Engine.Player
 
             CommandRunner.RunCommands(args);
             ReadLine();
-
         }
 
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs e)
@@ -428,7 +429,7 @@ namespace Engine.Player
             {
                 int d = e.ProgressPercentage - last;
                 float m = Console.WindowWidth / 100f;
-                int fd = (int)(m * d);
+                int fd = (int) (m * d);
                 for (int j = 0; j < fd; j++)
                 {
                     Console.Write("#");
@@ -488,6 +489,7 @@ namespace Engine.Player
                 Console.WriteLine("Engine is Contained in Game Package. Using engine from there.");
                 return;
             }
+
             string filePath = version;
             if (version.StartsWith("path:") && File.Exists(version.Remove(0, 5)))
             {
@@ -508,10 +510,7 @@ namespace Engine.Player
                 }
 
                 filePath = GetEnginePath(version);
-
             }
-
-
 
 
             Console.WriteLine("Loading Engine Version: " + version);
@@ -522,13 +521,13 @@ namespace Engine.Player
         {
             string addr = $"http://213.109.162.193/apps/EngineArchives/{version}.engine";
             HttpWebResponse response = null;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(addr);
+            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(addr);
             request.Method = "HEAD";
 
             bool ret = false;
             try
             {
-                response = (HttpWebResponse)request.GetResponse();
+                response = (HttpWebResponse) request.GetResponse();
                 ret = true;
             }
             catch (Exception)

@@ -29,7 +29,7 @@ namespace Engine.Demo.scenes
             int hybLayer = LayerManager.RegisterLayer("hybrid", new Layer(1, 1 | 2));
             int physicsLayer = LayerManager.RegisterLayer("physics", new Layer(1, 1));
             LayerManager.DisableCollisions(rayLayer, physicsLayer);
-            
+
             BasicCamera mainCamera =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
@@ -85,7 +85,8 @@ namespace Engine.Demo.scenes
                     {
                         nodes[i, j].Walkable = false;
                         nodes[i, j].Owner
-                            .AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Prefabs.Sphere, blockTex, 1));
+                            .AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader,
+                                Prefabs.Sphere, blockTex, 1));
                     }
 
                     nodes[i, j].Owner.Scale *= 0.3f;
@@ -128,7 +129,9 @@ namespace Engine.Demo.scenes
 
             for (int i = 0; i < path.Count; i++)
             {
-                path[i].Owner.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Prefabs.Cube, tex, 1));
+                path[i].Owner
+                    .AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Prefabs.Cube, tex,
+                        1));
             }
 
             startNode.Owner.GetComponent<LitMeshRendererComponent>().Textures[0] = beginTex;

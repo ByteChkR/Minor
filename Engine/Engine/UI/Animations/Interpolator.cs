@@ -8,10 +8,11 @@ namespace Engine.UI.Animations
     public abstract class Interpolator
     {
         private List<Interpolator> SubInterpolators = new List<Interpolator>();
+
         public delegate float Interpolate(float input);
+
         public Interpolator()
         {
-
         }
 
         protected Interpolator(List<Interpolator> subInterpolators)

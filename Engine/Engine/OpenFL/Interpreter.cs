@@ -91,7 +91,8 @@ namespace Engine.OpenFL
         /// Delegate that is used to import defines
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private delegate void DefineHandler(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines, int width,
+        private delegate void DefineHandler(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines,
+            int width,
             int height, int depth, int channelCount, KernelDatabase kernelDb);
 
         /// <summary>
@@ -223,7 +224,8 @@ namespace Engine.OpenFL
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(CLAPI instance, string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
+        public Interpreter(CLAPI instance, string file, MemoryBuffer input, int width, int height, int depth,
+            int channelCount,
             KernelDatabase kernelDB,
             bool ignoreDebug)
         {
@@ -256,7 +258,8 @@ namespace Engine.OpenFL
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
         /// <param name="ignoreDebug">a flag to ignore the brk statement</param>
-        public Interpreter(CLAPI instance, string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height,
+        public Interpreter(CLAPI instance, string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input,
+            int width, int height,
             int depth,
             int channelCount, string kernelDBFolder,
             bool ignoreDebug) : this(instance, file, input, width, height, depth, channelCount,
@@ -275,7 +278,8 @@ namespace Engine.OpenFL
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDBFolder">The folder the kernel data base will be initialized in</param>
-        public Interpreter(CLAPI instance, string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input, int width, int height,
+        public Interpreter(CLAPI instance, string file, OpenCL.TypeEnums.DataTypes genType, MemoryBuffer input,
+            int width, int height,
             int depth,
             int channelCount, string kernelDBFolder) : this(instance, file, input, width, height, depth, channelCount,
             new KernelDatabase(instance, kernelDBFolder, genType), false)
@@ -292,7 +296,8 @@ namespace Engine.OpenFL
         /// <param name="depth">Depth of the input buffer</param>
         /// <param name="channelCount">The Channel Count</param>
         /// <param name="kernelDB">The Kernel DB that will be used</param>
-        public Interpreter(CLAPI instance, string file, MemoryBuffer input, int width, int height, int depth, int channelCount,
+        public Interpreter(CLAPI instance, string file, MemoryBuffer input, int width, int height, int depth,
+            int channelCount,
             KernelDatabase kernelDB) : this(instance, file, input, width, height, depth, channelCount, kernelDB, false)
         {
         }
@@ -389,7 +394,8 @@ namespace Engine.OpenFL
 
             //Parsing File
             _currentBuffer.SetKey(InputBufferName);
-            Data = LoadScriptData(_instance, file, _currentBuffer, width, height, depth, channelCount, _kernelDb, _flFunctions);
+            Data = LoadScriptData(_instance, file, _currentBuffer, width, height, depth, channelCount, _kernelDb,
+                _flFunctions);
 
             Reset();
         }
@@ -483,8 +489,8 @@ namespace Engine.OpenFL
                 if (data.Arguments[_currentWord].argType == FLArgumentType.Function)
                 {
                     bool KeepBuffer = data.InstructionType == FLInstructionType.FLFunction &&
-                                      ((FLFunctionInfo)data.Instruction).LeaveStack;
-                    JumpTo((int)data.Arguments[_currentWord].value, KeepBuffer);
+                                      ((FLFunctionInfo) data.Instruction).LeaveStack;
+                    JumpTo((int) data.Arguments[_currentWord].value, KeepBuffer);
                     ret = LineAnalysisResult.Jump; //We Jumped to another point in the code.
                     _currentArgStack
                         .Push(null); //Push null to signal the interpreter that he returned before assigning the right value.
@@ -502,11 +508,11 @@ namespace Engine.OpenFL
             {
                 if (data.InstructionType == FLInstructionType.FLFunction)
                 {
-                    ((FLFunctionInfo)data.Instruction).Run();
+                    ((FLFunctionInfo) data.Instruction).Run();
                     return LineAnalysisResult.IncreasePC;
                 }
 
-                CLKernel K = (CLKernel)data.Instruction;
+                CLKernel K = (CLKernel) data.Instruction;
                 if (K == null || data.Arguments.Count != K.Parameter.Count - FLHeaderArgCount)
                 {
                     Logger.Crash(
@@ -589,14 +595,15 @@ namespace Engine.OpenFL
 #if NO_CL
             int size = 1;
 #else
-            int size = (int)_currentBuffer.Buffer.Size;
+            int size = (int) _currentBuffer.Buffer.Size;
 #endif
 
 
             if (!leaveBuffer)
             {
                 _currentBuffer =
-                    new CLBufferInfo(CLAPI.CreateEmpty<byte>(_instance, size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer),
+                    new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(_instance, size, MemoryFlag.ReadWrite | MemoryFlag.CopyHostPointer),
                         true);
                 _currentBuffer.SetKey("Internal_JumpBuffer_Stack_Index" + (_jumpStack.Count - 1));
             }
@@ -680,7 +687,8 @@ namespace Engine.OpenFL
             return lines;
         }
 
-        private static FLScriptData LoadScriptData(CLAPI instance, string file, CLBufferInfo inBuffer, int width, int height, int depth,
+        private static FLScriptData LoadScriptData(CLAPI instance, string file, CLBufferInfo inBuffer, int width,
+            int height, int depth,
             int channelCount,
             KernelDatabase db, Dictionary<string, FLFunctionInfo> funcs)
         {
@@ -694,11 +702,13 @@ namespace Engine.OpenFL
 
             Logger.Log("Parsing Texture Defines for File: " + file,
                 DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
-            ParseDefines(instance, DefineKey, DefineTexture, ret.Source, ret.Defines, width, height, depth, channelCount, db);
+            ParseDefines(instance, DefineKey, DefineTexture, ret.Source, ret.Defines, width, height, depth,
+                channelCount, db);
 
             Logger.Log("Parsing Script Defines for File: " + file,
                 DebugChannel.Log | DebugChannel.OpenFL | DebugChannel.IO, 5);
-            ParseDefines(instance, ScriptDefineKey, DefineScript, ret.Source, ret.Defines, width, height, depth, channelCount,
+            ParseDefines(instance, ScriptDefineKey, DefineScript, ret.Source, ret.Defines, width, height, depth,
+                channelCount,
                 db);
 
             Logger.Log("Parsing JumpLocations for File: " + file,
@@ -730,12 +740,12 @@ namespace Engine.OpenFL
 
             if (code.Length == 0)
             {
-                return new FLInstructionData() { InstructionType = FLInstructionType.NOP };
+                return new FLInstructionData() {InstructionType = FLInstructionType.NOP};
             }
 
             if (code[0].Trim().EndsWith(FunctionNamePostfix))
             {
-                return new FLInstructionData() { InstructionType = FLInstructionType.FunctionHeader };
+                return new FLInstructionData() {InstructionType = FLInstructionType.FunctionHeader};
             }
 
             bool isBakedFunction = funcs.ContainsKey(code[0]);
@@ -758,20 +768,20 @@ namespace Engine.OpenFL
             {
                 if (defines.ContainsKey(code[i]))
                 {
-                    argData.Add(new FLArgumentData() { value = defines[code[i]], argType = FLArgumentType.Buffer });
+                    argData.Add(new FLArgumentData() {value = defines[code[i]], argType = FLArgumentType.Buffer});
                 }
                 else if (jumpLocations.ContainsKey(code[i]))
                 {
                     argData.Add(
-                        new FLArgumentData() { value = jumpLocations[code[i]], argType = FLArgumentType.Function });
+                        new FLArgumentData() {value = jumpLocations[code[i]], argType = FLArgumentType.Function});
                 }
                 else if (decimal.TryParse(code[i], NumberStyles.Any, NumberParsingHelper, out decimal valResult))
                 {
-                    argData.Add(new FLArgumentData() { value = valResult, argType = FLArgumentType.Number });
+                    argData.Add(new FLArgumentData() {value = valResult, argType = FLArgumentType.Number});
                 }
                 else
                 {
-                    argData.Add(new FLArgumentData() { value = null, argType = FLArgumentType.Unknown });
+                    argData.Add(new FLArgumentData() {value = null, argType = FLArgumentType.Unknown});
 #if !NO_CL
                     Logger.Crash(new FLInvalidArgumentType(code[i], "Number or Defined buffer."), true);
 #endif
@@ -817,7 +827,7 @@ namespace Engine.OpenFL
         /// <returns>The active buffer read from the gpu and placed in cpu memory</returns>
         public T[] GetResult<T>() where T : struct
         {
-            return CLAPI.ReadBuffer<T>(_instance, _currentBuffer.Buffer, (int)_currentBuffer.Buffer.Size);
+            return CLAPI.ReadBuffer<T>(_instance, _currentBuffer.Buffer, (int) _currentBuffer.Buffer.Size);
         }
 
         /// <summary>

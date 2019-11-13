@@ -9,16 +9,20 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
     public class PackageManifest : IPackageManifest
     {
         public string PackageVersion { get; set; } = "unnamed";
-        public  string Title { get; set; } = "unnamed";
-        public  string Version { get; set; }
+        public string Title { get; set; } = "unnamed";
+        public string Version { get; set; }
         public string Executable { get; set; }
+
         [XmlIgnore]
-        public  string StartCommand
+        public string StartCommand
         {
-            get { return $"dotnet {Executable}"; }
-            set { throw new NotSupportedException("Changing the Start Command is a V2 Feature"); }
+            get => $"dotnet {Executable}";
+            set => throw new NotSupportedException("Changing the Start Command is a V2 Feature");
         }
-        public PackageManifest() { }
+
+        public PackageManifest()
+        {
+        }
 
         public PackageManifest(string title, string executable, string version)
         {

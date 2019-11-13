@@ -6,7 +6,6 @@ using OpenTK;
 
 namespace Engine.UI.Animations
 {
-
     public abstract class Animation
     {
         public AnimationTrigger Trigger { get; set; }
@@ -30,13 +29,16 @@ namespace Engine.UI.Animations
 
         public void Update(UIElement target, float deltaTime)
         {
-            if (!isLoaded && frameCount > 1) //To Prevent loading lag we will call OnLoad event after 2 frames. To ensure that delta time is stable
+            if (!isLoaded && frameCount > 1
+            ) //To Prevent loading lag we will call OnLoad event after 2 frames. To ensure that delta time is stable
             {
                 isLoaded = true;
                 CheckState(AnimationTrigger.OnLoad);
             }
             else if (!isLoaded)
+            {
                 frameCount++;
+            }
 
             if (IsAnimating)
             {
@@ -49,6 +51,5 @@ namespace Engine.UI.Animations
                 }
             }
         }
-
     }
 }

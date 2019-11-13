@@ -11,12 +11,13 @@ namespace Engine.BuildTools.Common
             string[] a = args.Split(new[] {' ', '\n'});
             RunActionAsCommand(action, a, onEnd);
         }
+
         public static void RunActionAsCommand(Action<string[]> action, string[] args, Action<Exception> onEnd)
         {
             Thread t = new Thread(() => RunThread(action, args, onEnd));
             t.Start();
         }
-        
+
 
         private static void RunThread(Action<string[]> action, string[] args, Action<Exception> onEnd)
         {
@@ -29,13 +30,15 @@ namespace Engine.BuildTools.Common
             {
                 onEnd?.Invoke(e);
             }
-
-
         }
 
         public static int RunProcess(string file, string args, Action waitAction, Action<string> writeLine = null)
         {
-            if (writeLine == null) writeLine = Console.WriteLine;
+            if (writeLine == null)
+            {
+                writeLine = Console.WriteLine;
+            }
+
             ProcessStartInfo psi = new ProcessStartInfo(file, args)
             {
                 RedirectStandardOutput = true,
@@ -46,7 +49,7 @@ namespace Engine.BuildTools.Common
 
             writeLine(file + " " + args);
 
-            Process p = new Process { StartInfo = psi };
+            Process p = new Process {StartInfo = psi};
 
             p.Start();
 

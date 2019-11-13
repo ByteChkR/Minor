@@ -69,10 +69,15 @@ namespace Engine.OpenCL
 
         public void Dispose()
         {
-            if (this == _instance) _instance = null;
+            if (this == _instance)
+            {
+                _instance = null;
+            }
+
             _context.Dispose();
             _commandQueue.Dispose();
         }
+
         /// <summary>
         /// Reinitializes the CL API
         /// Used by The unit tests when requireing actual CL api calls(e.g. not in NO_CL mode)
@@ -101,6 +106,7 @@ namespace Engine.OpenCL
         }
 
         #region Instance Functions
+
         internal static Program CreateCLProgramFromSource(CLAPI instance, string source)
         {
 #if NO_CL
@@ -118,6 +124,7 @@ namespace Engine.OpenCL
             }
 #endif
         }
+
         internal static Program CreateCLProgramFromSource(CLAPI instance, string[] source)
         {
 #if NO_CL
@@ -150,7 +157,7 @@ namespace Engine.OpenCL
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer<T>(CLAPI instance, T[] data, MemoryFlag flags) where T : struct
         {
-            object[] arr = Array.ConvertAll(data, x => (object)x);
+            object[] arr = Array.ConvertAll(data, x => (object) x);
             return CreateBuffer(instance, arr, typeof(T), flags);
         }
 
@@ -164,11 +171,10 @@ namespace Engine.OpenCL
             long bytes = data.Length * Marshal.SizeOf(data[0]);
             EngineStatisticsManager.CLObjectCreated(bytes);
             MemoryBuffer mb =
-                instance._context.CreateBuffer((MemoryFlag)(flags | MemoryFlag.CopyHostPointer), t, data);
+                instance._context.CreateBuffer((MemoryFlag) (flags | MemoryFlag.CopyHostPointer), t, data);
 
             return mb;
 #endif
-
         }
 
         /// <summary>
@@ -218,10 +224,6 @@ namespace Engine.OpenCL
             return program.CreateKernel(name);
 #endif
         }
-
-
-
-
 
 
         /// <summary>
@@ -309,7 +311,8 @@ namespace Engine.OpenCL
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
         /// <param name="uniform">Should every channel receive the same value on the same pixel?</param>
-        public static void WriteRandom<T>(CLAPI instance, MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels, bool uniform)
+        public static void WriteRandom<T>(CLAPI instance, MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels,
+            bool uniform)
             where T : struct
         {
 #if NO_CL
@@ -318,7 +321,7 @@ namespace Engine.OpenCL
 
             MemoryBuffer buffer = buf;
 
-            T[] data = instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int)buffer.Size);
+            T[] data = instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int) buffer.Size);
 #endif
 
             WriteRandom(data, enabledChannels, rnd, uniform);
@@ -385,7 +388,8 @@ namespace Engine.OpenCL
         /// <param name="genTypeMaxVal">The max valuee of the generic type that is used.(byte = 255)</param>
         /// <param name="enabledChannels">The enabled channels for the kernel</param>
         /// <param name="channelCount">The amount of active channels.</param>
-        public static void Run(CLAPI instance, CLKernel kernel, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,
+        public static void Run(CLAPI instance, CLKernel kernel, MemoryBuffer image, int3 dimensions,
+            float genTypeMaxVal,
             MemoryBuffer enabledChannels,
             int channelCount)
         {

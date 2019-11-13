@@ -4,11 +4,10 @@ using System.Xml;
 
 namespace VersionHelper
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            
             XmlDocument doc = new XmlDocument();
             doc.Load(args[0]);
             XmlNode[] nodes = FindVersionTags(doc);

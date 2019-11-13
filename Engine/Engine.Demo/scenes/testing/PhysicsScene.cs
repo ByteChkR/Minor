@@ -50,7 +50,8 @@ namespace Engine.Demo.scenes.testing
             Collider c = new Collider(new Box(Vector3.Zero, 1000, 100, 1000), "physics");
             ground.AddComponent(c);
             MeshRendererComponent mrc =
-                new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Box, TextureLoader.ColorToTexture(Color.Blue), 1);
+                new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Box,
+                    TextureLoader.ColorToTexture(Color.Blue), 1);
             ground.AddComponent(mrc);
             Add(ground);
             ground.Scale = new Vector3(500, 50, 500);
@@ -62,7 +63,8 @@ namespace Engine.Demo.scenes.testing
                 Collider objColl = new Collider(new Sphere(Vector3.Zero, 1), "physics");
                 obj.AddComponent(objColl);
                 LitMeshRendererComponent objMrc =
-                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Sphere, TextureLoader.ColorToTexture(Color.Green), 1);
+                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Sphere,
+                        TextureLoader.ColorToTexture(Color.Green), 1);
                 obj.AddComponent(objMrc);
                 Add(obj);
                 obj.LocalPosition = new Vector3((float) (Rnd.NextDouble() * 100 - 50),
@@ -77,7 +79,8 @@ namespace Engine.Demo.scenes.testing
                     "physics");
                 obj.AddComponent(objColl);
                 LitMeshRendererComponent objMrc =
-                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Box, TextureLoader.ColorToTexture(Color.Red), 1);
+                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Box,
+                        TextureLoader.ColorToTexture(Color.Red), 1);
                 obj.AddComponent(objMrc);
                 Add(obj);
                 obj.LocalPosition = new Vector3((float) (Rnd.NextDouble() * 100 - 50),

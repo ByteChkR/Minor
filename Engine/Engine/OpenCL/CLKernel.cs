@@ -67,7 +67,7 @@ namespace Engine.OpenCL
         /// <param name="value">The value to be set</param>
         public void SetArg(string parameterName, object value)
         {
-            SetArg(Parameter[parameterName].Id, Parameter[parameterName].CastToType(_instance,value));
+            SetArg(Parameter[parameterName].Id, Parameter[parameterName].CastToType(_instance, value));
         }
 
         /// <summary>

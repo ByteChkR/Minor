@@ -23,7 +23,6 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             {
                 Console.WriteLine("Checksum verification failed!");
             }
-
         }
 
         private bool CheckHashes(PackageManifest pm, string outPutDir)
@@ -33,7 +32,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             bool isCorrect = true;
             for (int j = 0; j < files.Length; j++)
             {
-                string f = (new Uri(Path.GetFullPath(files[j])).MakeRelativeUri(outDir)).ToString();
+                string f = new Uri(Path.GetFullPath(files[j])).MakeRelativeUri(outDir).ToString();
                 for (int i = 0; i < pm.Hashes.Count; i++)
                 {
                     if (f == pm.Hashes[i].File)
@@ -92,11 +91,13 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
 
             return v == PackageVersion;
         }
+
         public void WriteManifest(Stream s, IPackageManifest manifest)
         {
             XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
             xs.Serialize(s, manifest);
         }
+
         public IPackageManifest GetPackageManifest(string path)
         {
             ZipArchive pack = ZipFile.OpenRead(path);

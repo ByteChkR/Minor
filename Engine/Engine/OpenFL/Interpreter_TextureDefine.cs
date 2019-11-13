@@ -21,7 +21,8 @@ namespace Engine.OpenFL
         /// Define handler that loads defined textures
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private static void DefineTexture(CLAPI instance,string[] arg, Dictionary<string, CLBufferInfo> defines, int width, int height,
+        private static void DefineTexture(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines,
+            int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)
         {
             if (arg.Length < 2)
@@ -73,7 +74,7 @@ namespace Engine.OpenFL
                 if (File.Exists(fn))
                 {
                     Bitmap bmp = new Bitmap((Bitmap) System.Drawing.Image.FromFile(fn), width, height);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(instance,bmp,
+                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(instance, bmp,
                         MemoryFlag.CopyHostPointer | flags), true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -83,7 +84,8 @@ namespace Engine.OpenFL
                     Logger.Crash(
                         new FLInvalidFunctionUseException(DefineKey, "Invalid Filepath",
                             new InvalidFilePathException(fn)), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance,InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -91,8 +93,9 @@ namespace Engine.OpenFL
             }
             else if (filename == "rnd")
             {
-                MemoryBuffer buf = CLAPI.CreateEmpty<byte>(instance,InputBufferSize, flags | MemoryFlag.CopyHostPointer);
-                CLAPI.WriteRandom(instance,buf, randombytesource, activeChannels, false);
+                MemoryBuffer buf =
+                    CLAPI.CreateEmpty<byte>(instance, InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                CLAPI.WriteRandom(instance, buf, randombytesource, activeChannels, false);
 
                 CLBufferInfo info = new CLBufferInfo(buf, true);
                 info.SetKey(varname);
@@ -100,7 +103,8 @@ namespace Engine.OpenFL
             }
             else if (filename == "urnd")
             {
-                MemoryBuffer buf = CLAPI.CreateEmpty<byte>(instance, InputBufferSize, flags | MemoryFlag.CopyHostPointer);
+                MemoryBuffer buf =
+                    CLAPI.CreateEmpty<byte>(instance, InputBufferSize, flags | MemoryFlag.CopyHostPointer);
                 CLAPI.WriteRandom(instance, buf, randombytesource, activeChannels, true);
 
                 CLBufferInfo info = new CLBufferInfo(buf, true);
@@ -119,7 +123,8 @@ namespace Engine.OpenFL
                 if (args.Length < 10)
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -127,7 +132,8 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[2], out int n))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -135,7 +141,8 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[3], out int widh))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -143,7 +150,8 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[4], out int heigt))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -151,7 +159,8 @@ namespace Engine.OpenFL
                 else if (!bool.TryParse(args[5], out bool periodicInput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -159,7 +168,8 @@ namespace Engine.OpenFL
                 else if (!bool.TryParse(args[6], out bool periodicOutput))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -167,7 +177,8 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[7], out int symmetry))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -175,7 +186,8 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[8], out int ground))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -183,7 +195,8 @@ namespace Engine.OpenFL
                 else if (!int.TryParse(args[9], out int limit))
                 {
                     Logger.Crash(new FLInvalidFunctionUseException("wfc", "Invalid WFC Define statement"), true);
-                    CLBufferInfo info = new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    CLBufferInfo info = new CLBufferInfo(
+                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -221,7 +234,8 @@ namespace Engine.OpenFL
                             new FLInvalidFunctionUseException("wfc", "Invalid WFC Image statement",
                                 new InvalidFilePathException(fn)), true);
                         CLBufferInfo info =
-                            new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite), true);
+                            new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                                true);
                         info.SetKey(varname);
                         defines.Add(varname, info);
                     }

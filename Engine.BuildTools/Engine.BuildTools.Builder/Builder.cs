@@ -13,21 +13,21 @@ namespace Engine.BuildTools.Builder
 {
     public static class Builder
     {
-
         private static BuildSettings LoadSettings(string path)
         {
             XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
             FileStream fs = new FileStream(path, FileMode.Open);
-            BuildSettings bs = (BuildSettings)xs.Deserialize(fs);
+            BuildSettings bs = (BuildSettings) xs.Deserialize(fs);
             fs.Close();
             return bs;
         }
 
         public static void RunCommand(string args)
         {
-            string[] a = args.Split(new[] { ' ', '\n' });
+            string[] a = args.Split(new[] {' ', '\n'});
             RunCommand(a);
         }
+
         public static void RunCommand(string[] args)
         {
             StartupInfo info = new StartupInfo(args);
@@ -198,7 +198,8 @@ namespace Engine.BuildTools.Builder
                         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                         string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
                             bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly);
-                        Creator.CreateGamePackage(projectName, startArg, outputFolder + "/" + projectName + ".game", buildOutput, files,
+                        Creator.CreateGamePackage(projectName, startArg, outputFolder + "/" + projectName + ".game",
+                            buildOutput, files,
                             fvi.FileVersion, packagerVersion);
                     }
                 }
@@ -241,10 +242,18 @@ namespace Engine.BuildTools.Builder
         private static void BuildProject(string filepath)
         {
             int ret = BuildCommand(filepath);
-            if (ret != 0) throw new Exception("Compilation Command Failed.");
+            if (ret != 0)
+            {
+                throw new Exception("Compilation Command Failed.");
+            }
+
             ret = PublishCommand(filepath);
-            if (ret != 0) throw new Exception("Publish Command Failed.");
+            if (ret != 0)
+            {
+                throw new Exception("Publish Command Failed.");
+            }
         }
+
         private static int BuildCommand(string filepath)
         {
             return ProcessUtils.RunProcess("cmd.exe", $"/C dotnet build {filepath} -c Release",
@@ -295,6 +304,7 @@ namespace Engine.BuildTools.Builder
                     Console.WriteLine("Deleting publish folder to prevent copying the wrong assemblies.");
                     Directory.Delete(folder + "/obj", true);
                 }
+
                 string packagerVersion = Creator.DEFAULT_VERSION;
                 if (info.HasValueFlag("--packager-version"))
                 {
@@ -347,7 +357,8 @@ namespace Engine.BuildTools.Builder
 
                 string[] files = ParseFileList(fileList, Path.GetFullPath(args[0]), args[1], bool.Parse(args[3]),
                     bool.Parse(args[4]));
-                Creator.CreateGamePackage(args[1], args[1] + ".dll", Path.GetFullPath(args[2]), Path.GetFullPath(args[0]), files, fvi.FileVersion, packagerVersion);
+                Creator.CreateGamePackage(args[1], args[1] + ".dll", Path.GetFullPath(args[2]),
+                    Path.GetFullPath(args[0]), files, fvi.FileVersion, packagerVersion);
             }
             catch (Exception e)
             {
@@ -454,7 +465,7 @@ namespace Engine.BuildTools.Builder
 
         public static string[] CreateFileList(string path, string searchPatterns, char separator = '+')
         {
-            string[] patterns = searchPatterns.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+            string[] patterns = searchPatterns.Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries);
             List<string> ret = new List<string>();
             for (int i = 0; i < patterns.Length; i++)
             {
@@ -464,20 +475,22 @@ namespace Engine.BuildTools.Builder
             return ret.ToArray();
         }
 
-        public static AssetPackageInfo CreatePackageInfo(string memoryFileExts, string unpackedFileExts, char separator = '+')
+        public static AssetPackageInfo CreatePackageInfo(string memoryFileExts, string unpackedFileExts,
+            char separator = '+')
         {
             AssetPackageInfo info = new AssetPackageInfo();
-            List<string> unpackExts = unpackedFileExts.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            List<string> unpackExts = unpackedFileExts.Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() {packageType = AssetPackageType.Unpack});
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
+                info.FileInfos.Add(packExts[i], new AssetFileInfo() {packageType = AssetPackageType.Memory});
             }
 
             return info;
@@ -565,6 +578,5 @@ namespace Engine.BuildTools.Builder
 
             return files;
         }
-
     }
 }

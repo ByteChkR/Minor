@@ -95,10 +95,10 @@ namespace Engine.Rendering
                 tr.Close();
                 for (int i = 0; i < lines.Length; i++)
                 {
-                    src += lines[i]+'\n';
+                    src += lines[i] + '\n';
                 }
+
                 ret.Add(subshader.Key, src);
-                
             }
 
             return TryCreateFromSource(ret, out program);

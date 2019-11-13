@@ -19,7 +19,10 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
         public string Version { get; set; }
         public string StartCommand { get; set; }
         public List<HashEntry> Hashes { get; set; }
-        public PackageManifest() { }
+
+        public PackageManifest()
+        {
+        }
 
         public PackageManifest(string title, string startCommand, string version, List<HashEntry> entries)
         {

@@ -113,6 +113,7 @@ namespace Engine.Core
         {
             Window.MakeCurrent();
         }
+
         public void SetSettings(EngineSettings settings)
         {
             Settings = settings;
@@ -317,9 +318,9 @@ namespace Engine.Core
             CurrentScene?.Update((float) e.Time);
 
             MemoryTracer.NextStage("Physics Update");
-            PhysicsEngine.Update((float)e.Time);
+            PhysicsEngine.Update((float) e.Time);
 
-            EngineStatisticsManager.Update((float)e.Time);
+            EngineStatisticsManager.Update((float) e.Time);
 
             MemoryTracer.NextStage("ThreadManager Update");
             ThreadManager.CheckManagerStates();
@@ -389,7 +390,7 @@ namespace Engine.Core
 
             Window.SwapBuffers();
 
-            EngineStatisticsManager.Render((float)e.Time);
+            EngineStatisticsManager.Render((float) e.Time);
 
             MemoryTracer.ReturnFromSubStage();
         }

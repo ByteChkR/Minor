@@ -8,6 +8,7 @@ namespace Engine.UI.Animations
     {
         protected List<UIElement> Targets = new List<UIElement>();
         private List<Animation> animators = new List<Animation>();
+
         public Animator(List<Animation> animatorList, params UIElement[] targets)
         {
             animators = animatorList;
@@ -21,6 +22,7 @@ namespace Engine.UI.Animations
                 AddTarget(elements[i]);
             }
         }
+
         public void AddTarget(UIElement target)
         {
             Targets.Add(target);
@@ -44,9 +46,9 @@ namespace Engine.UI.Animations
                     btn.RemoveFromHoverEvent(OnHover);
                     btn.RemoveFromLeaveEvent(OnLeave);
                 }
+
                 Targets.Remove(target);
             }
-
         }
 
         private void OnClick(Button target)
@@ -64,6 +66,7 @@ namespace Engine.UI.Animations
                 ad.CheckState(AnimationTrigger.OnEnter);
             }
         }
+
         private void OnHover(Button target)
         {
             foreach (Animation ad in animators)
@@ -71,6 +74,7 @@ namespace Engine.UI.Animations
                 ad.CheckState(AnimationTrigger.OnHover);
             }
         }
+
         private void OnLeave(Button target)
         {
             foreach (Animation ad in animators)

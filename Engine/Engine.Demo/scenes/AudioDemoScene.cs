@@ -113,7 +113,6 @@ namespace Engine.Demo.scenes
         {
             Mesh bgBox = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
-            
 
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);

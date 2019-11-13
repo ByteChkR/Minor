@@ -74,7 +74,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             // Allocates enough memory for the return value and retrieves it
             byte[] output = new byte[returnValueSize.ToUInt32()];
             result = ProgramsNativeApi.GetProgramBuildInformation(program, device.Handle, programBuildInformation,
-                new UIntPtr((uint)output.Length), output, out returnValueSize);
+                new UIntPtr((uint) output.Length), output, out returnValueSize);
             if (result != Result.Success)
             {
                 throw new OpenClException("The program build information could not be retrieved.", result);
@@ -102,7 +102,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             // Loads the program from the specified source string
             Result result;
             IntPtr[] sourceList = sources.Select(source => Marshal.StringToHGlobalAnsi(source)).ToArray();
-            uint[] sourceLengths = sources.Select(source => (uint)source.Length).ToArray();
+            uint[] sourceLengths = sources.Select(source => (uint) source.Length).ToArray();
             IntPtr programPointer =
                 ProgramsNativeApi.CreateProgramWithSource(Handle, 1, sourceList, sourceLengths, out result);
 
@@ -183,7 +183,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             // Loads the program from the specified source string
             Result result;
             IntPtr[] sourceList = sources.Select(source => Marshal.StringToHGlobalAnsi(source)).ToArray();
-            uint[] sourceLengths = sources.Select(source => (uint)source.Length).ToArray();
+            uint[] sourceLengths = sources.Select(source => (uint) source.Length).ToArray();
             IntPtr programPointer =
                 ProgramsNativeApi.CreateProgramWithSource(Handle, 1, sourceList, sourceLengths, out result);
 
@@ -238,7 +238,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created program.</returns>
         public Task<Program> CreateAndBuildProgramFromStringAsync(string source)
         {
-            return CreateAndBuildProgramFromStringAsync(new List<string> { source });
+            return CreateAndBuildProgramFromStringAsync(new List<string> {source});
         }
 
         /// <summary>
@@ -249,7 +249,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created program.</returns>
         public Program CreateAndBuildProgramFromString(string source)
         {
-            return CreateAndBuildProgramFromString(new List<string> { source });
+            return CreateAndBuildProgramFromString(new List<string> {source});
         }
 
         /// <summary>
@@ -304,7 +304,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created program.</returns>
         public Task<Program> CreateAndBuildProgramFromStreamAsync(Stream stream)
         {
-            return CreateAndBuildProgramFromStreamAsync(new List<Stream> { stream });
+            return CreateAndBuildProgramFromStreamAsync(new List<Stream> {stream});
         }
 
         /// <summary>
@@ -315,7 +315,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created program.</returns>
         public Program CreateAndBuildProgramFromStream(Stream stream)
         {
-            return CreateAndBuildProgramFromStream(new List<Stream> { stream });
+            return CreateAndBuildProgramFromStream(new List<Stream> {stream});
         }
 
         /// <summary>
@@ -363,7 +363,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created program.</returns>
         public Task<Program> CreateAndBuildProgramFromFileAsync(string fileName)
         {
-            return CreateAndBuildProgramFromFileAsync(new List<string> { fileName });
+            return CreateAndBuildProgramFromFileAsync(new List<string> {fileName});
         }
 
         /// <summary>
@@ -374,7 +374,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created program.</returns>
         public Program CreateAndBuildProgramFromFile(string fileName)
         {
-            return CreateAndBuildProgramFromFile(new List<string> { fileName });
+            return CreateAndBuildProgramFromFile(new List<string> {fileName});
         }
 
         /// <summary>
@@ -388,8 +388,8 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         {
             // Creates a new memory buffer of the specified size and with the specified memory flags
             Result result;
-            IntPtr memoryBufferPointer = MemoryNativeApi.CreateBuffer(Handle, (Interop.Memory.MemoryFlag)memoryFlags,
-                new UIntPtr((uint)size), IntPtr.Zero, out result);
+            IntPtr memoryBufferPointer = MemoryNativeApi.CreateBuffer(Handle, (Interop.Memory.MemoryFlag) memoryFlags,
+                new UIntPtr((uint) size), IntPtr.Zero, out result);
 
             // Checks if the creation of the memory buffer was successful, if not, then an exception is thrown
             if (result != Result.Success)
@@ -398,7 +398,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             }
 
             // Creates the memory buffer from the pointer to the memory buffer and returns it
-            return new MemoryBuffer(memoryBufferPointer, (long)size);
+            return new MemoryBuffer(memoryBufferPointer, (long) size);
         }
 
         //public MemoryBuffer CreateFromGLTexture2D(Memory.MemoryFlag memoryFlags,uint gltex_target, int miplevel, uint gltex)
@@ -444,7 +444,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
                 // Creates a new memory buffer for the specified value
                 Result result;
                 IntPtr memoryBufferPointer = MemoryNativeApi.CreateBuffer(Handle,
-                    (Interop.Memory.MemoryFlag)memoryFlags, new UIntPtr((uint)size), hostBufferPointer, out result);
+                    (Interop.Memory.MemoryFlag) memoryFlags, new UIntPtr((uint) size), hostBufferPointer, out result);
 
                 // Checks if the creation of the memory buffer was successful, if not, then an exception is thrown
                 if (result != Result.Success)
@@ -453,7 +453,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
                 }
 
                 // Creates the memory buffer from the pointer to the memory buffer and returns it
-                return new MemoryBuffer(memoryBufferPointer, (long)size);
+                return new MemoryBuffer(memoryBufferPointer, (long) size);
             }
             finally
             {
@@ -475,7 +475,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created memory buffer.</returns>
         public MemoryBuffer CreateBuffer<T>(Memory.MemoryFlag memoryFlags, T[] value) where T : struct
         {
-            return CreateBuffer(memoryFlags, typeof(T), Array.ConvertAll(value, x => (object)x));
+            return CreateBuffer(memoryFlags, typeof(T), Array.ConvertAll(value, x => (object) x));
             //// Tries to create the memory buffer, if anything goes wrong, then it is crucial to free the allocated memory
             //IntPtr hostBufferPointer = IntPtr.Zero;
             //try
@@ -517,7 +517,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <returns>Returns the created context.</returns>
         public static Context CreateContext(Device device)
         {
-            return CreateContext(new List<Device> { device });
+            return CreateContext(new List<Device> {device});
         }
 
         /// <summary>
@@ -530,7 +530,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         {
             // Creates the new context for the specified devices
             Result result;
-            IntPtr contextPointer = ContextsNativeApi.CreateContext(IntPtr.Zero, (uint)devices.Count(),
+            IntPtr contextPointer = ContextsNativeApi.CreateContext(IntPtr.Zero, (uint) devices.Count(),
                 devices.Select(device => device.Handle).ToArray(), IntPtr.Zero, IntPtr.Zero, out result);
 
             // Checks if the device creation was successful, if not, then an exception is thrown

@@ -9,7 +9,9 @@ namespace Engine.BuildTools.PackageCreator.Versions
 
         bool IsVersion(string path);
 
-        void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version);
+        void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir,
+            string[] files, string version);
+
         void CreateEnginePackage(string outputFile, string workingDir, string[] files, string version = null);
 
         void UnpackPackage(string file, string outPutDir);

@@ -82,6 +82,7 @@ namespace Engine.DataTypes
             {
                 return;
             }
+
             EngineStatisticsManager.GLObjectDestroyed(bytes);
             _disposed = true;
             GL.DeleteBuffer(_ebo);

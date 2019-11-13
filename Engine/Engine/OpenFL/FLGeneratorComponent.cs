@@ -21,6 +21,7 @@ namespace Engine.OpenFL
         private bool MultiThread = false;
 
         private FLRunner _flRunner;
+
         /// <summary>
         /// List of previews
         /// </summary>
@@ -64,10 +65,11 @@ namespace Engine.OpenFL
         /// <param name="previews">List of previews</param>
         /// <param name="width">Width/height of the output texture</param>
         /// <param name="height"></param>
-        public FLGeneratorComponent(List<LitMeshRendererComponent> previews, int width, int height, bool multiThread = false)
+        public FLGeneratorComponent(List<LitMeshRendererComponent> previews, int width, int height,
+            bool multiThread = false)
         {
             MultiThread = multiThread;
-            
+
             this.width = width;
             this.height = height;
             _previews = previews;
@@ -138,7 +140,6 @@ namespace Engine.OpenFL
             }
 
 
-
             DebugConsoleComponent console =
                 Owner.Scene.GetChildWithName("Console").GetComponent<DebugConsoleComponent>();
             console?.AddCommand("runfl", cmd_RunFL);
@@ -170,6 +171,7 @@ namespace Engine.OpenFL
             {
                 return;
             }
+
             Dictionary<string, Texture> otherTex = new Dictionary<string, Texture>();
             otherTex.Add("result", Tex);
             otherTex.Add("specularOut", SpecularTex);
@@ -180,8 +182,6 @@ namespace Engine.OpenFL
 
             _flRunner.Enqueue(exec);
             _flRunner.Process();
-            
-
         }
 
         /// <summary>
@@ -222,14 +222,14 @@ namespace Engine.OpenFL
                 res = _stepInterpreter.GetActiveBufferInternal().Buffer;
             }
 
-            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(CLAPI.MainThread, res, (int)res.Size), (int)Tex.Width,
-                (int)Tex.Height);
+            TextureLoader.Update(Tex, CLAPI.ReadBuffer<byte>(CLAPI.MainThread, res, (int) res.Size), (int) Tex.Width,
+                (int) Tex.Height);
             CLBufferInfo spe = _stepInterpreter.GetBuffer("specularOut");
             if (spe != null)
             {
-                byte[] spec = CLAPI.ReadBuffer<byte>(CLAPI.MainThread, spe.Buffer, (int)spe.Buffer.Size);
+                byte[] spec = CLAPI.ReadBuffer<byte>(CLAPI.MainThread, spe.Buffer, (int) spe.Buffer.Size);
 
-                TextureLoader.Update(SpecularTex, spec, (int)SpecularTex.Width, (int)SpecularTex.Height);
+                TextureLoader.Update(SpecularTex, spec, (int) SpecularTex.Width, (int) SpecularTex.Height);
             }
 
 
@@ -253,7 +253,8 @@ namespace Engine.OpenFL
 
             _isInStepMode = true;
             _stepInterpreter?.ReleaseResources();
-            _stepInterpreter = new Interpreter(CLAPI.MainThread, args[0], OpenCL.TypeEnums.DataTypes.UCHAR1, buf, (int)Tex.Width, (int)Tex.Height, 1, 4,"assets/kernel/", false);
+            _stepInterpreter = new Interpreter(CLAPI.MainThread, args[0], OpenCL.TypeEnums.DataTypes.UCHAR1, buf,
+                (int) Tex.Width, (int) Tex.Height, 1, 4, "assets/kernel/", false);
 
             return "Debugging Session Started.";
         }

@@ -14,14 +14,14 @@ namespace Engine.DataTypes
         public void AddVertex(Vertex v)
         {
             Vertices.Add(v);
-            indices.Add((uint)indices.Count);
+            indices.Add((uint) indices.Count);
         }
 
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            AddVertex(new Vertex() { Position = v1 });
-            AddVertex(new Vertex() { Position = v2 });
-            AddVertex(new Vertex() { Position = v3 });
+            AddVertex(new Vertex() {Position = v1});
+            AddVertex(new Vertex() {Position = v2});
+            AddVertex(new Vertex() {Position = v3});
         }
 
 

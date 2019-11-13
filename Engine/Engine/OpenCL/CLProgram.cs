@@ -37,7 +37,7 @@ namespace Engine.OpenCL
         /// Public constructor
         /// </summary>
         /// <param name="FilePath">The FilePath where the source is located</param>
-        public CLProgram(CLAPI instance,string FilePath, string genType)
+        public CLProgram(CLAPI instance, string FilePath, string genType)
         {
             _filePath = FilePath;
             _genType = genType;
@@ -114,11 +114,11 @@ namespace Engine.OpenCL
                     source.Substring(kernelNameIndex, source.Length - kernelNameIndex).IndexOf(')') + 1);
                 if (k == null)
                 {
-                    ContainedKernels.Add(kernelName, new CLKernel(instance,null, kernelName, parameter));
+                    ContainedKernels.Add(kernelName, new CLKernel(instance, null, kernelName, parameter));
                 }
                 else
                 {
-                    ContainedKernels.Add(kernelName, new CLKernel(instance,k, kernelName, parameter));
+                    ContainedKernels.Add(kernelName, new CLKernel(instance, k, kernelName, parameter));
                 }
             }
         }

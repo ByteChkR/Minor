@@ -17,12 +17,14 @@ namespace Engine.BuildTools.PackageCreator
     public static class Creator
     {
         public const string DEFAULT_VERSION = "v1";
+
         private static Dictionary<string, IPackageVersion> _packageVersions = new Dictionary<string, IPackageVersion>
         {
-            { "legacy", new LegacyVersion() },
-            { "v1", new Version1() },
-            {"v2", new Version2() }
+            {"legacy", new LegacyVersion()},
+            {"v1", new Version1()},
+            {"v2", new Version2()}
         };
+
         public static IPackageManifest ReadManifest(string path)
         {
             ZipArchive archive = ZipFile.OpenRead(path);
@@ -34,6 +36,7 @@ namespace Engine.BuildTools.PackageCreator
                     return packageVersion.Value.GetPackageManifest(path);
                 }
             }
+
             throw new IOException("The file is not a supported format.");
         }
 
@@ -57,12 +60,15 @@ namespace Engine.BuildTools.PackageCreator
             _packageVersions[o.PackageVersion].WriteManifest(s, o);
         }
 
-        public static void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version, string packageVersion = DEFAULT_VERSION)
+        public static void CreateGamePackage(string packageName, string executable, string outputFile,
+            string workingDir, string[] files, string version, string packageVersion = DEFAULT_VERSION)
         {
-            _packageVersions[packageVersion].CreateGamePackage(packageName, executable, outputFile, workingDir, files, version);
+            _packageVersions[packageVersion]
+                .CreateGamePackage(packageName, executable, outputFile, workingDir, files, version);
         }
 
-        public static void CreateEnginePackage(string outputFile, string workingDir, string[] files, string packageVersion = DEFAULT_VERSION)
+        public static void CreateEnginePackage(string outputFile, string workingDir, string[] files,
+            string packageVersion = DEFAULT_VERSION)
         {
             _packageVersions[packageVersion].CreateEnginePackage(outputFile, workingDir, files);
         }

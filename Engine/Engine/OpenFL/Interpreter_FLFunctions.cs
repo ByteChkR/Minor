@@ -77,7 +77,7 @@ namespace Engine.OpenFL
             {
                 Logger.Log("Updating Channel Buffer", DebugChannel.Log | DebugChannel.OpenFL, 6);
                 _activeChannels = temp;
-                CLAPI.WriteToBuffer(_instance,_activeChannelBuffer, _activeChannels);
+                CLAPI.WriteToBuffer(_instance, _activeChannelBuffer, _activeChannels);
             }
             else
             {

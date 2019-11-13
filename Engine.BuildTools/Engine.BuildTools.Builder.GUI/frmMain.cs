@@ -35,12 +35,15 @@ namespace Engine.BuildTools.Builder.GUI
             xs = new XmlSerializer(typeof(BuildSettings));
 
             CheckForIllegalCrossThreadCalls = false;
-
         }
 
         private void Initialize()
         {
-            if (Initialized) return;
+            if (Initialized)
+            {
+                return;
+            }
+
             Initialized = true;
             SetGlobalState(true);
             InvalidateFormOnContent();
@@ -90,7 +93,10 @@ namespace Engine.BuildTools.Builder.GUI
 
         private void SaveFile(string fileName)
         {
-            if (File.Exists(fileName)) File.Delete(fileName);
+            if (File.Exists(fileName))
+            {
+                File.Delete(fileName);
+            }
 
             bs.MemoryFiles = PackFileString(rtbPackedExts.Text);
             bs.UnpackFiles = PackFileString(rtbUnpackedExts.Text);
@@ -126,7 +132,7 @@ namespace Engine.BuildTools.Builder.GUI
                 try
                 {
                     FileStream fs = new FileStream(ofdBuildSettings.FileName, FileMode.Open);
-                    bs = (BuildSettings)xs.Deserialize(fs);
+                    bs = (BuildSettings) xs.Deserialize(fs);
                     fs.Close();
                     SaveLocation = ofdBuildSettings.FileName;
                     Initialize();
@@ -149,7 +155,11 @@ namespace Engine.BuildTools.Builder.GUI
             {
                 try
                 {
-                    if (File.Exists(sfdBuildSettings.FileName)) File.Delete(sfdBuildSettings.FileName);
+                    if (File.Exists(sfdBuildSettings.FileName))
+                    {
+                        File.Delete(sfdBuildSettings.FileName);
+                    }
+
                     FileStream fs = new FileStream(sfdBuildSettings.FileName, FileMode.Create);
                     xs.Serialize(fs, new BuildSettings());
                     fs.Close();
@@ -177,15 +187,15 @@ namespace Engine.BuildTools.Builder.GUI
 
         private void InvalidateFormOnContent()
         {
-            if (cbBuildFlags.SelectedIndex == (int)BuildType.PackOnly)
+            if (cbBuildFlags.SelectedIndex == (int) BuildType.PackOnly)
             {
                 nudPackageSize.Enabled = true;
             }
-            else if (cbBuildFlags.SelectedIndex == (int)BuildType.Embed)
+            else if (cbBuildFlags.SelectedIndex == (int) BuildType.Embed)
             {
                 nudPackageSize.Enabled = false;
             }
-            else if (cbBuildFlags.SelectedIndex == (int)BuildType.PackEmbed)
+            else if (cbBuildFlags.SelectedIndex == (int) BuildType.PackEmbed)
             {
                 nudPackageSize.Enabled = true;
             }
@@ -206,7 +216,7 @@ namespace Engine.BuildTools.Builder.GUI
             tbProject.Text = bs.Project;
             tbOutputFolder.Text = bs.OutputFolder;
             tbEngineProject.Text = bs.EngineProject;
-            cbBuildFlags.SelectedIndex = (int)bs.BuildFlags;
+            cbBuildFlags.SelectedIndex = (int) bs.BuildFlags;
             cbCreateEnginePackage.Checked = bs.CreateEnginePackage;
             cbCreateGamePackage.Checked = bs.CreateGamePackage;
             rtbPackedExts.Text = UnpackFileString(bs.MemoryFiles);
@@ -220,7 +230,7 @@ namespace Engine.BuildTools.Builder.GUI
             bs.Project = tbProject.Text;
             bs.OutputFolder = tbOutputFolder.Text;
             bs.EngineProject = tbEngineProject.Text;
-            bs.BuildFlags = (BuildType)cbBuildFlags.SelectedIndex;
+            bs.BuildFlags = (BuildType) cbBuildFlags.SelectedIndex;
             bs.CreateEnginePackage = cbCreateEnginePackage.Checked;
             bs.CreateGamePackage = cbCreateGamePackage.Checked;
             bs.MemoryFiles = PackFileString(rtbPackedExts.Text);
@@ -266,7 +276,7 @@ namespace Engine.BuildTools.Builder.GUI
 
         private string UnpackFileString(string fileExts)
         {
-            string[] r = fileExts.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] r = fileExts.Split(new[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
             StringBuilder sb = new StringBuilder("");
             for (int i = 0; i < r.Length; i++)
             {
@@ -278,7 +288,7 @@ namespace Engine.BuildTools.Builder.GUI
 
         private string PackFileString(string fileExts)
         {
-            string[] r = fileExts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] r = fileExts.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
             StringBuilder sb = new StringBuilder("");
 
             if (r.Length > 0)
@@ -375,8 +385,14 @@ namespace Engine.BuildTools.Builder.GUI
                 exists = FileExists(SaveLocation, tbFileList.Text);
             }
 
-            if (exists) tbFileList.BackColor = Color.Green;
-            else tbFileList.BackColor = Color.Red;
+            if (exists)
+            {
+                tbFileList.BackColor = Color.Green;
+            }
+            else
+            {
+                tbFileList.BackColor = Color.Red;
+            }
         }
 
         private void tbProject_TextChanged(object sender, EventArgs e)
@@ -387,8 +403,14 @@ namespace Engine.BuildTools.Builder.GUI
 
             exists = FileExists(SaveLocation, tbProject.Text);
 
-            if (exists) tbProject.BackColor = Color.Green;
-            else tbProject.BackColor = Color.Red;
+            if (exists)
+            {
+                tbProject.BackColor = Color.Green;
+            }
+            else
+            {
+                tbProject.BackColor = Color.Red;
+            }
         }
 
         private void tbAssetFolder_TextChanged(object sender, EventArgs e)
@@ -400,8 +422,14 @@ namespace Engine.BuildTools.Builder.GUI
             exists = DirectoryExists(SaveLocation, tbAssetFolder.Text);
 
 
-            if (exists) tbAssetFolder.BackColor = Color.Green;
-            else tbAssetFolder.BackColor = Color.Red;
+            if (exists)
+            {
+                tbAssetFolder.BackColor = Color.Green;
+            }
+            else
+            {
+                tbAssetFolder.BackColor = Color.Red;
+            }
         }
 
         private void tbOutputFolder_TextChanged(object sender, EventArgs e)
@@ -413,8 +441,14 @@ namespace Engine.BuildTools.Builder.GUI
             exists = DirectoryExists(SaveLocation, tbOutputFolder.Text);
 
 
-            if (exists) tbOutputFolder.BackColor = Color.Green;
-            else tbOutputFolder.BackColor = Color.Red;
+            if (exists)
+            {
+                tbOutputFolder.BackColor = Color.Green;
+            }
+            else
+            {
+                tbOutputFolder.BackColor = Color.Red;
+            }
         }
 
         private void tbEngineProject_TextChanged(object sender, EventArgs e)
@@ -426,8 +460,14 @@ namespace Engine.BuildTools.Builder.GUI
             exists = FileExists(SaveLocation, tbEngineProject.Text);
 
 
-            if (exists) tbEngineProject.BackColor = Color.Green;
-            else tbEngineProject.BackColor = Color.Red;
+            if (exists)
+            {
+                tbEngineProject.BackColor = Color.Green;
+            }
+            else
+            {
+                tbEngineProject.BackColor = Color.Red;
+            }
         }
 
         private void CreateEnginePackage(string engineProjectFile, string outputPath)
@@ -438,7 +478,8 @@ namespace Engine.BuildTools.Builder.GUI
             SetState(State.Busy);
 
             buildFailed = false;
-            ProcessUtils.RunActionAsCommand(BuildTools.Builder.Builder.RunCommand, $"{useExperimental} --create-engine-package {engineProjectFile} {outputPath}", EnginePackagerFinished);
+            ProcessUtils.RunActionAsCommand(Builder.RunCommand,
+                $"{useExperimental} --create-engine-package {engineProjectFile} {outputPath}", EnginePackagerFinished);
             //ProcessUtils.RunProcess("cmd.exe",
             //  $"/C dotnet Engine.BuildTools.Builder.dll {useExperimental} --create-engine-package {engineProjectFile} {outputPath}",
             //   Application.DoEvents, WriteOutput);
@@ -446,7 +487,9 @@ namespace Engine.BuildTools.Builder.GUI
 
         private enum State
         {
-            Idle, Busy, Error
+            Idle,
+            Busy,
+            Error
         }
 
         private void SetState(State state)
@@ -475,9 +518,21 @@ namespace Engine.BuildTools.Builder.GUI
 
         private string GetPackagerVersion()
         {
-            if (rbUseV1.Checked) return "v1";
-            if (rbUseV2.Checked) return "v2";
-            if (rbUseLegacy.Checked) return "legacy";
+            if (rbUseV1.Checked)
+            {
+                return "v1";
+            }
+
+            if (rbUseV2.Checked)
+            {
+                return "v2";
+            }
+
+            if (rbUseLegacy.Checked)
+            {
+                return "legacy";
+            }
+
             return "Unknown";
         }
 
@@ -499,21 +554,26 @@ namespace Engine.BuildTools.Builder.GUI
                 string args = tbStartCmd.Text.Replace("$ProjectName", Path.GetFileNameWithoutExtension(tbProject.Text));
                 versionSpecific += " --set-start-args " + args;
             }
+
             WriteOutput("Using packager version: " + GetPackagerVersion());
             buildFailed = false;
-            ProcessUtils.RunActionAsCommand(BuildTools.Builder.Builder.RunCommand, SaveLocation + " " + packagerVersion + versionSpecific, XMLBuildFinished);
+            ProcessUtils.RunActionAsCommand(Builder.RunCommand, SaveLocation + " " + packagerVersion + versionSpecific,
+                XMLBuildFinished);
             //Lib.Builder.RunCommand(SaveLocation + " " + useExperimental);
             //ProcessUtils.RunProcess("cmd.exe",
             //   "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents,
             //   WriteOutput);
-
         }
 
         private bool buildFailed = false;
 
         private void XMLBuildFinished(Exception ex)
         {
-            if (buildFailed) return;
+            if (buildFailed)
+            {
+                return;
+            }
+
             if (ex != null)
             {
                 buildFailed = true;
@@ -521,6 +581,7 @@ namespace Engine.BuildTools.Builder.GUI
                 SetState(State.Error);
                 return;
             }
+
             if (cbCreateEnginePackage.Checked)
             {
                 CreateEnginePackage($"{FullPath(SaveLocation, tbEngineProject.Text)}",
@@ -531,12 +592,15 @@ namespace Engine.BuildTools.Builder.GUI
                 SetState(State.Idle);
                 OpenBuildFolder();
             }
-
         }
 
         private void EnginePackagerFinished(Exception ex)
         {
-            if (buildFailed) return;
+            if (buildFailed)
+            {
+                return;
+            }
+
             if (ex != null)
             {
                 buildFailed = true;
@@ -557,7 +621,9 @@ namespace Engine.BuildTools.Builder.GUI
 
             string outputFile = $"{outputPath + "/" + Path.GetFileNameWithoutExtension(tbProject.Text)}.engine";
             if (!Directory.Exists(outputPath))
+            {
                 Directory.CreateDirectory(outputPath);
+            }
 
             CreateEnginePackage(FullPath(SaveLocation, tbEngineProject.Text), outputFile);
 
@@ -567,7 +633,9 @@ namespace Engine.BuildTools.Builder.GUI
         private void OpenBuildFolder()
         {
             if (DirectoryExists(SaveLocation, tbOutputFolder.Text))
+            {
                 Process.Start("explorer.exe", FullPath(SaveLocation, tbOutputFolder.Text));
+            }
         }
 
         private void rbUseV2_CheckedChanged(object sender, EventArgs e)

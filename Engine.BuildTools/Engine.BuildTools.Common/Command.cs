@@ -14,9 +14,14 @@ namespace Engine.BuildTools.Common
             CommandAction = action;
             CommandKeys = keys;
         }
+
         public static Command CreateCommand(Action<StartupInfo, string[]> action, params string[] keys)
         {
-            if(keys.Length == 0)return  new Command(action, new []{""});
+            if (keys.Length == 0)
+            {
+                return new Command(action, new[] {""});
+            }
+
             return new Command(action, keys);
         }
 

@@ -20,8 +20,6 @@ namespace Engine.DataTypes
     /// </summary>
     public class GameFont : IDisposable
     {
-        
-
         /// <summary>
         /// The Name of the Font. This is the key you can load Fonts by.
         /// </summary>

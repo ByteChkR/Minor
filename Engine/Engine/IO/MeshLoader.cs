@@ -58,7 +58,6 @@ namespace Engine.IO
         /// <returns></returns>
         internal static List<Mesh> LoadModel(Stream stream, string hint = "", string path = "")
         {
-
             return LoadAssimpScene(LoadInternalAssimpScene(stream, hint), path);
         }
 
@@ -79,7 +78,7 @@ namespace Engine.IO
             if (!IOManager.Exists(path))
             {
                 Logger.Crash(new InvalidFolderPathException(path), true);
-                return new List<Mesh> { DefaultFilepaths.DefaultMesh };
+                return new List<Mesh> {DefaultFilepaths.DefaultMesh};
             }
 
             return LoadModel(IOManager.GetStream(path), Path.GetExtension(path), path);
@@ -191,7 +190,7 @@ namespace Engine.IO
             for (int i = 0; i < mesh.FaceCount; i++)
             {
                 Face f = mesh.Faces[i];
-                indices.AddRange(f.Indices.Select(x => (uint)x));
+                indices.AddRange(f.Indices.Select(x => (uint) x));
             }
 
 
@@ -233,7 +232,6 @@ namespace Engine.IO
         /// <param name="ebo">element buffer object</param>
         internal static void setupMesh(uint[] indices, Vertex[] vertices, out int vao, out int vbo, out int ebo)
         {
-            
             GL.GenVertexArrays(1, out vao);
             GL.GenBuffers(1, out vbo);
             GL.GenBuffers(1, out ebo);
@@ -243,13 +241,13 @@ namespace Engine.IO
 
             //VBO
             GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vertex.VERTEX_BYTE_SIZE),
+            GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (vertices.Length * Vertex.VERTEX_BYTE_SIZE),
                 vertices, BufferUsageHint.StaticDraw);
 
             //EBO
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ebo);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr)(indices.Length * sizeof(uint)), indices,
+            GL.BufferData(BufferTarget.ElementArrayBuffer, (IntPtr) (indices.Length * sizeof(uint)), indices,
                 BufferUsageHint.StaticDraw);
 
             //Attribute Pointers

@@ -176,7 +176,6 @@ namespace Engine.Debug
         /// <returns>A gameobject ready to be added to the game</returns>
         public static GameObject CreateConsole()
         {
-
             GameObject obj = new GameObject("Console");
             GameObject _in = new GameObject("ConsoleInput");
             GameObject _out = new GameObject("ConsoleOutput");
@@ -204,31 +203,40 @@ namespace Engine.Debug
             bmp.SetPixel(0, 0, System.Drawing.Color.Black);
 
             UIImageRendererComponent _bgImage =
-                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f, DefaultFilepaths.DefaultUIImageShader);
+                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f,
+                    DefaultFilepaths.DefaultUIImageShader);
 
             UIImageRendererComponent _bgOutImage =
                 new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.4f,
                     DefaultFilepaths.DefaultUIImageShader);
 
 
-            UITextRendererComponent _tText = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
-            {
-                Text = "GameEngine Console:"
-            };
-            UITextRendererComponent _tHint = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
-            {
-                Text = "GameEngine Console:"
-            };
+            UITextRendererComponent _tText =
+                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUITextShader)
+                {
+                    Text = "GameEngine Console:"
+                };
+            UITextRendererComponent _tHint =
+                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUITextShader)
+                {
+                    Text = "GameEngine Console:"
+                };
 
-            UITextRendererComponent _tIn = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
-            {
-                Text = ""
-            };
+            UITextRendererComponent _tIn =
+                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUITextShader)
+                {
+                    Text = ""
+                };
 
-            UITextRendererComponent _tOut = new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f, DefaultFilepaths.DefaultUITextShader)
-            {
-                Text = "Console Initialized.."
-            };
+            UITextRendererComponent _tOut =
+                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUITextShader)
+                {
+                    Text = "Console Initialized.."
+                };
 
             GraphDrawingComponent _gDraw = new GraphDrawingComponent(DefaultFilepaths.DefaultUIGraphShader, false, 1f);
 

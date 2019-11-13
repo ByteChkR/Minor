@@ -15,6 +15,7 @@ namespace Engine.Core
     public class TaskReference<T>
     {
         public delegate T DelTask();
+
         private Action<T> OnFinish;
         private T _ret;
         private Thread t;
@@ -24,7 +25,6 @@ namespace Engine.Core
         {
             OnFinish = onFinish;
             t = new Thread(() => ThreadRun(task));
-
         }
 
         internal void RunTask()
@@ -34,9 +34,7 @@ namespace Engine.Core
 
         private void ThreadRun(DelTask task)
         {
-
             _ret = task.Invoke();
-
         }
 
         internal bool CheckState()
@@ -54,6 +52,7 @@ namespace Engine.Core
     {
         public List<TaskReference<T>> RunningTasks = new List<TaskReference<T>>();
         public Type type => typeof(T);
+
         public void RunTask(TaskReference<T> task)
         {
             RunningTasks.Add(task);
@@ -65,22 +64,26 @@ namespace Engine.Core
         {
             for (int i = RunningTasks.Count - 1; i >= 0; i--)
             {
-                if (RunningTasks[i].CheckState()) RunningTasks.RemoveAt(i);
+                if (RunningTasks[i].CheckState())
+                {
+                    RunningTasks.RemoveAt(i);
+                }
             }
 
             return RunningTasks.Count == 0;
         }
     }
+
     public static class ThreadManager
     {
+        private static List<IThreadManager> managers = new List<IThreadManager>();
 
-        static List<IThreadManager> managers = new List<IThreadManager>();
-        
         public static void RunTask<T>(TaskReference<T>.DelTask task, Action<T> onFinish)
         {
             ThreadManager<T> manager = GetManager<T>();
-            manager.RunTask(ThreadManager.CreateTask(task, onFinish));
+            manager.RunTask(CreateTask(task, onFinish));
         }
+
         public static void RunTask<T>(TaskReference<T> task)
         {
             ThreadManager<T> manager = GetManager<T>();
@@ -91,7 +94,10 @@ namespace Engine.Core
         {
             for (int i = managers.Count - 1; i >= 0; i--)
             {
-                if (managers[i].CheckStates()) managers.RemoveAt(i);
+                if (managers[i].CheckStates())
+                {
+                    managers.RemoveAt(i);
+                }
             }
         }
 
@@ -116,11 +122,10 @@ namespace Engine.Core
         {
             managers.Remove(manager);
         }
+
         public static TaskReference<T> CreateTask<T>(TaskReference<T>.DelTask task, Action<T> onFinish)
         {
             return new TaskReference<T>(task, onFinish);
         }
-
-
     }
 }

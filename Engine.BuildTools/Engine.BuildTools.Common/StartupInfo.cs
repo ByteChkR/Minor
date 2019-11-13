@@ -60,7 +60,7 @@ namespace Engine.BuildTools.Builder
                 return File.ReadAllLines(arg.Remove(0, 1)).ToList();
             }
 
-            return new List<string>() { arg };
+            return new List<string>() {arg};
         }
     }
 }

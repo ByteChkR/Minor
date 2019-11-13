@@ -8,10 +8,12 @@ namespace Engine.BuildTools.PackageCreator
     [XmlRoot(ElementName = "PackageManifest")]
     public class PackageManifestHeader
     {
-        
         public string PackageVersion { get; set; } = "legacy";
 
-        public PackageManifestHeader() { }
+        public PackageManifestHeader()
+        {
+        }
+
         public PackageManifestHeader(string packageVersion)
         {
             PackageVersion = packageVersion;

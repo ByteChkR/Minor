@@ -26,7 +26,8 @@ namespace Engine.Tests
                 b[i] = (byte) i;
             }
 
-            MemoryBuffer buffer = CLAPI.CreateBuffer(CLAPI.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            MemoryBuffer buffer =
+                CLAPI.CreateBuffer(CLAPI.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
@@ -43,7 +44,8 @@ namespace Engine.Tests
                 b[i] = i;
             }
 
-            MemoryBuffer buffer = CLAPI.CreateBuffer(CLAPI.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            MemoryBuffer buffer =
+                CLAPI.CreateBuffer(CLAPI.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             float[] c = CLAPI.ReadBuffer<float>(CLAPI.MainThread, buffer, b.Length);
 
@@ -62,7 +64,8 @@ namespace Engine.Tests
                 b[i] = i;
             }
 
-            MemoryBuffer buffer = CLAPI.CreateEmpty<float>(CLAPI.MainThread, b.Length, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            MemoryBuffer buffer = CLAPI.CreateEmpty<float>(CLAPI.MainThread, b.Length,
+                MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
 
             CLAPI.WriteToBuffer(CLAPI.MainThread, buffer, b);

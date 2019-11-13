@@ -43,7 +43,8 @@ namespace Engine.UI.EventSystems
         }
 
         public Button(Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null,
-            Texture btnHover = null, Action<Button> onClick = null, Action<Button> onEnter = null, Action<Button> onHover = null, Action<Button> onLeave = null) : base(btnIdle, false, alpha, shader)
+            Texture btnHover = null, Action<Button> onClick = null, Action<Button> onEnter = null,
+            Action<Button> onHover = null, Action<Button> onLeave = null) : base(btnIdle, false, alpha, shader)
         {
             this.btnIdle = btnIdle;
             if (btnClick != null)
@@ -79,14 +80,26 @@ namespace Engine.UI.EventSystems
 
         public static void AddToEvent(ref Action<Button> ev, Action<Button> action)
         {
-            if (ev == null) ev = action;
-            else ev += action;
+            if (ev == null)
+            {
+                ev = action;
+            }
+            else
+            {
+                ev += action;
+            }
         }
 
         public static void RemoveFromEvent(ref Action<Button> ev, Action<Button> action)
         {
-            if (ev == null) return;
-            else ev -= ev;
+            if (ev == null)
+            {
+                return;
+            }
+            else
+            {
+                ev -= ev;
+            }
         }
 
         public void AddToClickEvent(Action<Button> action)
@@ -128,7 +141,6 @@ namespace Engine.UI.EventSystems
         {
             RemoveFromEvent(ref OnLeave, action);
         }
-
 
 
         protected override void OnDestroy()

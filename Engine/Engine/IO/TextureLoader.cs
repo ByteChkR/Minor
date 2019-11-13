@@ -40,7 +40,8 @@ namespace Engine.IO
             GL.BindTexture(TextureTarget.Texture2D, 0);
             long bytes = width * height * 4;
             EngineStatisticsManager.GLObjectCreated(bytes);
-            return new Texture(texID, bytes); ;
+            return new Texture(texID, bytes);
+            ;
         }
 
         /// <summary>
@@ -79,11 +80,11 @@ namespace Engine.IO
         /// <returns></returns>
         private static byte[] TextureToByteArray(Texture tex)
         {
-            byte[] buffer = new byte[(int)(tex.Width * tex.Height * 4)];
+            byte[] buffer = new byte[(int) (tex.Width * tex.Height * 4)];
             GCHandle handle = GCHandle.Alloc(buffer, GCHandleType.Pinned);
             GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);
 
-            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int)tex.Width, (int)tex.Height, 1, PixelFormat.Bgra,
+            GL.GetTextureSubImage(tex.TextureId, 0, 0, 0, 0, (int) tex.Width, (int) tex.Height, 1, PixelFormat.Bgra,
                 PixelType.UnsignedByte, buffer.Length, handle.AddrOfPinnedObject());
 
             handle.Free();
@@ -248,13 +249,13 @@ namespace Engine.IO
         private static void DefaultTexParameter()
         {
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
-                (int)TextureMinFilter.Linear);
+                (int) TextureMinFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
-                (int)TextureMagFilter.Linear);
+                (int) TextureMagFilter.Linear);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS,
-                (int)TextureWrapMode.Repeat);
+                (int) TextureWrapMode.Repeat);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT,
-                (int)TextureWrapMode.Repeat);
+                (int) TextureWrapMode.Repeat);
         }
 
         /// <summary>
@@ -264,7 +265,7 @@ namespace Engine.IO
         /// <returns>A copy of Other</returns>
         private static Texture Copy(Texture other)
         {
-            return BytesToTexture(TextureToByteArray(other), (int)other.Width, (int)other.Height);
+            return BytesToTexture(TextureToByteArray(other), (int) other.Width, (int) other.Height);
         }
 
         /// <summary>
@@ -280,10 +281,10 @@ namespace Engine.IO
 
             Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
                 DebugChannel.Log | DebugChannel.IO, 1);
-            for (int i = 0; i < m.GetMaterialTextureCount((Assimp.TextureType)texType); i++)
+            for (int i = 0; i < m.GetMaterialTextureCount((Assimp.TextureType) texType); i++)
             {
                 TextureSlot s;
-                m.GetMaterialTexture((Assimp.TextureType)texType, i, out s);
+                m.GetMaterialTexture((Assimp.TextureType) texType, i, out s);
                 Texture tx = FileToTexture(dir + s.FilePath);
                 tx.TexType = texType;
                 ret.Add(tx);

@@ -93,7 +93,6 @@ namespace Engine.Demo.components
                 return "Not a number.";
             }
 
-            
 
             Random rnd = new Random();
             for (int i = 0; i < nmbrs; i++)

@@ -8,9 +8,9 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
 {
     public class LegacyVersion : IPackageVersion
     {
-        public  string ManifestPath => "EngineVersion";
+        public string ManifestPath => "EngineVersion";
 
-        public  string PackageVersion => "legacy";
+        public string PackageVersion => "legacy";
 
         public void WriteManifest(Stream s, IPackageManifest manifest)
         {
@@ -18,7 +18,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             xs.Serialize(s, manifest);
         }
 
-        public  bool IsVersion(string path)
+        public bool IsVersion(string path)
         {
             TextReader tr = null;
             Stream s = null;
@@ -27,25 +27,26 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
                 ZipArchive pack = ZipFile.OpenRead(path);
                 s = pack.GetEntry(ManifestPath).Open();
                 tr = new StreamReader(s);
-
             }
             catch (Exception)
             {
                 s?.Close();
                 return false;
             }
+
             string v = tr.ReadLine();
             tr.Close();
             return true;
         }
 
-        public  IPackageManifest GetPackageManifest(string path)
+        public IPackageManifest GetPackageManifest(string path)
         {
             string name = "Engine";
             if (!path.EndsWith(".engine"))
             {
                 name = Path.GetFileNameWithoutExtension(path);
             }
+
             ZipArchive pack = ZipFile.OpenRead(path);
             Stream s = pack.GetEntry(ManifestPath).Open();
             TextReader tr = new StreamReader(s);
@@ -54,16 +55,17 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             return new PackageManifest(name, v);
         }
 
-        public  void UnpackPackage(string file, string outPutDir)
+        public void UnpackPackage(string file, string outPutDir)
         {
             ZipFile.ExtractToDirectory(file, outPutDir);
             File.Delete(outPutDir + "/" + ManifestPath);
         }
 
-        public  void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir, string[] files, string version)
+        public void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir,
+            string[] files, string version)
         {
             File.WriteAllBytes(outputFile,
-                new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
             FileStream fs = new FileStream(outputFile, FileMode.Open);
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
             Uri wdir = new Uri(workingDir);
@@ -88,10 +90,11 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             fs.Close();
         }
 
-        public virtual void CreateEnginePackage(string outputFile, string workingDir, string[] files, string version = null)
+        public virtual void CreateEnginePackage(string outputFile, string workingDir, string[] files,
+            string version = null)
         {
             File.WriteAllBytes(outputFile,
-                new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
+                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
             FileStream fs = new FileStream(outputFile, FileMode.Open);
 
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
@@ -101,6 +104,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             {
                 version = Creator.GetEngineVersion(workingDir);
             }
+
             foreach (string file in files)
             {
                 Uri f = new Uri(file);

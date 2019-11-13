@@ -17,16 +17,30 @@
 
         internal static void Update(float deltaTime)
         {
-            if (deltaTime > BiggestUpdateTime) BiggestUpdateTime = deltaTime;
-            else if (deltaTime < SmallestUpdateTime) SmallestUpdateTime = deltaTime;
+            if (deltaTime > BiggestUpdateTime)
+            {
+                BiggestUpdateTime = deltaTime;
+            }
+            else if (deltaTime < SmallestUpdateTime)
+            {
+                SmallestUpdateTime = deltaTime;
+            }
+
             TimeSinceStartup += deltaTime;
             TotalUpdates++;
         }
 
         internal static void Render(float renderTime)
         {
-            if (renderTime > BiggestRenderTime) BiggestRenderTime = renderTime;
-            else if (renderTime < SmallestRenderTime) SmallestRenderTime = renderTime;
+            if (renderTime > BiggestRenderTime)
+            {
+                BiggestRenderTime = renderTime;
+            }
+            else if (renderTime < SmallestRenderTime)
+            {
+                SmallestRenderTime = renderTime;
+            }
+
             TotalFrames++;
             TotalRenderTime += renderTime;
         }
@@ -34,24 +48,25 @@
         internal static void GLObjectCreated(long bytes)
         {
             OpenGLObjectCount++;
-            OpenGLObjectsKB += bytes / (float)1028;
+            OpenGLObjectsKB += bytes / (float) 1028;
         }
 
         internal static void GLObjectDestroyed(long bytes)
         {
             OpenGLObjectCount--;
-            OpenGLObjectsKB -= bytes / (float)1028;
+            OpenGLObjectsKB -= bytes / (float) 1028;
         }
+
         internal static void CLObjectCreated(long bytes)
         {
             OpenCLObjectCount++;
-            OpenCLObjectsKB += bytes / (float)1028;
+            OpenCLObjectsKB += bytes / (float) 1028;
         }
 
         internal static void CLObjectDestroyed(long bytes)
         {
             OpenCLObjectCount--;
-            OpenCLObjectsKB -= bytes / (float)1028;
+            OpenCLObjectsKB -= bytes / (float) 1028;
         }
     }
 }

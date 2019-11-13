@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace Engine.BuildTools.Builder.CLI
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            BuildTools.Builder.Builder.RunCommand(args);
+            Builder.RunCommand(args);
         }
     }
 }
