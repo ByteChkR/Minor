@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Engine.Audio;
 using Engine.Core;
 using Engine.Debug;
@@ -47,7 +48,7 @@ namespace Engine.Rendering
                 time += last ? -dt : dt;
             }
 
-            LightColor = new Color((int) (255 * time), (int) (255 * time), 255, 255);
+            LightColor = Color.FromArgb((int) (255 * time), (int) (255 * time), 255, 255);
         }
     }
 }

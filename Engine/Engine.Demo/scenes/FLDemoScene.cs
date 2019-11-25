@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Drawing;
 using System.Resources;
 using Assimp;
 using Engine.Audio;
@@ -18,7 +19,6 @@ using Engine.UI.EventSystems;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Animation = Engine.UI.Animations.Animation;
-using TKColor = OpenTK.Color;
 using Mesh = Engine.DataTypes.Mesh;
 
 namespace Engine.Demo.scenes
@@ -207,7 +207,7 @@ namespace Engine.Demo.scenes
             GameEngine.Instance.CurrentScene.Add(inPicCam);
 
 
-            splitCam = new RenderTarget(inPicCam, 1, new Color(0, 0, 0, 0))
+            splitCam = new RenderTarget(inPicCam, 1, Color.FromArgb(0, 0, 0, 0))
             {
                 MergeType = RenderTargetMergeType.Additive,
                 ViewPort = new Rectangle(0, 0, (int) (GameEngine.Instance.Width * 0.3f),

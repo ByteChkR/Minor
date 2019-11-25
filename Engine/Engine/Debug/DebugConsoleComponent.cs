@@ -14,7 +14,6 @@ using OpenTK.Graphics.OpenGL;
 using OpenTK.Input;
 using OpenTK;
 using Bitmap = System.Drawing.Bitmap;
-using Color = OpenTK.Color;
 
 namespace Engine.Debug
 {

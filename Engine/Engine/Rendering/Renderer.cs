@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using Engine.Core;
 using Engine.Debug;
@@ -27,7 +28,7 @@ namespace Engine.Rendering
         /// <summary>
         /// The Clear color of the two standard Render targets(World/UI)
         /// </summary>
-        private Color _clearColor = new Color(0, 0, 0, 0);
+        private Color _clearColor = Color.FromArgb(0, 0, 0, 0);
 
         /// <summary>
         /// The Clear color of the two standard Render targets(World/UI)

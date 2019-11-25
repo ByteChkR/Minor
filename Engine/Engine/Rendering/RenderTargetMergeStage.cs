@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Engine.DataTypes;
 using Engine.Debug;
 using OpenTK;
@@ -41,13 +42,13 @@ namespace Engine.Rendering
         /// Render target 0 for the pingpong rendering
         /// </summary>
         private static RenderTarget _screenTarget0 =
-            new RenderTarget(new ScreenCamera(), int.MaxValue, new Color(0, 0, 0, 0));
+            new RenderTarget(new ScreenCamera(), int.MaxValue, Color.FromArgb(0, 0, 0, 0));
 
         /// <summary>
         /// Render target 1 for the pingpong rendering
         /// </summary>
         private static RenderTarget _screenTarget1 =
-            new RenderTarget(new ScreenCamera(), int.MaxValue, new Color(0, 0, 0, 0));
+            new RenderTarget(new ScreenCamera(), int.MaxValue, Color.FromArgb(0, 0, 0, 0));
 
         /// <summary>
         /// The shaders used for the different merge types
@@ -190,7 +191,7 @@ namespace Engine.Rendering
 
             //GL.Disable(EnableCap.ScissorTest);
 
-            GL.ClearColor(new Color(168, 143, 50, 255));
+            GL.ClearColor(Color.FromArgb(168, 143, 50, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
 
