@@ -9,7 +9,7 @@ addons:
         packages:
         - fakeroot
         - libgdiplus
-        - libopenal1
+        - libalut0
 
 matrix:
   include:
@@ -20,7 +20,6 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
-  - sudo modprobe snd-dummy
   - sudo chmod +x setupcl.sh
   - sudo bash setupcl.sh
 
