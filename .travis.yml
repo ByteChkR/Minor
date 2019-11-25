@@ -1,5 +1,6 @@
 language: csharp
 mono: none
+sudo: required
 dist: xenial
 services:
   - xvfb
@@ -19,7 +20,8 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
-  - ./setupcl.sh
+  - sudo chmod +x setupcl.sh
+  - sudo bash setupcl.sh
 
 
   #Restore Projects
