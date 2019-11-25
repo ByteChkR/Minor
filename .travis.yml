@@ -1,6 +1,5 @@
 language: csharp
 mono: none
-sudo: required
 dist: xenial
 services:
   - xvfb
@@ -8,6 +7,8 @@ addons:
     apt:
         packages:
         - fakeroot
+        - libgdiplus
+        - libopenal-dev
 
 matrix:
   include:
@@ -18,9 +19,6 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
-    #Install GDI+
-  - sudo apt-get install libgdiplus
-  - sudo apt-get install libopenal-dev
   - ./setupcl.sh
 
 
