@@ -18,17 +18,5 @@ namespace Engine.Tests
 
 
         }
-
-        [Fact]
-        public static void CLTest()
-        {
-            CLAPI.Reinitialize();
-        }
-
-        [Fact]
-        public static void ALTest()
-        {
-            AudioManager.Initialize();
-        }
     }
 }
