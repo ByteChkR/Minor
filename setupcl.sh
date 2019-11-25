@@ -23,3 +23,4 @@
     sudo ln -s /opt/intel/opencl-1.2-4.5.0.8/lib64/libOpenCL.so /usr/lib/libOpenCL.so
     sudo ln -s /opt/intel/opencl-1.2-4.5.0.8/lib64/libOpenCL.so.1 /usr/lib/libOpenCL.so.1
     sudo ldconfig
+cd ../..
