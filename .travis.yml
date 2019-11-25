@@ -1,7 +1,9 @@
 language: csharp
 mono: none
 sudo: required
-
+dist: xenial
+services:
+  - xvfb
 matrix:
   include:
     - dotnet: 2.2
@@ -17,11 +19,6 @@ install:
   - dotnet restore ADL/ADL/
   - dotnet restore ext-pp/
   - dotnet restore Engine/ #<-- The Project
-
-before_script:
- - "export DISPLAY=:99.0"
- - "bash -e /etc/init.d/xvfb start"
- - sleep 3 # give xvfb some time to start
 
 #Build the projects
 #ADL has to be splitted into its subprojects since 2 of them are .Net Framework based and will not compile with .net Core
