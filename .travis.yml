@@ -15,6 +15,10 @@ matrix:
 install:
     #Install GDI+
   - sudo apt-get install libgdiplus
+  - sudo apt-get install libopenal-dev
+  - sudo apt-get install pocl-opencl-icd
+
+
   #Restore Projects
   - dotnet restore ADL/ADL/
   - dotnet restore ext-pp/
