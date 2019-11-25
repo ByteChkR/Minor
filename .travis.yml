@@ -4,6 +4,11 @@ sudo: required
 dist: xenial
 services:
   - xvfb
+addons:
+    apt:
+        packages:
+        - fakeroot
+
 matrix:
   include:
     - dotnet: 2.2
@@ -16,7 +21,8 @@ install:
     #Install GDI+
   - sudo apt-get install libgdiplus
   - sudo apt-get install libopenal-dev
-  - sudo apt-get install pocl-opencl-icd
+  - sudo apt-get install opencl-intel-cpu-runtime
+  - ./setupcl.sh
 
 
   #Restore Projects
