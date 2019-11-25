@@ -9,7 +9,7 @@ addons:
         packages:
         - fakeroot
         - libgdiplus
-        - libopenal-dev
+        - libopenal1
 
 matrix:
   include:
