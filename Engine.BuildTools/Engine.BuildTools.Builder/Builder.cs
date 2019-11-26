@@ -574,6 +574,7 @@ namespace Engine.BuildTools.Builder
                 f.Add(projectFolder + "/" + projectName + ".dll");
                 f.Add(projectFolder + "/" + projectName + ".runtimeconfig.json");
                 f.Add(projectFolder + "/" + projectName + ".deps.json");
+                //f.AddRange(Directory.GetFiles(projectFolder+"/", "System*.dll"));
                 files = f.ToArray();
             }
 
