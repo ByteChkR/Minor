@@ -74,9 +74,10 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             TextReader tr = null;
             Stream s = null;
             string v = "";
+            ZipArchive pack = null;
             try
             {
-                ZipArchive pack = ZipFile.OpenRead(path);
+                pack = ZipFile.OpenRead(path);
                 s = pack.GetEntry(ManifestPath).Open();
                 tr = new StreamReader(s);
                 XmlSerializer xs = new XmlSerializer(typeof(PackageManifestHeader));
@@ -86,9 +87,12 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             catch (Exception)
             {
                 tr?.Close();
+                pack?.Dispose();
                 return false;
             }
 
+            pack.Dispose();
+            tr.Close();
             return v == PackageVersion;
         }
 
@@ -104,6 +108,8 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             Stream s = pack.GetEntry(ManifestPath).Open();
             XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
             PackageManifest pm = (PackageManifest) xs.Deserialize(s);
+            s.Close();
+            pack.Dispose();
             return pm;
         }
 

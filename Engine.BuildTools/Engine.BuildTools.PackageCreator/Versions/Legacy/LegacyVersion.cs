@@ -22,20 +22,23 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
         {
             TextReader tr = null;
             Stream s = null;
+            ZipArchive pack = null;
             try
             {
-                ZipArchive pack = ZipFile.OpenRead(path);
+                pack = ZipFile.OpenRead(path);
                 s = pack.GetEntry(ManifestPath).Open();
                 tr = new StreamReader(s);
             }
             catch (Exception)
             {
                 s?.Close();
+                pack?.Dispose();
                 return false;
             }
 
             string v = tr.ReadLine();
             tr.Close();
+            pack.Dispose();
             return true;
         }
 
@@ -52,6 +55,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             TextReader tr = new StreamReader(s);
             string v = tr.ReadLine();
             tr.Close();
+            pack.Dispose();
             return new PackageManifest(name, v);
         }
 

@@ -29,21 +29,26 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
             TextReader tr = null;
             Stream s = null;
             string v = "";
+            ZipArchive pack = null;
             try
             {
-                ZipArchive pack = ZipFile.OpenRead(path);
+                pack = ZipFile.OpenRead(path);
                 s = pack.GetEntry(ManifestPath).Open();
                 tr = new StreamReader(s);
                 XmlSerializer xs = new XmlSerializer(typeof(PackageManifestHeader));
-                PackageManifestHeader pm = (PackageManifestHeader) xs.Deserialize(tr);
+                PackageManifestHeader pm = (PackageManifestHeader)xs.Deserialize(tr);
                 v = pm.PackageVersion;
             }
             catch (Exception)
             {
                 tr?.Close();
+                pack?.Dispose();
                 return false;
             }
 
+
+            pack.Dispose();
+            tr.Close();
             return v == PackageVersion;
         }
 
@@ -52,7 +57,9 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
             ZipArchive pack = ZipFile.OpenRead(path);
             Stream s = pack.GetEntry(ManifestPath).Open();
             XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
-            PackageManifest pm = (PackageManifest) xs.Deserialize(s);
+            PackageManifest pm = (PackageManifest)xs.Deserialize(s);
+            s.Close();
+            pack.Dispose();
             return pm;
         }
 
@@ -60,7 +67,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
             string[] files, string version)
         {
             File.WriteAllBytes(outputFile,
-                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+                new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             FileStream fs = new FileStream(outputFile, FileMode.Open);
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);
             Uri wdir = new Uri(workingDir);
@@ -89,7 +96,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
         public void CreateEnginePackage(string outputFile, string workingDir, string[] files, string version = null)
         {
             File.WriteAllBytes(outputFile,
-                new byte[] {80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0});
+                new byte[] { 80, 75, 5, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
             FileStream fs = new FileStream(outputFile, FileMode.Open);
 
             ZipArchive a = new ZipArchive(fs, ZipArchiveMode.Update);

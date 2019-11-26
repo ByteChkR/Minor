@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Engine.BuildTools.Tests": {
+      "commandName": "Project",
+      "workingDirectory": "resources"
+    }
+  }
+}
