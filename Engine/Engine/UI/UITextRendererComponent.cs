@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Rendering;
@@ -63,6 +64,11 @@ namespace Engine.UI
             }
         }
 
+        public Color SystemColor
+        {
+            get => System.Drawing.Color.FromArgb((int)(Color.X*255), (int)(Color.Y * 255), (int)(Color.Z * 255), 255);
+            set => Color = new Vector3(value.R/255f, value.G / 255f, value.B / 255f);
+        }
         public Vector3 Color = Vector3.UnitX; // RED
 
         /// <summary>

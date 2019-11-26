@@ -53,6 +53,19 @@ namespace Engine.UI
             LoadFont(filename, 32);
         }
 
+        public static GameFont LoadFontDirect(string filename, int pixelSize)
+        {
+            if (IOManager.Exists(filename))
+            {
+                return LoadFontInternal(IOManager.GetStream(filename), pixelSize, out string _);
+            }
+            else
+            {
+                Logger.Log("Not found File: " + filename, DebugChannel.Log, 10);
+                Logger.Crash(new InvalidFilePathException(filename), true);
+                return DefaultFilepaths.DefaultFont;
+            }
+        }
         /// <summary>
         /// Loads a font with the specifed pixel size
         /// </summary>
