@@ -169,7 +169,7 @@ namespace Engine.Rendering
                     float ambientContrib = Renderer.Lights[i].AmbientContribution;
                     GL.Uniform1(prog.GetUniformLocation(string.Format(s, i, "ambientContribution")), ambientContrib);
 
-                    Vector3 pos = Renderer.Lights[i].Owner.GetLocalPosition();
+                    Vector3 pos = Renderer.Lights[i].Owner.GetWorldPosition();
                     GL.Uniform3(prog.GetUniformLocation(string.Format(s, i, "position")), pos);
                     Vector3 att = Renderer.Lights[i].Attenuation;
                     GL.Uniform3(prog.GetUniformLocation(string.Format(s, i, "attenuation")), att);
