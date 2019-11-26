@@ -571,9 +571,12 @@ namespace Engine.BuildTools.Builder
                     f.AddRange(Directory.GetFiles(packFolder, "*", SearchOption.AllDirectories));
                 }
 
+                if(File.Exists(projectFolder + "/" + projectName + ".dll"))
                 f.Add(projectFolder + "/" + projectName + ".dll");
-                f.Add(projectFolder + "/" + projectName + ".runtimeconfig.json");
-                f.Add(projectFolder + "/" + projectName + ".deps.json");
+                if (File.Exists(projectFolder + "/" + projectName + ".runtimeconfig.json"))
+                    f.Add(projectFolder + "/" + projectName + ".runtimeconfig.json");
+                if (File.Exists(projectFolder + "/" + projectName + ".deps.json"))
+                    f.Add(projectFolder + "/" + projectName + ".deps.json");
                 //f.AddRange(Directory.GetFiles(projectFolder+"/", "System*.dll"));
                 files = f.ToArray();
             }
