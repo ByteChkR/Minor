@@ -1,4 +1,5 @@
-﻿using Engine.Rendering;
+﻿using System;
+using Engine.Rendering;
 
 namespace Engine.Core
 {
@@ -7,6 +8,7 @@ namespace Engine.Core
     /// </summary>
     public abstract class AbstractScene : GameObject
     {
+
         /// <summary>
         /// The Camera that is associated with the Game World
         /// </summary>

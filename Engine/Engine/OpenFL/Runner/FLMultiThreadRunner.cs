@@ -27,8 +27,8 @@ namespace Engine.OpenCL.Runner
         {
             foreach (KeyValuePair<Texture, byte[]> keyValuePair in result)
             {
-                TextureLoader.Update(keyValuePair.Key, keyValuePair.Value, (int) keyValuePair.Key.Width,
-                    (int) keyValuePair.Key.Height);
+                TextureLoader.Update(keyValuePair.Key, keyValuePair.Value, (int)keyValuePair.Key.Width,
+                    (int)keyValuePair.Key.Height);
             }
         }
 
@@ -46,26 +46,25 @@ namespace Engine.OpenCL.Runner
             base.Enqueue(context);
         }
 
-        public override void Process()
+        public override void Process(Action onFinish = null)
         {
-            ThreadManager.RunTask(_proc, (x) =>
-            {
-                foreach (KeyValuePair<FLExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
-                {
-                    foreach (KeyValuePair<Texture, byte[]> bytese in textureUpdate.Value)
-                    {
-                        TextureLoader.Update(bytese.Key, bytese.Value, (int) bytese.Key.Width, (int) bytese.Key.Height);
-                    }
-                }
-            });
+            ThreadManager.RunTask(() => _proc(onFinish), (x) =>
+             {
+                 foreach (KeyValuePair<FLExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
+                 {
+                     foreach (KeyValuePair<Texture, byte[]> bytese in textureUpdate.Value)
+                     {
+                         TextureLoader.Update(bytese.Key, bytese.Value, (int)bytese.Key.Width, (int)bytese.Key.Height);
+                     }
+                 }
+             });
             //Thread t = new Thread(ThreadProcess);
             //t.Priority = ThreadPriority.Lowest;
             //t.Start();
-
             //_onFinishQueueCallback?.Invoke();
         }
 
-        private Dictionary<FLExecutionContext, Dictionary<Texture, byte[]>> _proc()
+        private Dictionary<FLExecutionContext, Dictionary<Texture, byte[]>> _proc(Action onFinish = null)
         {
             window = new GameWindow(100, 100, GraphicsMode.Default, "FLRunner");
             window.MakeCurrent();
@@ -88,6 +87,7 @@ namespace Engine.OpenCL.Runner
             }
 
             window.Dispose();
+            onFinish?.Invoke();
             return ret;
         }
     }

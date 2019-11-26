@@ -51,6 +51,14 @@ namespace Engine.UI.Animations
             }
         }
 
+        public void TriggerEvent(AnimationTrigger uiEvent)
+        {
+            foreach (Animation ad in animators)
+            {
+                ad.CheckState(uiEvent);
+            }
+        }
+
         private void OnClick(Button target)
         {
             foreach (Animation ad in animators)
