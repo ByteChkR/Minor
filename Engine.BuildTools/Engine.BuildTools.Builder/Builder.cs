@@ -197,7 +197,7 @@ namespace Engine.BuildTools.Builder
 
                         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                         string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
-                            bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly);
+                            bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly, false);
                         Creator.CreateGamePackage(projectName, startArg, outputFolder + "/" + projectName + ".game",
                             buildOutput, files,
                             fvi.FileVersion, packagerVersion);
@@ -358,6 +358,7 @@ namespace Engine.BuildTools.Builder
                     fileList = "";
                 }
 
+                bool standalone = version == "standalone";
                 string packagerVersion = Creator.DEFAULT_VERSION;
                 string startArg = args[1] + ".dll";
                 if (info.HasValueFlag("--packager-version"))
@@ -383,7 +384,7 @@ namespace Engine.BuildTools.Builder
                 }
 
                 string[] files = ParseFileList(fileList, Path.GetFullPath(args[0]), args[1], bool.Parse(args[3]),
-                    bool.Parse(args[4]));
+                    bool.Parse(args[4]), standalone);
                 Creator.CreateGamePackage(args[1], startArg, Path.GetFullPath(args[2]),
                     Path.GetFullPath(args[0]), files, version, packagerVersion);
             }
@@ -543,7 +544,7 @@ namespace Engine.BuildTools.Builder
         }
 
         private static string[] ParseFileList(string fileList, string projectFolder, string projectName,
-            bool copyAssetsWhenError, bool copyPacksWhenError)
+            bool copyAssetsWhenError, bool copyPacksWhenError, bool isStandalone)
         {
             string[] files;
             if (fileList != null && File.Exists(fileList))
@@ -563,21 +564,40 @@ namespace Engine.BuildTools.Builder
                 string assetFolder = projectFolder + "/assets";
                 if (Directory.Exists(assetFolder) && copyAssetsWhenError)
                 {
-                    f.AddRange(Directory.GetFiles(assetFolder, "*", SearchOption.AllDirectories));
+                    string[] ff = Directory.GetFiles(assetFolder, "*", SearchOption.AllDirectories);
+                    for (int i = 0; i < ff.Length; i++)
+                    {
+                        if (!f.Contains(ff[i])) f.Add(ff[i]);
+                    }
                 }
 
                 if (Directory.Exists(packFolder) && copyPacksWhenError)
                 {
-                    f.AddRange(Directory.GetFiles(packFolder, "*", SearchOption.AllDirectories));
+                    string[] ff = Directory.GetFiles(packFolder, "*", SearchOption.AllDirectories);
+                    for (int i = 0; i < ff.Length; i++)
+                    {
+                        if (!f.Contains(ff[i])) f.Add(ff[i]);
+                    }
                 }
 
-                if(File.Exists(projectFolder + "/" + projectName + ".dll"))
-                f.Add(projectFolder + "/" + projectName + ".dll");
-                if (File.Exists(projectFolder + "/" + projectName + ".runtimeconfig.json"))
-                    f.Add(projectFolder + "/" + projectName + ".runtimeconfig.json");
-                if (File.Exists(projectFolder + "/" + projectName + ".deps.json"))
-                    f.Add(projectFolder + "/" + projectName + ".deps.json");
+                string helper = Path.GetFullPath(projectFolder + "/" + projectName + ".dll");
+                if (File.Exists(helper) && !f.Contains(helper))
+                    f.Add(helper);
+                helper = Path.GetFullPath(projectFolder + "/" + projectName + ".runtimeconfig.json");
+                if (File.Exists(helper) && !f.Contains(helper))
+                    f.Add(helper);
+                helper = Path.GetFullPath(projectFolder + "/" + projectName + ".deps.json");
+                if (File.Exists(helper) && !f.Contains(helper))
+                    f.Add(helper);
                 //f.AddRange(Directory.GetFiles(projectFolder+"/", "System*.dll"));
+                if (isStandalone)
+                {
+                    string[] ff = ParseEngineFileList(fileList, projectFolder);
+                    for (int i = 0; i < ff.Length; i++)
+                    {
+                        if (!f.Contains(ff[i])) f.Add(ff[i]);
+                    }
+                }
                 files = f.ToArray();
             }
 
