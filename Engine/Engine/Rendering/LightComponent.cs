@@ -47,8 +47,7 @@ namespace Engine.Rendering
             {
                 time += last ? -dt : dt;
             }
-
-            LightColor = Color.FromArgb((int) (255 * time), (int) (255 * time), 255, 255);
+            
         }
     }
 }
