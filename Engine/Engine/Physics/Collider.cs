@@ -33,6 +33,9 @@ namespace Engine.Physics
         /// </summary>
         private bool _colliderRemoved;
 
+        public bool UpdateRotation { get; set; } = true;
+        public bool UpdateTranslation { get; set; } = true;
+
         /// <summary>
         /// Property to get/set the collider state
         /// IsTrigger = true -> No Collision solving.
@@ -176,12 +179,18 @@ namespace Engine.Physics
         {
             if (PhysicsCollider.IsDynamic)
             {
-                enforceRotationConstraints();
-                enforceTranslationConstraints();
                 //this.Log("Velocity: " + PhysicsCollider.LinearVelocity.Length(), DebugChannel.Log);
+                if (UpdateTranslation)
+                {
+                    enforceTranslationConstraints();
+                    Owner.SetLocalPosition(PhysicsCollider.Position);
+                }
 
-                Owner.SetLocalPosition(PhysicsCollider.Position);
-                Owner.SetRotation(PhysicsCollider.Orientation);
+                if (UpdateRotation)
+                {
+                    enforceRotationConstraints();
+                    Owner.SetRotation(PhysicsCollider.Orientation);
+                }
             }
         }
     }
