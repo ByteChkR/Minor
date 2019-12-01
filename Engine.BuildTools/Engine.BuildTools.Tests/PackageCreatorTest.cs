@@ -29,9 +29,12 @@ namespace Engine.BuildTools.Tests
 
 
             //Creator.CreateGamePackage("TestPackage", "NoExecutable", "");
-            Builder.Builder.RunCommand("--create-package ./content TestPackage ./output/TestPackage.game False False --packager-version legacy --packer-override-engine-version 9.9.9.9");
-            Builder.Builder.RunCommand("--create-package ./content TestPackage ./output/v1Test.game False False --packager-version v1 --packer-override-engine-version 9.9.9.9");
-            Builder.Builder.RunCommand("--create-package ./content TestPackage ./output/v2Test.game False False --packager-version v2 --packer-override-engine-version 9.9.9.9");
+            Builder.Builder.RunCommand(
+                "--create-package ./content TestPackage ./output/TestPackage.game False False --packager-version legacy --packer-override-engine-version 9.9.9.9");
+            Builder.Builder.RunCommand(
+                "--create-package ./content TestPackage ./output/v1Test.game False False --packager-version v1 --packer-override-engine-version 9.9.9.9");
+            Builder.Builder.RunCommand(
+                "--create-package ./content TestPackage ./output/v2Test.game False False --packager-version v2 --packer-override-engine-version 9.9.9.9");
 
 
             IPackageManifest manifestL = Creator.ReadManifest("./output/TestPackage.game");
@@ -43,12 +46,11 @@ namespace Engine.BuildTools.Tests
             Assert.True(manifestV2.PackageVersion == "v2");
             Assert.True(manifestV2.Version == manifestL.Version && manifestV2.Version == manifestV1.Version);
             Assert.True(manifestV2.Title == manifestL.Title && manifestV2.Title == manifestV1.Title);
-            Assert.True(manifestV2.StartCommand == manifestL.StartCommand && manifestV2.StartCommand == manifestV1.StartCommand);
+            Assert.True(manifestV2.StartCommand == manifestL.StartCommand &&
+                        manifestV2.StartCommand == manifestV1.StartCommand);
 
             Directory.Delete("content", true);
             Directory.Delete("output", true);
-
-
         }
     }
 }

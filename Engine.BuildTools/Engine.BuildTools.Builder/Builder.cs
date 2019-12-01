@@ -17,14 +17,14 @@ namespace Engine.BuildTools.Builder
         {
             XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
             FileStream fs = new FileStream(path, FileMode.Open);
-            BuildSettings bs = (BuildSettings)xs.Deserialize(fs);
+            BuildSettings bs = (BuildSettings) xs.Deserialize(fs);
             fs.Close();
             return bs;
         }
 
         public static void RunCommand(string args)
         {
-            string[] a = args.Split(new[] { ' ', '\n' });
+            string[] a = args.Split(new[] {' ', '\n'});
             RunCommand(a);
         }
 
@@ -347,6 +347,7 @@ namespace Engine.BuildTools.Builder
                 {
                     version = info.GetValues("--packer-override-engine-version")[0];
                 }
+
                 string fileList;
                 if (args.Length > 5)
                 {
@@ -493,7 +494,7 @@ namespace Engine.BuildTools.Builder
 
         public static string[] CreateFileList(string path, string searchPatterns, char separator = '+')
         {
-            string[] patterns = searchPatterns.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+            string[] patterns = searchPatterns.Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries);
             List<string> ret = new List<string>();
             for (int i = 0; i < patterns.Length; i++)
             {
@@ -507,18 +508,18 @@ namespace Engine.BuildTools.Builder
             char separator = '+')
         {
             AssetPackageInfo info = new AssetPackageInfo();
-            List<string> unpackExts = unpackedFileExts.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries)
+            List<string> unpackExts = unpackedFileExts.Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() { packageType = AssetPackageType.Unpack });
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() {packageType = AssetPackageType.Unpack});
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo() { packageType = AssetPackageType.Memory });
+                info.FileInfos.Add(packExts[i], new AssetFileInfo() {packageType = AssetPackageType.Memory});
             }
 
             return info;
@@ -567,7 +568,10 @@ namespace Engine.BuildTools.Builder
                     string[] ff = Directory.GetFiles(assetFolder, "*", SearchOption.AllDirectories);
                     for (int i = 0; i < ff.Length; i++)
                     {
-                        if (!f.Contains(ff[i])) f.Add(ff[i]);
+                        if (!f.Contains(ff[i]))
+                        {
+                            f.Add(ff[i]);
+                        }
                     }
                 }
 
@@ -576,28 +580,44 @@ namespace Engine.BuildTools.Builder
                     string[] ff = Directory.GetFiles(packFolder, "*", SearchOption.AllDirectories);
                     for (int i = 0; i < ff.Length; i++)
                     {
-                        if (!f.Contains(ff[i])) f.Add(ff[i]);
+                        if (!f.Contains(ff[i]))
+                        {
+                            f.Add(ff[i]);
+                        }
                     }
                 }
 
                 string helper = Path.GetFullPath(projectFolder + "/" + projectName + ".dll");
                 if (File.Exists(helper) && !f.Contains(helper))
+                {
                     f.Add(helper);
+                }
+
                 helper = Path.GetFullPath(projectFolder + "/" + projectName + ".runtimeconfig.json");
                 if (File.Exists(helper) && !f.Contains(helper))
+                {
                     f.Add(helper);
+                }
+
                 helper = Path.GetFullPath(projectFolder + "/" + projectName + ".deps.json");
                 if (File.Exists(helper) && !f.Contains(helper))
+                {
                     f.Add(helper);
+                }
+
                 //f.AddRange(Directory.GetFiles(projectFolder+"/", "System*.dll"));
                 if (isStandalone)
                 {
                     string[] ff = ParseEngineFileList(fileList, projectFolder);
                     for (int i = 0; i < ff.Length; i++)
                     {
-                        if (!f.Contains(ff[i])) f.Add(ff[i]);
+                        if (!f.Contains(ff[i]))
+                        {
+                            f.Add(ff[i]);
+                        }
                     }
                 }
+
                 files = f.ToArray();
             }
 
