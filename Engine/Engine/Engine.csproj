@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;TravisTest;Debug_FullTrace;Release_CollectLogs</Configurations>
-    <AssemblyVersion>0.2.1.6</AssemblyVersion>
-    <FileVersion>0.2.1.6</FileVersion>
+    <AssemblyVersion>0.2.1.7</AssemblyVersion>
+    <FileVersion>0.2.1.7</FileVersion>
     <Version>0.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>github.com/ByteChkR/Minor</RepositoryUrl>
@@ -106,7 +106,9 @@
     <None Remove="assets\kernel\sub.cl" />
     <None Remove="assets\kernel\utils.cl" />
     <None Remove="assets\kernel\worley.cl" />
+    <None Remove="assets\models\cube_flat.obj" />
     <None Remove="assets\models\default_mesh.obj" />
+    <None Remove="assets\models\sphere_smooth.obj" />
     <None Remove="assets\shader\graph.fs" />
     <None Remove="assets\shader\graph.vs" />
     <None Remove="assets\shader\internal\merge_stage\merge_renderer.vs" />
@@ -166,7 +168,9 @@
     <EmbeddedResource Include="assets\kernel\sub.cl" />
     <EmbeddedResource Include="assets\kernel\utils.cl" />
     <EmbeddedResource Include="assets\kernel\worley.cl" />
+    <EmbeddedResource Include="assets\models\cube_flat.obj" />
     <EmbeddedResource Include="assets\models\default_mesh.obj" />
+    <EmbeddedResource Include="assets\models\sphere_smooth.obj" />
     <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader.vs" />
     <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader_add.fs" />
     <EmbeddedResource Include="assets\shader\internal\merge_stage\merge_shader_mul.fs" />

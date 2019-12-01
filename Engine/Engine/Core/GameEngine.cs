@@ -27,6 +27,9 @@ namespace Engine.Core
         /// </summary>
         private GameWindow Window;
 
+        public bool HasFocus => Window.Focused;
+        public Vector2 WindowPosition => new Vector2(Window.Location.X, Window.Location.Y);
+
         public EventSystem UISystem { get; private set; }
 
         /// <summary>
