@@ -199,7 +199,7 @@ namespace Engine.Debug
             //GameEngine.Instance.AddRenderTarget(rt2);
 
             Bitmap bmp = new Bitmap(1, 1);
-            bmp.SetPixel(0, 0, System.Drawing.Color.Black);
+            bmp.SetPixel(0, 0, Color.Black);
 
             UIImageRendererComponent _bgImage =
                 new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f,

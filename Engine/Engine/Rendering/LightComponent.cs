@@ -47,7 +47,6 @@ namespace Engine.Rendering
             {
                 time += last ? -dt : dt;
             }
-            
         }
     }
 }

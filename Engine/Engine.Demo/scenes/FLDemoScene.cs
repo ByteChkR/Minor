@@ -145,7 +145,7 @@ namespace Engine.Demo.scenes
             _sourceCube.AddComponent(new LightComponent());
             _sourceCube.AddComponent(new RotateAroundComponent() {Slow = 0.15f});
             _sourceCube.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, sourceCube,
-                TextureLoader.ColorToTexture(System.Drawing.Color.White), 1));
+                TextureLoader.ColorToTexture(Color.White), 1));
 
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
             uiText.AddComponent(new FLGeneratorComponent(new List<LitMeshRendererComponent>
@@ -218,9 +218,9 @@ namespace Engine.Demo.scenes
             GameEngine.Instance.AddRenderTarget(splitCam);
 
             GameObject obj = new GameObject("Button");
-            Texture btnIdle = TextureLoader.ColorToTexture(System.Drawing.Color.Green);
-            Texture btnHover = TextureLoader.ColorToTexture(System.Drawing.Color.Red);
-            Texture btnClick = TextureLoader.ColorToTexture(System.Drawing.Color.Blue);
+            Texture btnIdle = TextureLoader.ColorToTexture(Color.Green);
+            Texture btnHover = TextureLoader.ColorToTexture(Color.Red);
+            Texture btnClick = TextureLoader.ColorToTexture(Color.Blue);
             Button btn = new Button(btnIdle, DefaultFilepaths.DefaultUIImageShader, 1, btnClick, btnHover);
             LinearAnimation loadAnim = new LinearAnimation();
             loadAnim.Interpolator = new SmoothInterpolator();

@@ -15,8 +15,6 @@ namespace Engine.Tests
             GameWindow wnd = new GameWindow(100, 100, GraphicsMode.Default, "TEST");
             wnd.MakeCurrent();
             wnd.Dispose();
-
-
         }
     }
 }

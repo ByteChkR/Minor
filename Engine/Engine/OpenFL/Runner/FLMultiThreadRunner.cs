@@ -27,8 +27,8 @@ namespace Engine.OpenCL.Runner
         {
             foreach (KeyValuePair<Texture, byte[]> keyValuePair in result)
             {
-                TextureLoader.Update(keyValuePair.Key, keyValuePair.Value, (int)keyValuePair.Key.Width,
-                    (int)keyValuePair.Key.Height);
+                TextureLoader.Update(keyValuePair.Key, keyValuePair.Value, (int) keyValuePair.Key.Width,
+                    (int) keyValuePair.Key.Height);
             }
         }
 
@@ -49,15 +49,15 @@ namespace Engine.OpenCL.Runner
         public override void Process(Action onFinish = null)
         {
             ThreadManager.RunTask(() => _proc(onFinish), (x) =>
-             {
-                 foreach (KeyValuePair<FLExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
-                 {
-                     foreach (KeyValuePair<Texture, byte[]> bytese in textureUpdate.Value)
-                     {
-                         TextureLoader.Update(bytese.Key, bytese.Value, (int)bytese.Key.Width, (int)bytese.Key.Height);
-                     }
-                 }
-             });
+            {
+                foreach (KeyValuePair<FLExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
+                {
+                    foreach (KeyValuePair<Texture, byte[]> bytese in textureUpdate.Value)
+                    {
+                        TextureLoader.Update(bytese.Key, bytese.Value, (int) bytese.Key.Width, (int) bytese.Key.Height);
+                    }
+                }
+            });
             //Thread t = new Thread(ThreadProcess);
             //t.Priority = ThreadPriority.Lowest;
             //t.Start();

@@ -12,6 +12,6 @@ namespace Engine.Physics
         X = 1,
         Y = 2,
         Z = 4,
-        ALL = X|Y|Z
+        ALL = X | Y | Z
     }
 }

@@ -66,6 +66,7 @@ namespace Engine.UI
                 return DefaultFilepaths.DefaultFont;
             }
         }
+
         /// <summary>
         /// Loads a font with the specifed pixel size
         /// </summary>
