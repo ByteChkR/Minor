@@ -13,7 +13,18 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     public class BoxSphereContactManifold : ContactManifold
     {
         protected ConvexCollidable<BoxShape> box;
+
+        private Contact contact = new Contact();
+        private bool previouslyColliding;
         protected ConvexCollidable<SphereShape> sphere;
+
+        ///<summary>
+        /// Constructs a new manifold.
+        ///</summary>
+        public BoxSphereContactManifold()
+        {
+            contacts = new RawList<Contact>(1);
+        }
 
         ///<summary>
         /// Gets the first collidable in the pair.
@@ -24,17 +35,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         /// Gets the second collidable in the pair.
         /// </summary>
         public ConvexCollidable<SphereShape> CollidableB => sphere;
-
-        ///<summary>
-        /// Constructs a new manifold.
-        ///</summary>
-        public BoxSphereContactManifold()
-        {
-            contacts = new RawList<Contact>(1);
-        }
-
-        private Contact contact = new Contact();
-        private bool previouslyColliding;
 
         ///<summary>
         /// Updates the manifold.

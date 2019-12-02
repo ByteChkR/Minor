@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using Engine.DataTypes;
 using Engine.Debug;
-using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Rendering
@@ -57,6 +56,11 @@ namespace Engine.Rendering
             new Dictionary<RenderTargetMergeType, ShaderProgram>();
 
         /// <summary>
+        /// Flag that indicates what is the next input buffer and what is the next output buffer
+        /// </summary>
+        private static bool _isOne;
+
+        /// <summary>
         /// Initialization method
         /// </summary>
         private static void Init()
@@ -87,11 +91,6 @@ namespace Engine.Rendering
 
             DefaultFilepaths.DefaultScreenShader.AddUniformCache("sourceTexture");
         }
-
-        /// <summary>
-        /// Flag that indicates what is the next input buffer and what is the next output buffer
-        /// </summary>
-        private static bool _isOne;
 
         /// <summary>
         /// Flips input and output of GetTarget() and GetSource()

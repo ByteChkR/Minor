@@ -12,31 +12,25 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     /// </summary>
     public class ContactPenetrationConstraint : SolverUpdateable
     {
-        internal Contact contact;
-
-        ///<summary>
-        /// Gets the contact associated with this penetration constraint.
-        ///</summary>
-        public Contact Contact => contact;
-
         internal float accumulatedImpulse;
 
         //float linearBX, linearBY, linearBZ;
         internal float angularAX, angularAY, angularAZ;
         internal float angularBX, angularBY, angularBZ;
-
-        private float softness;
         private float bias;
-        private float linearAX, linearAY, linearAZ;
+        internal Contact contact;
+        private ContactManifoldConstraint contactManifoldConstraint;
         private Entity entityA, entityB;
 
         private bool entityADynamic, entityBDynamic;
+        private float linearAX, linearAY, linearAZ;
+
+        internal Vector3 ra, rb;
+
+        private float softness;
 
         //Inverse effective mass matrix
         internal float velocityToImpulse;
-        private ContactManifoldConstraint contactManifoldConstraint;
-
-        internal Vector3 ra, rb;
 
         ///<summary>
         /// Constructs a new penetration constraint.
@@ -46,34 +40,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             isActive = false;
         }
 
-
         ///<summary>
-        /// Configures the penetration constraint.
+        /// Gets the contact associated with this penetration constraint.
         ///</summary>
-        ///<param name="contactManifoldConstraint">Owning manifold constraint.</param>
-        ///<param name="contact">Contact associated with the penetration constraint.</param>
-        public void Setup(ContactManifoldConstraint contactManifoldConstraint, Contact contact)
-        {
-            this.contactManifoldConstraint = contactManifoldConstraint;
-            this.contact = contact;
-            isActive = true;
-
-            entityA = contactManifoldConstraint.EntityA;
-            entityB = contactManifoldConstraint.EntityB;
-        }
-
-        ///<summary>
-        /// Cleans up the constraint.
-        ///</summary>
-        public void CleanUp()
-        {
-            accumulatedImpulse = 0;
-            contactManifoldConstraint = null;
-            contact = null;
-            entityA = null;
-            entityB = null;
-            isActive = false;
-        }
+        public Contact Contact => contact;
 
         /// <summary>
         /// Gets the total normal impulse applied by this penetration constraint to maintain the separation of the involved entities.
@@ -106,6 +76,35 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
                 return lambda;
             }
+        }
+
+
+        ///<summary>
+        /// Configures the penetration constraint.
+        ///</summary>
+        ///<param name="contactManifoldConstraint">Owning manifold constraint.</param>
+        ///<param name="contact">Contact associated with the penetration constraint.</param>
+        public void Setup(ContactManifoldConstraint contactManifoldConstraint, Contact contact)
+        {
+            this.contactManifoldConstraint = contactManifoldConstraint;
+            this.contact = contact;
+            isActive = true;
+
+            entityA = contactManifoldConstraint.EntityA;
+            entityB = contactManifoldConstraint.EntityB;
+        }
+
+        ///<summary>
+        /// Cleans up the constraint.
+        ///</summary>
+        public void CleanUp()
+        {
+            accumulatedImpulse = 0;
+            contactManifoldConstraint = null;
+            contact = null;
+            entityA = null;
+            entityB = null;
+            isActive = false;
         }
 
 

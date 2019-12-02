@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using Engine.BuildTools.PackageCreator;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v2
 {
@@ -14,12 +13,6 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
     [Serializable]
     public class PackageManifest : IPackageManifest
     {
-        public string PackageVersion { get; set; } = "unnamed";
-        public string Title { get; set; } = "unnamed";
-        public string Version { get; set; }
-        public string StartCommand { get; set; }
-        public List<HashEntry> Hashes { get; set; }
-
         public PackageManifest()
         {
         }
@@ -32,6 +25,12 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             Version = version;
             Hashes = entries;
         }
+
+        public List<HashEntry> Hashes { get; set; }
+        public string PackageVersion { get; set; } = "unnamed";
+        public string Title { get; set; } = "unnamed";
+        public string Version { get; set; }
+        public string StartCommand { get; set; }
 
         public override string ToString()
         {

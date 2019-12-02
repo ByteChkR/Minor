@@ -11,10 +11,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
     {
         private Vector3 accumulatedImpulse;
         private Vector3 biasVelocity;
+        private Vector3 error;
         private Vector3 localAnchorA;
         private Vector3 localAnchorB;
         private Matrix3x3 massMatrix;
-        private Vector3 error;
         private Matrix3x3 rACrossProduct;
         private Matrix3x3 rBCrossProduct;
         private Vector3 worldOffsetA, worldOffsetB;
@@ -96,102 +96,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
                 Matrix3x3.TransformTranspose(ref worldOffsetB, ref connectionB.orientationMatrix, out localAnchorB);
             }
         }
-
-        #region I3DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// </summary>
-        public Vector3 RelativeVelocity
-        {
-            get
-            {
-                Vector3 cross;
-                Vector3 aVel, bVel;
-                Vector3.Cross(ref connectionA.angularVelocity, ref worldOffsetA, out cross);
-                Vector3.Add(ref connectionA.linearVelocity, ref cross, out aVel);
-                Vector3.Cross(ref connectionB.angularVelocity, ref worldOffsetB, out cross);
-                Vector3.Add(ref connectionB.linearVelocity, ref cross, out bVel);
-                return aVel - bVel;
-            }
-        }
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// </summary>
-        public Vector3 TotalImpulse => accumulatedImpulse;
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// </summary>
-        public Vector3 Error => error;
-
-        #endregion
-
-        #region I3DJacobianConstraint Members
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianZ">Third linear jacobian entry for the first connected entity.</param>
-        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = Toolbox.RightVector;
-            jacobianY = Toolbox.UpVector;
-            jacobianZ = Toolbox.BackVector;
-        }
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianZ">Third linear jacobian entry for the second connected entity.</param>
-        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = Toolbox.RightVector;
-            jacobianY = Toolbox.UpVector;
-            jacobianZ = Toolbox.BackVector;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianZ">Third angular jacobian entry for the first connected entity.</param>
-        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = rACrossProduct.Right;
-            jacobianY = rACrossProduct.Up;
-            jacobianZ = rACrossProduct.Forward;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianZ">Third angular jacobian entry for the second connected entity.</param>
-        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = rBCrossProduct.Right;
-            jacobianY = rBCrossProduct.Up;
-            jacobianZ = rBCrossProduct.Forward;
-        }
-
-        /// <summary>
-        /// Gets the mass matrix of the constraint.
-        /// </summary>
-        /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
-        public void GetMassMatrix(out Matrix3x3 outputMassMatrix)
-        {
-            outputMassMatrix = massMatrix;
-        }
-
-        #endregion
 
 
         /// <summary>
@@ -351,5 +255,101 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
                    Math.Abs(lambda.Y) +
                    Math.Abs(lambda.Z);
         }
+
+        #region I3DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// </summary>
+        public Vector3 RelativeVelocity
+        {
+            get
+            {
+                Vector3 cross;
+                Vector3 aVel, bVel;
+                Vector3.Cross(ref connectionA.angularVelocity, ref worldOffsetA, out cross);
+                Vector3.Add(ref connectionA.linearVelocity, ref cross, out aVel);
+                Vector3.Cross(ref connectionB.angularVelocity, ref worldOffsetB, out cross);
+                Vector3.Add(ref connectionB.linearVelocity, ref cross, out bVel);
+                return aVel - bVel;
+            }
+        }
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// </summary>
+        public Vector3 TotalImpulse => accumulatedImpulse;
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// </summary>
+        public Vector3 Error => error;
+
+        #endregion
+
+        #region I3DJacobianConstraint Members
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianZ">Third linear jacobian entry for the first connected entity.</param>
+        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = Toolbox.RightVector;
+            jacobianY = Toolbox.UpVector;
+            jacobianZ = Toolbox.BackVector;
+        }
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianZ">Third linear jacobian entry for the second connected entity.</param>
+        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = Toolbox.RightVector;
+            jacobianY = Toolbox.UpVector;
+            jacobianZ = Toolbox.BackVector;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianZ">Third angular jacobian entry for the first connected entity.</param>
+        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = rACrossProduct.Right;
+            jacobianY = rACrossProduct.Up;
+            jacobianZ = rACrossProduct.Forward;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianZ">Third angular jacobian entry for the second connected entity.</param>
+        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = rBCrossProduct.Right;
+            jacobianY = rBCrossProduct.Up;
+            jacobianZ = rBCrossProduct.Forward;
+        }
+
+        /// <summary>
+        /// Gets the mass matrix of the constraint.
+        /// </summary>
+        /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
+        public void GetMassMatrix(out Matrix3x3 outputMassMatrix)
+        {
+            outputMassMatrix = massMatrix;
+        }
+
+        #endregion
     }
 }

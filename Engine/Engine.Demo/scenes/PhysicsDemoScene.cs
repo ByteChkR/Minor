@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Resources;
-using Assimp;
-using Engine.Core;
+﻿using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Demo.components;
@@ -10,8 +7,6 @@ using Engine.Physics;
 using Engine.Physics.BEPUphysics.Entities.Prefabs;
 using Engine.Rendering;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using Mesh = Engine.DataTypes.Mesh;
 
 namespace Engine.Demo.scenes
 {

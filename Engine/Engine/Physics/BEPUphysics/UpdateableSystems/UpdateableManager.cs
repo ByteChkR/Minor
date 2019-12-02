@@ -12,11 +12,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         protected Action<int> multithreadedUpdateDelegate;
         protected TimeStepSettings timeStepSettings;
 
-        ///<summary>
-        /// Gets the time step settings used by the updateable manager.
-        ///</summary>
-        public TimeStepSettings TimeStepSettings => timeStepSettings;
-
         protected UpdateableManager(TimeStepSettings timeStepSettings)
         {
             this.timeStepSettings = timeStepSettings;
@@ -31,16 +26,21 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         }
 
         ///<summary>
-        /// Notifies the manager that the updateable has changed sequential updating state.
+        /// Gets the time step settings used by the updateable manager.
         ///</summary>
-        ///<param name="updateable">Updateable with changed state.</param>
-        public abstract void SequentialUpdatingStateChanged(ISpaceUpdateable updateable);
+        public TimeStepSettings TimeStepSettings => timeStepSettings;
 
 
         ///<summary>
         /// Gets or sets the owning space.
         ///</summary>
         public Space Space { get; set; }
+
+        ///<summary>
+        /// Notifies the manager that the updateable has changed sequential updating state.
+        ///</summary>
+        ///<param name="updateable">Updateable with changed state.</param>
+        public abstract void SequentialUpdatingStateChanged(ISpaceUpdateable updateable);
     }
 
     ///<summary>

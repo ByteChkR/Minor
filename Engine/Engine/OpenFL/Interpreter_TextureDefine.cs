@@ -8,7 +8,6 @@ using Engine.IO;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.WFC;
-using Image = Engine.OpenCL.DotNetCore.Memory.Image;
 
 namespace Engine.OpenFL
 {

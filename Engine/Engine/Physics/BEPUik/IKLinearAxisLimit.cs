@@ -8,6 +8,11 @@ namespace Engine.Physics.BEPUik
     public class IKLinearAxisLimit : IKLimit
     {
         /// <summary>
+        /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point which will be kept on the line.
+        /// </summary>
+        public Vector3 LocalAnchorB;
+
+        /// <summary>
         /// Gets or sets the offset in connection A's local space from the center of mass to the anchor point of the line.
         /// </summary>
         public Vector3 LocalLineAnchor;
@@ -19,9 +24,25 @@ namespace Engine.Physics.BEPUik
         public Vector3 LocalLineDirection;
 
         /// <summary>
-        /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point which will be kept on the line.
+        /// Constructs a new axis limit.
         /// </summary>
-        public Vector3 LocalAnchorB;
+        /// <param name="connectionA">First bone connected by the joint.</param>
+        /// <param name="connectionB">Second bone connected by the joint.</param>
+        /// <param name="lineAnchor">Anchor point of the line attached to the first bone in world space.</param>
+        /// <param name="lineDirection">Direction of the line attached to the first bone in world space. Must be unit length.</param>
+        /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
+        /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other along the axis.</param>
+        /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other along the axis.</param>
+        public IKLinearAxisLimit(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection,
+            Vector3 anchorB, float minimumDistance, float maximumDistance)
+            : base(connectionA, connectionB)
+        {
+            LineAnchor = lineAnchor;
+            LineDirection = lineDirection;
+            AnchorB = anchorB;
+            MinimumDistance = minimumDistance;
+            MaximumDistance = maximumDistance;
+        }
 
         /// <summary>
         /// Gets or sets the world space location of the line anchor attached to connection A.
@@ -64,27 +85,6 @@ namespace Engine.Physics.BEPUik
         /// Gets or sets the maximum distance that the joint connections should be kept from each other.
         /// </summary>
         public float MaximumDistance { get; set; }
-
-        /// <summary>
-        /// Constructs a new axis limit.
-        /// </summary>
-        /// <param name="connectionA">First bone connected by the joint.</param>
-        /// <param name="connectionB">Second bone connected by the joint.</param>
-        /// <param name="lineAnchor">Anchor point of the line attached to the first bone in world space.</param>
-        /// <param name="lineDirection">Direction of the line attached to the first bone in world space. Must be unit length.</param>
-        /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
-        /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other along the axis.</param>
-        /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other along the axis.</param>
-        public IKLinearAxisLimit(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection,
-            Vector3 anchorB, float minimumDistance, float maximumDistance)
-            : base(connectionA, connectionB)
-        {
-            LineAnchor = lineAnchor;
-            LineDirection = lineDirection;
-            AnchorB = anchorB;
-            MinimumDistance = minimumDistance;
-            MaximumDistance = maximumDistance;
-        }
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {

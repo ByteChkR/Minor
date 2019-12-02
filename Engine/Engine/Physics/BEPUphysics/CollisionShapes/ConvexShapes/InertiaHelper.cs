@@ -23,6 +23,23 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public static int NumberOfSamplesPerDimension = 10;
 
 
+        /// <summary>
+        /// Set of directions sampled by the inertia helper when constructing a mesh representation of a convex object.
+        /// </summary>
+        public static Vector3[] SampleDirections;
+
+        /// <summary>
+        /// Set of triangles represented by groups of three indices into the SampleDirections array.
+        /// </summary>
+        public static int[] SampleTriangleIndices;
+
+
+        static InertiaHelper()
+        {
+            GenerateSphere(1, out SampleDirections, out SampleTriangleIndices);
+        }
+
+
         ///<summary>
         /// Computes the volume contribution of a point.
         ///</summary>
@@ -46,23 +63,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             contribution.M21 = contribution.M12;
             contribution.M31 = contribution.M13;
             contribution.M32 = contribution.M23;
-        }
-
-
-        /// <summary>
-        /// Set of directions sampled by the inertia helper when constructing a mesh representation of a convex object.
-        /// </summary>
-        public static Vector3[] SampleDirections;
-
-        /// <summary>
-        /// Set of triangles represented by groups of three indices into the SampleDirections array.
-        /// </summary>
-        public static int[] SampleTriangleIndices;
-
-
-        static InertiaHelper()
-        {
-            GenerateSphere(1, out SampleDirections, out SampleTriangleIndices);
         }
 
 

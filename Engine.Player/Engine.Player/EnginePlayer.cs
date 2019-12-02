@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -20,17 +19,17 @@ namespace Engine.Player
 {
     internal class EnginePlayer
     {
+        private const int MF_BYCOMMAND = 0x00000000;
+        public const int SC_CLOSE = 0xF060;
         private static List<string> engineversions = new List<string>();
         private static Process p;
         private static bool DontReadLine;
         private static StartupInfo info;
         public static WebClient wc = new WebClient();
 
-        private static string EngineVersion = null;
+        private static string EngineVersion;
 
-
-        private const int MF_BYCOMMAND = 0x00000000;
-        public const int SC_CLOSE = 0xF060;
+        private static int last;
 
         [DllImport("user32.dll")]
         public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
@@ -81,18 +80,14 @@ namespace Engine.Player
             {
                 Console.WriteLine("Drag a file onto the executable, or specify the path in the command line.");
                 HelpCommand(info, args);
-
-                return;
             }
             else if (args[0].EndsWith(".engine"))
             {
                 AddEngineCommand(info, args);
-                return;
             }
             else if (args[0].EndsWith(".game"))
             {
                 RunGameCommand(info, args);
-                return;
             }
         }
 
@@ -420,8 +415,6 @@ namespace Engine.Player
             Console.WriteLine("");
             Console.WriteLine("Success: " + !e.Cancelled);
         }
-
-        private static int last = 0;
 
         private static void WcOnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {

@@ -9,8 +9,7 @@ namespace Engine.OpenCL.DotNetCore.Interop
     /// <summary>
     /// Represents a custom attribute, which can be used to mark an element of the public API with the OpenCL version that is was introduced in.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Struct,
-        Inherited = true, AllowMultiple = false)]
+    [AttributeUsage(AttributeTargets.Enum | AttributeTargets.Field | AttributeTargets.Method | AttributeTargets.Struct)]
     public class IntroducedInOpenClAttribute : Attribute
     {
         #region Constructors
@@ -33,12 +32,12 @@ namespace Engine.OpenCL.DotNetCore.Interop
         /// <summary>
         /// Gets or sets the major version of OpenCL in which the marked element of the public API was introduced.
         /// </summary>
-        public int MajorVersion { get; private set; }
+        public int MajorVersion { get; }
 
         /// <summary>
         /// Gets or sets the minor version of OpenCL in which the marked element of the public API was introduced.
         /// </summary>
-        public int MinorVersion { get; private set; }
+        public int MinorVersion { get; }
 
         #endregion
     }

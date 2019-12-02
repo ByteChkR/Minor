@@ -6,8 +6,8 @@ namespace Engine.Demo.components
     public class GeneralTimer : AbstractComponent
     {
         private float _destroyTime;
-        private float _time;
         private Action _onTrigger;
+        private float _time;
 
         public GeneralTimer(float destroyTime, Action onTrigger)
         {

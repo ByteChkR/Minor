@@ -3,7 +3,7 @@ namespace Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands
     /// <summary>
     /// Represents an enumeration for the status of the execution of a command.
     /// </summary>
-    public enum CommandExecutionStatus : int
+    public enum CommandExecutionStatus
     {
         /// <summary>
         /// The command has completed.

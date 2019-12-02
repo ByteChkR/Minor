@@ -18,6 +18,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         private Vector3 biasVelocity;
         private Matrix3x3 effectiveMassMatrix;
 
+        private Vector3 error;
+
+        private Vector3 localPoint;
+
         /// <summary>
         /// Maximum impulse that can be applied in a single frame.
         /// </summary>
@@ -29,31 +33,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         private float maxForceDtSquared;
 
-        private Vector3 error;
-
-        private Vector3 localPoint;
-
-        private Vector3 worldPoint;
-
         private Vector3 r;
         private float usedSoftness;
 
-        /// <summary>
-        /// Gets or sets the entity affected by the constraint.
-        /// </summary>
-        public override Entity Entity
-        {
-            get => base.Entity;
-            set
-            {
-                if (Entity != value)
-                {
-                    accumulatedImpulse = new Vector3();
-                }
-
-                base.Entity = value;
-            }
-        }
+        private Vector3 worldPoint;
 
 
         /// <summary>
@@ -79,6 +62,23 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         {
             Settings = new MotorSettings3D(this);
             IsActive = false;
+        }
+
+        /// <summary>
+        /// Gets or sets the entity affected by the constraint.
+        /// </summary>
+        public override Entity Entity
+        {
+            get => base.Entity;
+            set
+            {
+                if (Entity != value)
+                {
+                    accumulatedImpulse = new Vector3();
+                }
+
+                base.Entity = value;
+            }
         }
 
         /// <summary>
@@ -113,35 +113,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         /// Gets the motor's velocity and servo settings.
         /// </summary>
         public MotorSettings3D Settings { get; }
-
-        #region I3DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// </summary>
-        public Vector3 RelativeVelocity
-        {
-            get
-            {
-                Vector3 lambda;
-                Vector3.Cross(ref r, ref entity.angularVelocity, out lambda);
-                Vector3.Subtract(ref lambda, ref entity.linearVelocity, out lambda);
-                return lambda;
-            }
-        }
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// </summary>
-        public Vector3 TotalImpulse => accumulatedImpulse;
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// If the motor is in velocity only mode, error is zero.
-        /// </summary>
-        public Vector3 Error => error;
-
-        #endregion
 
         /// <summary>
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
@@ -292,5 +263,34 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
                 maxForceDtSquared = float.MaxValue;
             }
         }
+
+        #region I3DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// </summary>
+        public Vector3 RelativeVelocity
+        {
+            get
+            {
+                Vector3 lambda;
+                Vector3.Cross(ref r, ref entity.angularVelocity, out lambda);
+                Vector3.Subtract(ref lambda, ref entity.linearVelocity, out lambda);
+                return lambda;
+            }
+        }
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// </summary>
+        public Vector3 TotalImpulse => accumulatedImpulse;
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// If the motor is in velocity only mode, error is zero.
+        /// </summary>
+        public Vector3 Error => error;
+
+        #endregion
     }
 }

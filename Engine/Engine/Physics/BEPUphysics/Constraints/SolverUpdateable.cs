@@ -12,9 +12,43 @@ namespace Engine.Physics.BEPUphysics.Constraints
     /// </summary>
     public abstract class SolverUpdateable : ISimulationIslandConnectionOwner, ISpaceObject
     {
-        internal int solverIndex;
+        private static EntityComparer comparer = new EntityComparer();
+
+
+        /// <summary>
+        /// List of all entities affected by this updateable.
+        /// </summary>
+        protected internal readonly RawList<Entity> involvedEntities = new RawList<Entity>(2);
+
+        protected internal bool isActive = true;
+
+        protected internal bool isActiveInSolver = true;
+
+        /// <summary>
+        /// Number of entities used in the solver updateable.
+        /// Note that this is set automatically by the sortInvolvedEntities method
+        /// if it is called.
+        /// </summary>
+        protected internal int numberOfInvolvedEntities;
+
+        protected internal SimulationIslandConnection simulationIslandConnection;
 
         protected internal Solver solver;
+        internal int solverIndex;
+
+        protected internal SolverSettings solverSettings = new SolverSettings();
+
+
+        protected internal Space space;
+
+
+        protected SolverUpdateable()
+        {
+            //Initialize the connection.
+            //It will usually be overridden and end up floating on back to the resource pool.
+            simulationIslandConnection = PhysicsResources.GetSimulationIslandConnection();
+            simulationIslandConnection.Owner = this;
+        }
 
         ///<summary>
         /// Gets the solver to which the solver updateable belongs.
@@ -26,39 +60,15 @@ namespace Engine.Physics.BEPUphysics.Constraints
             protected internal set => solver = value;
         }
 
-        protected internal SimulationIslandConnection simulationIslandConnection;
-
-        /// <summary>
-        /// Gets the simulation island connection associated with this updateable.
-        /// </summary>
-        public SimulationIslandConnection SimulationIslandConnection => simulationIslandConnection;
-
-
-        /// <summary>
-        /// List of all entities affected by this updateable.
-        /// </summary>
-        protected internal readonly RawList<Entity> involvedEntities = new RawList<Entity>(2);
-
         ///<summary>
         /// Gets the entities that this solver updateable is involved with.
         ///</summary>
         public ReadOnlyList<Entity> InvolvedEntities => new ReadOnlyList<Entity>(involvedEntities);
 
-        /// <summary>
-        /// Number of entities used in the solver updateable.
-        /// Note that this is set automatically by the sortInvolvedEntities method
-        /// if it is called.
-        /// </summary>
-        protected internal int numberOfInvolvedEntities;
-
-        protected internal SolverSettings solverSettings = new SolverSettings();
-
         ///<summary>
         /// Gets the solver settings that manage how the solver updates.
         ///</summary>
         public SolverSettings SolverSettings => solverSettings;
-
-        protected internal bool isActive = true;
 
         /// <summary>
         /// Gets or sets whether or not this solver updateable is active.
@@ -85,14 +95,51 @@ namespace Engine.Physics.BEPUphysics.Constraints
             }
         }
 
-        protected internal bool isActiveInSolver = true;
-
         /// <summary>
         /// Gets whether or not the space's solver should try to solve this object.
         /// Depends on conditions specific to each solver updateable type and whether or not
         /// it has completed its computations early.  Recomputed each frame.
         /// </summary>
         public bool IsActiveInSolver => isActiveInSolver;
+
+
+        /// <summary>
+        /// Gets the solver group that manages this solver updateable, if any.
+        /// Null if not owned by a solver group.
+        /// </summary>
+        public SolverGroup SolverGroup { get; protected internal set; }
+
+        /// <summary>
+        /// Gets the simulation island connection associated with this updateable.
+        /// </summary>
+        public SimulationIslandConnection SimulationIslandConnection => simulationIslandConnection;
+
+        Space ISpaceObject.Space
+        {
+            get => space;
+            set => space = value;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the user data associated with this object.
+        /// </summary>
+        public object Tag { get; set; }
+
+        /// <summary>
+        /// Called after the object is added to a space.
+        /// </summary>
+        /// <param name="newSpace">Space to which this object was added.</param>
+        public virtual void OnAdditionToSpace(Space newSpace)
+        {
+        }
+
+        /// <summary>
+        /// Called before an object is removed from its space.
+        /// </summary>
+        public virtual void OnRemovalFromSpace(Space oldSpace)
+        {
+        }
 
         /// <summary>
         /// Activates all entities involved with this solver updateable.
@@ -109,22 +156,6 @@ namespace Engine.Physics.BEPUphysics.Constraints
                     break;
                 }
             }
-        }
-
-
-        /// <summary>
-        /// Gets the solver group that manages this solver updateable, if any.
-        /// Null if not owned by a solver group.
-        /// </summary>
-        public SolverGroup SolverGroup { get; protected internal set; }
-
-
-        protected SolverUpdateable()
-        {
-            //Initialize the connection.
-            //It will usually be overridden and end up floating on back to the resource pool.
-            simulationIslandConnection = PhysicsResources.GetSimulationIslandConnection();
-            simulationIslandConnection.Owner = this;
         }
 
 
@@ -250,10 +281,8 @@ namespace Engine.Physics.BEPUphysics.Constraints
                         entitiesChanged = true;
                         break;
                     }
-                    else
-                    {
-                        entitiesChanged = true;
-                    }
+
+                    entitiesChanged = true;
                 }
             }
 
@@ -372,8 +401,21 @@ namespace Engine.Physics.BEPUphysics.Constraints
             }
         }
 
+        ///<summary>
+        /// Called when the updateable is added to a solver.
+        ///</summary>
+        ///<param name="newSolver">Solver to which the updateable was added.</param>
+        public virtual void OnAdditionToSolver(Solver newSolver)
+        {
+        }
 
-        private static EntityComparer comparer = new EntityComparer();
+        /// <summary>
+        /// Called when the updateable is removed from its solver.
+        /// </summary>
+        /// <param name="oldSolver">Solver from which the updateable was removed.</param>
+        public virtual void OnRemovalFromSolver(Solver oldSolver)
+        {
+        }
 
         private class EntityComparer : IComparer<Entity>
         {
@@ -395,52 +437,6 @@ namespace Engine.Physics.BEPUphysics.Constraints
             }
 
             #endregion
-        }
-
-
-        protected internal Space space;
-
-        Space ISpaceObject.Space
-        {
-            get => space;
-            set => space = value;
-        }
-
-
-        /// <summary>
-        /// Gets or sets the user data associated with this object.
-        /// </summary>
-        public object Tag { get; set; }
-
-        /// <summary>
-        /// Called after the object is added to a space.
-        /// </summary>
-        /// <param name="newSpace">Space to which this object was added.</param>
-        public virtual void OnAdditionToSpace(Space newSpace)
-        {
-        }
-
-        /// <summary>
-        /// Called before an object is removed from its space.
-        /// </summary>
-        public virtual void OnRemovalFromSpace(Space oldSpace)
-        {
-        }
-
-        ///<summary>
-        /// Called when the updateable is added to a solver.
-        ///</summary>
-        ///<param name="newSolver">Solver to which the updateable was added.</param>
-        public virtual void OnAdditionToSolver(Solver newSolver)
-        {
-        }
-
-        /// <summary>
-        /// Called when the updateable is removed from its solver.
-        /// </summary>
-        /// <param name="oldSolver">Solver from which the updateable was removed.</param>
-        public virtual void OnRemovalFromSolver(Solver oldSolver)
-        {
         }
     }
 }

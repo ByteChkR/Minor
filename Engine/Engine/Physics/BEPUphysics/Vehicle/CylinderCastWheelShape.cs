@@ -14,18 +14,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
     /// </summary>
     public class CylinderCastWheelShape : WheelShape
     {
-        private CylinderShape shape;
-
         private Quaternion localWheelOrientation;
-
-        /// <summary>
-        /// Gets or sets the unsteered orientation of the wheel in the vehicle's local space.
-        /// </summary>
-        public Quaternion LocalWheelOrientation
-        {
-            get => localWheelOrientation;
-            set => localWheelOrientation = value;
-        }
+        private CylinderShape shape;
 
         /// <summary>
         /// Creates a new cylinder cast based wheel shape.
@@ -44,6 +34,15 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             LocalWheelOrientation = localWheelOrientation;
             LocalGraphicTransform = localGraphicTransform;
             IncludeSteeringTransformInCast = includeSteeringTransformInCast;
+        }
+
+        /// <summary>
+        /// Gets or sets the unsteered orientation of the wheel in the vehicle's local space.
+        /// </summary>
+        public Quaternion LocalWheelOrientation
+        {
+            get => localWheelOrientation;
+            set => localWheelOrientation = value;
         }
 
         /// <summary>

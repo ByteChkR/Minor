@@ -9,6 +9,24 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
     /// </summary>
     public abstract class NarrowPhasePairFactory
     {
+        protected bool allowOnDemandConstruction = true;
+
+        /// <summary>
+        /// Gets or sets the number of elements in the pair factory that are ready to take.
+        /// If the factory runs out, it will construct new instances to give away (unless AllowOnDemandConstruction is set to false).
+        /// </summary>
+        public abstract int Count { get; set; }
+
+        /// <summary>
+        /// Gets or sets whether or not to allow the factory to create additional instances when it runs
+        /// out of its initial set.  Defaults to true.
+        /// </summary>
+        public bool AllowOnDemandConstruction
+        {
+            get => allowOnDemandConstruction;
+            set => allowOnDemandConstruction = value;
+        }
+
         ///<summary>
         /// Manufactures and returns a narrow phase pair for the given overlap.
         ///</summary>
@@ -20,24 +38,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         /// </summary>
         /// <param name="pair">Pair to return.</param>
         public abstract void GiveBack(NarrowPhasePair pair);
-
-        /// <summary>
-        /// Gets or sets the number of elements in the pair factory that are ready to take.
-        /// If the factory runs out, it will construct new instances to give away (unless AllowOnDemandConstruction is set to false).
-        /// </summary>
-        public abstract int Count { get; set; }
-
-        protected bool allowOnDemandConstruction = true;
-
-        /// <summary>
-        /// Gets or sets whether or not to allow the factory to create additional instances when it runs
-        /// out of its initial set.  Defaults to true.
-        /// </summary>
-        public bool AllowOnDemandConstruction
-        {
-            get => allowOnDemandConstruction;
-            set => allowOnDemandConstruction = value;
-        }
 
         /// <summary>
         /// Ensures that the factory has at least the given number of elements ready to take.
@@ -77,6 +77,17 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
     {
         private LockingResourcePool<T> pool = new LockingResourcePool<T>();
 
+
+        /// <summary>
+        /// Gets or sets the number of elements in the pair factory that are ready to take.
+        /// If the factory runs out, it will construct new instances to give away (unless AllowOnDemandConstruction is set to false).
+        /// </summary>
+        public override int Count
+        {
+            get => pool.Count;
+            set => pool.Initialize(value);
+        }
+
         /// <summary>
         /// Get a resource from the factory.
         /// </summary>
@@ -102,17 +113,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         {
             pair.NarrowPhase = null;
             pool.GiveBack((T) pair);
-        }
-
-
-        /// <summary>
-        /// Gets or sets the number of elements in the pair factory that are ready to take.
-        /// If the factory runs out, it will construct new instances to give away (unless AllowOnDemandConstruction is set to false).
-        /// </summary>
-        public override int Count
-        {
-            get => pool.Count;
-            set => pool.Initialize(value);
         }
 
 

@@ -4,9 +4,14 @@ namespace Engine.Physics.BEPUik
 {
     public class SingleBoneRevoluteConstraint : SingleBoneConstraint
     {
-        private Vector3 freeAxis;
+        /// <summary>
+        /// Axis of allowed rotation in the bone's local space.
+        /// </summary>
+        public Vector3 BoneLocalFreeAxis;
+
         private Vector3 constrainedAxis1;
         private Vector3 constrainedAxis2;
+        private Vector3 freeAxis;
 
         /// <summary>
         /// Gets or sets the direction to constrain the bone free axis to.
@@ -27,12 +32,6 @@ namespace Engine.Physics.BEPUik
                 constrainedAxis2 = Vector3.Cross(freeAxis, constrainedAxis1);
             }
         }
-
-
-        /// <summary>
-        /// Axis of allowed rotation in the bone's local space.
-        /// </summary>
-        public Vector3 BoneLocalFreeAxis;
 
         protected internal override void UpdateJacobiansAndVelocityBias()
         {

@@ -17,11 +17,10 @@ namespace Engine.WFC
 {
     public class WFCOverlayMode : WaveFunctionCollapse
     {
-        private readonly int _n;
-        private readonly byte[][] _patterns;
         private readonly List<Color> _colors;
         private readonly int _ground;
-        public bool Success { get; private set; }
+        private readonly int _n;
+        private readonly byte[][] _patterns;
 
         public WFCOverlayMode(Bitmap bitmap, int N, int width, int height, bool periodicInput, bool periodicOutput,
             int symmetry, int ground)
@@ -223,6 +222,8 @@ namespace Engine.WFC
                 ground)
         {
         }
+
+        public bool Success { get; private set; }
 
         protected override bool OnBoundary(int x, int y)
         {

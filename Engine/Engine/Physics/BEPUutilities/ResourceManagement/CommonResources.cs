@@ -8,6 +8,12 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
     /// </summary>
     public static class CommonResources
     {
+        private static LockingResourcePool<RawList<RayHit>> SubPoolRayHitList;
+        private static LockingResourcePool<RawList<int>> SubPoolIntList;
+        private static LockingResourcePool<HashSet<int>> SubPoolIntSet;
+        private static LockingResourcePool<RawList<float>> SubPoolFloatList;
+        private static LockingResourcePool<RawList<Vector3>> SubPoolVectorList;
+
         static CommonResources()
         {
             ResetPools();
@@ -21,12 +27,6 @@ namespace Engine.Physics.BEPUutilities.ResourceManagement
             SubPoolVectorList = new LockingResourcePool<RawList<Vector3>>();
             SubPoolRayHitList = new LockingResourcePool<RawList<RayHit>>();
         }
-
-        private static LockingResourcePool<RawList<RayHit>> SubPoolRayHitList;
-        private static LockingResourcePool<RawList<int>> SubPoolIntList;
-        private static LockingResourcePool<HashSet<int>> SubPoolIntSet;
-        private static LockingResourcePool<RawList<float>> SubPoolFloatList;
-        private static LockingResourcePool<RawList<Vector3>> SubPoolVectorList;
 
         /// <summary>
         /// Retrieves a ray hit list from the resource pool.

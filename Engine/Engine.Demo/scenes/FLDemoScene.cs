@@ -1,15 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Resources;
-using Assimp;
-using Engine.Audio;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Demo.components;
 using Engine.IO;
-using Engine.OpenCL;
-using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 using Engine.Rendering;
 using Engine.UI.Animations;
@@ -17,9 +12,6 @@ using Engine.UI.Animations.AnimationTypes;
 using Engine.UI.Animations.Interpolators;
 using Engine.UI.EventSystems;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using Animation = Engine.UI.Animations.Animation;
-using Mesh = Engine.DataTypes.Mesh;
 
 namespace Engine.Demo.scenes
 {
@@ -143,7 +135,7 @@ namespace Engine.Demo.scenes
 
             Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             _sourceCube.AddComponent(new LightComponent());
-            _sourceCube.AddComponent(new RotateAroundComponent() {Slow = 0.15f});
+            _sourceCube.AddComponent(new RotateAroundComponent {Slow = 0.15f});
             _sourceCube.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, sourceCube,
                 TextureLoader.ColorToTexture(Color.White), 1));
 

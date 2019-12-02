@@ -8,16 +8,33 @@ namespace Engine.Physics.BEPUphysics.Constraints
     public class SolverSettings
     {
         /// <summary>
+        /// The value to assign to new constraints' SolverSettings.MinimumImpulse.
+        /// Impulses with magnitudes below this value will count as effectively zero in determining iteration early outs unless changed in the constraint's solver settings.
+        /// High values quicken the short circuit but can cause instability, while low values will often prevent short circuiting, possibly increasing accuracy but harming performance.
+        /// Defaults to .001f.
+        /// </summary>
+        public static float DefaultMinimumImpulse = .001f;
+
+        /// <summary>
+        /// The value to assign to new constraints' SolverSettings.MinimumIterations.
+        /// Constraints are able to skip extra calculations if deemed appropriate after they complete the minimum iterations.
+        /// Higher values force the system to wait longer before trying to early out, possibly improving behavior.
+        /// Defaults to 1.
+        /// </summary>
+        public static int DefaultMinimumIterationCount = 1;
+
+        /// <summary>
         /// Used to count how many iterations have taken place so far.
         /// </summary>
         internal int currentIterations;
 
+        internal int iterationsAtZeroImpulse;
+
         internal int maximumIterationCount = int.MaxValue;
 
-        internal int minimumIterationCount = DefaultMinimumIterationCount;
-
         internal float minimumImpulse = DefaultMinimumImpulse;
-        internal int iterationsAtZeroImpulse;
+
+        internal int minimumIterationCount = DefaultMinimumIterationCount;
 
         /// <summary>
         /// Gets or sets the maximum iterations that the wheel constraint can undergo.
@@ -52,21 +69,5 @@ namespace Engine.Physics.BEPUphysics.Constraints
             get => minimumImpulse;
             set => minimumImpulse = Math.Max(value, 0);
         }
-
-        /// <summary>
-        /// The value to assign to new constraints' SolverSettings.MinimumImpulse.
-        /// Impulses with magnitudes below this value will count as effectively zero in determining iteration early outs unless changed in the constraint's solver settings.
-        /// High values quicken the short circuit but can cause instability, while low values will often prevent short circuiting, possibly increasing accuracy but harming performance.
-        /// Defaults to .001f.
-        /// </summary>
-        public static float DefaultMinimumImpulse = .001f;
-
-        /// <summary>
-        /// The value to assign to new constraints' SolverSettings.MinimumIterations.
-        /// Constraints are able to skip extra calculations if deemed appropriate after they complete the minimum iterations.
-        /// Higher values force the system to wait longer before trying to early out, possibly improving behavior.
-        /// Defaults to 1.
-        /// </summary>
-        public static int DefaultMinimumIterationCount = 1;
     }
 }

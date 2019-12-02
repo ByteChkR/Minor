@@ -16,10 +16,14 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class TerrainPairHandler : StandardPairHandler
     {
-        private Terrain terrain;
-        private ConvexCollidable convex;
-
         private NonConvexContactManifoldConstraint contactConstraint;
+        private ConvexCollidable convex;
+        private Terrain terrain;
+
+        protected TerrainPairHandler()
+        {
+            contactConstraint = new NonConvexContactManifoldConstraint(this);
+        }
 
 
         public override Collidable CollidableA => convex;
@@ -41,11 +45,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override ContactManifold ContactManifold => TerrainManifold;
 
         protected abstract TerrainContactManifold TerrainManifold { get; }
-
-        protected TerrainPairHandler()
-        {
-            contactConstraint = new NonConvexContactManifoldConstraint(this);
-        }
 
         ///<summary>
         /// Initializes the pair handler.

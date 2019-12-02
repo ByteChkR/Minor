@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Engine.DataTypes;
 using Engine.OpenCL.DotNetCore.CommandQueues;
 using Engine.OpenCL.DotNetCore.DataTypes;
 using Engine.OpenCL.DotNetCore.Kernels;
@@ -18,22 +17,7 @@ namespace Engine.OpenCL
     /// </summary>
     public class CLKernel
     {
-        /// <summary>
-        /// Dictionary containing the Parsed Kernel Parameters Indexed by their name
-        /// </summary>
-        public Dictionary<string, KernelParameter> Parameter { get; }
-
         private CLAPI _instance;
-
-        /// <summary>
-        /// The Compiled and Linked OpenCL Kernel
-        /// </summary>
-        private Kernel Kernel { get; }
-
-        /// <summary>
-        /// The name of the CLKernel
-        /// </summary>
-        public string Name { get; }
 
         /// <summary>
         /// Constructor
@@ -49,6 +33,21 @@ namespace Engine.OpenCL
             Parameter = new Dictionary<string, KernelParameter>(parameter.Select(x =>
                 new KeyValuePair<string, KernelParameter>(x.Name, x)));
         }
+
+        /// <summary>
+        /// Dictionary containing the Parsed Kernel Parameters Indexed by their name
+        /// </summary>
+        public Dictionary<string, KernelParameter> Parameter { get; }
+
+        /// <summary>
+        /// The Compiled and Linked OpenCL Kernel
+        /// </summary>
+        private Kernel Kernel { get; }
+
+        /// <summary>
+        /// The name of the CLKernel
+        /// </summary>
+        public string Name { get; }
 
         /// <summary>
         /// Sets the buffer as argument.

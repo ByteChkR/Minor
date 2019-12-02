@@ -1,8 +1,6 @@
 ﻿using Engine.Core;
 using Engine.DataTypes;
-using Engine.Debug;
 using Engine.IO;
-using Engine.OpenCL.DotNetCore.Programs;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
@@ -13,7 +11,24 @@ namespace Engine.Rendering
     /// </summary>
     public class LitMeshRendererComponent : RenderingComponent
     {
-        private bool _init = false;
+        private bool _init;
+
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="shader">The Shader to be used</param>
+        /// <param name="model">The mesh to be drawn</param>
+        /// <param name="diffuseTexture">The Texture to drawn on the mesh</param>
+        /// <param name="renderMask">The render mask</param>
+        /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
+        public LitMeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
+            bool disposeOnDestroy = true) : base(shader, true, Renderer.RenderType.Opaque, renderMask)
+        {
+            Textures = new[] {diffuseTexture};
+            Meshes = new[] {model};
+            RenderMask = renderMask;
+            DisposeMeshOnDestroy = disposeOnDestroy;
+        }
 
         /// <summary>
         /// The property that implements the render mask requirement of IRendereringComponent
@@ -45,23 +60,6 @@ namespace Engine.Rendering
         /// A flag that if set, will dispose the meshes once it has been destroyed
         /// </summary>
         public bool DisposeMeshOnDestroy { get; set; }
-
-        /// <summary>
-        /// Public constructor
-        /// </summary>
-        /// <param name="shader">The Shader to be used</param>
-        /// <param name="model">The mesh to be drawn</param>
-        /// <param name="diffuseTexture">The Texture to drawn on the mesh</param>
-        /// <param name="renderMask">The render mask</param>
-        /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
-        public LitMeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
-            bool disposeOnDestroy = true) : base(shader, true, Renderer.RenderType.Opaque, renderMask)
-        {
-            Textures = new[] {diffuseTexture};
-            Meshes = new[] {model};
-            RenderMask = renderMask;
-            DisposeMeshOnDestroy = disposeOnDestroy;
-        }
 
         /// <summary>
         /// Dispose implementation

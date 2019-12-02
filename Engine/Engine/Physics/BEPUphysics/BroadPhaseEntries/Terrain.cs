@@ -15,6 +15,46 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public class Terrain : StaticCollidable
     {
+        protected internal ContactEventManager<Terrain> events;
+
+
+        internal bool improveBoundaryBehavior = true;
+
+        /// <summary>
+        /// The sidedness of triangles in the terrain. Precomputed based on the transform.
+        /// </summary>
+        internal TriangleSidedness sidedness;
+
+
+        internal float thickness;
+
+        internal AffineTransform worldTransform;
+
+
+        ///<summary>
+        /// Constructs a new Terrain.
+        ///</summary>
+        ///<param name="shape">Shape to use for the terrain.</param>
+        ///<param name="worldTransform">Transform to use for the terrain.</param>
+        public Terrain(TerrainShape shape, AffineTransform worldTransform)
+        {
+            WorldTransform = worldTransform;
+            Shape = shape;
+
+            Events = new ContactEventManager<Terrain>();
+        }
+
+
+        ///<summary>
+        /// Constructs a new Terrain.
+        ///</summary>
+        ///<param name="heights">Height data to use to create the TerrainShape.</param>
+        ///<param name="worldTransform">Transform to use for the terrain.</param>
+        public Terrain(float[,] heights, AffineTransform worldTransform)
+            : this(new TerrainShape(heights), worldTransform)
+        {
+        }
+
         ///<summary>
         /// Gets the shape of this collidable.
         ///</summary>
@@ -23,13 +63,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => (TerrainShape) shape;
             set => base.Shape = value;
         }
-
-        /// <summary>
-        /// The sidedness of triangles in the terrain. Precomputed based on the transform.
-        /// </summary>
-        internal TriangleSidedness sidedness;
-
-        internal AffineTransform worldTransform;
 
         ///<summary>
         /// Gets or sets the affine transform of the terrain.
@@ -62,9 +95,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             }
         }
 
-
-        internal bool improveBoundaryBehavior = true;
-
         /// <summary>
         /// Gets or sets whether or not the collision system should attempt to improve contact behavior at the boundaries between triangles.
         /// This has a slight performance cost, but prevents objects sliding across a triangle boundary from 'bumping,' and otherwise improves
@@ -75,8 +105,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => improveBoundaryBehavior;
             set => improveBoundaryBehavior = value;
         }
-
-        protected internal ContactEventManager<Terrain> events;
 
         ///<summary>
         /// Gets the event manager used by the Terrain.
@@ -109,9 +137,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         protected internal override IContactEventTriggerer EventTriggerer => events;
 
         protected override IDeferredEventCreator EventCreator => events;
-
-
-        internal float thickness;
 
         /// <summary>
         /// Gets or sets the thickness of the terrain.  This defines how far below the triangles of the terrain's surface the terrain 'body' extends.
@@ -162,31 +187,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
 
                 thickness = value;
             }
-        }
-
-
-        ///<summary>
-        /// Constructs a new Terrain.
-        ///</summary>
-        ///<param name="shape">Shape to use for the terrain.</param>
-        ///<param name="worldTransform">Transform to use for the terrain.</param>
-        public Terrain(TerrainShape shape, AffineTransform worldTransform)
-        {
-            WorldTransform = worldTransform;
-            Shape = shape;
-
-            Events = new ContactEventManager<Terrain>();
-        }
-
-
-        ///<summary>
-        /// Constructs a new Terrain.
-        ///</summary>
-        ///<param name="heights">Height data to use to create the TerrainShape.</param>
-        ///<param name="worldTransform">Transform to use for the terrain.</param>
-        public Terrain(float[,] heights, AffineTransform worldTransform)
-            : this(new TerrainShape(heights), worldTransform)
-        {
         }
 
 

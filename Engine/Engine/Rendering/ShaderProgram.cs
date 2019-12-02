@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using Engine.Common;
-using Engine.Core;
-using Engine.DataTypes;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.IO;
@@ -19,7 +15,7 @@ namespace Engine.Rendering
     /// </summary>
     public class ShaderProgram : IDisposable
     {
-        private readonly Dictionary<string, int> uniformCache = new Dictionary<string, int>();
+        private static int _lastUsedPrgID = -1;
 
 
         /// <summary>
@@ -27,7 +23,7 @@ namespace Engine.Rendering
         /// </summary>
         private readonly int _prgId;
 
-        private static int _lastUsedPrgID = -1;
+        private readonly Dictionary<string, int> uniformCache = new Dictionary<string, int>();
 
         /// <summary>
         /// Private constructor
@@ -35,6 +31,14 @@ namespace Engine.Rendering
         private ShaderProgram()
         {
             _prgId = GL.CreateProgram();
+        }
+
+        /// <summary>
+        /// Disposable Implementation that frees the GL Shader memory once the shader is not longer in use
+        /// </summary>
+        public void Dispose()
+        {
+            GL.DeleteProgram(_prgId);
         }
 
         internal static bool TryCreateFromSource(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
@@ -102,14 +106,6 @@ namespace Engine.Rendering
             }
 
             return TryCreateFromSource(ret, out program);
-        }
-
-        /// <summary>
-        /// Disposable Implementation that frees the GL Shader memory once the shader is not longer in use
-        /// </summary>
-        public void Dispose()
-        {
-            GL.DeleteProgram(_prgId);
         }
 
         /// <summary>

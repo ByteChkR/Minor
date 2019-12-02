@@ -16,10 +16,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class TriangleConvexPairHandler : ConvexConstraintPairHandler
     {
-        private ConvexCollidable<TriangleShape> triangle;
-        private ConvexCollidable convex;
-
         private TriangleConvexContactManifold contactManifold = new TriangleConvexContactManifold();
+        private ConvexCollidable convex;
+        private ConvexCollidable<TriangleShape> triangle;
 
         public override Collidable CollidableA => convex;
 

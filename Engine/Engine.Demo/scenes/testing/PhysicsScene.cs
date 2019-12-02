@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Drawing;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Demo.components;
@@ -8,21 +8,18 @@ using Engine.Physics;
 using Engine.Physics.BEPUphysics.Entities.Prefabs;
 using Engine.Rendering;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
-using Color = System.Drawing.Color;
-using MathHelper = Engine.Physics.BEPUutilities.MathHelper;
 using Vector3 = Engine.Physics.BEPUutilities.Vector3;
 
 namespace Engine.Demo.scenes.testing
 {
     public class PhysicsScene : AbstractScene
     {
-        private Texture Tex;
-        private Mesh Sphere;
         private Mesh Box;
-        private Random Rnd;
         private int ObjCount = 1000;
+        private Random Rnd;
+        private Mesh Sphere;
         private int StaticObjCount = 7500;
+        private Texture Tex;
 
         protected override void InitializeScene()
         {

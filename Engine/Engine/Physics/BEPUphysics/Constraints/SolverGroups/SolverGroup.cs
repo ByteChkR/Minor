@@ -18,6 +18,22 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         public ReadOnlyList<SolverUpdateable> SolverUpdateables =>
             new ReadOnlyList<SolverUpdateable>(solverUpdateables);
 
+        ///<summary>
+        /// Gets the solver to which the solver updateable belongs.
+        ///</summary>
+        public override Solver Solver
+        {
+            get => solver;
+            protected internal set
+            {
+                base.Solver = value;
+                for (int i = 0; i < solverUpdateables.Count; i++)
+                {
+                    solverUpdateables.Elements[i].Solver = value;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Collects the entities which are affected by the solver group and updates the internal listing.
@@ -258,22 +274,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
             for (int i = 0; i < solverUpdateables.Count; i++)
             {
                 solverUpdateables[i].OnRemovalFromSolver(oldSolver);
-            }
-        }
-
-        ///<summary>
-        /// Gets the solver to which the solver updateable belongs.
-        ///</summary>
-        public override Solver Solver
-        {
-            get => solver;
-            protected internal set
-            {
-                base.Solver = value;
-                for (int i = 0; i < solverUpdateables.Count; i++)
-                {
-                    solverUpdateables.Elements[i].Solver = value;
-                }
             }
         }
     }

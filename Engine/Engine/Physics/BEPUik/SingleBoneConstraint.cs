@@ -5,18 +5,18 @@ namespace Engine.Physics.BEPUik
 {
     public abstract class SingleBoneConstraint : IKConstraint
     {
+        internal Vector3 accumulatedImpulse;
+        internal Matrix3x3 angularJacobian;
+        internal Matrix3x3 effectiveMass;
+        internal Matrix3x3 linearJacobian;
+
+
+        internal Vector3 velocityBias;
+
         /// <summary>
         /// Gets or sets the bone associated with the single bone constraint.
         /// </summary>
         public Bone TargetBone { get; set; }
-
-
-        internal Vector3 velocityBias;
-        internal Matrix3x3 linearJacobian;
-        internal Matrix3x3 angularJacobian;
-        internal Matrix3x3 effectiveMass;
-
-        internal Vector3 accumulatedImpulse;
 
 
         protected internal override void ComputeEffectiveMass()

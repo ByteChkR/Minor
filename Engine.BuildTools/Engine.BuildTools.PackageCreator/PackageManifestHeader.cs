@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Xml;
 using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator
@@ -8,8 +7,6 @@ namespace Engine.BuildTools.PackageCreator
     [XmlRoot(ElementName = "PackageManifest")]
     public class PackageManifestHeader
     {
-        public string PackageVersion { get; set; } = "legacy";
-
         public PackageManifestHeader()
         {
         }
@@ -18,5 +15,7 @@ namespace Engine.BuildTools.PackageCreator
         {
             PackageVersion = packageVersion;
         }
+
+        public string PackageVersion { get; set; } = "legacy";
     }
 }

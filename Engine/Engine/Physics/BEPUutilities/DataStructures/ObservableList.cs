@@ -10,16 +10,6 @@ namespace Engine.Physics.BEPUutilities.DataStructures
     ///<typeparam name="T">Type of elements in the list.</typeparam>
     public class ObservableList<T> : IList<T>
     {
-        /// <summary>
-        /// Gets the list wrapped by the observable list. Adds and removes made to this list directly will not trigger events.
-        /// </summary>
-        public RawList<T> WrappedList { get; }
-
-        ///<summary>
-        /// Fires when elements in the list are changed.
-        ///</summary>
-        public event Action<ObservableList<T>> Changed;
-
         ///<summary>
         /// Constructs a new observable list.
         ///</summary>
@@ -47,13 +37,10 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             WrappedList = new RawList<T>(initialCapacity);
         }
 
-        protected void OnChanged()
-        {
-            if (Changed != null)
-            {
-                Changed(this);
-            }
-        }
+        /// <summary>
+        /// Gets the list wrapped by the observable list. Adds and removes made to this list directly will not trigger events.
+        /// </summary>
+        public RawList<T> WrappedList { get; }
 
 
         /// <summary>
@@ -172,21 +159,34 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             return false;
         }
 
-        ///<summary>
-        /// Gets an enumerator for the list.
-        ///</summary>
-        ///<returns>Enumerator for the list.</returns>
-        public RawList<T>.Enumerator GetEnumerator()
-        {
-            return WrappedList.GetEnumerator();
-        }
-
         IEnumerator<T> IEnumerable<T>.GetEnumerator()
         {
             return WrappedList.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
+        {
+            return WrappedList.GetEnumerator();
+        }
+
+        ///<summary>
+        /// Fires when elements in the list are changed.
+        ///</summary>
+        public event Action<ObservableList<T>> Changed;
+
+        protected void OnChanged()
+        {
+            if (Changed != null)
+            {
+                Changed(this);
+            }
+        }
+
+        ///<summary>
+        /// Gets an enumerator for the list.
+        ///</summary>
+        ///<returns>Enumerator for the list.</returns>
+        public RawList<T>.Enumerator GetEnumerator()
         {
             return WrappedList.GetEnumerator();
         }

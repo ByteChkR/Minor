@@ -39,12 +39,6 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         protected internal Matrix worldTransform;
 
         /// <summary>
-        /// Gets or sets the collision rules used by the wheel.
-        /// </summary>
-        public CollisionRules CollisionRules { get; set; } = new CollisionRules
-            {Group = CollisionRules.DefaultDynamicCollisionGroup};
-
-        /// <summary>
         /// Gets or sets the graphical radius of the wheel.
         /// </summary>
         public abstract float Radius { get; set; }
@@ -143,6 +137,12 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// Gets the world matrix of the wheel for positioning a graphic.
         /// </summary>
         public Matrix WorldTransform => worldTransform;
+
+        /// <summary>
+        /// Gets or sets the collision rules used by the wheel.
+        /// </summary>
+        public CollisionRules CollisionRules { get; set; } = new CollisionRules
+            {Group = CollisionRules.DefaultDynamicCollisionGroup};
 
 
         /// <summary>

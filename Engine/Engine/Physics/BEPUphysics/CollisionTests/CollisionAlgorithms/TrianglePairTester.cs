@@ -13,6 +13,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         ///</summary>
         public bool Updated;
 
+        /// <summary>
+        /// Whether or not the last found contact should have its normal corrected.
+        /// </summary>
+        public abstract bool ShouldCorrectContactNormal { get; }
+
         //Relies on the triangle being located in the local space of the convex object.  The convex transform is used to transform the
         //contact points back from the convex's local space into world space.
         ///<summary>
@@ -31,11 +36,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// <param name="contact">Contact to check.</param>
         /// <returns>Region in which the contact resides.</returns>
         public abstract VoronoiRegion GetRegion(TriangleShape triangle, ref ContactData contact);
-
-        /// <summary>
-        /// Whether or not the last found contact should have its normal corrected.
-        /// </summary>
-        public abstract bool ShouldCorrectContactNormal { get; }
 
         ///<summary>
         /// Initializes the pair tester.

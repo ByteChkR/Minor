@@ -10,6 +10,25 @@ namespace Engine.Rendering
     /// </summary>
     public class MeshRendererComponent : RenderingComponent
     {
+        protected bool _init;
+
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="shader">The Shader to be used</param>
+        /// <param name="model">The mesh to be drawn</param>
+        /// <param name="diffuseTexture">The Texture to drawn on the mesh</param>
+        /// <param name="renderMask">The render mask</param>
+        /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
+        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
+            bool disposeOnDestroy = true) : base(shader, true, Renderer.RenderType.Opaque, renderMask)
+        {
+            Textures = new[] {diffuseTexture};
+            Meshes = new[] {model};
+            RenderMask = renderMask;
+            DisposeMeshOnDestroy = disposeOnDestroy;
+        }
+
         /// <summary>
         /// The property that implements the render mask requirement of IRendereringComponent
         /// </summary>
@@ -40,23 +59,6 @@ namespace Engine.Rendering
         /// A flag that if set, will dispose the meshes once it has been destroyed
         /// </summary>
         public bool DisposeMeshOnDestroy { get; set; }
-
-        /// <summary>
-        /// Public constructor
-        /// </summary>
-        /// <param name="shader">The Shader to be used</param>
-        /// <param name="model">The mesh to be drawn</param>
-        /// <param name="diffuseTexture">The Texture to drawn on the mesh</param>
-        /// <param name="renderMask">The render mask</param>
-        /// <param name="disposeOnDestroy">The DisposeMeshOnDestroy Flag</param>
-        public MeshRendererComponent(ShaderProgram shader, Mesh model, Texture diffuseTexture, int renderMask,
-            bool disposeOnDestroy = true) : base(shader, true, Renderer.RenderType.Opaque, renderMask)
-        {
-            Textures = new[] {diffuseTexture};
-            Meshes = new[] {model};
-            RenderMask = renderMask;
-            DisposeMeshOnDestroy = disposeOnDestroy;
-        }
 
         /// <summary>
         /// Dispose implementation
@@ -92,9 +94,6 @@ namespace Engine.Rendering
                 Program.AddUniformCache("texture_height" + i);
             }
         }
-
-
-        protected bool _init = false;
 
         /// <summary>
         /// The Code for rendering a Mesh

@@ -13,6 +13,16 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         private MeshBoundingBoxTreeData data;
 
         ///<summary>
+        /// Constructs a new triangle mesh.
+        ///</summary>
+        ///<param name="data">Data to use to construct the mesh.</param>
+        public TriangleMesh(MeshBoundingBoxTreeData data)
+        {
+            this.data = data;
+            Tree = new MeshBoundingBoxTree(data);
+        }
+
+        ///<summary>
         /// Gets or sets the bounding box data used in the mesh.
         ///</summary>
         public MeshBoundingBoxTreeData Data
@@ -29,16 +39,6 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         /// Gets the bounding box tree that accelerates queries to this triangle mesh.
         ///</summary>
         public MeshBoundingBoxTree Tree { get; }
-
-        ///<summary>
-        /// Constructs a new triangle mesh.
-        ///</summary>
-        ///<param name="data">Data to use to construct the mesh.</param>
-        public TriangleMesh(MeshBoundingBoxTreeData data)
-        {
-            this.data = data;
-            Tree = new MeshBoundingBoxTree(data);
-        }
 
         ///<summary>
         /// Tests a ray against the triangle mesh.

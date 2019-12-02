@@ -12,6 +12,12 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     ///</summary>
     public class NonConvexContactManifoldConstraint : ContactManifoldConstraint
     {
+        private Stack<ContactFrictionConstraint> frictionConstraintPool = new Stack<ContactFrictionConstraint>(4);
+
+        internal RawList<ContactFrictionConstraint> frictionConstraints;
+
+        private Stack<ContactPenetrationConstraint> penetrationConstraintPool =
+            new Stack<ContactPenetrationConstraint>(4);
         //Unlike the convex manifold constraint, this constraint enforces no requirements
         //on the contact data.  The collisions can form a nonconvex patch.  They can have differing normals.
         //This is required for proper collision handling on large structures
@@ -21,25 +27,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         //One friction constraint for each contact.
 
         internal RawList<ContactPenetrationConstraint> penetrationConstraints;
-
-        ///<summary>
-        /// Gets the penetration constraints in the manifold.
-        ///</summary>
-        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints =>
-            new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
-
-        private Stack<ContactPenetrationConstraint> penetrationConstraintPool =
-            new Stack<ContactPenetrationConstraint>(4);
-
-        internal RawList<ContactFrictionConstraint> frictionConstraints;
-
-        ///<summary>
-        /// Gets the friction constraints in the manifold.
-        ///</summary>
-        public ReadOnlyList<ContactFrictionConstraint> ContactFrictionConstraints =>
-            new ReadOnlyList<ContactFrictionConstraint>(frictionConstraints);
-
-        private Stack<ContactFrictionConstraint> frictionConstraintPool = new Stack<ContactFrictionConstraint>(4);
 
 
         ///<summary>
@@ -65,6 +52,18 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
                 Add(frictionConstraint);
             }
         }
+
+        ///<summary>
+        /// Gets the penetration constraints in the manifold.
+        ///</summary>
+        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints =>
+            new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
+
+        ///<summary>
+        /// Gets the friction constraints in the manifold.
+        ///</summary>
+        public ReadOnlyList<ContactFrictionConstraint> ContactFrictionConstraints =>
+            new ReadOnlyList<ContactFrictionConstraint>(frictionConstraints);
 
 
         ///<summary>

@@ -9,16 +9,6 @@ namespace Engine.Rendering
     public class BasicCamera : GameObject, ICamera
     {
         /// <summary>
-        /// The projection matrix of the Camera
-        /// </summary>
-        public Matrix4 Projection { get; set; }
-
-        /// <summary>
-        /// The view matrix of the Camera
-        /// </summary>
-        public Matrix4 ViewMatrix => Matrix4.Invert(GetWorldTransform());
-
-        /// <summary>
         /// Public constructor
         /// </summary>
         /// <param name="projection">The projection matrix of the Camera</param>
@@ -27,5 +17,15 @@ namespace Engine.Rendering
         {
             Projection = projection;
         }
+
+        /// <summary>
+        /// The projection matrix of the Camera
+        /// </summary>
+        public Matrix4 Projection { get; set; }
+
+        /// <summary>
+        /// The view matrix of the Camera
+        /// </summary>
+        public Matrix4 ViewMatrix => Matrix4.Invert(GetWorldTransform());
     }
 }

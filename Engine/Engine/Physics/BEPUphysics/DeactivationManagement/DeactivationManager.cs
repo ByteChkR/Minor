@@ -12,11 +12,67 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
     ///</summary>
     public class DeactivationManager : MultithreadedProcessingStage
     {
+        private static float maximumSplitAttemptsFraction = .01f;
+
+        private static int minimumSplitAttempts = 3;
+
+        //Merges must be performed sequentially.
+        private SpinLock addLocker = new SpinLock();
         private int deactivationIslandIndex;
+
+        private UnsafeResourcePool<SimulationIsland> islandPool = new UnsafeResourcePool<SimulationIsland>();
+        internal float lowVelocityTimeMinimum = 1f;
+
+
+        //TryToSplit is NOT THREAD SAFE.  Only one TryToSplit should ever be run.
+        private Queue<SimulationIslandMember> member1Friends = new Queue<SimulationIslandMember>(),
+            member2Friends = new Queue<SimulationIslandMember>();
+
+        private Action<int> multithreadedCandidacyLoopDelegate;
+
+        private List<SimulationIslandMember> searchedMembers1 = new List<SimulationIslandMember>(),
+            searchedMembers2 = new List<SimulationIslandMember>();
+        //TODO: Deactivation Candidate Detection
+        //-Could scan the entities of CURRENTLY ACTIVE simulation islands.
+        //-Requires a List-format of active sim islands.
+        //-Requires sim islands have a list-format entity set.
+        //-Simulation islands of different sizes won't load-balance well on the xbox360; it would be fine on the pc though.
+        //TODO: Simulation Island Deactivation
+
+        private RawList<SimulationIslandMember> simulationIslandMembers = new RawList<SimulationIslandMember>();
+        private RawList<SimulationIsland> simulationIslands = new RawList<SimulationIsland>();
+
+
+        private ConcurrentDeque<SimulationIslandConnection> splitAttempts =
+            new ConcurrentDeque<SimulationIslandConnection>();
+
+        internal bool useStabilization = true;
 
         internal float velocityLowerLimit = .26f;
         internal float velocityLowerLimitSquared = .26f * .26f;
-        internal float lowVelocityTimeMinimum = 1f;
+
+        ///<summary>
+        /// Constructs a deactivation manager.
+        ///</summary>
+        ///<param name="timeStepSettings">The time step settings used by the manager.</param>
+        public DeactivationManager(TimeStepSettings timeStepSettings)
+        {
+            Enabled = true;
+            multithreadedCandidacyLoopDelegate = MultithreadedCandidacyLoop;
+            TimeStepSettings = timeStepSettings;
+        }
+
+        ///<summary>
+        /// Constructs a deactivation manager.
+        ///</summary>
+        ///<param name="timeStepSettings">The time step settings used by the manager.</param>
+        /// <param name="parallelLooper">Parallel loop provider used by the manager.</param>
+        public DeactivationManager(TimeStepSettings timeStepSettings, IParallelLooper parallelLooper)
+            : this(timeStepSettings)
+        {
+            ParallelLooper = parallelLooper;
+            AllowMultithreading = true;
+        }
 
         ///<summary>
         /// Gets or sets the velocity under which the deactivation system will consider 
@@ -53,8 +109,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             }
         }
 
-        internal bool useStabilization = true;
-
         ///<summary>
         /// Gets or sets whether or not to use a stabilization effect on nearly motionless objects.
         /// This removes a lot of energy from a system when things are settling down, allowing them to go 
@@ -66,14 +120,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             get => useStabilization;
             set => useStabilization = value;
         }
-
-
-        //TryToSplit is NOT THREAD SAFE.  Only one TryToSplit should ever be run.
-        private Queue<SimulationIslandMember> member1Friends = new Queue<SimulationIslandMember>(),
-            member2Friends = new Queue<SimulationIslandMember>();
-
-        private List<SimulationIslandMember> searchedMembers1 = new List<SimulationIslandMember>(),
-            searchedMembers2 = new List<SimulationIslandMember>();
 
         ///<summary>
         /// Gets or sets the maximum number of objects to attempt to deactivate each frame.
@@ -87,44 +133,47 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         public TimeStepSettings TimeStepSettings { get; set; }
 
         ///<summary>
-        /// Constructs a deactivation manager.
-        ///</summary>
-        ///<param name="timeStepSettings">The time step settings used by the manager.</param>
-        public DeactivationManager(TimeStepSettings timeStepSettings)
-        {
-            Enabled = true;
-            multithreadedCandidacyLoopDelegate = MultithreadedCandidacyLoop;
-            TimeStepSettings = timeStepSettings;
-        }
-
-        ///<summary>
-        /// Constructs a deactivation manager.
-        ///</summary>
-        ///<param name="timeStepSettings">The time step settings used by the manager.</param>
-        /// <param name="parallelLooper">Parallel loop provider used by the manager.</param>
-        public DeactivationManager(TimeStepSettings timeStepSettings, IParallelLooper parallelLooper)
-            : this(timeStepSettings)
-        {
-            ParallelLooper = parallelLooper;
-            AllowMultithreading = true;
-        }
-        //TODO: Deactivation Candidate Detection
-        //-Could scan the entities of CURRENTLY ACTIVE simulation islands.
-        //-Requires a List-format of active sim islands.
-        //-Requires sim islands have a list-format entity set.
-        //-Simulation islands of different sizes won't load-balance well on the xbox360; it would be fine on the pc though.
-        //TODO: Simulation Island Deactivation
-
-        private RawList<SimulationIslandMember> simulationIslandMembers = new RawList<SimulationIslandMember>();
-        private RawList<SimulationIsland> simulationIslands = new RawList<SimulationIsland>();
-
-        ///<summary>
         /// Gets the simulation islands currently in the manager.
         ///</summary>
         public ReadOnlyList<SimulationIsland> SimulationIslands =>
             new ReadOnlyList<SimulationIsland>(simulationIslands);
 
-        private UnsafeResourcePool<SimulationIsland> islandPool = new UnsafeResourcePool<SimulationIsland>();
+        /// <summary>
+        /// Gets or sets the fraction of splits that the deactivation manager will attempt in a single frame.
+        /// The total splits queued multiplied by this value results in the number of splits managed.
+        /// Defaults to .04f.
+        /// </summary>
+        public static float MaximumSplitAttemptsFraction
+        {
+            get => maximumSplitAttemptsFraction;
+            set
+            {
+                if (value > 1 || value < 0)
+                {
+                    throw new ArgumentException("Value must be from zero to one.");
+                }
+
+                maximumSplitAttemptsFraction = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the minimum number of splits attempted in a single frame.
+        /// Defaults to 5.
+        /// </summary>
+        public static int MinimumSplitAttempts
+        {
+            get => minimumSplitAttempts;
+            set
+            {
+                if (value >= 0)
+                {
+                    throw new ArgumentException("Minimum split count must be nonnegative.");
+                }
+
+                minimumSplitAttempts = value;
+            }
+        }
 
         private void GiveBackIsland(SimulationIsland island)
         {
@@ -179,8 +228,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             }
         }
 
-        private Action<int> multithreadedCandidacyLoopDelegate;
-
         private void MultithreadedCandidacyLoop(int i)
         {
             simulationIslandMembers.Elements[i].UpdateDeactivationCandidacy(TimeStepSettings.TimeStepDuration);
@@ -206,51 +253,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             }
 
             DeactivateObjects();
-        }
-
-
-        private ConcurrentDeque<SimulationIslandConnection> splitAttempts =
-            new ConcurrentDeque<SimulationIslandConnection>();
-
-        private static float maximumSplitAttemptsFraction = .01f;
-
-        /// <summary>
-        /// Gets or sets the fraction of splits that the deactivation manager will attempt in a single frame.
-        /// The total splits queued multiplied by this value results in the number of splits managed.
-        /// Defaults to .04f.
-        /// </summary>
-        public static float MaximumSplitAttemptsFraction
-        {
-            get => maximumSplitAttemptsFraction;
-            set
-            {
-                if (value > 1 || value < 0)
-                {
-                    throw new ArgumentException("Value must be from zero to one.");
-                }
-
-                maximumSplitAttemptsFraction = value;
-            }
-        }
-
-        private static int minimumSplitAttempts = 3;
-
-        /// <summary>
-        /// Gets or sets the minimum number of splits attempted in a single frame.
-        /// Defaults to 5.
-        /// </summary>
-        public static int MinimumSplitAttempts
-        {
-            get => minimumSplitAttempts;
-            set
-            {
-                if (value >= 0)
-                {
-                    throw new ArgumentException("Minimum split count must be nonnegative.");
-                }
-
-                minimumSplitAttempts = value;
-            }
         }
 
         private void FlushSplits()
@@ -327,9 +329,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
                 ++numberOfIslandsChecked;
             }
         }
-
-        //Merges must be performed sequentially.
-        private SpinLock addLocker = new SpinLock();
 
         ///<summary>
         /// Adds a simulation island connection to the deactivation manager.

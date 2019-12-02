@@ -11,6 +11,13 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     ///</summary>
     public class ConvexContactManifoldConstraint : ContactManifoldConstraint
     {
+        private Stack<ContactPenetrationConstraint> penetrationConstraintPool =
+            new Stack<ContactPenetrationConstraint>(4);
+
+
+        internal RawList<ContactPenetrationConstraint> penetrationConstraints;
+
+        internal SlidingFrictionTwoAxis slidingFriction;
         //This contact manifold constraint covers a single, 4-contact pair.
 
         //The solver group is composed of multiple constraints.
@@ -19,30 +26,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         //One twist constraint.
 
         internal TwistFrictionConstraint twistFriction;
-
-        ///<summary>
-        /// Gets the twist friction constraint used by the manifold.
-        ///</summary>
-        public TwistFrictionConstraint TwistFriction => twistFriction;
-
-        internal SlidingFrictionTwoAxis slidingFriction;
-
-        ///<summary>
-        /// Gets the sliding friction constraint used by the manifold.
-        ///</summary>
-        public SlidingFrictionTwoAxis SlidingFriction => slidingFriction;
-
-
-        internal RawList<ContactPenetrationConstraint> penetrationConstraints;
-
-        ///<summary>
-        /// Gets the penetration constraints used by the manifold.
-        ///</summary>
-        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints =>
-            new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
-
-        private Stack<ContactPenetrationConstraint> penetrationConstraintPool =
-            new Stack<ContactPenetrationConstraint>(4);
 
 
         ///<summary>
@@ -71,6 +54,22 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             twistFriction = new TwistFrictionConstraint();
             Add(twistFriction);
         }
+
+        ///<summary>
+        /// Gets the twist friction constraint used by the manifold.
+        ///</summary>
+        public TwistFrictionConstraint TwistFriction => twistFriction;
+
+        ///<summary>
+        /// Gets the sliding friction constraint used by the manifold.
+        ///</summary>
+        public SlidingFrictionTwoAxis SlidingFriction => slidingFriction;
+
+        ///<summary>
+        /// Gets the penetration constraints used by the manifold.
+        ///</summary>
+        public ReadOnlyList<ContactPenetrationConstraint> ContactPenetrationConstraints =>
+            new ReadOnlyList<ContactPenetrationConstraint>(penetrationConstraints);
 
         ///<summary>
         /// Cleans up the constraint.

@@ -13,12 +13,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     public class ConvexHull : Entity<ConvexCollidable<ConvexHullShape>>
     {
         /// <summary>
-        /// List of the points composing the surface of the convex hull in local space.
-        /// </summary>
-        public ReadOnlyList<Vector3> Vertices => CollisionInformation.Shape.Vertices;
-
-
-        /// <summary>
         /// Constructs a nondynamic convex hull of points.
         /// </summary>
         /// <param name="points">List of points in the object.</param>
@@ -91,5 +85,10 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
+
+        /// <summary>
+        /// List of the points composing the surface of the convex hull in local space.
+        /// </summary>
+        public ReadOnlyList<Vector3> Vertices => CollisionInformation.Shape.Vertices;
     }
 }

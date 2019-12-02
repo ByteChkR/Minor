@@ -28,6 +28,25 @@ namespace Engine.Physics.BEPUutilities.Threading
         }
 
 
+        /// <summary>
+        /// Disposes the worker.
+        /// </summary>
+        public void Dispose()
+        {
+            lock (disposedLocker)
+            {
+                if (!disposed)
+                {
+                    disposed = true;
+                    getToWork.Dispose();
+                    getToWork = null;
+                    thread = null;
+                    GC.SuppressFinalize(this);
+                }
+            }
+        }
+
+
         internal void Work()
         {
             if (threadStart != null)
@@ -64,25 +83,6 @@ namespace Engine.Physics.BEPUutilities.Threading
                 } //this is not 'thread safe' but the result of the unsafety is a quick fail in the worst case.
 
                 manager.OnWorkerFinish();
-            }
-        }
-
-
-        /// <summary>
-        /// Disposes the worker.
-        /// </summary>
-        public void Dispose()
-        {
-            lock (disposedLocker)
-            {
-                if (!disposed)
-                {
-                    disposed = true;
-                    getToWork.Dispose();
-                    getToWork = null;
-                    thread = null;
-                    GC.SuppressFinalize(this);
-                }
             }
         }
 

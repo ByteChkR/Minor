@@ -9,7 +9,23 @@ namespace Engine.Physics.BEPUphysics.DataStructures
     ///</summary>
     public class MeshBoundingBoxTree
     {
+        /// <summary>
+        /// The tiny extra margin added to leaf bounding boxes that allow the volume cost metric to function properly even in degenerate cases.
+        /// </summary>
+        public static float LeafMargin = .001f;
+
         private MeshBoundingBoxTreeData data;
+
+        private Node root;
+
+        /// <summary>
+        /// Constructs a new tree.
+        /// </summary>
+        /// <param name="data">Data to use to construct the tree.</param>
+        public MeshBoundingBoxTree(MeshBoundingBoxTreeData data)
+        {
+            Data = data;
+        }
 
 
         /// <summary>
@@ -28,8 +44,6 @@ namespace Engine.Physics.BEPUphysics.DataStructures
             }
         }
 
-        private Node root;
-
         /// <summary>
         /// Gets or sets the data used to construct the tree.
         /// When set, the tree will be reconstructed.
@@ -42,15 +56,6 @@ namespace Engine.Physics.BEPUphysics.DataStructures
                 data = value;
                 Reconstruct();
             }
-        }
-
-        /// <summary>
-        /// Constructs a new tree.
-        /// </summary>
-        /// <param name="data">Data to use to construct the tree.</param>
-        public MeshBoundingBoxTree(MeshBoundingBoxTreeData data)
-        {
-            Data = data;
         }
 
 
@@ -237,14 +242,14 @@ namespace Engine.Physics.BEPUphysics.DataStructures
         abstract class Node
         {
             internal BoundingBox BoundingBox;
+
+            internal abstract bool IsLeaf { get; }
             internal abstract void GetOverlaps(ref BoundingBox boundingBox, IList<int> outputOverlappedElements);
 
             internal abstract void GetOverlaps(ref BoundingSphere boundingSphere, IList<int> outputOverlappedElements);
 
             //internal abstract void GetOverlaps(ref BoundingFrustum boundingFrustum, IList<int> outputOverlappedElements);
             internal abstract void GetOverlaps(ref Ray ray, float maximumLength, IList<int> outputOverlappedElements);
-
-            internal abstract bool IsLeaf { get; }
 
 
             internal abstract bool TryToInsert(LeafNode node, out Node treeNode);
@@ -420,16 +425,9 @@ namespace Engine.Physics.BEPUphysics.DataStructures
             }
         }
 
-        /// <summary>
-        /// The tiny extra margin added to leaf bounding boxes that allow the volume cost metric to function properly even in degenerate cases.
-        /// </summary>
-        public static float LeafMargin = .001f;
-
         private sealed class LeafNode : Node
         {
             private int LeafIndex;
-
-            internal override bool IsLeaf => true;
 
             internal LeafNode(int leafIndex, MeshBoundingBoxTreeData data)
             {
@@ -443,6 +441,8 @@ namespace Engine.Physics.BEPUphysics.DataStructures
                 BoundingBox.Min.Y -= LeafMargin;
                 BoundingBox.Min.Z -= LeafMargin;
             }
+
+            internal override bool IsLeaf => true;
 
             internal override void GetOverlaps(ref BoundingBox boundingBox, IList<int> outputOverlappedElements)
             {

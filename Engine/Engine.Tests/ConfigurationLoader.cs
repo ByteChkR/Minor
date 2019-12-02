@@ -29,28 +29,12 @@ namespace Engine.Tests
         }
 
         [Fact]
-        public void TestSaving()
-        {
-            TestContainer container = new TestContainer()
-            {
-                ContainerName = "TestContainer",
-                Data = new TestStruct() {TestString = "TestString", Position = Vector4.UnitY, TestInt = 123}
-            };
-
-            EngineConfig.CreateConfig(container, "resources/ConfigTest_Save.xml");
-
-            string created = File.ReadAllText("resources/ConfigTest_Save.xml");
-            string original = File.ReadAllText("resources/io/test_struct_original.xml");
-            Assert.True(original == created);
-        }
-
-        [Fact]
         public void TestLoading()
         {
-            TestContainer reference = new TestContainer()
+            TestContainer reference = new TestContainer
             {
                 ContainerName = "TestContainer",
-                Data = new TestStruct() {TestString = "TestString", Position = Vector4.UnitY, TestInt = 123}
+                Data = new TestStruct {TestString = "TestString", Position = Vector4.UnitY, TestInt = 123}
             };
 
             object container = new TestContainer();
@@ -61,6 +45,22 @@ namespace Engine.Tests
             Assert.True(reference.Data.TestString == c.Data.TestString);
             Assert.True(reference.Data.TestInt == c.Data.TestInt);
             Assert.True(reference.Data.Position == c.Data.Position);
+        }
+
+        [Fact]
+        public void TestSaving()
+        {
+            TestContainer container = new TestContainer
+            {
+                ContainerName = "TestContainer",
+                Data = new TestStruct {TestString = "TestString", Position = Vector4.UnitY, TestInt = 123}
+            };
+
+            EngineConfig.CreateConfig(container, "resources/ConfigTest_Save.xml");
+
+            string created = File.ReadAllText("resources/ConfigTest_Save.xml");
+            string original = File.ReadAllText("resources/io/test_struct_original.xml");
+            Assert.True(original == created);
         }
     }
 }

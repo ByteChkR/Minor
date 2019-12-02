@@ -8,34 +8,6 @@ namespace Engine.Physics.BEPUutilities
     public static partial class ConvexHullHelper
     {
         /// <summary>
-        /// Represents a cell in space which is already occupied by a point.  Any other points which resolve to the same cell are considered redundant.
-        /// </summary>
-        public struct BlockedCell : IEquatable<BlockedCell>
-        {
-            public int X;
-            public int Y;
-            public int Z;
-
-            public override int GetHashCode()
-            {
-                const long p1 = 961748927L;
-                const long p2 = 961748941L;
-                const long p3 = 982451653L;
-                return (int) (X * p1 + Y * p2 + Z * p3);
-            }
-
-            public override bool Equals(object obj)
-            {
-                return Equals((BlockedCell) obj);
-            }
-
-            public bool Equals(BlockedCell other)
-            {
-                return other.X == X && other.Y == Y && other.Z == Z;
-            }
-        }
-
-        /// <summary>
         /// Contains and manufactures cell sets used by the redundant point remover.  To minimize memory usage, this can be cleared
         /// after using the RemoveRedundantPoints if it isn't going to be used again.
         /// </summary>
@@ -111,6 +83,34 @@ namespace Engine.Physics.BEPUutilities
 
             set.Clear();
             BlockedCellSets.GiveBack(set);
+        }
+
+        /// <summary>
+        /// Represents a cell in space which is already occupied by a point.  Any other points which resolve to the same cell are considered redundant.
+        /// </summary>
+        public struct BlockedCell : IEquatable<BlockedCell>
+        {
+            public int X;
+            public int Y;
+            public int Z;
+
+            public override int GetHashCode()
+            {
+                const long p1 = 961748927L;
+                const long p2 = 961748941L;
+                const long p3 = 982451653L;
+                return (int) (X * p1 + Y * p2 + Z * p3);
+            }
+
+            public override bool Equals(object obj)
+            {
+                return Equals((BlockedCell) obj);
+            }
+
+            public bool Equals(BlockedCell other)
+            {
+                return other.X == X && other.Y == Y && other.Z == Z;
+            }
         }
     }
 }

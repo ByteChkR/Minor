@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using System.Reflection;
-using Engine.Common;
 using Engine.Audio;
+using Engine.Common;
 using Engine.DataTypes;
 using Engine.Debug;
 using Engine.IO;
@@ -14,7 +13,6 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Platform;
 
-
 namespace Engine.Core
 {
     /// <summary>
@@ -23,19 +21,57 @@ namespace Engine.Core
     public class GameEngine
     {
         /// <summary>
-        /// The Window used to render
+        /// Private flag if the there is a scene change in progress
         /// </summary>
-        private GameWindow Window;
+        private bool _changeScene;
 
-        public bool HasFocus => Window.Focused;
-        public Vector2 WindowPosition => new Vector2(Window.Location.X, Window.Location.Y);
+        /// <summary>
+        /// The Next scene to be initialized
+        /// </summary>
+        private Type _nextScene;
 
-        public EventSystem UISystem { get; private set; }
+        /// <summary>
+        /// An internal update frame counter
+        /// </summary>
+        private int FrameCounter;
 
         /// <summary>
         /// Renderer Instance
         /// </summary>
         protected Renderer Renderer;
+
+        /// <summary>
+        /// An internal render frame counter
+        /// </summary>
+        private int RenderFrameCounter;
+
+        /// <summary>
+        /// The Window used to render
+        /// </summary>
+        private GameWindow Window;
+
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="settings">Settings to be used</param>
+        public GameEngine(EngineSettings settings)
+        {
+            Instance = this;
+
+            TextProcessorAPI.PPCallback = new PPIOCallbacks();
+
+            if (settings != null)
+            {
+                SetSettings(settings);
+            }
+
+            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
+        }
+
+        public bool HasFocus => Window.Focused;
+        public Vector2 WindowPosition => new Vector2(Window.Location.X, Window.Location.Y);
+
+        public EventSystem UISystem { get; private set; }
 
         /// <summary>
         /// The Settings the engine has been started with
@@ -71,47 +107,14 @@ namespace Engine.Core
         public float AspectRatio => Width / (float) Height;
 
         /// <summary>
-        /// Private flag if the there is a scene change in progress
-        /// </summary>
-        private bool _changeScene;
-
-        /// <summary>
-        /// The Next scene to be initialized
-        /// </summary>
-        private Type _nextScene;
-
-        /// <summary>
-        /// An internal update frame counter
-        /// </summary>
-        private int FrameCounter;
-
-        /// <summary>
-        /// An internal render frame counter
-        /// </summary>
-        private int RenderFrameCounter;
-
-        /// <summary>
         /// Default Settings
         /// </summary>
         private DebugSettings EngineDefault => DebugSettings.GetDefault();
 
         /// <summary>
-        /// Public constructor
+        /// Mouse Position in pixels
         /// </summary>
-        /// <param name="settings">Settings to be used</param>
-        public GameEngine(EngineSettings settings)
-        {
-            Instance = this;
-
-            TextProcessorAPI.PPCallback = new PPIOCallbacks();
-
-            if (settings != null)
-            {
-                SetSettings(settings);
-            }
-
-            ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
-        }
+        public Vector2 MousePosition { get; private set; }
 
         public void MakeCurrent()
         {
@@ -248,11 +251,6 @@ namespace Engine.Core
             Window.VSync = VSyncMode.Off;
             Window.Run(0, 0);
         }
-
-        /// <summary>
-        /// Mouse Position in pixels
-        /// </summary>
-        public Vector2 MousePosition { get; private set; }
 
         /// <summary>
         /// Converts the Current Screen position to world space coordinates

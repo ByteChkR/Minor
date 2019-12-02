@@ -17,30 +17,23 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
     /// </remarks>
     public class Grid2DSortAndSweep : BroadPhase
     {
-        /// <summary>
-        /// Gets or sets the width of cells in the 2D grid.  For sparser, larger scenes, increasing this can help performance.
-        /// For denser scenes, decreasing this may help.
-        /// </summary>
-        public static float CellSize
-        {
-            get => 1 / cellSizeInverse;
-            set => cellSizeInverse = 1 / value;
-        }
-
         //TODO: Try different values for this.
         internal static float cellSizeInverse = 1 / 8f;
-
-        internal static void ComputeCell(ref Vector3 v, out Int2 cell)
-        {
-            cell.Y = (int) Math.Floor(v.Y * cellSizeInverse);
-            cell.Z = (int) Math.Floor(v.Z * cellSizeInverse);
-        }
 
 
         internal SortedGrid2DSet cellSet = new SortedGrid2DSet();
 
+        //TODO: Cell change operations take a while.  Spin lock can't efficiently wait that long.
+        //This causes some pretty horrible scaling problems in some scenarios.
+        //Improving the cell set operations directly should improve that problem and the query times noticeably.
+
+
+        private SpinLock cellSetLocker = new SpinLock();
+
 
         private RawList<Grid2DEntry> entries = new RawList<Grid2DEntry>();
+
+        private UnsafeResourcePool<Grid2DEntry> entryPool = new UnsafeResourcePool<Grid2DEntry>();
         private Action<int> updateEntry, updateCell;
 
         /// <summary>
@@ -65,7 +58,21 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             QueryAccelerator = new Grid2DSortAndSweepQueryAccelerator(this);
         }
 
-        private UnsafeResourcePool<Grid2DEntry> entryPool = new UnsafeResourcePool<Grid2DEntry>();
+        /// <summary>
+        /// Gets or sets the width of cells in the 2D grid.  For sparser, larger scenes, increasing this can help performance.
+        /// For denser scenes, decreasing this may help.
+        /// </summary>
+        public static float CellSize
+        {
+            get => 1 / cellSizeInverse;
+            set => cellSizeInverse = 1 / value;
+        }
+
+        internal static void ComputeCell(ref Vector3 v, out Int2 cell)
+        {
+            cell.Y = (int) Math.Floor(v.Y * cellSizeInverse);
+            cell.Z = (int) Math.Floor(v.Z * cellSizeInverse);
+        }
 
         /// <summary>
         /// Adds an entry to the broad phase.
@@ -187,13 +194,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 }
             }
         }
-
-        //TODO: Cell change operations take a while.  Spin lock can't efficiently wait that long.
-        //This causes some pretty horrible scaling problems in some scenarios.
-        //Improving the cell set operations directly should improve that problem and the query times noticeably.
-
-
-        private SpinLock cellSetLocker = new SpinLock();
 
         private void UpdateEntry(int i)
         {

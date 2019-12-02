@@ -7,26 +7,7 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
     ///</summary>
     public class SpaceObjectBuffer : ProcessingStage
     {
-        private struct SpaceObjectChange
-        {
-            public readonly ISpaceObject SpaceObject;
-
-            //Could change to enumeration, or more generally, buffered 'action<ISpaceObject>' to perform on the space object.
-            public readonly bool ShouldAdd;
-
-            public SpaceObjectChange(ISpaceObject spaceObject, bool shouldAdd)
-            {
-                SpaceObject = spaceObject;
-                ShouldAdd = shouldAdd;
-            }
-        }
-
         private ConcurrentDeque<SpaceObjectChange> objectsToChange = new ConcurrentDeque<SpaceObjectChange>();
-
-        ///<summary>
-        /// Gets the space which owns this buffer.
-        ///</summary>
-        public Space Space { get; }
 
         ///<summary>
         /// Constructs the buffer.
@@ -37,6 +18,11 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
             Enabled = true;
             Space = space;
         }
+
+        ///<summary>
+        /// Gets the space which owns this buffer.
+        ///</summary>
+        public Space Space { get; }
 
         ///<summary>
         /// Adds a space object to the buffer.
@@ -72,6 +58,20 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
                 {
                     Space.Remove(change.SpaceObject);
                 }
+            }
+        }
+
+        private struct SpaceObjectChange
+        {
+            public readonly ISpaceObject SpaceObject;
+
+            //Could change to enumeration, or more generally, buffered 'action<ISpaceObject>' to perform on the space object.
+            public readonly bool ShouldAdd;
+
+            public SpaceObjectChange(ISpaceObject spaceObject, bool shouldAdd)
+            {
+                SpaceObject = spaceObject;
+                ShouldAdd = shouldAdd;
             }
         }
     }

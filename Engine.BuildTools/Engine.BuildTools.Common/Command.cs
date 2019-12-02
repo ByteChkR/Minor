@@ -6,8 +6,8 @@ namespace Engine.BuildTools.Common
 {
     public class Command
     {
-        public string[] CommandKeys;
         public Action<StartupInfo, string[]> CommandAction;
+        public string[] CommandKeys;
 
         private Command(Action<StartupInfo, string[]> action, string[] keys)
         {

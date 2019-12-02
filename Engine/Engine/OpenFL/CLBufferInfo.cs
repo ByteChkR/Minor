@@ -1,5 +1,4 @@
 ﻿using Engine.OpenCL.DotNetCore.Memory;
-using OpenTK.Input;
 
 namespace Engine.OpenFL
 {
@@ -14,16 +13,6 @@ namespace Engine.OpenFL
         public MemoryBuffer Buffer;
 
         /// <summary>
-        /// Flag that is used to keep track of memory buffers that stayed inside the engine code and can not possibly be changed or used by the user.
-        /// </summary>
-        public bool IsInternal { get; private set; }
-
-        /// <summary>
-        /// The Buffer name
-        /// </summary>
-        public string DefinedBufferName { get; private set; }
-
-        /// <summary>
         /// The Internal Constructor
         /// </summary>
         /// <param name="buffer">The inner buffer</param>
@@ -34,6 +23,16 @@ namespace Engine.OpenFL
             Buffer = buffer;
             DefinedBufferName = "UnnamedBuffer";
         }
+
+        /// <summary>
+        /// Flag that is used to keep track of memory buffers that stayed inside the engine code and can not possibly be changed or used by the user.
+        /// </summary>
+        public bool IsInternal { get; private set; }
+
+        /// <summary>
+        /// The Buffer name
+        /// </summary>
+        public string DefinedBufferName { get; private set; }
 
         /// <summary>
         /// Sets the IsInernal Flag to the specified state

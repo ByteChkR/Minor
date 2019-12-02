@@ -10,10 +10,9 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class GeneralConvexPairHandler : ConvexConstraintPairHandler
     {
+        private GeneralConvexContactManifold contactManifold = new GeneralConvexContactManifold();
         private ConvexCollidable convexA;
         private ConvexCollidable convexB;
-
-        private GeneralConvexContactManifold contactManifold = new GeneralConvexContactManifold();
 
 
         public override Collidable CollidableA => convexA;

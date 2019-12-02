@@ -7,6 +7,8 @@ namespace Engine.Physics.BEPUphysics.DataStructures
     ///</summary>
     public class TransformableMeshData : MeshBoundingBoxTreeData
     {
+        internal AffineTransform worldTransform = AffineTransform.Identity;
+
         ///<summary>
         /// Constructs the mesh data.
         ///</summary>
@@ -30,9 +32,6 @@ namespace Engine.Physics.BEPUphysics.DataStructures
             Vertices = vertices;
             Indices = indices;
         }
-
-
-        internal AffineTransform worldTransform = AffineTransform.Identity;
 
         ///<summary>
         /// Gets or sets the transform to apply to the vertices before returning their position.

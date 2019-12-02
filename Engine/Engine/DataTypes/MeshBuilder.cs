@@ -7,8 +7,8 @@ namespace Engine.DataTypes
 {
     public class MeshBuilder
     {
-        private List<Vertex> Vertices = new List<Vertex>();
         private List<uint> indices = new List<uint>();
+        private List<Vertex> Vertices = new List<Vertex>();
 
 
         public void AddVertex(Vertex v)
@@ -19,9 +19,9 @@ namespace Engine.DataTypes
 
         public void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3)
         {
-            AddVertex(new Vertex() {Position = v1});
-            AddVertex(new Vertex() {Position = v2});
-            AddVertex(new Vertex() {Position = v3});
+            AddVertex(new Vertex {Position = v1});
+            AddVertex(new Vertex {Position = v2});
+            AddVertex(new Vertex {Position = v3});
         }
 
 

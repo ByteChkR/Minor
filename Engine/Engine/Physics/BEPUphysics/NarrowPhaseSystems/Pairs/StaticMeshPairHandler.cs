@@ -16,10 +16,14 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class StaticMeshPairHandler : StandardPairHandler
     {
-        private StaticMesh mesh;
-        private ConvexCollidable convex;
-
         private NonConvexContactManifoldConstraint contactConstraint;
+        private ConvexCollidable convex;
+        private StaticMesh mesh;
+
+        protected StaticMeshPairHandler()
+        {
+            contactConstraint = new NonConvexContactManifoldConstraint(this);
+        }
 
 
         public override Collidable CollidableA => convex;
@@ -41,11 +45,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         public override ContactManifold ContactManifold => MeshManifold;
 
         protected abstract StaticMeshContactManifold MeshManifold { get; }
-
-        protected StaticMeshPairHandler()
-        {
-            contactConstraint = new NonConvexContactManifoldConstraint(this);
-        }
 
         ///<summary>
         /// Initializes the pair handler.

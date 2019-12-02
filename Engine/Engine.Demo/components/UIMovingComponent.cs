@@ -8,12 +8,12 @@ namespace Engine.Demo.components
 {
     public class UIMovingComponent : UIImageRendererComponent
     {
+        private float time;
+
         public UIMovingComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
             texture, worldSpace, alpha, shader)
         {
         }
-
-        private float time;
 
         protected override void Awake()
         {

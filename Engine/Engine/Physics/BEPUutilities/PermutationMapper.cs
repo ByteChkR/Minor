@@ -5,41 +5,6 @@
     /// </summary>
     public class PermutationMapper
     {
-        /// <summary>
-        /// Constructs a new permutation mapper.
-        /// </summary>
-        public PermutationMapper()
-        {
-            PermutationIndex = 0;
-        }
-
-        private long permutationIndex;
-
-        /// <summary>
-        /// Gets or sets the permutation index used by the solver.  If the simulation is restarting from a given frame,
-        /// setting this index to be consistent is required for deterministic results.
-        /// </summary>
-        public long PermutationIndex
-        {
-            get => permutationIndex;
-            set
-            {
-                permutationIndex = value < 0 ? value + long.MaxValue + 1 : value;
-                currentPrime = primes[permutationIndex % primes.Length];
-
-                currentOffset = currentPrime * permutationIndex;
-
-                if (currentOffset < 0)
-                {
-                    currentOffset = currentOffset + long.MaxValue + 1;
-                }
-            }
-        }
-
-
-        private long currentOffset;
-        private long currentPrime;
-
         private static long[] primes =
         {
             818660357, 878916037, 844828463, 706609493, 478906601, 707908823, 938052293, 630235027, 984165979,
@@ -144,6 +109,41 @@
             947268481,
             490370093, 401570791, 475092199
         };
+
+
+        private long currentOffset;
+        private long currentPrime;
+
+        private long permutationIndex;
+
+        /// <summary>
+        /// Constructs a new permutation mapper.
+        /// </summary>
+        public PermutationMapper()
+        {
+            PermutationIndex = 0;
+        }
+
+        /// <summary>
+        /// Gets or sets the permutation index used by the solver.  If the simulation is restarting from a given frame,
+        /// setting this index to be consistent is required for deterministic results.
+        /// </summary>
+        public long PermutationIndex
+        {
+            get => permutationIndex;
+            set
+            {
+                permutationIndex = value < 0 ? value + long.MaxValue + 1 : value;
+                currentPrime = primes[permutationIndex % primes.Length];
+
+                currentOffset = currentPrime * permutationIndex;
+
+                if (currentOffset < 0)
+                {
+                    currentOffset = currentOffset + long.MaxValue + 1;
+                }
+            }
+        }
 
 
         /// <summary>

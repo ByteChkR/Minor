@@ -12,7 +12,8 @@ namespace Engine.Physics.BEPUphysics.Vehicle
     /// </summary>
     public class Wheel
     {
-        internal Vector3 ra, rb;
+        internal WheelBrake brake;
+        internal WheelDrivingMotor drivingMotor;
 
         /// <summary>
         /// Used for solver early outing.
@@ -21,20 +22,18 @@ namespace Engine.Physics.BEPUphysics.Vehicle
 
         internal bool isSupported;
 
-        internal WheelBrake brake;
-        internal WheelDrivingMotor drivingMotor;
-
 
         internal Vector3 localForwardDirection = new Vector3(0, 0, -1);
 
         internal Vector3 normal;
+        internal Vector3 ra, rb;
         internal WheelShape shape;
         internal WheelSlidingFriction slidingFriction;
 
         internal Collidable supportingCollidable;
-        internal Material supportMaterial;
-        internal Vector3 supportLocation;
         internal Entity supportingEntity;
+        internal Vector3 supportLocation;
+        internal Material supportMaterial;
         internal WheelSuspension suspension;
         internal Vehicle vehicle;
         internal Vector3 worldForwardDirection;
@@ -69,11 +68,6 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             Brake = rollingFriction;
             SlidingFriction = slidingFriction;
             Shape = shape;
-        }
-
-        internal void UpdateSolverActivity()
-        {
-            isActiveInSolver = true;
         }
 
         /// <summary>
@@ -314,6 +308,11 @@ namespace Engine.Physics.BEPUphysics.Vehicle
                     localForwardDirection = worldForwardDirection;
                 }
             }
+        }
+
+        internal void UpdateSolverActivity()
+        {
+            isActiveInSolver = true;
         }
 
 

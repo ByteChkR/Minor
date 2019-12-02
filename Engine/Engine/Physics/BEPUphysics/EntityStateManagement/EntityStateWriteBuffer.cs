@@ -9,25 +9,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
     ///</summary>
     public class EntityStateWriteBuffer : ProcessingStage
     {
-        internal enum TargetField : byte
-        {
-            Position,
-            Orientation,
-            LinearVelocity,
-            AngularVelocity
-        }
-
-        //TODO: Not a particularly elegant buffering mechanism.  Make a better in-order buffering scheme.
-        //There are platform requirements on layout that cause issues with the WINDOWS explicit version.
-        //TODO: There's probably a better way to handle it on the XBOX/WP7 than the "give up" approach taken below.
-        internal struct EntityStateChange
-        {
-            internal Quaternion orientationQuaternion;
-            internal Vector3 vector;
-            internal TargetField targetField;
-            internal Entity target;
-        }
-
         private ConcurrentDeque<EntityStateChange> stateChanges = new ConcurrentDeque<EntityStateChange>();
 
         ///<summary>
@@ -107,6 +88,25 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                         break;
                 }
             }
+        }
+
+        internal enum TargetField : byte
+        {
+            Position,
+            Orientation,
+            LinearVelocity,
+            AngularVelocity
+        }
+
+        //TODO: Not a particularly elegant buffering mechanism.  Make a better in-order buffering scheme.
+        //There are platform requirements on layout that cause issues with the WINDOWS explicit version.
+        //TODO: There's probably a better way to handle it on the XBOX/WP7 than the "give up" approach taken below.
+        internal struct EntityStateChange
+        {
+            internal Quaternion orientationQuaternion;
+            internal Vector3 vector;
+            internal TargetField targetField;
+            internal Entity target;
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using OpenTK.Audio;
+﻿using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 
 namespace Engine.Audio
@@ -16,16 +14,16 @@ namespace Engine.Audio
         private static AudioContext _context;
 
         /// <summary>
+        /// Useful Property to check if something has gone wrong with OpenAL
+        /// </summary>
+        public static AlcError GetCurrentALcError => _context?.CurrentError ?? AlcError.InvalidContext;
+
+        /// <summary>
         /// Initializes the OpenAL Audio Context
         /// </summary>
         public static void Initialize()
         {
             _context = new AudioContext();
         }
-
-        /// <summary>
-        /// Useful Property to check if something has gone wrong with OpenAL
-        /// </summary>
-        public static AlcError GetCurrentALcError => _context?.CurrentError ?? AlcError.InvalidContext;
     }
 }

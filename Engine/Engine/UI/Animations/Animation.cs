@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using Engine.Core;
-using Engine.UI.EventSystems;
-using OpenTK;
-
-namespace Engine.UI.Animations
+﻿namespace Engine.UI.Animations
 {
     public abstract class Animation
     {
+        private int frameCount;
+        private bool isLoaded;
         public AnimationTrigger Trigger { get; set; }
         public string Type { get; set; }
         public float AnimationDelay { get; set; }
         private float TimeSinceAnimationStart { get; set; }
         public bool IsAnimating { get; private set; }
-        private bool isLoaded = false;
-        private int frameCount = 0;
 
         public abstract bool Animate(UIElement target, float animationStart);
 

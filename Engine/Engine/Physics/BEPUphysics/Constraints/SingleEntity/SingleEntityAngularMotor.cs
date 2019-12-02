@@ -59,28 +59,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
         /// </summary>
         public MotorSettingsOrientation Settings { get; }
 
-        #region I3DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity with respect to the constraint.
-        /// For single entity constraints, this is pretty straightforward.  It is taken directly from the 
-        /// entity.
-        /// </summary>
-        public Vector3 RelativeVelocity => -Entity.AngularVelocity;
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// </summary>
-        public Vector3 TotalImpulse => accumulatedImpulse;
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// If the motor is in velocity only mode, error is zero.
-        /// </summary>
-        public Vector3 Error => axis * angle;
-
-        #endregion
-
         /// <summary>
         /// Applies the corrective impulses required by the constraint.
         /// </summary>
@@ -225,5 +203,27 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
                 maxForceDtSquared = float.MaxValue;
             }
         }
+
+        #region I3DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity with respect to the constraint.
+        /// For single entity constraints, this is pretty straightforward.  It is taken directly from the 
+        /// entity.
+        /// </summary>
+        public Vector3 RelativeVelocity => -Entity.AngularVelocity;
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// </summary>
+        public Vector3 TotalImpulse => accumulatedImpulse;
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// If the motor is in velocity only mode, error is zero.
+        /// </summary>
+        public Vector3 Error => axis * angle;
+
+        #endregion
     }
 }

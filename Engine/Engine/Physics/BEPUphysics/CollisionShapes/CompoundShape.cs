@@ -145,11 +145,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     {
         internal RawList<CompoundShapeEntry> shapes;
 
-        ///<summary>
-        /// Gets the list of shapes in the compound shape.
-        ///</summary>
-        public ReadOnlyList<CompoundShapeEntry> Shapes => new ReadOnlyList<CompoundShapeEntry>(shapes);
-
 
         ///<summary>
         /// Constructs a compound shape.
@@ -213,6 +208,11 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             this.shapes = new RawList<CompoundShapeEntry>(shapes);
             UpdateEntityShapeVolume(volumeDescription);
         }
+
+        ///<summary>
+        /// Gets the list of shapes in the compound shape.
+        ///</summary>
+        public ReadOnlyList<CompoundShapeEntry> Shapes => new ReadOnlyList<CompoundShapeEntry>(shapes);
 
 
         /// <summary>

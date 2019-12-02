@@ -72,29 +72,6 @@ namespace Engine.Physics.BEPUphysics.Paths.PathFollowing
         public Quaternion TargetOrientation { get; set; }
 
         /// <summary>
-        /// Gets the angular velocity necessary to change an entity's orientation from
-        /// the starting quaternion to the ending quaternion over time dt.
-        /// </summary>
-        /// <param name="start">Initial orientation.</param>
-        /// <param name="end">Final orientation.</param>
-        /// <param name="dt">Time over which the angular velocity is to be applied.</param>
-        /// <returns>Angular velocity to reach the goal in time.</returns>
-        public static Vector3 GetAngularVelocity(Quaternion start, Quaternion end, float dt)
-        {
-            //Compute the relative orientation R' between R and the target relative orientation.
-            Quaternion errorOrientation;
-            Quaternion.Conjugate(ref start, out errorOrientation);
-            Quaternion.Multiply(ref end, ref errorOrientation, out errorOrientation);
-
-            Vector3 axis;
-            float angle;
-            //Turn this into an axis-angle representation.
-            Quaternion.GetAxisAngleFromQuaternion(ref errorOrientation, out axis, out angle);
-            Vector3.Multiply(ref axis, angle / dt, out axis);
-            return axis;
-        }
-
-        /// <summary>
         /// Adds the motors to the solver.  Called automatically.
         /// </summary>
         public override void OnAdditionToSpace(Space newSpace)
@@ -132,6 +109,29 @@ namespace Engine.Physics.BEPUphysics.Paths.PathFollowing
                 AngularMotor.IsActive = false;
                 Entity.AngularVelocity = GetAngularVelocity(Entity.Orientation, TargetOrientation, dt);
             }
+        }
+
+        /// <summary>
+        /// Gets the angular velocity necessary to change an entity's orientation from
+        /// the starting quaternion to the ending quaternion over time dt.
+        /// </summary>
+        /// <param name="start">Initial orientation.</param>
+        /// <param name="end">Final orientation.</param>
+        /// <param name="dt">Time over which the angular velocity is to be applied.</param>
+        /// <returns>Angular velocity to reach the goal in time.</returns>
+        public static Vector3 GetAngularVelocity(Quaternion start, Quaternion end, float dt)
+        {
+            //Compute the relative orientation R' between R and the target relative orientation.
+            Quaternion errorOrientation;
+            Quaternion.Conjugate(ref start, out errorOrientation);
+            Quaternion.Multiply(ref end, ref errorOrientation, out errorOrientation);
+
+            Vector3 axis;
+            float angle;
+            //Turn this into an axis-angle representation.
+            Quaternion.GetAxisAngleFromQuaternion(ref errorOrientation, out axis, out angle);
+            Vector3.Multiply(ref axis, angle / dt, out axis);
+            return axis;
         }
     }
 }

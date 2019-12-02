@@ -1,16 +1,14 @@
-﻿using System.Collections.Generic;
-using Engine.UI.Animations.Interpolators;
-using Engine.UI.EventSystems;
+﻿using Engine.UI.Animations.Interpolators;
 using OpenTK;
 
 namespace Engine.UI.Animations.AnimationTypes
 {
     public class LinearAnimation : Animation
     {
-        public float MaxAnimationTime = 1;
-        public Vector2 StartPos;
         public Vector2 EndPos;
         public Interpolator Interpolator = new LinearInterpolator();
+        public float MaxAnimationTime = 1;
+        public Vector2 StartPos;
 
         public override bool Animate(UIElement target, float timeSinceAnimationStart)
         {

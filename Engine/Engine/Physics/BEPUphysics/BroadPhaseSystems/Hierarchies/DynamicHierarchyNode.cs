@@ -11,6 +11,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
     {
         internal BoundingBox BoundingBox;
 
+        internal abstract bool IsLeaf { get; }
+
+        internal abstract Node ChildA { get; }
+        internal abstract Node ChildB { get; }
+        internal abstract BroadPhaseEntry Element { get; }
+
         internal abstract void GetOverlaps(ref BoundingBox boundingBox,
             IList<BroadPhaseEntry> outputOverlappedElements);
 
@@ -22,12 +28,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             IList<BroadPhaseEntry> outputOverlappedElements);
 
         internal abstract void GetOverlaps(Node node, DynamicHierarchy owner);
-
-        internal abstract bool IsLeaf { get; }
-
-        internal abstract Node ChildA { get; }
-        internal abstract Node ChildB { get; }
-        internal abstract BroadPhaseEntry Element { get; }
 
         internal abstract bool TryToInsert(LeafNode node, out Node treeNode);
 
@@ -54,13 +54,23 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
 
     internal sealed class InternalNode : Node
     {
+        internal static float MaximumVolumeScale = 1.4f;
+
+        internal static LockingResourcePool<InternalNode> nodePool = new LockingResourcePool<InternalNode>();
+
+        internal static LockingResourcePool<RawList<LeafNode>> nodeListPool =
+            new LockingResourcePool<RawList<LeafNode>>();
+
+
+        private static XComparer xComparer = new XComparer();
+        private static YComparer yComparer = new YComparer();
+
+        private static ZComparer zComparer = new ZComparer();
         internal Node childA;
         internal Node childB;
 
         internal float currentVolume;
         internal float maximumVolume;
-
-        internal static float MaximumVolumeScale = 1.4f;
 
         internal override Node ChildA => childA;
 
@@ -212,8 +222,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             }
         }
 
-        internal static LockingResourcePool<InternalNode> nodePool = new LockingResourcePool<InternalNode>();
-
         internal override bool TryToInsert(LeafNode node, out Node treeNode)
         {
             //Since we are an internal node, we know we have two children.
@@ -316,9 +324,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             //if (Math.Abs(currentVolume - DEBUGlastVolume) > .000001 * (DEBUGlastVolume + currentVolume))
             //    Logger.Log(":Break>:)");
         }
-
-        internal static LockingResourcePool<RawList<LeafNode>> nodeListPool =
-            new LockingResourcePool<RawList<LeafNode>>();
 
         internal void Revalidate()
         {
@@ -727,12 +732,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies
             Vector3.Subtract(ref BoundingBox.Max, ref BoundingBox.Min, out offset);
             return offset.X * offset.Y * offset.Z + ChildA.MeasureSubtreeCost() + childB.MeasureSubtreeCost();
         }
-
-
-        private static XComparer xComparer = new XComparer();
-        private static YComparer yComparer = new YComparer();
-
-        private static ZComparer zComparer = new ZComparer();
 
         //Try using Comparer instead of IComparer- is there some tricky hardcoded optimization?
         private class XComparer : IComparer<LeafNode>

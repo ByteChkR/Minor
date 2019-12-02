@@ -2,30 +2,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Engine.Core
 {
     internal interface IThreadManager
     {
-        bool CheckStates();
         Type type { get; }
+        bool CheckStates();
     }
 
     public class TaskReference<T>
     {
         public delegate T DelTask();
 
-        private Action<T> OnFinish;
         private T _ret;
+
+        private Action<T> OnFinish;
         private Thread t;
-        public bool IsDone => !t.IsAlive;
 
         internal TaskReference(DelTask task, Action<T> onFinish)
         {
             OnFinish = onFinish;
             t = new Thread(() => ThreadRun(task));
         }
+
+        public bool IsDone => !t.IsAlive;
 
         internal void RunTask()
         {
@@ -53,12 +54,6 @@ namespace Engine.Core
         public List<TaskReference<T>> RunningTasks = new List<TaskReference<T>>();
         public Type type => typeof(T);
 
-        public void RunTask(TaskReference<T> task)
-        {
-            RunningTasks.Add(task);
-            task.RunTask();
-        }
-
 
         public bool CheckStates()
         {
@@ -71,6 +66,12 @@ namespace Engine.Core
             }
 
             return RunningTasks.Count == 0;
+        }
+
+        public void RunTask(TaskReference<T> task)
+        {
+            RunningTasks.Add(task);
+            task.RunTask();
         }
     }
 

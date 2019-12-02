@@ -1,6 +1,4 @@
-﻿using OpenTK;
-
-namespace Engine.Rendering
+﻿namespace Engine.Rendering
 {
     ///// <summary>
     ///// Defines the Properties of an object that can be used for rendering

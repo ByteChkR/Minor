@@ -1,5 +1,4 @@
-﻿using System;
-using Engine.Rendering;
+﻿using Engine.Rendering;
 
 namespace Engine.Core
 {
@@ -8,6 +7,15 @@ namespace Engine.Core
     /// </summary>
     public abstract class AbstractScene : GameObject
     {
+        /// <summary>
+        /// Protected Constructor
+        /// </summary>
+        /// <param name="sceneName">The Name of the Scene</param>
+        protected AbstractScene(string sceneName = "Scene") : base(sceneName)
+        {
+            Scene = this;
+        }
+
         /// <summary>
         /// The Camera that is associated with the Game World
         /// </summary>
@@ -23,16 +31,6 @@ namespace Engine.Core
             {
                 Camera = c;
             }
-        }
-
-
-        /// <summary>
-        /// Protected Constructor
-        /// </summary>
-        /// <param name="sceneName">The Name of the Scene</param>
-        protected AbstractScene(string sceneName = "Scene") : base(sceneName)
-        {
-            Scene = this;
         }
 
         /// <summary>

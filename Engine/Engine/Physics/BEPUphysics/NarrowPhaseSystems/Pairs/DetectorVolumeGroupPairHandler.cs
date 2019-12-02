@@ -10,11 +10,11 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class DetectorVolumeGroupPairHandler : DetectorVolumePairHandler, IDetectorVolumePairHandlerParent
     {
-        private Dictionary<EntityCollidable, DetectorVolumePairHandler> subPairs =
-            new Dictionary<EntityCollidable, DetectorVolumePairHandler>();
-
         private HashSet<EntityCollidable> containedPairs = new HashSet<EntityCollidable>();
         private RawList<EntityCollidable> pairsToRemove = new RawList<EntityCollidable>();
+
+        private Dictionary<EntityCollidable, DetectorVolumePairHandler> subPairs =
+            new Dictionary<EntityCollidable, DetectorVolumePairHandler>();
 
         /// <summary>
         /// Gets a read-only dictionary of collidables associated with this group pair handler all the subpairs associated with them.

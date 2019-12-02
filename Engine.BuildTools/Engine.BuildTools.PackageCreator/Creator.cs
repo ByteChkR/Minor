@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Reflection;
-using System.Xml.Serialization;
 using Engine.BuildTools.PackageCreator.Versions;
 using Engine.BuildTools.PackageCreator.Versions.Legacy;
 using Engine.BuildTools.PackageCreator.Versions.v1;

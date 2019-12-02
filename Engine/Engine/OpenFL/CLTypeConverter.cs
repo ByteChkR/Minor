@@ -67,7 +67,7 @@ namespace Engine.OpenFL
                 {OpenCL.TypeEnums.DataTypes.FLOAT3, create_float3},
                 {OpenCL.TypeEnums.DataTypes.FLOAT4, create_float4},
                 {OpenCL.TypeEnums.DataTypes.FLOAT8, create_float8},
-                {OpenCL.TypeEnums.DataTypes.FLOAT16, create_float16},
+                {OpenCL.TypeEnums.DataTypes.FLOAT16, create_float16}
             };
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace Engine.OpenFL
                 {OpenCL.TypeEnums.DataTypes.FLOAT3, typeof(float)},
                 {OpenCL.TypeEnums.DataTypes.FLOAT4, typeof(float)},
                 {OpenCL.TypeEnums.DataTypes.FLOAT8, typeof(float)},
-                {OpenCL.TypeEnums.DataTypes.FLOAT16, typeof(float)},
+                {OpenCL.TypeEnums.DataTypes.FLOAT16, typeof(float)}
             };
 
         /// <summary>
@@ -182,7 +182,7 @@ namespace Engine.OpenFL
                 {OpenCL.TypeEnums.DataTypes.FLOAT3, from_float3},
                 {OpenCL.TypeEnums.DataTypes.FLOAT4, from_float4},
                 {OpenCL.TypeEnums.DataTypes.FLOAT8, from_float8},
-                {OpenCL.TypeEnums.DataTypes.FLOAT16, from_float16},
+                {OpenCL.TypeEnums.DataTypes.FLOAT16, from_float16}
             };
 
         /// <summary>

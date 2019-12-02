@@ -8,6 +8,11 @@ namespace Engine.Physics.BEPUik
     public class IKPointOnPlaneJoint : IKJoint
     {
         /// <summary>
+        /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point which will be kept on the plane.
+        /// </summary>
+        public Vector3 LocalAnchorB;
+
+        /// <summary>
         /// Gets or sets the offset in connection A's local space from the center of mass to the anchor point of the line.
         /// </summary>
         public Vector3 LocalPlaneAnchor;
@@ -18,10 +23,23 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public Vector3 LocalPlaneNormal;
 
+
         /// <summary>
-        /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point which will be kept on the plane.
+        /// Constructs a new point on plane joint.
         /// </summary>
-        public Vector3 LocalAnchorB;
+        /// <param name="connectionA">First bone connected by the joint.</param>
+        /// <param name="connectionB">Second bone connected by the joint.</param>
+        /// <param name="planeAnchor">Anchor point of the plane attached to the first bone in world space.</param>
+        /// <param name="planeNormal">Normal of the plane attached to the first bone in world space. Must be unit length.</param>
+        /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
+        public IKPointOnPlaneJoint(Bone connectionA, Bone connectionB, Vector3 planeAnchor, Vector3 planeNormal,
+            Vector3 anchorB)
+            : base(connectionA, connectionB)
+        {
+            PlaneAnchor = planeAnchor;
+            PlaneNormal = planeNormal;
+            AnchorB = anchorB;
+        }
 
         /// <summary>
         /// Gets or sets the world space location of the line anchor attached to connection A.
@@ -53,24 +71,6 @@ namespace Engine.Physics.BEPUik
             set =>
                 LocalAnchorB = Quaternion.Transform(value - ConnectionB.Position,
                     Quaternion.Conjugate(ConnectionB.Orientation));
-        }
-
-
-        /// <summary>
-        /// Constructs a new point on plane joint.
-        /// </summary>
-        /// <param name="connectionA">First bone connected by the joint.</param>
-        /// <param name="connectionB">Second bone connected by the joint.</param>
-        /// <param name="planeAnchor">Anchor point of the plane attached to the first bone in world space.</param>
-        /// <param name="planeNormal">Normal of the plane attached to the first bone in world space. Must be unit length.</param>
-        /// <param name="anchorB">Anchor point on the second bone in world space which is measured against the other connection's anchor.</param>
-        public IKPointOnPlaneJoint(Bone connectionA, Bone connectionB, Vector3 planeAnchor, Vector3 planeNormal,
-            Vector3 anchorB)
-            : base(connectionA, connectionB)
-        {
-            PlaneAnchor = planeAnchor;
-            PlaneNormal = planeNormal;
-            AnchorB = anchorB;
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

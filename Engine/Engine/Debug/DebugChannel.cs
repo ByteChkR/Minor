@@ -6,7 +6,7 @@ namespace Engine.Debug
     /// An enum of Channels that can be used to send logs
     /// </summary>
     [Flags]
-    public enum DebugChannel : int
+    public enum DebugChannel
     {
         /// <summary>
         /// Used to Write Logs to the Debug System
@@ -58,6 +58,6 @@ namespace Engine.Debug
         WFC = 1 << 30,
 
         EngineCore = Engine | Core,
-        EngineRendering = Engine | Rendering,
+        EngineRendering = Engine | Rendering
     }
 }

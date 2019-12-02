@@ -13,14 +13,14 @@ namespace Engine.Rendering
         Matrix4 Projection { get; }
 
         /// <summary>
+        /// The view matrix of the Camera
+        /// </summary>
+        Matrix4 ViewMatrix { get; }
+
+        /// <summary>
         /// Method to Get the World Transform of the Camera
         /// </summary>
         /// <returns></returns>
         Matrix4 GetWorldTransform();
-
-        /// <summary>
-        /// The view matrix of the Camera
-        /// </summary>
-        Matrix4 ViewMatrix { get; }
     }
 }

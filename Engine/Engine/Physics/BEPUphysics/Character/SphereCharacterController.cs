@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUphysics.Entities.Prefabs;
@@ -17,258 +16,30 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class SphereCharacterController : Updateable, IBeforeSolverUpdateable
     {
-        /// <summary>
-        /// Gets the physical body of the character.
-        /// </summary>
-        public Sphere Body { get; }
-
-        /// <summary>
-        /// Gets the contact categorizer used by the character to determine how contacts affect the character's movement.
-        /// </summary>
-        public CharacterContactCategorizer ContactCategorizer { get; }
-
-        /// <summary>
-        /// Gets the support system which other systems use to perform local ray casts and contact queries.
-        /// </summary>
-        public QueryManager QueryManager { get; }
-
-        /// <summary>
-        /// Gets the constraint used by the character to handle horizontal motion.  This includes acceleration due to player input and deceleration when the relative velocity
-        /// between the support and the character exceeds specified maximums.
-        /// </summary>
-        public HorizontalMotionConstraint HorizontalMotionConstraint { get; }
-
-        /// <summary>
-        /// Gets the constraint used by the character to stay glued to surfaces it stands on.
-        /// </summary>
-        public VerticalMotionConstraint VerticalMotionConstraint { get; }
-
-        /// <summary>
-        /// Gets or sets the pair locker used by the character controller to avoid interfering with the behavior of other characters.
-        /// </summary>
-        private CharacterPairLocker PairLocker { get; }
-
-        private Vector3 down = new Vector3(0, -1, 0);
-
-        /// <summary>
-        /// Gets or sets the down direction of the character. Controls the interpretation of movement and support finding.
-        /// </summary>
-        public Vector3 Down
-        {
-            get => down;
-            set
-            {
-                float lengthSquared = value.LengthSquared();
-                if (lengthSquared < Toolbox.Epsilon)
-                {
-                    return; //Silently fail. Assuming here that a dynamic process is setting this property; don't need to make a stink about it.
-                }
-
-                Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out value);
-                down = value;
-            }
-        }
-
-        private Vector3 viewDirection = new Vector3(0, 0, -1);
-
-        /// <summary>
-        /// Gets or sets the view direction associated with the character.
-        /// Also sets the horizontal view direction internally based on the current down vector.
-        /// This is used to interpret the movement directions.
-        /// </summary>
-        public Vector3 ViewDirection
-        {
-            get => viewDirection;
-            set => viewDirection = value;
-        }
-
-        private float jumpSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character leaves the ground when it jumps.
-        /// </summary>
-        public float JumpSpeed
-        {
-            get => jumpSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                jumpSpeed = value;
-            }
-        }
-
-        private float slidingJumpSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character leaves the ground when it jumps without traction.
-        /// </summary>
-        public float SlidingJumpSpeed
-        {
-            get => slidingJumpSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                slidingJumpSpeed = value;
-            }
-        }
-
-        private float jumpForceFactor = 1f;
-
-        /// <summary>
-        /// Gets or sets the amount of force to apply to supporting dynamic entities as a fraction of the force used to reach the jump speed.
-        /// </summary>
-        public float JumpForceFactor
-        {
-            get => jumpForceFactor;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                jumpForceFactor = value;
-            }
-        }
-
-        private float speed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move while standing with a support that provides traction.
-        /// Relative velocities with a greater magnitude will be decelerated.
-        /// </summary>
-        public float Speed
-        {
-            get => speed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                speed = value;
-            }
-        }
-
-        private float tractionForce;
-
-        /// <summary>
-        /// Gets or sets the maximum force that the character can apply while on a support which provides traction.
-        /// </summary>
-        public float TractionForce
-        {
-            get => tractionForce;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                tractionForce = value;
-            }
-        }
-
-        private float slidingSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move while on a support that does not provide traction.
-        /// Relative velocities with a greater magnitude will be decelerated.
-        /// </summary>
-        public float SlidingSpeed
-        {
-            get => slidingSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                slidingSpeed = value;
-            }
-        }
-
-        private float slidingForce;
-
-        /// <summary>
-        /// Gets or sets the maximum force that the character can apply while on a support which does not provide traction.
-        /// </summary>
-        public float SlidingForce
-        {
-            get => slidingForce;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                slidingForce = value;
-            }
-        }
+        private float airForce;
 
         private float airSpeed;
 
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move with no support.
-        /// The character will not be decelerated while airborne.
-        /// </summary>
-        public float AirSpeed
-        {
-            get => airSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
+        private Vector3 down = new Vector3(0, -1, 0);
 
-                airSpeed = value;
-            }
-        }
+        private float jumpForceFactor = 1f;
 
-        private float airForce;
+        private float jumpSpeed;
 
-        /// <summary>
-        /// Gets or sets the maximum force that the character can apply with no support.
-        /// </summary>
-        public float AirForce
-        {
-            get => airForce;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
+        private float slidingForce;
 
-                airForce = value;
-            }
-        }
+        private float slidingJumpSpeed;
 
-        /// <summary>
-        /// Gets or sets a scaling factor to apply to the maximum speed of the character.
-        /// This is useful when a character does not have 0 or MaximumSpeed target speed, but rather
-        /// intermediate values. A common use case is analog controller sticks.
-        /// </summary>
-        public float SpeedScale { get; set; } = 1;
+        private float slidingSpeed;
+
+        private float speed;
+
+        private float tractionForce;
 
 
-        /// <summary>
-        /// Gets the support finder used by the character.
-        /// The support finder analyzes the character's contacts to see if any of them provide support and/or traction.
-        /// </summary>
-        public SupportFinder SupportFinder { get; }
+        private bool tryToJump;
+
+        private Vector3 viewDirection = new Vector3(0, 0, -1);
 
 
         /// <summary>
@@ -335,55 +106,236 @@ namespace Engine.Physics.BEPUphysics.Character
             Body.CollisionInformation.Tag = new CharacterSynchronizer(Body);
         }
 
-        private void RemoveFriction(EntityCollidable sender, BroadPhaseEntry other, NarrowPhasePair pair)
+        /// <summary>
+        /// Gets the physical body of the character.
+        /// </summary>
+        public Sphere Body { get; }
+
+        /// <summary>
+        /// Gets the contact categorizer used by the character to determine how contacts affect the character's movement.
+        /// </summary>
+        public CharacterContactCategorizer ContactCategorizer { get; }
+
+        /// <summary>
+        /// Gets the support system which other systems use to perform local ray casts and contact queries.
+        /// </summary>
+        public QueryManager QueryManager { get; }
+
+        /// <summary>
+        /// Gets the constraint used by the character to handle horizontal motion.  This includes acceleration due to player input and deceleration when the relative velocity
+        /// between the support and the character exceeds specified maximums.
+        /// </summary>
+        public HorizontalMotionConstraint HorizontalMotionConstraint { get; }
+
+        /// <summary>
+        /// Gets the constraint used by the character to stay glued to surfaces it stands on.
+        /// </summary>
+        public VerticalMotionConstraint VerticalMotionConstraint { get; }
+
+        /// <summary>
+        /// Gets or sets the pair locker used by the character controller to avoid interfering with the behavior of other characters.
+        /// </summary>
+        private CharacterPairLocker PairLocker { get; }
+
+        /// <summary>
+        /// Gets or sets the down direction of the character. Controls the interpretation of movement and support finding.
+        /// </summary>
+        public Vector3 Down
         {
-            CollidablePairHandler collidablePair = pair as CollidablePairHandler;
-            if (collidablePair != null)
-                //The default values for InteractionProperties is all zeroes- zero friction, zero bounciness.
-                //That's exactly how we want the character to behave when hitting objects.
+            get => down;
+            set
             {
-                collidablePair.UpdateMaterialProperties(new InteractionProperties());
+                float lengthSquared = value.LengthSquared();
+                if (lengthSquared < Toolbox.Epsilon)
+                {
+                    return; //Silently fail. Assuming here that a dynamic process is setting this property; don't need to make a stink about it.
+                }
+
+                Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out value);
+                down = value;
             }
         }
 
-        private void ExpandBoundingBox()
+        /// <summary>
+        /// Gets or sets the view direction associated with the character.
+        /// Also sets the horizontal view direction internally based on the current down vector.
+        /// This is used to interpret the movement directions.
+        /// </summary>
+        public Vector3 ViewDirection
         {
-            if (Body.ActivityInformation.IsActive)
+            get => viewDirection;
+            set => viewDirection = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character leaves the ground when it jumps.
+        /// </summary>
+        public float JumpSpeed
+        {
+            get => jumpSpeed;
+            set
             {
-                //This runs after the bounding box updater is run, but before the broad phase.
-                //The expansion allows the downward pointing raycast to collect hit points.
-                Vector3 expansion = SupportFinder.MaximumAssistedDownStepHeight * down;
-                BoundingBox box = Body.CollisionInformation.BoundingBox;
-                if (down.X < 0)
+                if (value < 0)
                 {
-                    box.Min.X += expansion.X;
-                }
-                else
-                {
-                    box.Max.X += expansion.X;
+                    throw new ArgumentException("Value must be nonnegative.");
                 }
 
-                if (down.Y < 0)
-                {
-                    box.Min.Y += expansion.Y;
-                }
-                else
-                {
-                    box.Max.Y += expansion.Y;
-                }
-
-                if (down.Z < 0)
-                {
-                    box.Min.Z += expansion.Z;
-                }
-                else
-                {
-                    box.Max.Z += expansion.Z;
-                }
-
-                Body.CollisionInformation.BoundingBox = box;
+                jumpSpeed = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character leaves the ground when it jumps without traction.
+        /// </summary>
+        public float SlidingJumpSpeed
+        {
+            get => slidingJumpSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                slidingJumpSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of force to apply to supporting dynamic entities as a fraction of the force used to reach the jump speed.
+        /// </summary>
+        public float JumpForceFactor
+        {
+            get => jumpForceFactor;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                jumpForceFactor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move while standing with a support that provides traction.
+        /// Relative velocities with a greater magnitude will be decelerated.
+        /// </summary>
+        public float Speed
+        {
+            get => speed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                speed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum force that the character can apply while on a support which provides traction.
+        /// </summary>
+        public float TractionForce
+        {
+            get => tractionForce;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                tractionForce = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move while on a support that does not provide traction.
+        /// Relative velocities with a greater magnitude will be decelerated.
+        /// </summary>
+        public float SlidingSpeed
+        {
+            get => slidingSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                slidingSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum force that the character can apply while on a support which does not provide traction.
+        /// </summary>
+        public float SlidingForce
+        {
+            get => slidingForce;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                slidingForce = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move with no support.
+        /// The character will not be decelerated while airborne.
+        /// </summary>
+        public float AirSpeed
+        {
+            get => airSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                airSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum force that the character can apply with no support.
+        /// </summary>
+        public float AirForce
+        {
+            get => airForce;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                airForce = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a scaling factor to apply to the maximum speed of the character.
+        /// This is useful when a character does not have 0 or MaximumSpeed target speed, but rather
+        /// intermediate values. A common use case is analog controller sticks.
+        /// </summary>
+        public float SpeedScale { get; set; } = 1;
+
+
+        /// <summary>
+        /// Gets the support finder used by the character.
+        /// The support finder analyzes the character's contacts to see if any of them provide support and/or traction.
+        /// </summary>
+        public SupportFinder SupportFinder { get; }
 
         void IBeforeSolverUpdateable.Update(float dt)
         {
@@ -502,6 +454,82 @@ namespace Engine.Physics.BEPUphysics.Character
             HorizontalMotionConstraint.TargetSpeed *= SpeedScale;
         }
 
+        public override void OnAdditionToSpace(Space newSpace)
+        {
+            //Add any supplements to the space too.
+            newSpace.Add(Body);
+            newSpace.Add(HorizontalMotionConstraint);
+            newSpace.Add(VerticalMotionConstraint);
+            //This character controller requires the standard implementation of Space.
+            newSpace.BoundingBoxUpdater.Finishing += ExpandBoundingBox;
+
+            Body.AngularVelocity = new Vector3();
+            Body.LinearVelocity = new Vector3();
+        }
+
+        public override void OnRemovalFromSpace(Space oldSpace)
+        {
+            //Remove any supplements from the space too.
+            oldSpace.Remove(Body);
+            oldSpace.Remove(HorizontalMotionConstraint);
+            oldSpace.Remove(VerticalMotionConstraint);
+            //This character controller requires the standard implementation of Space.
+            oldSpace.BoundingBoxUpdater.Finishing -= ExpandBoundingBox;
+            SupportFinder.ClearSupportData();
+            Body.AngularVelocity = new Vector3();
+            Body.LinearVelocity = new Vector3();
+        }
+
+        private void RemoveFriction(EntityCollidable sender, BroadPhaseEntry other, NarrowPhasePair pair)
+        {
+            CollidablePairHandler collidablePair = pair as CollidablePairHandler;
+            if (collidablePair != null)
+                //The default values for InteractionProperties is all zeroes- zero friction, zero bounciness.
+                //That's exactly how we want the character to behave when hitting objects.
+            {
+                collidablePair.UpdateMaterialProperties(new InteractionProperties());
+            }
+        }
+
+        private void ExpandBoundingBox()
+        {
+            if (Body.ActivityInformation.IsActive)
+            {
+                //This runs after the bounding box updater is run, but before the broad phase.
+                //The expansion allows the downward pointing raycast to collect hit points.
+                Vector3 expansion = SupportFinder.MaximumAssistedDownStepHeight * down;
+                BoundingBox box = Body.CollisionInformation.BoundingBox;
+                if (down.X < 0)
+                {
+                    box.Min.X += expansion.X;
+                }
+                else
+                {
+                    box.Max.X += expansion.X;
+                }
+
+                if (down.Y < 0)
+                {
+                    box.Min.Y += expansion.Y;
+                }
+                else
+                {
+                    box.Max.Y += expansion.Y;
+                }
+
+                if (down.Z < 0)
+                {
+                    box.Min.Z += expansion.Z;
+                }
+                else
+                {
+                    box.Max.Z += expansion.Z;
+                }
+
+                Body.CollisionInformation.BoundingBox = box;
+            }
+        }
+
         private void ComputeRelativeVelocity(ref SupportData supportData, out Vector3 relativeVelocity)
         {
             //Compute the relative velocity between the body and its support, if any.
@@ -576,9 +604,6 @@ namespace Engine.Physics.BEPUphysics.Character
             Vector3.Add(ref relativeVelocity, ref velocityChange, out relativeVelocity);
         }
 
-
-        private bool tryToJump;
-
         /// <summary>
         /// Jumps the character off of whatever it's currently standing on.  If it has traction, it will go straight up.
         /// If it doesn't have traction, but is still supported by something, it will jump in the direction of the surface normal.
@@ -588,32 +613,6 @@ namespace Engine.Physics.BEPUphysics.Character
             //The actual jump velocities are applied next frame.  This ensures that gravity doesn't pre-emptively slow the jump, and uses more
             //up-to-date support data.
             tryToJump = true;
-        }
-
-        public override void OnAdditionToSpace(Space newSpace)
-        {
-            //Add any supplements to the space too.
-            newSpace.Add(Body);
-            newSpace.Add(HorizontalMotionConstraint);
-            newSpace.Add(VerticalMotionConstraint);
-            //This character controller requires the standard implementation of Space.
-            newSpace.BoundingBoxUpdater.Finishing += ExpandBoundingBox;
-
-            Body.AngularVelocity = new Vector3();
-            Body.LinearVelocity = new Vector3();
-        }
-
-        public override void OnRemovalFromSpace(Space oldSpace)
-        {
-            //Remove any supplements from the space too.
-            oldSpace.Remove(Body);
-            oldSpace.Remove(HorizontalMotionConstraint);
-            oldSpace.Remove(VerticalMotionConstraint);
-            //This character controller requires the standard implementation of Space.
-            oldSpace.BoundingBoxUpdater.Finishing -= ExpandBoundingBox;
-            SupportFinder.ClearSupportData();
-            Body.AngularVelocity = new Vector3();
-            Body.LinearVelocity = new Vector3();
         }
     }
 }

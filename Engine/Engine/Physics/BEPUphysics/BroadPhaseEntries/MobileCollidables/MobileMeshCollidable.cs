@@ -14,10 +14,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
     ///</summary>
     public class MobileMeshCollidable : EntityCollidable
     {
-        ///<summary>
-        /// Gets the shape of the collidable.
-        ///</summary>
-        public new MobileMeshShape Shape => (MobileMeshShape) shape;
+        internal bool improveBoundaryBehavior = true;
 
         /// <summary>
         /// Constructs a new mobile mesh collidable.
@@ -29,8 +26,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
             Events = new ContactEventManager<EntityCollidable>();
         }
 
-
-        internal bool improveBoundaryBehavior = true;
+        ///<summary>
+        /// Gets the shape of the collidable.
+        ///</summary>
+        public new MobileMeshShape Shape => (MobileMeshShape) shape;
 
         /// <summary>
         /// Gets or sets whether or not the collision system should attempt to improve contact behavior at the boundaries between triangles.

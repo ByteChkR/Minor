@@ -13,17 +13,12 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     {
         private readonly float[] leverArms = new float[4];
 
-        ///<summary>
-        /// Gets the contact manifold constraint that owns this constraint.
-        ///</summary>
-        public ConvexContactManifoldConstraint ContactManifoldConstraint { get; private set; }
-
         internal float accumulatedImpulse;
         private float angularX, angularY, angularZ;
         private int contactCount;
-        private float friction;
         private Entity entityA, entityB;
         private bool entityADynamic, entityBDynamic;
+        private float friction;
         private float velocityToImpulse;
 
         ///<summary>
@@ -33,6 +28,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
         {
             isActive = false;
         }
+
+        ///<summary>
+        /// Gets the contact manifold constraint that owns this constraint.
+        ///</summary>
+        public ConvexContactManifoldConstraint ContactManifoldConstraint { get; private set; }
 
         /// <summary>
         /// Gets the torque applied by twist friction.

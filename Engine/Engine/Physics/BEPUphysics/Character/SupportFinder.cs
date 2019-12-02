@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.CollisionRuleManagement;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
@@ -17,12 +16,31 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class SupportFinder
     {
-        private RawList<CharacterContact> supportContacts = new RawList<CharacterContact>();
-        private RawList<CharacterContact> tractionContacts = new RawList<CharacterContact>();
-        private RawList<CharacterContact> sideContacts = new RawList<CharacterContact>();
+        private Entity characterBody;
         private RawList<CharacterContact> headContacts = new RawList<CharacterContact>();
 
         private float maximumAssistedDownStepHeight = 1;
+        private RawList<CharacterContact> sideContacts = new RawList<CharacterContact>();
+        private RawList<CharacterContact> supportContacts = new RawList<CharacterContact>();
+
+        private SupportData supportData;
+        private RawList<CharacterContact> tractionContacts = new RawList<CharacterContact>();
+
+        private SupportData verticalSupportData;
+
+        /// <summary>
+        /// Constructs a new support finder.
+        /// </summary>
+        /// <param name="characterBody">Body entity used by the character.</param>
+        /// <param name="queryManager">Query provider used by the character. Used to perform ray cast tests against the character's near environment.</param>
+        /// <param name="contactCategorizer">Contact categorizer to use.</param>
+        public SupportFinder(Entity characterBody, QueryManager queryManager,
+            CharacterContactCategorizer contactCategorizer)
+        {
+            this.characterBody = characterBody;
+            QueryManager = queryManager;
+            ContactCategorizer = contactCategorizer;
+        }
 
         /// <summary>
         /// Gets or sets the maximum distance from the character's center to the support that will be assisted by downstepping.
@@ -40,12 +58,62 @@ namespace Engine.Physics.BEPUphysics.Character
         /// </summary>
         public float BottomDistance { get; private set; }
 
-        private SupportData supportData;
-
         /// <summary>
         /// Computes a combined support contact from all available supports (contacts or ray).
         /// </summary>
         public SupportData SupportData => supportData;
+
+        /// <summary>
+        /// Gets the support data of the character biased towards the character's movement direction.
+        /// Excludes contacts that might otherwise cause the vertical motion constraint to fight the character's movement.
+        /// </summary>
+        public SupportData VerticalSupportData => verticalSupportData;
+
+        /// <summary>
+        /// Gets whether or not at least one of the character's body's contacts provide support to the character.
+        /// </summary>
+        public bool HasSupport { get; private set; }
+
+        /// <summary>
+        /// Gets whether or not at least one of the character's supports, if any, are flat enough to allow traction.
+        /// </summary>
+        public bool HasTraction { get; private set; }
+
+        /// <summary>
+        /// Gets the data about the supporting ray, if any.
+        /// </summary>
+        public SupportRayData? SupportRayData { get; private set; }
+
+        /// <summary>
+        /// Gets the character's supports.
+        /// </summary>
+        public ReadOnlyList<CharacterContact> Supports => new ReadOnlyList<CharacterContact>(supportContacts);
+
+        /// <summary>
+        /// Gets the contacts on the side of the character.
+        /// </summary>
+        public ReadOnlyList<CharacterContact> SideContacts => new ReadOnlyList<CharacterContact>(sideContacts);
+
+        /// <summary>
+        /// Gets the contacts on the top of the character.
+        /// </summary>
+        public ReadOnlyList<CharacterContact> HeadContacts => new ReadOnlyList<CharacterContact>(headContacts);
+
+        /// <summary>
+        /// Gets a collection of the character's supports that provide traction.
+        /// Traction means that the surface's slope is flat enough to stand on normally.
+        /// </summary>
+        public ReadOnlyList<CharacterContact> TractionSupports => new ReadOnlyList<CharacterContact>(tractionContacts);
+
+        /// <summary>
+        /// Gets the contact categorizer used by the support finder.
+        /// </summary>
+        private CharacterContactCategorizer ContactCategorizer { get; }
+
+        /// <summary>
+        /// Gets the query manager used by the support finder.
+        /// </summary>
+        private QueryManager QueryManager { get; }
 
         /// <summary>
         /// Computes representative support information based on the character's current traction contacts, support contacts, and ray contacts.
@@ -134,14 +202,6 @@ namespace Engine.Physics.BEPUphysics.Character
             supportData.SupportObject = supportObject;
         }
 
-        private SupportData verticalSupportData;
-
-        /// <summary>
-        /// Gets the support data of the character biased towards the character's movement direction.
-        /// Excludes contacts that might otherwise cause the vertical motion constraint to fight the character's movement.
-        /// </summary>
-        public SupportData VerticalSupportData => verticalSupportData;
-
         /// <summary>
         /// Computes a traction contact using a movement direction. This is helpful for the vertical motion constraint.
         /// By biasing the search in the movement direction, contacts on the character's butt (which might otherwise hold the character back via the vertical motion constraint) are ignored.
@@ -204,68 +264,6 @@ namespace Engine.Physics.BEPUphysics.Character
             }
 
             verticalSupportData = new SupportData();
-        }
-
-        /// <summary>
-        /// Gets whether or not at least one of the character's body's contacts provide support to the character.
-        /// </summary>
-        public bool HasSupport { get; private set; }
-
-        /// <summary>
-        /// Gets whether or not at least one of the character's supports, if any, are flat enough to allow traction.
-        /// </summary>
-        public bool HasTraction { get; private set; }
-
-        /// <summary>
-        /// Gets the data about the supporting ray, if any.
-        /// </summary>
-        public SupportRayData? SupportRayData { get; private set; }
-
-        /// <summary>
-        /// Gets the character's supports.
-        /// </summary>
-        public ReadOnlyList<CharacterContact> Supports => new ReadOnlyList<CharacterContact>(supportContacts);
-
-        /// <summary>
-        /// Gets the contacts on the side of the character.
-        /// </summary>
-        public ReadOnlyList<CharacterContact> SideContacts => new ReadOnlyList<CharacterContact>(sideContacts);
-
-        /// <summary>
-        /// Gets the contacts on the top of the character.
-        /// </summary>
-        public ReadOnlyList<CharacterContact> HeadContacts => new ReadOnlyList<CharacterContact>(headContacts);
-
-        /// <summary>
-        /// Gets a collection of the character's supports that provide traction.
-        /// Traction means that the surface's slope is flat enough to stand on normally.
-        /// </summary>
-        public ReadOnlyList<CharacterContact> TractionSupports => new ReadOnlyList<CharacterContact>(tractionContacts);
-
-        private Entity characterBody;
-
-        /// <summary>
-        /// Gets the contact categorizer used by the support finder.
-        /// </summary>
-        private CharacterContactCategorizer ContactCategorizer { get; }
-
-        /// <summary>
-        /// Gets the query manager used by the support finder.
-        /// </summary>
-        private QueryManager QueryManager { get; }
-
-        /// <summary>
-        /// Constructs a new support finder.
-        /// </summary>
-        /// <param name="characterBody">Body entity used by the character.</param>
-        /// <param name="queryManager">Query provider used by the character. Used to perform ray cast tests against the character's near environment.</param>
-        /// <param name="contactCategorizer">Contact categorizer to use.</param>
-        public SupportFinder(Entity characterBody, QueryManager queryManager,
-            CharacterContactCategorizer contactCategorizer)
-        {
-            this.characterBody = characterBody;
-            QueryManager = queryManager;
-            ContactCategorizer = contactCategorizer;
         }
 
         /// <summary>

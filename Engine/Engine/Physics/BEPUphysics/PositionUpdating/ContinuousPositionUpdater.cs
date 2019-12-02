@@ -10,14 +10,20 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
     ///</summary>
     public class ContinuousPositionUpdater : PositionUpdater
     {
-        private RawList<IPositionUpdateable> discreteUpdateables = new RawList<IPositionUpdateable>();
-        private RawList<ICCDPositionUpdateable> passiveUpdateables = new RawList<ICCDPositionUpdateable>();
-        private RawList<ICCDPositionUpdateable> continuousUpdateables = new RawList<ICCDPositionUpdateable>();
-
         ///<summary>
         /// Number of objects in a list required to use multithreading.
         ///</summary>
         public static int MultithreadingThreshold = 100;
+
+        private RawList<ICCDPositionUpdateable> continuousUpdateables = new RawList<ICCDPositionUpdateable>();
+        private RawList<IPositionUpdateable> discreteUpdateables = new RawList<IPositionUpdateable>();
+        private RawList<ICCDPositionUpdateable> passiveUpdateables = new RawList<ICCDPositionUpdateable>();
+
+        private Action<int> preUpdate;
+
+        private Action<int> updateContinuous;
+
+        private Action<int> updateTimeOfImpact;
 
         ///<summary>
         /// Constructs the position updater.
@@ -44,8 +50,6 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             updateTimeOfImpact = UpdateTimeOfImpact;
             updateContinuous = UpdateContinuousItem;
         }
-
-        private Action<int> preUpdate;
 
         private void PreUpdate(int i)
         {
@@ -80,8 +84,6 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             }
         }
 
-        private Action<int> updateTimeOfImpact;
-
         private void UpdateTimeOfImpact(int i)
         {
             //This should always execute, even if the updateable is not active.  This is because
@@ -89,8 +91,6 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
             //is awake.
             continuousUpdateables.Elements[i].UpdateTimesOfImpact(timeStepSettings.TimeStepDuration);
         }
-
-        private Action<int> updateContinuous;
 
         private void UpdateContinuousItem(int i)
         {

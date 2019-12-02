@@ -1,7 +1,4 @@
-﻿using System;
-using Engine.Audio;
-using Engine.OpenCL;
-using OpenTK;
+﻿using OpenTK;
 using OpenTK.Graphics;
 using Xunit;
 

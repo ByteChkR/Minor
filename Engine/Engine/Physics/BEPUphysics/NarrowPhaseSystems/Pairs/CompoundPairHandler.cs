@@ -13,6 +13,11 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     {
         private CompoundCollidable compoundInfoB;
 
+        //Some danger of unintuitive-to-address allocations here.  If these lists get huge, the user will see some RawList<<>> goofiness in the profiler.
+        //They can still address it by clearing out the cached pair factories though.
+        private RawList<TreeOverlapPair<CompoundChild, CompoundChild>> overlappedElements =
+            new RawList<TreeOverlapPair<CompoundChild, CompoundChild>>();
+
         public override Collidable CollidableB => compoundInfoB;
 
         public override Entities.Entity EntityB => compoundInfoB.entity;
@@ -43,11 +48,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             base.CleanUp();
             compoundInfoB = null;
         }
-
-        //Some danger of unintuitive-to-address allocations here.  If these lists get huge, the user will see some RawList<<>> goofiness in the profiler.
-        //They can still address it by clearing out the cached pair factories though.
-        private RawList<TreeOverlapPair<CompoundChild, CompoundChild>> overlappedElements =
-            new RawList<TreeOverlapPair<CompoundChild, CompoundChild>>();
 
         protected override void UpdateContainedPairs()
         {

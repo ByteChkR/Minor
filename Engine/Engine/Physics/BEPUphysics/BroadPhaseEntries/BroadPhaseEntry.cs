@@ -12,6 +12,11 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     /// </summary>
     public abstract class BroadPhaseEntry : IBoundingBoxOwner, ICollisionRulesOwner
     {
+        protected internal BoundingBox boundingBox;
+
+        internal CollisionRules collisionRules;
+
+        private Action collisionRulesUpdatedDelegate;
         internal int hashCode;
 
         protected BroadPhaseEntry()
@@ -28,18 +33,15 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         public BroadPhase BroadPhase { get; internal set; }
 
         /// <summary>
-        /// Gets the object's hash code.
+        /// Gets whether this collidable is associated with an active entity. True if it is, false if it's not.
         /// </summary>
-        /// <returns>Hash code for the object.</returns>
-        public override int GetHashCode()
-        {
-            return hashCode;
-        }
+        public abstract bool IsActive { get; }
 
-        private Action collisionRulesUpdatedDelegate;
-        protected abstract void CollisionRulesUpdated();
 
-        protected internal BoundingBox boundingBox;
+        /// <summary>
+        /// Gets or sets the user data associated with this entry.
+        /// </summary>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Gets or sets the bounding box of the entry.
@@ -49,13 +51,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => boundingBox;
             set => boundingBox = value;
         }
-
-        /// <summary>
-        /// Gets whether this collidable is associated with an active entity. True if it is, false if it's not.
-        /// </summary>
-        public abstract bool IsActive { get; }
-
-        internal CollisionRules collisionRules;
 
         /// <summary>
         /// Gets the entry's collision rules.
@@ -82,6 +77,17 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                 }
             }
         }
+
+        /// <summary>
+        /// Gets the object's hash code.
+        /// </summary>
+        /// <returns>Hash code for the object.</returns>
+        public override int GetHashCode()
+        {
+            return hashCode;
+        }
+
+        protected abstract void CollisionRulesUpdated();
 
         /// <summary>
         /// Tests a ray against the entry.
@@ -150,11 +156,5 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         /// Updates the bounding box to the current state of the entry.
         /// </summary>
         public abstract void UpdateBoundingBox();
-
-
-        /// <summary>
-        /// Gets or sets the user data associated with this entry.
-        /// </summary>
-        public object Tag { get; set; }
     }
 }

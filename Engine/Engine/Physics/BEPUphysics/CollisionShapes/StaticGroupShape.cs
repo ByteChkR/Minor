@@ -14,6 +14,18 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     ///</summary>
     public class StaticGroupShape : CollisionShape
     {
+        ///<summary>
+        /// Constructs a new StaticGroupShape.
+        ///</summary>
+        ///<param name="collidables">List of collidables in the StaticGroup.</param>
+        ///<param name="owner">StaticGroup directly associated with this shape.</param>
+        public StaticGroupShape(IList<Collidable> collidables, StaticGroup owner)
+        {
+            StaticGroup = owner;
+            CollidableTree = new BoundingBoxTree<Collidable>(collidables);
+            //Rather than hooking up a bunch of ShapeChanged events here that don't capture the full capacity of change
+            //in our child collidables, we will rely on the user telling the collidable tree to reformat itself directly.
+        }
         //Technically, while this is superior to the 'put a bunch of stuff in the Space' approach, it is still 
         //inferior in maximum performance to an approach which allows for the direct comparison of a static tree against a nonstatic tree.
         //This would require tighter integration with the broad phase, though.  It's not clear that the performance boost is worth it.
@@ -29,20 +41,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         /// Contains Collidable instances as opposed to shapes.
         /// </summary>
         public BoundingBoxTree<Collidable> CollidableTree { get; }
-
-
-        ///<summary>
-        /// Constructs a new StaticGroupShape.
-        ///</summary>
-        ///<param name="collidables">List of collidables in the StaticGroup.</param>
-        ///<param name="owner">StaticGroup directly associated with this shape.</param>
-        public StaticGroupShape(IList<Collidable> collidables, StaticGroup owner)
-        {
-            StaticGroup = owner;
-            CollidableTree = new BoundingBoxTree<Collidable>(collidables);
-            //Rather than hooking up a bunch of ShapeChanged events here that don't capture the full capacity of change
-            //in our child collidables, we will rely on the user telling the collidable tree to reformat itself directly.
-        }
 
         /// <summary>
         /// Adds a new collidable to the group.

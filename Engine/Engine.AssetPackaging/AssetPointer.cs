@@ -5,12 +5,12 @@ namespace Engine.AssetPackaging
     [Serializable]
     public class AssetPointer
     {
-        public string Path;
-        public int PackageID;
-        public int Offset;
         public int Length;
+        public int Offset;
+        public int PackageID;
         public int PackageSize;
         public AssetPackageType PackageType;
+        public string Path;
 
         public static int GetPackageCount(int offset, int length, int packageSize)
         {

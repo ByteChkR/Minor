@@ -13,9 +13,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
         private Vector2 accumulatedImpulse;
         private Vector2 biasVelocity;
         private Matrix2x2 effectiveMassMatrix;
+        private Vector2 error;
         private Vector3 localAxisA, localAxisB;
         private Vector3 localConstrainedAxis1, localConstrainedAxis2; //Not a and b because they are both based on a...
-        private Vector2 error;
         private Vector3 worldAxisA, worldAxisB;
         private Vector3 worldConstrainedAxis1, worldConstrainedAxis2;
 
@@ -120,94 +120,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
             localConstrainedAxis1.Normalize();
             localConstrainedAxis2.Normalize();
         }
-
-        #region I2DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// </summary>
-        public Vector2 RelativeVelocity
-        {
-            get
-            {
-                Vector3 velocity;
-                Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
-
-                Vector2 lambda = new Vector2();
-                Vector3.Dot(ref worldConstrainedAxis1, ref velocity, out lambda.X);
-                Vector3.Dot(ref worldConstrainedAxis2, ref velocity, out lambda.Y);
-                return lambda;
-            }
-        }
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// </summary>
-        public Vector2 TotalImpulse => accumulatedImpulse;
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// </summary>
-        public Vector2 Error => error;
-
-        #endregion
-
-        #region I2DJacobianConstraint Members
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
-        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = Toolbox.ZeroVector;
-            jacobianY = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
-        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = Toolbox.ZeroVector;
-            jacobianY = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
-        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = worldConstrainedAxis1;
-            jacobianY = worldConstrainedAxis2;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
-        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = -worldConstrainedAxis1;
-            jacobianY = -worldConstrainedAxis2;
-        }
-
-        /// <summary>
-        /// Gets the mass matrix of the constraint.
-        /// </summary>
-        /// <param name="massMatrix">Constraint's mass matrix.</param>
-        public void GetMassMatrix(out Matrix2x2 massMatrix)
-        {
-            massMatrix = effectiveMassMatrix;
-        }
-
-        #endregion
 
         ///<summary>
         /// Performs the frame's configuration step.
@@ -343,5 +255,93 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Joints
 
             return Math.Abs(lambda.X) + Math.Abs(lambda.Y);
         }
+
+        #region I2DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// </summary>
+        public Vector2 RelativeVelocity
+        {
+            get
+            {
+                Vector3 velocity;
+                Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity, out velocity);
+
+                Vector2 lambda = new Vector2();
+                Vector3.Dot(ref worldConstrainedAxis1, ref velocity, out lambda.X);
+                Vector3.Dot(ref worldConstrainedAxis2, ref velocity, out lambda.Y);
+                return lambda;
+            }
+        }
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// </summary>
+        public Vector2 TotalImpulse => accumulatedImpulse;
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// </summary>
+        public Vector2 Error => error;
+
+        #endregion
+
+        #region I2DJacobianConstraint Members
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
+        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = Toolbox.ZeroVector;
+            jacobianY = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
+        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = Toolbox.ZeroVector;
+            jacobianY = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
+        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = worldConstrainedAxis1;
+            jacobianY = worldConstrainedAxis2;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
+        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = -worldConstrainedAxis1;
+            jacobianY = -worldConstrainedAxis2;
+        }
+
+        /// <summary>
+        /// Gets the mass matrix of the constraint.
+        /// </summary>
+        /// <param name="massMatrix">Constraint's mass matrix.</param>
+        public void GetMassMatrix(out Matrix2x2 massMatrix)
+        {
+            massMatrix = effectiveMassMatrix;
+        }
+
+        #endregion
     }
 }

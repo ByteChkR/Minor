@@ -3,7 +3,7 @@ namespace Engine.OpenCL.DotNetCore.Interop
     /// <summary>
     /// Represents an enumeration for the result codes that are returned by the native OpenCL functions.
     /// </summary>
-    public enum Result : int
+    public enum Result
     {
         #region OpenCL Error Codes
 

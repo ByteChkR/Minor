@@ -10,6 +10,29 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
     ///</summary>
     public class BufferedStatesManager
     {
+        private bool enabled;
+
+        internal RawList<Entity> entities = new RawList<Entity>();
+
+        ///<summary>
+        /// Constructs a new manager.
+        ///</summary>
+        public BufferedStatesManager()
+        {
+            InterpolatedStates = new InterpolatedStatesManager(this);
+            ReadBuffers = new StateReadBuffers(this);
+        }
+
+        ///<summary>
+        /// Constructs a new manager.
+        ///</summary>
+        ///<param name="parallelLooper">Parallel loop provider to be used by the manager.</param>
+        public BufferedStatesManager(IParallelLooper parallelLooper)
+        {
+            InterpolatedStates = new InterpolatedStatesManager(this, parallelLooper);
+            ReadBuffers = new StateReadBuffers(this, parallelLooper);
+        }
+
         ///<summary>
         /// Gets the buffers of last known entity states.
         ///</summary>
@@ -21,14 +44,10 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
         ///</summary>
         public InterpolatedStatesManager InterpolatedStates { get; }
 
-        internal RawList<Entity> entities = new RawList<Entity>();
-
         ///<summary>
         /// Gets the list of entities in the manager.
         ///</summary>
         public ReadOnlyList<Entity> Entities => new ReadOnlyList<Entity>(entities);
-
-        private bool enabled;
 
         ///<summary>
         /// Gets or sets whether or not the buffered states manager and its submanagers are updating.
@@ -51,25 +70,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
 
                 enabled = value;
             }
-        }
-
-        ///<summary>
-        /// Constructs a new manager.
-        ///</summary>
-        public BufferedStatesManager()
-        {
-            InterpolatedStates = new InterpolatedStatesManager(this);
-            ReadBuffers = new StateReadBuffers(this);
-        }
-
-        ///<summary>
-        /// Constructs a new manager.
-        ///</summary>
-        ///<param name="parallelLooper">Parallel loop provider to be used by the manager.</param>
-        public BufferedStatesManager(IParallelLooper parallelLooper)
-        {
-            InterpolatedStates = new InterpolatedStatesManager(this, parallelLooper);
-            ReadBuffers = new StateReadBuffers(this, parallelLooper);
         }
 
 

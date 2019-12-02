@@ -11,29 +11,138 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
     /// </summary>
     public class SimulationIslandMember
     {
+        internal bool allowStabilization = true;
+
+        internal RawList<SimulationIslandConnection> connections = new RawList<SimulationIslandConnection>(16);
+
+        private bool isAlwaysActive;
+
+        private bool isDeactivationCandidate;
+        internal bool isSlowing;
+
+        private bool previouslyActive = true;
+
         //This system could be expanded to allow non-entity simulation island members.
         //However, there are no such objects on the near horizon, and it is unlikely that anyone will be interested in developing custom simulation island members.
         private float previousVelocity;
-        internal float velocityTimeBelowLimit;
-        internal bool isSlowing;
 
-        /// <summary>
-        /// Gets the entity that owns this simulation island member.
-        /// </summary>
-        public Entity Owner { get; }
+        ///<summary>
+        /// Gets or sets the current search state of the simulation island member.  This is used by the simulation island system
+        /// to efficiently split islands.
+        ///</summary>
+        internal SimulationIslandSearchState searchState;
+
+
+        internal SimulationIsland simulationIsland;
+
+        internal SpinLock simulationIslandChangeLocker = new SpinLock();
+        internal float velocityTimeBelowLimit;
 
         internal SimulationIslandMember(Entity owner)
         {
             Owner = owner;
         }
 
-        internal RawList<SimulationIslandConnection> connections = new RawList<SimulationIslandConnection>(16);
+        /// <summary>
+        /// Gets the entity that owns this simulation island member.
+        /// </summary>
+        public Entity Owner { get; }
 
         ///<summary>
         /// Gets the connections associated with this member.
         ///</summary>
         public ReadOnlyList<SimulationIslandConnection> Connections =>
             new ReadOnlyList<SimulationIslandConnection>(connections);
+
+        ///<summary>
+        /// Gets or sets whether or not the object is a deactivation candidate.
+        ///</summary>
+        public bool IsDeactivationCandidate
+        {
+            get => isDeactivationCandidate;
+            private set
+            {
+                if (value && !isDeactivationCandidate)
+                {
+                    isDeactivationCandidate = true;
+                    OnBecameDeactivationCandidate();
+                }
+                else if (!value && isDeactivationCandidate)
+                {
+                    isDeactivationCandidate = false;
+                    OnBecameNonDeactivationCandidate();
+                }
+
+                if (!value)
+                {
+                    velocityTimeBelowLimit = 0;
+                }
+            }
+        }
+
+        ///<summary>
+        /// Gets whether or not the member is active.
+        ///</summary>
+        public bool IsActive
+        {
+            get
+            {
+                SimulationIsland currentSimulationIsland = SimulationIsland;
+                if (currentSimulationIsland != null)
+                {
+                    return currentSimulationIsland.isActive;
+                }
+
+                return velocityTimeBelowLimit <= 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets whether or not this member is always active.
+        /// </summary>
+        public bool IsAlwaysActive
+        {
+            get => isAlwaysActive;
+            set
+            {
+                isAlwaysActive = value;
+                if (isAlwaysActive)
+                {
+                    Activate();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets whether or not the entity can be stabilized by the deactivation system.  This allows systems of objects to go to sleep faster.
+        /// Defaults to true.
+        /// </summary>
+        public bool AllowStabilization
+        {
+            get => allowStabilization;
+            set => allowStabilization = value;
+        }
+
+        ///<summary>
+        /// Gets the simulation island that owns this member.
+        ///</summary>
+        public SimulationIsland SimulationIsland
+        {
+            get => simulationIsland != null ? simulationIsland.Parent : null;
+            internal set => simulationIsland = value;
+        }
+
+        /// <summary>
+        /// Gets the deactivation manager that is managing this member.
+        /// </summary>
+        public DeactivationManager DeactivationManager { get; internal set; }
+
+        //This is appropriate because it allows kinematic entities, while still technically members (they inherit ISimulationIslandMember), to act as dead-ends.
+        ///<summary>
+        /// Gets whether or not the object is dynamic.
+        /// Non-dynamic members act as dead-ends in connection graphs.
+        ///</summary>
+        public bool IsDynamic => Owner.isDynamic;
 
         ///<summary>
         /// Updates the member's deactivation state.
@@ -165,36 +274,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             previouslyActive = isActive;
         }
 
-        private bool isDeactivationCandidate;
-
-        ///<summary>
-        /// Gets or sets whether or not the object is a deactivation candidate.
-        ///</summary>
-        public bool IsDeactivationCandidate
-        {
-            get => isDeactivationCandidate;
-            private set
-            {
-                if (value && !isDeactivationCandidate)
-                {
-                    isDeactivationCandidate = true;
-                    OnBecameDeactivationCandidate();
-                }
-                else if (!value && isDeactivationCandidate)
-                {
-                    isDeactivationCandidate = false;
-                    OnBecameNonDeactivationCandidate();
-                }
-
-                if (!value)
-                {
-                    velocityTimeBelowLimit = 0;
-                }
-            }
-        }
-
-        internal SpinLock simulationIslandChangeLocker = new SpinLock();
-
         private void TryToCompressIslandHierarchy()
         {
             SimulationIsland currentSimulationIsland = simulationIsland;
@@ -227,25 +306,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             }
         }
 
-        private bool previouslyActive = true;
-
-        ///<summary>
-        /// Gets whether or not the member is active.
-        ///</summary>
-        public bool IsActive
-        {
-            get
-            {
-                SimulationIsland currentSimulationIsland = SimulationIsland;
-                if (currentSimulationIsland != null)
-                {
-                    return currentSimulationIsland.isActive;
-                }
-
-                return velocityTimeBelowLimit <= 0;
-            }
-        }
-
         /// <summary>
         /// Attempts to activate the entity.
         /// </summary>
@@ -269,37 +329,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             {
                 velocityTimeBelowLimit = -1;
             }
-        }
-
-        private bool isAlwaysActive;
-
-        /// <summary>
-        /// Gets or sets whether or not this member is always active.
-        /// </summary>
-        public bool IsAlwaysActive
-        {
-            get => isAlwaysActive;
-            set
-            {
-                isAlwaysActive = value;
-                if (isAlwaysActive)
-                {
-                    Activate();
-                }
-            }
-        }
-
-
-        internal bool allowStabilization = true;
-
-        /// <summary>
-        /// Gets or sets whether or not the entity can be stabilized by the deactivation system.  This allows systems of objects to go to sleep faster.
-        /// Defaults to true.
-        /// </summary>
-        public bool AllowStabilization
-        {
-            get => allowStabilization;
-            set => allowStabilization = value;
         }
 
 
@@ -356,36 +385,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
                 Deactivated(this);
             }
         }
-
-
-        internal SimulationIsland simulationIsland;
-
-        ///<summary>
-        /// Gets the simulation island that owns this member.
-        ///</summary>
-        public SimulationIsland SimulationIsland
-        {
-            get => simulationIsland != null ? simulationIsland.Parent : null;
-            internal set => simulationIsland = value;
-        }
-
-        /// <summary>
-        /// Gets the deactivation manager that is managing this member.
-        /// </summary>
-        public DeactivationManager DeactivationManager { get; internal set; }
-
-        //This is appropriate because it allows kinematic entities, while still technically members (they inherit ISimulationIslandMember), to act as dead-ends.
-        ///<summary>
-        /// Gets whether or not the object is dynamic.
-        /// Non-dynamic members act as dead-ends in connection graphs.
-        ///</summary>
-        public bool IsDynamic => Owner.isDynamic;
-
-        ///<summary>
-        /// Gets or sets the current search state of the simulation island member.  This is used by the simulation island system
-        /// to efficiently split islands.
-        ///</summary>
-        internal SimulationIslandSearchState searchState;
 
         ///<summary>
         /// Removes a connection reference from the member.

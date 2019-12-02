@@ -13,25 +13,28 @@ namespace Engine.WFC
 {
     public abstract class WaveFunctionCollapse
     {
-        protected bool[][] Wave;
-
-        protected int[][][] Propagator;
+        protected static readonly int[] Dx = {-1, 0, 1, 0};
+        protected static readonly int[] Dy = {0, 1, 0, -1};
+        private static readonly int[] Opposite = {2, 3, 0, 1};
         private int[][][] _compatible;
-        protected int[] Observed;
 
         private (int, int)[] _stack;
         private int _stacksize;
-
-        protected Random Random;
-        protected int Fmx, Fmy, T;
-        protected bool Periodic;
-
-        protected double[] Weights;
-        private double[] _weightLogWeights;
+        private double _sumOfWeights, _sumOfWeightLogWeights, _startingEntropy;
 
         private int[] _sumsOfOnes;
-        private double _sumOfWeights, _sumOfWeightLogWeights, _startingEntropy;
         private double[] _sumsOfWeights, _sumsOfWeightLogWeights, _entropies;
+        private double[] _weightLogWeights;
+        protected int Fmx, Fmy, T;
+        protected int[] Observed;
+        protected bool Periodic;
+
+        protected int[][][] Propagator;
+
+        protected Random Random;
+        protected bool[][] Wave;
+
+        protected double[] Weights;
 
         protected WaveFunctionCollapse(int width, int height)
         {
@@ -284,9 +287,5 @@ namespace Engine.WFC
 
         protected abstract bool OnBoundary(int x, int y);
         public abstract System.Drawing.Bitmap Graphics();
-
-        protected static readonly int[] Dx = {-1, 0, 1, 0};
-        protected static readonly int[] Dy = {0, 1, 0, -1};
-        private static readonly int[] Opposite = {2, 3, 0, 1};
     }
 }

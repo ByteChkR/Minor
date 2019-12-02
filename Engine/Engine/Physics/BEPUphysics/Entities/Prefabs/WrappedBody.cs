@@ -13,11 +13,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class WrappedBody : Entity<ConvexCollidable<WrappedShape>>
     {
-        ///<summary>
-        /// Gets the list of shapes in the wrapped body.
-        ///</summary>
-        public ObservableList<ConvexShapeEntry> Shapes => CollisionInformation.Shape.Shapes;
-
         /// <exception cref="ArgumentException">Thrown when the subbodies list contains zero entities.</exception>
         private WrappedBody(IList<ConvexShapeEntry> subShapes, float mass)
         {
@@ -81,5 +76,10 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         {
             MotionState = motionState;
         }
+
+        ///<summary>
+        /// Gets the list of shapes in the wrapped body.
+        ///</summary>
+        public ObservableList<ConvexShapeEntry> Shapes => CollisionInformation.Shape.Shapes;
     }
 }

@@ -14,11 +14,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems
     {
         private readonly SpinLock overlapAddLock = new SpinLock();
 
-        ///<summary>
-        /// Gets the object which is locked by the broadphase during synchronized update processes.
-        ///</summary>
-        public object Locker { get; protected set; }
-
         protected BroadPhase()
         {
             Locker = new object();
@@ -31,6 +26,11 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems
             ParallelLooper = parallelLooper;
             AllowMultithreading = true;
         }
+
+        ///<summary>
+        /// Gets the object which is locked by the broadphase during synchronized update processes.
+        ///</summary>
+        public object Locker { get; protected set; }
 
         //TODO: Initial capacity?  Special collection type other than list due to structs? RawList? Clear at beginning of each frame?
 

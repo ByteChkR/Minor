@@ -12,6 +12,15 @@ namespace Engine.OpenCL.DotNetCore
     /// </summary>
     public class OpenClException : Exception
     {
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the error code that was returned by OpenCL.
+        /// </summary>
+        public Result Result { get; }
+
+        #endregion
+
         #region Constructors
 
         /// <summary>
@@ -71,15 +80,6 @@ namespace Engine.OpenCL.DotNetCore
         {
             Result = result;
         }
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the error code that was returned by OpenCL.
-        /// </summary>
-        public Result Result { get; private set; }
 
         #endregion
     }

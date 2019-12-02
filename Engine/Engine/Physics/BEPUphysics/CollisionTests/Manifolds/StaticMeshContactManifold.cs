@@ -22,6 +22,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         ///</summary>
         public StaticMesh Mesh => mesh;
 
+        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
+
         protected internal override int FindOverlappingTriangles(float dt)
         {
             mesh.Mesh.Tree.GetOverlaps(convex.boundingBox, overlappedTriangles);
@@ -66,8 +68,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         {
             overlappedTriangles.Clear();
         }
-
-        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
 
 
         ///<summary>

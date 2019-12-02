@@ -29,10 +29,9 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
     /// </summary>
     public abstract class MotorSettings
     {
-        internal SolverUpdateable motor;
-
         internal float maximumForce = float.MaxValue;
         internal MotorMode mode = MotorMode.VelocityMotor;
+        internal SolverUpdateable motor;
 
         protected MotorSettings(SolverUpdateable motor)
         {
@@ -168,8 +167,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
     /// </summary>
     public class ServoSettings : ISpringSettings
     {
-        internal MotorSettings motorSettings;
-
         /// <summary>
         /// Speed at which the servo will try to achieve its goal.
         /// </summary>
@@ -184,6 +181,8 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
         /// Squared maximum extra velocity that the constraint will apply in an effort to correct constraint error.
         /// </summary>
         internal float maxCorrectiveVelocitySquared = float.MaxValue;
+
+        internal MotorSettings motorSettings;
 
         /// <summary>
         /// Spring settings define how a constraint responds to velocity and position error.

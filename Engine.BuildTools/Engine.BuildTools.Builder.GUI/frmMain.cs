@@ -1,15 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Remoting.Messaging;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Serialization;
 using Engine.BuildTools.Common;
@@ -19,9 +12,11 @@ namespace Engine.BuildTools.Builder.GUI
     public partial class frmMain : Form
     {
         private BuildSettings bs;
-        private XmlSerializer xs;
-        private string SaveLocation;
+
+        private bool buildFailed;
         private bool Initialized;
+        private string SaveLocation;
+        private XmlSerializer xs;
 
         public frmMain()
         {
@@ -485,13 +480,6 @@ namespace Engine.BuildTools.Builder.GUI
             //   Application.DoEvents, WriteOutput);
         }
 
-        private enum State
-        {
-            Idle,
-            Busy,
-            Error
-        }
-
         private void SetState(State state)
         {
             SetAllState(state != State.Busy); //Disable and enable controls based on if not busy
@@ -564,8 +552,6 @@ namespace Engine.BuildTools.Builder.GUI
             //   "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents,
             //   WriteOutput);
         }
-
-        private bool buildFailed = false;
 
         private void XMLBuildFinished(Exception ex)
         {
@@ -642,6 +628,13 @@ namespace Engine.BuildTools.Builder.GUI
         {
             cbEnableStartArg.Enabled = rbUseV2.Checked;
             tbStartCmd.Enabled = rbUseV2.Checked;
+        }
+
+        private enum State
+        {
+            Idle,
+            Busy,
+            Error
         }
     }
 }

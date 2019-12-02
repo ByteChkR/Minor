@@ -9,9 +9,41 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class BoxShape : ConvexShape
     {
-        internal float halfWidth;
         internal float halfHeight;
         internal float halfLength;
+        internal float halfWidth;
+
+
+        ///<summary>
+        /// Constructs a new box shape.
+        ///</summary>
+        ///<param name="width">Width of the box.</param>
+        ///<param name="height">Height of the box.</param>
+        ///<param name="length">Length of the box.</param>
+        public BoxShape(float width, float height, float length)
+        {
+            halfWidth = width * 0.5f;
+            halfHeight = height * 0.5f;
+            halfLength = length * 0.5f;
+
+            UpdateConvexShapeInfo(ComputeDescription(width, height, length, collisionMargin));
+        }
+
+        ///<summary>
+        /// Constructs a new box shape from cached information.
+        ///</summary>
+        ///<param name="width">Width of the box.</param>
+        ///<param name="height">Height of the box.</param>
+        ///<param name="length">Length of the box.</param>
+        /// <param name="description">Cached information about the shape. Assumed to be correct; no extra processing or validation is performed.</param>
+        public BoxShape(float width, float height, float length, ConvexShapeDescription description)
+        {
+            halfWidth = width * 0.5f;
+            halfHeight = height * 0.5f;
+            halfLength = length * 0.5f;
+
+            UpdateConvexShapeInfo(description);
+        }
 
 
         /// <summary>
@@ -90,38 +122,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
                 halfLength = value * 0.5f;
                 OnShapeChanged();
             }
-        }
-
-
-        ///<summary>
-        /// Constructs a new box shape.
-        ///</summary>
-        ///<param name="width">Width of the box.</param>
-        ///<param name="height">Height of the box.</param>
-        ///<param name="length">Length of the box.</param>
-        public BoxShape(float width, float height, float length)
-        {
-            halfWidth = width * 0.5f;
-            halfHeight = height * 0.5f;
-            halfLength = length * 0.5f;
-
-            UpdateConvexShapeInfo(ComputeDescription(width, height, length, collisionMargin));
-        }
-
-        ///<summary>
-        /// Constructs a new box shape from cached information.
-        ///</summary>
-        ///<param name="width">Width of the box.</param>
-        ///<param name="height">Height of the box.</param>
-        ///<param name="length">Length of the box.</param>
-        /// <param name="description">Cached information about the shape. Assumed to be correct; no extra processing or validation is performed.</param>
-        public BoxShape(float width, float height, float length, ConvexShapeDescription description)
-        {
-            halfWidth = width * 0.5f;
-            halfHeight = height * 0.5f;
-            halfLength = length * 0.5f;
-
-            UpdateConvexShapeInfo(description);
         }
 
         protected override void OnShapeChanged()

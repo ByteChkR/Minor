@@ -11,15 +11,20 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     /// </summary>
     public class ContactFrictionConstraint : SolverUpdateable
     {
-        ///<summary>
-        /// Gets the manifold constraint associated with this friction constraint.
-        ///</summary>
-        public ContactManifoldConstraint ContactManifoldConstraint { get; private set; }
+        internal float accumulatedImpulse;
 
-        ///<summary>
-        /// Gets the penetration constraint associated with this friction constraint.
-        ///</summary>
-        public ContactPenetrationConstraint PenetrationConstraint { get; private set; }
+        //float linearBX, linearBY, linearBZ;
+        private float angularAX, angularAY, angularAZ;
+        private float angularBX, angularBY, angularBZ;
+        private Entity entityA, entityB;
+        private bool entityAIsDynamic, entityBIsDynamic;
+
+        //Inverse effective mass matrix
+
+
+        private float friction;
+        internal float linearAX, linearAY, linearAZ;
+        private float velocityToImpulse;
 
         ///<summary>
         /// Constructs a new friction constraint.
@@ -29,53 +34,15 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             isActive = false;
         }
 
-        internal float accumulatedImpulse;
-
-        //float linearBX, linearBY, linearBZ;
-        private float angularAX, angularAY, angularAZ;
-        private float angularBX, angularBY, angularBZ;
-
-        //Inverse effective mass matrix
-
-
-        private float friction;
-        internal float linearAX, linearAY, linearAZ;
-        private Entity entityA, entityB;
-        private bool entityAIsDynamic, entityBIsDynamic;
-        private float velocityToImpulse;
-
+        ///<summary>
+        /// Gets the manifold constraint associated with this friction constraint.
+        ///</summary>
+        public ContactManifoldConstraint ContactManifoldConstraint { get; private set; }
 
         ///<summary>
-        /// Configures the friction constraint for a new contact.
+        /// Gets the penetration constraint associated with this friction constraint.
         ///</summary>
-        ///<param name="contactManifoldConstraint">Manifold to which the constraint belongs.</param>
-        ///<param name="penetrationConstraint">Penetration constraint associated with this friction constraint.</param>
-        public void Setup(ContactManifoldConstraint contactManifoldConstraint,
-            ContactPenetrationConstraint penetrationConstraint)
-        {
-            ContactManifoldConstraint = contactManifoldConstraint;
-            PenetrationConstraint = penetrationConstraint;
-            IsActive = true;
-            linearAX = 0;
-            linearAY = 0;
-            linearAZ = 0;
-
-            entityA = contactManifoldConstraint.EntityA;
-            entityB = contactManifoldConstraint.EntityB;
-        }
-
-        ///<summary>
-        /// Cleans upt he friction constraint.
-        ///</summary>
-        public void CleanUp()
-        {
-            accumulatedImpulse = 0;
-            ContactManifoldConstraint = null;
-            PenetrationConstraint = null;
-            entityA = null;
-            entityB = null;
-            IsActive = false;
-        }
+        public ContactPenetrationConstraint PenetrationConstraint { get; private set; }
 
         /// <summary>
         /// Gets the direction in which the friction force acts.
@@ -113,6 +80,39 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
                 return velocity;
             }
+        }
+
+
+        ///<summary>
+        /// Configures the friction constraint for a new contact.
+        ///</summary>
+        ///<param name="contactManifoldConstraint">Manifold to which the constraint belongs.</param>
+        ///<param name="penetrationConstraint">Penetration constraint associated with this friction constraint.</param>
+        public void Setup(ContactManifoldConstraint contactManifoldConstraint,
+            ContactPenetrationConstraint penetrationConstraint)
+        {
+            ContactManifoldConstraint = contactManifoldConstraint;
+            PenetrationConstraint = penetrationConstraint;
+            IsActive = true;
+            linearAX = 0;
+            linearAY = 0;
+            linearAZ = 0;
+
+            entityA = contactManifoldConstraint.EntityA;
+            entityB = contactManifoldConstraint.EntityB;
+        }
+
+        ///<summary>
+        /// Cleans upt he friction constraint.
+        ///</summary>
+        public void CleanUp()
+        {
+            accumulatedImpulse = 0;
+            ContactManifoldConstraint = null;
+            PenetrationConstraint = null;
+            entityA = null;
+            entityB = null;
+            IsActive = false;
         }
 
 

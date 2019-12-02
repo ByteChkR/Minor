@@ -12,10 +12,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
     ///</summary>
     public class TriangleConvexPairTester : TrianglePairTester
     {
-        internal ConvexShape convex;
-
-        internal CollisionState state = CollisionState.Plane;
-
         /// <summary>
         /// The number of updates between attempts to reset to the cheaper Plane collision state instead of more expensive GJK-based tests.
         /// This is used by the ExternalSeparated state because it only generates a boolean result.
@@ -24,9 +20,15 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         /// </summary>
         private const int EscapeAttemptPeriod = 10;
 
+        internal ConvexShape convex;
+
         private int escapeAttempts;
 
         private Vector3 localSeparatingAxis;
+
+        internal CollisionState state = CollisionState.Plane;
+
+        public override bool ShouldCorrectContactNormal => state == CollisionState.Deep;
 
         //Relies on the triangle being located in the local space of the convex object.  The convex transform is used to transform the
         //contact points back from the convex's local space into world space.
@@ -763,14 +765,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             Updated = false;
         }
 
-        internal enum CollisionState
-        {
-            Plane,
-            ExternalSeparated,
-            ExternalNear,
-            Deep
-        }
-
 
         public override VoronoiRegion GetRegion(TriangleShape triangle, ref ContactData contact)
         {
@@ -913,6 +907,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             return VoronoiRegion.C;
         }
 
-        public override bool ShouldCorrectContactNormal => state == CollisionState.Deep;
+        internal enum CollisionState
+        {
+            Plane,
+            ExternalSeparated,
+            ExternalNear,
+            Deep
+        }
     }
 }

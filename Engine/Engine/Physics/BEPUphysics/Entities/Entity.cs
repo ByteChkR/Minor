@@ -12,11 +12,6 @@ namespace Engine.Physics.BEPUphysics.Entities
     ///<typeparam name="T">Type of EntityCollidable to use for the entity.</typeparam>
     public class Entity<T> : Entity where T : EntityCollidable
     {
-        ///<summary>
-        /// Gets the collidable used by the entity.
-        ///</summary>
-        public new T CollisionInformation => (T) collisionInformation;
-
         protected internal Entity()
         {
         }
@@ -51,5 +46,10 @@ namespace Engine.Physics.BEPUphysics.Entities
         {
             Initialize(collisionInformation, mass, inertiaTensor);
         }
+
+        ///<summary>
+        /// Gets the collidable used by the entity.
+        ///</summary>
+        public new T CollisionInformation => (T) collisionInformation;
     }
 }

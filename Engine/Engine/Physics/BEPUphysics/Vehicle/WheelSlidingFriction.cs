@@ -10,47 +10,21 @@ namespace Engine.Physics.BEPUphysics.Vehicle
     /// </summary>
     public class WheelSlidingFriction : ISolverSettings
     {
-        #region Static Stuff
-
-        /// <summary>
-        /// Default blender used by WheelSlidingFriction constraints.
-        /// </summary>
-        public static WheelFrictionBlender DefaultSlidingFrictionBlender;
-
-        static WheelSlidingFriction()
-        {
-            DefaultSlidingFrictionBlender = BlendFriction;
-        }
-
-        /// <summary>
-        /// Function which takes the friction values from a wheel and a supporting material and computes the blended friction.
-        /// </summary>
-        /// <param name="wheelFriction">Friction coefficient associated with the wheel.</param>
-        /// <param name="materialFriction">Friction coefficient associated with the support material.</param>
-        /// <param name="usingKineticFriction">True if the friction coefficients passed into the blender are kinetic coefficients, false otherwise.</param>
-        /// <param name="wheel">Wheel being blended.</param>
-        /// <returns>Blended friction coefficient.</returns>
-        public static float BlendFriction(float wheelFriction, float materialFriction, bool usingKineticFriction,
-            Wheel wheel)
-        {
-            return wheelFriction * materialFriction;
-        }
-
-        #endregion
-
         internal float accumulatedImpulse;
 
         //float linearBX, linearBY, linearBZ;
         private float angularAX, angularAY, angularAZ;
         private float angularBX, angularBY, angularBZ;
         internal bool isActive = true;
-        private float linearAX, linearAY, linearAZ;
         private float kineticCoefficient;
+        private float linearAX, linearAY, linearAZ;
+        internal int numIterationsAtZeroImpulse;
         internal Vector3 slidingFrictionAxis;
         internal SolverSettings solverSettings = new SolverSettings();
         private float staticCoefficient;
         private float staticFrictionVelocityThreshold = 5;
-        internal int numIterationsAtZeroImpulse;
+
+        private bool supportIsDynamic;
         private Entity vehicleEntity, supportEntity;
 
         //Inverse effective mass matrix
@@ -129,17 +103,6 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         public Wheel Wheel { get; internal set; }
 
-        #region ISolverSettings Members
-
-        /// <summary>
-        /// Gets the solver settings used by this wheel constraint.
-        /// </summary>
-        public SolverSettings SolverSettings => solverSettings;
-
-        #endregion
-
-        private bool supportIsDynamic;
-
         ///<summary>
         /// Gets the relative velocity along the sliding direction at the wheel contact.
         ///</summary>
@@ -164,6 +127,15 @@ namespace Engine.Physics.BEPUphysics.Vehicle
                 return velocity;
             }
         }
+
+        #region ISolverSettings Members
+
+        /// <summary>
+        /// Gets the solver settings used by this wheel constraint.
+        /// </summary>
+        public SolverSettings SolverSettings => solverSettings;
+
+        #endregion
 
         internal float ApplyImpulse()
         {
@@ -327,5 +299,33 @@ namespace Engine.Physics.BEPUphysics.Vehicle
                 supportEntity.ApplyAngularImpulse(ref angular);
             }
         }
+
+        #region Static Stuff
+
+        /// <summary>
+        /// Default blender used by WheelSlidingFriction constraints.
+        /// </summary>
+        public static WheelFrictionBlender DefaultSlidingFrictionBlender;
+
+        static WheelSlidingFriction()
+        {
+            DefaultSlidingFrictionBlender = BlendFriction;
+        }
+
+        /// <summary>
+        /// Function which takes the friction values from a wheel and a supporting material and computes the blended friction.
+        /// </summary>
+        /// <param name="wheelFriction">Friction coefficient associated with the wheel.</param>
+        /// <param name="materialFriction">Friction coefficient associated with the support material.</param>
+        /// <param name="usingKineticFriction">True if the friction coefficients passed into the blender are kinetic coefficients, false otherwise.</param>
+        /// <param name="wheel">Wheel being blended.</param>
+        /// <returns>Blended friction coefficient.</returns>
+        public static float BlendFriction(float wheelFriction, float materialFriction, bool usingKineticFriction,
+            Wheel wheel)
+        {
+            return wheelFriction * materialFriction;
+        }
+
+        #endregion
     }
 }

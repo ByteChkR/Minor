@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Engine.Debug;
+﻿using Engine.Debug;
 using Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes;
 using Engine.Physics.BEPUutilities;
 

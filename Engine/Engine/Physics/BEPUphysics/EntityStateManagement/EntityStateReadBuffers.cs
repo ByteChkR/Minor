@@ -9,6 +9,39 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
     ///</summary>
     public class StateReadBuffers : MultithreadedProcessingStage
     {
+        internal MotionState[] backBuffer;
+        internal MotionState[] frontBuffer;
+
+        private BufferedStatesManager manager;
+
+
+        private Action<int> multithreadedStateUpdateDelegate;
+
+        ///<summary>
+        /// Constructs a read buffer manager.
+        ///</summary>
+        ///<param name="manager">Owning buffered states manager.</param>
+        public StateReadBuffers(BufferedStatesManager manager)
+        {
+            this.manager = manager;
+            multithreadedStateUpdateDelegate = MultithreadedStateUpdate;
+            FlipLocker = new object();
+        }
+
+        ///<summary>
+        /// Constructs a read buffer manager.
+        ///</summary>
+        ///<param name="manager">Owning buffered states manager.</param>
+        ///<param name="parallelLooper">Parallel loop provider to use.</param>
+        public StateReadBuffers(BufferedStatesManager manager, IParallelLooper parallelLooper)
+        {
+            this.manager = manager;
+            multithreadedStateUpdateDelegate = MultithreadedStateUpdate;
+            FlipLocker = new object();
+            ParallelLooper = parallelLooper;
+            AllowMultithreading = true;
+        }
+
         ///<summary>
         /// Gets or sets whether or not the buffers are active.
         ///</summary>
@@ -36,6 +69,13 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 }
             }
         }
+
+        ///<summary>
+        /// Gets the synchronization object which is locked during internal buffer flips.
+        /// Acquiring a lock on this object will prevent the manager from flipping the buffers
+        /// for the duration of the lock.
+        ///</summary>
+        public object FlipLocker { get; }
 
         internal void Enable()
         {
@@ -67,46 +107,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 frontBuffer = null;
             }
         }
-
-        private BufferedStatesManager manager;
-
-        ///<summary>
-        /// Gets the synchronization object which is locked during internal buffer flips.
-        /// Acquiring a lock on this object will prevent the manager from flipping the buffers
-        /// for the duration of the lock.
-        ///</summary>
-        public object FlipLocker { get; }
-
-        internal MotionState[] backBuffer;
-        internal MotionState[] frontBuffer;
-
-        ///<summary>
-        /// Constructs a read buffer manager.
-        ///</summary>
-        ///<param name="manager">Owning buffered states manager.</param>
-        public StateReadBuffers(BufferedStatesManager manager)
-        {
-            this.manager = manager;
-            multithreadedStateUpdateDelegate = MultithreadedStateUpdate;
-            FlipLocker = new object();
-        }
-
-        ///<summary>
-        /// Constructs a read buffer manager.
-        ///</summary>
-        ///<param name="manager">Owning buffered states manager.</param>
-        ///<param name="parallelLooper">Parallel loop provider to use.</param>
-        public StateReadBuffers(BufferedStatesManager manager, IParallelLooper parallelLooper)
-        {
-            this.manager = manager;
-            multithreadedStateUpdateDelegate = MultithreadedStateUpdate;
-            FlipLocker = new object();
-            ParallelLooper = parallelLooper;
-            AllowMultithreading = true;
-        }
-
-
-        private Action<int> multithreadedStateUpdateDelegate;
 
         private void MultithreadedStateUpdate(int i)
         {

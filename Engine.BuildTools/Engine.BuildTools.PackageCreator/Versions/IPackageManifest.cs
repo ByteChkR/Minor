@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace Engine.BuildTools.PackageCreator.Versions
+﻿namespace Engine.BuildTools.PackageCreator.Versions
 {
     public interface IPackageManifest
     {

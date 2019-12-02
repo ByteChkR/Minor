@@ -5,6 +5,12 @@
     /// </summary>
     public class AngularPlaneControl : Control
     {
+        public AngularPlaneControl()
+        {
+            AngularMotor = new SingleBoneAngularPlaneConstraint();
+            AngularMotor.Rigidity = 1;
+        }
+
         /// <summary>
         /// Gets or sets the controlled bone.
         /// </summary>
@@ -19,10 +25,10 @@
         /// </summary>
         public SingleBoneAngularPlaneConstraint AngularMotor { get; }
 
-        public AngularPlaneControl()
+        public override float MaximumForce
         {
-            AngularMotor = new SingleBoneAngularPlaneConstraint();
-            AngularMotor.Rigidity = 1;
+            get => AngularMotor.MaximumForce;
+            set => AngularMotor.MaximumForce = value;
         }
 
         protected internal override void Preupdate(float dt, float updateRate)
@@ -53,12 +59,6 @@
         protected internal override void ClearAccumulatedImpulses()
         {
             AngularMotor.ClearAccumulatedImpulses();
-        }
-
-        public override float MaximumForce
-        {
-            get => AngularMotor.MaximumForce;
-            set => AngularMotor.MaximumForce = value;
         }
     }
 }

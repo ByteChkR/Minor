@@ -9,11 +9,35 @@ namespace Engine.Physics.BEPUik
     public class IKPointOnLineJoint : IKJoint
     {
         /// <summary>
+        /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point which will be kept on the line.
+        /// </summary>
+        public Vector3 LocalAnchorB;
+
+        /// <summary>
         /// Gets or sets the offset in connection A's local space from the center of mass to the anchor point of the line.
         /// </summary>
         public Vector3 LocalLineAnchor;
 
         private Vector3 localLineDirection;
+
+        private Vector3 localRestrictedAxis1, localRestrictedAxis2;
+
+        /// <summary>
+        /// Constructs a new point on line joint.
+        /// </summary>
+        /// <param name="connectionA">First bone connected by the joint.</param>
+        /// <param name="connectionB">Second bone connected by the joint.</param>
+        /// <param name="lineAnchor">Anchor point of the line attached to the first bone in world space.</param>
+        /// <param name="lineDirection">Direction of the line attached to the first bone in world space. Must be unit length.</param>
+        /// <param name="anchorB">Anchor point on the second bone in world space which tries to stay on connection A's line.</param>
+        public IKPointOnLineJoint(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection,
+            Vector3 anchorB)
+            : base(connectionA, connectionB)
+        {
+            LineAnchor = lineAnchor;
+            LineDirection = lineDirection;
+            AnchorB = anchorB;
+        }
 
         /// <summary>
         /// Gets or sets the direction of the line in connection A's local space.
@@ -28,12 +52,6 @@ namespace Engine.Physics.BEPUik
                 ComputeRestrictedAxes();
             }
         }
-
-
-        /// <summary>
-        /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point which will be kept on the line.
-        /// </summary>
-        public Vector3 LocalAnchorB;
 
         /// <summary>
         /// Gets or sets the world space location of the line anchor attached to connection A.
@@ -67,8 +85,6 @@ namespace Engine.Physics.BEPUik
                     Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
-        private Vector3 localRestrictedAxis1, localRestrictedAxis2;
-
         private void ComputeRestrictedAxes()
         {
             Vector3 cross;
@@ -87,23 +103,6 @@ namespace Engine.Physics.BEPUik
 
             //Don't need to normalize this; cross product of two unit length perpendicular vectors.
             Vector3.Cross(ref localRestrictedAxis1, ref localLineDirection, out localRestrictedAxis2);
-        }
-
-        /// <summary>
-        /// Constructs a new point on line joint.
-        /// </summary>
-        /// <param name="connectionA">First bone connected by the joint.</param>
-        /// <param name="connectionB">Second bone connected by the joint.</param>
-        /// <param name="lineAnchor">Anchor point of the line attached to the first bone in world space.</param>
-        /// <param name="lineDirection">Direction of the line attached to the first bone in world space. Must be unit length.</param>
-        /// <param name="anchorB">Anchor point on the second bone in world space which tries to stay on connection A's line.</param>
-        public IKPointOnLineJoint(Bone connectionA, Bone connectionB, Vector3 lineAnchor, Vector3 lineDirection,
-            Vector3 anchorB)
-            : base(connectionA, connectionB)
-        {
-            LineAnchor = lineAnchor;
-            LineDirection = lineDirection;
-            AnchorB = anchorB;
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

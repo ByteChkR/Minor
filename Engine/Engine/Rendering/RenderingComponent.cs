@@ -24,6 +24,48 @@ namespace Engine.Rendering
         }
 
         /// <summary>
+        /// the shader program that is used
+        /// </summary>
+        public ShaderProgram Program { get; set; }
+
+        /// <summary>
+        /// the render queue that determines the order in which the objects are drawn
+        /// This only applies to Screen space Render Contexts. For World space the ordering is worked out by the distance to the camera.
+        /// </summary>
+        public int RenderQueue { get; set; }
+
+        /// <summary>
+        /// Cached version of the ModelView Matrix(is used for ordered rendering
+        /// </summary>
+        public Matrix4 MV { get; private set; }
+
+        /// <summary>
+        /// The position of the Object in ModelView Space
+        /// </summary>
+        public Vector3 MVPosition { get; private set; }
+
+        /// <summary>
+        /// The Render type of the context
+        /// </summary>
+        public Renderer.RenderType RenderType { get; set; }
+
+        /// <summary>
+        /// A flag that indicates if the object is meant to be drawn in screen space or world space
+        /// </summary>
+        public bool WorldSpace { get; set; }
+
+        /// <summary>
+        /// CompareTo Implementation
+        /// If both transparent and in camera space
+        /// </summary>
+        /// <param name="other">The Object to compare against</param>
+        /// <returns></returns>
+        public int CompareTo(RenderingComponent other)
+        {
+            return -CmpTo(other);
+        }
+
+        /// <summary>
         /// Abstract function that will be called when the object should be drawn
         /// </summary>
         /// <param name="viewMat">View Matrix</param>
@@ -38,17 +80,6 @@ namespace Engine.Rendering
         public virtual void Render(Matrix4 viewMat, Matrix4 projMat, ShaderProgram prog)
         {
             Render(viewMat, projMat);
-        }
-
-        /// <summary>
-        /// CompareTo Implementation
-        /// If both transparent and in camera space
-        /// </summary>
-        /// <param name="other">The Object to compare against</param>
-        /// <returns></returns>
-        public int CompareTo(RenderingComponent other)
-        {
-            return -CmpTo(other);
         }
 
         /// <summary>
@@ -102,37 +133,6 @@ namespace Engine.Rendering
             //Let z buffer do the ordering
             return 0;
         }
-
-        /// <summary>
-        /// the shader program that is used
-        /// </summary>
-        public ShaderProgram Program { get; set; }
-
-        /// <summary>
-        /// the render queue that determines the order in which the objects are drawn
-        /// This only applies to Screen space Render Contexts. For World space the ordering is worked out by the distance to the camera.
-        /// </summary>
-        public int RenderQueue { get; set; }
-
-        /// <summary>
-        /// Cached version of the ModelView Matrix(is used for ordered rendering
-        /// </summary>
-        public Matrix4 MV { get; private set; }
-
-        /// <summary>
-        /// The position of the Object in ModelView Space
-        /// </summary>
-        public Vector3 MVPosition { get; private set; }
-
-        /// <summary>
-        /// The Render type of the context
-        /// </summary>
-        public Renderer.RenderType RenderType { get; set; }
-
-        /// <summary>
-        /// A flag that indicates if the object is meant to be drawn in screen space or world space
-        /// </summary>
-        public bool WorldSpace { get; set; }
 
         /// <summary>
         /// Precalculates the ModelView Matrix

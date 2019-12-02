@@ -43,7 +43,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
         /// <summary>
         /// Gets the devices for which the context was created.
         /// </summary>
-        public IEnumerable<Device> Devices { get; private set; }
+        public IEnumerable<Device> Devices { get; }
 
         #endregion
 
@@ -83,6 +83,37 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             // Returns the output
             return InteropConverter.To<T>(output);
         }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Disposes of the resources that have been acquired by the context.
+        /// </summary>
+        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // Checks if the context has already been disposed of, if not, then the context is disposed of
+            if (!IsDisposed)
+            {
+                ContextsNativeApi.ReleaseContext(Handle);
+            }
+
+            // Makes sure that the base class can execute its dispose logic
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Private Delegates
+
+        /// <summary>
+        /// A delegate for the callback of <see cref="BuildProgram"/>.
+        /// </summary>
+        /// <param name="program">The program that was compiled and linked.</param>
+        /// <param name="userData">User-defined data that can be passed to the callback subscription.</param>
+        private delegate void BuildProgramCallback(IntPtr program, IntPtr userData);
 
         #endregion
 
@@ -134,7 +165,6 @@ namespace Engine.OpenCL.DotNetCore.Contexts
                             }
                             catch (OpenClException)
                             {
-                                continue;
                             }
                         }
 
@@ -213,7 +243,6 @@ namespace Engine.OpenCL.DotNetCore.Contexts
                     }
                     catch (OpenClException)
                     {
-                        continue;
                     }
                 }
 
@@ -398,7 +427,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             }
 
             // Creates the memory buffer from the pointer to the memory buffer and returns it
-            return new MemoryBuffer(memoryBufferPointer, (long) size);
+            return new MemoryBuffer(memoryBufferPointer, size);
         }
 
         //public MemoryBuffer CreateFromGLTexture2D(Memory.MemoryFlag memoryFlags,uint gltex_target, int miplevel, uint gltex)
@@ -453,7 +482,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
                 }
 
                 // Creates the memory buffer from the pointer to the memory buffer and returns it
-                return new MemoryBuffer(memoryBufferPointer, (long) size);
+                return new MemoryBuffer(memoryBufferPointer, size);
             }
             finally
             {
@@ -542,37 +571,6 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             // Creates the new context object from the pointer and returns it
             return new Context(contextPointer, devices);
         }
-
-        #endregion
-
-        #region IDisposable Implementation
-
-        /// <summary>
-        /// Disposes of the resources that have been acquired by the context.
-        /// </summary>
-        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
-        protected override void Dispose(bool disposing)
-        {
-            // Checks if the context has already been disposed of, if not, then the context is disposed of
-            if (!IsDisposed)
-            {
-                ContextsNativeApi.ReleaseContext(Handle);
-            }
-
-            // Makes sure that the base class can execute its dispose logic
-            base.Dispose(disposing);
-        }
-
-        #endregion
-
-        #region Private Delegates
-
-        /// <summary>
-        /// A delegate for the callback of <see cref="BuildProgram"/>.
-        /// </summary>
-        /// <param name="program">The program that was compiled and linked.</param>
-        /// <param name="userData">User-defined data that can be passed to the callback subscription.</param>
-        private delegate void BuildProgramCallback(IntPtr program, IntPtr userData);
 
         #endregion
     }

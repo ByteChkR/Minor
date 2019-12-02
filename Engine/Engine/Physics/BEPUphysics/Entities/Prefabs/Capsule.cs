@@ -10,24 +10,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class Capsule : Entity<ConvexCollidable<CapsuleShape>>
     {
-        /// <summary>
-        /// Gets or sets the length of the capsule.
-        /// </summary>
-        public float Length
-        {
-            get => CollisionInformation.Shape.Length;
-            set => CollisionInformation.Shape.Length = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the radius of the capsule.
-        /// </summary>
-        public float Radius
-        {
-            get => CollisionInformation.Shape.Radius;
-            set => CollisionInformation.Shape.Radius = value;
-        }
-
         private Capsule(float len, float rad)
             : base(new ConvexCollidable<CapsuleShape>(new CapsuleShape(len, rad)))
         {
@@ -36,32 +18,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
         private Capsule(float len, float rad, float mass)
             : base(new ConvexCollidable<CapsuleShape>(new CapsuleShape(len, rad)), mass)
         {
-        }
-
-
-        ///<summary>
-        /// Computes an orientation and length from a line segment.
-        ///</summary>
-        ///<param name="start">Starting point of the line segment.</param>
-        ///<param name="end">Endpoint of the line segment.</param>
-        ///<param name="orientation">Orientation of a line that fits the line segment.</param>
-        ///<param name="length">Length of the line segment.</param>
-        public static void GetCapsuleInformation(ref Vector3 start, ref Vector3 end, out Quaternion orientation,
-            out float length)
-        {
-            Vector3 segmentDirection;
-            Vector3.Subtract(ref end, ref start, out segmentDirection);
-            length = segmentDirection.Length();
-            if (length > 0)
-            {
-                Vector3.Divide(ref segmentDirection, length, out segmentDirection);
-                Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.UpVector, ref segmentDirection,
-                    out orientation);
-            }
-            else
-            {
-                orientation = Quaternion.Identity;
-            }
         }
 
         ///<summary>
@@ -152,6 +108,50 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             : this(length, radius)
         {
             MotionState = motionState;
+        }
+
+        /// <summary>
+        /// Gets or sets the length of the capsule.
+        /// </summary>
+        public float Length
+        {
+            get => CollisionInformation.Shape.Length;
+            set => CollisionInformation.Shape.Length = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the radius of the capsule.
+        /// </summary>
+        public float Radius
+        {
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
+        }
+
+
+        ///<summary>
+        /// Computes an orientation and length from a line segment.
+        ///</summary>
+        ///<param name="start">Starting point of the line segment.</param>
+        ///<param name="end">Endpoint of the line segment.</param>
+        ///<param name="orientation">Orientation of a line that fits the line segment.</param>
+        ///<param name="length">Length of the line segment.</param>
+        public static void GetCapsuleInformation(ref Vector3 start, ref Vector3 end, out Quaternion orientation,
+            out float length)
+        {
+            Vector3 segmentDirection;
+            Vector3.Subtract(ref end, ref start, out segmentDirection);
+            length = segmentDirection.Length();
+            if (length > 0)
+            {
+                Vector3.Divide(ref segmentDirection, length, out segmentDirection);
+                Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.UpVector, ref segmentDirection,
+                    out orientation);
+            }
+            else
+            {
+                orientation = Quaternion.Identity;
+            }
         }
     }
 }

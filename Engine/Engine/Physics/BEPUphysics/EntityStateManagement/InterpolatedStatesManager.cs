@@ -12,6 +12,41 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
     ///</summary>
     public class InterpolatedStatesManager : MultithreadedProcessingStage
     {
+        private RigidTransform[] backBuffer;
+
+
+        private float blendAmount;
+
+        private BufferedStatesManager manager;
+
+        private Action<int> multithreadedWithReadBuffersDelegate;
+        private RigidTransform[] states = new RigidTransform[64];
+
+        ///<summary>
+        /// Constructs a new interpolated states manager.
+        ///</summary>
+        ///<param name="manager">Owning buffered states manager.</param>
+        public InterpolatedStatesManager(BufferedStatesManager manager)
+        {
+            this.manager = manager;
+            multithreadedWithReadBuffersDelegate = UpdateIndex;
+            FlipLocker = new object();
+        }
+
+        ///<summary>
+        /// Constructs a new interpolated states manager.
+        ///</summary>
+        ///<param name="manager">Owning buffered states manager.</param>
+        /// <param name="parallelLooper">Parallel loop provider to use.</param>
+        public InterpolatedStatesManager(BufferedStatesManager manager, IParallelLooper parallelLooper)
+        {
+            this.manager = manager;
+            multithreadedWithReadBuffersDelegate = UpdateIndex;
+            FlipLocker = new object();
+            ParallelLooper = parallelLooper;
+            AllowMultithreading = true;
+        }
+
         ///<summary>
         /// Gets or sets whether or not the manager is updating.
         ///</summary>
@@ -38,6 +73,27 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                     base.Enabled = true;
                 }
             }
+        }
+
+        ///<summary>
+        /// Gets the synchronization object locked prior to flipping the internal buffers.
+        /// Acquiring a lock on this object will prevent the internal buffers from flipping for the duration
+        /// of the lock.
+        ///</summary>
+        public object FlipLocker { get; }
+
+        ///<summary>
+        /// Gets or sets the blending amount to use.
+        /// This is set automatically when the space is using internal timestepping
+        /// (I.E. when Space.Update(dt) is called).  It is a value from 0 to 1
+        /// that defines the amount of the previous and current frames to include
+        /// in the blended state.  A value of 1 means use only the current frame;
+        /// a value of 0 means use only the previous frame.
+        ///</summary>
+        public float BlendAmount
+        {
+            get => blendAmount;
+            set => blendAmount = MathHelper.Clamp(value, 0, 1);
         }
 
         internal void Enable()
@@ -68,62 +124,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 states = null;
             }
         }
-
-        private BufferedStatesManager manager;
-
-        ///<summary>
-        /// Gets the synchronization object locked prior to flipping the internal buffers.
-        /// Acquiring a lock on this object will prevent the internal buffers from flipping for the duration
-        /// of the lock.
-        ///</summary>
-        public object FlipLocker { get; }
-
-        private RigidTransform[] backBuffer;
-        private RigidTransform[] states = new RigidTransform[64];
-
-        ///<summary>
-        /// Constructs a new interpolated states manager.
-        ///</summary>
-        ///<param name="manager">Owning buffered states manager.</param>
-        public InterpolatedStatesManager(BufferedStatesManager manager)
-        {
-            this.manager = manager;
-            multithreadedWithReadBuffersDelegate = UpdateIndex;
-            FlipLocker = new object();
-        }
-
-        ///<summary>
-        /// Constructs a new interpolated states manager.
-        ///</summary>
-        ///<param name="manager">Owning buffered states manager.</param>
-        /// <param name="parallelLooper">Parallel loop provider to use.</param>
-        public InterpolatedStatesManager(BufferedStatesManager manager, IParallelLooper parallelLooper)
-        {
-            this.manager = manager;
-            multithreadedWithReadBuffersDelegate = UpdateIndex;
-            FlipLocker = new object();
-            ParallelLooper = parallelLooper;
-            AllowMultithreading = true;
-        }
-
-
-        private float blendAmount;
-
-        ///<summary>
-        /// Gets or sets the blending amount to use.
-        /// This is set automatically when the space is using internal timestepping
-        /// (I.E. when Space.Update(dt) is called).  It is a value from 0 to 1
-        /// that defines the amount of the previous and current frames to include
-        /// in the blended state.  A value of 1 means use only the current frame;
-        /// a value of 0 means use only the previous frame.
-        ///</summary>
-        public float BlendAmount
-        {
-            get => blendAmount;
-            set => blendAmount = MathHelper.Clamp(value, 0, 1);
-        }
-
-        private Action<int> multithreadedWithReadBuffersDelegate;
 
         private void UpdateIndex(int i)
         {

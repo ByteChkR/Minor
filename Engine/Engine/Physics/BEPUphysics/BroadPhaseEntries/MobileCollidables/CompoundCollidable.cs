@@ -15,90 +15,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
     ///</summary>
     public class CompoundCollidable : EntityCollidable
     {
-        /// <summary>
-        /// Gets or sets the event manager for the collidable.
-        /// Compound collidables must use a special CompoundEventManager in order for the deferred events created
-        /// by child collidables to be dispatched.
-        /// If this method is bypassed and a different event manager is used, this method will return null and 
-        /// deferred events from children will fail.
-        /// </summary>
-        public new CompoundEventManager Events
-        {
-            get => events as CompoundEventManager;
-            set
-            {
-                //Tell every child to update their parent references to the new object.
-                foreach (CompoundChild child in children)
-                {
-                    child.CollisionInformation.events.Parent = value;
-                }
-
-                base.Events = value;
-            }
-        }
-
-        ///<summary>
-        /// Gets the shape of the collidable.
-        ///</summary>
-        public new CompoundShape Shape
-        {
-            get => (CompoundShape) shape;
-            protected internal set => base.Shape = value;
-        }
-
         internal RawList<CompoundChild> children = new RawList<CompoundChild>();
 
-        ///<summary>
-        /// Gets a list of the children in the collidable.
-        ///</summary>
-        public ReadOnlyList<CompoundChild> Children => new ReadOnlyList<CompoundChild>(children);
 
-
-        protected override void OnEntityChanged()
-        {
-            for (int i = 0; i < children.Count; i++)
-            {
-                children.Elements[i].CollisionInformation.Entity = entity;
-            }
-
-            base.OnEntityChanged();
-        }
-
-
-        private CompoundChild GetChild(CompoundChildData data, int index)
-        {
-            EntityCollidable instance = data.Entry.Shape.GetCollidableInstance();
-
-            if (data.Events != null)
-            {
-                instance.Events = data.Events;
-            }
-
-            //Establish the link between the child event manager and our event manager.
-            instance.events.Parent = Events;
-
-            if (data.CollisionRules != null)
-            {
-                instance.CollisionRules = data.CollisionRules;
-            }
-
-            instance.Tag = data.Tag;
-
-            if (data.Material == null)
-            {
-                data.Material = new Material();
-            }
-
-            return new CompoundChild(Shape, instance, data.Material, index);
-        }
-
-        private CompoundChild GetChild(CompoundShapeEntry entry, int index)
-        {
-            EntityCollidable instance = entry.Shape.GetCollidableInstance();
-            //Establish the link between the child event manager and our event manager.
-            instance.events.Parent = Events;
-            return new CompoundChild(Shape, instance, index);
-        }
+        internal CompoundHierarchy hierarchy;
 
         //Used to efficiently split compounds.
         internal CompoundCollidable()
@@ -178,13 +98,93 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
             hierarchy = new CompoundHierarchy(this);
         }
 
+        /// <summary>
+        /// Gets or sets the event manager for the collidable.
+        /// Compound collidables must use a special CompoundEventManager in order for the deferred events created
+        /// by child collidables to be dispatched.
+        /// If this method is bypassed and a different event manager is used, this method will return null and 
+        /// deferred events from children will fail.
+        /// </summary>
+        public new CompoundEventManager Events
+        {
+            get => events as CompoundEventManager;
+            set
+            {
+                //Tell every child to update their parent references to the new object.
+                foreach (CompoundChild child in children)
+                {
+                    child.CollisionInformation.events.Parent = value;
+                }
 
-        internal CompoundHierarchy hierarchy;
+                base.Events = value;
+            }
+        }
+
+        ///<summary>
+        /// Gets the shape of the collidable.
+        ///</summary>
+        public new CompoundShape Shape
+        {
+            get => (CompoundShape) shape;
+            protected internal set => base.Shape = value;
+        }
+
+        ///<summary>
+        /// Gets a list of the children in the collidable.
+        ///</summary>
+        public ReadOnlyList<CompoundChild> Children => new ReadOnlyList<CompoundChild>(children);
 
         ///<summary>
         /// Gets the hierarchy of children used by the collidable.
         ///</summary>
         public CompoundHierarchy Hierarchy => hierarchy;
+
+
+        protected override void OnEntityChanged()
+        {
+            for (int i = 0; i < children.Count; i++)
+            {
+                children.Elements[i].CollisionInformation.Entity = entity;
+            }
+
+            base.OnEntityChanged();
+        }
+
+
+        private CompoundChild GetChild(CompoundChildData data, int index)
+        {
+            EntityCollidable instance = data.Entry.Shape.GetCollidableInstance();
+
+            if (data.Events != null)
+            {
+                instance.Events = data.Events;
+            }
+
+            //Establish the link between the child event manager and our event manager.
+            instance.events.Parent = Events;
+
+            if (data.CollisionRules != null)
+            {
+                instance.CollisionRules = data.CollisionRules;
+            }
+
+            instance.Tag = data.Tag;
+
+            if (data.Material == null)
+            {
+                data.Material = new Material();
+            }
+
+            return new CompoundChild(Shape, instance, data.Material, index);
+        }
+
+        private CompoundChild GetChild(CompoundShapeEntry entry, int index)
+        {
+            EntityCollidable instance = entry.Shape.GetCollidableInstance();
+            //Establish the link between the child event manager and our event manager.
+            instance.events.Parent = Events;
+            return new CompoundChild(Shape, instance, index);
+        }
 
 
         ///<summary>
@@ -567,6 +567,21 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
         private CompoundShape shape;
         internal int shapeIndex;
 
+        internal CompoundChild(CompoundShape shape, EntityCollidable collisionInformation, Material material, int index)
+        {
+            this.shape = shape;
+            CollisionInformation = collisionInformation;
+            Material = material;
+            shapeIndex = index;
+        }
+
+        internal CompoundChild(CompoundShape shape, EntityCollidable collisionInformation, int index)
+        {
+            this.shape = shape;
+            CollisionInformation = collisionInformation;
+            shapeIndex = index;
+        }
+
         /// <summary>
         /// Gets the index of the shape used by this child in the CompoundShape's shapes list.
         /// </summary>
@@ -586,21 +601,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// Gets the index of the shape associated with this child in the CompoundShape's shapes list.
         /// </summary>
         public CompoundShapeEntry Entry => shape.shapes.Elements[shapeIndex];
-
-        internal CompoundChild(CompoundShape shape, EntityCollidable collisionInformation, Material material, int index)
-        {
-            this.shape = shape;
-            CollisionInformation = collisionInformation;
-            Material = material;
-            shapeIndex = index;
-        }
-
-        internal CompoundChild(CompoundShape shape, EntityCollidable collisionInformation, int index)
-        {
-            this.shape = shape;
-            CollisionInformation = collisionInformation;
-            shapeIndex = index;
-        }
 
         /// <summary>
         /// Gets the bounding box of the child.

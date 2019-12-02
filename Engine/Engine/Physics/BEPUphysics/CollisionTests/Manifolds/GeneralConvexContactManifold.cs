@@ -14,24 +14,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class GeneralConvexContactManifold : ContactManifold
     {
-        private RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
-
-        ///<summary>
-        /// Gets the pair tester used by the manifold to do testing.
-        ///</summary>
-        public GeneralConvexPairTester PairTester { get; }
-
         protected ConvexCollidable collidableA, collidableB;
-
-        ///<summary>
-        /// Gets the first collidable in the pair.
-        ///</summary>
-        public ConvexCollidable CollidableA => collidableA;
-
-        /// <summary>
-        /// Gets the second collidable in the pair.
-        /// </summary>
-        public ConvexCollidable CollidableB => collidableB;
+        private RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
 
         ///<summary>
         /// Constructs a new convex-convex manifold.
@@ -43,6 +27,21 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             contactIndicesToRemove = new RawList<int>(4);
             PairTester = new GeneralConvexPairTester();
         }
+
+        ///<summary>
+        /// Gets the pair tester used by the manifold to do testing.
+        ///</summary>
+        public GeneralConvexPairTester PairTester { get; }
+
+        ///<summary>
+        /// Gets the first collidable in the pair.
+        ///</summary>
+        public ConvexCollidable CollidableA => collidableA;
+
+        /// <summary>
+        /// Gets the second collidable in the pair.
+        /// </summary>
+        public ConvexCollidable CollidableB => collidableB;
 
         ///<summary>
         /// Updates the manifold.

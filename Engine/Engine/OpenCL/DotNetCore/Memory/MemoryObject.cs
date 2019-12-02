@@ -15,75 +15,6 @@ namespace Engine.OpenCL.DotNetCore.Memory
     /// </summary>
     public abstract class MemoryObject : HandleBase
     {
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new <see cref="MemoryObject"/> instance.
-        /// </summary>
-        /// <param name="handle">The handle to the OpenCL memory object.</param>
-        internal MemoryObject(IntPtr handle, long bytes)
-            : base(handle)
-        {
-            this.bytes = bytes;
-        }
-
-        private long bytes;
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// Contains the size of the contents of the memory object in bytes.
-        /// </summary>
-        private Nullable<long> size;
-
-        /// <summary>
-        /// Gets the size of the contents of the memory object in bytes.
-        /// </summary>
-        public long Size
-        {
-            get
-            {
-                if (!size.HasValue)
-                {
-                    if (Marshal.SizeOf<IntPtr>() == sizeof(long))
-                    {
-                        size = GetMemoryObjectInformation<long>(MemoryObjectInformation.Size);
-                    }
-                    else
-                    {
-                        size = (long) GetMemoryObjectInformation<int>(MemoryObjectInformation.Size);
-                    }
-                }
-
-                return size.Value;
-            }
-        }
-
-        /// <summary>
-        /// Contains the flags with which the memory object was created.
-        /// </summary>
-        private Nullable<MemoryFlag> flags;
-
-        /// <summary>
-        /// Gets the flags with which the memory object was created.
-        /// </summary>
-        public MemoryFlag Flags
-        {
-            get
-            {
-                if (!flags.HasValue)
-                {
-                    flags = (MemoryFlag) GetMemoryObjectInformation<ulong>(MemoryObjectInformation.Flags);
-                }
-
-                return flags.Value;
-            }
-        }
-
-        #endregion
-
         #region Private Methods
 
         /// <summary>
@@ -137,6 +68,75 @@ namespace Engine.OpenCL.DotNetCore.Memory
 
             // Makes sure that the base class can execute its dispose logic
             base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Constructors
+
+        /// <summary>
+        /// Initializes a new <see cref="MemoryObject"/> instance.
+        /// </summary>
+        /// <param name="handle">The handle to the OpenCL memory object.</param>
+        internal MemoryObject(IntPtr handle, long bytes)
+            : base(handle)
+        {
+            this.bytes = bytes;
+        }
+
+        private long bytes;
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Contains the size of the contents of the memory object in bytes.
+        /// </summary>
+        private long? size;
+
+        /// <summary>
+        /// Gets the size of the contents of the memory object in bytes.
+        /// </summary>
+        public long Size
+        {
+            get
+            {
+                if (!size.HasValue)
+                {
+                    if (Marshal.SizeOf<IntPtr>() == sizeof(long))
+                    {
+                        size = GetMemoryObjectInformation<long>(MemoryObjectInformation.Size);
+                    }
+                    else
+                    {
+                        size = GetMemoryObjectInformation<int>(MemoryObjectInformation.Size);
+                    }
+                }
+
+                return size.Value;
+            }
+        }
+
+        /// <summary>
+        /// Contains the flags with which the memory object was created.
+        /// </summary>
+        private MemoryFlag? flags;
+
+        /// <summary>
+        /// Gets the flags with which the memory object was created.
+        /// </summary>
+        public MemoryFlag Flags
+        {
+            get
+            {
+                if (!flags.HasValue)
+                {
+                    flags = (MemoryFlag) GetMemoryObjectInformation<ulong>(MemoryObjectInformation.Flags);
+                }
+
+                return flags.Value;
+            }
         }
 
         #endregion

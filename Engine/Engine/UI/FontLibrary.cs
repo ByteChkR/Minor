@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -59,12 +58,10 @@ namespace Engine.UI
             {
                 return LoadFontInternal(IOManager.GetStream(filename), pixelSize, out string _);
             }
-            else
-            {
-                Logger.Log("Not found File: " + filename, DebugChannel.Log, 10);
-                Logger.Crash(new InvalidFilePathException(filename), true);
-                return DefaultFilepaths.DefaultFont;
-            }
+
+            Logger.Log("Not found File: " + filename, DebugChannel.Log, 10);
+            Logger.Crash(new InvalidFilePathException(filename), true);
+            return DefaultFilepaths.DefaultFont;
         }
 
         /// <summary>

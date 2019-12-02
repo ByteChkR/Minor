@@ -13,6 +13,16 @@ namespace Engine.Physics.BEPUphysics
     /// </summary>
     public static class PhysicsResources
     {
+        private static LockingResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
+        private static LockingResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
+        private static LockingResourcePool<RawList<Collidable>> SubPoolCollidableList;
+        private static LockingResourcePool<RawList<Entity>> SubPoolEntityRawList;
+        private static LockingResourcePool<TriangleShape> SubPoolTriangleShape;
+        private static LockingResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
+        private static LockingResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
+
+        private static LockingResourcePool<SimulationIslandConnection> SimulationIslandConnections;
+
         static PhysicsResources()
         {
             ResetPools();
@@ -30,16 +40,6 @@ namespace Engine.Physics.BEPUphysics
             SubPoolTriangleCollidables = new LockingResourcePool<TriangleCollidable>();
             SimulationIslandConnections = new LockingResourcePool<SimulationIslandConnection>();
         }
-
-        private static LockingResourcePool<RawList<RayCastResult>> SubPoolRayCastResultList;
-        private static LockingResourcePool<RawList<BroadPhaseEntry>> SubPoolBroadPhaseEntryList;
-        private static LockingResourcePool<RawList<Collidable>> SubPoolCollidableList;
-        private static LockingResourcePool<RawList<Entity>> SubPoolEntityRawList;
-        private static LockingResourcePool<TriangleShape> SubPoolTriangleShape;
-        private static LockingResourcePool<RawList<CompoundChild>> SubPoolCompoundChildList;
-        private static LockingResourcePool<TriangleCollidable> SubPoolTriangleCollidables;
-
-        private static LockingResourcePool<SimulationIslandConnection> SimulationIslandConnections;
 
         //#endif
         /// <summary>

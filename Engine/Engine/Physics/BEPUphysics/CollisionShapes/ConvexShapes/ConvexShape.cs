@@ -10,15 +10,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public abstract class ConvexShape : EntityShape
     {
-        protected void UpdateConvexShapeInfo(ConvexShapeDescription description)
-        {
-            UpdateEntityShapeVolume(description.EntityShapeVolume);
-            MinimumRadius = description.MinimumRadius;
-            MaximumRadius = description.MaximumRadius;
-            collisionMargin = description.CollisionMargin;
-        }
-
-
         protected internal float collisionMargin = CollisionDetectionSettings.DefaultMargin;
 
         ///<summary>
@@ -53,6 +44,14 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         /// guaranteed to be equal to or larger than the actual maximum radius.
         /// </summary>
         public float MaximumRadius { get; internal set; }
+
+        protected void UpdateConvexShapeInfo(ConvexShapeDescription description)
+        {
+            UpdateEntityShapeVolume(description.EntityShapeVolume);
+            MinimumRadius = description.MinimumRadius;
+            MaximumRadius = description.MaximumRadius;
+            collisionMargin = description.CollisionMargin;
+        }
 
         ///<summary>
         /// Gets the extreme point of the shape in local space in a given direction.

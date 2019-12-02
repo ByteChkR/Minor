@@ -13,12 +13,17 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class SpherePairHandler : ConvexPairHandler
     {
-        private ConvexCollidable<SphereShape> sphereA;
-        private ConvexCollidable<SphereShape> sphereB;
+        private NonConvexContactManifoldConstraint contactConstraint;
 
         //Using a non-convex one since they have slightly lower overhead than their Convex friends when dealing with a single contact point.
         private SphereContactManifold contactManifold = new SphereContactManifold();
-        private NonConvexContactManifoldConstraint contactConstraint;
+        private ConvexCollidable<SphereShape> sphereA;
+        private ConvexCollidable<SphereShape> sphereB;
+
+        public SpherePairHandler()
+        {
+            contactConstraint = new NonConvexContactManifoldConstraint(this);
+        }
 
         public override Collidable CollidableA => sphereA;
 
@@ -37,11 +42,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
         public override ContactManifold ContactManifold => contactManifold;
-
-        public SpherePairHandler()
-        {
-            contactConstraint = new NonConvexContactManifoldConstraint(this);
-        }
 
         ///<summary>
         /// Initializes the pair handler.

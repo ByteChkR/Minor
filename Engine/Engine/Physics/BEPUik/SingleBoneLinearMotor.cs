@@ -5,14 +5,14 @@ namespace Engine.Physics.BEPUik
     public class SingleBoneLinearMotor : SingleBoneConstraint
     {
         /// <summary>
-        /// Gets or sets the target position to apply to the target bone.
-        /// </summary>
-        public Vector3 TargetPosition;
-
-        /// <summary>
         /// Gets or sets the offset in the bone's local space to the point which will be pulled towards the target position.
         /// </summary>
         public Vector3 LocalOffset;
+
+        /// <summary>
+        /// Gets or sets the target position to apply to the target bone.
+        /// </summary>
+        public Vector3 TargetPosition;
 
 
         public Vector3 Offset

@@ -10,24 +10,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class TransformableEntity : Entity<ConvexCollidable<TransformableShape>>
     {
-        ///<summary>
-        /// Gets the shape on which the transformable shape is based.
-        ///</summary>
-        public ConvexShape Shape
-        {
-            get => CollisionInformation.Shape.Shape;
-            set => CollisionInformation.Shape.Shape = value;
-        }
-
-        ///<summary>
-        /// Gets the linear transform that the shape uses to transform its base shape.
-        ///</summary>
-        public Matrix3x3 Transform
-        {
-            get => CollisionInformation.Shape.Transform;
-            set => CollisionInformation.Shape.Transform = value;
-        }
-
         private TransformableEntity(ConvexShape shape, Matrix3x3 transform)
             : base(new ConvexCollidable<TransformableShape>(new TransformableShape(shape, transform)))
         {
@@ -89,6 +71,24 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             : this(shape, transform)
         {
             MotionState = motionState;
+        }
+
+        ///<summary>
+        /// Gets the shape on which the transformable shape is based.
+        ///</summary>
+        public ConvexShape Shape
+        {
+            get => CollisionInformation.Shape.Shape;
+            set => CollisionInformation.Shape.Shape = value;
+        }
+
+        ///<summary>
+        /// Gets the linear transform that the shape uses to transform its base shape.
+        ///</summary>
+        public Matrix3x3 Transform
+        {
+            get => CollisionInformation.Shape.Transform;
+            set => CollisionInformation.Shape.Transform = value;
         }
     }
 }

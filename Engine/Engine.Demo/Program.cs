@@ -6,7 +6,6 @@ using Engine.Debug;
 using Engine.Demo.scenes;
 using Engine.Demo.scenes.testing;
 using Engine.IO;
-using Engine.Physics;
 
 namespace Engine.Demo
 {
@@ -20,7 +19,7 @@ namespace Engine.Demo
         [ConfigVariable] public static string TestString = "This is a text.";
 
         [ConfigVariable]
-        public static TestStruct TestVec = new TestStruct() {NestedText = "I am a member of Test Struct"};
+        public static TestStruct TestVec = new TestStruct {NestedText = "I am a member of Test Struct"};
 
         private static bool AskForDebugLogSending()
         {

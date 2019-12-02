@@ -11,47 +11,19 @@ namespace Engine.Physics.BEPUphysics.Constraints
     ///</summary>
     public class Solver : MultithreadedProcessingStage
     {
-        private RawList<SolverUpdateable> solverUpdateables = new RawList<SolverUpdateable>();
+        private SpinLock addRemoveLocker = new SpinLock();
         internal int iterationLimit = 10;
 
-        ///<summary>
-        /// Gets or sets the maximum number of iterations the solver will attempt to use to solve the simulation's constraints.
-        ///</summary>
-        public int IterationLimit
-        {
-            get => iterationLimit;
-            set => iterationLimit = Math.Max(value, 0);
-        }
+        private Action<int> multithreadedExclusiveUpdateDelegate;
 
-        ///<summary>
-        /// Gets the list of solver updateables in the solver.
-        ///</summary>
-        public ReadOnlyList<SolverUpdateable> SolverUpdateables =>
-            new ReadOnlyList<SolverUpdateable>(solverUpdateables);
+
+        private Action<int> multithreadedIterationDelegate;
+
+
+        private Action<int> multithreadedPrestepDelegate;
+        private RawList<SolverUpdateable> solverUpdateables = new RawList<SolverUpdateable>();
 
         protected internal TimeStepSettings timeStepSettings;
-
-        ///<summary>
-        /// Gets or sets the time step settings used by the solver.
-        ///</summary>
-        public TimeStepSettings TimeStepSettings
-        {
-            get => timeStepSettings;
-            set => timeStepSettings = value;
-        }
-
-        ///<summary>
-        /// Gets or sets the deactivation manager used by the solver.
-        /// When constraints are added and removed, the deactivation manager
-        /// gains and loses simulation island connections that affect simulation islands
-        /// and activity states.
-        ///</summary>
-        public DeactivationManager DeactivationManager { get; set; }
-
-        /// <summary>
-        /// Gets the permutation mapper used by the solver.
-        /// </summary>
-        public PermutationMapper PermutationMapper { get; }
 
         ///<summary>
         /// Constructs a Solver.
@@ -83,7 +55,42 @@ namespace Engine.Physics.BEPUphysics.Constraints
             AllowMultithreading = true;
         }
 
-        private SpinLock addRemoveLocker = new SpinLock();
+        ///<summary>
+        /// Gets or sets the maximum number of iterations the solver will attempt to use to solve the simulation's constraints.
+        ///</summary>
+        public int IterationLimit
+        {
+            get => iterationLimit;
+            set => iterationLimit = Math.Max(value, 0);
+        }
+
+        ///<summary>
+        /// Gets the list of solver updateables in the solver.
+        ///</summary>
+        public ReadOnlyList<SolverUpdateable> SolverUpdateables =>
+            new ReadOnlyList<SolverUpdateable>(solverUpdateables);
+
+        ///<summary>
+        /// Gets or sets the time step settings used by the solver.
+        ///</summary>
+        public TimeStepSettings TimeStepSettings
+        {
+            get => timeStepSettings;
+            set => timeStepSettings = value;
+        }
+
+        ///<summary>
+        /// Gets or sets the deactivation manager used by the solver.
+        /// When constraints are added and removed, the deactivation manager
+        /// gains and loses simulation island connections that affect simulation islands
+        /// and activity states.
+        ///</summary>
+        public DeactivationManager DeactivationManager { get; set; }
+
+        /// <summary>
+        /// Gets the permutation mapper used by the solver.
+        /// </summary>
+        public PermutationMapper PermutationMapper { get; }
 
         ///<summary>
         /// Adds a solver updateable to the solver.
@@ -147,9 +154,6 @@ namespace Engine.Physics.BEPUphysics.Constraints
             }
         }
 
-
-        private Action<int> multithreadedPrestepDelegate;
-
         private void MultithreadedPrestep(int i)
         {
             SolverUpdateable updateable = solverUpdateables.Elements[i];
@@ -161,8 +165,6 @@ namespace Engine.Physics.BEPUphysics.Constraints
                 updateable.Update(timeStepSettings.TimeStepDuration);
             }
         }
-
-        private Action<int> multithreadedExclusiveUpdateDelegate;
 
         private void MultithreadedExclusiveUpdate(int i)
         {
@@ -180,9 +182,6 @@ namespace Engine.Physics.BEPUphysics.Constraints
                 }
             }
         }
-
-
-        private Action<int> multithreadedIterationDelegate;
 
         private void MultithreadedIteration(int i)
         {

@@ -5,10 +5,10 @@ namespace Engine.AI
 {
     public class PriorityQueue<T> where T : IComparable<T>
     {
+        public readonly bool IsDescending;
+
         //The underlying structure.
         private List<T> list;
-        public int Count => list.Count;
-        public readonly bool IsDescending;
 
         public PriorityQueue()
         {
@@ -45,6 +45,8 @@ namespace Engine.AI
                 Enqueue(item);
             }
         }
+
+        public int Count => list.Count;
 
 
         public void Enqueue(T x)

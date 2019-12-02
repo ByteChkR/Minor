@@ -27,11 +27,6 @@ namespace Engine.UI
             1.0f, 1.0f, 1.0f, 1.0f
         };
 
-        /// <summary>
-        /// The image that will be drawn to the screen
-        /// </summary>
-        public virtual Texture Texture { get; set; }
-
 
         /// <summary>
         /// Private flag if the Screen Space Quad has been loaded
@@ -67,6 +62,11 @@ namespace Engine.UI
         {
             Texture = texture;
         }
+
+        /// <summary>
+        /// The image that will be drawn to the screen
+        /// </summary>
+        public virtual Texture Texture { get; set; }
 
         /// <summary>
         /// Disposes th Texture used by the context

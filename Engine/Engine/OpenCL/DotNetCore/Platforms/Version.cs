@@ -50,22 +50,22 @@ namespace Engine.OpenCL.DotNetCore.Platforms
         /// <summary>
         /// Gets the original version string returned by the OpenCL platform, which is in the format "OpenCL[space][major_version.minor_version][space][platform-specific information]".
         /// </summary>
-        public string VersionString { get; private set; }
+        public string VersionString { get; }
 
         /// <summary>
         /// Gets the major version of OpenCL that is supported by the OpenCL platform.
         /// </summary>
-        public int MajorVersion { get; private set; }
+        public int MajorVersion { get; }
 
         /// <summary>
         /// Gets the minor version of OpenCL that is supported by the OpenCL platform.
         /// </summary>
-        public int MinorVersion { get; private set; }
+        public int MinorVersion { get; }
 
         /// <summary>
         /// Gets the version information specific to the OpenCL platform.
         /// </summary>
-        public string PlatformSpecificInformation { get; private set; }
+        public string PlatformSpecificInformation { get; }
 
         #endregion
     }

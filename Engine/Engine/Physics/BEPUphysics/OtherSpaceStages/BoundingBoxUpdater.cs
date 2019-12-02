@@ -13,12 +13,9 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
     {
         //TODO: should the Entries field be publicly accessible since there's not any custom add/remove logic?
         private RawList<MobileCollidable> entries = new RawList<MobileCollidable>();
-        private TimeStepSettings timeStepSettings;
 
-        ///<summary>
-        /// Gets or sets the time step settings used by the updater.
-        ///</summary>
-        public TimeStepSettings TimeStepSettings { get; set; }
+        private Action<int> multithreadedLoopBodyDelegate;
+        private TimeStepSettings timeStepSettings;
 
         ///<summary>
         /// Constructs the bounding box updater.
@@ -43,7 +40,10 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
             AllowMultithreading = true;
         }
 
-        private Action<int> multithreadedLoopBodyDelegate;
+        ///<summary>
+        /// Gets or sets the time step settings used by the updater.
+        ///</summary>
+        public TimeStepSettings TimeStepSettings { get; set; }
 
         private void LoopBody(int i)
         {

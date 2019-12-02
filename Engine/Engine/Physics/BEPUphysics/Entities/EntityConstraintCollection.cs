@@ -22,21 +22,21 @@ namespace Engine.Physics.BEPUphysics.Entities
             this.connections = connections;
         }
 
-        /// <summary>
-        /// Gets an enumerator for the collection.
-        /// </summary>
-        /// <returns>Enumerator for the collection.</returns>
-        public Enumerator GetEnumerator()
-        {
-            return new Enumerator(connections);
-        }
-
         IEnumerator<TwoEntityConstraint> IEnumerable<TwoEntityConstraint>.GetEnumerator()
         {
             return new Enumerator(connections);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return new Enumerator(connections);
+        }
+
+        /// <summary>
+        /// Gets an enumerator for the collection.
+        /// </summary>
+        /// <returns>Enumerator for the collection.</returns>
+        public Enumerator GetEnumerator()
         {
             return new Enumerator(connections);
         }

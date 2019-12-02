@@ -14,45 +14,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public abstract class TriangleMeshConvexContactManifold : ContactManifold
     {
-        protected RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
         private QuickDictionary<TriangleIndices, TrianglePairTester> activePairTesters;
 
 
-        protected abstract TrianglePairTester GetTester();
-
-        protected abstract void GiveBackTester(TrianglePairTester tester);
-
-        private struct BoundarySets
-        {
-            public QuickSet<int> BlockedVertexRegions;
-            public QuickSet<Edge> BlockedEdgeRegions;
-            public QuickList<EdgeContact> EdgeContacts;
-            public QuickList<VertexContact> VertexContacts;
-
-            public BoundarySets(int sizePower)
-            {
-                BlockedVertexRegions = new QuickSet<int>(BufferPools<int>.Thread, BufferPools<int>.Thread, sizePower);
-                BlockedEdgeRegions = new QuickSet<Edge>(BufferPools<Edge>.Thread, BufferPools<int>.Thread, sizePower);
-                EdgeContacts = new QuickList<EdgeContact>(BufferPools<EdgeContact>.Thread, sizePower);
-                VertexContacts = new QuickList<VertexContact>(BufferPools<VertexContact>.Thread, sizePower);
-            }
-
-            internal void Dispose()
-            {
-                BlockedEdgeRegions.Dispose();
-                BlockedVertexRegions.Dispose();
-                VertexContacts.Dispose();
-                EdgeContacts.Dispose();
-            }
-        }
-
-
         protected ConvexCollidable convex;
-
-        ///<summary>
-        /// Gets the convex collidable associated with this pair.
-        ///</summary>
-        public ConvexCollidable ConvexCollidable => convex;
+        protected RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
 
         ///<summary>
         /// Constructs a new contact manifold.
@@ -67,10 +33,20 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 3);
         }
 
+        ///<summary>
+        /// Gets the convex collidable associated with this pair.
+        ///</summary>
+        public ConvexCollidable ConvexCollidable => convex;
+
         protected virtual RigidTransform MeshTransform => RigidTransform.Identity;
 
 
         protected abstract bool UseImprovedBoundaryHandling { get; }
+
+
+        protected abstract TrianglePairTester GetTester();
+
+        protected abstract void GiveBackTester(TrianglePairTester tester);
         protected internal abstract int FindOverlappingTriangles(float dt);
 
         /// <summary>
@@ -717,6 +693,30 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 3);
             CleanUpOverlappingTriangles();
             base.CleanUp();
+        }
+
+        private struct BoundarySets
+        {
+            public QuickSet<int> BlockedVertexRegions;
+            public QuickSet<Edge> BlockedEdgeRegions;
+            public QuickList<EdgeContact> EdgeContacts;
+            public QuickList<VertexContact> VertexContacts;
+
+            public BoundarySets(int sizePower)
+            {
+                BlockedVertexRegions = new QuickSet<int>(BufferPools<int>.Thread, BufferPools<int>.Thread, sizePower);
+                BlockedEdgeRegions = new QuickSet<Edge>(BufferPools<Edge>.Thread, BufferPools<int>.Thread, sizePower);
+                EdgeContacts = new QuickList<EdgeContact>(BufferPools<EdgeContact>.Thread, sizePower);
+                VertexContacts = new QuickList<VertexContact>(BufferPools<VertexContact>.Thread, sizePower);
+            }
+
+            internal void Dispose()
+            {
+                BlockedEdgeRegions.Dispose();
+                BlockedVertexRegions.Dispose();
+                VertexContacts.Dispose();
+                EdgeContacts.Dispose();
+            }
         }
 
         /// <summary>

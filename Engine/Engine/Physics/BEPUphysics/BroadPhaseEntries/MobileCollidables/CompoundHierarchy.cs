@@ -9,16 +9,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
     public class CompoundHierarchy
     {
         ///<summary>
-        /// Gets the bounding box tree of the hierarchy.
-        ///</summary>
-        public BoundingBoxTree<CompoundChild> Tree { get; }
-
-        ///<summary>
-        /// Gets the CompoundCollidable that owns this hierarchy.
-        ///</summary>
-        public CompoundCollidable Owner { get; }
-
-        ///<summary>
         /// Constructs a new compound hierarchy.
         ///</summary>
         ///<param name="owner">Owner of the hierarchy.</param>
@@ -37,5 +27,15 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
 
             Tree = new BoundingBoxTree<CompoundChild>(children);
         }
+
+        ///<summary>
+        /// Gets the bounding box tree of the hierarchy.
+        ///</summary>
+        public BoundingBoxTree<CompoundChild> Tree { get; }
+
+        ///<summary>
+        /// Gets the CompoundCollidable that owns this hierarchy.
+        ///</summary>
+        public CompoundCollidable Owner { get; }
     }
 }

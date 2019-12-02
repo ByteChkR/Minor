@@ -12,15 +12,11 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class ConvexHullShape : ConvexShape
     {
-        ///<summary>
-        /// Gets the point set of the convex hull.
-        ///</summary>
-        public ReadOnlyList<Vector3> Vertices => new ReadOnlyList<Vector3>(vertices);
-
-        private Vector3[] vertices;
+        private readonly float unexpandedMaximumRadius;
 
         private readonly float unexpandedMinimumRadius;
-        private readonly float unexpandedMaximumRadius;
+
+        private Vector3[] vertices;
 
         ///<summary>
         /// Constructs a new convex hull shape.
@@ -125,6 +121,11 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             localSurfaceVertices.CopyTo(vertices, 0);
             UpdateConvexShapeInfo(description);
         }
+
+        ///<summary>
+        /// Gets the point set of the convex hull.
+        ///</summary>
+        public ReadOnlyList<Vector3> Vertices => new ReadOnlyList<Vector3>(vertices);
 
         protected override void OnShapeChanged()
         {

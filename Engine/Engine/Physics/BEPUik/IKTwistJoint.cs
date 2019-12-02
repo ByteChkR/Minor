@@ -32,6 +32,23 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public Vector3 LocalMeasurementAxisB;
 
+
+        /// <summary>
+        /// Builds a new twist limit. Prevents two bones from rotating beyond a certain angle away from each other as measured by attaching an axis to each connected bone.
+        /// </summary>
+        /// <param name="connectionA">First connection of the limit.</param>
+        /// <param name="connectionB">Second connection of the limit.</param>
+        /// <param name="axisA">Axis attached to connectionA in world space.</param>
+        /// <param name="axisB">Axis attached to connectionB in world space.</param>
+        public IKTwistJoint(Bone connectionA, Bone connectionB, Vector3 axisA, Vector3 axisB)
+            : base(connectionA, connectionB)
+        {
+            AxisA = axisA;
+            AxisB = axisB;
+
+            ComputeMeasurementAxes();
+        }
+
         /// <summary>
         /// Gets or sets the axis attached to ConnectionA in world space.
         /// Must be unit length and perpendicular to MeasurementAxisA.
@@ -107,23 +124,6 @@ namespace Engine.Physics.BEPUik
             //Plop them on!
             MeasurementAxisA = worldMeasurementAxisA;
             MeasurementAxisB = worldMeasurementAxisB;
-        }
-
-
-        /// <summary>
-        /// Builds a new twist limit. Prevents two bones from rotating beyond a certain angle away from each other as measured by attaching an axis to each connected bone.
-        /// </summary>
-        /// <param name="connectionA">First connection of the limit.</param>
-        /// <param name="connectionB">Second connection of the limit.</param>
-        /// <param name="axisA">Axis attached to connectionA in world space.</param>
-        /// <param name="axisB">Axis attached to connectionB in world space.</param>
-        public IKTwistJoint(Bone connectionA, Bone connectionB, Vector3 axisA, Vector3 axisB)
-            : base(connectionA, connectionB)
-        {
-            AxisA = axisA;
-            AxisB = axisB;
-
-            ComputeMeasurementAxes();
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

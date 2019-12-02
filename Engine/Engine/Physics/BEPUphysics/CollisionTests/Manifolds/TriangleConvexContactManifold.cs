@@ -15,26 +15,10 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public class TriangleConvexContactManifold : ContactManifold
     {
-        private RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
-        private TriangleShape localTriangleShape = new TriangleShape();
-
-        ///<summary>
-        /// Gets the pair tester used by the manifold.
-        ///</summary>
-        public TriangleConvexPairTester PairTester { get; }
-
         protected ConvexCollidable convex;
+        private TriangleShape localTriangleShape = new TriangleShape();
+        private RawValueList<ContactSupplementData> supplementData = new RawValueList<ContactSupplementData>(4);
         protected ConvexCollidable<TriangleShape> triangle;
-
-        ///<summary>
-        /// Gets the convex associated with the pair.
-        ///</summary>
-        public ConvexCollidable Convex => convex;
-
-        ///<summary>
-        /// Gets the triangle associated with the pair.
-        ///</summary>
-        public ConvexCollidable<TriangleShape> Triangle => triangle;
 
         ///<summary>
         /// Constructs a new manifold.
@@ -46,6 +30,21 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             contactIndicesToRemove = new RawList<int>(4);
             PairTester = new TriangleConvexPairTester();
         }
+
+        ///<summary>
+        /// Gets the pair tester used by the manifold.
+        ///</summary>
+        public TriangleConvexPairTester PairTester { get; }
+
+        ///<summary>
+        /// Gets the convex associated with the pair.
+        ///</summary>
+        public ConvexCollidable Convex => convex;
+
+        ///<summary>
+        /// Gets the triangle associated with the pair.
+        ///</summary>
+        public ConvexCollidable<TriangleShape> Triangle => triangle;
 
         public override void Update(float dt)
         {

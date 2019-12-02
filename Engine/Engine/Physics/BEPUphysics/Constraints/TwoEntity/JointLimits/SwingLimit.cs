@@ -11,15 +11,15 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
     {
         private float biasVelocity;
         private Vector3 hingeAxis;
-        private float minimumCosine = 1;
 
         private Vector3 localAxisA;
 
         private Vector3 localAxisB;
+        private float minimumCosine = 1;
+        private float velocityToImpulse;
         private Vector3 worldAxisA;
 
         private Vector3 worldAxisB;
-        private float velocityToImpulse;
 
         /// <summary>
         /// Constructs a new constraint which attempts to restrict the maximum relative angle of two entities to some value.
@@ -113,90 +113,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
                 Quaternion.Transform(ref worldAxisB, ref conjugate, out localAxisB);
             }
         }
-
-        #region I1DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// </summary>
-        public float RelativeVelocity
-        {
-            get
-            {
-                if (isLimitActive)
-                {
-                    Vector3 relativeVelocity;
-                    Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity,
-                        out relativeVelocity);
-                    float lambda;
-                    Vector3.Dot(ref relativeVelocity, ref hingeAxis, out lambda);
-                    return lambda;
-                }
-
-                return 0;
-            }
-        }
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// </summary>
-        public float TotalImpulse { get; private set; }
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// </summary>
-        public float Error { get; private set; }
-
-        #endregion
-
-        #region I1DJacobianConstraint Members
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobian">Linear jacobian entry for the first connected entity.</param>
-        public void GetLinearJacobianA(out Vector3 jacobian)
-        {
-            jacobian = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobian">Linear jacobian entry for the second connected entity.</param>
-        public void GetLinearJacobianB(out Vector3 jacobian)
-        {
-            jacobian = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobian">Angular jacobian entry for the first connected entity.</param>
-        public void GetAngularJacobianA(out Vector3 jacobian)
-        {
-            jacobian = hingeAxis;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobian">Angular jacobian entry for the second connected entity.</param>
-        public void GetAngularJacobianB(out Vector3 jacobian)
-        {
-            jacobian = -hingeAxis;
-        }
-
-        /// <summary>
-        /// Gets the mass matrix of the constraint.
-        /// </summary>
-        /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
-        public void GetMassMatrix(out float outputMassMatrix)
-        {
-            outputMassMatrix = velocityToImpulse;
-        }
-
-        #endregion
 
         /// <summary>
         /// Applies the sequential impulse.
@@ -344,5 +260,89 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
                 connectionB.ApplyAngularImpulse(ref impulse);
             }
         }
+
+        #region I1DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// </summary>
+        public float RelativeVelocity
+        {
+            get
+            {
+                if (isLimitActive)
+                {
+                    Vector3 relativeVelocity;
+                    Vector3.Subtract(ref connectionA.angularVelocity, ref connectionB.angularVelocity,
+                        out relativeVelocity);
+                    float lambda;
+                    Vector3.Dot(ref relativeVelocity, ref hingeAxis, out lambda);
+                    return lambda;
+                }
+
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// </summary>
+        public float TotalImpulse { get; private set; }
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// </summary>
+        public float Error { get; private set; }
+
+        #endregion
+
+        #region I1DJacobianConstraint Members
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobian">Linear jacobian entry for the first connected entity.</param>
+        public void GetLinearJacobianA(out Vector3 jacobian)
+        {
+            jacobian = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobian">Linear jacobian entry for the second connected entity.</param>
+        public void GetLinearJacobianB(out Vector3 jacobian)
+        {
+            jacobian = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobian">Angular jacobian entry for the first connected entity.</param>
+        public void GetAngularJacobianA(out Vector3 jacobian)
+        {
+            jacobian = hingeAxis;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobian">Angular jacobian entry for the second connected entity.</param>
+        public void GetAngularJacobianB(out Vector3 jacobian)
+        {
+            jacobian = -hingeAxis;
+        }
+
+        /// <summary>
+        /// Gets the mass matrix of the constraint.
+        /// </summary>
+        /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
+        public void GetMassMatrix(out float outputMassMatrix)
+        {
+            outputMassMatrix = velocityToImpulse;
+        }
+
+        #endregion
     }
 }

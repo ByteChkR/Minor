@@ -9,61 +9,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class TriangleShape : ConvexShape
     {
-        internal Vector3 vA, vB, vC;
-
-        ///<summary>
-        /// Gets or sets the first vertex of the triangle shape.
-        ///</summary>
-        public Vector3 VertexA
-        {
-            get => vA;
-            set
-            {
-                vA = value;
-                OnShapeChanged();
-            }
-        }
-
-        ///<summary>
-        /// Gets or sets the second vertex of the triangle shape.
-        ///</summary>
-        public Vector3 VertexB
-        {
-            get => vB;
-            set
-            {
-                vB = value;
-                OnShapeChanged();
-            }
-        }
-
-        ///<summary>
-        /// Gets or sets the third vertex of the triangle shape.
-        ///</summary>
-        public Vector3 VertexC
-        {
-            get => vC;
-            set
-            {
-                vC = value;
-                OnShapeChanged();
-            }
-        }
-
         internal TriangleSidedness sidedness;
-
-        ///<summary>
-        /// Gets or sets the sidedness of the triangle.
-        ///</summary>
-        public TriangleSidedness Sidedness
-        {
-            get => sidedness;
-            set
-            {
-                sidedness = value;
-                OnShapeChanged();
-            }
-        }
+        internal Vector3 vA, vB, vC;
 
         ///<summary>
         /// Constructs a triangle shape without initializing it.
@@ -124,6 +71,58 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             this.vB = vB - center;
             this.vC = vC - center;
             UpdateConvexShapeInfo(description);
+        }
+
+        ///<summary>
+        /// Gets or sets the first vertex of the triangle shape.
+        ///</summary>
+        public Vector3 VertexA
+        {
+            get => vA;
+            set
+            {
+                vA = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the second vertex of the triangle shape.
+        ///</summary>
+        public Vector3 VertexB
+        {
+            get => vB;
+            set
+            {
+                vB = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the third vertex of the triangle shape.
+        ///</summary>
+        public Vector3 VertexC
+        {
+            get => vC;
+            set
+            {
+                vC = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the sidedness of the triangle.
+        ///</summary>
+        public TriangleSidedness Sidedness
+        {
+            get => sidedness;
+            set
+            {
+                sidedness = value;
+                OnShapeChanged();
+            }
         }
 
 

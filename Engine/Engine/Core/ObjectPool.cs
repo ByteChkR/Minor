@@ -86,6 +86,16 @@ namespace Engine.Core
         public delegate T CreateNew();
 
         /// <summary>
+        /// The Factory that is creating new instances of type T
+        /// </summary>
+        private readonly CreateNew _factory;
+
+        /// <summary>
+        /// The Maximum amount of items allowed
+        /// </summary>
+        private readonly int _maxItems;
+
+        /// <summary>
         /// The internal list of pooled objects
         /// </summary>
         private List<PooledObject<T>> _InternalList = new List<PooledObject<T>>();
@@ -95,16 +105,6 @@ namespace Engine.Core
         /// serves as a starting point for the next unused item
         /// </summary>
         private int _nextID;
-
-        /// <summary>
-        /// The Maximum amount of items allowed
-        /// </summary>
-        private readonly int _maxItems;
-
-        /// <summary>
-        /// The Factory that is creating new instances of type T
-        /// </summary>
-        private readonly CreateNew _factory;
 
         /// <summary>
         /// Public Constructor
@@ -137,6 +137,20 @@ namespace Engine.Core
         /// <param name="factory">The factory producing new instances of Type T</param>
         public ObjectPool(CreateNew factory) : this(0, 1000, factory)
         {
+        }
+
+        /// <summary>
+        /// Disposes all objects in the pool
+        /// Warning: all objects from the pool become unusable
+        /// </summary>
+        public void Dispose()
+        {
+            for (int i = 0; i < _InternalList.Count; i++)
+            {
+                _InternalList[i].Object.Dispose();
+            }
+
+            _InternalList.Clear();
         }
 
         /// <summary>
@@ -250,20 +264,6 @@ namespace Engine.Core
                     _InternalList.RemoveAt(i);
                 }
             }
-        }
-
-        /// <summary>
-        /// Disposes all objects in the pool
-        /// Warning: all objects from the pool become unusable
-        /// </summary>
-        public void Dispose()
-        {
-            for (int i = 0; i < _InternalList.Count; i++)
-            {
-                _InternalList[i].Object.Dispose();
-            }
-
-            _InternalList.Clear();
         }
     }
 }

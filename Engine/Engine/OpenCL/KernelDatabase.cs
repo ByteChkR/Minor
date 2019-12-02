@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.IO;
@@ -17,9 +15,6 @@ namespace Engine.OpenCL
         /// The Folder that will get searched when initializing the database.
         /// </summary>
         private readonly string _folderName;
-
-
-        public string GenDataType { get; }
 
         /// <summary>
         /// The currently loaded kernels
@@ -43,6 +38,9 @@ namespace Engine.OpenCL
             LoadedKernels = new Dictionary<string, CLKernel>();
             Initialize(instance);
         }
+
+
+        public string GenDataType { get; }
 
 
         /// <summary>

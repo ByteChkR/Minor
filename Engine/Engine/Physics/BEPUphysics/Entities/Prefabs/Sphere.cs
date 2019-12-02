@@ -10,15 +10,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class Sphere : Entity<ConvexCollidable<SphereShape>>
     {
-        /// <summary>
-        /// Radius of the sphere.
-        /// </summary>
-        public float Radius
-        {
-            get => CollisionInformation.Shape.Radius;
-            set => CollisionInformation.Shape.Radius = value;
-        }
-
         private Sphere(float radius)
             : base(new ConvexCollidable<SphereShape>(new SphereShape(radius)))
         {
@@ -74,6 +65,15 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             : this(radius)
         {
             MotionState = motionState;
+        }
+
+        /// <summary>
+        /// Radius of the sphere.
+        /// </summary>
+        public float Radius
+        {
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
         }
     }
 }

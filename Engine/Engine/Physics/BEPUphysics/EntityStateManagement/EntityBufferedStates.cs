@@ -7,6 +7,19 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
     ///</summary>
     public class EntityBufferedStates
     {
+        internal int motionStateIndex;
+
+        ///<summary>
+        /// Constructs a new buffered states entry.
+        ///</summary>
+        ///<param name="entity">Owning entity.</param>
+        public EntityBufferedStates(Entity entity)
+        {
+            Entity = entity;
+            States = new BufferedStatesAccessor(this);
+            InterpolatedStates = new InterpolatedStatesAccessor(this);
+        }
+
         ///<summary>
         /// Gets the buffered states manager that owns this entry.
         ///</summary>
@@ -25,8 +38,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
         ///</summary>
         public InterpolatedStatesAccessor InterpolatedStates { get; }
 
-        internal int motionStateIndex;
-
         ///<summary>
         /// Gets the motion state index of this entity.
         ///</summary>
@@ -34,17 +45,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
         {
             get => motionStateIndex;
             internal set => motionStateIndex = value;
-        }
-
-        ///<summary>
-        /// Constructs a new buffered states entry.
-        ///</summary>
-        ///<param name="entity">Owning entity.</param>
-        public EntityBufferedStates(Entity entity)
-        {
-            Entity = entity;
-            States = new BufferedStatesAccessor(this);
-            InterpolatedStates = new InterpolatedStatesAccessor(this);
         }
 
         ///<summary>

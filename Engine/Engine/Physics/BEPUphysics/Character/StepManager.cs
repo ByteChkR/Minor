@@ -20,50 +20,16 @@ namespace Engine.Physics.BEPUphysics.Character
 
         private float maximumStepHeight = 1f;
 
-        /// <summary>
-        /// Gets or sets the maximum height which the character is capable of stepping up or down onto.
-        /// </summary>
-        public float MaximumStepHeight
-        {
-            get => maximumStepHeight;
-            set
-            {
-                if (maximumStepHeight < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                maximumStepHeight = value;
-            }
-        }
-
         private float minimumDownStepHeight = .1f;
-
-        /// <summary>
-        /// Gets or sets the minimum down step height.  Down steps which are smaller than this are simply ignored by the step system; instead, the character falls.
-        /// If the new step location has traction, the intermediate falling will not remove traction from the character.  The only difference is that the character isn't
-        /// teleported down when the step is too small.
-        /// </summary>
-        public float MinimumDownStepHeight
-        {
-            get => minimumDownStepHeight;
-            set
-            {
-                if (minimumDownStepHeight < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                minimumDownStepHeight = value;
-            }
-        }
 
         private float minimumUpStepHeight;
 
-        private SupportFinder SupportFinder { get; }
-        private QueryManager QueryManager { get; }
-        private CharacterContactCategorizer ContactCategorizer { get; }
-        private HorizontalMotionConstraint HorizontalMotionConstraint { get; }
+
+        private RawList<ContactData> stepContacts = new RawList<ContactData>();
+
+        private float
+            upStepMargin =
+                .1f; //There's a little extra space above the maximum step height to start the obstruction and downcast test rays.  Helps when a step is very close to the max step height.
 
         /// <summary>
         /// Constructs a new step manager for a character.
@@ -90,6 +56,47 @@ namespace Engine.Physics.BEPUphysics.Character
                 1.1f; // Math.Max(0, -.01f + character.Body.CollisionInformation.Shape.CollisionMargin * (1 - character.SupportFinder.sinMaximumSlope));
         }
 
+        /// <summary>
+        /// Gets or sets the maximum height which the character is capable of stepping up or down onto.
+        /// </summary>
+        public float MaximumStepHeight
+        {
+            get => maximumStepHeight;
+            set
+            {
+                if (maximumStepHeight < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                maximumStepHeight = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the minimum down step height.  Down steps which are smaller than this are simply ignored by the step system; instead, the character falls.
+        /// If the new step location has traction, the intermediate falling will not remove traction from the character.  The only difference is that the character isn't
+        /// teleported down when the step is too small.
+        /// </summary>
+        public float MinimumDownStepHeight
+        {
+            get => minimumDownStepHeight;
+            set
+            {
+                if (minimumDownStepHeight < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                minimumDownStepHeight = value;
+            }
+        }
+
+        private SupportFinder SupportFinder { get; }
+        private QueryManager QueryManager { get; }
+        private CharacterContactCategorizer ContactCategorizer { get; }
+        private HorizontalMotionConstraint HorizontalMotionConstraint { get; }
+
         private bool IsDownStepObstructed(ref QuickList<CharacterContact> sideContacts)
         {
             //A contact is considered obstructive if its projected depth is deeper than any existing contact along the existing contacts' normals.
@@ -103,9 +110,6 @@ namespace Engine.Physics.BEPUphysics.Character
 
             return false;
         }
-
-
-        private RawList<ContactData> stepContacts = new RawList<ContactData>();
 
         /// <summary>
         /// Determines if a down step is possible, and if so, computes the location to which the character should teleport.
@@ -347,10 +351,6 @@ namespace Engine.Physics.BEPUphysics.Character
             newPosition = new Vector3();
             return false;
         }
-
-        private float
-            upStepMargin =
-                .1f; //There's a little extra space above the maximum step height to start the obstruction and downcast test rays.  Helps when a step is very close to the max step height.
 
         private void FindUpStepCandidates(RawList<ContactData> outputStepCandidates, ref Vector3 down)
         {

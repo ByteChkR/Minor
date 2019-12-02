@@ -8,11 +8,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests
     public class Contact
     {
         /// <summary>
-        /// Amount of penetration between the two objects.
-        /// </summary>
-        public float PenetrationDepth;
-
-        /// <summary>
         /// Identifier used to link contact data with existing contacts and categorize members of a manifold.
         /// </summary>
         public int Id = -1;
@@ -21,6 +16,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests
         /// Normal direction of the surface at the contact point.
         /// </summary>
         public Vector3 Normal;
+
+        /// <summary>
+        /// Amount of penetration between the two objects.
+        /// </summary>
+        public float PenetrationDepth;
 
 
         /// <summary>

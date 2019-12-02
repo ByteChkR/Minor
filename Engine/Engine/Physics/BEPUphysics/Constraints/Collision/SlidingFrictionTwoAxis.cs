@@ -11,20 +11,31 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     /// </summary>
     public class SlidingFrictionTwoAxis : SolverUpdateable
     {
+        internal Vector2 accumulatedImpulse;
+        internal Matrix2x3 angularA, angularB;
+        private int contactCount;
+        private Entity entityA, entityB;
+        private bool entityADynamic, entityBDynamic;
+        private float friction;
+        internal Matrix2x3 linearA;
+
+        internal Vector3 manifoldCenter, relativeVelocity;
+        private Vector3 ra, rb;
+        private Matrix2x2 velocityToImpulse;
+
+
+        ///<summary>
+        /// Constructs a new sliding friction constraint.
+        ///</summary>
+        public SlidingFrictionTwoAxis()
+        {
+            isActive = false;
+        }
+
         ///<summary>
         /// Gets the contact manifold constraint that owns this constraint.
         ///</summary>
         public ConvexContactManifoldConstraint ContactManifoldConstraint { get; private set; }
-
-        internal Vector2 accumulatedImpulse;
-        internal Matrix2x3 angularA, angularB;
-        private int contactCount;
-        private float friction;
-        internal Matrix2x3 linearA;
-        private Entity entityA, entityB;
-        private bool entityADynamic, entityBDynamic;
-        private Vector3 ra, rb;
-        private Matrix2x2 velocityToImpulse;
 
 
         /// <summary>
@@ -126,15 +137,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             }
         }
 
-
-        ///<summary>
-        /// Constructs a new sliding friction constraint.
-        ///</summary>
-        public SlidingFrictionTwoAxis()
-        {
-            isActive = false;
-        }
-
         /// <summary>
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
         /// </summary>
@@ -217,8 +219,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
 
             return Math.Abs(lambda.X) + Math.Abs(lambda.Y);
         }
-
-        internal Vector3 manifoldCenter, relativeVelocity;
 
         ///<summary>
         /// Performs the frame's configuration step.

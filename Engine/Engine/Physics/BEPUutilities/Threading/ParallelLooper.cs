@@ -10,14 +10,29 @@ namespace Engine.Physics.BEPUutilities.Threading
     /// </summary>
     public class ParallelLooper : IParallelLooper, IDisposable
     {
+        private readonly object disposedLocker = new object();
         private readonly AutoResetEvent loopFinished;
+
+        internal int currentBeginIndex, currentEndIndex;
+        internal Action<int> currentLoopBody;
+
+
+        private bool disposed;
+        internal int iterationsPerSteal;
+
+        internal int jobIndex;
+        internal int maxJobIndex;
         private int workerCount;
 
         internal List<ParallelLoopWorker> workers = new List<ParallelLoopWorker>();
 
-        internal int currentBeginIndex, currentEndIndex;
-        internal Action<int> currentLoopBody;
-        internal int iterationsPerSteal;
+        /// <summary>
+        /// Constructs a new parallel loop manager.
+        /// </summary>
+        public ParallelLooper()
+        {
+            loopFinished = new AutoResetEvent(false);
+        }
 
         /// <summary>
         /// Gets or sets the minimum number of tasks to be allocated to each thread
@@ -31,61 +46,31 @@ namespace Engine.Physics.BEPUutilities.Threading
         /// </summary>
         public int MaximumIterationsPerTask { get; set; } = 80;
 
-        internal int jobIndex;
-        internal int maxJobIndex;
-
         /// <summary>
-        /// Constructs a new parallel loop manager.
+        /// Releases resources used by the object.
         /// </summary>
-        public ParallelLooper()
+        public void Dispose()
         {
-            loopFinished = new AutoResetEvent(false);
+            lock (disposedLocker)
+            {
+                if (!disposed)
+                {
+                    disposed = true;
+                    while (workers.Count > 0)
+                    {
+                        RemoveThread();
+                    }
+
+                    loopFinished.Close();
+                    GC.SuppressFinalize(this);
+                }
+            }
         }
 
         /// <summary>
         /// Gets the number of threads used by the looper.
         /// </summary>
         public int ThreadCount => workers.Count;
-
-        /// <summary>
-        /// Adds a thread to the manager.
-        /// </summary>
-        public void AddThread()
-        {
-            AddThread(null);
-        }
-
-        /// <summary>
-        /// Adds a thread to the manager.
-        /// </summary>
-        /// <param name="threadStart">Initialization to run on the worker thread.</param>
-        public void AddThread(Action threadStart)
-        {
-            workers.Add(new ParallelLoopWorker(this, threadStart));
-        }
-
-        /// <summary>
-        /// Removes a thread from the manager.
-        /// </summary>
-        public void RemoveThread()
-        {
-            if (workers.Count > 0)
-            {
-                lock (workers[0].disposedLocker)
-                {
-                    if (!workers[0].disposed)
-                    {
-                        currentLoopBody = null;
-                        workerCount = 1;
-                        workers[0].getToWork.Set();
-                        loopFinished.WaitOne();
-                        workers[0].Dispose();
-                    }
-                }
-
-                workers.RemoveAt(0);
-            }
-        }
 
         /// <summary>
         /// Iterates over the interval.
@@ -130,36 +115,51 @@ namespace Engine.Physics.BEPUutilities.Threading
             loopFinished.WaitOne();
         }
 
+        /// <summary>
+        /// Adds a thread to the manager.
+        /// </summary>
+        public void AddThread()
+        {
+            AddThread(null);
+        }
+
+        /// <summary>
+        /// Adds a thread to the manager.
+        /// </summary>
+        /// <param name="threadStart">Initialization to run on the worker thread.</param>
+        public void AddThread(Action threadStart)
+        {
+            workers.Add(new ParallelLoopWorker(this, threadStart));
+        }
+
+        /// <summary>
+        /// Removes a thread from the manager.
+        /// </summary>
+        public void RemoveThread()
+        {
+            if (workers.Count > 0)
+            {
+                lock (workers[0].disposedLocker)
+                {
+                    if (!workers[0].disposed)
+                    {
+                        currentLoopBody = null;
+                        workerCount = 1;
+                        workers[0].getToWork.Set();
+                        loopFinished.WaitOne();
+                        workers[0].Dispose();
+                    }
+                }
+
+                workers.RemoveAt(0);
+            }
+        }
+
         internal void OnWorkerFinish()
         {
             if (Interlocked.Decrement(ref workerCount) == 0)
             {
                 loopFinished.Set();
-            }
-        }
-
-
-        private bool disposed;
-        private readonly object disposedLocker = new object();
-
-        /// <summary>
-        /// Releases resources used by the object.
-        /// </summary>
-        public void Dispose()
-        {
-            lock (disposedLocker)
-            {
-                if (!disposed)
-                {
-                    disposed = true;
-                    while (workers.Count > 0)
-                    {
-                        RemoveThread();
-                    }
-
-                    loopFinished.Close();
-                    GC.SuppressFinalize(this);
-                }
             }
         }
 

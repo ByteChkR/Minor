@@ -1,5 +1,4 @@
-﻿using Engine.Core;
-using Engine.DataTypes;
+﻿using Engine.DataTypes;
 using Engine.Rendering;
 using OpenTK;
 
@@ -11,12 +10,6 @@ namespace Engine.UI
     public abstract class UIElement : RenderingComponent
     {
         /// <summary>
-        /// Flag if the context has changed and needs an update
-        /// </summary>
-        protected bool ContextInvalid = true;
-
-
-        /// <summary>
         /// Backing field for alpha
         /// </summary>
         private float _alpha;
@@ -26,6 +19,34 @@ namespace Engine.UI
         /// backing field for the Render Mask
         /// </summary>
         private int _renderMask;
+
+        /// <summary>
+        /// Flag if the context has changed and needs an update
+        /// </summary>
+        protected bool ContextInvalid = true;
+
+
+        /// <summary>
+        /// The UI Element Constructor
+        /// </summary>
+        /// <param name="shader">The Shader to be used</param>
+        /// <param name="worldSpace">Is the Element in world space?</param>
+        /// <param name="alpha">Initial ALpha value(0 = transparent; 1 = opaque)</param>
+        protected UIElement(ShaderProgram shader, bool worldSpace, float alpha) : base(shader, worldSpace,
+            Renderer.RenderType.Transparent, 1 << 30)
+        {
+            Alpha = alpha;
+            WorldSpace = worldSpace;
+
+            if (shader != null)
+            {
+                Program = shader;
+            }
+            else
+            {
+                Program = DefaultFilepaths.DefaultUIImageShader;
+            }
+        }
 
         /// <summary>
         /// The render mask that this element belongs to
@@ -80,29 +101,6 @@ namespace Engine.UI
             {
                 _alpha = value;
                 ContextInvalid = true;
-            }
-        }
-
-
-        /// <summary>
-        /// The UI Element Constructor
-        /// </summary>
-        /// <param name="shader">The Shader to be used</param>
-        /// <param name="worldSpace">Is the Element in world space?</param>
-        /// <param name="alpha">Initial ALpha value(0 = transparent; 1 = opaque)</param>
-        protected UIElement(ShaderProgram shader, bool worldSpace, float alpha) : base(shader, worldSpace,
-            Renderer.RenderType.Transparent, 1 << 30)
-        {
-            Alpha = alpha;
-            WorldSpace = worldSpace;
-
-            if (shader != null)
-            {
-                Program = shader;
-            }
-            else
-            {
-                Program = DefaultFilepaths.DefaultUIImageShader;
             }
         }
     }

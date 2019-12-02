@@ -11,29 +11,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     {
         private float halfLength;
 
-        ///<summary>
-        /// Gets or sets the length of the capsule's inner line segment.
-        ///</summary>
-        public float Length
-        {
-            get => halfLength * 2;
-            set
-            {
-                halfLength = value * 0.5f;
-                OnShapeChanged();
-            }
-        }
-
-        //This is a convenience method.  People expect to see a 'radius' of some kind.
-        ///<summary>
-        /// Gets or sets the radius of the capsule.
-        ///</summary>
-        public float Radius
-        {
-            get => collisionMargin;
-            set => CollisionMargin = value;
-        }
-
 
         ///<summary>
         /// Constructs a new capsule shape.
@@ -57,6 +34,29 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             halfLength = length * 0.5f;
 
             UpdateConvexShapeInfo(description);
+        }
+
+        ///<summary>
+        /// Gets or sets the length of the capsule's inner line segment.
+        ///</summary>
+        public float Length
+        {
+            get => halfLength * 2;
+            set
+            {
+                halfLength = value * 0.5f;
+                OnShapeChanged();
+            }
+        }
+
+        //This is a convenience method.  People expect to see a 'radius' of some kind.
+        ///<summary>
+        /// Gets or sets the radius of the capsule.
+        ///</summary>
+        public float Radius
+        {
+            get => collisionMargin;
+            set => CollisionMargin = value;
         }
 
 

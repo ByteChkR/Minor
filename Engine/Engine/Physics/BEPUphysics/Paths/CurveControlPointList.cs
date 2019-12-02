@@ -33,29 +33,6 @@ namespace Engine.Physics.BEPUphysics.Paths
         /// </summary>
         public Curve<TValue> Curve { get; }
 
-        #region IEnumerable<CurveControlPoint<TValue>> Members
-
-        ///<summary>
-        /// Gets an enumerator for the list.
-        ///</summary>
-        ///<returns>Enumerator for the list.</returns>
-        public List<CurveControlPoint<TValue>>.Enumerator GetEnumerator()
-        {
-            return list.GetEnumerator();
-        }
-
-        IEnumerator<CurveControlPoint<TValue>> IEnumerable<CurveControlPoint<TValue>>.GetEnumerator()
-        {
-            return list.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return list.GetEnumerator();
-        }
-
-        #endregion
-
         /// <summary>
         /// Adds a control point to the curve.
         /// </summary>
@@ -102,5 +79,28 @@ namespace Engine.Physics.BEPUphysics.Paths
             list.RemoveAt(index);
             Curve.ControlPointRemoved(removed, index);
         }
+
+        #region IEnumerable<CurveControlPoint<TValue>> Members
+
+        ///<summary>
+        /// Gets an enumerator for the list.
+        ///</summary>
+        ///<returns>Enumerator for the list.</returns>
+        public List<CurveControlPoint<TValue>>.Enumerator GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        IEnumerator<CurveControlPoint<TValue>> IEnumerable<CurveControlPoint<TValue>>.GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return list.GetEnumerator();
+        }
+
+        #endregion
     }
 }

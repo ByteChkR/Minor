@@ -9,35 +9,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class CylinderShape : ConvexShape
     {
-        private float radius;
-
-        ///<summary>
-        /// Gets or sets the radius of the cylinder.
-        ///</summary>
-        public float Radius
-        {
-            get => radius;
-            set
-            {
-                radius = value;
-                OnShapeChanged();
-            }
-        }
-
         private float halfHeight;
-
-        ///<summary>
-        /// Gets or sets the height of the cylinder.
-        ///</summary>
-        public float Height
-        {
-            get => halfHeight * 2;
-            set
-            {
-                halfHeight = value * 0.5f;
-                OnShapeChanged();
-            }
-        }
+        private float radius;
 
         ///<summary>
         /// Constructs a new cylinder shape.
@@ -62,6 +35,32 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             halfHeight = height * .5f;
             this.radius = radius;
             UpdateConvexShapeInfo(description);
+        }
+
+        ///<summary>
+        /// Gets or sets the radius of the cylinder.
+        ///</summary>
+        public float Radius
+        {
+            get => radius;
+            set
+            {
+                radius = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the height of the cylinder.
+        ///</summary>
+        public float Height
+        {
+            get => halfHeight * 2;
+            set
+            {
+                halfHeight = value * 0.5f;
+                OnShapeChanged();
+            }
         }
 
         protected override void OnShapeChanged()

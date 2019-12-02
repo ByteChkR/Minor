@@ -9,10 +9,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
     /// </summary>
     public class MaximumLinearSpeedConstraint : SingleEntityConstraint, I3DImpulseConstraint
     {
+        private Vector3 accumulatedImpulse;
         private float effectiveMassMatrix;
         private float maxForceDt = float.MaxValue;
         private float maxForceDtSquared = float.MaxValue;
-        private Vector3 accumulatedImpulse;
         private float maximumForce = float.MaxValue;
         private float maximumSpeed;
         private float maximumSpeedSquared;
@@ -84,22 +84,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             get => softness;
             set => softness = Math.Max(0, value);
         }
-
-        #region I3DImpulseConstraint Members
-
-        /// <summary>
-        /// Gets the current relative velocity with respect to the constraint.
-        /// For a single entity constraint, this is pretty straightforward as the
-        /// velocity of the entity.
-        /// </summary>
-        Vector3 I3DImpulseConstraint.RelativeVelocity => Entity.LinearVelocity;
-
-        /// <summary>
-        /// Gets the total impulse applied by the constraint.
-        /// </summary>
-        public Vector3 TotalImpulse => accumulatedImpulse;
-
-        #endregion
 
         /// <summary>
         /// Calculates and applies corrective impulses.
@@ -187,5 +171,21 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             //Can't do warmstarting due to the strangeness of this constraint (not based on a position error, nor is it really a motor).
             accumulatedImpulse = Toolbox.ZeroVector;
         }
+
+        #region I3DImpulseConstraint Members
+
+        /// <summary>
+        /// Gets the current relative velocity with respect to the constraint.
+        /// For a single entity constraint, this is pretty straightforward as the
+        /// velocity of the entity.
+        /// </summary>
+        Vector3 I3DImpulseConstraint.RelativeVelocity => Entity.LinearVelocity;
+
+        /// <summary>
+        /// Gets the total impulse applied by the constraint.
+        /// </summary>
+        public Vector3 TotalImpulse => accumulatedImpulse;
+
+        #endregion
     }
 }

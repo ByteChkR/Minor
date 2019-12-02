@@ -1,15 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.IO;
-using Engine.OpenCL.DotNetCore.Kernels;
-using Engine.OpenCL.DotNetCore.Memory;
-using Engine.OpenFL;
 using OpenTK;
 using OpenTK.Graphics;
-using OpenTK.Graphics.OpenGL;
 
 namespace Engine.OpenCL.Runner
 {
@@ -48,7 +43,7 @@ namespace Engine.OpenCL.Runner
 
         public override void Process(Action onFinish = null)
         {
-            ThreadManager.RunTask(() => _proc(onFinish), (x) =>
+            ThreadManager.RunTask(() => _proc(onFinish), x =>
             {
                 foreach (KeyValuePair<FLExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
                 {

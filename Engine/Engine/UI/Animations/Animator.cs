@@ -6,8 +6,8 @@ namespace Engine.UI.Animations
 {
     public class Animator : AbstractComponent
     {
-        protected List<UIElement> Targets = new List<UIElement>();
         private List<Animation> animators = new List<Animation>();
+        protected List<UIElement> Targets = new List<UIElement>();
 
         public Animator(List<Animation> animatorList, params UIElement[] targets)
         {

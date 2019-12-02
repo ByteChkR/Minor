@@ -8,18 +8,12 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     ///</summary>
     public abstract class EntityShape : CollisionShape
     {
-        protected void UpdateEntityShapeVolume(EntityShapeVolumeDescription volume)
-        {
-            Volume = volume.Volume;
-            volumeDistribution = volume.VolumeDistribution;
-        }
+        internal Matrix3x3 volumeDistribution;
 
         /// <summary>
         /// Gets the volume of the shape.
         /// </summary>
         public float Volume { get; internal set; }
-
-        internal Matrix3x3 volumeDistribution;
 
         /// <summary>
         /// Gets the volume distribution of the shape.
@@ -27,6 +21,12 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         /// By default, entities scale this distribution by Mass * InertiaHelper.InertiaTensorScale to compute their local inertia tensor.
         /// </summary>
         public Matrix3x3 VolumeDistribution => volumeDistribution;
+
+        protected void UpdateEntityShapeVolume(EntityShapeVolumeDescription volume)
+        {
+            Volume = volume.Volume;
+            volumeDistribution = volume.VolumeDistribution;
+        }
 
 
         /// <summary>

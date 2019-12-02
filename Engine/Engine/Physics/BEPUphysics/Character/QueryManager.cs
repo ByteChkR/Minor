@@ -20,6 +20,9 @@ namespace Engine.Physics.BEPUphysics.Character
         private CharacterContactCategorizer contactCategorizer;
 
 
+        private Func<BroadPhaseEntry, bool> SupportRayFilter;
+
+
         /// <summary>
         /// Constructs the query manager for a character.
         /// </summary>
@@ -30,9 +33,6 @@ namespace Engine.Physics.BEPUphysics.Character
 
             SupportRayFilter = SupportRayFilterFunction;
         }
-
-
-        private Func<BroadPhaseEntry, bool> SupportRayFilter;
 
         private bool SupportRayFilterFunction(BroadPhaseEntry entry)
         {

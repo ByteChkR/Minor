@@ -74,12 +74,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     public class WrappedShape : ConvexShape
     {
         ///<summary>
-        /// Gets the shapes in wrapped shape.
-        ///</summary>
-        public ObservableList<ConvexShapeEntry> Shapes { get; } = new ObservableList<ConvexShapeEntry>();
-
-
-        ///<summary>
         /// Constructs a wrapped shape.
         /// A constructor is also available which takes a list of objects rather than just a pair.
         /// The shape will be recentered.  If the center is needed, use the other constructor.
@@ -182,6 +176,11 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             UpdateConvexShapeInfo(description);
             Shapes.Changed += ShapesChanged;
         }
+
+        ///<summary>
+        /// Gets the shapes in wrapped shape.
+        ///</summary>
+        public ObservableList<ConvexShapeEntry> Shapes { get; } = new ObservableList<ConvexShapeEntry>();
 
 
         protected override void OnShapeChanged()

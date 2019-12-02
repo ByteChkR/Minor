@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -8,19 +7,14 @@ namespace Engine.BuildTools.Common
 {
     public class ConsoleRedirector
     {
-        private Thread _thread = null;
-        private Thread _errThread = null;
-        private TextReader _cOut;
         private TextReader _cEOut;
-        private Process _proc;
+        private TextReader _cOut;
         private Action<string> _del;
+        private Thread _errThread;
+        private Process _proc;
+        private Thread _thread;
         private object lockObj = new object();
-        private bool quitFlag = false;
-
-        public ConsoleRedirector()
-        {
-            //SHIT
-        }
+        private bool quitFlag;
 
 
         public static ConsoleRedirector CreateRedirector(StreamReader consoleOut, StreamReader errorConsoleOut,

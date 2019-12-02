@@ -13,11 +13,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
         internal EntityBufferedStates bufferedStates;
 
         ///<summary>
-        /// Gets and sets the states write buffer used when buffered properties are written.
-        ///</summary>
-        public EntityStateWriteBuffer WriteBuffer { get; set; }
-
-        ///<summary>
         /// Constructs a new accessor.
         ///</summary>
         ///<param name="bufferedStates">The owning states system.</param>
@@ -26,16 +21,10 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             this.bufferedStates = bufferedStates;
         }
 
-        private bool IsReadBufferAccessible()
-        {
-            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled &&
-                   bufferedStates.BufferedStatesManager.ReadBuffers.Enabled;
-        }
-
-        private bool IsWriteBufferAccessible()
-        {
-            return WriteBuffer != null && WriteBuffer.Enabled;
-        }
+        ///<summary>
+        /// Gets and sets the states write buffer used when buffered properties are written.
+        ///</summary>
+        public EntityStateWriteBuffer WriteBuffer { get; set; }
 
 
         ///<summary>
@@ -247,6 +236,17 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                     bufferedStates.Entity.MotionState = value;
                 }
             }
+        }
+
+        private bool IsReadBufferAccessible()
+        {
+            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled &&
+                   bufferedStates.BufferedStatesManager.ReadBuffers.Enabled;
+        }
+
+        private bool IsWriteBufferAccessible()
+        {
+            return WriteBuffer != null && WriteBuffer.Enabled;
         }
     }
 }

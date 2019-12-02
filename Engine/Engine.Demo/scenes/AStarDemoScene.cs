@@ -10,18 +10,17 @@ using Engine.Physics;
 using Engine.Physics.BEPUphysics.Entities.Prefabs;
 using Engine.Rendering;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Demo.scenes
 {
     public class AStarDemoScene : AbstractScene
     {
-        private AINode[,] nodes;
-        private Texture tex;
         private Texture beginTex;
-        private Texture endTex;
         private Texture blockTex;
+        private Texture endTex;
+        private AINode[,] nodes;
         private List<AINode> path;
+        private Texture tex;
 
         protected override void InitializeScene()
         {

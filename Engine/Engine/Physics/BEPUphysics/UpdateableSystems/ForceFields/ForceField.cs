@@ -17,6 +17,17 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
         private float currentTimestep;
         private ForceFieldShape shape;
 
+        /// <summary>
+        /// Constructs a force field.
+        /// </summary>
+        /// <param name="shape">Shape to use for the force field.</param>
+        protected ForceField(ForceFieldShape shape)
+        {
+            Shape = shape;
+            subfunction = CalculateImpulsesSubfunction;
+            AllowMultithreading = true;
+        }
+
 
         ///<summary>
         /// Gets or sets whether or not threading is allowed.
@@ -32,17 +43,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
         /// Gets or sets the multithreaded looper used by the force field.
         ///</summary>
         public IParallelLooper ParallelLooper { get; set; }
-
-        /// <summary>
-        /// Constructs a force field.
-        /// </summary>
-        /// <param name="shape">Shape to use for the force field.</param>
-        protected ForceField(ForceFieldShape shape)
-        {
-            Shape = shape;
-            subfunction = CalculateImpulsesSubfunction;
-            AllowMultithreading = true;
-        }
 
         /// <summary>
         /// Gets or sets whether the the force field will force affected entities to wake up.
@@ -78,13 +78,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
         }
 
         /// <summary>
-        /// Performs any custom logic desired prior to the force application.
-        /// </summary>
-        protected virtual void PreUpdate()
-        {
-        }
-
-        /// <summary>
         /// Applies forces specified by the given calculation delegate to bodies in the volume.
         /// Called automatically when needed by the owning Space.
         /// </summary>
@@ -107,30 +100,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
                 {
                     CalculateImpulsesSubfunction(i);
                 }
-            }
-        }
-
-        /// <summary>
-        /// Calculates the impulse to apply to the entity.
-        /// </summary>
-        /// <param name="e">Affected entity.</param>
-        /// <param name="dt">Duration between simulation updates.</param>
-        /// <param name="impulse">Impulse to apply to the entity.</param>
-        protected abstract void CalculateImpulse(Entity e, float dt, out Vector3 impulse);
-
-        private void CalculateImpulsesSubfunction(int index)
-        {
-            Entity e = affectedEntities[index];
-            if (e.isDynamic && (e.activityInformation.IsActive || ForceWakeUp) && Shape.IsEntityAffected(e))
-            {
-                if (ForceWakeUp)
-                {
-                    e.activityInformation.Activate();
-                }
-
-                Vector3 impulse;
-                CalculateImpulse(e, currentTimestep, out impulse);
-                e.ApplyLinearImpulse(ref impulse);
             }
         }
 
@@ -158,6 +127,37 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields
             base.OnRemovalFromSpace(oldSpace);
             ParallelLooper = null;
             QueryAccelerator = null;
+        }
+
+        /// <summary>
+        /// Performs any custom logic desired prior to the force application.
+        /// </summary>
+        protected virtual void PreUpdate()
+        {
+        }
+
+        /// <summary>
+        /// Calculates the impulse to apply to the entity.
+        /// </summary>
+        /// <param name="e">Affected entity.</param>
+        /// <param name="dt">Duration between simulation updates.</param>
+        /// <param name="impulse">Impulse to apply to the entity.</param>
+        protected abstract void CalculateImpulse(Entity e, float dt, out Vector3 impulse);
+
+        private void CalculateImpulsesSubfunction(int index)
+        {
+            Entity e = affectedEntities[index];
+            if (e.isDynamic && (e.activityInformation.IsActive || ForceWakeUp) && Shape.IsEntityAffected(e))
+            {
+                if (ForceWakeUp)
+                {
+                    e.activityInformation.Activate();
+                }
+
+                Vector3 impulse;
+                CalculateImpulse(e, currentTimestep, out impulse);
+                e.ApplyLinearImpulse(ref impulse);
+            }
         }
     }
 }

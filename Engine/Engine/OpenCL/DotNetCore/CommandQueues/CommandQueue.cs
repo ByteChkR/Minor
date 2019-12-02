@@ -1,7 +1,6 @@
 #region Using Directives
 
 using System;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Engine.OpenCL.DotNetCore.Contexts;
@@ -31,6 +30,54 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
         internal CommandQueue(IntPtr handle)
             : base(handle)
         {
+        }
+
+        #endregion
+
+        #region Public Static Methods
+
+        /// <summary>
+        /// Creates a new command queue for the specified context and device.
+        /// </summary>
+        /// <param name="context">The context for which the command queue is to be created.</param>
+        /// <param name="device">The devices for which the command queue is to be created.</param>
+        /// <exception cref="OpenClException">If the command queue could not be created, then an <see cref="OpenClException"/> exception is thrown.</exception>
+        /// <returns>Returns the created command queue.</returns>
+        public static CommandQueue CreateCommandQueue(Context context, Device device)
+        {
+            // Creates the new command queue for the specified context and device
+            Result result;
+            IntPtr commandQueuePointer =
+                CommandQueuesNativeApi.CreateCommandQueue(context.Handle, device.Handle, 0, out result);
+
+            // Checks if the command queue creation was successful, if not, then an exception is thrown
+            if (result != Result.Success)
+            {
+                throw new OpenClException("The command queue could not be created.", result);
+            }
+
+            // Creates the new command queue object from the pointer and returns it
+            return new CommandQueue(commandQueuePointer);
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Disposes of the resources that have been acquired by the command queue.
+        /// </summary>
+        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // Checks if the command queue has already been disposed of, if not, then the command queue is disposed of
+            if (!IsDisposed)
+            {
+                CommandQueuesNativeApi.ReleaseCommandQueue(Handle);
+            }
+
+            // Makes sure that the base class can execute its dispose logic
+            base.Dispose(disposing);
         }
 
         #endregion
@@ -212,7 +259,7 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
             // Enqueues the kernel
             IntPtr waitEventPointer;
             Result result = EnqueuedCommandsNativeApi.EnqueueNDRangeKernel(Handle, kernel.Handle, (uint) workDimension,
-                null, new IntPtr[] {new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
+                null, new[] {new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
 
             // Checks if the kernel was enqueued successfully, if not, then an exception is thrown
             if (result != Result.Success)
@@ -260,7 +307,7 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
             // Enqueues the kernel
             IntPtr waitEventPointer;
             Result result = EnqueuedCommandsNativeApi.EnqueueNDRangeKernel(Handle, kernel.Handle, (uint) workDimension,
-                null, new IntPtr[] {new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
+                null, new[] {new IntPtr(workUnitsPerKernel)}, null, 0, null, out waitEventPointer);
 
             // Checks if the kernel was enqueued successfully, if not, then an exception is thrown
             if (result != Result.Success)
@@ -288,54 +335,6 @@ namespace Engine.OpenCL.DotNetCore.CommandQueues
         //    if (result != Result.Success)
         //        throw new OpenClException("The Gl Objects could not be acuired.", result);
         //}
-
-        #endregion
-
-        #region Public Static Methods
-
-        /// <summary>
-        /// Creates a new command queue for the specified context and device.
-        /// </summary>
-        /// <param name="context">The context for which the command queue is to be created.</param>
-        /// <param name="device">The devices for which the command queue is to be created.</param>
-        /// <exception cref="OpenClException">If the command queue could not be created, then an <see cref="OpenClException"/> exception is thrown.</exception>
-        /// <returns>Returns the created command queue.</returns>
-        public static CommandQueue CreateCommandQueue(Context context, Device device)
-        {
-            // Creates the new command queue for the specified context and device
-            Result result;
-            IntPtr commandQueuePointer =
-                CommandQueuesNativeApi.CreateCommandQueue(context.Handle, device.Handle, 0, out result);
-
-            // Checks if the command queue creation was successful, if not, then an exception is thrown
-            if (result != Result.Success)
-            {
-                throw new OpenClException("The command queue could not be created.", result);
-            }
-
-            // Creates the new command queue object from the pointer and returns it
-            return new CommandQueue(commandQueuePointer);
-        }
-
-        #endregion
-
-        #region IDisposable Implementation
-
-        /// <summary>
-        /// Disposes of the resources that have been acquired by the command queue.
-        /// </summary>
-        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
-        protected override void Dispose(bool disposing)
-        {
-            // Checks if the command queue has already been disposed of, if not, then the command queue is disposed of
-            if (!IsDisposed)
-            {
-                CommandQueuesNativeApi.ReleaseCommandQueue(Handle);
-            }
-
-            // Makes sure that the base class can execute its dispose logic
-            base.Dispose(disposing);
-        }
 
         #endregion
     }

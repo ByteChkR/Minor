@@ -22,7 +22,7 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.Events
                 foreach (CompoundChild child in compound.children)
                 {
                     IDeferredEventCreator deferredEventCreator =
-                        child.CollisionInformation.events as IDeferredEventCreator;
+                        child.CollisionInformation.events;
                     if (deferredEventCreator.IsActive)
                     {
                         deferredEventCreator.DispatchEvents();

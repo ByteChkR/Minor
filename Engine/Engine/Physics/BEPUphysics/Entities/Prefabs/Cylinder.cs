@@ -10,25 +10,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class Cylinder : Entity<ConvexCollidable<CylinderShape>>
     {
-        /// <summary>
-        /// Gets or sets the height of the cylinder.
-        /// </summary>
-        public float Height
-        {
-            get => CollisionInformation.Shape.Height;
-            set => CollisionInformation.Shape.Height = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the radius of the cylinder.
-        /// </summary>
-        public float Radius
-        {
-            get => CollisionInformation.Shape.Radius;
-            set => CollisionInformation.Shape.Radius = value;
-        }
-
-
         private Cylinder(float high, float rad, float mass)
             : base(new ConvexCollidable<CylinderShape>(new CylinderShape(high, rad)), mass)
         {
@@ -87,6 +68,24 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             : this(height, radius)
         {
             MotionState = motionState;
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the cylinder.
+        /// </summary>
+        public float Height
+        {
+            get => CollisionInformation.Shape.Height;
+            set => CollisionInformation.Shape.Height = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the radius of the cylinder.
+        /// </summary>
+        public float Radius
+        {
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
         }
     }
 }

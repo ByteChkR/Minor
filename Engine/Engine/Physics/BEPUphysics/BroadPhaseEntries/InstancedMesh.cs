@@ -18,28 +18,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public class InstancedMesh : StaticCollidable
     {
+        protected internal ContactEventManager<InstancedMesh> events;
+
+        internal bool improveBoundaryBehavior = true;
+
+        internal TriangleSidedness sidedness = TriangleSidedness.DoubleSided;
         internal AffineTransform worldTransform;
-
-        ///<summary>
-        /// Gets or sets the world transform of the mesh.
-        ///</summary>
-        public AffineTransform WorldTransform
-        {
-            get => worldTransform;
-            set
-            {
-                worldTransform = value;
-                Shape.ComputeBoundingBox(ref value, out boundingBox);
-            }
-        }
-
-        /// <summary>
-        /// Updates the bounding box to the current state of the entry.
-        /// </summary>
-        public override void UpdateBoundingBox()
-        {
-            Shape.ComputeBoundingBox(ref worldTransform, out boundingBox);
-        }
 
 
         ///<summary>
@@ -64,11 +48,22 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         }
 
         ///<summary>
+        /// Gets or sets the world transform of the mesh.
+        ///</summary>
+        public AffineTransform WorldTransform
+        {
+            get => worldTransform;
+            set
+            {
+                worldTransform = value;
+                Shape.ComputeBoundingBox(ref value, out boundingBox);
+            }
+        }
+
+        ///<summary>
         /// Gets the shape used by the instanced mesh.
         ///</summary>
         public new InstancedMeshShape Shape => (InstancedMeshShape) shape;
-
-        internal TriangleSidedness sidedness = TriangleSidedness.DoubleSided;
 
         ///<summary>
         /// Gets or sets the sidedness of the mesh.  This can be used to ignore collisions and rays coming from a direction relative to the winding of the triangle.
@@ -78,8 +73,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => sidedness;
             set => sidedness = value;
         }
-
-        internal bool improveBoundaryBehavior = true;
 
         /// <summary>
         /// Gets or sets whether or not the collision system should attempt to improve contact behavior at the boundaries between triangles.
@@ -91,9 +84,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => improveBoundaryBehavior;
             set => improveBoundaryBehavior = value;
         }
-
-
-        protected internal ContactEventManager<InstancedMesh> events;
 
         ///<summary>
         /// Gets the event manager of the mesh.
@@ -126,6 +116,14 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         protected internal override IContactEventTriggerer EventTriggerer => events;
 
         protected override IDeferredEventCreator EventCreator => events;
+
+        /// <summary>
+        /// Updates the bounding box to the current state of the entry.
+        /// </summary>
+        public override void UpdateBoundingBox()
+        {
+            Shape.ComputeBoundingBox(ref worldTransform, out boundingBox);
+        }
 
 
         /// <summary>

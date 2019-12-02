@@ -10,21 +10,6 @@ namespace Engine.Debug
     public class EngineStageInformation
     {
         /// <summary>
-        /// Name of the Stage
-        /// </summary>
-        public string Name;
-
-        /// <summary>
-        /// A property that indicates if the Current Stage info was finalized(e.g. it will not be updated again since the stage is over)
-        /// </summary>
-        public bool Finalized { get; private set; }
-
-        /// <summary>
-        /// The GC Collection at the start of the stage
-        /// </summary>
-        public long Before;
-
-        /// <summary>
         /// The GC Collection at the end of the stage
         /// </summary>
         public long After;
@@ -35,9 +20,14 @@ namespace Engine.Debug
         public long AfterGarbageCollection;
 
         /// <summary>
-        /// The Timing information about the current stage
+        /// The GC Collection at the start of the stage
         /// </summary>
-        public TimeSpan TimeSpentInStage;
+        public long Before;
+
+        /// <summary>
+        /// Name of the Stage
+        /// </summary>
+        public string Name;
 
         /// <summary>
         /// The Parent Stage(null if its A root stage
@@ -55,6 +45,11 @@ namespace Engine.Debug
         public Stopwatch Timer;
 
         /// <summary>
+        /// The Timing information about the current stage
+        /// </summary>
+        public TimeSpan TimeSpentInStage;
+
+        /// <summary>
         /// Internal Constructor to create a Stage Information object.
         /// </summary>
         /// <param name="name"></param>
@@ -68,6 +63,11 @@ namespace Engine.Debug
             Timer = new Stopwatch();
             Timer.Start();
         }
+
+        /// <summary>
+        /// A property that indicates if the Current Stage info was finalized(e.g. it will not be updated again since the stage is over)
+        /// </summary>
+        public bool Finalized { get; private set; }
 
         /// <summary>
         /// Function called when this stage has ended

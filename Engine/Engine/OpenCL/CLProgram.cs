@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Engine.Common;
-using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Kernels;
 using Engine.OpenCL.DotNetCore.Programs;
 
@@ -24,16 +23,6 @@ namespace Engine.OpenCL
         private readonly string _genType;
 
         /// <summary>
-        /// The kernels that are contained in the Program
-        /// </summary>
-        public Dictionary<string, CLKernel> ContainedKernels { get; }
-
-        /// <summary>
-        /// The Compiled OpenCL Program
-        /// </summary>
-        public Program ClProgramHandle { get; set; }
-
-        /// <summary>
         /// Public constructor
         /// </summary>
         /// <param name="FilePath">The FilePath where the source is located</param>
@@ -46,6 +35,16 @@ namespace Engine.OpenCL
 
             Initialize(instance);
         }
+
+        /// <summary>
+        /// The kernels that are contained in the Program
+        /// </summary>
+        public Dictionary<string, CLKernel> ContainedKernels { get; }
+
+        /// <summary>
+        /// The Compiled OpenCL Program
+        /// </summary>
+        public Program ClProgramHandle { get; set; }
 
         /// <summary>
         /// Returns the N of the VectorN types

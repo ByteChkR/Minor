@@ -12,6 +12,17 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     {
         private TriangleMesh triangleMesh;
 
+
+        ///<summary>
+        /// Constructs a new instanced mesh shape.
+        ///</summary>
+        ///<param name="vertices">Vertices of the mesh.</param>
+        ///<param name="indices">Indices of the mesh.</param>
+        public InstancedMeshShape(Vector3[] vertices, int[] indices)
+        {
+            TriangleMesh = new TriangleMesh(new StaticMeshData(vertices, indices));
+        }
+
         ///<summary>
         /// Gets or sets the TriangleMesh data structure used by this shape.
         ///</summary>
@@ -23,17 +34,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
                 triangleMesh = value;
                 OnShapeChanged();
             }
-        }
-
-
-        ///<summary>
-        /// Constructs a new instanced mesh shape.
-        ///</summary>
-        ///<param name="vertices">Vertices of the mesh.</param>
-        ///<param name="indices">Indices of the mesh.</param>
-        public InstancedMeshShape(Vector3[] vertices, int[] indices)
-        {
-            TriangleMesh = new TriangleMesh(new StaticMeshData(vertices, indices));
         }
 
 

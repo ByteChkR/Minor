@@ -58,91 +58,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
         /// </summary>
         public MotorSettingsOrientation Settings { get; }
 
-        #region I3DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// </summary>
-        public Vector3 RelativeVelocity => connectionA.angularVelocity - connectionB.angularVelocity;
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// </summary>
-        public Vector3 TotalImpulse => accumulatedImpulse;
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// If the motor is in velocity only mode, error is zero.
-        /// </summary>
-        public Vector3 Error => axis * angle;
-
-        #endregion
-
-        #region I3DJacobianConstraint Members
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianZ">Third linear jacobian entry for the first connected entity.</param>
-        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = Toolbox.ZeroVector;
-            jacobianY = Toolbox.ZeroVector;
-            jacobianZ = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianZ">Third linear jacobian entry for the second connected entity.</param>
-        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = Toolbox.ZeroVector;
-            jacobianY = Toolbox.ZeroVector;
-            jacobianZ = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianZ">Third angular jacobian entry for the first connected entity.</param>
-        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = Toolbox.RightVector;
-            jacobianY = Toolbox.UpVector;
-            jacobianZ = Toolbox.BackVector;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianZ">Third angular jacobian entry for the second connected entity.</param>
-        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
-        {
-            jacobianX = Toolbox.RightVector;
-            jacobianY = Toolbox.UpVector;
-            jacobianZ = Toolbox.BackVector;
-        }
-
-        /// <summary>
-        /// Gets the mass matrix of the constraint.
-        /// </summary>
-        /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
-        public void GetMassMatrix(out Matrix3x3 outputMassMatrix)
-        {
-            outputMassMatrix = effectiveMassMatrix;
-        }
-
-        #endregion
-
         /// <summary>
         /// Applies the corrective impulses required by the constraint.
         /// </summary>
@@ -300,5 +215,90 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors
                 connectionB.ApplyAngularImpulse(ref torqueB);
             }
         }
+
+        #region I3DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// </summary>
+        public Vector3 RelativeVelocity => connectionA.angularVelocity - connectionB.angularVelocity;
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// </summary>
+        public Vector3 TotalImpulse => accumulatedImpulse;
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// If the motor is in velocity only mode, error is zero.
+        /// </summary>
+        public Vector3 Error => axis * angle;
+
+        #endregion
+
+        #region I3DJacobianConstraint Members
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianZ">Third linear jacobian entry for the first connected entity.</param>
+        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = Toolbox.ZeroVector;
+            jacobianY = Toolbox.ZeroVector;
+            jacobianZ = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianZ">Third linear jacobian entry for the second connected entity.</param>
+        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = Toolbox.ZeroVector;
+            jacobianY = Toolbox.ZeroVector;
+            jacobianZ = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianZ">Third angular jacobian entry for the first connected entity.</param>
+        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = Toolbox.RightVector;
+            jacobianY = Toolbox.UpVector;
+            jacobianZ = Toolbox.BackVector;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianZ">Third angular jacobian entry for the second connected entity.</param>
+        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY, out Vector3 jacobianZ)
+        {
+            jacobianX = Toolbox.RightVector;
+            jacobianY = Toolbox.UpVector;
+            jacobianZ = Toolbox.BackVector;
+        }
+
+        /// <summary>
+        /// Gets the mass matrix of the constraint.
+        /// </summary>
+        /// <param name="outputMassMatrix">Constraint's mass matrix.</param>
+        public void GetMassMatrix(out Matrix3x3 outputMassMatrix)
+        {
+            outputMassMatrix = effectiveMassMatrix;
+        }
+
+        #endregion
     }
 }

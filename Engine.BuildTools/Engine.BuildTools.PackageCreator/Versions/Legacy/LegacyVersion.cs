@@ -2,7 +2,6 @@
 using System.IO;
 using System.IO.Compression;
 using System.Xml.Serialization;
-using Engine.BuildTools.PackageCreator.Versions.Legacy;
 
 namespace Engine.BuildTools.PackageCreator.Versions.Legacy
 {

@@ -5,7 +5,25 @@ namespace Engine.Physics.BEPUik
 {
     public class IKRevoluteJoint : IKJoint
     {
+        private Vector3 localConstrainedAxis1, localConstrainedAxis2;
         private Vector3 localFreeAxisA;
+
+        private Vector3 localFreeAxisB;
+
+        /// <summary>
+        /// Constructs a new orientation joint.
+        /// Orientation joints can be used to simulate the angular portion of a hinge.
+        /// Orientation joints allow rotation around only a single axis.
+        /// </summary>
+        /// <param name="connectionA">First entity connected in the orientation joint.</param>
+        /// <param name="connectionB">Second entity connected in the orientation joint.</param>
+        /// <param name="freeAxis">Axis allowed to rotate freely in world space.</param>
+        public IKRevoluteJoint(Bone connectionA, Bone connectionB, Vector3 freeAxis)
+            : base(connectionA, connectionB)
+        {
+            WorldFreeAxisA = freeAxis;
+            WorldFreeAxisB = freeAxis;
+        }
 
         /// <summary>
         /// Gets or sets the free axis in connection A's local space.
@@ -20,8 +38,6 @@ namespace Engine.Physics.BEPUik
                 ComputeConstrainedAxes();
             }
         }
-
-        private Vector3 localFreeAxisB;
 
         /// <summary>
         /// Gets or sets the free axis in connection B's local space.
@@ -57,8 +73,6 @@ namespace Engine.Physics.BEPUik
             get => Quaternion.Transform(localFreeAxisB, ConnectionB.Orientation);
             set => LocalFreeAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
-
-        private Vector3 localConstrainedAxis1, localConstrainedAxis2;
 
         private void ComputeConstrainedAxes()
         {
@@ -99,21 +113,6 @@ namespace Engine.Physics.BEPUik
                 Quaternion.Transform(worldConstrainedAxis1, Quaternion.Conjugate(ConnectionA.Orientation));
             localConstrainedAxis2 =
                 Quaternion.Transform(worldConstrainedAxis2, Quaternion.Conjugate(ConnectionA.Orientation));
-        }
-
-        /// <summary>
-        /// Constructs a new orientation joint.
-        /// Orientation joints can be used to simulate the angular portion of a hinge.
-        /// Orientation joints allow rotation around only a single axis.
-        /// </summary>
-        /// <param name="connectionA">First entity connected in the orientation joint.</param>
-        /// <param name="connectionB">Second entity connected in the orientation joint.</param>
-        /// <param name="freeAxis">Axis allowed to rotate freely in world space.</param>
-        public IKRevoluteJoint(Bone connectionA, Bone connectionB, Vector3 freeAxis)
-            : base(connectionA, connectionB)
-        {
-            WorldFreeAxisA = freeAxis;
-            WorldFreeAxisB = freeAxis;
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

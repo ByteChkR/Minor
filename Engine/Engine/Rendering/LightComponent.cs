@@ -1,14 +1,16 @@
-﻿using System;
-using System.Drawing;
-using Engine.Audio;
+﻿using System.Drawing;
 using Engine.Core;
-using Engine.Debug;
 using OpenTK;
 
 namespace Engine.Rendering
 {
     public class LightComponent : AbstractComponent
     {
+        private bool last;
+        private float slow = 0.075f;
+
+
+        private float time;
         public bool IsPoint { get; set; } = true;
         public Color LightColor { get; set; } = Color.White;
         public Vector3 Attenuation { get; set; } = new Vector3(1, 0, 0);
@@ -24,11 +26,6 @@ namespace Engine.Rendering
         {
             Renderer.Lights.Remove(this);
         }
-
-
-        private float time;
-        private bool last;
-        private float slow = 0.075f;
 
         protected override void Update(float deltaTime)
         {

@@ -10,31 +10,31 @@ namespace Engine.Physics.BEPUphysics.Vehicle
     public class WheelSuspension : ISpringSettings, ISolverSettings
     {
         internal float accumulatedImpulse;
+        private float allowedCompression = .01f;
 
         //float linearBX, linearBY, linearBZ;
         private float angularAX, angularAY, angularAZ;
         private float angularBX, angularBY, angularBZ;
         private float bias;
+        internal float currentLength;
 
         internal bool isActive = true;
         private float linearAX, linearAY, linearAZ;
-        private float allowedCompression = .01f;
-        internal float currentLength;
         internal Vector3 localAttachmentPoint;
         internal Vector3 localDirection;
         private float maximumSpringCorrectionSpeed = float.MaxValue;
         private float maximumSpringForce = float.MaxValue;
-        internal float restLength;
-        internal SolverSettings solverSettings = new SolverSettings();
-        internal Vector3 worldAttachmentPoint;
-        internal Vector3 worldDirection;
         internal int numIterationsAtZeroImpulse;
-        private Entity vehicleEntity, supportEntity;
+        internal float restLength;
         private float softness;
+        internal SolverSettings solverSettings = new SolverSettings();
+        private bool supportIsDynamic;
+        private Entity vehicleEntity, supportEntity;
 
         //Inverse effective mass matrix
         private float velocityToImpulse;
-        private bool supportIsDynamic;
+        internal Vector3 worldAttachmentPoint;
+        internal Vector3 worldDirection;
 
         /// <summary>
         /// Constructs a new suspension for a wheel.
@@ -215,24 +215,6 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             }
         }
 
-        #region ISolverSettings Members
-
-        /// <summary>
-        /// Gets the solver settings used by this wheel constraint.
-        /// </summary>
-        public SolverSettings SolverSettings => solverSettings;
-
-        #endregion
-
-        #region ISpringSettings Members
-
-        /// <summary>
-        /// Gets the spring settings that define the behavior of the suspension.
-        /// </summary>
-        public SpringSettings SpringSettings { get; } = new SpringSettings();
-
-        #endregion
-
 
         ///<summary>
         /// Gets the relative velocity along the support normal at the contact point.
@@ -258,6 +240,24 @@ namespace Engine.Physics.BEPUphysics.Vehicle
                 return velocity;
             }
         }
+
+        #region ISolverSettings Members
+
+        /// <summary>
+        /// Gets the solver settings used by this wheel constraint.
+        /// </summary>
+        public SolverSettings SolverSettings => solverSettings;
+
+        #endregion
+
+        #region ISpringSettings Members
+
+        /// <summary>
+        /// Gets the spring settings that define the behavior of the suspension.
+        /// </summary>
+        public SpringSettings SpringSettings { get; } = new SpringSettings();
+
+        #endregion
 
         internal float ApplyImpulse()
         {

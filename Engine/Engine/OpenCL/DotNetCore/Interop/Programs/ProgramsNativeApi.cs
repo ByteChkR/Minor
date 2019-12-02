@@ -12,6 +12,19 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
     /// </summary>
     public static class ProgramsNativeApi
     {
+        #region Deprecated Public Methods
+
+        /// <summary>
+        /// Allows the implementation to release the resources allocated by the OpenCL compiler.
+        /// </summary>
+        /// <returns>This call currently always returns <c>Result.Success</c>.</returns>
+        [IntroducedInOpenCl(1, 0)]
+        [DllImport("OpenCL", EntryPoint = "clUnloadCompiler")]
+        [Obsolete("This is a deprecated OpenCL 1.1 method, please use UnloadPlatformCompiler instead.")]
+        public static extern Result UnloadCompiler();
+
+        #endregion
+
         #region Public Static Methods
 
         /// <summary>
@@ -408,19 +421,6 @@ namespace Engine.OpenCL.DotNetCore.Interop.Programs
             [Out] byte[] parameterValue,
             [Out] out UIntPtr parameterValueSizeReturned
         );
-
-        #endregion
-
-        #region Deprecated Public Methods
-
-        /// <summary>
-        /// Allows the implementation to release the resources allocated by the OpenCL compiler.
-        /// </summary>
-        /// <returns>This call currently always returns <c>Result.Success</c>.</returns>
-        [IntroducedInOpenCl(1, 0)]
-        [DllImport("OpenCL", EntryPoint = "clUnloadCompiler")]
-        [Obsolete("This is a deprecated OpenCL 1.1 method, please use UnloadPlatformCompiler instead.")]
-        public static extern Result UnloadCompiler();
 
         #endregion
     }

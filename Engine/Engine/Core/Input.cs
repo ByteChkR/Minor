@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using OpenTK;
 using OpenTK.Input;
-using OpenTK.Platform.Windows;
 
 namespace Engine.Core
 {

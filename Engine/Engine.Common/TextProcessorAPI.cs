@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -53,19 +52,87 @@ namespace Engine.Common
     {
         public static IIOCallback PPCallback = null;
 
+        private static Dictionary<string, APreProcessorConfig> _configs = new Dictionary<string, APreProcessorConfig>
+        {
+            {".fl", new FLPreProcessorConfig()},
+            {".vs", new GLCLPreProcessorConfig()},
+            {".fs", new GLCLPreProcessorConfig()},
+            {".cl", new GLCLPreProcessorConfig()},
+            {"***", new DefaultPreProcessorConfig()}
+        };
+
+        public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
+        {
+            return new[] {_configs[ext].GetGenericInclude(file, genType)};
+        }
+
+        public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
+        {
+            return PreprocessLines(new FilePathContent(filename), defs);
+        }
+
+        public static string[] PreprocessLines(string[] lines, string incDir, Dictionary<string, bool> defs)
+        {
+            return PreprocessLines(new FileContent(lines, incDir), defs);
+        }
+
+        internal static string[] PreprocessLines(IFileContent file, Dictionary<string, bool> defs)
+        {
+            string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
+            if (_configs.ContainsKey(ext))
+            {
+                DebugHelper.Log("Found Matching PreProcessor Config for: " + ext, 1 | (1 << 21));
+                return _configs[ext].Preprocess(file, defs);
+            }
+
+            DebugHelper.Log("Loading File with Default PreProcessing", 1 | (1 << 21));
+            return _configs["***"].Preprocess(file, defs);
+        }
+
+
+        public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
+        {
+            return PreprocessSource(new FilePathContent(filename), defs);
+        }
+
+        public static string PreprocessSource(string[] lines, string incDir, Dictionary<string, bool> defs)
+        {
+            return PreprocessSource(new FileContent(lines, incDir), defs);
+        }
+
+
+        /// <summary>
+        /// Loads and preprocesses the file specified
+        /// </summary>
+        /// <param name="filename">the filepath</param>
+        /// <param name="defs">definitions</param>
+        /// <returns>the source as string</returns>
+        internal static string PreprocessSource(IFileContent filename, Dictionary<string, bool> defs)
+        {
+            StringBuilder sb = new StringBuilder();
+            string[] src = PreprocessLines(filename, defs);
+            for (int i = 0; i < src.Length; i++)
+            {
+                sb.Append(src[i] + "\n");
+            }
+
+            return sb.ToString();
+        }
+
         public class FileContent : IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
-            private readonly string[] _lines;
             private readonly string _incDir;
-            public bool HasValidFilepath => false;
-            private string Key => _incDir + "/memoryFile";
-            private string Path => _incDir + "/memoryFile";
+            private readonly string[] _lines;
 
             public FileContent(string[] lines, string incDir)
             {
                 _lines = lines;
                 _incDir = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(incDir));
             }
+
+            private string Key => _incDir + "/memoryFile";
+            private string Path => _incDir + "/memoryFile";
+            public bool HasValidFilepath => false;
 
             public bool TryGetLines(out string[] lines)
             {
@@ -137,8 +204,18 @@ namespace Engine.Common
 
         public class DefaultPreProcessorConfig : APreProcessorConfig
         {
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
             private static StringBuilder _sb = new StringBuilder();
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
+
+            protected override List<AbstractPlugin> Plugins =>
+                new List<AbstractPlugin>
+                {
+                    new FakeGenericsPlugin(),
+                    new IncludePlugin(),
+                    new ConditionalPlugin(),
+                    new ExceptionPlugin(),
+                    new MultiLinePlugin()
+                };
 
             public override string GetGenericInclude(string filename, string[] genType)
             {
@@ -152,6 +229,12 @@ namespace Engine.Common
                 string gens = _sb.Length == 0 ? "" : _sb.ToString();
                 return "#include " + filename + " " + gens;
             }
+        }
+
+        public class GLCLPreProcessorConfig : APreProcessorConfig
+        {
+            private static StringBuilder _sb = new StringBuilder();
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
 
             protected override List<AbstractPlugin> Plugins =>
                 new List<AbstractPlugin>
@@ -162,12 +245,6 @@ namespace Engine.Common
                     new ExceptionPlugin(),
                     new MultiLinePlugin()
                 };
-        }
-
-        public class GLCLPreProcessorConfig : APreProcessorConfig
-        {
-            private static StringBuilder _sb = new StringBuilder();
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
 
             public override string GetGenericInclude(string filename, string[] genType)
             {
@@ -182,36 +259,12 @@ namespace Engine.Common
                 string gens = _sb.Length == 0 ? "" : _sb.ToString();
                 return "#include " + filename + " " + gens;
             }
-
-            protected override List<AbstractPlugin> Plugins =>
-                new List<AbstractPlugin>
-                {
-                    new FakeGenericsPlugin(),
-                    new IncludePlugin(),
-                    new ConditionalPlugin(),
-                    new ExceptionPlugin(),
-                    new MultiLinePlugin()
-                };
         }
 
         public class FLPreProcessorConfig : APreProcessorConfig
         {
-            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
-
             private static StringBuilder _sb = new StringBuilder();
-
-            public override string GetGenericInclude(string filename, string[] genType)
-            {
-                _sb.Clear();
-                foreach (string gt in genType)
-                {
-                    _sb.Append(gt);
-                    _sb.Append(' ');
-                }
-
-                string gens = _sb.Length == 0 ? "" : _sb.ToString();
-                return "#pp_include: " + filename + " " + gens;
-            }
+            protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
 
             protected override List<AbstractPlugin> Plugins
             {
@@ -238,73 +291,19 @@ namespace Engine.Common
                     };
                 }
             }
-        }
 
-        private static Dictionary<string, APreProcessorConfig> _configs = new Dictionary<string, APreProcessorConfig>
-        {
-            {".fl", new FLPreProcessorConfig()},
-            {".vs", new GLCLPreProcessorConfig()},
-            {".fs", new GLCLPreProcessorConfig()},
-            {".cl", new GLCLPreProcessorConfig()},
-            {"***", new DefaultPreProcessorConfig()}
-        };
-
-        public static string[] GenericIncludeToSource(string ext, string file, params string[] genType)
-        {
-            return new[] {_configs[ext].GetGenericInclude(file, genType)};
-        }
-
-        public static string[] PreprocessLines(string filename, Dictionary<string, bool> defs)
-        {
-            return PreprocessLines(new FilePathContent(filename), defs);
-        }
-
-        public static string[] PreprocessLines(string[] lines, string incDir, Dictionary<string, bool> defs)
-        {
-            return PreprocessLines(new FileContent(lines, incDir), defs);
-        }
-
-        internal static string[] PreprocessLines(IFileContent file, Dictionary<string, bool> defs)
-        {
-            string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
-            if (_configs.ContainsKey(ext))
+            public override string GetGenericInclude(string filename, string[] genType)
             {
-                DebugHelper.Log("Found Matching PreProcessor Config for: " + ext, 1 | (1 << 21));
-                return _configs[ext].Preprocess(file, defs);
+                _sb.Clear();
+                foreach (string gt in genType)
+                {
+                    _sb.Append(gt);
+                    _sb.Append(' ');
+                }
+
+                string gens = _sb.Length == 0 ? "" : _sb.ToString();
+                return "#pp_include: " + filename + " " + gens;
             }
-
-            DebugHelper.Log("Loading File with Default PreProcessing", 1 | (1 << 21));
-            return _configs["***"].Preprocess(file, defs);
-        }
-
-
-        public static string PreprocessSource(string filename, Dictionary<string, bool> defs)
-        {
-            return PreprocessSource(new FilePathContent(filename), defs);
-        }
-
-        public static string PreprocessSource(string[] lines, string incDir, Dictionary<string, bool> defs)
-        {
-            return PreprocessSource(new FileContent(lines, incDir), defs);
-        }
-
-
-        /// <summary>
-        /// Loads and preprocesses the file specified
-        /// </summary>
-        /// <param name="filename">the filepath</param>
-        /// <param name="defs">definitions</param>
-        /// <returns>the source as string</returns>
-        internal static string PreprocessSource(IFileContent filename, Dictionary<string, bool> defs)
-        {
-            StringBuilder sb = new StringBuilder();
-            string[] src = PreprocessLines(filename, defs);
-            for (int i = 0; i < src.Length; i++)
-            {
-                sb.Append(src[i] + "\n");
-            }
-
-            return sb.ToString();
         }
     }
 }

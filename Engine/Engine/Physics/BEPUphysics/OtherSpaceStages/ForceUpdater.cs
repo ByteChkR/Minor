@@ -13,27 +13,11 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
         private RawList<IForceUpdateable> dynamicObjects = new RawList<IForceUpdateable>();
         protected internal Vector3 gravity;
 
-        ///<summary>
-        /// Gets or sets the gravity applied by the force updater.
-        ///</summary>
-        public Vector3 Gravity
-        {
-            get => gravity;
-            set => gravity = value;
-        }
-
         internal Vector3 gravityDt;
 
-        protected TimeStepSettings timeStepSettings;
+        private Action<int> multithreadedLoopBodyDelegate;
 
-        ///<summary>
-        /// Gets or sets the time step settings used by the force updater.
-        ///</summary>
-        public TimeStepSettings TimeStepSettings
-        {
-            get => timeStepSettings;
-            set => timeStepSettings = value;
-        }
+        protected TimeStepSettings timeStepSettings;
 
         ///<summary>
         /// Constructs the force updater.
@@ -58,7 +42,23 @@ namespace Engine.Physics.BEPUphysics.OtherSpaceStages
             AllowMultithreading = true;
         }
 
-        private Action<int> multithreadedLoopBodyDelegate;
+        ///<summary>
+        /// Gets or sets the gravity applied by the force updater.
+        ///</summary>
+        public Vector3 Gravity
+        {
+            get => gravity;
+            set => gravity = value;
+        }
+
+        ///<summary>
+        /// Gets or sets the time step settings used by the force updater.
+        ///</summary>
+        public TimeStepSettings TimeStepSettings
+        {
+            get => timeStepSettings;
+            set => timeStepSettings = value;
+        }
 
         private void UpdateObject(int i)
         {

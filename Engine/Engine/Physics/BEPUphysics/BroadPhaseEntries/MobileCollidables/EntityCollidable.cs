@@ -13,6 +13,15 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
     ///</summary>
     public abstract class EntityCollidable : MobileCollidable
     {
+        protected internal Entity entity;
+
+
+        protected internal ContactEventManager<EntityCollidable> events;
+
+        protected internal Vector3 localPosition;
+
+        protected internal RigidTransform worldTransform;
+
         protected EntityCollidable()
         {
             //This constructor is used when the subclass is going to set the shape after doing some extra initialization.
@@ -33,8 +42,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
             protected set => base.Shape = value;
         }
 
-        protected internal Entity entity;
-
         ///<summary>
         /// Gets the entity owning the collidable.
         ///</summary>
@@ -47,13 +54,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
                 OnEntityChanged();
             }
         }
-
-
-        protected virtual void OnEntityChanged()
-        {
-        }
-
-        protected internal RigidTransform worldTransform;
 
         ///<summary>
         /// Gets or sets the world transform of the collidable.
@@ -81,8 +81,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
         /// </summary>
         public override bool IsActive => entity != null ? entity.activityInformation.IsActive : false;
 
-        protected internal Vector3 localPosition;
-
         ///<summary>
         /// Gets or sets the local position of the collidable.
         /// The local position can be used to offset the collision geometry
@@ -97,6 +95,52 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
 
                 localPosition.Validate();
             }
+        }
+
+        ///<summary>
+        /// Gets or sets the event manager of the collidable.
+        ///</summary>
+        public ContactEventManager<EntityCollidable> Events
+        {
+            get => events;
+            set
+            {
+                if (value.Owner != null && //Can't use a manager which is owned by a different entity.
+                    value != events) //Stay quiet if for some reason the same event manager is being set.
+                {
+                    throw new ArgumentException(
+                        "Event manager is already owned by an entity; event managers cannot be shared.");
+                }
+
+                //Must pass on the link to the parent event manager to the new event manager in case we are the child of a compound.
+                CompoundEventManager oldParent = null;
+                if (events != null)
+                {
+                    events.Owner = null;
+                    oldParent = events.Parent;
+                    events.Parent = null;
+                }
+
+                events = value;
+                if (events != null)
+                {
+                    events.Owner = this;
+                    events.Parent = oldParent;
+                }
+            }
+        }
+
+        protected internal override IContactEventTriggerer EventTriggerer => events;
+
+
+        ///<summary>
+        /// Gets an enumerable collection of all entities overlapping this collidable.
+        ///</summary>
+        public EntityCollidableCollection OverlappedEntities => new EntityCollidableCollection(this);
+
+
+        protected virtual void OnEntityChanged()
+        {
         }
 
         ///<summary>
@@ -255,49 +299,5 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
                 entity.activityInformation.Activate();
             }
         }
-
-
-        protected internal ContactEventManager<EntityCollidable> events;
-
-        ///<summary>
-        /// Gets or sets the event manager of the collidable.
-        ///</summary>
-        public ContactEventManager<EntityCollidable> Events
-        {
-            get => events;
-            set
-            {
-                if (value.Owner != null && //Can't use a manager which is owned by a different entity.
-                    value != events) //Stay quiet if for some reason the same event manager is being set.
-                {
-                    throw new ArgumentException(
-                        "Event manager is already owned by an entity; event managers cannot be shared.");
-                }
-
-                //Must pass on the link to the parent event manager to the new event manager in case we are the child of a compound.
-                CompoundEventManager oldParent = null;
-                if (events != null)
-                {
-                    events.Owner = null;
-                    oldParent = events.Parent;
-                    events.Parent = null;
-                }
-
-                events = value;
-                if (events != null)
-                {
-                    events.Owner = this;
-                    events.Parent = oldParent;
-                }
-            }
-        }
-
-        protected internal override IContactEventTriggerer EventTriggerer => events;
-
-
-        ///<summary>
-        /// Gets an enumerable collection of all entities overlapping this collidable.
-        ///</summary>
-        public EntityCollidableCollection OverlappedEntities => new EntityCollidableCollection(this);
     }
 }

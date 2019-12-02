@@ -11,6 +11,11 @@
         Space Space { get; set; }
 
         /// <summary>
+        /// Gets or sets the user data associated with this object.
+        /// </summary>
+        object Tag { get; set; }
+
+        /// <summary>
         /// Called after the object is added to a space.
         /// </summary>
         /// <param name="newSpace">Space to which the object was added.</param>
@@ -21,10 +26,5 @@
         /// </summary>
         /// <param name="oldSpace">Space from which the object was removed.</param>
         void OnRemovalFromSpace(Space oldSpace);
-
-        /// <summary>
-        /// Gets or sets the user data associated with this object.
-        /// </summary>
-        object Tag { get; set; }
     }
 }

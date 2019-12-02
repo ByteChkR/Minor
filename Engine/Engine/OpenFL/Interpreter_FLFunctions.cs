@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;

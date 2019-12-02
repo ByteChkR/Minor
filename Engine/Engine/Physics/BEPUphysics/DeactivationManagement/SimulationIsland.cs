@@ -9,35 +9,19 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
     ///</summary>
     public class SimulationIsland
     {
-        internal SimulationIsland immediateParent;
-
-        internal SimulationIsland Parent => immediateParent == this ? this : immediateParent.Parent;
-
         internal bool allowDeactivation = true;
-        internal bool isActive = true;
 
-        ///<summary>
-        /// Gets or sets whether or not the island is currently active.
-        ///</summary>
-        public bool IsActive
-        {
-            get => isActive;
-            set => isActive = value;
-        }
+        private Action<SimulationIslandMember> becameDeactivationCandidateDelegate;
 
-        internal int memberCount;
-
-        /// <summary>
-        /// Gets the number of simulation island members within this simulation island.
-        /// </summary>
-        public int MemberCount => memberCount;
+        private Action<SimulationIslandMember> becameNonDeactivationCandidateDelegate;
 
         internal int deactivationCandidateCount;
+        internal SimulationIsland immediateParent;
+        internal bool isActive = true;
 
-        /// <summary>
-        /// Gets the number of simulation island members in the simulation island which are prepared to go to sleep.
-        /// </summary>
-        public int DeactivationCandidateCount => deactivationCandidateCount;
+        private Action<SimulationIslandMember> memberActivatedDelegate;
+
+        internal int memberCount;
 
         ///<summary>
         /// Constructs a simulation island.
@@ -50,14 +34,31 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             CleanUp();
         }
 
-        private Action<SimulationIslandMember> memberActivatedDelegate;
+        internal SimulationIsland Parent => immediateParent == this ? this : immediateParent.Parent;
+
+        ///<summary>
+        /// Gets or sets whether or not the island is currently active.
+        ///</summary>
+        public bool IsActive
+        {
+            get => isActive;
+            set => isActive = value;
+        }
+
+        /// <summary>
+        /// Gets the number of simulation island members within this simulation island.
+        /// </summary>
+        public int MemberCount => memberCount;
+
+        /// <summary>
+        /// Gets the number of simulation island members in the simulation island which are prepared to go to sleep.
+        /// </summary>
+        public int DeactivationCandidateCount => deactivationCandidateCount;
 
         private void MemberActivated(SimulationIslandMember member)
         {
             IsActive = true;
         }
-
-        private Action<SimulationIslandMember> becameDeactivationCandidateDelegate;
 
         private void BecameDeactivationCandidate(SimulationIslandMember member)
         {
@@ -65,8 +66,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             //The reason why this does not deactivate when count == members.count is that deactivation candidate count will go up and down in parallel.
             //The actual deactivation process is not designed to be thread safe.  Perhaps doable, but perhaps not worth the effort.
         }
-
-        private Action<SimulationIslandMember> becameNonDeactivationCandidateDelegate;
 
         private void BecameNonDeactivationCandidate(SimulationIslandMember member)
         {

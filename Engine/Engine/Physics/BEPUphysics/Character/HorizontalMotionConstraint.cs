@@ -13,13 +13,59 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class HorizontalMotionConstraint : SolverUpdateable
     {
+        private Vector2 accumulatedImpulse;
+        private Vector3 angularJacobianB1;
+        private Vector3 angularJacobianB2;
         private Entity characterBody;
-        private SupportFinder supportFinder;
+        private bool hadTraction;
+
+        private Vector3 horizontalForwardDirection;
+        private bool isTryingToMove;
+        private Vector3 linearJacobianA1;
+        private Vector3 linearJacobianA2;
+        private Vector3 linearJacobianB1;
+        private Vector3 linearJacobianB2;
+
+
+        private Matrix2x2 massMatrix;
+        private float maxAccelerationForceDt;
+
+        private float maxForceDt;
+
+        private Vector2 movementDirection;
+
+
+        internal Vector3 movementDirection3d;
+
+        private Vector2 positionCorrectionBias;
+
+        private Vector3 positionLocalOffset;
+        private Entity previousSupportEntity;
+
+        private Vector3 strafeDirection;
 
 
         private SupportData supportData;
+        private Entity supportEntity;
+        private SupportFinder supportFinder;
 
-        private Vector2 movementDirection;
+        private float supportForceFactor = 1;
+        private Vector2 targetVelocity;
+        private float timeSinceTransition;
+        private bool wasTryingToMove;
+
+        /// <summary>
+        /// Constructs a new horizontal motion constraint.
+        /// </summary>
+        /// <param name="characterBody">Character body to be governed by this constraint.</param>
+        /// <param name="supportFinder">Helper used to find supports for the character.</param>
+        public HorizontalMotionConstraint(Entity characterBody, SupportFinder supportFinder)
+        {
+            this.characterBody = characterBody;
+            this.supportFinder = supportFinder;
+            CollectInvolvedEntities();
+            MaximumAccelerationForce = float.MaxValue;
+        }
 
         /// <summary>
         /// Gets or sets the goal movement direction.
@@ -67,9 +113,6 @@ namespace Engine.Physics.BEPUphysics.Character
         /// </summary>
         public float MaximumAccelerationForce { get; set; }
 
-        private float maxForceDt;
-        private float maxAccelerationForceDt;
-
         /// <summary>
         /// <para>Gets or sets the time it takes for the character to achieve stable footing after trying to stop moving.
         /// When a character has stable footing, it will resist position drift relative to its support. For example,
@@ -95,6 +138,133 @@ namespace Engine.Physics.BEPUphysics.Character
         /// </summary>
         public bool HasPositionAnchor => timeSinceTransition < 0;
 
+
+        /// <summary>
+        /// Gets or sets the current movement style used by the character.
+        /// </summary>
+        public MovementMode MovementMode { get; set; }
+
+        /// <summary>
+        /// Gets the 3d movement direction, as updated in the previous call to UpdateMovementBasis.
+        /// Note that this will not change when MovementDirection is set. It only changes on a call to UpdateMovementBasis.
+        /// So, getting this value externally will get the previous frame's snapshot.
+        /// </summary>
+        public Vector3 MovementDirection3d => movementDirection3d;
+
+        /// <summary>
+        /// Gets the strafe direction as updated in the previous call to UpdateMovementBasis.
+        /// </summary>
+        public Vector3 StrafeDirection => strafeDirection;
+
+        /// <summary>
+        /// Gets the horizontal forward direction as updated in the previous call to UpdateMovementBasis.
+        /// </summary>
+        public Vector3 ForwardDirection => horizontalForwardDirection;
+
+        /// <summary>
+        /// Gets or sets the scaling factor of forces applied to the supporting object if it is a dynamic entity.
+        /// Low values (below 1) reduce the amount of motion imparted to the support object; it acts 'heavier' as far as horizontal motion is concerned.
+        /// High values (above 1) increase the force applied to support objects, making them appear lighter.
+        /// Be careful when changing this- it can create impossible situations!
+        /// </summary>
+        public float SupportForceFactor
+        {
+            get => supportForceFactor;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                supportForceFactor = value;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the current velocity between the character and its support in constraint space.
+        /// The X component corresponds to velocity along the movement direction.
+        /// The Y component corresponds to velocity perpendicular to the movement direction and support normal.
+        /// </summary>
+        public Vector2 RelativeVelocity
+        {
+            get
+            {
+                //The relative velocity's x component is in the movement direction.
+                //y is the perpendicular direction.
+                Vector2 relativeVelocity = new Vector2();
+
+                Vector3.Dot(ref linearJacobianA1, ref characterBody.linearVelocity, out relativeVelocity.X);
+                Vector3.Dot(ref linearJacobianA2, ref characterBody.linearVelocity, out relativeVelocity.Y);
+
+                float x, y;
+                if (supportEntity != null)
+                {
+                    Vector3.Dot(ref linearJacobianB1, ref supportEntity.linearVelocity, out x);
+                    Vector3.Dot(ref linearJacobianB2, ref supportEntity.linearVelocity, out y);
+                    relativeVelocity.X += x;
+                    relativeVelocity.Y += y;
+                    Vector3.Dot(ref angularJacobianB1, ref supportEntity.angularVelocity, out x);
+                    Vector3.Dot(ref angularJacobianB2, ref supportEntity.angularVelocity, out y);
+                    relativeVelocity.X += x;
+                    relativeVelocity.Y += y;
+                }
+
+                return relativeVelocity;
+            }
+        }
+
+        /// <summary>
+        /// Gets the current velocity between the character and its support.
+        /// </summary>
+        public Vector3 RelativeWorldVelocity
+        {
+            get
+            {
+                Vector3 bodyVelocity = characterBody.LinearVelocity;
+                if (supportEntity != null)
+                {
+                    return bodyVelocity - Toolbox.GetVelocityOfPoint(supportData.Position, supportEntity.Position,
+                               supportEntity.LinearVelocity, supportEntity.AngularVelocity);
+                }
+
+                return bodyVelocity;
+            }
+        }
+
+        /// <summary>
+        /// Gets the velocity of the support at the support point.
+        /// </summary>
+        public Vector3 SupportVelocity =>
+            supportEntity == null
+                ? new Vector3()
+                : Toolbox.GetVelocityOfPoint(supportData.Position, supportEntity.Position,
+                    supportEntity.LinearVelocity, supportEntity.AngularVelocity);
+
+
+        /// <summary>
+        /// Gets the accumulated impulse in world space applied to the character.
+        /// </summary>
+        public Vector3 CharacterAccumulatedImpulse
+        {
+            get
+            {
+                Vector3 impulse;
+                impulse.X = accumulatedImpulse.X * linearJacobianA1.X + accumulatedImpulse.Y * linearJacobianA2.X;
+                impulse.Y = accumulatedImpulse.X * linearJacobianA1.Y + accumulatedImpulse.Y * linearJacobianA2.Y;
+                impulse.Z = accumulatedImpulse.X * linearJacobianA1.Z + accumulatedImpulse.Y * linearJacobianA2.Z;
+                return impulse;
+            }
+        }
+
+        /// <summary>
+        /// Gets the accumulated impulse in constraint space.
+        /// The X component corresponds to impulse along the movement direction.
+        /// The Y component corresponds to impulse perpendicular to the movement direction and support normal.
+        /// </summary>
+        public Vector2 AccumulatedImpulse => accumulatedImpulse;
+
         /// <summary>
         /// Forces a recomputation of the position anchor during the next update if a position anchor is currently active.
         /// The new position anchor will be dropped at the character's location as of the next update.
@@ -106,36 +276,6 @@ namespace Engine.Physics.BEPUphysics.Character
                 timeSinceTransition = TimeUntilPositionAnchor;
             }
         }
-
-
-        /// <summary>
-        /// Gets or sets the current movement style used by the character.
-        /// </summary>
-        public MovementMode MovementMode { get; set; }
-
-
-        internal Vector3 movementDirection3d;
-
-        /// <summary>
-        /// Gets the 3d movement direction, as updated in the previous call to UpdateMovementBasis.
-        /// Note that this will not change when MovementDirection is set. It only changes on a call to UpdateMovementBasis.
-        /// So, getting this value externally will get the previous frame's snapshot.
-        /// </summary>
-        public Vector3 MovementDirection3d => movementDirection3d;
-
-        private Vector3 strafeDirection;
-
-        /// <summary>
-        /// Gets the strafe direction as updated in the previous call to UpdateMovementBasis.
-        /// </summary>
-        public Vector3 StrafeDirection => strafeDirection;
-
-        private Vector3 horizontalForwardDirection;
-
-        /// <summary>
-        /// Gets the horizontal forward direction as updated in the previous call to UpdateMovementBasis.
-        /// </summary>
-        public Vector3 ForwardDirection => horizontalForwardDirection;
 
         /// <summary>
         /// Updates the movement basis of the horizontal motion constraint.
@@ -191,63 +331,6 @@ namespace Engine.Physics.BEPUphysics.Character
                     supportEntity = null;
                 }
             }
-        }
-
-        private float supportForceFactor = 1;
-
-        /// <summary>
-        /// Gets or sets the scaling factor of forces applied to the supporting object if it is a dynamic entity.
-        /// Low values (below 1) reduce the amount of motion imparted to the support object; it acts 'heavier' as far as horizontal motion is concerned.
-        /// High values (above 1) increase the force applied to support objects, making them appear lighter.
-        /// Be careful when changing this- it can create impossible situations!
-        /// </summary>
-        public float SupportForceFactor
-        {
-            get => supportForceFactor;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                supportForceFactor = value;
-            }
-        }
-
-
-        private Matrix2x2 massMatrix;
-        private Entity supportEntity;
-        private Vector3 linearJacobianA1;
-        private Vector3 linearJacobianA2;
-        private Vector3 linearJacobianB1;
-        private Vector3 linearJacobianB2;
-        private Vector3 angularJacobianB1;
-        private Vector3 angularJacobianB2;
-
-        private Vector2 accumulatedImpulse;
-        private Vector2 targetVelocity;
-
-        private Vector2 positionCorrectionBias;
-
-        private Vector3 positionLocalOffset;
-        private bool wasTryingToMove;
-        private bool hadTraction;
-        private Entity previousSupportEntity;
-        private float timeSinceTransition;
-        private bool isTryingToMove;
-
-        /// <summary>
-        /// Constructs a new horizontal motion constraint.
-        /// </summary>
-        /// <param name="characterBody">Character body to be governed by this constraint.</param>
-        /// <param name="supportFinder">Helper used to find supports for the character.</param>
-        public HorizontalMotionConstraint(Entity characterBody, SupportFinder supportFinder)
-        {
-            this.characterBody = characterBody;
-            this.supportFinder = supportFinder;
-            CollectInvolvedEntities();
-            MaximumAccelerationForce = float.MaxValue;
         }
 
 
@@ -601,89 +684,5 @@ namespace Engine.Physics.BEPUphysics.Character
 
             return Math.Abs(lambda.X) + Math.Abs(lambda.Y);
         }
-
-
-        /// <summary>
-        /// Gets the current velocity between the character and its support in constraint space.
-        /// The X component corresponds to velocity along the movement direction.
-        /// The Y component corresponds to velocity perpendicular to the movement direction and support normal.
-        /// </summary>
-        public Vector2 RelativeVelocity
-        {
-            get
-            {
-                //The relative velocity's x component is in the movement direction.
-                //y is the perpendicular direction.
-                Vector2 relativeVelocity = new Vector2();
-
-                Vector3.Dot(ref linearJacobianA1, ref characterBody.linearVelocity, out relativeVelocity.X);
-                Vector3.Dot(ref linearJacobianA2, ref characterBody.linearVelocity, out relativeVelocity.Y);
-
-                float x, y;
-                if (supportEntity != null)
-                {
-                    Vector3.Dot(ref linearJacobianB1, ref supportEntity.linearVelocity, out x);
-                    Vector3.Dot(ref linearJacobianB2, ref supportEntity.linearVelocity, out y);
-                    relativeVelocity.X += x;
-                    relativeVelocity.Y += y;
-                    Vector3.Dot(ref angularJacobianB1, ref supportEntity.angularVelocity, out x);
-                    Vector3.Dot(ref angularJacobianB2, ref supportEntity.angularVelocity, out y);
-                    relativeVelocity.X += x;
-                    relativeVelocity.Y += y;
-                }
-
-                return relativeVelocity;
-            }
-        }
-
-        /// <summary>
-        /// Gets the current velocity between the character and its support.
-        /// </summary>
-        public Vector3 RelativeWorldVelocity
-        {
-            get
-            {
-                Vector3 bodyVelocity = characterBody.LinearVelocity;
-                if (supportEntity != null)
-                {
-                    return bodyVelocity - Toolbox.GetVelocityOfPoint(supportData.Position, supportEntity.Position,
-                               supportEntity.LinearVelocity, supportEntity.AngularVelocity);
-                }
-
-                return bodyVelocity;
-            }
-        }
-
-        /// <summary>
-        /// Gets the velocity of the support at the support point.
-        /// </summary>
-        public Vector3 SupportVelocity =>
-            supportEntity == null
-                ? new Vector3()
-                : Toolbox.GetVelocityOfPoint(supportData.Position, supportEntity.Position,
-                    supportEntity.LinearVelocity, supportEntity.AngularVelocity);
-
-
-        /// <summary>
-        /// Gets the accumulated impulse in world space applied to the character.
-        /// </summary>
-        public Vector3 CharacterAccumulatedImpulse
-        {
-            get
-            {
-                Vector3 impulse;
-                impulse.X = accumulatedImpulse.X * linearJacobianA1.X + accumulatedImpulse.Y * linearJacobianA2.X;
-                impulse.Y = accumulatedImpulse.X * linearJacobianA1.Y + accumulatedImpulse.Y * linearJacobianA2.Y;
-                impulse.Z = accumulatedImpulse.X * linearJacobianA1.Z + accumulatedImpulse.Y * linearJacobianA2.Z;
-                return impulse;
-            }
-        }
-
-        /// <summary>
-        /// Gets the accumulated impulse in constraint space.
-        /// The X component corresponds to impulse along the movement direction.
-        /// The Y component corresponds to impulse perpendicular to the movement direction and support normal.
-        /// </summary>
-        public Vector2 AccumulatedImpulse => accumulatedImpulse;
     }
 }

@@ -25,6 +25,12 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
 
         private static float surfaceEpsilon = 1e-7f;
 
+        private static float depthRefinementEpsilon = 1e-4f;
+
+        private static float rayCastSurfaceEpsilon = 1e-9f;
+
+        private static int maximumDepthRefinementIterations = 3;
+
         /// <summary>
         /// Gets or sets how close surface-finding based MPR methods have to get before exiting.
         /// Defaults to 1e-7.
@@ -44,8 +50,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 }
             }
         }
-
-        private static float depthRefinementEpsilon = 1e-4f;
 
         /// <summary>
         /// Gets or sets how close the penetration depth refinement system should converge before quitting.
@@ -69,8 +73,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             }
         }
 
-        private static float rayCastSurfaceEpsilon = 1e-9f;
-
         /// <summary>
         /// Gets or sets how close surface-finding ray casts have to get before exiting.
         /// Defaults to 1e-9.
@@ -90,8 +92,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
                 }
             }
         }
-
-        private static int maximumDepthRefinementIterations = 3;
 
         /// <summary>
         /// Gets or sets the maximum number of iterations to use to reach the local penetration depth minimum when using the RefinePenetration function.

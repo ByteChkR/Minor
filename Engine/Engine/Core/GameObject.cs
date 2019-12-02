@@ -19,36 +19,6 @@ namespace Engine.Core
     public class GameObject : IDestroyable
     {
         /// <summary>
-        /// Redirection for the KeyDown Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
-        {
-            GameEngine.Instance.CurrentScene?.OnKeyDown(sender, e);
-        }
-
-        /// <summary>
-        /// Redirection for the KeyUp Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
-        {
-            GameEngine.Instance.CurrentScene?.OnKeyUp(sender, e);
-        }
-
-        /// <summary>
-        /// Redirection for the KeyPress Event
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        internal static void _KeyPress(object sender, KeyPressEventArgs e)
-        {
-            GameEngine.Instance.CurrentScene?.OnKeyPress(sender, e);
-        }
-
-        /// <summary>
         /// Internal cache of objects with renderers to loop through them quickly
         /// </summary>
         internal static List<GameObject> ObjsWithAttachedRenderers = new List<GameObject>();
@@ -60,17 +30,88 @@ namespace Engine.Core
             new Dictionary<Collidable, Collider>();
 
         /// <summary>
+        /// An object counter to *almost* never have name collisions
+        /// </summary>
+        private static int _objId;
+
+        /// <summary>
+        /// The list of children of this object
+        /// </summary>
+        private readonly List<GameObject> _children = new List<GameObject>();
+
+        /// <summary>
+        /// the list of components in the object
+        /// </summary>
+        private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
+
+        /// <summary>
+        /// Private flag that indicates that the object has been destroyed but is not yet removed from the systems
+        /// </summary>
+        private bool _destructionPending;
+
+
+        /// <summary>
+        /// Internal flag that is used to increase performance by not calculating matrices for objects that wont show up anyway
+        /// </summary>
+        private bool _hasRendererInHierarchy;
+
+        private Physics.BEPUutilities.Vector3 _localPosition;
+        private Physics.BEPUutilities.Quaternion _rotation = Quaternion.Identity;
+        private Physics.BEPUutilities.Vector3 _scale = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
+        private Matrix4 _transform = Matrix4.Identity;
+
+        /// <summary>
         /// Internal cache for the world transform
         /// </summary>
         internal Matrix4 _worldTransformCache;
+
+        private bool transformChanged = true;
+
+        /// <summary>
+        /// public constructor
+        /// </summary>
+        /// <param name="localPosition">Initial object position</param>
+        /// <param name="name">Name of the object</param>
+        /// <param name="parent">The parent of the object</param>
+        public GameObject(Vector3 localPosition, string name, GameObject parent)
+        {
+            _worldTransformCache = Matrix4.Identity;
+
+            LocalPosition = localPosition;
+            Parent = parent;
+
+            if (name == string.Empty)
+            {
+                Name = "Gameobject" + _objId;
+                addObjCount();
+            }
+            else
+            {
+                Name = name;
+            }
+        }
+
+        /// <summary>
+        /// public constructor
+        /// </summary>
+        /// <param name="localPosition">Initial object position</param>
+        /// <param name="name">Name of the object</param>
+        public GameObject(Vector3 localPosition, string name) : this(localPosition, name, null)
+        {
+        }
+
+        /// <summary>
+        /// public constructor
+        /// </summary>
+        /// <param name="name">Name of the object</param>
+        public GameObject(string name) : this(new Vector3(), name, null)
+        {
+        }
 
         /// <summary>
         /// The IRenderingComponent that will be set to a value when a renderer is added and set to null when a renderer is removed
         /// </summary>
         public RenderingComponent RenderingComponent { get; private set; }
-
-        private bool transformChanged = true;
-        private Matrix4 _transform = Matrix4.Identity;
 
         /// <summary>
         /// The Transform component
@@ -145,21 +186,6 @@ namespace Engine.Core
         public AbstractScene Scene { get; internal set; }
 
         /// <summary>
-        /// An object counter to *almost* never have name collisions
-        /// </summary>
-        private static int _objId;
-
-        /// <summary>
-        /// the list of components in the object
-        /// </summary>
-        private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
-
-        /// <summary>
-        /// The list of children of this object
-        /// </summary>
-        private readonly List<GameObject> _children = new List<GameObject>();
-
-        /// <summary>
         /// The object name
         /// </summary>
         [ConfigVariable]
@@ -176,25 +202,10 @@ namespace Engine.Core
         /// </summary>
         public bool Destroyed { get; private set; }
 
-
-        /// <summary>
-        /// Internal flag that is used to increase performance by not calculating matrices for objects that wont show up anyway
-        /// </summary>
-        private bool _hasRendererInHierarchy;
-
         /// <summary>
         /// The parent of the object
         /// </summary>
         public GameObject Parent { get; private set; }
-
-        /// <summary>
-        /// Private flag that indicates that the object has been destroyed but is not yet removed from the systems
-        /// </summary>
-        private bool _destructionPending;
-
-        private Physics.BEPUutilities.Vector3 _localPosition;
-        private Physics.BEPUutilities.Vector3 _scale = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
-        private Physics.BEPUutilities.Quaternion _rotation = Quaternion.Identity;
 
 
         [ConfigVariable]
@@ -205,18 +216,6 @@ namespace Engine.Core
             set => Rotation =
                 Physics.BEPUutilities.Quaternion.CreateFromAxisAngle(
                     new Physics.BEPUutilities.Vector3(value.X, value.Y, value.Z), value.W);
-        }
-
-        /// <summary>
-        /// Destructor that will create a warning if undestroyed objects get garbage collected
-        /// </summary>
-        ~GameObject()
-        {
-            if (!Destroyed)
-            {
-                Logger.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
-                    DebugChannel.Warning | DebugChannel.EngineCore, 10);
-            }
         }
 
         /// <summary>
@@ -233,6 +232,48 @@ namespace Engine.Core
             foreach (GameObject gameObject in _children)
             {
                 gameObject.Destroy();
+            }
+        }
+
+        /// <summary>
+        /// Redirection for the KeyDown Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal static void _KeyDown(object sender, KeyboardKeyEventArgs e)
+        {
+            GameEngine.Instance.CurrentScene?.OnKeyDown(sender, e);
+        }
+
+        /// <summary>
+        /// Redirection for the KeyUp Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal static void _KeyUp(object sender, KeyboardKeyEventArgs e)
+        {
+            GameEngine.Instance.CurrentScene?.OnKeyUp(sender, e);
+        }
+
+        /// <summary>
+        /// Redirection for the KeyPress Event
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        internal static void _KeyPress(object sender, KeyPressEventArgs e)
+        {
+            GameEngine.Instance.CurrentScene?.OnKeyPress(sender, e);
+        }
+
+        /// <summary>
+        /// Destructor that will create a warning if undestroyed objects get garbage collected
+        /// </summary>
+        ~GameObject()
+        {
+            if (!Destroyed)
+            {
+                Logger.Log("Object " + Name + " was garbage collected. This can cause nullpointers.",
+                    DebugChannel.Warning | DebugChannel.EngineCore, 10);
             }
         }
 
@@ -274,53 +315,12 @@ namespace Engine.Core
         }
 
         /// <summary>
-        /// public constructor
-        /// </summary>
-        /// <param name="localPosition">Initial object position</param>
-        /// <param name="name">Name of the object</param>
-        /// <param name="parent">The parent of the object</param>
-        public GameObject(Vector3 localPosition, string name, GameObject parent)
-        {
-            _worldTransformCache = Matrix4.Identity;
-
-            LocalPosition = localPosition;
-            Parent = parent;
-
-            if (name == string.Empty)
-            {
-                Name = "Gameobject" + _objId;
-                addObjCount();
-            }
-            else
-            {
-                Name = name;
-            }
-        }
-
-        /// <summary>
         /// Adds the object count
         /// is used for giving objects names that are different
         /// </summary>
         private static void addObjCount()
         {
             _objId++;
-        }
-
-        /// <summary>
-        /// public constructor
-        /// </summary>
-        /// <param name="localPosition">Initial object position</param>
-        /// <param name="name">Name of the object</param>
-        public GameObject(Vector3 localPosition, string name) : this(localPosition, name, null)
-        {
-        }
-
-        /// <summary>
-        /// public constructor
-        /// </summary>
-        /// <param name="name">Name of the object</param>
-        public GameObject(string name) : this(new Vector3(), name, null)
-        {
         }
 
         /// <summary>

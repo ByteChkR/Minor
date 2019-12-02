@@ -1,5 +1,4 @@
-﻿using System;
-using Engine.Debug;
+﻿using Engine.Debug;
 using OpenTK;
 using OpenTK.Graphics;
 
@@ -13,7 +12,7 @@ namespace Engine.Core
         [ConfigVariable] public static EngineSettings Settings;
 
 
-        public static EngineSettings DefaultSettings => new EngineSettings()
+        public static EngineSettings DefaultSettings => new EngineSettings
         {
             DebugSettings = DebugSettings.GetDefault(),
             Depth = 8,
@@ -24,7 +23,7 @@ namespace Engine.Core
             Title = "GameTitle",
             PhysicsThreadCount = 1,
             VSync = VSyncMode.On,
-            WindowFlags = GameWindowFlags.Default,
+            WindowFlags = GameWindowFlags.Default
         };
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace Engine.Core
         /// <summary>
         /// The Stencil Bits
         /// </summary>
-        public int Stencil { get; set; } = 0;
+        public int Stencil { get; set; }
 
         /// <summary>
         /// The FXAA Samples

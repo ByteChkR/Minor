@@ -3,7 +3,6 @@
 using System;
 using System.Runtime.InteropServices;
 using Engine.OpenCL.DotNetCore.Interop.Devices;
-using Engine.OpenCL.DotNetCore.Interop.Memory;
 
 #endregion
 

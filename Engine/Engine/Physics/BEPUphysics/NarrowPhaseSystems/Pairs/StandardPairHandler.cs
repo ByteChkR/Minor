@@ -12,6 +12,16 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class StandardPairHandler : CollidablePairHandler
     {
+        ///<summary>
+        /// Constructs a pair handler.
+        ///</summary>
+        protected StandardPairHandler()
+        {
+            //Child type constructors construct manifold and constraint first.
+            ContactManifold.ContactAdded += OnContactAdded;
+            ContactManifold.ContactRemoved += OnContactRemoved;
+        }
+
         /// <summary>
         /// Gets the contact manifold used by the pair handler.
         /// </summary>
@@ -22,15 +32,11 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         /// </summary>
         public abstract ContactManifoldConstraint ContactConstraint { get; }
 
-        ///<summary>
-        /// Constructs a pair handler.
-        ///</summary>
-        protected StandardPairHandler()
-        {
-            //Child type constructors construct manifold and constraint first.
-            ContactManifold.ContactAdded += OnContactAdded;
-            ContactManifold.ContactRemoved += OnContactRemoved;
-        }
+
+        /// <summary>
+        /// Gets the number of contacts associated with this pair handler.
+        /// </summary>
+        protected internal override int ContactCount => ContactManifold.contacts.Count;
 
         protected override void OnContactAdded(Contact contact)
         {
@@ -198,12 +204,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
             previousContactCount = ContactManifold.contacts.Count;
         }
-
-
-        /// <summary>
-        /// Gets the number of contacts associated with this pair handler.
-        /// </summary>
-        protected internal override int ContactCount => ContactManifold.contacts.Count;
 
         /// <summary>
         /// Clears the contacts associated with this pair handler.

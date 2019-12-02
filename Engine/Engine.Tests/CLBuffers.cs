@@ -3,7 +3,6 @@ using Engine.Common;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Xunit;
-using Xunit.Sdk;
 
 namespace Engine.Tests
 {
@@ -13,6 +12,22 @@ namespace Engine.Tests
         public CLBuffers()
         {
             TestSetup.ApplyDebugSettings();
+        }
+
+
+        private static bool CheckValues(float[] values, float[] reference)
+        {
+            DebugHelper.ThrowOnAllExceptions = true;
+            bool working = true;
+            for (int i = 0; i < values.Length; i++)
+            {
+                if (Math.Abs(values[i] - reference[i]) > 0.01f)
+                {
+                    working = false;
+                }
+            }
+
+            return working;
         }
 
         [Fact]
@@ -74,22 +89,6 @@ namespace Engine.Tests
 
 
             Assert.True(CheckValues(c, b));
-        }
-
-
-        private static bool CheckValues(float[] values, float[] reference)
-        {
-            DebugHelper.ThrowOnAllExceptions = true;
-            bool working = true;
-            for (int i = 0; i < values.Length; i++)
-            {
-                if (Math.Abs(values[i] - reference[i]) > 0.01f)
-                {
-                    working = false;
-                }
-            }
-
-            return working;
         }
     }
 

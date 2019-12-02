@@ -18,64 +18,18 @@ namespace Engine.Tests
         }
 
         [Fact]
-        public void FLDefines()
+        public void FLComments()
         {
             DebugHelper.ThrowOnAllExceptions = true;
-
-            string file = Path.GetFullPath("resources/filter/defines/test.fl");
+            string file = Path.GetFullPath("resources/filter/comments/test.fl");
             Interpreter P = new Interpreter(CLAPI.MainThread, file,
                 CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
                     MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                 1,
-                4, TestSetup.KernelDB);
-
-            InterpreterStepResult ret = P.Step();
-
-
-            Assert.True(ret.DefinedBuffers.Count == 5);
-            Assert.True(ret.DefinedBuffers[0] == "in_unmanaged");
-            Assert.True(ret.DefinedBuffers[1] == "textureD_internal");
-            Assert.True(ret.DefinedBuffers[2] == "textureC_internal");
-            Assert.True(ret.DefinedBuffers[3] == "textureB_internal");
-            Assert.True(ret.DefinedBuffers[4] == "textureA_internal");
-        }
-
-        [Fact]
-        public void FLWFCDefines_Wrong()
-        {
-            DebugHelper.ThrowOnAllExceptions = true;
-
-            string[] files = Directory.GetFiles("resources/filter/defines/", "test_wrong_define_wfc_*.fl");
-
-
-            for (int i = 0; i < 2; i++)
+                4, new KernelDatabase(CLAPI.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1)); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
+            while (!P.Terminated)
             {
-                DebugHelper.ThrowOnAllExceptions = i == 0;
-                foreach (string file in files)
-                {
-                    try
-                    {
-                        Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                            CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
-                                MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite),
-                            128,
-                            128,
-                            1,
-                            4, TestSetup.KernelDB);
-                        Assert.True(!DebugHelper.ThrowOnAllExceptions);
-                    }
-                    catch (Exception e)
-                    {
-                        Assert.True(DebugHelper.ThrowOnAllExceptions);
-                        if (!(e is FLInvalidFunctionUseException))
-                        {
-                            Assert.True(false);
-                            continue;
-                        }
-
-                        //We passed
-                    }
-                }
+                P.Step();
             }
         }
 
@@ -111,6 +65,29 @@ namespace Engine.Tests
                     //We passed
                 }
             }
+        }
+
+        [Fact]
+        public void FLDefines()
+        {
+            DebugHelper.ThrowOnAllExceptions = true;
+
+            string file = Path.GetFullPath("resources/filter/defines/test.fl");
+            Interpreter P = new Interpreter(CLAPI.MainThread, file,
+                CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                    MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
+                1,
+                4, TestSetup.KernelDB);
+
+            InterpreterStepResult ret = P.Step();
+
+
+            Assert.True(ret.DefinedBuffers.Count == 5);
+            Assert.True(ret.DefinedBuffers[0] == "in_unmanaged");
+            Assert.True(ret.DefinedBuffers[1] == "textureD_internal");
+            Assert.True(ret.DefinedBuffers[2] == "textureC_internal");
+            Assert.True(ret.DefinedBuffers[3] == "textureB_internal");
+            Assert.True(ret.DefinedBuffers[4] == "textureA_internal");
         }
 
         [Fact]
@@ -180,22 +157,6 @@ namespace Engine.Tests
         }
 
         [Fact]
-        public void FLComments()
-        {
-            DebugHelper.ThrowOnAllExceptions = true;
-            string file = Path.GetFullPath("resources/filter/comments/test.fl");
-            Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
-                    MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
-                1,
-                4, new KernelDatabase(CLAPI.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1)); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
-            while (!P.Terminated)
-            {
-                P.Step();
-            }
-        }
-
-        [Fact]
         public void FLKernels()
         {
             DebugHelper.ThrowOnAllExceptions = true;
@@ -214,6 +175,44 @@ namespace Engine.Tests
                 while (!P.Terminated)
                 {
                     P.Step();
+                }
+            }
+        }
+
+        [Fact]
+        public void FLWFCDefines_Wrong()
+        {
+            DebugHelper.ThrowOnAllExceptions = true;
+
+            string[] files = Directory.GetFiles("resources/filter/defines/", "test_wrong_define_wfc_*.fl");
+
+
+            for (int i = 0; i < 2; i++)
+            {
+                DebugHelper.ThrowOnAllExceptions = i == 0;
+                foreach (string file in files)
+                {
+                    try
+                    {
+                        Interpreter P = new Interpreter(CLAPI.MainThread, file,
+                            CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                                MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite),
+                            128,
+                            128,
+                            1,
+                            4, TestSetup.KernelDB);
+                        Assert.True(!DebugHelper.ThrowOnAllExceptions);
+                    }
+                    catch (Exception e)
+                    {
+                        Assert.True(DebugHelper.ThrowOnAllExceptions);
+                        if (!(e is FLInvalidFunctionUseException))
+                        {
+                            Assert.True(false);
+                        }
+
+                        //We passed
+                    }
                 }
             }
         }

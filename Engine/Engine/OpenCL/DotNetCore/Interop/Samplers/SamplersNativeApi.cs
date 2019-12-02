@@ -12,6 +12,45 @@ namespace Engine.OpenCL.DotNetCore.Interop.Samplers
     /// </summary>
     public static class SamplersNativeApi
     {
+        #region Deprecated Static Methods
+
+        /// <summary>
+        /// Creates a sampler object. A sampler object describes how to sample an image when the image is read in the kernel. The built-in functions to read from an image in a kernel take a sampler as an argument. The sampler arguments to
+        /// the image read function can be sampler objects created using OpenCL functions and passed as argument values to the kernel or can be samplers declared inside a kernel.
+        /// </summary>
+        /// <param name="context">Must be a valid OpenCL context.</param>
+        /// <param name="normalizedCoordinates">Determines if the image coordinates specified are normalized or not.</param>
+        /// <param name="addressingMode">Specifies how out-of-range image coordinates are handled when reading from an image.</param>
+        /// <param name="filterMode">Specifies the type of filter that must be applied when reading an image.</param>
+        /// <param name="errorCode">Returns an appropriate error code. If <see cref="errorCode"/> is <c>null</c>, no error code is returned.</param>
+        /// <returns>
+        /// Returns a valid non-zero sampler object and <see cref="errorCode"/> is set to <c>Result.Success</c> if the sampler object is created successfully. Otherwise, it returns a <c>null</c> value with one of the following error values
+        /// returned in <see cref="errorCode"/>:
+        /// 
+        /// <c>Result.InvalidContext</c> if <see cref="context"/> is not a valid context.
+        /// 
+        /// <c>Result.InvalidValue</c> if the property name in <see cref="samplerProperties"/> is not a supported property name, if the value specified for a supported property name is not valid, or if the same property name is specified more
+        /// than once.
+        /// 
+        /// <c>Result.InvalidOperation</c> if <see cref="images"/> are not supported by any device associated with <see cref="context"/>.
+        /// 
+        /// <c>Result.OutOfResources</c> if there is a failure to allocate resources required by the OpenCL implementation on the device.
+        /// 
+        /// <c>Result.OutOfHostMemory</c> if there is a failure to allocate resources required by the OpenCL implementation on the host.
+        /// </returns>
+        [IntroducedInOpenCl(1, 0)]
+        [DllImport("OpenCL", EntryPoint = "clCreateSampler")]
+        [Obsolete("This is a deprecated OpenCL 1.2 method, please use CreateImage instead.")]
+        public static extern IntPtr CreateSampler(
+            [In] IntPtr context,
+            [In] [MarshalAs(UnmanagedType.U4)] uint normalizedCoordinates,
+            [In] [MarshalAs(UnmanagedType.U4)] AddressingMode addressingMode,
+            [In] [MarshalAs(UnmanagedType.U4)] FilterMode filterMode,
+            [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
+        );
+
+        #endregion
+
         #region Public Static Methods
 
         /// <summary>
@@ -113,45 +152,6 @@ namespace Engine.OpenCL.DotNetCore.Interop.Samplers
             [In] UIntPtr parameterValueSize,
             [Out] byte[] parameterValue,
             [Out] out UIntPtr parameterValueSizeReturned
-        );
-
-        #endregion
-
-        #region Deprecated Static Methods
-
-        /// <summary>
-        /// Creates a sampler object. A sampler object describes how to sample an image when the image is read in the kernel. The built-in functions to read from an image in a kernel take a sampler as an argument. The sampler arguments to
-        /// the image read function can be sampler objects created using OpenCL functions and passed as argument values to the kernel or can be samplers declared inside a kernel.
-        /// </summary>
-        /// <param name="context">Must be a valid OpenCL context.</param>
-        /// <param name="normalizedCoordinates">Determines if the image coordinates specified are normalized or not.</param>
-        /// <param name="addressingMode">Specifies how out-of-range image coordinates are handled when reading from an image.</param>
-        /// <param name="filterMode">Specifies the type of filter that must be applied when reading an image.</param>
-        /// <param name="errorCode">Returns an appropriate error code. If <see cref="errorCode"/> is <c>null</c>, no error code is returned.</param>
-        /// <returns>
-        /// Returns a valid non-zero sampler object and <see cref="errorCode"/> is set to <c>Result.Success</c> if the sampler object is created successfully. Otherwise, it returns a <c>null</c> value with one of the following error values
-        /// returned in <see cref="errorCode"/>:
-        /// 
-        /// <c>Result.InvalidContext</c> if <see cref="context"/> is not a valid context.
-        /// 
-        /// <c>Result.InvalidValue</c> if the property name in <see cref="samplerProperties"/> is not a supported property name, if the value specified for a supported property name is not valid, or if the same property name is specified more
-        /// than once.
-        /// 
-        /// <c>Result.InvalidOperation</c> if <see cref="images"/> are not supported by any device associated with <see cref="context"/>.
-        /// 
-        /// <c>Result.OutOfResources</c> if there is a failure to allocate resources required by the OpenCL implementation on the device.
-        /// 
-        /// <c>Result.OutOfHostMemory</c> if there is a failure to allocate resources required by the OpenCL implementation on the host.
-        /// </returns>
-        [IntroducedInOpenCl(1, 0)]
-        [DllImport("OpenCL", EntryPoint = "clCreateSampler")]
-        [Obsolete("This is a deprecated OpenCL 1.2 method, please use CreateImage instead.")]
-        public static extern IntPtr CreateSampler(
-            [In] IntPtr context,
-            [In] [MarshalAs(UnmanagedType.U4)] uint normalizedCoordinates,
-            [In] [MarshalAs(UnmanagedType.U4)] AddressingMode addressingMode,
-            [In] [MarshalAs(UnmanagedType.U4)] FilterMode filterMode,
-            [Out] [MarshalAs(UnmanagedType.I4)] out Result errorCode
         );
 
         #endregion

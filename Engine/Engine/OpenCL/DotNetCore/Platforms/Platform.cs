@@ -30,166 +30,6 @@ namespace Engine.OpenCL.DotNetCore.Platforms
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// Contains the name of the OpenCL platform.
-        /// </summary>
-        private string name;
-
-        /// <summary>
-        /// Gets the name of the OpenCL platform.
-        /// </summary>
-        public string Name
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    name = GetPlatformInformation<string>(PlatformInformation.Name);
-                }
-
-                return name;
-            }
-        }
-
-        /// <summary>
-        /// Contains the name of the vendor of the OpenCL platform.
-        /// </summary>
-        private string vendor;
-
-        /// <summary>
-        /// Gets the name of the vendor of the OpenCL platform.
-        /// </summary>
-        public string Vendor
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(vendor))
-                {
-                    vendor = GetPlatformInformation<string>(PlatformInformation.Vendor);
-                }
-
-                return vendor;
-            }
-        }
-
-        /// <summary>
-        /// Contains the version of the OpenCL platform.
-        /// </summary>
-        private Version version;
-
-        /// <summary>
-        /// Gets the version of the OpenCL platform.
-        /// </summary>
-        public Version Version
-        {
-            get
-            {
-                if (version == null)
-                {
-                    version = new Version(GetPlatformInformation<string>(PlatformInformation.Version));
-                }
-
-                return version;
-            }
-        }
-
-        /// <summary>
-        /// Contains the profile supported by the OpenCL platform.
-        /// </summary>
-        private Nullable<Profile> profile;
-
-        /// <summary>
-        /// Gets the profile supported by the OpenCL platform.
-        /// </summary>
-        public Profile Profile
-        {
-            get
-            {
-                if (!profile.HasValue)
-                {
-                    string profileName = GetPlatformInformation<string>(PlatformInformation.Profile);
-                    if (profileName == "FULL_PROFILE")
-                    {
-                        profile = Profile.Full;
-                    }
-                    else
-                    {
-                        profile = Profile.Embedded;
-                    }
-                }
-
-                return profile.Value;
-            }
-        }
-
-        /// <summary>
-        /// Contains the extensions supported by the OpenCL platform.
-        /// </summary>
-        private IEnumerable<string> extensions;
-
-        /// <summary>
-        /// Gets the extensions support by the OpenCL platform.
-        /// </summary>
-        public IEnumerable<string> Extensions
-        {
-            get
-            {
-                if (extensions == null)
-                {
-                    extensions = GetPlatformInformation<string>(PlatformInformation.Extensions).Split(' ').ToList();
-                }
-
-                return extensions;
-            }
-        }
-
-        /// <summary>
-        /// Contains the the resolution of the host timer in nanoseconds.
-        /// </summary>
-        private Nullable<long> platformHostTimerResolution;
-
-        /// <summary>
-        /// Gets the the resolution of the host timer in nanoseconds.
-        /// </summary>
-        public long PlatformHostTimerResolution
-        {
-            get
-            {
-                if (!platformHostTimerResolution.HasValue)
-                {
-                    platformHostTimerResolution =
-                        (long) GetPlatformInformation<ulong>(PlatformInformation.PlatformHostTimerResolution);
-                }
-
-                return platformHostTimerResolution.Value;
-            }
-        }
-
-        /// <summary>
-        /// Contains the function name suffix used to identify extension functions to be directed to this platform by the ICD Loader.
-        /// </summary>
-        private string platformIcdSuffix;
-
-        /// <summary>
-        /// Gets the function name suffix used to identify extension functions to be directed to this platform by the ICD Loader.
-        /// </summary>
-        public string PlatformIcdSuffix
-        {
-            get
-            {
-                if (platformIcdSuffix == null)
-                {
-                    platformIcdSuffix = GetPlatformInformation<string>(PlatformInformation.PlatformIcdSuffix);
-                }
-
-                return platformIcdSuffix;
-            }
-        }
-
-        #endregion
-
         #region Private Methods
 
         /// <summary>
@@ -292,6 +132,166 @@ namespace Engine.OpenCL.DotNetCore.Platforms
             foreach (IntPtr platformPointer in platformPointers)
             {
                 yield return new Platform(platformPointer);
+            }
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Contains the name of the OpenCL platform.
+        /// </summary>
+        private string name;
+
+        /// <summary>
+        /// Gets the name of the OpenCL platform.
+        /// </summary>
+        public string Name
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    name = GetPlatformInformation<string>(PlatformInformation.Name);
+                }
+
+                return name;
+            }
+        }
+
+        /// <summary>
+        /// Contains the name of the vendor of the OpenCL platform.
+        /// </summary>
+        private string vendor;
+
+        /// <summary>
+        /// Gets the name of the vendor of the OpenCL platform.
+        /// </summary>
+        public string Vendor
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(vendor))
+                {
+                    vendor = GetPlatformInformation<string>(PlatformInformation.Vendor);
+                }
+
+                return vendor;
+            }
+        }
+
+        /// <summary>
+        /// Contains the version of the OpenCL platform.
+        /// </summary>
+        private Version version;
+
+        /// <summary>
+        /// Gets the version of the OpenCL platform.
+        /// </summary>
+        public Version Version
+        {
+            get
+            {
+                if (version == null)
+                {
+                    version = new Version(GetPlatformInformation<string>(PlatformInformation.Version));
+                }
+
+                return version;
+            }
+        }
+
+        /// <summary>
+        /// Contains the profile supported by the OpenCL platform.
+        /// </summary>
+        private Profile? profile;
+
+        /// <summary>
+        /// Gets the profile supported by the OpenCL platform.
+        /// </summary>
+        public Profile Profile
+        {
+            get
+            {
+                if (!profile.HasValue)
+                {
+                    string profileName = GetPlatformInformation<string>(PlatformInformation.Profile);
+                    if (profileName == "FULL_PROFILE")
+                    {
+                        profile = Profile.Full;
+                    }
+                    else
+                    {
+                        profile = Profile.Embedded;
+                    }
+                }
+
+                return profile.Value;
+            }
+        }
+
+        /// <summary>
+        /// Contains the extensions supported by the OpenCL platform.
+        /// </summary>
+        private IEnumerable<string> extensions;
+
+        /// <summary>
+        /// Gets the extensions support by the OpenCL platform.
+        /// </summary>
+        public IEnumerable<string> Extensions
+        {
+            get
+            {
+                if (extensions == null)
+                {
+                    extensions = GetPlatformInformation<string>(PlatformInformation.Extensions).Split(' ').ToList();
+                }
+
+                return extensions;
+            }
+        }
+
+        /// <summary>
+        /// Contains the the resolution of the host timer in nanoseconds.
+        /// </summary>
+        private long? platformHostTimerResolution;
+
+        /// <summary>
+        /// Gets the the resolution of the host timer in nanoseconds.
+        /// </summary>
+        public long PlatformHostTimerResolution
+        {
+            get
+            {
+                if (!platformHostTimerResolution.HasValue)
+                {
+                    platformHostTimerResolution =
+                        (long) GetPlatformInformation<ulong>(PlatformInformation.PlatformHostTimerResolution);
+                }
+
+                return platformHostTimerResolution.Value;
+            }
+        }
+
+        /// <summary>
+        /// Contains the function name suffix used to identify extension functions to be directed to this platform by the ICD Loader.
+        /// </summary>
+        private string platformIcdSuffix;
+
+        /// <summary>
+        /// Gets the function name suffix used to identify extension functions to be directed to this platform by the ICD Loader.
+        /// </summary>
+        public string PlatformIcdSuffix
+        {
+            get
+            {
+                if (platformIcdSuffix == null)
+                {
+                    platformIcdSuffix = GetPlatformInformation<string>(PlatformInformation.PlatformIcdSuffix);
+                }
+
+                return platformIcdSuffix;
             }
         }
 

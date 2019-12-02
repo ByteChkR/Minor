@@ -54,32 +54,6 @@ namespace Engine.OpenCL.DotNetCore.Events
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// Gets the current command execution status code. This is the raw numeric status code, which can be helpful, when the command raised an error, to retrieve more information about the type of error that was returned.
-        /// </summary>
-        public int CommandExecutionStatusCode => GetEventInformation<int>(EventInformation.CommandExecutionStatus);
-
-        /// <summary>
-        /// Gets the current command execution status.
-        /// </summary>
-        public CommandExecutionStatus CommandExecutionStatus
-        {
-            get
-            {
-                int commandExecutionStatusCode = CommandExecutionStatusCode;
-                if (commandExecutionStatusCode >= 0)
-                {
-                    return (CommandExecutionStatus) commandExecutionStatusCode;
-                }
-
-                return CommandExecutionStatus.Error;
-            }
-        }
-
-        #endregion
-
         #region Private Methods
 
         /// <summary>
@@ -115,6 +89,26 @@ namespace Engine.OpenCL.DotNetCore.Events
 
         #endregion
 
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Disposes of the resources that have been acquired by the event.
+        /// </summary>
+        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // Checks if the event has already been disposed of, if not, then it is disposed of
+            if (!IsDisposed)
+            {
+                EventsNativeApi.ReleaseEvent(Handle);
+            }
+
+            // Makes sure that the base class can execute its dispose logic
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
         #region Private Delegates
 
         /// <summary>
@@ -123,6 +117,32 @@ namespace Engine.OpenCL.DotNetCore.Events
         /// <param name="waitEvent">A pointer to the OpenCL event object.</param>
         /// <param name="userData">User-defined data that can be passed to the event subscription.</param>
         private delegate void AwaitableEventCallback(IntPtr waitEvent, IntPtr userData);
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Gets the current command execution status code. This is the raw numeric status code, which can be helpful, when the command raised an error, to retrieve more information about the type of error that was returned.
+        /// </summary>
+        public int CommandExecutionStatusCode => GetEventInformation<int>(EventInformation.CommandExecutionStatus);
+
+        /// <summary>
+        /// Gets the current command execution status.
+        /// </summary>
+        public CommandExecutionStatus CommandExecutionStatus
+        {
+            get
+            {
+                int commandExecutionStatusCode = CommandExecutionStatusCode;
+                if (commandExecutionStatusCode >= 0)
+                {
+                    return (CommandExecutionStatus) commandExecutionStatusCode;
+                }
+
+                return CommandExecutionStatus.Error;
+            }
+        }
 
         #endregion
 
@@ -147,26 +167,6 @@ namespace Engine.OpenCL.DotNetCore.Events
         /// An event, which is raised, when the command completes successfully or with an error.
         /// </summary>
         public event EventHandler OnCompleted;
-
-        #endregion
-
-        #region IDisposable Implementation
-
-        /// <summary>
-        /// Disposes of the resources that have been acquired by the event.
-        /// </summary>
-        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
-        protected override void Dispose(bool disposing)
-        {
-            // Checks if the event has already been disposed of, if not, then it is disposed of
-            if (!IsDisposed)
-            {
-                EventsNativeApi.ReleaseEvent(Handle);
-            }
-
-            // Makes sure that the base class can execute its dispose logic
-            base.Dispose(disposing);
-        }
 
         #endregion
     }

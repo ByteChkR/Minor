@@ -17,6 +17,24 @@ namespace Engine.OpenFL
     /// </summary>
     public partial class Interpreter
     {
+        #region Static Properties
+
+        /// <summary>
+        /// A helper variable to accomodate funky german number parsing
+        /// </summary>
+        private static readonly CultureInfo NumberParsingHelper = new CultureInfo(CultureInfo.InvariantCulture.LCID);
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// A flag that indicates if the Interpreter reached the end of the script
+        /// </summary>
+        public bool Terminated { get; private set; }
+
+        #endregion
+
         #region Constant Keywords
 
         /// <summary>
@@ -64,15 +82,6 @@ namespace Engine.OpenFL
         /// The Symbol that indicates a filepath. (has to be surrounded e.g. "/path/to/file")
         /// </summary>
         private const string FilepathIndicator = "\"";
-
-        #endregion
-
-        #region Static Properties
-
-        /// <summary>
-        /// A helper variable to accomodate funky german number parsing
-        /// </summary>
-        private static readonly CultureInfo NumberParsingHelper = new CultureInfo(CultureInfo.InvariantCulture.LCID);
 
         #endregion
 
@@ -199,15 +208,6 @@ namespace Engine.OpenFL
                 return idx + 1;
             }
         }
-
-        #endregion
-
-        #region Public Properties
-
-        /// <summary>
-        /// A flag that indicates if the Interpreter reached the end of the script
-        /// </summary>
-        public bool Terminated { get; private set; }
 
         #endregion
 
@@ -341,7 +341,7 @@ namespace Engine.OpenFL
                 {
                     if (memoryBuffer.Value.IsInternal)
                     {
-                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value.ToString(),
+                        Logger.Log("Freeing Buffer: " + memoryBuffer.Value,
                             DebugChannel.Log | DebugChannel.OpenFL, 5);
                         memoryBuffer.Value.Buffer.Dispose();
                     }
@@ -740,12 +740,12 @@ namespace Engine.OpenFL
 
             if (code.Length == 0)
             {
-                return new FLInstructionData() {InstructionType = FLInstructionType.NOP};
+                return new FLInstructionData {InstructionType = FLInstructionType.NOP};
             }
 
             if (code[0].Trim().EndsWith(FunctionNamePostfix))
             {
-                return new FLInstructionData() {InstructionType = FLInstructionType.FunctionHeader};
+                return new FLInstructionData {InstructionType = FLInstructionType.FunctionHeader};
             }
 
             bool isBakedFunction = funcs.ContainsKey(code[0]);
@@ -768,20 +768,20 @@ namespace Engine.OpenFL
             {
                 if (defines.ContainsKey(code[i]))
                 {
-                    argData.Add(new FLArgumentData() {value = defines[code[i]], argType = FLArgumentType.Buffer});
+                    argData.Add(new FLArgumentData {value = defines[code[i]], argType = FLArgumentType.Buffer});
                 }
                 else if (jumpLocations.ContainsKey(code[i]))
                 {
                     argData.Add(
-                        new FLArgumentData() {value = jumpLocations[code[i]], argType = FLArgumentType.Function});
+                        new FLArgumentData {value = jumpLocations[code[i]], argType = FLArgumentType.Function});
                 }
                 else if (decimal.TryParse(code[i], NumberStyles.Any, NumberParsingHelper, out decimal valResult))
                 {
-                    argData.Add(new FLArgumentData() {value = valResult, argType = FLArgumentType.Number});
+                    argData.Add(new FLArgumentData {value = valResult, argType = FLArgumentType.Number});
                 }
                 else
                 {
-                    argData.Add(new FLArgumentData() {value = null, argType = FLArgumentType.Unknown});
+                    argData.Add(new FLArgumentData {value = null, argType = FLArgumentType.Unknown});
 #if !NO_CL
                     Logger.Crash(new FLInvalidArgumentType(code[i], "Number or Defined buffer."), true);
 #endif

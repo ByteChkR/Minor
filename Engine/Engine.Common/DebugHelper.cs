@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection.Emit;
 using ADL;
 using ADL.Configs;
 using ADL.Crash;
@@ -14,7 +13,7 @@ namespace Engine.Common
 {
     public static class DebugHelper
     {
-        public static int SeverityFilter = 0;
+        public static int SeverityFilter;
         public static bool ThrowOnAllExceptions = true;
         public static bool Init { get; private set; }
 

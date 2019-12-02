@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Resources;
 using System.Text;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.IO;
-using Engine.Rendering;
 using Engine.UI;
-using Engine.UI.EventSystems;
-using OpenTK.Graphics.OpenGL;
-using OpenTK.Input;
 using OpenTK;
-using Bitmap = System.Drawing.Bitmap;
+using OpenTK.Input;
 
 namespace Engine.Debug
 {
@@ -23,19 +18,11 @@ namespace Engine.Debug
     public class DebugConsoleComponent : AbstractComponent
     {
         /// <summary>
-        /// the Graph data stored.
+        /// Delegate representing a command.
         /// </summary>
-        private Queue<float> _graphData;
-
-        /// <summary>
-        /// The Maximum amount of graph data stored
-        /// </summary>
-        private int _maxGraphCount = 1600;
-
-        /// <summary>
-        /// The Maximum Amount of console lines that is *roughly* working for the usecase
-        /// </summary>
-        private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 20;
+        /// <param name="args">The commands that were provided by the user input</param>
+        /// <returns></returns>
+        public delegate string ConsoleCommand(string[] args);
 
         /// <summary>
         /// The Text to be displayed when the Console is Closed.
@@ -47,15 +34,47 @@ namespace Engine.Debug
         /// </summary>
         private const string ConsoleTitle = "GameEngine Console:";
 
+
         /// <summary>
-        /// Reference to the Title Renderer Component
+        /// The maximum time the cursor stays idle before changing its visible state.
         /// </summary>
-        private UITextRendererComponent _title;
+        private readonly float _blinkMaxTime = 0.5f;
+
+        /// <summary>
+        /// A list used to store previous inputs from the user
+        /// To provide a more "console~ish" feel
+        /// </summary>
+        private readonly List<string> _commandHistory = new List<string>();
+
+        /// <summary>
+        /// Internal List of Commands
+        /// </summary>
+        private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
+
+        /// <summary>
+        /// Reference to the Background Image Renderer Component
+        /// </summary>
+        private UIImageRendererComponent _bgImage;
+
+        /// <summary>
+        /// If the Text Cursor will be shown
+        /// </summary>
+        private bool _blinkActive;
+
+        /// <summary>
+        /// The current time for the blinking
+        /// </summary>
+        private float _blinkTime;
 
         /// <summary>
         /// Reference to the Console Input Renderer Component
         /// </summary>
         private UITextRendererComponent _consoleInput;
+
+        /// <summary>
+        /// Queue that is storing the Log Text
+        /// </summary>
+        private Queue<string> _consoleOutBuffer;
 
         /// <summary>
         /// Reference to the Console Output Renderer Component
@@ -68,14 +87,9 @@ namespace Engine.Debug
         private UIImageRendererComponent _consoleOutputImage;
 
         /// <summary>
-        /// Reference to the Hint Text Renderer Component
+        /// The current Index in the command history
         /// </summary>
-        private UITextRendererComponent _hintText;
-
-        /// <summary>
-        /// Reference to the Background Image Renderer Component
-        /// </summary>
-        private UIImageRendererComponent _bgImage;
+        private int _currentId;
 
         /// <summary>
         /// The Graph component
@@ -83,9 +97,24 @@ namespace Engine.Debug
         private GraphDrawingComponent _graph;
 
         /// <summary>
-        /// String builder used for inputs from the used
+        /// the Graph data stored.
         /// </summary>
-        private StringBuilder _sb;
+        private Queue<float> _graphData;
+
+        /// <summary>
+        /// Reference to the Hint Text Renderer Component
+        /// </summary>
+        private UITextRendererComponent _hintText;
+
+        /// <summary>
+        /// Flag used to indicate that the console window has changed and we need to redraw it
+        /// </summary>
+        private bool _invalidate;
+
+        /// <summary>
+        /// The Maximum amount of graph data stored
+        /// </summary>
+        private int _maxGraphCount = 1600;
 
         /// <summary>
         /// String builder used for outputs to the console.
@@ -93,53 +122,9 @@ namespace Engine.Debug
         private StringBuilder _outSB;
 
         /// <summary>
-        /// Delegate representing a command.
+        /// String builder used for inputs from the used
         /// </summary>
-        /// <param name="args">The commands that were provided by the user input</param>
-        /// <returns></returns>
-        public delegate string ConsoleCommand(string[] args);
-
-        /// <summary>
-        /// Internal List of Commands
-        /// </summary>
-        private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
-
-        /// <summary>
-        /// Queue that is storing the Log Text
-        /// </summary>
-        private Queue<string> _consoleOutBuffer;
-
-        /// <summary>
-        /// A list used to store previous inputs from the user
-        /// To provide a more "console~ish" feel
-        /// </summary>
-        private readonly List<string> _commandHistory = new List<string>();
-
-        /// <summary>
-        /// The current Index in the command history
-        /// </summary>
-        private int _currentId;
-
-        /// <summary>
-        /// The current position in the input(the position of characters)
-        /// </summary>
-        private int inputIndex;
-
-        /// <summary>
-        /// If the Text Cursor will be shown
-        /// </summary>
-        private bool _blinkActive;
-
-
-        /// <summary>
-        /// The maximum time the cursor stays idle before changing its visible state.
-        /// </summary>
-        private readonly float _blinkMaxTime = 0.5f;
-
-        /// <summary>
-        /// The current time for the blinking
-        /// </summary>
-        private float _blinkTime;
+        private StringBuilder _sb;
 
         /// <summary>
         /// Flag to show/disable the console
@@ -148,9 +133,24 @@ namespace Engine.Debug
         private bool _showConsole;
 
         /// <summary>
-        /// Flag used to indicate that the console window has changed and we need to redraw it
+        /// Reference to the Title Renderer Component
         /// </summary>
-        private bool _invalidate;
+        private UITextRendererComponent _title;
+
+        private int fps;
+        private float frames;
+
+        /// <summary>
+        /// The current position in the input(the position of characters)
+        /// </summary>
+        private int inputIndex;
+
+        private float time;
+
+        /// <summary>
+        /// The Maximum Amount of console lines that is *roughly* working for the usecase
+        /// </summary>
+        private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 20;
 
         /// <summary>
         /// Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues)
@@ -252,7 +252,7 @@ namespace Engine.Debug
             _gDraw.Points = new[]
             {
                 new Vector2(0f, 0f),
-                new Vector2(1f, 1f),
+                new Vector2(1f, 1f)
             };
 
             _tText.Position = new Vector2(-0.39f, 0.353f) * 2;
@@ -631,10 +631,6 @@ namespace Engine.Debug
                 }
             }
         }
-
-        private int fps;
-        private float time;
-        private float frames;
 
         /// <summary>
         /// Update Function

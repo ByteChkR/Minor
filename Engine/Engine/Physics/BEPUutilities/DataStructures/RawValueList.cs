@@ -16,15 +16,6 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         ///</summary>
         public T[] Elements;
 
-        /// <summary>
-        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// Can also be set; setting the count is a direct change to the count integer and does not change the state of the array.
-        /// </summary>
-        /// <returns>
-        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
-        /// </returns>
-        public int Count { get; set; }
-
         ///<summary>
         /// Constructs an empty list.
         ///</summary>
@@ -48,6 +39,29 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             Elements = new T[initialCapacity];
         }
 
+        /// <summary>
+        /// Gets the number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// Can also be set; setting the count is a direct change to the count integer and does not change the state of the array.
+        /// </summary>
+        /// <returns>
+        /// The number of elements contained in the <see cref="T:System.Collections.Generic.ICollection`1"/>.
+        /// </returns>
+        public int Count { get; set; }
+
+        ///<summary>
+        /// Gets or sets the current size allocated for the list.
+        ///</summary>
+        public int Capacity
+        {
+            get => Elements.Length;
+            set
+            {
+                T[] newArray = new T[value];
+                Array.Copy(Elements, newArray, Count);
+                Elements = newArray;
+            }
+        }
+
 
         ///<summary>
         /// Removes an element from the list.
@@ -65,20 +79,6 @@ namespace Engine.Physics.BEPUutilities.DataStructures
             if (index < Count)
             {
                 Elements[index] = Elements[Count];
-            }
-        }
-
-        ///<summary>
-        /// Gets or sets the current size allocated for the list.
-        ///</summary>
-        public int Capacity
-        {
-            get => Elements.Length;
-            set
-            {
-                T[] newArray = new T[value];
-                Array.Copy(Elements, newArray, Count);
-                Elements = newArray;
             }
         }
 

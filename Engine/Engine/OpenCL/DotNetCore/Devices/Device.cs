@@ -28,6 +28,62 @@ namespace Engine.OpenCL.DotNetCore.Devices
 
         #endregion
 
+        #region Private Methods
+
+        /// <summary>
+        /// Retrieves the specified information about the device.
+        /// </summary>
+        /// <typeparam name="T">The type of the data that is to be returned.</param>
+        /// <param name="deviceInformation">The kind of information that is to be retrieved.</param>
+        /// <exception cref="OpenClException">If the information could not be retrieved, then an <see cref="OpenClException"/> is thrown.</exception>
+        /// <returns>Returns the specified information.</returns>
+        public T GetDeviceInformation<T>(DeviceInformation deviceInformation)
+        {
+            // Retrieves the size of the return value in bytes, this is used to later get the full information
+            UIntPtr returnValueSize;
+            Result result =
+                DevicesNativeApi.GetDeviceInformation(Handle, deviceInformation, UIntPtr.Zero, null,
+                    out returnValueSize);
+            if (result != Result.Success)
+            {
+                throw new OpenClException("The device information could not be retrieved.", result);
+            }
+
+            // Allocates enough memory for the return value and retrieves it
+            byte[] output = new byte[returnValueSize.ToUInt32()];
+            result = DevicesNativeApi.GetDeviceInformation(Handle, deviceInformation, new UIntPtr((uint) output.Length),
+                output, out returnValueSize);
+            if (result != Result.Success)
+            {
+                throw new OpenClException("The device information could not be retrieved.", result);
+            }
+
+            // Returns the output
+            return InteropConverter.To<T>(output);
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Disposes of the resources that have been acquired by the command queue.
+        /// </summary>
+        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // Checks if the device has already been disposed of, if not, then the device is disposed of
+            if (!IsDisposed)
+            {
+                DevicesNativeApi.ReleaseDevice(Handle);
+            }
+
+            // Makes sure that the base class can execute its dispose logic
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
         #region Public Properties
 
         /// <summary>
@@ -96,7 +152,7 @@ namespace Engine.OpenCL.DotNetCore.Devices
         /// <summary>
         /// Contains the global memory size of the device.
         /// </summary>
-        private Nullable<long> globalMemorySize;
+        private long? globalMemorySize;
 
         /// <summary>
         /// Gets the global memory size of the device.
@@ -117,7 +173,7 @@ namespace Engine.OpenCL.DotNetCore.Devices
         /// <summary>
         /// Contains the number of bits, that the device can use to address its memory.
         /// </summary>
-        private Nullable<int> addressBits;
+        private int? addressBits;
 
         /// <summary>
         /// Gets the number of bits, that the device can use to address its memory.
@@ -138,7 +194,7 @@ namespace Engine.OpenCL.DotNetCore.Devices
         /// <summary>
         /// Contains the maximum clock frequency of the device in MHz.
         /// </summary>
-        private Nullable<int> maximumClockFrequency;
+        private int? maximumClockFrequency;
 
         /// <summary>
         /// Gets the maximum clock frequency of the device in MHz.
@@ -159,7 +215,7 @@ namespace Engine.OpenCL.DotNetCore.Devices
         /// <summary>
         /// Contains a value that determines whether the device is currently available.
         /// </summary>
-        private Nullable<bool> isAvailable;
+        private bool? isAvailable;
 
         /// <summary>
         /// Gets a value that determines whether the device is currently available.
@@ -196,62 +252,6 @@ namespace Engine.OpenCL.DotNetCore.Devices
 
                 return builtInKernels;
             }
-        }
-
-        #endregion
-
-        #region Private Methods
-
-        /// <summary>
-        /// Retrieves the specified information about the device.
-        /// </summary>
-        /// <typeparam name="T">The type of the data that is to be returned.</param>
-        /// <param name="deviceInformation">The kind of information that is to be retrieved.</param>
-        /// <exception cref="OpenClException">If the information could not be retrieved, then an <see cref="OpenClException"/> is thrown.</exception>
-        /// <returns>Returns the specified information.</returns>
-        public T GetDeviceInformation<T>(DeviceInformation deviceInformation)
-        {
-            // Retrieves the size of the return value in bytes, this is used to later get the full information
-            UIntPtr returnValueSize;
-            Result result =
-                DevicesNativeApi.GetDeviceInformation(Handle, deviceInformation, UIntPtr.Zero, null,
-                    out returnValueSize);
-            if (result != Result.Success)
-            {
-                throw new OpenClException("The device information could not be retrieved.", result);
-            }
-
-            // Allocates enough memory for the return value and retrieves it
-            byte[] output = new byte[returnValueSize.ToUInt32()];
-            result = DevicesNativeApi.GetDeviceInformation(Handle, deviceInformation, new UIntPtr((uint) output.Length),
-                output, out returnValueSize);
-            if (result != Result.Success)
-            {
-                throw new OpenClException("The device information could not be retrieved.", result);
-            }
-
-            // Returns the output
-            return InteropConverter.To<T>(output);
-        }
-
-        #endregion
-
-        #region IDisposable Implementation
-
-        /// <summary>
-        /// Disposes of the resources that have been acquired by the command queue.
-        /// </summary>
-        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
-        protected override void Dispose(bool disposing)
-        {
-            // Checks if the device has already been disposed of, if not, then the device is disposed of
-            if (!IsDisposed)
-            {
-                DevicesNativeApi.ReleaseDevice(Handle);
-            }
-
-            // Makes sure that the base class can execute its dispose logic
-            base.Dispose(disposing);
         }
 
         #endregion

@@ -14,12 +14,12 @@ namespace Engine.IO
         /// <summary>
         /// Backing field of the Public Property Cube
         /// </summary>
-        private static Mesh _cube = null;
+        private static Mesh _cube;
 
         /// <summary>
         /// Backing field of the Public Property Sphere
         /// </summary>
-        private static Mesh _sphere = null;
+        private static Mesh _sphere;
 
         /// <summary>
         /// Returns an instance of a Cube

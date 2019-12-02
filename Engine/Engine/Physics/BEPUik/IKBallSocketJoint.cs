@@ -16,6 +16,19 @@ namespace Engine.Physics.BEPUik
         public Vector3 LocalOffsetB;
 
         /// <summary>
+        /// Builds a ball socket joint.
+        /// </summary>
+        /// <param name="connectionA">First connection in the pair.</param>
+        /// <param name="connectionB">Second connection in the pair.</param>
+        /// <param name="anchor">World space anchor location used to initialize the local anchors.</param>
+        public IKBallSocketJoint(Bone connectionA, Bone connectionB, Vector3 anchor)
+            : base(connectionA, connectionB)
+        {
+            OffsetA = anchor - ConnectionA.Position;
+            OffsetB = anchor - ConnectionB.Position;
+        }
+
+        /// <summary>
         /// Gets or sets the offset in world space from the center of mass of connection A to the anchor point.
         /// </summary>
         public Vector3 OffsetA
@@ -31,19 +44,6 @@ namespace Engine.Physics.BEPUik
         {
             get => Quaternion.Transform(LocalOffsetB, ConnectionB.Orientation);
             set => LocalOffsetB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
-        }
-
-        /// <summary>
-        /// Builds a ball socket joint.
-        /// </summary>
-        /// <param name="connectionA">First connection in the pair.</param>
-        /// <param name="connectionB">Second connection in the pair.</param>
-        /// <param name="anchor">World space anchor location used to initialize the local anchors.</param>
-        public IKBallSocketJoint(Bone connectionA, Bone connectionB, Vector3 anchor)
-            : base(connectionA, connectionB)
-        {
-            OffsetA = anchor - ConnectionA.Position;
-            OffsetB = anchor - ConnectionB.Position;
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

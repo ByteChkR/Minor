@@ -37,11 +37,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
     public class ConvexCollidable<T> : ConvexCollidable where T : ConvexShape
     {
         ///<summary>
-        /// Gets the shape of the collidable.
-        ///</summary>
-        public new T Shape => (T) shape;
-
-        ///<summary>
         /// Constructs a new convex collidable.
         ///</summary>
         ///<param name="shape">Shape to use in the collidable.</param>
@@ -49,6 +44,11 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables
             : base(shape)
         {
         }
+
+        ///<summary>
+        /// Gets the shape of the collidable.
+        ///</summary>
+        public new T Shape => (T) shape;
 
 
         /// <summary>

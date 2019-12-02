@@ -9,16 +9,6 @@ namespace Engine.DataTypes
     public class AudioFile : IDisposable
     {
         /// <summary>
-        /// The OpenAL Buffer handle
-        /// </summary>
-        public int Buffer { get; }
-
-        /// <summary>
-        /// The buffer size in bytes
-        /// </summary>
-        public int BufferSize { get; }
-
-        /// <summary>
         /// Internal Constructor to create a Audio file Data object.
         /// </summary>
         /// <param name="buffer"></param>
@@ -28,6 +18,16 @@ namespace Engine.DataTypes
             BufferSize = bufferSize;
             Buffer = buffer;
         }
+
+        /// <summary>
+        /// The OpenAL Buffer handle
+        /// </summary>
+        public int Buffer { get; }
+
+        /// <summary>
+        /// The buffer size in bytes
+        /// </summary>
+        public int BufferSize { get; }
 
 
         /// <summary>

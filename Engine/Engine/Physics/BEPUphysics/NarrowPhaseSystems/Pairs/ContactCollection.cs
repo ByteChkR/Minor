@@ -8,64 +8,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class ContactCollection : IList<ContactInformation>
     {
-        ///<summary>
-        /// Enumerator for the contact collection.
-        ///</summary>
-        public struct Enumerator : IEnumerator<ContactInformation>
-        {
-            private ContactCollection contactCollection;
-            private int index;
-            private int count;
-
-            internal Enumerator(ContactCollection contactCollection)
-            {
-                this.contactCollection = contactCollection;
-                index = -1;
-                count = contactCollection.Count;
-            }
-
-
-            /// <summary>
-            /// Gets the element in the collection at the current position of the enumerator.
-            /// </summary>
-            /// <returns>
-            /// The element in the collection at the current position of the enumerator.
-            /// </returns>
-            public ContactInformation Current => contactCollection[index];
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            /// <filterpriority>2</filterpriority>
-            public void Dispose()
-            {
-            }
-
-            object System.Collections.IEnumerator.Current => Current;
-
-            /// <summary>
-            /// Advances the enumerator to the next element of the collection.
-            /// </summary>
-            /// <returns>
-            /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-            /// </returns>
-            /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-            public bool MoveNext()
-            {
-                return ++index < count;
-            }
-
-            /// <summary>
-            /// Sets the enumerator to its initial position, which is before the first element in the collection.
-            /// </summary>
-            /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-            public void Reset()
-            {
-                index = -1;
-                count = contactCollection.Count;
-            }
-        }
-
         private CollidablePairHandler pair;
 
         internal ContactCollection(CollidablePairHandler pair)
@@ -105,15 +47,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
-        {
-            return new Enumerator(this);
-        }
-
-        ///<summary>
-        /// Gets an enumerator for the collection.
-        ///</summary>
-        ///<returns>Enumerator for the contact collection.</returns>
-        public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
         }
@@ -198,6 +131,73 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         void IList<ContactInformation>.RemoveAt(int index)
         {
             throw new NotSupportedException();
+        }
+
+        ///<summary>
+        /// Gets an enumerator for the collection.
+        ///</summary>
+        ///<returns>Enumerator for the contact collection.</returns>
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        ///<summary>
+        /// Enumerator for the contact collection.
+        ///</summary>
+        public struct Enumerator : IEnumerator<ContactInformation>
+        {
+            private ContactCollection contactCollection;
+            private int index;
+            private int count;
+
+            internal Enumerator(ContactCollection contactCollection)
+            {
+                this.contactCollection = contactCollection;
+                index = -1;
+                count = contactCollection.Count;
+            }
+
+
+            /// <summary>
+            /// Gets the element in the collection at the current position of the enumerator.
+            /// </summary>
+            /// <returns>
+            /// The element in the collection at the current position of the enumerator.
+            /// </returns>
+            public ContactInformation Current => contactCollection[index];
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            /// <filterpriority>2</filterpriority>
+            public void Dispose()
+            {
+            }
+
+            object System.Collections.IEnumerator.Current => Current;
+
+            /// <summary>
+            /// Advances the enumerator to the next element of the collection.
+            /// </summary>
+            /// <returns>
+            /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+            /// </returns>
+            /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+            public bool MoveNext()
+            {
+                return ++index < count;
+            }
+
+            /// <summary>
+            /// Sets the enumerator to its initial position, which is before the first element in the collection.
+            /// </summary>
+            /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+            public void Reset()
+            {
+                index = -1;
+                count = contactCollection.Count;
+            }
         }
     }
 }

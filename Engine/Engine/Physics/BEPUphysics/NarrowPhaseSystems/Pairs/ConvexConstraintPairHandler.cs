@@ -10,16 +10,16 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     {
         private ConvexContactManifoldConstraint contactConstraint;
 
+        protected ConvexConstraintPairHandler()
+        {
+            contactConstraint = new ConvexContactManifoldConstraint(this);
+        }
+
 
         /// <summary>
         /// Gets the contact constraint used by the pair handler.
         /// </summary>
         public override ContactManifoldConstraint ContactConstraint => contactConstraint;
-
-        protected ConvexConstraintPairHandler()
-        {
-            contactConstraint = new ConvexContactManifoldConstraint(this);
-        }
 
         protected internal override void GetContactInformation(int index, out ContactInformation info)
         {

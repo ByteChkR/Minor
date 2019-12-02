@@ -22,6 +22,21 @@ namespace Engine.Audio
         /// </summary>
         private AudioFile _clip;
 
+
+        /// <summary>
+        /// Protected Constructor that will be called from inheriting classes to set up a audio source
+        /// </summary>
+        protected AbstractAudioSource()
+        {
+            source = AL.GenSource(); //Generating Audio Source
+
+            //Setting Default Values
+            AL.Source(source, ALSourcef.ReferenceDistance, 0f);
+            AL.Source(source, ALSourcef.MaxDistance, 50f);
+            AL.Source(source, ALSourcef.Pitch, 1f);
+            AL.Source(source, ALSourcef.Gain, 1f);
+        }
+
         /// <summary>
         /// The Clip that is loaded by OpenAL
         /// </summary>
@@ -74,6 +89,31 @@ namespace Engine.Audio
         /// A Wrapper to return the Current State of the OpenCL Audio Source bound to this object
         /// </summary>
         public ALSourceState SourceState => AL.GetSourceState(source);
+
+        /// <summary>
+        /// Instructs the audio source to play the clip that has been assigned to it.
+        /// </summary>
+        public void Play()
+        {
+            AL.SourcePlay(source);
+        }
+
+        /// <summary>
+        /// Instructs the audio source to pause the clip that has been assigned to it.
+        /// </summary>
+        public void Pause()
+        {
+            AL.SourcePause(source);
+        }
+
+        /// <summary>
+        /// Instructs the audio source to stop the clip that has been assigned to it.
+        /// </summary>
+        public void Stop()
+        {
+            AL.SourceStop(source);
+            TrackPosition = 0;
+        }
 
 
         #region Public Properties
@@ -232,45 +272,5 @@ namespace Engine.Audio
         }
 
         #endregion
-
-
-        /// <summary>
-        /// Protected Constructor that will be called from inheriting classes to set up a audio source
-        /// </summary>
-        protected AbstractAudioSource()
-        {
-            source = AL.GenSource(); //Generating Audio Source
-
-            //Setting Default Values
-            AL.Source(source, ALSourcef.ReferenceDistance, 0f);
-            AL.Source(source, ALSourcef.MaxDistance, 50f);
-            AL.Source(source, ALSourcef.Pitch, 1f);
-            AL.Source(source, ALSourcef.Gain, 1f);
-        }
-
-        /// <summary>
-        /// Instructs the audio source to play the clip that has been assigned to it.
-        /// </summary>
-        public void Play()
-        {
-            AL.SourcePlay(source);
-        }
-
-        /// <summary>
-        /// Instructs the audio source to pause the clip that has been assigned to it.
-        /// </summary>
-        public void Pause()
-        {
-            AL.SourcePause(source);
-        }
-
-        /// <summary>
-        /// Instructs the audio source to stop the clip that has been assigned to it.
-        /// </summary>
-        public void Stop()
-        {
-            AL.SourceStop(source);
-            TrackPosition = 0;
-        }
     }
 }

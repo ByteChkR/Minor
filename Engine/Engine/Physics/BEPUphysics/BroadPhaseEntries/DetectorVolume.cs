@@ -64,17 +64,38 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     /// </summary>
     public class DetectorVolume : BroadPhaseEntry, ISpaceObject, IDeferredEventCreator
     {
+        private Queue<ContainmentChange> containmentChanges = new Queue<ContainmentChange>();
+
+        private bool innerFacingIsClockwise;
+
+
+        /// <summary>
+        /// Used to protect against containment changes coming in from multithreaded narrowphase contexts.
+        /// </summary>
+        private SpinLock locker = new SpinLock();
+
         internal Dictionary<Entity, DetectorVolumePairHandler> pairs =
             new Dictionary<Entity, DetectorVolumePairHandler>();
+
+
+        private TriangleMesh triangleMesh;
+
+
+        /// <summary>
+        /// Creates a detector volume.
+        /// </summary>
+        /// <param name="triangleMesh">Closed and consistently wound mesh defining the volume.</param>
+        public DetectorVolume(TriangleMesh triangleMesh)
+        {
+            TriangleMesh = triangleMesh;
+            UpdateBoundingBox();
+        }
 
         /// <summary>
         /// Gets the list of pairs associated with the detector volume.
         /// </summary>
         public ReadOnlyDictionary<Entity, DetectorVolumePairHandler> Pairs =>
             new ReadOnlyDictionary<Entity, DetectorVolumePairHandler>(pairs);
-
-
-        private TriangleMesh triangleMesh;
 
         /// <summary>
         /// Gets or sets the triangle mesh data and acceleration structure.  Must be a closed mesh with consistent winding.
@@ -90,15 +111,84 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             }
         }
 
+        ///<summary>
+        /// Space that owns the detector volume.
+        ///</summary>
+        public Space Space { get; private set; }
 
         /// <summary>
-        /// Creates a detector volume.
+        /// Gets whether this collidable is associated with an active entity. True if it is, false if it's not.
         /// </summary>
-        /// <param name="triangleMesh">Closed and consistently wound mesh defining the volume.</param>
-        public DetectorVolume(TriangleMesh triangleMesh)
+        public override bool IsActive => false;
+
+
+        DeferredEventDispatcher IDeferredEventCreator.DeferredEventDispatcher { get; set; }
+
+        bool IDeferredEventCreator.IsActive
         {
-            TriangleMesh = triangleMesh;
-            UpdateBoundingBox();
+            get => true;
+            set => throw new NotSupportedException("Detector volumes are always active deferred event generators.");
+        }
+
+        void IDeferredEventCreator.DispatchEvents()
+        {
+            while (containmentChanges.Count > 0)
+            {
+                ContainmentChange change = containmentChanges.Dequeue();
+                switch (change.Change)
+                {
+                    case ContainmentChangeType.BeganTouching:
+                        if (EntityBeganTouching != null)
+                        {
+                            EntityBeganTouching(this, change.Entity);
+                        }
+
+                        break;
+                    case ContainmentChangeType.StoppedTouching:
+                        if (EntityStoppedTouching != null)
+                        {
+                            EntityStoppedTouching(this, change.Entity);
+                        }
+
+                        break;
+                    case ContainmentChangeType.BeganContaining:
+                        if (VolumeBeganContainingEntity != null)
+                        {
+                            VolumeBeganContainingEntity(this, change.Entity);
+                        }
+
+                        break;
+                    case ContainmentChangeType.StoppedContaining:
+                        if (VolumeStoppedContainingEntity != null)
+                        {
+                            VolumeStoppedContainingEntity(this, change.Entity);
+                        }
+
+                        break;
+                }
+            }
+        }
+
+        int IDeferredEventCreator.ChildDeferredEventCreators
+        {
+            get => 0;
+            set => throw new NotSupportedException("The detector volume does not allow child deferred event creators.");
+        }
+
+
+        Space ISpaceObject.Space
+        {
+            get => Space;
+            set => Space = value;
+        }
+
+
+        void ISpaceObject.OnAdditionToSpace(Space newSpace)
+        {
+        }
+
+        void ISpaceObject.OnRemovalFromSpace(Space oldSpace)
+        {
         }
 
 
@@ -121,20 +211,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         /// Fires when an entity ceases to be fully engulfed by a volume.
         /// </summary>
         public event VolumeStopsContainingEntityEventHandler VolumeStoppedContainingEntity;
-
-
-        Space ISpaceObject.Space
-        {
-            get => Space;
-            set => Space = value;
-        }
-
-        ///<summary>
-        /// Space that owns the detector volume.
-        ///</summary>
-        public Space Space { get; private set; }
-
-        private bool innerFacingIsClockwise;
 
         /// <summary>
         /// Determines if a point is contained by the detector volume.
@@ -202,11 +278,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                         pair.BroadPhaseOverlap.entryB);
             }
         }
-
-        /// <summary>
-        /// Gets whether this collidable is associated with an active entity. True if it is, false if it's not.
-        /// </summary>
-        public override bool IsActive => false;
 
         public override bool RayCast(Ray ray, float maximumLength, out RayHit rayHit)
         {
@@ -318,37 +389,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             CommonResources.GiveBack(triangles);
         }
 
-
-        void ISpaceObject.OnAdditionToSpace(Space newSpace)
-        {
-        }
-
-        void ISpaceObject.OnRemovalFromSpace(Space oldSpace)
-        {
-        }
-
-
-        /// <summary>
-        /// Used to protect against containment changes coming in from multithreaded narrowphase contexts.
-        /// </summary>
-        private SpinLock locker = new SpinLock();
-
-        private struct ContainmentChange
-        {
-            public Entity Entity;
-            public ContainmentChangeType Change;
-        }
-
-        private enum ContainmentChangeType : byte
-        {
-            BeganTouching,
-            StoppedTouching,
-            BeganContaining,
-            StoppedContaining
-        }
-
-        private Queue<ContainmentChange> containmentChanges = new Queue<ContainmentChange>();
-
         internal void BeganTouching(DetectorVolumePairHandler pair)
         {
             locker.Enter();
@@ -393,58 +433,18 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             locker.Exit();
         }
 
-
-        DeferredEventDispatcher IDeferredEventCreator.DeferredEventDispatcher { get; set; }
-
-        bool IDeferredEventCreator.IsActive
+        private struct ContainmentChange
         {
-            get => true;
-            set => throw new NotSupportedException("Detector volumes are always active deferred event generators.");
+            public Entity Entity;
+            public ContainmentChangeType Change;
         }
 
-        void IDeferredEventCreator.DispatchEvents()
+        private enum ContainmentChangeType : byte
         {
-            while (containmentChanges.Count > 0)
-            {
-                ContainmentChange change = containmentChanges.Dequeue();
-                switch (change.Change)
-                {
-                    case ContainmentChangeType.BeganTouching:
-                        if (EntityBeganTouching != null)
-                        {
-                            EntityBeganTouching(this, change.Entity);
-                        }
-
-                        break;
-                    case ContainmentChangeType.StoppedTouching:
-                        if (EntityStoppedTouching != null)
-                        {
-                            EntityStoppedTouching(this, change.Entity);
-                        }
-
-                        break;
-                    case ContainmentChangeType.BeganContaining:
-                        if (VolumeBeganContainingEntity != null)
-                        {
-                            VolumeBeganContainingEntity(this, change.Entity);
-                        }
-
-                        break;
-                    case ContainmentChangeType.StoppedContaining:
-                        if (VolumeStoppedContainingEntity != null)
-                        {
-                            VolumeStoppedContainingEntity(this, change.Entity);
-                        }
-
-                        break;
-                }
-            }
-        }
-
-        int IDeferredEventCreator.ChildDeferredEventCreators
-        {
-            get => 0;
-            set => throw new NotSupportedException("The detector volume does not allow child deferred event creators.");
+            BeganTouching,
+            StoppedTouching,
+            BeganContaining,
+            StoppedContaining
         }
     }
 

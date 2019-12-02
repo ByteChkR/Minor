@@ -13,14 +13,20 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public abstract class Collidable : BroadPhaseEntry
     {
-        protected Collidable()
-        {
-            shapeChangedDelegate = OnShapeChanged;
-        }
+        internal RawList<CollidablePairHandler> pairs = new RawList<CollidablePairHandler>();
 
 
         protected internal CollisionShape
             shape; //Having this non-private allows for some very special-casey stuff; see TriangleShape initialization.
+
+        private Action<CollisionShape> shapeChangedDelegate;
+
+        private bool shapeChangedHooked = true;
+
+        protected Collidable()
+        {
+            shapeChangedDelegate = OnShapeChanged;
+        }
 
         ///<summary>
         /// Gets the shape used by the collidable.
@@ -44,8 +50,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
                 OnShapeChanged(shape);
             }
         }
-
-        private bool shapeChangedHooked = true;
 
         /// <summary>
         /// Gets or sets whether the shape changed event is hooked. Setting this modifies the event delegate list on the associated shape, if any shape exists.
@@ -82,15 +86,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         /// </summary>
         public bool IgnoreShapeChanges { get; set; }
 
-        private Action<CollisionShape> shapeChangedDelegate;
-
-        protected virtual void OnShapeChanged(CollisionShape collisionShape)
-        {
-        }
-
-
-        internal RawList<CollidablePairHandler> pairs = new RawList<CollidablePairHandler>();
-
         ///<summary>
         /// Gets the list of pairs associated with the collidable.
         /// These pairs are found by the broad phase and are managed by the narrow phase;
@@ -102,6 +97,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         /// Gets a list of all other collidables that this collidable overlaps.
         ///</summary>
         public CollidableCollection OverlappedCollidables => new CollidableCollection(this);
+
+        protected virtual void OnShapeChanged(CollisionShape collisionShape)
+        {
+        }
 
         protected override void CollisionRulesUpdated()
         {

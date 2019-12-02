@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using Assimp;
 using Assimp.Configs;
@@ -11,10 +10,9 @@ using Engine.Debug;
 using Engine.Exceptions;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using Mesh = Engine.DataTypes.Mesh;
 using AssimpMesh = Assimp.Mesh;
 using AssimpTextureType = Assimp.TextureType;
-using Bitmap = System.Drawing.Bitmap;
+using Mesh = Engine.DataTypes.Mesh;
 using TextureType = Engine.DataTypes.TextureType;
 
 namespace Engine.IO

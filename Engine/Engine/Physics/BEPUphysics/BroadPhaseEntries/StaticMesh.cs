@@ -21,24 +21,11 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     /// </remarks>
     public class StaticMesh : StaticCollidable
     {
-        ///<summary>
-        /// Gets the TriangleMesh acceleration structure used by the StaticMesh.
-        ///</summary>
-        public TriangleMesh Mesh { get; private set; }
+        protected internal ContactEventManager<StaticMesh> events;
 
-        ///<summary>
-        /// Gets or sets the world transform of the mesh.
-        ///</summary>
-        public AffineTransform WorldTransform
-        {
-            get => ((TransformableMeshData) Mesh.Data).worldTransform;
-            set
-            {
-                ((TransformableMeshData) Mesh.Data).WorldTransform = value;
-                Mesh.Tree.Refit();
-                UpdateBoundingBox();
-            }
-        }
+        internal bool improveBoundaryBehavior = true;
+
+        internal TriangleSidedness sidedness = TriangleSidedness.DoubleSided;
 
         ///<summary>
         /// Constructs a new static mesh.
@@ -64,11 +51,28 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         }
 
         ///<summary>
+        /// Gets the TriangleMesh acceleration structure used by the StaticMesh.
+        ///</summary>
+        public TriangleMesh Mesh { get; private set; }
+
+        ///<summary>
+        /// Gets or sets the world transform of the mesh.
+        ///</summary>
+        public AffineTransform WorldTransform
+        {
+            get => ((TransformableMeshData) Mesh.Data).worldTransform;
+            set
+            {
+                ((TransformableMeshData) Mesh.Data).WorldTransform = value;
+                Mesh.Tree.Refit();
+                UpdateBoundingBox();
+            }
+        }
+
+        ///<summary>
         /// Gets the shape used by the mesh.
         ///</summary>
         public new StaticMeshShape Shape => (StaticMeshShape) shape;
-
-        internal TriangleSidedness sidedness = TriangleSidedness.DoubleSided;
 
         ///<summary>
         /// Gets or sets the sidedness of the mesh.  This can be used to ignore collisions and rays coming from a direction relative to the winding of the triangle.
@@ -78,8 +82,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => sidedness;
             set => sidedness = value;
         }
-
-        internal bool improveBoundaryBehavior = true;
 
         /// <summary>
         /// Gets or sets whether or not the collision system should attempt to improve contact behavior at the boundaries between triangles.
@@ -91,9 +93,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             get => improveBoundaryBehavior;
             set => improveBoundaryBehavior = value;
         }
-
-
-        protected internal ContactEventManager<StaticMesh> events;
 
         ///<summary>
         /// Gets the event manager used by the mesh.

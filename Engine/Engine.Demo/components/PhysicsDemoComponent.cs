@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Resources;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -9,21 +8,21 @@ using Engine.Physics;
 using Engine.Physics.BEPUphysics.Entities.Prefabs;
 using Engine.Rendering;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Demo.components
 {
     public class PhysicsDemoComponent : AbstractComponent
     {
+        private Mesh Box = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
+
+        private List<GameObject> Collider = new List<GameObject>();
         private int game;
+        private Mesh Sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
 
         public PhysicsDemoComponent()
         {
             game = LayerManager.NameToLayer("physics");
         }
-
-        private Mesh Box = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
-        private Mesh Sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
 
         protected override void Awake()
         {
@@ -70,8 +69,6 @@ namespace Engine.Demo.components
 
             return "Gravity Set to: "; // + Physics.Gravity;
         }
-
-        private List<GameObject> Collider = new List<GameObject>();
 
         private string cmd_ResetCollider(string[] args)
         {

@@ -13,7 +13,17 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     ///</summary>
     public abstract class ContactManifoldConstraint : SolverGroup
     {
+        protected Entity entityA;
+
+        protected Entity entityB;
         internal InteractionProperties materialInteraction;
+
+        protected internal CollidablePairHandler pair;
+
+        protected ContactManifoldConstraint(CollidablePairHandler pairHandler)
+        {
+            pair = pairHandler;
+        }
 
         ///<summary>
         /// Gets or sets the material-blended properties used by this constraint.
@@ -24,31 +34,20 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
             set => materialInteraction = value;
         }
 
-        protected Entity entityA;
-
         ///<summary>
         /// Gets the first entity associated with the manifold.
         ///</summary>
         public Entity EntityA => entityA;
-
-        protected Entity entityB;
 
         ///<summary>
         /// Gets the second entity associated with the manifold.
         ///</summary>
         public Entity EntityB => entityB;
 
-        protected internal CollidablePairHandler pair;
-
         ///<summary>
         /// Gets the pair handler owning this constraint.
         ///</summary>
         public CollidablePairHandler Pair => pair;
-
-        protected ContactManifoldConstraint(CollidablePairHandler pairHandler)
-        {
-            pair = pairHandler;
-        }
 
 
         protected internal override void OnInvolvedEntitiesChanged()

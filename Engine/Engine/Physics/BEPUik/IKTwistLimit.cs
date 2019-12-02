@@ -32,6 +32,27 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public Vector3 LocalMeasurementAxisB;
 
+        private float maximumAngle;
+
+
+        /// <summary>
+        /// Builds a new twist limit. Prevents two bones from rotating beyond a certain angle away from each other as measured by attaching an axis to each connected bone.
+        /// </summary>
+        /// <param name="connectionA">First connection of the limit.</param>
+        /// <param name="connectionB">Second connection of the limit.</param>
+        /// <param name="axisA">Axis attached to connectionA in world space.</param>
+        /// <param name="axisB">Axis attached to connectionB in world space.</param>
+        /// <param name="maximumAngle">Maximum angle allowed between connectionA's axis and connectionB's axis.</param>
+        public IKTwistLimit(Bone connectionA, Bone connectionB, Vector3 axisA, Vector3 axisB, float maximumAngle)
+            : base(connectionA, connectionB)
+        {
+            AxisA = axisA;
+            AxisB = axisB;
+            MaximumAngle = maximumAngle;
+
+            ComputeMeasurementAxes();
+        }
+
         /// <summary>
         /// Gets or sets the axis attached to ConnectionA in world space.
         /// Must be unit length and perpendicular to MeasurementAxisA.
@@ -73,8 +94,6 @@ namespace Engine.Physics.BEPUik
             get => Quaternion.Transform(LocalMeasurementAxisB, ConnectionB.Orientation);
             set => LocalMeasurementAxisB = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
         }
-
-        private float maximumAngle;
 
         /// <summary>
         /// Gets or sets the maximum angle between the two axes allowed by the constraint.
@@ -118,25 +137,6 @@ namespace Engine.Physics.BEPUik
             //Plop them on!
             MeasurementAxisA = worldMeasurementAxisA;
             MeasurementAxisB = worldMeasurementAxisB;
-        }
-
-
-        /// <summary>
-        /// Builds a new twist limit. Prevents two bones from rotating beyond a certain angle away from each other as measured by attaching an axis to each connected bone.
-        /// </summary>
-        /// <param name="connectionA">First connection of the limit.</param>
-        /// <param name="connectionB">Second connection of the limit.</param>
-        /// <param name="axisA">Axis attached to connectionA in world space.</param>
-        /// <param name="axisB">Axis attached to connectionB in world space.</param>
-        /// <param name="maximumAngle">Maximum angle allowed between connectionA's axis and connectionB's axis.</param>
-        public IKTwistLimit(Bone connectionA, Bone connectionB, Vector3 axisA, Vector3 axisB, float maximumAngle)
-            : base(connectionA, connectionB)
-        {
-            AxisA = axisA;
-            AxisB = axisB;
-            MaximumAngle = maximumAngle;
-
-            ComputeMeasurementAxes();
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

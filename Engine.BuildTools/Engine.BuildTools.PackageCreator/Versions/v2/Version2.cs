@@ -9,10 +9,9 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
 {
     public class Version2 : IPackageVersion
     {
+        private MD5 md5 = MD5.Create();
         public string ManifestPath => "PackageManifest.xml";
         public string PackageVersion => "v2";
-
-        private MD5 md5 = MD5.Create();
 
         public void UnpackPackage(string file, string outPutDir)
         {
@@ -23,50 +22,6 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             {
                 Console.WriteLine("Checksum verification failed!");
             }
-        }
-
-        private bool CheckHashes(PackageManifest pm, string outPutDir)
-        {
-            string[] files = Directory.GetFiles(outPutDir, "*", SearchOption.AllDirectories);
-            Uri outDir = new Uri(Path.GetFullPath(outPutDir));
-            bool isCorrect = true;
-            for (int j = 0; j < files.Length; j++)
-            {
-                string f = new Uri(Path.GetFullPath(files[j])).MakeRelativeUri(outDir).ToString();
-                for (int i = 0; i < pm.Hashes.Count; i++)
-                {
-                    if (f == pm.Hashes[i].File)
-                    {
-                        Stream s = File.OpenRead(files[i]);
-                        isCorrect &= CompareHash(pm.Hashes[i].Hash, s);
-                        s.Close();
-                    }
-                }
-            }
-
-            return isCorrect;
-        }
-
-        private string ComputeHash(Stream content)
-        {
-            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
-            return Convert.ToBase64String(md5.ComputeHash(content));
-        }
-
-        private string ComputeHash(byte[] content)
-        {
-            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
-            return Convert.ToBase64String(md5.ComputeHash(content));
-        }
-
-        private bool CompareHash(string should, byte[] content)
-        {
-            return should == ComputeHash(content);
-        }
-
-        private bool CompareHash(string should, Stream content)
-        {
-            return should == ComputeHash(content);
         }
 
         public bool IsVersion(string path)
@@ -145,11 +100,6 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             fs.Close();
         }
 
-        private HashEntry CreateEntry(string name, byte[] content)
-        {
-            return new HashEntry {File = name, Hash = ComputeHash(content)};
-        }
-
         public void CreateEnginePackage(string outputFile, string workingDir, string[] files, string version = null)
         {
             File.WriteAllBytes(outputFile,
@@ -185,6 +135,55 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             str.Close();
             a.Dispose();
             fs.Close();
+        }
+
+        private bool CheckHashes(PackageManifest pm, string outPutDir)
+        {
+            string[] files = Directory.GetFiles(outPutDir, "*", SearchOption.AllDirectories);
+            Uri outDir = new Uri(Path.GetFullPath(outPutDir));
+            bool isCorrect = true;
+            for (int j = 0; j < files.Length; j++)
+            {
+                string f = new Uri(Path.GetFullPath(files[j])).MakeRelativeUri(outDir).ToString();
+                for (int i = 0; i < pm.Hashes.Count; i++)
+                {
+                    if (f == pm.Hashes[i].File)
+                    {
+                        Stream s = File.OpenRead(files[i]);
+                        isCorrect &= CompareHash(pm.Hashes[i].Hash, s);
+                        s.Close();
+                    }
+                }
+            }
+
+            return isCorrect;
+        }
+
+        private string ComputeHash(Stream content)
+        {
+            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
+            return Convert.ToBase64String(md5.ComputeHash(content));
+        }
+
+        private string ComputeHash(byte[] content)
+        {
+            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
+            return Convert.ToBase64String(md5.ComputeHash(content));
+        }
+
+        private bool CompareHash(string should, byte[] content)
+        {
+            return should == ComputeHash(content);
+        }
+
+        private bool CompareHash(string should, Stream content)
+        {
+            return should == ComputeHash(content);
+        }
+
+        private HashEntry CreateEntry(string name, byte[] content)
+        {
+            return new HashEntry {File = name, Hash = ComputeHash(content)};
         }
     }
 }

@@ -13,12 +13,12 @@ namespace Engine.Physics.BEPUphysics.Constraints.Collision
     {
         protected Entity entityA;
 
+        protected Entity entityB;
+
         ///<summary>
         /// Gets the first entity in the pair.
         ///</summary>
         public Entity EntityA => entityA;
-
-        protected Entity entityB;
 
         ///<summary>
         /// Gets the second entity in the pair.

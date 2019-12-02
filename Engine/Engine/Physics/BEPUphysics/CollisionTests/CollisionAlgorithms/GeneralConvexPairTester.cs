@@ -21,14 +21,17 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         ///</summary>
         public static bool UseSimplexCaching;
 
-        private CollisionState state = CollisionState.Separated;
-        private CollisionState previousState = CollisionState.Separated;
-
-        private Vector3 localSeparatingAxis;
         private CachedSimplex cachedSimplex;
 
         protected internal ConvexCollidable collidableA;
         protected internal ConvexCollidable collidableB;
+
+        private Vector3 localDirection;
+
+        private Vector3 localSeparatingAxis;
+        private CollisionState previousState = CollisionState.Separated;
+
+        private CollisionState state = CollisionState.Separated;
 
         ///<summary>
         /// Gets the first collidable in the pair.
@@ -177,8 +180,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
             contact = new ContactData();
             return false;
         }
-
-        private Vector3 localDirection;
 
         private bool DoDeepContact(out ContactData contact)
         {

@@ -17,97 +17,15 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     ///</summary>
     public class MobileMeshShape : EntityShape
     {
-        private float meshCollisionMargin = CollisionDetectionSettings.DefaultMargin;
-
         /// <summary>
-        /// Gets or sets the margin of the mobile mesh to use when colliding with other meshes.
-        /// When colliding with non-mesh shapes, the mobile mesh has no margin.
+        /// The difference in t parameters in a ray cast under which two hits are considered to be redundant.
         /// </summary>
-        public float MeshCollisionMargin
-        {
-            get => meshCollisionMargin;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Mesh margin must be nonnegative.");
-                }
-
-                meshCollisionMargin = value;
-                OnShapeChanged();
-            }
-        }
-
-        ///<summary>
-        /// Gets or sets the TriangleMesh data structure used by this shape.
-        ///</summary>
-        public TriangleMesh TriangleMesh { get; }
-
-        /// <summary>
-        /// Gets the transform used by the local mesh shape.
-        /// </summary>
-        public AffineTransform Transform => ((TransformableMeshData) TriangleMesh.Data).worldTransform;
+        public static float MeshHitUniquenessThreshold = .0001f;
 
         private RawList<Vector3> hullVertices = new RawList<Vector3>();
-
-        /// <summary>
-        /// Gets the list of vertices on the convex hull of the mesh used to compute the bounding box.
-        /// </summary>
-        public ReadOnlyList<Vector3> HullVertices => new ReadOnlyList<Vector3>(hullVertices);
+        private float meshCollisionMargin = CollisionDetectionSettings.DefaultMargin;
 
         internal MobileMeshSolidity solidity = MobileMeshSolidity.DoubleSided;
-
-        ///<summary>
-        /// Gets the solidity of the mesh.
-        ///</summary>
-        public MobileMeshSolidity Solidity => solidity;
-
-        /// <summary>
-        /// Gets or sets the sidedness of the shape.  This is a convenience property based on the Solidity property.
-        /// If the shape is solid, this returns whatever sidedness is computed to make the triangles of the shape face outward.
-        /// If the shape is solid, setting this property will change the sidedness that is used while the shape is solid.
-        /// </summary>
-        public TriangleSidedness Sidedness
-        {
-            get
-            {
-                switch (solidity)
-                {
-                    case MobileMeshSolidity.Clockwise:
-                        return TriangleSidedness.Clockwise;
-                    case MobileMeshSolidity.Counterclockwise:
-                        return TriangleSidedness.Counterclockwise;
-                    case MobileMeshSolidity.DoubleSided:
-                        return TriangleSidedness.DoubleSided;
-                    case MobileMeshSolidity.Solid:
-                        return SidednessWhenSolid;
-                }
-
-                return TriangleSidedness.DoubleSided;
-            }
-            set
-            {
-                if (solidity == MobileMeshSolidity.Solid)
-                {
-                    SidednessWhenSolid = value;
-                }
-                else
-                {
-                    switch (value)
-                    {
-                        case TriangleSidedness.Clockwise:
-                            solidity = MobileMeshSolidity.Clockwise;
-                            break;
-                        case TriangleSidedness.Counterclockwise:
-                            solidity = MobileMeshSolidity.Counterclockwise;
-                            break;
-                        case TriangleSidedness.DoubleSided:
-                            solidity = MobileMeshSolidity.DoubleSided;
-                            break;
-                    }
-                }
-            }
-        }
 
         ///<summary>
         /// Constructs a new mobile mesh shape.
@@ -188,6 +106,92 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             UpdateEntityShapeVolume(volumeDescription);
         }
 
+        /// <summary>
+        /// Gets or sets the margin of the mobile mesh to use when colliding with other meshes.
+        /// When colliding with non-mesh shapes, the mobile mesh has no margin.
+        /// </summary>
+        public float MeshCollisionMargin
+        {
+            get => meshCollisionMargin;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Mesh margin must be nonnegative.");
+                }
+
+                meshCollisionMargin = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the TriangleMesh data structure used by this shape.
+        ///</summary>
+        public TriangleMesh TriangleMesh { get; }
+
+        /// <summary>
+        /// Gets the transform used by the local mesh shape.
+        /// </summary>
+        public AffineTransform Transform => ((TransformableMeshData) TriangleMesh.Data).worldTransform;
+
+        /// <summary>
+        /// Gets the list of vertices on the convex hull of the mesh used to compute the bounding box.
+        /// </summary>
+        public ReadOnlyList<Vector3> HullVertices => new ReadOnlyList<Vector3>(hullVertices);
+
+        ///<summary>
+        /// Gets the solidity of the mesh.
+        ///</summary>
+        public MobileMeshSolidity Solidity => solidity;
+
+        /// <summary>
+        /// Gets or sets the sidedness of the shape.  This is a convenience property based on the Solidity property.
+        /// If the shape is solid, this returns whatever sidedness is computed to make the triangles of the shape face outward.
+        /// If the shape is solid, setting this property will change the sidedness that is used while the shape is solid.
+        /// </summary>
+        public TriangleSidedness Sidedness
+        {
+            get
+            {
+                switch (solidity)
+                {
+                    case MobileMeshSolidity.Clockwise:
+                        return TriangleSidedness.Clockwise;
+                    case MobileMeshSolidity.Counterclockwise:
+                        return TriangleSidedness.Counterclockwise;
+                    case MobileMeshSolidity.DoubleSided:
+                        return TriangleSidedness.DoubleSided;
+                    case MobileMeshSolidity.Solid:
+                        return SidednessWhenSolid;
+                }
+
+                return TriangleSidedness.DoubleSided;
+            }
+            set
+            {
+                if (solidity == MobileMeshSolidity.Solid)
+                {
+                    SidednessWhenSolid = value;
+                }
+                else
+                {
+                    switch (value)
+                    {
+                        case TriangleSidedness.Clockwise:
+                            solidity = MobileMeshSolidity.Clockwise;
+                            break;
+                        case TriangleSidedness.Counterclockwise:
+                            solidity = MobileMeshSolidity.Counterclockwise;
+                            break;
+                        case TriangleSidedness.DoubleSided:
+                            solidity = MobileMeshSolidity.DoubleSided;
+                            break;
+                    }
+                }
+            }
+        }
+
 
         /// <summary>
         /// Gets the triangle sidedness required if the mesh is in solid mode.
@@ -241,11 +245,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
             CommonResources.GiveBack(overlapList);
             return false;
         }
-
-        /// <summary>
-        /// The difference in t parameters in a ray cast under which two hits are considered to be redundant.
-        /// </summary>
-        public static float MeshHitUniquenessThreshold = .0001f;
 
         internal bool IsHitUnique(RawList<RayHit> hits, ref RayHit hit)
         {

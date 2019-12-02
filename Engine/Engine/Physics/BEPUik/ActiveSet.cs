@@ -11,14 +11,22 @@ namespace Engine.Physics.BEPUik
     /// </summary>
     public class ActiveSet : IDisposable
     {
+        private float automassTarget = 1;
+
+        private float automassUnstressedFalloff = 0.9f;
+
+        internal List<Bone> bones = new List<Bone>();
+
+        //Stores data about an in-process BFS.
+        private Queue<Bone> bonesToVisit = new Queue<Bone>();
         internal List<IKJoint> joints = new List<IKJoint>();
+
+        private List<Bone> uniqueChildren = new List<Bone>();
 
         /// <summary>
         /// Gets the most recently computed set of active joints sorted by their traversal distance from control constraints.
         /// </summary>
         public ReadOnlyList<IKJoint> Joints => new ReadOnlyList<IKJoint>(joints);
-
-        internal List<Bone> bones = new List<Bone>();
 
         /// <summary>
         /// Gets the most recently computed set of active bones sorted by their traversal distance from control constraints.
@@ -32,8 +40,6 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public bool UseAutomass { get; set; }
 
-        private float automassUnstressedFalloff = 0.9f;
-
         /// <summary>
         /// Gets or sets the multiplier applied to the mass of a bone before distributing it to the child bones.
         /// Used only when UseAutomass is set to true.
@@ -43,8 +49,6 @@ namespace Engine.Physics.BEPUik
             get => automassUnstressedFalloff;
             set => automassUnstressedFalloff = Math.Max(value, 0);
         }
-
-        private float automassTarget = 1;
 
         /// <summary>
         /// Gets or sets the mass that the heaviest bones will have when automass is enabled.
@@ -63,8 +67,10 @@ namespace Engine.Physics.BEPUik
             }
         }
 
-        //Stores data about an in-process BFS.
-        private Queue<Bone> bonesToVisit = new Queue<Bone>();
+        public void Dispose()
+        {
+            Clear();
+        }
 
 
         private void FindStressedPaths(List<Control> controls)
@@ -237,8 +243,6 @@ namespace Engine.Physics.BEPUik
                 FindCycles(boneToAnalyze);
             }
         }
-
-        private List<Bone> uniqueChildren = new List<Bone>();
 
         private void DistributeMass(Bone bone)
         {
@@ -527,11 +531,6 @@ namespace Engine.Physics.BEPUik
         ~ActiveSet()
         {
             Dispose();
-        }
-
-        public void Dispose()
-        {
-            Clear();
         }
     }
 }

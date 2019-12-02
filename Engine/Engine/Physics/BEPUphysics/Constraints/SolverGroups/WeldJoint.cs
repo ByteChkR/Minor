@@ -24,27 +24,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
             Add(NoRotationJoint);
         }
 
-        private static Vector3 GetAnchorGuess(Entity connectionA, Entity connectionB)
-        {
-            Vector3 anchor = new Vector3();
-            if (connectionA != null)
-            {
-                anchor += connectionA.position;
-            }
-
-            if (connectionB != null)
-            {
-                anchor += connectionB.position;
-            }
-
-            if (connectionA != null && connectionB != null)
-            {
-                anchor *= 0.5f;
-            }
-
-            return anchor;
-        }
-
         /// <summary>
         /// Constructs a new constraint which restricts the linear and angular motion between two entities.
         /// Uses the average of the two entity positions for the anchor.
@@ -89,5 +68,26 @@ namespace Engine.Physics.BEPUphysics.Constraints.SolverGroups
         /// Gets the no rotation joint that prevents angular motion.
         /// </summary>
         public NoRotationJoint NoRotationJoint { get; }
+
+        private static Vector3 GetAnchorGuess(Entity connectionA, Entity connectionB)
+        {
+            Vector3 anchor = new Vector3();
+            if (connectionA != null)
+            {
+                anchor += connectionA.position;
+            }
+
+            if (connectionB != null)
+            {
+                anchor += connectionB.position;
+            }
+
+            if (connectionA != null && connectionB != null)
+            {
+                anchor *= 0.5f;
+            }
+
+            return anchor;
+        }
     }
 }

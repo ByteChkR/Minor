@@ -7,11 +7,10 @@ namespace Engine.Demo.scenes.testing
 {
     public class SceneRunner
     {
-        private List<Type> Scenes = new List<Type>();
-        public static SceneRunner Instance = null;
+        public static SceneRunner Instance;
+        private int CurrrentScene;
         private GameEngine Engine;
-        private int CurrrentScene = 0;
-        public bool Finished { get; private set; }
+        private List<Type> Scenes = new List<Type>();
         private bool TerminateOnFinish = true;
 
         public SceneRunner(GameEngine engine, Assembly asm, string nameSpace)
@@ -30,6 +29,8 @@ namespace Engine.Demo.scenes.testing
                 Scenes.AddRange(GetScenesFromNamespace(asm, nameSpaces[i]));
             }
         }
+
+        public bool Finished { get; private set; }
 
         private List<Type> GetScenesFromNamespace(Assembly asm, string nameSpace)
         {

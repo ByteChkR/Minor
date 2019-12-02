@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Engine.Common
+﻿namespace Engine.Common
 {
     public interface IDebugSettings
     {

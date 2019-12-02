@@ -7,70 +7,12 @@ namespace Engine.Physics.BEPUphysics.Materials
     ///</summary>
     public class Material
     {
-        internal float kineticFriction = MaterialManager.DefaultKineticFriction;
-
-        ///<summary>
-        /// Gets or sets the friction coefficient used when the object is sliding quickly and
-        /// no special material relationship is defined between the colliding objects.
-        ///</summary>
-        public float KineticFriction
-        {
-            get => kineticFriction;
-            set
-            {
-                kineticFriction = value;
-                if (MaterialChanged != null)
-                {
-                    MaterialChanged(this);
-                }
-            }
-        }
-
-        internal float staticFriction = MaterialManager.DefaultStaticFriction;
-
-        ///<summary>
-        /// Gets or sets the friction coefficient used when the object is sliding slowly and
-        /// no special material relationship is defined between the colliding objects.
-        ///</summary>
-        public float StaticFriction
-        {
-            get => staticFriction;
-            set
-            {
-                staticFriction = value;
-                if (MaterialChanged != null)
-                {
-                    MaterialChanged(this);
-                }
-            }
-        }
-
-
         internal float bounciness = MaterialManager.DefaultBounciness;
 
-        ///<summary>
-        /// Gets or sets the coefficient of restitution between the objects when
-        /// no special material relationship is defined between the colliding objects.
-        ///</summary>
-        public float Bounciness
-        {
-            get => bounciness;
-            set
-            {
-                bounciness = value;
-                if (MaterialChanged != null)
-                {
-                    MaterialChanged(this);
-                }
-            }
-        }
-
-        ///<summary>
-        /// Gets or sets user data associated with the material.
-        ///</summary>
-        public object Tag { get; set; }
-
         private int hashCode;
+        internal float kineticFriction = MaterialManager.DefaultKineticFriction;
+
+        internal float staticFriction = MaterialManager.DefaultStaticFriction;
 
         ///<summary>
         /// Constructs a new material.
@@ -93,6 +35,62 @@ namespace Engine.Physics.BEPUphysics.Materials
             this.kineticFriction = kineticFriction;
             this.bounciness = bounciness;
         }
+
+        ///<summary>
+        /// Gets or sets the friction coefficient used when the object is sliding quickly and
+        /// no special material relationship is defined between the colliding objects.
+        ///</summary>
+        public float KineticFriction
+        {
+            get => kineticFriction;
+            set
+            {
+                kineticFriction = value;
+                if (MaterialChanged != null)
+                {
+                    MaterialChanged(this);
+                }
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the friction coefficient used when the object is sliding slowly and
+        /// no special material relationship is defined between the colliding objects.
+        ///</summary>
+        public float StaticFriction
+        {
+            get => staticFriction;
+            set
+            {
+                staticFriction = value;
+                if (MaterialChanged != null)
+                {
+                    MaterialChanged(this);
+                }
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the coefficient of restitution between the objects when
+        /// no special material relationship is defined between the colliding objects.
+        ///</summary>
+        public float Bounciness
+        {
+            get => bounciness;
+            set
+            {
+                bounciness = value;
+                if (MaterialChanged != null)
+                {
+                    MaterialChanged(this);
+                }
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets user data associated with the material.
+        ///</summary>
+        public object Tag { get; set; }
 
         /// <summary>
         /// Serves as a hash function for a particular type. 

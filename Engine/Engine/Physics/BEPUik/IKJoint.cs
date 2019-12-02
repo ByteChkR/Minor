@@ -8,6 +8,25 @@ namespace Engine.Physics.BEPUik
     /// </summary>
     public abstract class IKJoint : IKConstraint
     {
+        internal Vector3 accumulatedImpulse;
+        internal Matrix3x3 angularJacobianA;
+        internal Matrix3x3 angularJacobianB;
+        internal Matrix3x3 effectiveMass;
+
+        private bool enabled;
+        internal Matrix3x3 linearJacobianA;
+        internal Matrix3x3 linearJacobianB;
+
+
+        internal Vector3 velocityBias;
+
+        protected IKJoint(Bone connectionA, Bone connectionB)
+        {
+            ConnectionA = connectionA;
+            ConnectionB = connectionB;
+            Enabled = true;
+        }
+
         /// <summary>
         /// Gets the first bone connected by this joint.
         /// </summary>
@@ -22,8 +41,6 @@ namespace Engine.Physics.BEPUik
         /// Gets whether or not the joint is a member of the active set as determined by the last IK solver execution.
         /// </summary>
         public bool IsActive { get; internal set; }
-
-        private bool enabled;
 
         /// <summary>
         /// Gets or sets whether or not this joint is enabled. If set to true, this joint will be a part of
@@ -49,23 +66,6 @@ namespace Engine.Physics.BEPUik
                 enabled = value;
             }
         }
-
-        protected IKJoint(Bone connectionA, Bone connectionB)
-        {
-            ConnectionA = connectionA;
-            ConnectionB = connectionB;
-            Enabled = true;
-        }
-
-
-        internal Vector3 velocityBias;
-        internal Matrix3x3 linearJacobianA;
-        internal Matrix3x3 angularJacobianA;
-        internal Matrix3x3 linearJacobianB;
-        internal Matrix3x3 angularJacobianB;
-        internal Matrix3x3 effectiveMass;
-
-        internal Vector3 accumulatedImpulse;
 
 
         protected internal override void ComputeEffectiveMass()

@@ -16,20 +16,14 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class GroupPairHandler : CollidablePairHandler, IPairHandlerParent
     {
+        private int contactCount;
+
+        private HashSet<CollidablePair> containedPairs = new HashSet<CollidablePair>();
         private ContactManifoldConstraintGroup manifoldConstraintGroup;
+        private RawList<CollidablePair> pairsToRemove = new RawList<CollidablePair>();
 
         private Dictionary<CollidablePair, CollidablePairHandler> subPairs =
             new Dictionary<CollidablePair, CollidablePairHandler>();
-
-        private HashSet<CollidablePair> containedPairs = new HashSet<CollidablePair>();
-        private RawList<CollidablePair> pairsToRemove = new RawList<CollidablePair>();
-
-
-        ///<summary>
-        /// Gets a list of the pairs associated with children.
-        ///</summary>
-        public ReadOnlyDictionary<CollidablePair, CollidablePairHandler> ChildPairs =>
-            new ReadOnlyDictionary<CollidablePair, CollidablePairHandler>(subPairs);
 
 
         ///<summary>
@@ -38,6 +32,67 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         protected GroupPairHandler()
         {
             manifoldConstraintGroup = new ContactManifoldConstraintGroup();
+        }
+
+
+        ///<summary>
+        /// Gets a list of the pairs associated with children.
+        ///</summary>
+        public ReadOnlyDictionary<CollidablePair, CollidablePairHandler> ChildPairs =>
+            new ReadOnlyDictionary<CollidablePair, CollidablePairHandler>(subPairs);
+
+        /// <summary>
+        /// Gets the number of contacts in the pair.
+        /// </summary>
+        protected internal override int ContactCount => contactCount;
+
+
+        void IPairHandlerParent.AddSolverUpdateable(SolverUpdateable addedItem)
+        {
+            manifoldConstraintGroup.Add(addedItem);
+            //If this is the first child solver item to be added, we need to add ourselves to our parent too.
+            if (manifoldConstraintGroup.SolverUpdateables.Count == 1)
+            {
+                if (Parent != null)
+                {
+                    Parent.AddSolverUpdateable(manifoldConstraintGroup);
+                }
+                else if (NarrowPhase != null)
+                {
+                    NarrowPhase.NotifyUpdateableAdded(manifoldConstraintGroup);
+                }
+            }
+        }
+
+        void IPairHandlerParent.RemoveSolverUpdateable(SolverUpdateable removedItem)
+        {
+            manifoldConstraintGroup.Remove(removedItem);
+
+            //If this is the last child solver item, we need to remove ourselves from our parent too.
+            if (manifoldConstraintGroup.SolverUpdateables.Count == 0)
+            {
+                if (Parent != null)
+                {
+                    Parent.RemoveSolverUpdateable(manifoldConstraintGroup);
+                }
+                else if (NarrowPhase != null)
+                {
+                    NarrowPhase.NotifyUpdateableRemoved(manifoldConstraintGroup);
+                }
+            }
+        }
+
+
+        void IPairHandlerParent.OnContactAdded(Contact contact)
+        {
+            contactCount++;
+            OnContactAdded(contact);
+        }
+
+        void IPairHandlerParent.OnContactRemoved(Contact contact)
+        {
+            contactCount--;
+            OnContactRemoved(contact);
         }
 
 
@@ -278,63 +333,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
             throw new IndexOutOfRangeException("Contact index is not present in the pair.");
         }
-
-
-        void IPairHandlerParent.AddSolverUpdateable(SolverUpdateable addedItem)
-        {
-            manifoldConstraintGroup.Add(addedItem);
-            //If this is the first child solver item to be added, we need to add ourselves to our parent too.
-            if (manifoldConstraintGroup.SolverUpdateables.Count == 1)
-            {
-                if (Parent != null)
-                {
-                    Parent.AddSolverUpdateable(manifoldConstraintGroup);
-                }
-                else if (NarrowPhase != null)
-                {
-                    NarrowPhase.NotifyUpdateableAdded(manifoldConstraintGroup);
-                }
-            }
-        }
-
-        void IPairHandlerParent.RemoveSolverUpdateable(SolverUpdateable removedItem)
-        {
-            manifoldConstraintGroup.Remove(removedItem);
-
-            //If this is the last child solver item, we need to remove ourselves from our parent too.
-            if (manifoldConstraintGroup.SolverUpdateables.Count == 0)
-            {
-                if (Parent != null)
-                {
-                    Parent.RemoveSolverUpdateable(manifoldConstraintGroup);
-                }
-                else if (NarrowPhase != null)
-                {
-                    NarrowPhase.NotifyUpdateableRemoved(manifoldConstraintGroup);
-                }
-            }
-        }
-
-
-        void IPairHandlerParent.OnContactAdded(Contact contact)
-        {
-            contactCount++;
-            OnContactAdded(contact);
-        }
-
-        void IPairHandlerParent.OnContactRemoved(Contact contact)
-        {
-            contactCount--;
-            OnContactRemoved(contact);
-        }
-
-
-        private int contactCount;
-
-        /// <summary>
-        /// Gets the number of contacts in the pair.
-        /// </summary>
-        protected internal override int ContactCount => contactCount;
 
         /// <summary>
         /// Clears the pair's contacts.

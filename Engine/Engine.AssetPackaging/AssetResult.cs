@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Security.Principal;
 using System.Xml.Serialization;
 
 namespace Engine.AssetPackaging
@@ -14,7 +13,8 @@ namespace Engine.AssetPackaging
         public List<AssetPointer> indexList = new List<AssetPointer>();
 
         [XmlElement(ElementName = "Compression")]
-        public bool Compression = false;
+        public bool Compression;
+
 
         [XmlIgnore] public List<AssetPack> packs = new List<AssetPack>();
 
@@ -47,10 +47,8 @@ namespace Engine.AssetPackaging
 
                 fs.Close();
             }
-            else
-            {
-                assetPack = StoreInPackages(fs, file, packPath, type);
-            }
+
+            assetPack = StoreInPackages(fs, file, packPath, type);
         }
 
         private int StoreInPackages(Stream s, string file, string packPath, AssetPackageType type)

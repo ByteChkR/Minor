@@ -5,7 +5,7 @@ namespace Engine.UI.Animations.Interpolators
 {
     public class Arc2Interpolator : Interpolator
     {
-        public Arc2Interpolator() : base()
+        public Arc2Interpolator()
         {
         }
 

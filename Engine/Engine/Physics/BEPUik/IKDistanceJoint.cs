@@ -8,6 +8,8 @@ namespace Engine.Physics.BEPUik
     /// </summary>
     public class IKDistanceJoint : IKJoint
     {
+        private float distance;
+
         /// <summary>
         /// Gets or sets the offset in connection A's local space from the center of mass to the anchor point.
         /// </summary>
@@ -17,6 +19,21 @@ namespace Engine.Physics.BEPUik
         /// Gets or sets the offset in connection B's local space from the center of mass to the anchor point.
         /// </summary>
         public Vector3 LocalAnchorB;
+
+        /// <summary>
+        /// Constructs a new distance joint.
+        /// </summary>
+        /// <param name="connectionA">First bone connected by the joint.</param>
+        /// <param name="connectionB">Second bone connected by the joint.</param>
+        /// <param name="anchorA">Anchor point on the first bone in world space.</param>
+        /// <param name="anchorB">Anchor point on the second bone in world space.</param>
+        public IKDistanceJoint(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB)
+            : base(connectionA, connectionB)
+        {
+            AnchorA = anchorA;
+            AnchorB = anchorB;
+            Vector3.Distance(ref anchorA, ref anchorB, out distance);
+        }
 
         /// <summary>
         /// Gets or sets the offset in world space from the center of mass of connection A to the anchor point.
@@ -40,8 +57,6 @@ namespace Engine.Physics.BEPUik
                     Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
-        private float distance;
-
         /// <summary>
         /// Gets or sets the distance that the joint connections should be kept from each other.
         /// </summary>
@@ -49,21 +64,6 @@ namespace Engine.Physics.BEPUik
         {
             get => distance;
             set => distance = Math.Max(0, value);
-        }
-
-        /// <summary>
-        /// Constructs a new distance joint.
-        /// </summary>
-        /// <param name="connectionA">First bone connected by the joint.</param>
-        /// <param name="connectionB">Second bone connected by the joint.</param>
-        /// <param name="anchorA">Anchor point on the first bone in world space.</param>
-        /// <param name="anchorB">Anchor point on the second bone in world space.</param>
-        public IKDistanceJoint(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB)
-            : base(connectionA, connectionB)
-        {
-            AnchorA = anchorA;
-            AnchorB = anchorB;
-            Vector3.Distance(ref anchorA, ref anchorB, out distance);
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

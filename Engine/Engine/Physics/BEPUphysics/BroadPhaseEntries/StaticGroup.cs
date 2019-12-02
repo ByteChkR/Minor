@@ -16,6 +16,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     /// </remarks>
     public class StaticGroup : StaticCollidable
     {
+        protected internal ContactEventManager<StaticGroup> events;
+
         ///<summary>
         /// Constructs a new static mesh.
         ///</summary>
@@ -30,9 +32,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         /// Gets the shape used by the mesh.  Unlike most collidable-shape pairs, StaticGroupShapes cannot be shared between multiple StaticGroups.
         ///</summary>
         public new StaticGroupShape Shape => (StaticGroupShape) shape;
-
-
-        protected internal ContactEventManager<StaticGroup> events;
 
         ///<summary>
         /// Gets the event manager used by the mesh.

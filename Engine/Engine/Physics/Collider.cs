@@ -14,39 +14,9 @@ namespace Engine.Physics
     public class Collider : AbstractComponent
     {
         /// <summary>
-        /// The Physics System collider
-        /// </summary>
-        public Entity PhysicsCollider { get; }
-
-        /// <summary>
-        /// The constraints of the collider
-        /// </summary>
-        public ColliderConstraints ColliderConstraints { get; set; }
-
-        /// <summary>
-        /// The Collision layer
-        /// </summary>
-        public int CollisionLayer { get; set; }
-
-        /// <summary>
         /// Private flag if the collider has been removed from the physics engine
         /// </summary>
         private bool _colliderRemoved;
-
-        public bool UpdateRotation { get; set; } = true;
-        public bool UpdateTranslation { get; set; } = true;
-
-        /// <summary>
-        /// Property to get/set the collider state
-        /// IsTrigger = true -> No Collision solving.
-        /// IsTrigger = false -> Collision Solving
-        /// </summary>
-        public bool IsTrigger
-        {
-            get => PhysicsCollider.CollisionInformation.CollisionRules.Personal == CollisionRule.NoSolver;
-            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal =
-                value ? CollisionRule.NoSolver : CollisionRule.Normal;
-        }
 
         /// <summary>
         /// Constructor for creating a Collider Component
@@ -68,6 +38,36 @@ namespace Engine.Physics
 
             PhysicsCollider.CollisionInformation.Tag = this;
             CollisionLayer = layerID;
+        }
+
+        /// <summary>
+        /// The Physics System collider
+        /// </summary>
+        public Entity PhysicsCollider { get; }
+
+        /// <summary>
+        /// The constraints of the collider
+        /// </summary>
+        public ColliderConstraints ColliderConstraints { get; set; }
+
+        /// <summary>
+        /// The Collision layer
+        /// </summary>
+        public int CollisionLayer { get; set; }
+
+        public bool UpdateRotation { get; set; } = true;
+        public bool UpdateTranslation { get; set; } = true;
+
+        /// <summary>
+        /// Property to get/set the collider state
+        /// IsTrigger = true -> No Collision solving.
+        /// IsTrigger = false -> Collision Solving
+        /// </summary>
+        public bool IsTrigger
+        {
+            get => PhysicsCollider.CollisionInformation.CollisionRules.Personal == CollisionRule.NoSolver;
+            set => PhysicsCollider.CollisionInformation.CollisionRules.Personal =
+                value ? CollisionRule.NoSolver : CollisionRule.Normal;
         }
 
 

@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using Engine.Core;
-using Engine.Physics.BEPUphysics.EntityStateManagement;
+﻿using System.Collections.Generic;
 
 namespace Engine.UI.Animations
 {
     public abstract class Interpolator
     {
-        private List<Interpolator> SubInterpolators = new List<Interpolator>();
-
         public delegate float Interpolate(float input);
+
+        private List<Interpolator> SubInterpolators = new List<Interpolator>();
 
         public Interpolator()
         {

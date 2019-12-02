@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUphysics.CollisionTests;
@@ -17,372 +16,29 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class CharacterController : Updateable, IBeforeSolverUpdateable
     {
-        /// <summary>
-        /// Gets the physical body of the character.  Do not use this reference to modify the character's height and radius.  Instead, use the BodyRadius property and the StanceManager's StandingHeight and CrouchingHeight properties.
-        /// </summary>
-        public Cylinder Body { get; }
-
-        /// <summary>
-        /// Gets the contact categorizer used by the character to determine how contacts affect the character's movement.
-        /// </summary>
-        public CharacterContactCategorizer ContactCategorizer { get; }
-
-        /// <summary>
-        /// Gets the manager responsible for finding places for the character to step up and down to.
-        /// </summary>
-        public StepManager StepManager { get; }
-
-        /// <summary>
-        /// Gets the manager responsible for crouching, standing, and the verification involved in changing states.
-        /// </summary>
-        public StanceManager StanceManager { get; }
-
-        /// <summary>
-        /// Gets the support system which other systems use to perform local ray casts and contact queries.
-        /// </summary>
-        public QueryManager QueryManager { get; }
-
-        /// <summary>
-        /// Gets the constraint used by the character to handle horizontal motion.  This includes acceleration due to player input and deceleration when the relative velocity
-        /// between the support and the character exceeds specified maximums.
-        /// </summary>
-        public HorizontalMotionConstraint HorizontalMotionConstraint { get; }
-
-        /// <summary>
-        /// Gets the constraint used by the character to stay glued to surfaces it stands on.
-        /// </summary>
-        public VerticalMotionConstraint VerticalMotionConstraint { get; }
-
-        /// <summary>
-        /// Gets or sets the pair locker used by the character controller to avoid interfering with the behavior of other characters.
-        /// </summary>
-        private CharacterPairLocker PairLocker { get; }
-
-        /// <summary>
-        /// Gets or sets the down direction of the character, defining its orientation.
-        /// </summary>
-        public Vector3 Down
-        {
-            get => Body.OrientationMatrix.Down;
-            set
-            {
-                //Update the character's orientation to something compatible with the new direction.
-                Quaternion orientation;
-                float lengthSquared = value.LengthSquared();
-                if (lengthSquared < Toolbox.Epsilon)
-                {
-                    value = Body.OrientationMatrix
-                        .Down; //Silently fail. Assuming here that a dynamic process is setting this property; don't need to make a stink about it.
-                }
-                else
-                {
-                    Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out value);
-                }
-
-                Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.DownVector, ref value, out orientation);
-                Body.Orientation = orientation;
-            }
-        }
-
-        private Vector3 viewDirection = new Vector3(0, 0, -1);
-
-        /// <summary>
-        /// Gets or sets the view direction associated with the character.
-        /// Also sets the horizontal view direction internally based on the current down vector.
-        /// This is used to interpret the movement directions.
-        /// </summary>
-        public Vector3 ViewDirection
-        {
-            get => viewDirection;
-            set
-            {
-                float lengthSquared = value.LengthSquared();
-                if (lengthSquared > 1e-7f)
-                {
-                    Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out viewDirection);
-                }
-                else
-                {
-                    value = Vector3.Cross(Down, Toolbox.UpVector);
-                    lengthSquared = value.LengthSquared();
-                    if (lengthSquared > 1e-7f)
-                    {
-                        Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out viewDirection);
-                    }
-                    else
-                    {
-                        value = Vector3.Cross(Down, Toolbox.ForwardVector);
-                        Vector3.Normalize(ref value, out viewDirection);
-                    }
-                }
-            }
-        }
-
-        private float jumpSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character leaves the ground when it jumps.
-        /// </summary>
-        public float JumpSpeed
-        {
-            get => jumpSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                jumpSpeed = value;
-            }
-        }
-
-        private float slidingJumpSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character leaves the ground when it jumps without traction.
-        /// </summary>
-        public float SlidingJumpSpeed
-        {
-            get => slidingJumpSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                slidingJumpSpeed = value;
-            }
-        }
-
-        private float jumpForceFactor = 1f;
-
-        /// <summary>
-        /// Gets or sets the amount of force to apply to supporting dynamic entities as a fraction of the force used to reach the jump speed.
-        /// </summary>
-        public float JumpForceFactor
-        {
-            get => jumpForceFactor;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                jumpForceFactor = value;
-            }
-        }
-
-        private float standingSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move while standing with a support that provides traction.
-        /// Relative velocities with a greater magnitude will be decelerated.
-        /// </summary>
-        public float StandingSpeed
-        {
-            get => standingSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                standingSpeed = value;
-            }
-        }
-
-        private float crouchingSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move while crouching with a support that provides traction.
-        /// Relative velocities with a greater magnitude will be decelerated.
-        /// </summary>
-        public float CrouchingSpeed
-        {
-            get => crouchingSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                crouchingSpeed = value;
-            }
-        }
-
-        private float proneSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move while prone with a support that provides traction.
-        /// Relative velocities with a greater magnitude will be decelerated.
-        /// </summary>
-        public float ProneSpeed
-        {
-            get => proneSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                proneSpeed = value;
-            }
-        }
-
-        private float tractionForce;
-
-        /// <summary>
-        /// Gets or sets the maximum force that the character can apply while on a support which provides traction.
-        /// </summary>
-        public float TractionForce
-        {
-            get => tractionForce;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                tractionForce = value;
-            }
-        }
-
-        private float slidingSpeed;
-
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move while on a support that does not provide traction.
-        /// Relative velocities with a greater magnitude will be decelerated.
-        /// </summary>
-        public float SlidingSpeed
-        {
-            get => slidingSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                slidingSpeed = value;
-            }
-        }
-
-        private float slidingForce;
-
-        /// <summary>
-        /// Gets or sets the maximum force that the character can apply while on a support which does not provide traction.
-        /// </summary>
-        public float SlidingForce
-        {
-            get => slidingForce;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
-
-                slidingForce = value;
-            }
-        }
+        private float airForce;
 
         private float airSpeed;
 
-        /// <summary>
-        /// Gets or sets the speed at which the character will try to move with no support.
-        /// The character will not be decelerated while airborne.
-        /// </summary>
-        public float AirSpeed
-        {
-            get => airSpeed;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
+        private float crouchingSpeed;
 
-                airSpeed = value;
-            }
-        }
+        private float jumpForceFactor = 1f;
 
-        private float airForce;
+        private float jumpSpeed;
 
-        /// <summary>
-        /// Gets or sets the maximum force that the character can apply with no support.
-        /// </summary>
-        public float AirForce
-        {
-            get => airForce;
-            set
-            {
-                if (value < 0)
-                {
-                    throw new ArgumentException("Value must be nonnegative.");
-                }
+        private float proneSpeed;
 
-                airForce = value;
-            }
-        }
+        private float slidingForce;
 
-        /// <summary>
-        /// Gets or sets a scaling factor to apply to the maximum speed of the character.
-        /// This is useful when a character does not have 0 or MaximumSpeed target speed, but rather
-        /// intermediate values. A common use case is analog controller sticks.
-        /// </summary>
-        public float SpeedScale { get; set; } = 1;
+        private float slidingJumpSpeed;
 
+        private float slidingSpeed;
 
-        /// <summary>
-        /// Gets or sets the radius of the body cylinder.  To change the height, use the StanceManager.StandingHeight and StanceManager.CrouchingHeight.
-        /// </summary>
-        public float BodyRadius
-        {
-            get => Body.CollisionInformation.Shape.Radius;
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentException("Radius must be positive.");
-                }
+        private float standingSpeed;
 
-                Body.CollisionInformation.Shape.Radius = value;
-                //Tell the query manager to update its representation.
-                StanceManager.UpdateQueryShapes();
-            }
-        }
+        private float tractionForce;
 
-        /// <summary>
-        /// Gets or sets the collision margin of the body cylinder. Also updates the StanceManager's query shapes to match.
-        /// </summary>
-        public float CollisionMargin
-        {
-            get => Body.CollisionInformation.Shape.CollisionMargin;
-            set
-            {
-                if (value <= 0)
-                {
-                    throw new ArgumentException("Radius must be positive.");
-                }
-
-                Body.CollisionInformation.Shape.CollisionMargin = value;
-                //Tell the query manager to update its representation.
-                StanceManager.UpdateQueryShapes();
-            }
-        }
-
-        /// <summary>
-        /// Gets the support finder used by the character.
-        /// The support finder analyzes the character's contacts to see if any of them provide support and/or traction.
-        /// </summary>
-        public SupportFinder SupportFinder { get; }
+        private Vector3 viewDirection = new Vector3(0, 0, -1);
 
 
         /// <summary>
@@ -471,72 +127,355 @@ namespace Engine.Physics.BEPUphysics.Character
             Body.CollisionInformation.Tag = new CharacterSynchronizer(Body);
         }
 
+        /// <summary>
+        /// Gets the physical body of the character.  Do not use this reference to modify the character's height and radius.  Instead, use the BodyRadius property and the StanceManager's StandingHeight and CrouchingHeight properties.
+        /// </summary>
+        public Cylinder Body { get; }
 
-        private void RemoveFriction(EntityCollidable sender, BroadPhaseEntry other, NarrowPhasePair pair)
+        /// <summary>
+        /// Gets the contact categorizer used by the character to determine how contacts affect the character's movement.
+        /// </summary>
+        public CharacterContactCategorizer ContactCategorizer { get; }
+
+        /// <summary>
+        /// Gets the manager responsible for finding places for the character to step up and down to.
+        /// </summary>
+        public StepManager StepManager { get; }
+
+        /// <summary>
+        /// Gets the manager responsible for crouching, standing, and the verification involved in changing states.
+        /// </summary>
+        public StanceManager StanceManager { get; }
+
+        /// <summary>
+        /// Gets the support system which other systems use to perform local ray casts and contact queries.
+        /// </summary>
+        public QueryManager QueryManager { get; }
+
+        /// <summary>
+        /// Gets the constraint used by the character to handle horizontal motion.  This includes acceleration due to player input and deceleration when the relative velocity
+        /// between the support and the character exceeds specified maximums.
+        /// </summary>
+        public HorizontalMotionConstraint HorizontalMotionConstraint { get; }
+
+        /// <summary>
+        /// Gets the constraint used by the character to stay glued to surfaces it stands on.
+        /// </summary>
+        public VerticalMotionConstraint VerticalMotionConstraint { get; }
+
+        /// <summary>
+        /// Gets or sets the pair locker used by the character controller to avoid interfering with the behavior of other characters.
+        /// </summary>
+        private CharacterPairLocker PairLocker { get; }
+
+        /// <summary>
+        /// Gets or sets the down direction of the character, defining its orientation.
+        /// </summary>
+        public Vector3 Down
         {
-            CollidablePairHandler collidablePair = pair as CollidablePairHandler;
-            if (collidablePair != null)
-                //The default values for InteractionProperties is all zeroes- zero friction, zero bounciness.
-                //That's exactly how we want the character to behave when hitting objects.
+            get => Body.OrientationMatrix.Down;
+            set
             {
-                collidablePair.UpdateMaterialProperties(new InteractionProperties());
+                //Update the character's orientation to something compatible with the new direction.
+                Quaternion orientation;
+                float lengthSquared = value.LengthSquared();
+                if (lengthSquared < Toolbox.Epsilon)
+                {
+                    value = Body.OrientationMatrix
+                        .Down; //Silently fail. Assuming here that a dynamic process is setting this property; don't need to make a stink about it.
+                }
+                else
+                {
+                    Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out value);
+                }
+
+                Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.DownVector, ref value, out orientation);
+                Body.Orientation = orientation;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the view direction associated with the character.
+        /// Also sets the horizontal view direction internally based on the current down vector.
+        /// This is used to interpret the movement directions.
+        /// </summary>
+        public Vector3 ViewDirection
+        {
+            get => viewDirection;
+            set
+            {
+                float lengthSquared = value.LengthSquared();
+                if (lengthSquared > 1e-7f)
+                {
+                    Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out viewDirection);
+                }
+                else
+                {
+                    value = Vector3.Cross(Down, Toolbox.UpVector);
+                    lengthSquared = value.LengthSquared();
+                    if (lengthSquared > 1e-7f)
+                    {
+                        Vector3.Divide(ref value, (float) Math.Sqrt(lengthSquared), out viewDirection);
+                    }
+                    else
+                    {
+                        value = Vector3.Cross(Down, Toolbox.ForwardVector);
+                        Vector3.Normalize(ref value, out viewDirection);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character leaves the ground when it jumps.
+        /// </summary>
+        public float JumpSpeed
+        {
+            get => jumpSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                jumpSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character leaves the ground when it jumps without traction.
+        /// </summary>
+        public float SlidingJumpSpeed
+        {
+            get => slidingJumpSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                slidingJumpSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the amount of force to apply to supporting dynamic entities as a fraction of the force used to reach the jump speed.
+        /// </summary>
+        public float JumpForceFactor
+        {
+            get => jumpForceFactor;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                jumpForceFactor = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move while standing with a support that provides traction.
+        /// Relative velocities with a greater magnitude will be decelerated.
+        /// </summary>
+        public float StandingSpeed
+        {
+            get => standingSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                standingSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move while crouching with a support that provides traction.
+        /// Relative velocities with a greater magnitude will be decelerated.
+        /// </summary>
+        public float CrouchingSpeed
+        {
+            get => crouchingSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                crouchingSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move while prone with a support that provides traction.
+        /// Relative velocities with a greater magnitude will be decelerated.
+        /// </summary>
+        public float ProneSpeed
+        {
+            get => proneSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                proneSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum force that the character can apply while on a support which provides traction.
+        /// </summary>
+        public float TractionForce
+        {
+            get => tractionForce;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                tractionForce = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move while on a support that does not provide traction.
+        /// Relative velocities with a greater magnitude will be decelerated.
+        /// </summary>
+        public float SlidingSpeed
+        {
+            get => slidingSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                slidingSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum force that the character can apply while on a support which does not provide traction.
+        /// </summary>
+        public float SlidingForce
+        {
+            get => slidingForce;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                slidingForce = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the speed at which the character will try to move with no support.
+        /// The character will not be decelerated while airborne.
+        /// </summary>
+        public float AirSpeed
+        {
+            get => airSpeed;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                airSpeed = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum force that the character can apply with no support.
+        /// </summary>
+        public float AirForce
+        {
+            get => airForce;
+            set
+            {
+                if (value < 0)
+                {
+                    throw new ArgumentException("Value must be nonnegative.");
+                }
+
+                airForce = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a scaling factor to apply to the maximum speed of the character.
+        /// This is useful when a character does not have 0 or MaximumSpeed target speed, but rather
+        /// intermediate values. A common use case is analog controller sticks.
+        /// </summary>
+        public float SpeedScale { get; set; } = 1;
 
 
         /// <summary>
-        /// Cylinder shape used to compute the expanded bounding box of the character.
+        /// Gets or sets the radius of the body cylinder.  To change the height, use the StanceManager.StandingHeight and StanceManager.CrouchingHeight.
         /// </summary>
-        private void ExpandBoundingBox()
+        public float BodyRadius
         {
-            if (Body.ActivityInformation.IsActive)
+            get => Body.CollisionInformation.Shape.Radius;
+            set
             {
-                //This runs after the bounding box updater is run, but before the broad phase.
-                //Expanding the character's bounding box ensures that minor variations in velocity will not cause
-                //any missed information.
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Radius must be positive.");
+                }
 
-                //TODO: seems a bit silly to do this work sequentially. Would be better if it could run in parallel in the proper location.
-
-                Vector3 down = Down;
-                BoundingBox boundingBox = Body.CollisionInformation.BoundingBox;
-                //Expand the bounding box up and down using the step height.
-                Vector3 expansion;
-                Vector3.Multiply(ref down, StepManager.MaximumStepHeight, out expansion);
-                expansion.X = Math.Abs(expansion.X);
-                expansion.Y = Math.Abs(expansion.Y);
-                expansion.Z = Math.Abs(expansion.Z);
-
-                //When the character climbs a step, it teleports horizontally a little to gain support. Expand the bounding box to accommodate the margin.
-                //Compute the expansion caused by the extra radius along each axis.
-                //There's a few ways to go about doing this.
-
-                //The following is heavily cooked, but it is based on the angle between the vertical axis and a particular axis.
-                //Given that, the amount of the radial expansion required along that axis can be computed.
-                //The dot product would provide the cos(angle) between the vertical axis and a chosen axis.
-                //Equivalently, it is how much expansion would be along that axis, if the vertical axis was the axis of expansion.
-                //However, it's not. The dot product actually gives us the expansion along an axis perpendicular to the chosen axis, pointing away from the character's vertical axis.
-
-                //What we need is actually given by the sin(angle), which is given by ||verticalAxis x testAxis||.
-                //The sin(angle) is the projected length of the verticalAxis (not the expansion!) on the axis perpendicular to the testAxis pointing away from the character's vertical axis.
-                //That projected length, however is equal to the expansion along the test axis, which is exactly what we want.
-                //To show this, try setting up the triangles at the corner of a cylinder with the world axes and cylinder axes.
-
-                //Since the test axes we're using are all standard directions ({0,0,1}, {0,1,0}, and {0,0,1}), most of the cross product logic simplifies out, and we are left with:
-                float horizontalExpansionAmount = Body.CollisionInformation.Shape.CollisionMargin * 1.1f;
-                Vector3 squaredDown;
-                squaredDown.X = down.X * down.X;
-                squaredDown.Y = down.Y * down.Y;
-                squaredDown.Z = down.Z * down.Z;
-                expansion.X += horizontalExpansionAmount * (float) Math.Sqrt(squaredDown.Y + squaredDown.Z);
-                expansion.Y += horizontalExpansionAmount * (float) Math.Sqrt(squaredDown.X + squaredDown.Z);
-                expansion.Z += horizontalExpansionAmount * (float) Math.Sqrt(squaredDown.X + squaredDown.Y);
-
-                Vector3.Add(ref expansion, ref boundingBox.Max, out boundingBox.Max);
-                Vector3.Subtract(ref boundingBox.Min, ref expansion, out boundingBox.Min);
-
-                Body.CollisionInformation.BoundingBox = boundingBox;
+                Body.CollisionInformation.Shape.Radius = value;
+                //Tell the query manager to update its representation.
+                StanceManager.UpdateQueryShapes();
             }
         }
+
+        /// <summary>
+        /// Gets or sets the collision margin of the body cylinder. Also updates the StanceManager's query shapes to match.
+        /// </summary>
+        public float CollisionMargin
+        {
+            get => Body.CollisionInformation.Shape.CollisionMargin;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Radius must be positive.");
+                }
+
+                Body.CollisionInformation.Shape.CollisionMargin = value;
+                //Tell the query manager to update its representation.
+                StanceManager.UpdateQueryShapes();
+            }
+        }
+
+        /// <summary>
+        /// Gets the support finder used by the character.
+        /// The support finder analyzes the character's contacts to see if any of them provide support and/or traction.
+        /// </summary>
+        public SupportFinder SupportFinder { get; }
+
+        /// <summary>
+        /// <para>Gets or sets whether the character should attempt to jump during the next update. During each update, this flag will be set to false.
+        /// If it has traction, it will go straight up. If it doesn't have traction, but is still supported by something, it will jump in the direction of the surface normal.</para>
+        /// <para>Setting this to true has the same effect as calling Jump. This property is primarily useful for fully resetting the physical state to avoid desynchronization, e.g. in networking.</para>
+        /// </summary>
+        public bool TryToJump { get; set; }
 
 
         void IBeforeSolverUpdateable.Update(float dt)
@@ -693,6 +632,99 @@ namespace Engine.Physics.BEPUphysics.Character
             }
 
             HorizontalMotionConstraint.TargetSpeed *= SpeedScale;
+        }
+
+        public override void OnAdditionToSpace(Space newSpace)
+        {
+            //Add any supplements to the space too.
+            newSpace.Add(Body);
+            newSpace.Add(HorizontalMotionConstraint);
+            newSpace.Add(VerticalMotionConstraint);
+            //This character controller requires the standard implementation of Space.
+            newSpace.BoundingBoxUpdater.Finishing += ExpandBoundingBox;
+
+            Body.AngularVelocity = new Vector3();
+            Body.LinearVelocity = new Vector3();
+        }
+
+        public override void OnRemovalFromSpace(Space oldSpace)
+        {
+            //Remove any supplements from the space too.
+            oldSpace.Remove(Body);
+            oldSpace.Remove(HorizontalMotionConstraint);
+            oldSpace.Remove(VerticalMotionConstraint);
+            //This character controller requires the standard implementation of Space.
+            oldSpace.BoundingBoxUpdater.Finishing -= ExpandBoundingBox;
+            SupportFinder.ClearSupportData();
+            Body.AngularVelocity = new Vector3();
+            Body.LinearVelocity = new Vector3();
+        }
+
+
+        private void RemoveFriction(EntityCollidable sender, BroadPhaseEntry other, NarrowPhasePair pair)
+        {
+            CollidablePairHandler collidablePair = pair as CollidablePairHandler;
+            if (collidablePair != null)
+                //The default values for InteractionProperties is all zeroes- zero friction, zero bounciness.
+                //That's exactly how we want the character to behave when hitting objects.
+            {
+                collidablePair.UpdateMaterialProperties(new InteractionProperties());
+            }
+        }
+
+
+        /// <summary>
+        /// Cylinder shape used to compute the expanded bounding box of the character.
+        /// </summary>
+        private void ExpandBoundingBox()
+        {
+            if (Body.ActivityInformation.IsActive)
+            {
+                //This runs after the bounding box updater is run, but before the broad phase.
+                //Expanding the character's bounding box ensures that minor variations in velocity will not cause
+                //any missed information.
+
+                //TODO: seems a bit silly to do this work sequentially. Would be better if it could run in parallel in the proper location.
+
+                Vector3 down = Down;
+                BoundingBox boundingBox = Body.CollisionInformation.BoundingBox;
+                //Expand the bounding box up and down using the step height.
+                Vector3 expansion;
+                Vector3.Multiply(ref down, StepManager.MaximumStepHeight, out expansion);
+                expansion.X = Math.Abs(expansion.X);
+                expansion.Y = Math.Abs(expansion.Y);
+                expansion.Z = Math.Abs(expansion.Z);
+
+                //When the character climbs a step, it teleports horizontally a little to gain support. Expand the bounding box to accommodate the margin.
+                //Compute the expansion caused by the extra radius along each axis.
+                //There's a few ways to go about doing this.
+
+                //The following is heavily cooked, but it is based on the angle between the vertical axis and a particular axis.
+                //Given that, the amount of the radial expansion required along that axis can be computed.
+                //The dot product would provide the cos(angle) between the vertical axis and a chosen axis.
+                //Equivalently, it is how much expansion would be along that axis, if the vertical axis was the axis of expansion.
+                //However, it's not. The dot product actually gives us the expansion along an axis perpendicular to the chosen axis, pointing away from the character's vertical axis.
+
+                //What we need is actually given by the sin(angle), which is given by ||verticalAxis x testAxis||.
+                //The sin(angle) is the projected length of the verticalAxis (not the expansion!) on the axis perpendicular to the testAxis pointing away from the character's vertical axis.
+                //That projected length, however is equal to the expansion along the test axis, which is exactly what we want.
+                //To show this, try setting up the triangles at the corner of a cylinder with the world axes and cylinder axes.
+
+                //Since the test axes we're using are all standard directions ({0,0,1}, {0,1,0}, and {0,0,1}), most of the cross product logic simplifies out, and we are left with:
+                float horizontalExpansionAmount = Body.CollisionInformation.Shape.CollisionMargin * 1.1f;
+                Vector3 squaredDown;
+                squaredDown.X = down.X * down.X;
+                squaredDown.Y = down.Y * down.Y;
+                squaredDown.Z = down.Z * down.Z;
+                expansion.X += horizontalExpansionAmount * (float) Math.Sqrt(squaredDown.Y + squaredDown.Z);
+                expansion.Y += horizontalExpansionAmount * (float) Math.Sqrt(squaredDown.X + squaredDown.Z);
+                expansion.Z += horizontalExpansionAmount * (float) Math.Sqrt(squaredDown.X + squaredDown.Y);
+
+                Vector3.Add(ref expansion, ref boundingBox.Max, out boundingBox.Max);
+                Vector3.Subtract(ref boundingBox.Min, ref expansion, out boundingBox.Min);
+
+                Body.CollisionInformation.BoundingBox = boundingBox;
+            }
         }
 
         private SupportData TeleportToPosition(Vector3 newPosition, float dt)
@@ -879,13 +911,6 @@ namespace Engine.Physics.BEPUphysics.Character
         }
 
         /// <summary>
-        /// <para>Gets or sets whether the character should attempt to jump during the next update. During each update, this flag will be set to false.
-        /// If it has traction, it will go straight up. If it doesn't have traction, but is still supported by something, it will jump in the direction of the surface normal.</para>
-        /// <para>Setting this to true has the same effect as calling Jump. This property is primarily useful for fully resetting the physical state to avoid desynchronization, e.g. in networking.</para>
-        /// </summary>
-        public bool TryToJump { get; set; }
-
-        /// <summary>
         /// <para>Jumps the character off of whatever it's currently standing on during the next update.  If it has traction, it will go straight up.
         /// If it doesn't have traction, but is still supported by something, it will jump in the direction of the surface normal.</para>
         /// <para>The same effect can be achieved by setting TryToJump to true.</para>
@@ -895,32 +920,6 @@ namespace Engine.Physics.BEPUphysics.Character
             //The actual jump velocities are applied next frame.  This ensures that gravity doesn't pre-emptively slow the jump, and uses more
             //up-to-date support data.
             TryToJump = true;
-        }
-
-        public override void OnAdditionToSpace(Space newSpace)
-        {
-            //Add any supplements to the space too.
-            newSpace.Add(Body);
-            newSpace.Add(HorizontalMotionConstraint);
-            newSpace.Add(VerticalMotionConstraint);
-            //This character controller requires the standard implementation of Space.
-            newSpace.BoundingBoxUpdater.Finishing += ExpandBoundingBox;
-
-            Body.AngularVelocity = new Vector3();
-            Body.LinearVelocity = new Vector3();
-        }
-
-        public override void OnRemovalFromSpace(Space oldSpace)
-        {
-            //Remove any supplements from the space too.
-            oldSpace.Remove(Body);
-            oldSpace.Remove(HorizontalMotionConstraint);
-            oldSpace.Remove(VerticalMotionConstraint);
-            //This character controller requires the standard implementation of Space.
-            oldSpace.BoundingBoxUpdater.Finishing -= ExpandBoundingBox;
-            SupportFinder.ClearSupportData();
-            Body.AngularVelocity = new Vector3();
-            Body.LinearVelocity = new Vector3();
         }
     }
 }

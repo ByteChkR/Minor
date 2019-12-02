@@ -1,5 +1,4 @@
 ﻿using System;
-using Engine.Core;
 using Engine.Rendering;
 using Engine.UI;
 using OpenTK;
@@ -11,8 +10,8 @@ namespace Engine.Debug
     {
         public string Key;
         public Vector2 Maximum;
-        public Vector2 Minimum;
         public int MaxPoints;
+        public Vector2 Minimum;
     }
 
     /// <summary>
@@ -20,13 +19,62 @@ namespace Engine.Debug
     /// </summary>
     public class GraphDrawingComponent : UIElement
     {
+        /// <summary>
+        /// A flag that indicates if we need to push the points to the gpu
+        /// </summary>
+        private bool _bufferDirty = true;
+
         //This as data object for how the graph should be oriented
         private GraphLayout _currentLayout;
+
+        /// <summary>
+        /// Flag that is used to initialize things on creation
+        /// </summary>
+        private bool _init;
 
         /// <summary>
         /// Backing field of the graph data
         /// </summary>
         private Vector2[] _points;
+
+        /// <summary>
+        /// The VBO of the screen quad
+        /// </summary>
+        private int _vbo, _vao;
+
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="shader">The shader to be used</param>
+        /// <param name="worldSpace">flag if the graph is in world space</param>
+        /// <param name="alpha">the alpha value of the graph</param>
+        public GraphDrawingComponent(ShaderProgram shader, bool worldSpace, float alpha) :
+            base(shader, worldSpace, alpha)
+        {
+            _points = new Vector2[0];
+        }
+
+
+        /// <summary>
+        /// the point data that will get drawn
+        /// </summary>
+        public Vector2[] Points
+        {
+            get => _points;
+            set
+            {
+                _bufferDirty = true;
+                if (Owner != null)
+                {
+                    _points = ComputeUVPos(Position, Scale, value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Flag that enables or disables the graph rendering
+        /// </summary>
+        public bool Enabled { get; set; } = true;
 
         /// <summary>
         /// Computes the UVs of the Quad that will contain the graph data
@@ -48,55 +96,6 @@ namespace Engine.Debug
             }
 
             return ret;
-        }
-
-
-        /// <summary>
-        /// the point data that will get drawn
-        /// </summary>
-        public Vector2[] Points
-        {
-            get => _points;
-            set
-            {
-                _bufferDirty = true;
-                if (Owner != null)
-                {
-                    _points = ComputeUVPos(Position, Scale, value);
-                }
-            }
-        }
-
-        /// <summary>
-        /// The VBO of the screen quad
-        /// </summary>
-        private int _vbo, _vao;
-
-        /// <summary>
-        /// A flag that indicates if we need to push the points to the gpu
-        /// </summary>
-        private bool _bufferDirty = true;
-
-        /// <summary>
-        /// Flag that is used to initialize things on creation
-        /// </summary>
-        private bool _init = false;
-
-        /// <summary>
-        /// Flag that enables or disables the graph rendering
-        /// </summary>
-        public bool Enabled { get; set; } = true;
-
-        /// <summary>
-        /// Public constructor
-        /// </summary>
-        /// <param name="shader">The shader to be used</param>
-        /// <param name="worldSpace">flag if the graph is in world space</param>
-        /// <param name="alpha">the alpha value of the graph</param>
-        public GraphDrawingComponent(ShaderProgram shader, bool worldSpace, float alpha) :
-            base(shader, worldSpace, alpha)
-        {
-            _points = new Vector2[0];
         }
 
         /// <summary>

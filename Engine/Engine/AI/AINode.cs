@@ -11,23 +11,28 @@ namespace Engine.AI
         private readonly List<AINode> Connections;
 
 
+        public float CurrentCost;
+        public float EstimatedCost;
+        public AINodeState NodeState;
+
+
         //Search Specific
         public AINode ParentNode;
         public bool Walkable;
         public float WalkCostMultiplier = 1;
-        public AINodeState NodeState;
-
-
-        public float CurrentCost;
-        public float EstimatedCost;
-
-        public float TotalCost => CurrentCost + EstimatedCost;
-        public int ConnectionCount => Connections.Count;
 
         public AINode(bool walkable)
         {
             Connections = new List<AINode>();
             Walkable = walkable;
+        }
+
+        public float TotalCost => CurrentCost + EstimatedCost;
+        public int ConnectionCount => Connections.Count;
+
+        public int CompareTo(AINode other)
+        {
+            return TotalCost.CompareTo(other.TotalCost);
         }
 
         public AINode GetConnection(int index)
@@ -71,11 +76,6 @@ namespace Engine.AI
             {
                 other.RemoveConnection(this, false);
             }
-        }
-
-        public int CompareTo(AINode other)
-        {
-            return TotalCost.CompareTo(other.TotalCost);
         }
     }
 }

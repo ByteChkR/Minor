@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Drawing;
-using System.IO;
-using System.Reflection;
 using Engine.Debug;
-using Engine.Exceptions;
-using Engine.IO;
-using Engine.UI;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.DataTypes
@@ -16,6 +10,24 @@ namespace Engine.DataTypes
     public class Texture : IDisposable
     {
         /// <summary>
+        /// Private flag to keep from disposing the texture twice
+        /// </summary>
+        private bool _disposed;
+
+        private bool _dontDispose;
+        private long bytes;
+
+        /// <summary>
+        /// Internal Constructor to Create a Texture Object from a GL Texture Handle
+        /// </summary>
+        /// <param name="textureId"></param>
+        internal Texture(int textureId, long bytes)
+        {
+            this.bytes = bytes;
+            TextureId = textureId;
+        }
+
+        /// <summary>
         /// The Texture type used to automatically bind textures to the right Uniforms in the shader
         /// None -> Diffuse
         /// </summary>
@@ -25,14 +37,6 @@ namespace Engine.DataTypes
         /// The OpenGL Handle to the texture
         /// </summary>
         public int TextureId { get; }
-
-        /// <summary>
-        /// Private flag to keep from disposing the texture twice
-        /// </summary>
-        private bool _disposed;
-
-        private bool _dontDispose;
-        private long bytes;
 
         /// <summary>
         /// Convenient Wrapper to query the texture width
@@ -64,13 +68,18 @@ namespace Engine.DataTypes
         }
 
         /// <summary>
-        /// Internal Constructor to Create a Texture Object from a GL Texture Handle
+        /// Disposed Implementation to free the texture memory when it is no longer in use.
         /// </summary>
-        /// <param name="textureId"></param>
-        internal Texture(int textureId, long bytes)
+        public void Dispose()
         {
-            this.bytes = bytes;
-            TextureId = textureId;
+            if (_disposed || _dontDispose)
+            {
+                return;
+            }
+
+            EngineStatisticsManager.GLObjectDestroyed(bytes);
+            _disposed = true;
+            GL.DeleteTexture(TextureId);
         }
 
         /// <summary>
@@ -85,21 +94,6 @@ namespace Engine.DataTypes
             {
                 _dontDispose = true
             };
-        }
-
-        /// <summary>
-        /// Disposed Implementation to free the texture memory when it is no longer in use.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed || _dontDispose)
-            {
-                return;
-            }
-
-            EngineStatisticsManager.GLObjectDestroyed(bytes);
-            _disposed = true;
-            GL.DeleteTexture(TextureId);
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables;
 using Engine.Physics.BEPUphysics.CollisionRuleManagement;
 using Engine.Physics.BEPUphysics.CollisionTests;
@@ -14,9 +13,27 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class CharacterContactCategorizer
     {
-        private float tractionThreshold;
-        private float supportThreshold;
         private float headThreshold;
+        private float supportThreshold;
+        private float tractionThreshold;
+
+        /// <summary>
+        /// Creates a new character contact categorizer.
+        /// </summary>
+        /// <param name="maximumTractionSlope">Maximum slope that a character can have traction on.</param>
+        /// <param name="maximumSupportSlope">Maximum slope that a character can be supported by.</param>
+        /// <param name="headThreshold">Value compared against the result of dot(outward facing contact normal, character down direction) to determine if a contact is on top of the character.
+        /// A value near -1 implies that the contact will only be considered a 'head' contact when the support normal is almost aligned with the character's vertical axis.
+        /// A value near -epsilon implies that almost all upper contacts will be considered head contacts.</param>
+        public CharacterContactCategorizer(float maximumTractionSlope, float maximumSupportSlope,
+            float headThreshold = -.01f)
+        {
+            MaximumTractionSlope = maximumTractionSlope;
+            MaximumSupportSlope = maximumSupportSlope;
+            HeadThreshold = headThreshold;
+            System.Diagnostics.Debug.Assert(SupportThreshold <= TractionThreshold,
+                "The character's support threshold should be no higher than the traction threshold for the traction threshold to be meaningful.");
+        }
 
         /// <summary>
         /// Gets or sets the value compared against the result of dot(outward facing contact normal, character down direction) to determine if a character has traction because of a contact.
@@ -95,24 +112,6 @@ namespace Engine.Physics.BEPUphysics.Character
         {
             get => (float) Math.Acos(SupportThreshold);
             set => SupportThreshold = (float) Math.Cos(value);
-        }
-
-        /// <summary>
-        /// Creates a new character contact categorizer.
-        /// </summary>
-        /// <param name="maximumTractionSlope">Maximum slope that a character can have traction on.</param>
-        /// <param name="maximumSupportSlope">Maximum slope that a character can be supported by.</param>
-        /// <param name="headThreshold">Value compared against the result of dot(outward facing contact normal, character down direction) to determine if a contact is on top of the character.
-        /// A value near -1 implies that the contact will only be considered a 'head' contact when the support normal is almost aligned with the character's vertical axis.
-        /// A value near -epsilon implies that almost all upper contacts will be considered head contacts.</param>
-        public CharacterContactCategorizer(float maximumTractionSlope, float maximumSupportSlope,
-            float headThreshold = -.01f)
-        {
-            MaximumTractionSlope = maximumTractionSlope;
-            MaximumSupportSlope = maximumSupportSlope;
-            HeadThreshold = headThreshold;
-            System.Diagnostics.Debug.Assert(SupportThreshold <= TractionThreshold,
-                "The character's support threshold should be no higher than the traction threshold for the traction threshold to be meaningful.");
         }
 
         /// <summary>

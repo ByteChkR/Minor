@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Resources;
 using Engine.Audio;
 using Engine.Core;
 using Engine.DataTypes;
@@ -9,7 +7,6 @@ using Engine.Demo.components;
 using Engine.IO;
 using Engine.Rendering;
 using OpenTK;
-using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Demo.scenes
 {

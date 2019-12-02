@@ -9,11 +9,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public abstract class NarrowPhasePair
     {
-        ///<summary>
-        /// Updates the collision between the broad phase entries.
-        ///</summary>
-        ///<param name="dt">Timestep duration.</param>
-        public abstract void UpdateCollision(float dt);
+        protected internal BroadPhaseOverlap broadPhaseOverlap;
 
         ///<summary>
         /// Gets or sets whether or not the pair needs to be updated.
@@ -29,8 +25,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             get => broadPhaseOverlap.collisionRule;
             set => broadPhaseOverlap.collisionRule = value;
         }
-
-        protected internal BroadPhaseOverlap broadPhaseOverlap;
 
         ///<summary>
         /// Gets the overlap used to create the pair.
@@ -54,6 +48,12 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
         /// Gets the narrow phase that owns this pair.
         /// </summary>
         public NarrowPhase NarrowPhase { get; internal set; }
+
+        ///<summary>
+        /// Updates the collision between the broad phase entries.
+        ///</summary>
+        ///<param name="dt">Timestep duration.</param>
+        public abstract void UpdateCollision(float dt);
 
         ///<summary>
         /// Initializes the pair.

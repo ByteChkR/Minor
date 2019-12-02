@@ -11,13 +11,11 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
     {
         private Vector2 accumulatedImpulse;
         private Vector2 biasVelocity;
+        private Vector2 error;
         private Vector3 jacobianMaxA;
         private Vector3 jacobianMaxB;
         private Vector3 jacobianMinA;
         private Vector3 jacobianMinB;
-        private bool maxIsActive;
-        private bool minIsActive;
-        private Vector2 error;
         private Vector3 localTestAxis;
 
         /// <summary>
@@ -25,13 +23,17 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
         /// </summary>
         protected float maximumAngle;
 
+        private bool maxIsActive;
+
         /// <summary>
         /// Minimum angle that entities can twist.
         /// </summary>
         protected float minimumAngle;
 
-        private Vector3 worldTestAxis;
+        private bool minIsActive;
         private Vector2 velocityToImpulse;
+
+        private Vector3 worldTestAxis;
 
         /// <summary>
         /// Constructs a new constraint which prevents the connected entities from rotating relative to each other around an axis beyond given limits.
@@ -159,126 +161,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
                 Matrix3x3.TransformTranspose(ref worldTestAxis, ref connectionB.orientationMatrix, out localTestAxis);
             }
         }
-
-        #region I2DImpulseConstraintWithError Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// The revolute limit is special; internally, it is sometimes two constraints.
-        /// The X value of the vector is the "minimum" plane of the limit, and the Y value is the "maximum" plane.
-        /// If a plane isn't active, its error is zero.
-        /// </summary>
-        public Vector2 RelativeVelocity
-        {
-            get
-            {
-                if (isLimitActive)
-                {
-                    float velocityA, velocityB;
-                    Vector2 toReturn = Vector2.Zero;
-                    if (minIsActive)
-                    {
-                        Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMinA, out velocityA);
-                        Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMinB, out velocityB);
-                        toReturn.X = velocityA + velocityB;
-                    }
-
-                    if (maxIsActive)
-                    {
-                        Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMaxA, out velocityA);
-                        Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMaxB, out velocityB);
-                        toReturn.Y = velocityA + velocityB;
-                    }
-
-                    return toReturn;
-                }
-
-                return new Vector2();
-            }
-        }
-
-        /// <summary>
-        /// Gets the total impulse applied by this constraint.
-        /// The x component corresponds to the minimum plane limit,
-        /// while the y component corresponds to the maximum plane limit.
-        /// </summary>
-        public Vector2 TotalImpulse => accumulatedImpulse;
-
-        /// <summary>
-        /// Gets the current constraint error.
-        /// The x component corresponds to the minimum plane limit,
-        /// while the y component corresponds to the maximum plane limit.
-        /// </summary>
-        public Vector2 Error => error;
-
-        #endregion
-
-        //Newer version of revolute limit will use up to two planes.  This is sort of like being a double-constraint, with two jacobians and everything.
-        //Not going to solve both plane limits simultaneously because they can be redundant.  De-linking them will let the system deal with redundancy better.
-
-        #region I2DJacobianConstraint Members
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
-        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = Toolbox.ZeroVector;
-            jacobianY = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the linear jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
-        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = Toolbox.ZeroVector;
-            jacobianY = Toolbox.ZeroVector;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the first connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
-        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = jacobianMinA;
-            jacobianY = jacobianMaxA;
-        }
-
-        /// <summary>
-        /// Gets the angular jacobian entry for the second connected entity.
-        /// </summary>
-        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
-        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
-        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
-        {
-            jacobianX = jacobianMinB;
-            jacobianY = jacobianMaxB;
-        }
-
-        /// <summary>
-        /// Gets the mass matrix of the revolute limit.
-        /// The revolute limit is special; in terms of solving, it is
-        /// actually sometimes TWO constraints; a minimum plane, and a
-        /// maximum plane.  The M11 field represents the minimum plane mass matrix
-        /// and the M22 field represents the maximum plane mass matrix.
-        /// </summary>
-        /// <param name="massMatrix">Mass matrix of the constraint.</param>
-        public void GetMassMatrix(out Matrix2x2 massMatrix)
-        {
-            massMatrix.M11 = velocityToImpulse.X;
-            massMatrix.M22 = velocityToImpulse.Y;
-            massMatrix.M12 = 0;
-            massMatrix.M21 = 0;
-        }
-
-        #endregion
 
         /// <summary>
         /// Computes one iteration of the constraint to meet the solver updateable's goal.
@@ -685,5 +567,125 @@ namespace Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits
             //else //if (currentAngle >= 0)
             //    return angle - minimumAngle;
         }
+
+        #region I2DImpulseConstraintWithError Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// The revolute limit is special; internally, it is sometimes two constraints.
+        /// The X value of the vector is the "minimum" plane of the limit, and the Y value is the "maximum" plane.
+        /// If a plane isn't active, its error is zero.
+        /// </summary>
+        public Vector2 RelativeVelocity
+        {
+            get
+            {
+                if (isLimitActive)
+                {
+                    float velocityA, velocityB;
+                    Vector2 toReturn = Vector2.Zero;
+                    if (minIsActive)
+                    {
+                        Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMinA, out velocityA);
+                        Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMinB, out velocityB);
+                        toReturn.X = velocityA + velocityB;
+                    }
+
+                    if (maxIsActive)
+                    {
+                        Vector3.Dot(ref connectionA.angularVelocity, ref jacobianMaxA, out velocityA);
+                        Vector3.Dot(ref connectionB.angularVelocity, ref jacobianMaxB, out velocityB);
+                        toReturn.Y = velocityA + velocityB;
+                    }
+
+                    return toReturn;
+                }
+
+                return new Vector2();
+            }
+        }
+
+        /// <summary>
+        /// Gets the total impulse applied by this constraint.
+        /// The x component corresponds to the minimum plane limit,
+        /// while the y component corresponds to the maximum plane limit.
+        /// </summary>
+        public Vector2 TotalImpulse => accumulatedImpulse;
+
+        /// <summary>
+        /// Gets the current constraint error.
+        /// The x component corresponds to the minimum plane limit,
+        /// while the y component corresponds to the maximum plane limit.
+        /// </summary>
+        public Vector2 Error => error;
+
+        #endregion
+
+        //Newer version of revolute limit will use up to two planes.  This is sort of like being a double-constraint, with two jacobians and everything.
+        //Not going to solve both plane limits simultaneously because they can be redundant.  De-linking them will let the system deal with redundancy better.
+
+        #region I2DJacobianConstraint Members
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the first connected entity.</param>
+        public void GetLinearJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = Toolbox.ZeroVector;
+            jacobianY = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the linear jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First linear jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second linear jacobian entry for the second connected entity.</param>
+        public void GetLinearJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = Toolbox.ZeroVector;
+            jacobianY = Toolbox.ZeroVector;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the first connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the first connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the first connected entity.</param>
+        public void GetAngularJacobianA(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = jacobianMinA;
+            jacobianY = jacobianMaxA;
+        }
+
+        /// <summary>
+        /// Gets the angular jacobian entry for the second connected entity.
+        /// </summary>
+        /// <param name="jacobianX">First angular jacobian entry for the second connected entity.</param>
+        /// <param name="jacobianY">Second angular jacobian entry for the second connected entity.</param>
+        public void GetAngularJacobianB(out Vector3 jacobianX, out Vector3 jacobianY)
+        {
+            jacobianX = jacobianMinB;
+            jacobianY = jacobianMaxB;
+        }
+
+        /// <summary>
+        /// Gets the mass matrix of the revolute limit.
+        /// The revolute limit is special; in terms of solving, it is
+        /// actually sometimes TWO constraints; a minimum plane, and a
+        /// maximum plane.  The M11 field represents the minimum plane mass matrix
+        /// and the M22 field represents the maximum plane mass matrix.
+        /// </summary>
+        /// <param name="massMatrix">Mass matrix of the constraint.</param>
+        public void GetMassMatrix(out Matrix2x2 massMatrix)
+        {
+            massMatrix.M11 = velocityToImpulse.X;
+            massMatrix.M22 = velocityToImpulse.Y;
+            massMatrix.M12 = 0;
+            massMatrix.M21 = 0;
+        }
+
+        #endregion
     }
 }

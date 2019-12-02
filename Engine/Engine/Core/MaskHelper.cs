@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Engine.Core
+﻿namespace Engine.Core
 {
     public static class MaskHelper
     {
@@ -22,10 +20,8 @@ namespace Engine.Core
             {
                 return (mask & flag) == flag;
             }
-            else
-            {
-                return (mask & flag) != 0;
-            }
+
+            return (mask & flag) != 0;
         }
     }
 }

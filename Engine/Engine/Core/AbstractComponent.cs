@@ -12,11 +12,6 @@ namespace Engine.Core
     public abstract class AbstractComponent : IDestroyable
     {
         /// <summary>
-        /// The Owner of the component(null if not attached to any Game object)
-        /// </summary>
-        public GameObject Owner { get; set; }
-
-        /// <summary>
         /// A private flag indicating if the object is awake
         /// </summary>
         private bool _awake;
@@ -27,9 +22,27 @@ namespace Engine.Core
         internal bool _destructionPending;
 
         /// <summary>
+        /// The Owner of the component(null if not attached to any Game object)
+        /// </summary>
+        public GameObject Owner { get; set; }
+
+        /// <summary>
         /// A public flag that is set to true when the object has been truely removed from the systems
         /// </summary>
         public bool Destroyed { get; private set; }
+
+        /// <summary>
+        /// Adds this component to the list of components that will be removed at the end of the frame
+        /// </summary>
+        public void Destroy()
+        {
+            if (_destructionPending)
+            {
+                return;
+            }
+
+            _destructionPending = true;
+        }
 
         /// <summary>
         /// Virtual Function that gets called when the script is used by the system for the first time
@@ -52,19 +65,6 @@ namespace Engine.Core
 
             Destroyed = true;
             _awake = false;
-        }
-
-        /// <summary>
-        /// Adds this component to the list of components that will be removed at the end of the frame
-        /// </summary>
-        public void Destroy()
-        {
-            if (_destructionPending)
-            {
-                return;
-            }
-
-            _destructionPending = true;
         }
 
         /// <summary>

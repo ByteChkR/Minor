@@ -28,52 +28,6 @@ namespace Engine.OpenCL.DotNetCore.Kernels
 
         #endregion
 
-        #region Public Properties
-
-        /// <summary>
-        /// Contains the function name of the OpenCL kernel.
-        /// </summary>
-        private string functionName;
-
-        /// <summary>
-        /// Gets the function name of the OpenCL kernel.
-        /// </summary>
-        public string FunctionName
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(functionName))
-                {
-                    functionName = GetKernelInformation<string>(KernelInformation.FunctionName);
-                }
-
-                return functionName;
-            }
-        }
-
-        /// <summary>
-        /// Contains the number of arguments, that the kernel function has.
-        /// </summary>
-        private Nullable<int> numberOfArguments;
-
-        /// <summary>
-        /// Gets the number of arguments, that the kernel function has.
-        /// </summary>
-        public int NumberOfArguments
-        {
-            get
-            {
-                if (!numberOfArguments.HasValue)
-                {
-                    numberOfArguments = (int) GetKernelInformation<uint>(KernelInformation.NumberOfArguments);
-                }
-
-                return numberOfArguments.Value;
-            }
-        }
-
-        #endregion
-
         #region Private Methods
 
         /// <summary>
@@ -106,6 +60,72 @@ namespace Engine.OpenCL.DotNetCore.Kernels
 
             // Returns the output
             return InteropConverter.To<T>(output);
+        }
+
+        #endregion
+
+        #region IDisposable Implementation
+
+        /// <summary>
+        /// Disposes of the resources that have been acquired by the kernel.
+        /// </summary>
+        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
+        protected override void Dispose(bool disposing)
+        {
+            // Checks if the kernel has already been disposed of, if not, then it is disposed of
+            if (!IsDisposed)
+            {
+                KernelsNativeApi.ReleaseKernel(Handle);
+            }
+
+            // Makes sure that the base class can execute its dispose logic
+            base.Dispose(disposing);
+        }
+
+        #endregion
+
+        #region Public Properties
+
+        /// <summary>
+        /// Contains the function name of the OpenCL kernel.
+        /// </summary>
+        private string functionName;
+
+        /// <summary>
+        /// Gets the function name of the OpenCL kernel.
+        /// </summary>
+        public string FunctionName
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(functionName))
+                {
+                    functionName = GetKernelInformation<string>(KernelInformation.FunctionName);
+                }
+
+                return functionName;
+            }
+        }
+
+        /// <summary>
+        /// Contains the number of arguments, that the kernel function has.
+        /// </summary>
+        private int? numberOfArguments;
+
+        /// <summary>
+        /// Gets the number of arguments, that the kernel function has.
+        /// </summary>
+        public int NumberOfArguments
+        {
+            get
+            {
+                if (!numberOfArguments.HasValue)
+                {
+                    numberOfArguments = (int) GetKernelInformation<uint>(KernelInformation.NumberOfArguments);
+                }
+
+                return numberOfArguments.Value;
+            }
         }
 
         #endregion
@@ -180,27 +200,6 @@ namespace Engine.OpenCL.DotNetCore.Kernels
         public void SetKernelArgumentGen<T>(int index, T value) where T : struct
         {
             SetKernelArgumentVal(index, value);
-            return;
-        }
-
-        #endregion
-
-        #region IDisposable Implementation
-
-        /// <summary>
-        /// Disposes of the resources that have been acquired by the kernel.
-        /// </summary>
-        /// <param name="disposing">Determines whether managed object or managed and unmanaged resources should be disposed of.</param>
-        protected override void Dispose(bool disposing)
-        {
-            // Checks if the kernel has already been disposed of, if not, then it is disposed of
-            if (!IsDisposed)
-            {
-                KernelsNativeApi.ReleaseKernel(Handle);
-            }
-
-            // Makes sure that the base class can execute its dispose logic
-            base.Dispose(disposing);
         }
 
         #endregion

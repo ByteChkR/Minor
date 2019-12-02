@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
 using System.Runtime.InteropServices;
 using Assimp;
 using Engine.DataTypes;
@@ -10,7 +9,6 @@ using Engine.Debug;
 using Engine.Exceptions;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
-using Engine.OpenCL.TypeEnums;
 using OpenTK.Graphics.OpenGL;
 using PixelFormat = OpenTK.Graphics.OpenGL.PixelFormat;
 using TextureType = Engine.DataTypes.TextureType;

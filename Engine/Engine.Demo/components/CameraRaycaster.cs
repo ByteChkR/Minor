@@ -10,8 +10,8 @@ namespace Engine.Demo.components
     public class CameraRaycaster : AbstractComponent
     {
         private int cast;
-        private GameObject sphereTargetMarker;
         private GameObject looker;
+        private GameObject sphereTargetMarker;
         private float yoff;
 
 

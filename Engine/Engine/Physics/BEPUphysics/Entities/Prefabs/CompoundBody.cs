@@ -12,12 +12,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class CompoundBody : Entity<CompoundCollidable>
     {
-        ///<summary>
-        /// Gets the list of shapes in the compound.
-        ///</summary>
-        public ReadOnlyList<CompoundShapeEntry> Shapes => CollisionInformation.Shape.Shapes;
-
-
         /// <summary>
         /// Creates a new kinematic CompoundBody with the given subbodies.
         /// </summary>
@@ -71,5 +65,10 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             Initialize(collidable, mass);
             Position = center;
         }
+
+        ///<summary>
+        /// Gets the list of shapes in the compound.
+        ///</summary>
+        public ReadOnlyList<CompoundShapeEntry> Shapes => CollisionInformation.Shape.Shapes;
     }
 }

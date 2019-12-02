@@ -12,33 +12,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     {
         protected ConvexShape shape;
 
-        ///<summary>
-        /// Gets or sets the convex shape to be transformed.
-        ///</summary>
-        public ConvexShape Shape
-        {
-            get => shape;
-            set
-            {
-                shape = value;
-                OnShapeChanged();
-            }
-        }
-
         protected Matrix3x3 transform;
-
-        ///<summary>
-        /// Gets or sets the linear transform used to transform the convex shape.
-        ///</summary>
-        public Matrix3x3 Transform
-        {
-            get => transform;
-            set
-            {
-                transform = value;
-                OnShapeChanged();
-            }
-        }
 
         ///<summary>
         /// Constructs a new transformable shape.
@@ -65,6 +39,32 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             this.transform = transform;
 
             UpdateConvexShapeInfo(description);
+        }
+
+        ///<summary>
+        /// Gets or sets the convex shape to be transformed.
+        ///</summary>
+        public ConvexShape Shape
+        {
+            get => shape;
+            set
+            {
+                shape = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the linear transform used to transform the convex shape.
+        ///</summary>
+        public Matrix3x3 Transform
+        {
+            get => transform;
+            set
+            {
+                transform = value;
+                OnShapeChanged();
+            }
         }
 
         protected override void OnShapeChanged()

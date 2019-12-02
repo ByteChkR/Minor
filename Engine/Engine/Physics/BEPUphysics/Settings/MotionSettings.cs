@@ -10,18 +10,6 @@ namespace Engine.Physics.BEPUphysics.Settings
     ///</summary>
     public static class MotionSettings
     {
-        ///<summary>
-        /// The scaling to apply to the core shapes used for continuous collision detection tests.
-        /// Values should be between 0 and 0.99f.  The smaller the value, the smaller the shapes used
-        /// to perform CCD are, and more collisions are missed.
-        /// Defaults to .8f.
-        ///</summary>
-        public static float CoreShapeScaling
-        {
-            get => coreShapeScaling;
-            set => coreShapeScaling = MathHelper.Clamp(value, 0, .99f);
-        }
-
         private static float coreShapeScaling = .8f;
 
         /// <summary>
@@ -49,15 +37,27 @@ namespace Engine.Physics.BEPUphysics.Settings
         /// </summary>
         public static CCDFilter CCDFilter;
 
+        static MotionSettings()
+        {
+            CCDFilter = DefaultCCDFilter;
+        }
+
+        ///<summary>
+        /// The scaling to apply to the core shapes used for continuous collision detection tests.
+        /// Values should be between 0 and 0.99f.  The smaller the value, the smaller the shapes used
+        /// to perform CCD are, and more collisions are missed.
+        /// Defaults to .8f.
+        ///</summary>
+        public static float CoreShapeScaling
+        {
+            get => coreShapeScaling;
+            set => coreShapeScaling = MathHelper.Clamp(value, 0, .99f);
+        }
+
 
         private static bool DefaultCCDFilter(CollidablePairHandler pair)
         {
             return pair.broadPhaseOverlap.collisionRule < CollisionRule.NoSolver;
-        }
-
-        static MotionSettings()
-        {
-            CCDFilter = DefaultCCDFilter;
         }
     }
 

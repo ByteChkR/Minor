@@ -76,6 +76,6 @@
         /// An unknown texture that does not mention any of the defined texture type definitions. It is still imported, but is excluded from any
         /// further postprocessing.
         /// </summary>
-        Unknown,
+        Unknown
     }
 }

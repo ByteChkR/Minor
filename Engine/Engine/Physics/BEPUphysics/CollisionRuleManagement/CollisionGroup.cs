@@ -53,7 +53,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         {
             foreach (CollisionGroup group in aGroups)
             {
-                DefineCollisionRulesWithSet(@group, bGroups, rule);
+                DefineCollisionRulesWithSet(group, bGroups, rule);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         {
             foreach (CollisionGroup g in groups)
             {
-                DefineCollisionRule(@group, g, rule);
+                DefineCollisionRule(group, g, rule);
             }
         }
 
@@ -117,7 +117,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         {
             foreach (CollisionGroup group in aGroups)
             {
-                RemoveCollisionRulesWithSet(@group, bGroups);
+                RemoveCollisionRulesWithSet(group, bGroups);
             }
         }
 
@@ -148,7 +148,7 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         {
             foreach (CollisionGroup g in groups)
             {
-                RemoveCollisionRule(@group, g);
+                RemoveCollisionRule(group, g);
             }
         }
 

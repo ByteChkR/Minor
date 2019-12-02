@@ -20,121 +20,16 @@ namespace Engine.Physics.BEPUphysics.Character
         /// </summary>
         private Cylinder characterBody;
 
-        private ConvexCollidable<CylinderShape> standingQueryObject;
+        private float crouchingHeight;
         private ConvexCollidable<CylinderShape> crouchingQueryObject;
-        private ConvexCollidable<CylinderShape> proneQueryObject;
         private ConvexCollidable<CylinderShape> currentQueryObject;
 
-        /// <summary>
-        /// Updates the query objects to match the character controller's current state.  Called when BodyRadius, StanceManager.StandingHeight, or StanceManager.CrouchingHeight is set.
-        /// </summary>
-        public void UpdateQueryShapes()
-        {
-            standingQueryObject.Shape.Radius = characterBody.Radius;
-            standingQueryObject.Shape.Height = StandingHeight;
-            standingQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
-            crouchingQueryObject.Shape.Radius = characterBody.Radius;
-            crouchingQueryObject.Shape.Height = CrouchingHeight;
-            crouchingQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
-            proneQueryObject.Shape.Radius = characterBody.Radius;
-            proneQueryObject.Shape.Height = ProneHeight;
-            proneQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
-        }
+        private float proneHeight;
+        private ConvexCollidable<CylinderShape> proneQueryObject;
 
         private float standingHeight;
 
-        /// <summary>
-        /// Gets or sets the height of the character while standing.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently standing.
-        /// </summary>
-        public float StandingHeight
-        {
-            get => standingHeight;
-            set
-            {
-                if (value <= 0 || value < CrouchingHeight)
-                {
-                    throw new ArgumentException(
-                        "Standing height must be positive and greater than the crouching height.");
-                }
-
-                standingHeight = value;
-                UpdateQueryShapes();
-                if (CurrentStance == Stance.Standing)
-                    //If we're currently standing, then the current shape must be modified as well.
-                    //This isn't entirely safe, but dynamic resizing generally isn't.
-                {
-                    characterBody.Height = standingHeight;
-                }
-            }
-        }
-
-        private float crouchingHeight;
-
-        /// <summary>
-        /// Gets or sets the height of the character while crouching.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently crouching.
-        /// </summary>
-        public float CrouchingHeight
-        {
-            get => crouchingHeight;
-            set
-            {
-                if (value <= 0 || value > StandingHeight)
-                {
-                    throw new ArgumentException("Crouching height must be positive and less than the standing height.");
-                }
-
-                crouchingHeight = value;
-                UpdateQueryShapes();
-
-                if (CurrentStance == Stance.Crouching)
-                    //If we're currently crouching, then the current shape must be modified as well.
-                    //This isn't entirely safe, but dynamic resizing generally isn't.
-                {
-                    characterBody.Height = crouchingHeight;
-                }
-            }
-        }
-
-        private float proneHeight;
-
-        /// <summary>
-        /// Gets or sets the height of the character while prone.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently prone.
-        /// </summary>
-        public float ProneHeight
-        {
-            get => proneHeight;
-            set
-            {
-                if (value <= 0 || value > CrouchingHeight)
-                {
-                    throw new ArgumentException(
-                        "Crouching height must be positive and less than the crouching height.");
-                }
-
-                proneHeight = value;
-                UpdateQueryShapes();
-
-                if (CurrentStance == Stance.Prone)
-                    //If we're currently crouching, then the current shape must be modified as well.
-                    //This isn't entirely safe, but dynamic resizing generally isn't.
-                {
-                    characterBody.Height = proneHeight;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Gets the current stance of the character.
-        /// </summary>
-        public Stance CurrentStance { get; private set; }
-
-        /// <summary>
-        /// Gets or sets the stance that the character is trying to move into.
-        /// </summary>
-        public Stance DesiredStance { get; set; }
-
-        private QueryManager QueryManager { get; }
-        private SupportFinder SupportFinder { get; }
+        private ConvexCollidable<CylinderShape> standingQueryObject;
 
         /// <summary>
         /// Constructs a stance manager for a character.
@@ -184,6 +79,111 @@ namespace Engine.Physics.BEPUphysics.Character
             standingQueryObject.CollisionRules = characterBody.CollisionInformation.CollisionRules;
             crouchingQueryObject.CollisionRules = characterBody.CollisionInformation.CollisionRules;
             proneQueryObject.CollisionRules = characterBody.CollisionInformation.CollisionRules;
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the character while standing.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently standing.
+        /// </summary>
+        public float StandingHeight
+        {
+            get => standingHeight;
+            set
+            {
+                if (value <= 0 || value < CrouchingHeight)
+                {
+                    throw new ArgumentException(
+                        "Standing height must be positive and greater than the crouching height.");
+                }
+
+                standingHeight = value;
+                UpdateQueryShapes();
+                if (CurrentStance == Stance.Standing)
+                    //If we're currently standing, then the current shape must be modified as well.
+                    //This isn't entirely safe, but dynamic resizing generally isn't.
+                {
+                    characterBody.Height = standingHeight;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the character while crouching.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently crouching.
+        /// </summary>
+        public float CrouchingHeight
+        {
+            get => crouchingHeight;
+            set
+            {
+                if (value <= 0 || value > StandingHeight)
+                {
+                    throw new ArgumentException("Crouching height must be positive and less than the standing height.");
+                }
+
+                crouchingHeight = value;
+                UpdateQueryShapes();
+
+                if (CurrentStance == Stance.Crouching)
+                    //If we're currently crouching, then the current shape must be modified as well.
+                    //This isn't entirely safe, but dynamic resizing generally isn't.
+                {
+                    characterBody.Height = crouchingHeight;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the height of the character while prone.  Must be less than the standing height.  To avoid resizing-related problems, use this only when the character is not being actively simulated or is not currently prone.
+        /// </summary>
+        public float ProneHeight
+        {
+            get => proneHeight;
+            set
+            {
+                if (value <= 0 || value > CrouchingHeight)
+                {
+                    throw new ArgumentException(
+                        "Crouching height must be positive and less than the crouching height.");
+                }
+
+                proneHeight = value;
+                UpdateQueryShapes();
+
+                if (CurrentStance == Stance.Prone)
+                    //If we're currently crouching, then the current shape must be modified as well.
+                    //This isn't entirely safe, but dynamic resizing generally isn't.
+                {
+                    characterBody.Height = proneHeight;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the current stance of the character.
+        /// </summary>
+        public Stance CurrentStance { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the stance that the character is trying to move into.
+        /// </summary>
+        public Stance DesiredStance { get; set; }
+
+        private QueryManager QueryManager { get; }
+        private SupportFinder SupportFinder { get; }
+
+        /// <summary>
+        /// Updates the query objects to match the character controller's current state.  Called when BodyRadius, StanceManager.StandingHeight, or StanceManager.CrouchingHeight is set.
+        /// </summary>
+        public void UpdateQueryShapes()
+        {
+            standingQueryObject.Shape.Radius = characterBody.Radius;
+            standingQueryObject.Shape.Height = StandingHeight;
+            standingQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
+            crouchingQueryObject.Shape.Radius = characterBody.Radius;
+            crouchingQueryObject.Shape.Height = CrouchingHeight;
+            crouchingQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
+            proneQueryObject.Shape.Radius = characterBody.Radius;
+            proneQueryObject.Shape.Height = ProneHeight;
+            proneQueryObject.Shape.CollisionMargin = characterBody.CollisionInformation.Shape.CollisionMargin;
         }
 
         private void PrepareQueryObject(EntityCollidable queryObject, ref Vector3 position)

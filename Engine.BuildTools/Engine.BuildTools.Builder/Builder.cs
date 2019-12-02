@@ -24,7 +24,7 @@ namespace Engine.BuildTools.Builder
 
         public static void RunCommand(string args)
         {
-            string[] a = args.Split(new[] {' ', '\n'});
+            string[] a = args.Split(' ', '\n');
             RunCommand(a);
         }
 
@@ -512,14 +512,14 @@ namespace Engine.BuildTools.Builder
                 .ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo() {packageType = AssetPackageType.Unpack});
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo {packageType = AssetPackageType.Unpack});
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo() {packageType = AssetPackageType.Memory});
+                info.FileInfos.Add(packExts[i], new AssetFileInfo {packageType = AssetPackageType.Memory});
             }
 
             return info;

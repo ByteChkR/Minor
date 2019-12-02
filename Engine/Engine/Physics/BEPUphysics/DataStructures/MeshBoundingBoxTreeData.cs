@@ -9,6 +9,8 @@ namespace Engine.Physics.BEPUphysics.DataStructures
     {
         internal int[] indices;
 
+        internal Vector3[] vertices;
+
         ///<summary>
         /// Gets or sets the indices of the triangle mesh.
         ///</summary>
@@ -17,8 +19,6 @@ namespace Engine.Physics.BEPUphysics.DataStructures
             get => indices;
             set => indices = value;
         }
-
-        internal Vector3[] vertices;
 
         ///<summary>
         /// Gets or sets the vertices of the triangle mesh.

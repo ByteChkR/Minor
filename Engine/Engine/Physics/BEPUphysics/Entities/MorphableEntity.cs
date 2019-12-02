@@ -10,15 +10,6 @@ namespace Engine.Physics.BEPUphysics.Entities
     public class MorphableEntity : Entity
     {
         ///<summary>
-        /// Gets or sets the collidable associated with the entity.
-        ///</summary>
-        public new EntityCollidable CollisionInformation
-        {
-            get => base.CollisionInformation;
-            set => SetCollisionInformation(value);
-        }
-
-        ///<summary>
         /// Constructs a new morphable entity.
         ///</summary>
         ///<param name="collisionInformation">Collidable to use with the entity.</param>
@@ -77,6 +68,15 @@ namespace Engine.Physics.BEPUphysics.Entities
         public MorphableEntity(EntityShape shape, float mass, Matrix3x3 inertiaTensor)
             : base(shape, mass, inertiaTensor)
         {
+        }
+
+        ///<summary>
+        /// Gets or sets the collidable associated with the entity.
+        ///</summary>
+        public new EntityCollidable CollisionInformation
+        {
+            get => base.CollisionInformation;
+            set => SetCollisionInformation(value);
         }
 
 

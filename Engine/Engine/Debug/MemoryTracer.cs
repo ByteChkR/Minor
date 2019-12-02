@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 
 namespace Engine.Debug
 {
@@ -19,16 +17,6 @@ namespace Engine.Debug
         /// </summary>
         private static DebugConsoleComponent _console;
 
-
-        /// <summary>
-        /// Setter that sets the console
-        /// </summary>
-        /// <param name="component"></param>
-        internal static void SetDebugComponent(DebugConsoleComponent component)
-        {
-            _console = component;
-        }
-
         /// <summary>
         /// Current active stage
         /// </summary>
@@ -38,6 +26,16 @@ namespace Engine.Debug
         /// The maximum history of informations that is kept
         /// </summary>
         public static readonly int MaxTraceCount = 10;
+
+
+        /// <summary>
+        /// Setter that sets the console
+        /// </summary>
+        /// <param name="component"></param>
+        internal static void SetDebugComponent(DebugConsoleComponent component)
+        {
+            _console = component;
+        }
 
 
         /// <summary>

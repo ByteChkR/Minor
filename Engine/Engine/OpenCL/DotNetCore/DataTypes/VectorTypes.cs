@@ -17,11 +17,12 @@
 
 #endregion
 
+using System;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
+
 namespace Engine.OpenCL.DotNetCore.DataTypes
 {
-    using System;
-    using System.Diagnostics;
-    using System.Runtime.InteropServices;
     using uchar = System.Byte;
 
     public interface IVectorType

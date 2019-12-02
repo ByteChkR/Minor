@@ -10,9 +10,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
     ///</summary>
     public sealed class TriangleSpherePairTester : TrianglePairTester
     {
+        private VoronoiRegion lastRegion;
         internal SphereShape sphere;
 
-        private VoronoiRegion lastRegion;
+
+        public override bool ShouldCorrectContactNormal => false;
 
 
         //Relies on the triangle being located in the local space of the convex object.  The convex transform is used to transform the
@@ -111,9 +113,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms
         {
             return lastRegion;
         }
-
-
-        public override bool ShouldCorrectContactNormal => false;
 
         ///<summary>
         /// Initializes the pair tester.

@@ -15,10 +15,15 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     {
         private ConvexCollidable convex;
 
+        private RawList<int> overlaps = new RawList<int>(8);
+        private TriangleShape triangle = new TriangleShape {collisionMargin = 0};
+
         /// <summary>
         /// Gets or sets whether or not to check the convex object for total containment within the detector volume.
         /// </summary>
         public bool CheckContainment { get; set; } = true;
+
+        public override EntityCollidable Collidable => convex;
 
         public override void Initialize(BroadPhaseEntry entryA, BroadPhaseEntry entryB)
         {
@@ -40,11 +45,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
             convex = null;
             CheckContainment = true;
         }
-
-        public override EntityCollidable Collidable => convex;
-
-        private RawList<int> overlaps = new RawList<int>(8);
-        private TriangleShape triangle = new TriangleShape {collisionMargin = 0};
 
         public override void UpdateCollision(float dt)
         {

@@ -44,6 +44,14 @@ namespace Engine.Physics.BEPUphysics.Materials
             MaterialInteractions = new Dictionary<MaterialPair, MaterialBlender>();
         }
 
+
+        ///<summary>
+        /// Gets or sets the material interactions dictionary.
+        /// This dictionary contains all the special relationships between specific materials.
+        /// These interaction properties will override properties obtained by normal blending.
+        ///</summary>
+        public static Dictionary<MaterialPair, MaterialBlender> MaterialInteractions { get; set; }
+
         ///<summary>
         /// Computes the interaction properties between two materials.
         ///</summary>
@@ -63,14 +71,6 @@ namespace Engine.Physics.BEPUphysics.Materials
                 MaterialBlender(materialA, materialB, out properties);
             }
         }
-
-
-        ///<summary>
-        /// Gets or sets the material interactions dictionary.
-        /// This dictionary contains all the special relationships between specific materials.
-        /// These interaction properties will override properties obtained by normal blending.
-        ///</summary>
-        public static Dictionary<MaterialPair, MaterialBlender> MaterialInteractions { get; set; }
 
         /// <summary>
         /// Blender used to combine materials into a pair's interaction properties.

@@ -14,6 +14,45 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
     /// </summary>
     public class Factories
     {
+        private RawList<NarrowPhasePairFactory> factories = new RawList<NarrowPhasePairFactory>();
+
+        /// <summary>
+        /// Constructs all factories.
+        /// </summary>
+        public Factories()
+        {
+            factories.Add(BoxBox = new NarrowPhasePairFactory<BoxPairHandler>());
+            factories.Add(BoxSphere = new NarrowPhasePairFactory<BoxSpherePairHandler>());
+            factories.Add(SphereSphere = new NarrowPhasePairFactory<SpherePairHandler>());
+            factories.Add(ConvexConvex = new NarrowPhasePairFactory<GeneralConvexPairHandler>());
+            factories.Add(TriangleConvex = new NarrowPhasePairFactory<TriangleConvexPairHandler>());
+            factories.Add(CompoundConvex = new NarrowPhasePairFactory<CompoundConvexPairHandler>());
+            factories.Add(CompoundCompound = new NarrowPhasePairFactory<CompoundPairHandler>());
+            factories.Add(CompoundStaticMesh = new NarrowPhasePairFactory<CompoundStaticMeshPairHandler>());
+            factories.Add(CompoundTerrain = new NarrowPhasePairFactory<CompoundTerrainPairHandler>());
+            factories.Add(CompoundInstancedMesh = new NarrowPhasePairFactory<CompoundInstancedMeshPairHandler>());
+            factories.Add(CompoundMobileMesh = new NarrowPhasePairFactory<CompoundMobileMeshPairHandler>());
+            factories.Add(StaticMeshConvex = new NarrowPhasePairFactory<StaticMeshConvexPairHandler>());
+            factories.Add(StaticMeshSphere = new NarrowPhasePairFactory<StaticMeshSpherePairHandler>());
+            factories.Add(TerrainConvex = new NarrowPhasePairFactory<TerrainConvexPairHandler>());
+            factories.Add(TerrainSphere = new NarrowPhasePairFactory<TerrainSpherePairHandler>());
+            factories.Add(InstancedMeshConvex = new NarrowPhasePairFactory<InstancedMeshConvexPairHandler>());
+            factories.Add(InstancedMeshSphere = new NarrowPhasePairFactory<InstancedMeshSpherePairHandler>());
+            factories.Add(MobileMeshConvex = new NarrowPhasePairFactory<MobileMeshConvexPairHandler>());
+            factories.Add(MobileMeshSphere = new NarrowPhasePairFactory<MobileMeshSpherePairHandler>());
+            factories.Add(MobileMeshTriangle = new NarrowPhasePairFactory<MobileMeshTrianglePairHandler>());
+            factories.Add(MobileMeshStaticMesh = new NarrowPhasePairFactory<MobileMeshStaticMeshPairHandler>());
+            factories.Add(MobileMeshInstancedMesh = new NarrowPhasePairFactory<MobileMeshInstancedMeshPairHandler>());
+            factories.Add(MobileMeshTerrain = new NarrowPhasePairFactory<MobileMeshTerrainPairHandler>());
+            factories.Add(MobileMeshMobileMesh = new NarrowPhasePairFactory<MobileMeshMobileMeshPairHandler>());
+            factories.Add(StaticGroupConvex = new NarrowPhasePairFactory<StaticGroupConvexPairHandler>());
+            factories.Add(StaticGroupCompound = new NarrowPhasePairFactory<StaticGroupCompoundPairHandler>());
+            factories.Add(StaticGroupMobileMesh = new NarrowPhasePairFactory<StaticGroupMobileMeshPairHandler>());
+            factories.Add(DetectorVolumeConvex = new NarrowPhasePairFactory<DetectorVolumeConvexPairHandler>());
+            factories.Add(DetectorVolumeMobileMesh = new NarrowPhasePairFactory<DetectorVolumeMobileMeshPairHandler>());
+            factories.Add(DetectorVolumeCompound = new NarrowPhasePairFactory<DetectorVolumeCompoundPairHandler>());
+        }
+
         /// <summary>
         /// Gets the factory for the box-box case.
         /// </summary>
@@ -164,49 +203,10 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
         /// </summary>
         public NarrowPhasePairFactory<DetectorVolumeCompoundPairHandler> DetectorVolumeCompound { get; }
 
-        private RawList<NarrowPhasePairFactory> factories = new RawList<NarrowPhasePairFactory>();
-
         /// <summary>
         /// Gets a collection of all the default factories.
         /// </summary>
         public ReadOnlyList<NarrowPhasePairFactory> All => new ReadOnlyList<NarrowPhasePairFactory>(factories);
-
-        /// <summary>
-        /// Constructs all factories.
-        /// </summary>
-        public Factories()
-        {
-            factories.Add(BoxBox = new NarrowPhasePairFactory<BoxPairHandler>());
-            factories.Add(BoxSphere = new NarrowPhasePairFactory<BoxSpherePairHandler>());
-            factories.Add(SphereSphere = new NarrowPhasePairFactory<SpherePairHandler>());
-            factories.Add(ConvexConvex = new NarrowPhasePairFactory<GeneralConvexPairHandler>());
-            factories.Add(TriangleConvex = new NarrowPhasePairFactory<TriangleConvexPairHandler>());
-            factories.Add(CompoundConvex = new NarrowPhasePairFactory<CompoundConvexPairHandler>());
-            factories.Add(CompoundCompound = new NarrowPhasePairFactory<CompoundPairHandler>());
-            factories.Add(CompoundStaticMesh = new NarrowPhasePairFactory<CompoundStaticMeshPairHandler>());
-            factories.Add(CompoundTerrain = new NarrowPhasePairFactory<CompoundTerrainPairHandler>());
-            factories.Add(CompoundInstancedMesh = new NarrowPhasePairFactory<CompoundInstancedMeshPairHandler>());
-            factories.Add(CompoundMobileMesh = new NarrowPhasePairFactory<CompoundMobileMeshPairHandler>());
-            factories.Add(StaticMeshConvex = new NarrowPhasePairFactory<StaticMeshConvexPairHandler>());
-            factories.Add(StaticMeshSphere = new NarrowPhasePairFactory<StaticMeshSpherePairHandler>());
-            factories.Add(TerrainConvex = new NarrowPhasePairFactory<TerrainConvexPairHandler>());
-            factories.Add(TerrainSphere = new NarrowPhasePairFactory<TerrainSpherePairHandler>());
-            factories.Add(InstancedMeshConvex = new NarrowPhasePairFactory<InstancedMeshConvexPairHandler>());
-            factories.Add(InstancedMeshSphere = new NarrowPhasePairFactory<InstancedMeshSpherePairHandler>());
-            factories.Add(MobileMeshConvex = new NarrowPhasePairFactory<MobileMeshConvexPairHandler>());
-            factories.Add(MobileMeshSphere = new NarrowPhasePairFactory<MobileMeshSpherePairHandler>());
-            factories.Add(MobileMeshTriangle = new NarrowPhasePairFactory<MobileMeshTrianglePairHandler>());
-            factories.Add(MobileMeshStaticMesh = new NarrowPhasePairFactory<MobileMeshStaticMeshPairHandler>());
-            factories.Add(MobileMeshInstancedMesh = new NarrowPhasePairFactory<MobileMeshInstancedMeshPairHandler>());
-            factories.Add(MobileMeshTerrain = new NarrowPhasePairFactory<MobileMeshTerrainPairHandler>());
-            factories.Add(MobileMeshMobileMesh = new NarrowPhasePairFactory<MobileMeshMobileMeshPairHandler>());
-            factories.Add(StaticGroupConvex = new NarrowPhasePairFactory<StaticGroupConvexPairHandler>());
-            factories.Add(StaticGroupCompound = new NarrowPhasePairFactory<StaticGroupCompoundPairHandler>());
-            factories.Add(StaticGroupMobileMesh = new NarrowPhasePairFactory<StaticGroupMobileMeshPairHandler>());
-            factories.Add(DetectorVolumeConvex = new NarrowPhasePairFactory<DetectorVolumeConvexPairHandler>());
-            factories.Add(DetectorVolumeMobileMesh = new NarrowPhasePairFactory<DetectorVolumeMobileMeshPairHandler>());
-            factories.Add(DetectorVolumeCompound = new NarrowPhasePairFactory<DetectorVolumeCompoundPairHandler>());
-        }
     }
 
     ///<summary>
@@ -214,12 +214,7 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
     ///</summary>
     public static class NarrowPhaseHelper
     {
-        /// <summary>
-        /// Gets the factories used by default to construct various pair types in the narrow phase.
-        /// These do not necessarily reflect the state of the narrow phase helper's CollisionManagers dictionary
-        /// if changes are made to its entries.
-        /// </summary>
-        public static Factories Factories { get; }
+        internal static Dictionary<TypePair, NarrowPhasePairFactory> collisionManagers;
 
         static NarrowPhaseHelper()
         {
@@ -458,7 +453,12 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems
                 Factories.DetectorVolumeCompound);
         }
 
-        internal static Dictionary<TypePair, NarrowPhasePairFactory> collisionManagers;
+        /// <summary>
+        /// Gets the factories used by default to construct various pair types in the narrow phase.
+        /// These do not necessarily reflect the state of the narrow phase helper's CollisionManagers dictionary
+        /// if changes are made to its entries.
+        /// </summary>
+        public static Factories Factories { get; }
 
         ///<summary>
         /// Gets or sets the dictionary that defines the factory to use for various type pairs.

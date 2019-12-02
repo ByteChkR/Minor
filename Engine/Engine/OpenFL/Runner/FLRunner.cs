@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Engine.DataTypes;
 using Engine.IO;
@@ -45,11 +44,11 @@ namespace Engine.OpenCL.Runner
 
     public class FLRunner
     {
-        protected Queue<FLExecutionContext> _processQueue;
+        protected KernelDatabase _db;
 
         //protected Action<FLExecutionContext, Dictionary<Texture, byte[]>> _onFinishQueueCallback;
         protected CLAPI _instance;
-        protected KernelDatabase _db;
+        protected Queue<FLExecutionContext> _processQueue;
 
         public FLRunner(
             CLAPI instance, /*Action<FLExecutionContext, Dictionary<string, byte[]>> onFinishQueueCallback,*/
@@ -97,8 +96,8 @@ namespace Engine.OpenCL.Runner
         protected Dictionary<string, byte[]> Process(FLExecutionContext context)
         {
             MemoryBuffer buf = CLAPI.CreateBuffer(_instance, context.Input, MemoryFlag.ReadWrite);
-            Interpreter ret = new Interpreter(_instance, context.Filename, buf, (int) context.Width,
-                (int) context.Height, 1, 4, _db, true);
+            Interpreter ret = new Interpreter(_instance, context.Filename, buf, context.Width,
+                context.Height, 1, 4, _db, true);
 
             do
             {

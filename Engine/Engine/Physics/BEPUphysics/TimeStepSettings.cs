@@ -6,6 +6,11 @@
     public class TimeStepSettings
     {
         /// <summary>
+        /// Amount of time accumulated by previous calls to Space.Update(float) that has not yet been simulated.
+        /// </summary>
+        public float AccumulatedTime;
+
+        /// <summary>
         /// Maximum number of timesteps to perform during a given frame when Space.Update(float) is used.  The unsimulated time will be accumulated for subsequent calls to Space.Update(float).
         /// Defaults to 3.
         /// </summary>
@@ -17,10 +22,5 @@
         /// Defaults to 1/60.
         /// </summary>
         public float TimeStepDuration = 1f / 60;
-
-        /// <summary>
-        /// Amount of time accumulated by previous calls to Space.Update(float) that has not yet been simulated.
-        /// </summary>
-        public float AccumulatedTime;
     }
 }

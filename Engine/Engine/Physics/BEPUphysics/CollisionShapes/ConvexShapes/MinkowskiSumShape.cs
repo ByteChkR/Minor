@@ -51,20 +51,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class MinkowskiSumShape : ConvexShape
     {
-        ///<summary>
-        /// Gets the list of shapes in the minkowski sum.
-        ///</summary>
-        public ObservableList<OrientedConvexShapeEntry> Shapes { get; } =
-            new ObservableList<OrientedConvexShapeEntry>();
-
         //Local offset is needed to ensure that the minkowski sum is centered on the local origin.
         private Vector3 localOffset;
-
-        ///<summary>
-        /// Gets the local offset of the elements in the minkowski sum.
-        /// This is required because convex shapes need to be centered on their local origin.
-        ///</summary>
-        public Vector3 LocalOffset => localOffset;
 
         /// <summary>
         /// Constructs a minkowski sum shape.
@@ -148,6 +136,18 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             UpdateConvexShapeInfo(description);
             Shapes.Changed += ShapesChanged;
         }
+
+        ///<summary>
+        /// Gets the list of shapes in the minkowski sum.
+        ///</summary>
+        public ObservableList<OrientedConvexShapeEntry> Shapes { get; } =
+            new ObservableList<OrientedConvexShapeEntry>();
+
+        ///<summary>
+        /// Gets the local offset of the elements in the minkowski sum.
+        /// This is required because convex shapes need to be centered on their local origin.
+        ///</summary>
+        public Vector3 LocalOffset => localOffset;
 
 
         private void ShapesChanged(ObservableList<OrientedConvexShapeEntry> list)

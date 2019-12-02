@@ -17,6 +17,21 @@ namespace Engine.Physics.BEPUik
     /// </summary>
     public class IKSolver : IDisposable
     {
+        private PermutationMapper permutationMapper = new PermutationMapper();
+
+        private float timeStepDuration = 1f;
+
+        /// <summary>
+        /// Constructs a new IKSolver.
+        /// </summary>
+        public IKSolver()
+        {
+            ActiveSet = new ActiveSet();
+            ControlIterationCount = 50;
+            FixerIterationCount = 70;
+            VelocitySubiterationCount = 2;
+        }
+
         /// <summary>
         /// Gets the active joint set associated with the solver.
         /// </summary>
@@ -48,8 +63,6 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public float AutoscaleControlMaximumForce { get; set; }
 
-        private float timeStepDuration = 1f;
-
         /// <summary>
         /// Gets or sets the time step duration elapsed by each position iteration.
         /// </summary>
@@ -67,18 +80,9 @@ namespace Engine.Physics.BEPUik
             }
         }
 
-
-        private PermutationMapper permutationMapper = new PermutationMapper();
-
-        /// <summary>
-        /// Constructs a new IKSolver.
-        /// </summary>
-        public IKSolver()
+        public void Dispose()
         {
-            ActiveSet = new ActiveSet();
-            ControlIterationCount = 50;
-            FixerIterationCount = 70;
-            VelocitySubiterationCount = 2;
+            ActiveSet.Dispose();
         }
 
         /// <summary>
@@ -296,11 +300,6 @@ namespace Engine.Physics.BEPUik
         ~IKSolver()
         {
             Dispose();
-        }
-
-        public void Dispose()
-        {
-            ActiveSet.Dispose();
         }
     }
 }

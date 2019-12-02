@@ -12,7 +12,10 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class CharacterPairLocker
     {
+        private static Comparer comparer = new Comparer();
         private Entity characterBody;
+
+        private RawList<ICharacterTag> involvedCharacters = new RawList<ICharacterTag>();
 
         /// <summary>
         /// Constructs a new character pair locker.
@@ -22,8 +25,6 @@ namespace Engine.Physics.BEPUphysics.Character
         {
             this.characterBody = characterBody;
         }
-
-        private RawList<ICharacterTag> involvedCharacters = new RawList<ICharacterTag>();
 
         /// <summary>
         /// Locks all pairs which involve other characters.
@@ -62,7 +63,19 @@ namespace Engine.Physics.BEPUphysics.Character
             }
         }
 
-        private static Comparer comparer = new Comparer();
+        /// <summary>
+        /// Unlocks all pairs which involve other characters.
+        /// </summary>
+        public void UnlockCharacterPairs()
+        {
+            //Unlock the pairs, LIFO.
+            for (int i = involvedCharacters.Count - 1; i >= 0; i--)
+            {
+                Monitor.Exit(involvedCharacters[i]);
+            }
+
+            involvedCharacters.Clear();
+        }
 
         private class Comparer : IComparer<ICharacterTag>
         {
@@ -80,20 +93,6 @@ namespace Engine.Physics.BEPUphysics.Character
 
                 return 0;
             }
-        }
-
-        /// <summary>
-        /// Unlocks all pairs which involve other characters.
-        /// </summary>
-        public void UnlockCharacterPairs()
-        {
-            //Unlock the pairs, LIFO.
-            for (int i = involvedCharacters.Count - 1; i >= 0; i--)
-            {
-                Monitor.Exit(involvedCharacters[i]);
-            }
-
-            involvedCharacters.Clear();
         }
     }
 }

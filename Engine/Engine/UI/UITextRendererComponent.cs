@@ -29,10 +29,6 @@ namespace Engine.UI
         /// </summary>
         protected static bool _init;
 
-        public bool Center = false;
-
-        private bool cached;
-
         /// <summary>
         /// The Length of a single \t in UV coordinates
         /// </summary>
@@ -48,28 +44,9 @@ namespace Engine.UI
         /// </summary>
         private string _text = "HELLO";
 
-        /// <summary>
-        /// The text that is drawn
-        /// </summary>
-        public string Text
-        {
-            get => _text;
-            set
-            {
-                if (!string.Equals(_text, value))
-                {
-                    ContextInvalid = true;
-                    _text = value;
-                }
-            }
-        }
+        private bool cached;
 
-        public Color SystemColor
-        {
-            get => System.Drawing.Color.FromArgb((int) (Color.X * 255), (int) (Color.Y * 255), (int) (Color.Z * 255),
-                255);
-            set => Color = new Vector3(value.R / 255f, value.G / 255f, value.B / 255f);
-        }
+        public bool Center = false;
 
         public Vector3 Color = Vector3.UnitX; // RED
 
@@ -98,6 +75,29 @@ namespace Engine.UI
             shader, worldSpace, alpha)
         {
             Font = font;
+        }
+
+        /// <summary>
+        /// The text that is drawn
+        /// </summary>
+        public string Text
+        {
+            get => _text;
+            set
+            {
+                if (!string.Equals(_text, value))
+                {
+                    ContextInvalid = true;
+                    _text = value;
+                }
+            }
+        }
+
+        public Color SystemColor
+        {
+            get => System.Drawing.Color.FromArgb((int) (Color.X * 255), (int) (Color.Y * 255), (int) (Color.Z * 255),
+                255);
+            set => Color = new Vector3(value.R / 255f, value.G / 255f, value.B / 255f);
         }
 
         /// <summary>

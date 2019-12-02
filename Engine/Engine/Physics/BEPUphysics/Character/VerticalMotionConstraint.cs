@@ -14,12 +14,37 @@ namespace Engine.Physics.BEPUphysics.Character
     /// </summary>
     public class VerticalMotionConstraint : SolverUpdateable
     {
+        private float accumulatedImpulse;
+        private Vector3 angularJacobianB;
         private Entity characterBody;
-        private SupportFinder supportFinder;
+        private Vector3 linearJacobianA;
+        private Vector3 linearJacobianB;
+
+        private float maximumForce;
+
+        private float maximumGlueForce;
+        private float permittedVelocity;
 
         private SupportData supportData;
 
-        private float maximumGlueForce;
+        private Entity supportEntity;
+        private SupportFinder supportFinder;
+
+        private float supportForceFactor = 1f;
+
+        /// <summary>
+        /// Constructs a new vertical motion constraint.
+        /// </summary>
+        /// <param name="characterBody">Character body governed by the constraint.</param>
+        /// <param name="supportFinder">Support finder used by the character.</param>
+        /// <param name="maximumGlueForce">Maximum force the vertical motion constraint is allowed to apply in an attempt to keep the character on the ground.</param>
+        public VerticalMotionConstraint(Entity characterBody, SupportFinder supportFinder,
+            float maximumGlueForce = 5000)
+        {
+            this.characterBody = characterBody;
+            this.supportFinder = supportFinder;
+            MaximumGlueForce = maximumGlueForce;
+        }
 
         /// <summary>
         /// Gets or sets the maximum force that the constraint will apply in attempting to keep the character stuck to the ground.
@@ -37,10 +62,6 @@ namespace Engine.Physics.BEPUphysics.Character
                 maximumGlueForce = value;
             }
         }
-
-        private float maximumForce;
-
-        private float supportForceFactor = 1f;
 
         /// <summary>
         /// Gets or sets the scaling factor of forces applied to the supporting object if it is a dynamic entity.
@@ -67,27 +88,28 @@ namespace Engine.Physics.BEPUphysics.Character
         /// </summary>
         public float EffectiveMass { get; private set; }
 
-        private Entity supportEntity;
-        private Vector3 linearJacobianA;
-        private Vector3 linearJacobianB;
-        private Vector3 angularJacobianB;
-
-
-        private float accumulatedImpulse;
-        private float permittedVelocity;
-
         /// <summary>
-        /// Constructs a new vertical motion constraint.
+        /// Gets the relative velocity between the character and its support along the support normal.
         /// </summary>
-        /// <param name="characterBody">Character body governed by the constraint.</param>
-        /// <param name="supportFinder">Support finder used by the character.</param>
-        /// <param name="maximumGlueForce">Maximum force the vertical motion constraint is allowed to apply in an attempt to keep the character on the ground.</param>
-        public VerticalMotionConstraint(Entity characterBody, SupportFinder supportFinder,
-            float maximumGlueForce = 5000)
+        public float RelativeVelocity
         {
-            this.characterBody = characterBody;
-            this.supportFinder = supportFinder;
-            MaximumGlueForce = maximumGlueForce;
+            get
+            {
+                float relativeVelocity;
+
+                Vector3.Dot(ref linearJacobianA, ref characterBody.linearVelocity, out relativeVelocity);
+
+                if (supportEntity != null)
+                {
+                    float supportVelocity;
+                    Vector3.Dot(ref linearJacobianB, ref supportEntity.linearVelocity, out supportVelocity);
+                    relativeVelocity += supportVelocity;
+                    Vector3.Dot(ref angularJacobianB, ref supportEntity.angularVelocity, out supportVelocity);
+                    relativeVelocity += supportVelocity;
+                }
+
+                return relativeVelocity;
+            }
         }
 
         /// <summary>
@@ -257,30 +279,6 @@ namespace Engine.Physics.BEPUphysics.Character
             }
 
             return Math.Abs(lambda);
-        }
-
-        /// <summary>
-        /// Gets the relative velocity between the character and its support along the support normal.
-        /// </summary>
-        public float RelativeVelocity
-        {
-            get
-            {
-                float relativeVelocity;
-
-                Vector3.Dot(ref linearJacobianA, ref characterBody.linearVelocity, out relativeVelocity);
-
-                if (supportEntity != null)
-                {
-                    float supportVelocity;
-                    Vector3.Dot(ref linearJacobianB, ref supportEntity.linearVelocity, out supportVelocity);
-                    relativeVelocity += supportVelocity;
-                    Vector3.Dot(ref angularJacobianB, ref supportEntity.angularVelocity, out supportVelocity);
-                    relativeVelocity += supportVelocity;
-                }
-
-                return relativeVelocity;
-            }
         }
     }
 }

@@ -13,36 +13,8 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     {
         private float[,] heights;
 
-        //note: changing heights in array does not fire OnShapeChanged automatically.
-        //Need to notify parent manually if you do it.
-        ///<summary>
-        /// Gets or sets the height field of the terrain shape.
-        ///</summary>
-        public float[,] Heights
-        {
-            get => heights;
-            set
-            {
-                heights = value;
-                OnShapeChanged();
-            }
-        }
-
 
         private QuadTriangleOrganization quadTriangleOrganization;
-
-        ///<summary>
-        /// Gets or sets the quad triangle organization.
-        ///</summary>
-        public QuadTriangleOrganization QuadTriangleOrganization
-        {
-            get => quadTriangleOrganization;
-            set
-            {
-                quadTriangleOrganization = value;
-                OnShapeChanged();
-            }
-        }
 
         ///<summary>
         /// Constructs a TerrainShape.
@@ -68,6 +40,34 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         public TerrainShape(float[,] heights)
             : this(heights, QuadTriangleOrganization.BottomLeftUpperRight)
         {
+        }
+
+        //note: changing heights in array does not fire OnShapeChanged automatically.
+        //Need to notify parent manually if you do it.
+        ///<summary>
+        /// Gets or sets the height field of the terrain shape.
+        ///</summary>
+        public float[,] Heights
+        {
+            get => heights;
+            set
+            {
+                heights = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the quad triangle organization.
+        ///</summary>
+        public QuadTriangleOrganization QuadTriangleOrganization
+        {
+            get => quadTriangleOrganization;
+            set
+            {
+                quadTriangleOrganization = value;
+                OnShapeChanged();
+            }
         }
 
 

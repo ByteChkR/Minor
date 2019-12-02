@@ -10,15 +10,6 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
     {
         protected TimeStepSettings timeStepSettings;
 
-        ///<summary>
-        /// Gets or sets the time step settings used by the updater.
-        ///</summary>
-        public TimeStepSettings TimeStepSettings
-        {
-            get => timeStepSettings;
-            set => timeStepSettings = value;
-        }
-
         protected PositionUpdater(TimeStepSettings timeStepSettings, IParallelLooper parallelLooper)
             : this(timeStepSettings)
         {
@@ -30,6 +21,15 @@ namespace Engine.Physics.BEPUphysics.PositionUpdating
         {
             this.timeStepSettings = timeStepSettings;
             Enabled = true;
+        }
+
+        ///<summary>
+        /// Gets or sets the time step settings used by the updater.
+        ///</summary>
+        public TimeStepSettings TimeStepSettings
+        {
+            get => timeStepSettings;
+            set => timeStepSettings = value;
         }
 
         ///<summary>

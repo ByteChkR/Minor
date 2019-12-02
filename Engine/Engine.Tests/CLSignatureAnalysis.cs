@@ -1,21 +1,20 @@
 using System.Linq;
 using Engine.Common;
 using Engine.OpenCL;
-using DT = Engine.OpenCL.TypeEnums.DataTypes;
 using Xunit;
 using Xunit.Abstractions;
+using DT = Engine.OpenCL.TypeEnums.DataTypes;
 
 namespace Engine.Tests
 {
     public class CLSignatureAnalysis
     {
-        private readonly ITestOutputHelper output;
-
-
         public CLSignatureAnalysis(ITestOutputHelper output)
         {
             this.output = output;
         }
+
+        private readonly ITestOutputHelper output;
 
         [Fact]
         public void CL_KernelSignatureAnalysis()

@@ -11,33 +11,7 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     {
         private float height;
 
-        ///<summary>
-        /// Gets or sets the height of the cone.
-        ///</summary>
-        public float Height
-        {
-            get => height;
-            set
-            {
-                height = value;
-                OnShapeChanged();
-            }
-        }
-
         private float radius;
-
-        ///<summary>
-        /// Gets or sets the radius of the cone base.
-        ///</summary>
-        public float Radius
-        {
-            get => radius;
-            set
-            {
-                radius = value;
-                OnShapeChanged();
-            }
-        }
 
         ///<summary>
         /// Constructs a new cone shape.
@@ -64,6 +38,32 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
             this.radius = radius;
 
             UpdateConvexShapeInfo(description);
+        }
+
+        ///<summary>
+        /// Gets or sets the height of the cone.
+        ///</summary>
+        public float Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                OnShapeChanged();
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the radius of the cone base.
+        ///</summary>
+        public float Radius
+        {
+            get => radius;
+            set
+            {
+                radius = value;
+                OnShapeChanged();
+            }
         }
 
 

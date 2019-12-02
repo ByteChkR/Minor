@@ -7,16 +7,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
     /// </summary>
     public class SimulationIslandConnection
     {
-        /// <summary>
-        /// Stores members and the index at which this connection is located in that member's connections list.
-        /// This allows connections to be removed from members in constant time rather than linear time.
-        /// </summary>
-        internal struct Entry
-        {
-            internal SimulationIslandMember Member;
-            internal int Index;
-        }
-
         internal RawList<Entry> entries = new RawList<Entry>(2);
 
         /// <summary>
@@ -36,6 +26,11 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         /// a member's 'real' connections.
         /// </summary>
         public bool SlatedForRemoval { get; internal set; }
+
+        /// <summary>
+        /// Gets or sets the deactivation manager that owns the connection.
+        /// </summary>
+        public DeactivationManager DeactivationManager { get; internal set; }
 
 
         /// <summary>
@@ -79,11 +74,6 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
             }
         }
 
-        /// <summary>
-        /// Gets or sets the deactivation manager that owns the connection.
-        /// </summary>
-        public DeactivationManager DeactivationManager { get; internal set; }
-
 
         internal void CleanUp()
         {
@@ -101,6 +91,16 @@ namespace Engine.Physics.BEPUphysics.DeactivationManagement
         {
             //Note that the simulation member does not yet know about this connection, so the index is assigned to -1.
             entries.Add(new Entry {Index = -1, Member = simulationIslandMember});
+        }
+
+        /// <summary>
+        /// Stores members and the index at which this connection is located in that member's connections list.
+        /// This allows connections to be removed from members in constant time rather than linear time.
+        /// </summary>
+        internal struct Entry
+        {
+            internal SimulationIslandMember Member;
+            internal int Index;
         }
     }
 }

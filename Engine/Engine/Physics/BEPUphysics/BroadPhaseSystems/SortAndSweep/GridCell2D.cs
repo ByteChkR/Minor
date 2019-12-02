@@ -4,8 +4,8 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
 {
     internal class GridCell2D
     {
-        internal RawList<Grid2DEntry> entries = new RawList<Grid2DEntry>();
         internal Int2 cellIndex;
+        internal RawList<Grid2DEntry> entries = new RawList<Grid2DEntry>();
         internal int sortingHash;
 
         internal void Initialize(ref Int2 cellIndex, int hash)

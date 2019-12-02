@@ -20,12 +20,6 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
             this.bufferedStates = bufferedStates;
         }
 
-        private bool IsBufferAccessible()
-        {
-            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled &&
-                   bufferedStates.BufferedStatesManager.InterpolatedStates.Enabled;
-        }
-
 
         ///<summary>
         /// Gets the interpolated position of the entity.
@@ -121,6 +115,12 @@ namespace Engine.Physics.BEPUphysics.EntityStateManagement
                 };
                 return toReturn;
             }
+        }
+
+        private bool IsBufferAccessible()
+        {
+            return bufferedStates.BufferedStatesManager != null && bufferedStates.BufferedStatesManager.Enabled &&
+                   bufferedStates.BufferedStatesManager.InterpolatedStates.Enabled;
         }
     }
 }

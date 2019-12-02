@@ -13,35 +13,23 @@ namespace Engine.Rendering
     /// </summary>
     public class Renderer
     {
+        public enum RenderType
+        {
+            Opaque,
+            Transparent
+        }
+
+        internal static List<LightComponent> Lights = new List<LightComponent>();
+
         /// <summary>
         ///  A list of render targets
         /// </summary>
         private readonly List<RenderTarget> Targets = new List<RenderTarget>();
 
-        internal static List<LightComponent> Lights = new List<LightComponent>();
-
-        /// <summary>
-        /// Current target id
-        /// </summary>
-        private int CurrentTarget { get; set; }
-
         /// <summary>
         /// The Clear color of the two standard Render targets(World/UI)
         /// </summary>
         private Color _clearColor = Color.FromArgb(0, 0, 0, 0);
-
-        /// <summary>
-        /// The Clear color of the two standard Render targets(World/UI)
-        /// </summary>
-        public Color ClearColor
-        {
-            set
-            {
-                _clearColor = value;
-                rt1.ClearColor = rt.ClearColor = _clearColor;
-            }
-            get => _clearColor;
-        }
 
         /// <summary>
         /// Default Render Target(Game World)
@@ -71,6 +59,24 @@ namespace Engine.Rendering
             rt1 = new RenderTarget(new ScreenCamera(), 1 << 30, _clearColor);
             rt1.MergeType = RenderTargetMergeType.Additive;
             AddRenderTarget(rt1);
+        }
+
+        /// <summary>
+        /// Current target id
+        /// </summary>
+        private int CurrentTarget { get; set; }
+
+        /// <summary>
+        /// The Clear color of the two standard Render targets(World/UI)
+        /// </summary>
+        public Color ClearColor
+        {
+            set
+            {
+                _clearColor = value;
+                rt1.ClearColor = rt.ClearColor = _clearColor;
+            }
+            get => _clearColor;
         }
 
         /// <summary>
@@ -193,12 +199,6 @@ namespace Engine.Rendering
             {
                 contexts[i].Render(viewM, cam.Projection);
             }
-        }
-
-        public enum RenderType
-        {
-            Opaque,
-            Transparent
         }
     }
 }

@@ -6,12 +6,6 @@
     public interface IForceUpdateable
     {
         ///<summary>
-        /// Applies forces to the object.
-        ///</summary>
-        ///<param name="dt">Time step duration.</param>
-        void UpdateForForces(float dt);
-
-        ///<summary>
         /// Force updater that owns this object.
         ///</summary>
         ForceUpdater ForceUpdater { get; set; }
@@ -26,5 +20,11 @@
         /// Gets whether or not this object is active.  Only active objects are updated by the force updater.
         ///</summary>
         bool IsActive { get; }
+
+        ///<summary>
+        /// Applies forces to the object.
+        ///</summary>
+        ///<param name="dt">Time step duration.</param>
+        void UpdateForForces(float dt);
     }
 }

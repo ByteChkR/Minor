@@ -1,9 +1,5 @@
 ﻿using System;
-using System.IO;
-using System.Reflection;
 using Engine.Debug;
-using Engine.Exceptions;
-using Engine.IO;
 using OpenTK.Graphics.OpenGL;
 
 namespace Engine.DataTypes
@@ -19,15 +15,22 @@ namespace Engine.DataTypes
         public readonly int _ebo;
 
         /// <summary>
-        /// The Buffer used to store the actual vertex data
-        /// </summary>
-        public readonly int _vbo;
-
-        /// <summary>
         /// The Buffer used to connect _ebo, _vbo.
         /// In Theory you only need this buffer, but it is convenient to have the others sticking around as well.
         /// </summary>
         public readonly int _vao;
+
+        /// <summary>
+        /// The Buffer used to store the actual vertex data
+        /// </summary>
+        public readonly int _vbo;
+
+        private readonly long bytes;
+
+        /// <summary>
+        /// The amount of indices to draw(should be always indices.size)
+        /// </summary>
+        public readonly int DrawCount;
 
         /// <summary>
         /// Private flag that is used to prevent deleing the buffers more than once.
@@ -40,13 +43,6 @@ namespace Engine.DataTypes
         private bool _dontDispose;
 
         /// <summary>
-        /// The amount of indices to draw(should be always indices.size)
-        /// </summary>
-        public readonly int DrawCount;
-
-        private readonly long bytes;
-
-        /// <summary>
         /// Internal Constructor to create a Mesh Data object.
         /// </summary>
         internal Mesh(int ebo, int vbo, int vao, int drawCount, long bytes)
@@ -56,20 +52,6 @@ namespace Engine.DataTypes
             _vbo = vbo;
             _vao = vao;
             DrawCount = drawCount;
-        }
-
-        /// <summary>
-        /// Returns a Copy of this Mesh(It Does not copy the buffers on the GPU)
-        /// It is save to Dispose the copied object.
-        /// BUT NEVER DISPOSE THE SOURCE OBJECT BEFORE ALL COPIES HAVE BEEN DISPOSED, otherwise they become unusable and will probably crash the engine once interacted with
-        /// </summary>
-        /// <returns>A Copy of this Mesh Object</returns>
-        public Mesh Copy()
-        {
-            return new Mesh(_ebo, _vbo, _vao, DrawCount, bytes)
-            {
-                _dontDispose = true
-            };
         }
 
 
@@ -88,6 +70,20 @@ namespace Engine.DataTypes
             GL.DeleteBuffer(_ebo);
             GL.DeleteBuffer(_vbo);
             GL.DeleteVertexArray(_vao);
+        }
+
+        /// <summary>
+        /// Returns a Copy of this Mesh(It Does not copy the buffers on the GPU)
+        /// It is save to Dispose the copied object.
+        /// BUT NEVER DISPOSE THE SOURCE OBJECT BEFORE ALL COPIES HAVE BEEN DISPOSED, otherwise they become unusable and will probably crash the engine once interacted with
+        /// </summary>
+        /// <returns>A Copy of this Mesh Object</returns>
+        public Mesh Copy()
+        {
+            return new Mesh(_ebo, _vbo, _vao, DrawCount, bytes)
+            {
+                _dontDispose = true
+            };
         }
     }
 }

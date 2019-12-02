@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Engine.OpenCL;
-
-namespace Engine.OpenFL
+﻿namespace Engine.OpenFL
 {
     /// <summary>
     /// Info object around a FLFunction Delegate

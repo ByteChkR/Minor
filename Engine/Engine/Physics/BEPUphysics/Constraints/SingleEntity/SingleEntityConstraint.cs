@@ -9,15 +9,15 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
     public abstract class SingleEntityConstraint : SolverUpdateable
     {
         /// <summary>
+        /// Entity affected by the constraint.
+        /// </summary>
+        protected internal Entity entity;
+
+        /// <summary>
         /// Number of frames so far at effectively zero corrective impulse.
         /// Set to zero during every preStep(float dt) call and incremented by checkForEarlyOutIterations(Vector3 impulse).
         /// </summary>
         protected int iterationsAtZeroImpulse;
-
-        /// <summary>
-        /// Entity affected by the constraint.
-        /// </summary>
-        protected internal Entity entity;
 
         /// <summary>
         /// Gets or sets the entity affected by the constraint.

@@ -17,13 +17,53 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
     /// </summary>
     public class FluidVolume : Updateable, IDuringForcesUpdateable, ICollisionRulesOwner
     {
+        private Action<int> analyzeCollisionEntryDelegate;
+
+        private List<BroadPhaseEntry> broadPhaseEntries = new List<BroadPhaseEntry>();
+
+        private float dt;
+
+
+        private Vector3 flowDirection;
+
+        private float maxDepth;
         //TODO: The current FluidVolume implementation is awfully awful.
         //It would be really nice if it was a bit more flexible and less clunktastic.
         //(A mesh volume, maybe?)
 
         private RigidTransform surfaceTransform;
+
+        private List<Vector3[]> surfaceTriangles;
         private Matrix3x3 toSurfaceRotationMatrix;
         private Vector3 upVector;
+
+
+        /// <summary>
+        /// Creates a fluid volume.
+        /// </summary>
+        /// <param name="upVector">Up vector of the fluid volume.</param>
+        /// <param name="gravity">Strength of gravity for the purposes of the fluid volume.</param>
+        /// <param name="surfaceTriangles">List of triangles composing the surface of the fluid.  Set up as a list of length 3 arrays of Vector3's.</param>
+        /// <param name="depth">Depth of the fluid back along the surface normal.</param>
+        /// <param name="fluidDensity">Density of the fluid represented in the volume.</param>
+        /// <param name="linearDamping">Fraction by which to reduce the linear momentum of floating objects each update, in addition to any of the body's own damping.</param>
+        /// <param name="angularDamping">Fraction by which to reduce the angular momentum of floating objects each update, in addition to any of the body's own damping.</param>
+        public FluidVolume(Vector3 upVector, float gravity, List<Vector3[]> surfaceTriangles, float depth,
+            float fluidDensity, float linearDamping, float angularDamping)
+        {
+            Gravity = gravity;
+            SurfaceTriangles = surfaceTriangles;
+            MaxDepth = depth;
+            Density = fluidDensity;
+            LinearDamping = linearDamping;
+            AngularDamping = angularDamping;
+
+            UpVector = upVector;
+
+            analyzeCollisionEntryDelegate = AnalyzeEntry;
+
+            DensityMultipliers = new Dictionary<Entity, float>();
+        }
 
         ///<summary>
         /// Gets or sets the up vector of the fluid volume.
@@ -50,8 +90,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         /// Bounding box surrounding the surface triangles and entire depth of the object.
         /// </summary>
         public BoundingBox BoundingBox { get; private set; }
-
-        private float maxDepth;
 
         /// <summary>
         /// Maximum depth of the fluid from the surface.
@@ -86,9 +124,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         /// Fraction by which to reduce the angular momentum of floating objects each update.
         /// </summary>
         public float AngularDamping { get; set; }
-
-
-        private Vector3 flowDirection;
 
         /// <summary>
         /// Direction in which to exert force on objects within the fluid.
@@ -132,8 +167,6 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         ///</summary>
         public IParallelLooper ParallelLooper { get; set; }
 
-        private List<Vector3[]> surfaceTriangles;
-
         /// <summary>
         /// List of coplanar triangles composing the surface of the fluid.
         /// </summary>
@@ -152,61 +185,10 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
         ///</summary>
         public float Gravity { get; set; }
 
-
         /// <summary>
-        /// Creates a fluid volume.
+        /// Gets or sets the collision rules associated with the fluid volume.
         /// </summary>
-        /// <param name="upVector">Up vector of the fluid volume.</param>
-        /// <param name="gravity">Strength of gravity for the purposes of the fluid volume.</param>
-        /// <param name="surfaceTriangles">List of triangles composing the surface of the fluid.  Set up as a list of length 3 arrays of Vector3's.</param>
-        /// <param name="depth">Depth of the fluid back along the surface normal.</param>
-        /// <param name="fluidDensity">Density of the fluid represented in the volume.</param>
-        /// <param name="linearDamping">Fraction by which to reduce the linear momentum of floating objects each update, in addition to any of the body's own damping.</param>
-        /// <param name="angularDamping">Fraction by which to reduce the angular momentum of floating objects each update, in addition to any of the body's own damping.</param>
-        public FluidVolume(Vector3 upVector, float gravity, List<Vector3[]> surfaceTriangles, float depth,
-            float fluidDensity, float linearDamping, float angularDamping)
-        {
-            Gravity = gravity;
-            SurfaceTriangles = surfaceTriangles;
-            MaxDepth = depth;
-            Density = fluidDensity;
-            LinearDamping = linearDamping;
-            AngularDamping = angularDamping;
-
-            UpVector = upVector;
-
-            analyzeCollisionEntryDelegate = AnalyzeEntry;
-
-            DensityMultipliers = new Dictionary<Entity, float>();
-        }
-
-        /// <summary>
-        /// Recalculates the bounding box of the fluid based on its depth, surface normal, and surface triangles.
-        /// </summary>
-        public void RecalculateBoundingBox()
-        {
-            RawList<Vector3> points = CommonResources.GetVectorList();
-            foreach (Vector3[] tri in SurfaceTriangles)
-            {
-                points.Add(tri[0]);
-                points.Add(tri[1]);
-                points.Add(tri[2]);
-                points.Add(tri[0] - upVector * MaxDepth);
-                points.Add(tri[1] - upVector * MaxDepth);
-                points.Add(tri[2] - upVector * MaxDepth);
-            }
-
-            BoundingBox = BoundingBox.CreateFromPoints(points);
-            CommonResources.GiveBack(points);
-
-            //Compute the transforms used to pull objects into fluid local space.
-            Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.UpVector, ref upVector,
-                out surfaceTransform.Orientation);
-            Matrix3x3.CreateFromQuaternion(ref surfaceTransform.Orientation, out toSurfaceRotationMatrix);
-            surfaceTransform.Position = surfaceTriangles[0][0];
-        }
-
-        private List<BroadPhaseEntry> broadPhaseEntries = new List<BroadPhaseEntry>();
+        public CollisionRules CollisionRules { get; set; } = new CollisionRules();
 
         /// <summary>
         /// Applies buoyancy forces to appropriate objects.
@@ -239,8 +221,45 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             broadPhaseEntries.Clear();
         }
 
-        private float dt;
-        private Action<int> analyzeCollisionEntryDelegate;
+        public override void OnAdditionToSpace(Space newSpace)
+        {
+            base.OnAdditionToSpace(newSpace);
+            ParallelLooper = newSpace.ParallelLooper;
+            QueryAccelerator = newSpace.BroadPhase.QueryAccelerator;
+        }
+
+        public override void OnRemovalFromSpace(Space oldSpace)
+        {
+            base.OnRemovalFromSpace(oldSpace);
+            ParallelLooper = null;
+            QueryAccelerator = null;
+        }
+
+        /// <summary>
+        /// Recalculates the bounding box of the fluid based on its depth, surface normal, and surface triangles.
+        /// </summary>
+        public void RecalculateBoundingBox()
+        {
+            RawList<Vector3> points = CommonResources.GetVectorList();
+            foreach (Vector3[] tri in SurfaceTriangles)
+            {
+                points.Add(tri[0]);
+                points.Add(tri[1]);
+                points.Add(tri[2]);
+                points.Add(tri[0] - upVector * MaxDepth);
+                points.Add(tri[1] - upVector * MaxDepth);
+                points.Add(tri[2] - upVector * MaxDepth);
+            }
+
+            BoundingBox = BoundingBox.CreateFromPoints(points);
+            CommonResources.GiveBack(points);
+
+            //Compute the transforms used to pull objects into fluid local space.
+            Quaternion.GetQuaternionBetweenNormalizedVectors(ref Toolbox.UpVector, ref upVector,
+                out surfaceTransform.Orientation);
+            Matrix3x3.CreateFromQuaternion(ref surfaceTransform.Orientation, out toSurfaceRotationMatrix);
+            surfaceTransform.Position = surfaceTriangles[0][0];
+        }
 
         private void AnalyzeEntry(int i)
         {
@@ -468,24 +487,5 @@ namespace Engine.Physics.BEPUphysics.UpdateableSystems
             volumeCenter = Vector3.Zero;
             return 0;
         }
-
-        public override void OnAdditionToSpace(Space newSpace)
-        {
-            base.OnAdditionToSpace(newSpace);
-            ParallelLooper = newSpace.ParallelLooper;
-            QueryAccelerator = newSpace.BroadPhase.QueryAccelerator;
-        }
-
-        public override void OnRemovalFromSpace(Space oldSpace)
-        {
-            base.OnRemovalFromSpace(oldSpace);
-            ParallelLooper = null;
-            QueryAccelerator = null;
-        }
-
-        /// <summary>
-        /// Gets or sets the collision rules associated with the fluid volume.
-        /// </summary>
-        public CollisionRules CollisionRules { get; set; } = new CollisionRules();
     }
 }

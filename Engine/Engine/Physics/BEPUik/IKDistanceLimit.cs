@@ -18,6 +18,29 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public Vector3 LocalAnchorB;
 
+        private float maximumDistance;
+
+        private float minimumDistance;
+
+        /// <summary>
+        /// Constructs a new distance joint.
+        /// </summary>
+        /// <param name="connectionA">First bone connected by the joint.</param>
+        /// <param name="connectionB">Second bone connected by the joint.</param>
+        /// <param name="anchorA">Anchor point on the first bone in world space.</param>
+        /// <param name="anchorB">Anchor point on the second bone in world space.</param>
+        /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other.</param>
+        /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other.</param>
+        public IKDistanceLimit(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB,
+            float minimumDistance, float maximumDistance)
+            : base(connectionA, connectionB)
+        {
+            AnchorA = anchorA;
+            AnchorB = anchorB;
+            MinimumDistance = minimumDistance;
+            MaximumDistance = maximumDistance;
+        }
+
         /// <summary>
         /// Gets or sets the offset in world space from the center of mass of connection A to the anchor point.
         /// </summary>
@@ -40,8 +63,6 @@ namespace Engine.Physics.BEPUik
                     Quaternion.Conjugate(ConnectionB.Orientation));
         }
 
-        private float minimumDistance;
-
         /// <summary>
         /// Gets or sets the minimum distance that the joint connections should be kept from each other.
         /// </summary>
@@ -51,8 +72,6 @@ namespace Engine.Physics.BEPUik
             set => minimumDistance = Math.Max(0, value);
         }
 
-        private float maximumDistance;
-
         /// <summary>
         /// Gets or sets the maximum distance that the joint connections should be kept from each other.
         /// </summary>
@@ -60,25 +79,6 @@ namespace Engine.Physics.BEPUik
         {
             get => maximumDistance;
             set => maximumDistance = Math.Max(0, value);
-        }
-
-        /// <summary>
-        /// Constructs a new distance joint.
-        /// </summary>
-        /// <param name="connectionA">First bone connected by the joint.</param>
-        /// <param name="connectionB">Second bone connected by the joint.</param>
-        /// <param name="anchorA">Anchor point on the first bone in world space.</param>
-        /// <param name="anchorB">Anchor point on the second bone in world space.</param>
-        /// <param name="minimumDistance">Minimum distance that the joint connections should be kept from each other.</param>
-        /// <param name="maximumDistance">Maximum distance that the joint connections should be kept from each other.</param>
-        public IKDistanceLimit(Bone connectionA, Bone connectionB, Vector3 anchorA, Vector3 anchorB,
-            float minimumDistance, float maximumDistance)
-            : base(connectionA, connectionB)
-        {
-            AnchorA = anchorA;
-            AnchorB = anchorB;
-            MinimumDistance = minimumDistance;
-            MaximumDistance = maximumDistance;
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

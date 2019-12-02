@@ -1,17 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
-using Assimp;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.IO;
@@ -32,6 +26,11 @@ namespace Engine.Core
     [Serializable]
     public static class EngineConfig
     {
+        /// <summary>
+        /// Regex that removes the xmlns and xsi namespaces
+        /// </summary>
+        private const string NamespaceMatch = @"xmlns(:\w+)?=""([^""]+)""|xsi(:\w+)?=""([^""]+)""";
+
         /// <summary>
         /// Creates a Config file of the specified assembly & namespace(other namespaces get ignored)
         /// </summary>
@@ -182,11 +181,6 @@ namespace Engine.Core
         {
             return doc.SelectSingleNode("Settings/" + fullname);
         }
-
-        /// <summary>
-        /// Regex that removes the xmlns and xsi namespaces
-        /// </summary>
-        private const string NamespaceMatch = @"xmlns(:\w+)?=""([^""]+)""|xsi(:\w+)?=""([^""]+)""";
 
         /// <summary>
         /// Creates a List of tuple containing the xml full path of the object and the serialized object as string

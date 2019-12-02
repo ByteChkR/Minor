@@ -11,12 +11,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
     public class StaticMeshShape : CollisionShape
     {
         ///<summary>
-        /// Gets the triangle mesh data composing the StaticMeshShape.
-        ///</summary>
-        public TransformableMeshData TriangleMeshData { get; }
-
-
-        ///<summary>
         /// Constructs a new StaticMeshShape.
         ///</summary>
         ///<param name="vertices">Vertices of the mesh.</param>
@@ -37,5 +31,10 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes
         {
             TriangleMeshData = new TransformableMeshData(vertices, indices);
         }
+
+        ///<summary>
+        /// Gets the triangle mesh data composing the StaticMeshShape.
+        ///</summary>
+        public TransformableMeshData TriangleMeshData { get; }
     }
 }

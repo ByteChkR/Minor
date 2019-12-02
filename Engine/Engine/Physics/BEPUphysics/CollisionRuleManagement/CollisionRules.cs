@@ -9,10 +9,57 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
     /// </summary>
     public class CollisionRules
     {
-        ///<summary>
-        /// Fires when the contained collision rules are altered.
-        ///</summary>
-        public event Action CollisionRulesChanged;
+        internal static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> collisionRuleCalculator =
+            GetCollisionRuleDefault;
+
+
+        /// <summary>
+        /// Defines any special collision rules between collision groups.
+        /// </summary>
+        public static Dictionary<CollisionGroupPair, CollisionRule> CollisionGroupRules =
+            new Dictionary<CollisionGroupPair, CollisionRule>();
+
+        /// <summary>
+        /// If a CollisionRule calculation between two colliding objects results in no defined CollisionRule, this value will be used.
+        /// </summary>
+        public static CollisionRule DefaultCollisionRule = CollisionRule.Normal;
+
+        /// <summary>
+        /// When a dynamic entity is created and added to a space without having a specific collision group set beforehand, it inherits this collision group.
+        /// There are no special rules associated with this group by default; entities within this group have normal, full interaction with all other entities.
+        /// Collision group interaction rules can be overriden by entity personal collision rules or entity-to-entity specific collision rules.
+        /// </summary>
+        public static CollisionGroup DefaultDynamicCollisionGroup = new CollisionGroup();
+
+        /// <summary>
+        /// When a kinematic entity is created and added to a space without having a specific collision group set beforehand, it inherits this collision group.
+        /// Entities in this collision group will not create collision pairs with other entities of this collision group by default.  All other interactions are normal.
+        /// Collision group interaction rules can be overriden by entity personal collision rules or entity-to-entity specific collision rules.
+        /// 
+        /// Non-entity collidable objects like static triangle meshes also use this collision group by default.
+        /// </summary>
+        public static CollisionGroup DefaultKinematicCollisionGroup = new CollisionGroup();
+
+
+        internal CollisionGroup group;
+
+        private int hashCode;
+
+        private Action OnChangedDelegate;
+
+
+        internal CollisionRule personal = CollisionRule.Defer;
+
+
+        internal ObservableDictionary<CollisionRules, CollisionRule> specific =
+            new ObservableDictionary<CollisionRules, CollisionRule>();
+
+        static CollisionRules()
+        {
+            CollisionGroupRules.Add(
+                new CollisionGroupPair(DefaultKinematicCollisionGroup, DefaultKinematicCollisionGroup),
+                CollisionRule.NoBroadPhase);
+        }
 
 
         ///<summary>
@@ -23,33 +70,6 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
             hashCode = (int) (base.GetHashCode() * 0x8da6b343);
             OnChangedDelegate = OnChanged;
         }
-
-        private int hashCode;
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override int GetHashCode()
-        {
-            return hashCode;
-        }
-
-        private Action OnChangedDelegate;
-
-        protected void OnChanged()
-        {
-            if (CollisionRulesChanged != null)
-            {
-                CollisionRulesChanged();
-            }
-        }
-
-
-        internal CollisionGroup group;
 
         /// <summary>
         /// The collision group to which the object owning this instance belongs to.
@@ -67,9 +87,6 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
             }
         }
 
-
-        internal CollisionRule personal = CollisionRule.Defer;
-
         /// <summary>
         /// Determines in general how the object owning this instance should react to other objects.
         /// This is overridden by any relationships defined in the Specific collection with CollisionRules other than CollisionRule.Defer.
@@ -84,10 +101,6 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
                 OnChanged();
             }
         }
-
-
-        internal ObservableDictionary<CollisionRules, CollisionRule> specific =
-            new ObservableDictionary<CollisionRules, CollisionRule>();
 
         /// <summary>
         /// Specifies how the object owning this instance should react to other individual objects.
@@ -114,6 +127,41 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
                     specific = value;
                     OnChanged();
                 }
+            }
+        }
+
+        ///<summary>
+        /// Gets or sets the delegate used to calculate collision rules.
+        /// Defaults to CollisionRules.GetCollisionRuleDefault.
+        ///</summary>
+        public static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> CollisionRuleCalculator
+        {
+            get => collisionRuleCalculator;
+            set => collisionRuleCalculator = value;
+        }
+
+        ///<summary>
+        /// Fires when the contained collision rules are altered.
+        ///</summary>
+        public event Action CollisionRulesChanged;
+
+        /// <summary>
+        /// Serves as a hash function for a particular type. 
+        /// </summary>
+        /// <returns>
+        /// A hash code for the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            return hashCode;
+        }
+
+        protected void OnChanged()
+        {
+            if (CollisionRulesChanged != null)
+            {
+                CollisionRulesChanged();
             }
         }
 
@@ -190,26 +238,6 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
             }
         }
 
-        static CollisionRules()
-        {
-            CollisionGroupRules.Add(
-                new CollisionGroupPair(DefaultKinematicCollisionGroup, DefaultKinematicCollisionGroup),
-                CollisionRule.NoBroadPhase);
-        }
-
-        internal static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> collisionRuleCalculator =
-            GetCollisionRuleDefault;
-
-        ///<summary>
-        /// Gets or sets the delegate used to calculate collision rules.
-        /// Defaults to CollisionRules.GetCollisionRuleDefault.
-        ///</summary>
-        public static Func<ICollisionRulesOwner, ICollisionRulesOwner, CollisionRule> CollisionRuleCalculator
-        {
-            get => collisionRuleCalculator;
-            set => collisionRuleCalculator = value;
-        }
-
         /// <summary>
         /// Uses the CollisionRuleCalculator to get the collision rule between two collision rules owners.
         /// </summary>
@@ -220,34 +248,6 @@ namespace Engine.Physics.BEPUphysics.CollisionRuleManagement
         {
             return collisionRuleCalculator(ownerA, ownerB);
         }
-
-
-        /// <summary>
-        /// Defines any special collision rules between collision groups.
-        /// </summary>
-        public static Dictionary<CollisionGroupPair, CollisionRule> CollisionGroupRules =
-            new Dictionary<CollisionGroupPair, CollisionRule>();
-
-        /// <summary>
-        /// If a CollisionRule calculation between two colliding objects results in no defined CollisionRule, this value will be used.
-        /// </summary>
-        public static CollisionRule DefaultCollisionRule = CollisionRule.Normal;
-
-        /// <summary>
-        /// When a dynamic entity is created and added to a space without having a specific collision group set beforehand, it inherits this collision group.
-        /// There are no special rules associated with this group by default; entities within this group have normal, full interaction with all other entities.
-        /// Collision group interaction rules can be overriden by entity personal collision rules or entity-to-entity specific collision rules.
-        /// </summary>
-        public static CollisionGroup DefaultDynamicCollisionGroup = new CollisionGroup();
-
-        /// <summary>
-        /// When a kinematic entity is created and added to a space without having a specific collision group set beforehand, it inherits this collision group.
-        /// Entities in this collision group will not create collision pairs with other entities of this collision group by default.  All other interactions are normal.
-        /// Collision group interaction rules can be overriden by entity personal collision rules or entity-to-entity specific collision rules.
-        /// 
-        /// Non-entity collidable objects like static triangle meshes also use this collision group by default.
-        /// </summary>
-        public static CollisionGroup DefaultKinematicCollisionGroup = new CollisionGroup();
 
         /// <summary>
         /// Determines what collision rule governs the interaction between the two objects.

@@ -16,10 +16,16 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public abstract class MobileMeshContactManifold : TriangleMeshConvexContactManifold
     {
+        private static LockingResourcePool<TriangleConvexPairTester> testerPool =
+            new LockingResourcePool<TriangleConvexPairTester>();
+
+        private Vector3 lastValidConvexPosition;
         protected MobileMeshCollidable mesh;
-        internal int parentContactCount;
 
         internal RawList<int> overlappedTriangles = new RawList<int>(8);
+        internal int parentContactCount;
+
+        private float previousDepth;
 
         ///<summary>
         /// Gets the mesh of the pair.
@@ -27,6 +33,8 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         public MobileMeshCollidable Mesh => mesh;
 
         protected override RigidTransform MeshTransform => mesh.worldTransform;
+
+        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
 
         //Expand the convex's bounding box to include the mobile mesh's movement.
 
@@ -163,11 +171,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
             overlappedTriangles.Clear();
         }
 
-        protected override bool UseImprovedBoundaryHandling => mesh.improveBoundaryBehavior;
-
-        private float previousDepth;
-        private Vector3 lastValidConvexPosition;
-
         protected override void ProcessCandidates(ref QuickList<ContactData> candidates)
         {
             if (candidates.Count == 0 && parentContactCount == 0 && Mesh.Shape.solidity == MobileMeshSolidity.Solid)
@@ -298,9 +301,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 }
             }
         }
-
-        private static LockingResourcePool<TriangleConvexPairTester> testerPool =
-            new LockingResourcePool<TriangleConvexPairTester>();
 
         protected override void GiveBackTester(TrianglePairTester tester)
         {

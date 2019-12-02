@@ -8,39 +8,14 @@ namespace Engine.UI.EventSystems
 {
     public class Button : UIImageRendererComponent, ISelectable
     {
-        public int TabStop { get; set; }
-        public SelectableState state { get; private set; }
-        public EventSystem System { get; }
+        private Texture btnClick;
+        private Texture btnHover;
 
         private Texture btnIdle;
-        private Texture btnHover;
-        private Texture btnClick;
         private Action<Button> OnClick;
-        private Action<Button> OnHover;
         private Action<Button> OnEnter;
+        private Action<Button> OnHover;
         private Action<Button> OnLeave;
-
-
-        public Box2 BoundingBox => new Box2(Position - Scale, Position + Scale);
-
-
-        public override Texture Texture
-        {
-            get
-            {
-                if (state == SelectableState.Hovered)
-                {
-                    return btnHover;
-                }
-
-                if (state == SelectableState.Selected)
-                {
-                    return btnClick;
-                }
-
-                return btnIdle;
-            }
-        }
 
         public Button(Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null,
             Texture btnHover = null, Action<Button> onClick = null, Action<Button> onEnter = null,
@@ -72,6 +47,55 @@ namespace Engine.UI.EventSystems
             OnLeave = onLeave;
         }
 
+        public SelectableState state { get; private set; }
+        public EventSystem System { get; }
+
+
+        public override Texture Texture
+        {
+            get
+            {
+                if (state == SelectableState.Hovered)
+                {
+                    return btnHover;
+                }
+
+                if (state == SelectableState.Selected)
+                {
+                    return btnClick;
+                }
+
+                return btnIdle;
+            }
+        }
+
+        public int TabStop { get; set; }
+
+
+        public Box2 BoundingBox => new Box2(Position - Scale, Position + Scale);
+
+        public void SetState(SelectableState newState)
+        {
+            if (newState == SelectableState.Selected && state != SelectableState.Selected)
+            {
+                OnClick?.Invoke(this);
+            }
+            else if (newState == SelectableState.Hovered && state == SelectableState.None)
+            {
+                OnEnter?.Invoke(this);
+            }
+            else if (newState == SelectableState.Hovered && state == SelectableState.Hovered)
+            {
+                OnHover?.Invoke(this);
+            }
+            else if (newState == SelectableState.None && state == SelectableState.Hovered)
+            {
+                OnLeave?.Invoke(this);
+            }
+
+            state = newState;
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -94,7 +118,6 @@ namespace Engine.UI.EventSystems
         {
             if (ev == null)
             {
-                return;
             }
             else
             {
@@ -147,28 +170,6 @@ namespace Engine.UI.EventSystems
         {
             base.OnDestroy();
             System.Unregister(this);
-        }
-
-        public void SetState(SelectableState newState)
-        {
-            if (newState == SelectableState.Selected && state != SelectableState.Selected)
-            {
-                OnClick?.Invoke(this);
-            }
-            else if (newState == SelectableState.Hovered && state == SelectableState.None)
-            {
-                OnEnter?.Invoke(this);
-            }
-            else if (newState == SelectableState.Hovered && state == SelectableState.Hovered)
-            {
-                OnHover?.Invoke(this);
-            }
-            else if (newState == SelectableState.None && state == SelectableState.Hovered)
-            {
-                OnLeave?.Invoke(this);
-            }
-
-            state = newState;
         }
     }
 }

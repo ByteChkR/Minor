@@ -6,11 +6,11 @@ namespace Engine.Demo.components
 {
     public class TimeDisplay : AbstractComponent
     {
-        private UITextRendererComponent tr;
-        private float time;
-        private float frameTime;
-        private int fpsFrames;
         private int fps;
+        private int fpsFrames;
+        private float frameTime;
+        private float time;
+        private UITextRendererComponent tr;
 
         protected override void Awake()
         {

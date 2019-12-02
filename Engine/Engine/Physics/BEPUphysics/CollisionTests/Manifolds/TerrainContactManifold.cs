@@ -12,14 +12,15 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public abstract class TerrainContactManifold : TriangleMeshConvexContactManifold
     {
-        protected Terrain terrain;
-
         internal RawList<int> overlappedTriangles = new RawList<int>(4);
+        protected Terrain terrain;
 
         ///<summary>
         /// Gets the terrain associated with this pair.
         ///</summary>
         public Terrain Terrain => terrain;
+
+        protected override bool UseImprovedBoundaryHandling => terrain.improveBoundaryBehavior;
 
         protected internal override int FindOverlappingTriangles(float dt)
         {
@@ -158,8 +159,6 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
                 }
             }
         }
-
-        protected override bool UseImprovedBoundaryHandling => terrain.improveBoundaryBehavior;
 
 
         ///<summary>

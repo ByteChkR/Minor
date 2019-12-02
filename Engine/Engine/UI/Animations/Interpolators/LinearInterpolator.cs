@@ -1,6 +1,4 @@
-﻿using Engine.Core;
-
-namespace Engine.UI.Animations.Interpolators
+﻿namespace Engine.UI.Animations.Interpolators
 {
     public class LinearInterpolator : Interpolator
     {

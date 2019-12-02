@@ -12,6 +12,41 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.Events
     {
         protected internal int childDeferredEventCreators;
 
+        protected internal T owner;
+
+        private CompoundEventManager parent;
+
+        /// <summary>
+        /// The parent of the event manager, if any.
+        /// </summary>
+        protected internal CompoundEventManager Parent
+        {
+            get => parent;
+            set
+            {
+                //The child deferred event creator links must be maintained.
+                if (parent != null && isActive)
+                {
+                    ((IDeferredEventCreator) parent).ChildDeferredEventCreators--;
+                }
+
+                parent = value;
+                if (parent != null && isActive)
+                {
+                    ((IDeferredEventCreator) parent).ChildDeferredEventCreators++;
+                }
+            }
+        }
+
+        ///<summary>
+        /// Owner of the event manager.
+        ///</summary>
+        public T Owner
+        {
+            get => owner;
+            protected internal set => owner = value;
+        }
+
         /// <summary>
         /// Number of child deferred event creators.
         /// </summary>
@@ -41,41 +76,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries.Events
                     ((IDeferredEventCreator) this).IsActive = true;
                 }
             }
-        }
-
-        private CompoundEventManager parent;
-
-        /// <summary>
-        /// The parent of the event manager, if any.
-        /// </summary>
-        protected internal CompoundEventManager Parent
-        {
-            get => parent;
-            set
-            {
-                //The child deferred event creator links must be maintained.
-                if (parent != null && isActive)
-                {
-                    ((IDeferredEventCreator) parent).ChildDeferredEventCreators--;
-                }
-
-                parent = value;
-                if (parent != null && isActive)
-                {
-                    ((IDeferredEventCreator) parent).ChildDeferredEventCreators++;
-                }
-            }
-        }
-
-        protected internal T owner;
-
-        ///<summary>
-        /// Owner of the event manager.
-        ///</summary>
-        public T Owner
-        {
-            get => owner;
-            protected internal set => owner = value;
         }
 
 

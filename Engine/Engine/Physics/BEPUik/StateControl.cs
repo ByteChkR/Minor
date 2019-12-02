@@ -5,6 +5,14 @@
     /// </summary>
     public class StateControl : Control
     {
+        public StateControl()
+        {
+            LinearMotor = new SingleBoneLinearMotor();
+            AngularMotor = new SingleBoneAngularMotor();
+            LinearMotor.Rigidity = 1;
+            AngularMotor.Rigidity = 1;
+        }
+
         /// <summary>
         /// Gets or sets the controlled bone.
         /// </summary>
@@ -32,12 +40,14 @@
         /// </summary>
         public SingleBoneAngularMotor AngularMotor { get; }
 
-        public StateControl()
+        public override float MaximumForce
         {
-            LinearMotor = new SingleBoneLinearMotor();
-            AngularMotor = new SingleBoneAngularMotor();
-            LinearMotor.Rigidity = 1;
-            AngularMotor.Rigidity = 1;
+            get => LinearMotor.MaximumForce;
+            set
+            {
+                LinearMotor.MaximumForce = value;
+                AngularMotor.MaximumForce = value;
+            }
         }
 
         protected internal override void Preupdate(float dt, float updateRate)
@@ -75,16 +85,6 @@
         {
             LinearMotor.ClearAccumulatedImpulses();
             AngularMotor.ClearAccumulatedImpulses();
-        }
-
-        public override float MaximumForce
-        {
-            get => LinearMotor.MaximumForce;
-            set
-            {
-                LinearMotor.MaximumForce = value;
-                AngularMotor.MaximumForce = value;
-            }
         }
     }
 }

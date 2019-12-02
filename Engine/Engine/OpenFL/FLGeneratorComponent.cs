@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -8,8 +7,6 @@ using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenCL.Runner;
 using Engine.Rendering;
-using OpenTK;
-using OpenTK.Graphics;
 
 namespace Engine.OpenFL
 {
@@ -18,29 +15,12 @@ namespace Engine.OpenFL
     /// </summary>
     public class FLGeneratorComponent : AbstractComponent
     {
-        private bool MultiThread = false;
-
-        private FLRunner _flRunner;
-
         /// <summary>
         /// List of previews
         /// </summary>
         private readonly List<LitMeshRendererComponent> _previews;
 
-        /// <summary>
-        /// the texture that is beeing used to update the previews
-        /// </summary>
-        private Texture Tex { get; set; }
-
-        /// <summary>
-        /// the texture that is beeing used to update the previews
-        /// </summary>
-        private Texture SpecularTex { get; set; }
-
-        /// <summary>
-        /// The FL Interpreter
-        /// </summary>
-        private Interpreter _stepInterpreter;
+        private FLRunner _flRunner;
 
 
         /// <summary>
@@ -49,14 +29,21 @@ namespace Engine.OpenFL
         private bool _isInStepMode;
 
         /// <summary>
-        /// The width of the output texture
+        /// The FL Interpreter
         /// </summary>
-        private int width = 512;
+        private Interpreter _stepInterpreter;
 
         /// <summary>
         /// The height of the output texture
         /// </summary>
         private int height = 512;
+
+        private bool MultiThread;
+
+        /// <summary>
+        /// The width of the output texture
+        /// </summary>
+        private int width = 512;
 
 
         /// <summary>
@@ -74,6 +61,16 @@ namespace Engine.OpenFL
             this.height = height;
             _previews = previews;
         }
+
+        /// <summary>
+        /// the texture that is beeing used to update the previews
+        /// </summary>
+        private Texture Tex { get; set; }
+
+        /// <summary>
+        /// the texture that is beeing used to update the previews
+        /// </summary>
+        private Texture SpecularTex { get; set; }
 
         /// <summary>
         /// Command to run a FL script

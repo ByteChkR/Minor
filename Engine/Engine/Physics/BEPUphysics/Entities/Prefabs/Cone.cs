@@ -10,25 +10,6 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
     /// </summary>
     public class Cone : Entity<ConvexCollidable<ConeShape>>
     {
-        /// <summary>
-        /// Gets or sets the length of the cone.
-        /// </summary>
-        public float Height
-        {
-            get => CollisionInformation.Shape.Height;
-            set => CollisionInformation.Shape.Height = value;
-        }
-
-        /// <summary>
-        /// Gets or sets the radius of the cone.
-        /// </summary>
-        public float Radius
-        {
-            get => CollisionInformation.Shape.Radius;
-            set => CollisionInformation.Shape.Radius = value;
-        }
-
-
         private Cone(float high, float rad)
             : base(new ConvexCollidable<ConeShape>(new ConeShape(high, rad)))
         {
@@ -88,6 +69,24 @@ namespace Engine.Physics.BEPUphysics.Entities.Prefabs
             : this(height, radius)
         {
             MotionState = motionState;
+        }
+
+        /// <summary>
+        /// Gets or sets the length of the cone.
+        /// </summary>
+        public float Height
+        {
+            get => CollisionInformation.Shape.Height;
+            set => CollisionInformation.Shape.Height = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the radius of the cone.
+        /// </summary>
+        public float Radius
+        {
+            get => CollisionInformation.Shape.Radius;
+            set => CollisionInformation.Shape.Radius = value;
         }
     }
 }

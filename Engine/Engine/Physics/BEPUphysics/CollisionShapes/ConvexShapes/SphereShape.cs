@@ -8,16 +8,6 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
     ///</summary>
     public class SphereShape : ConvexShape
     {
-        //This is a convenience method.  People expect to see a 'radius' of some kind.
-        ///<summary>
-        /// Gets or sets the radius of the sphere.
-        ///</summary>
-        public float Radius
-        {
-            get => collisionMargin;
-            set => CollisionMargin = value;
-        }
-
         ///<summary>
         /// Constructs a new sphere shape.
         ///</summary>
@@ -37,6 +27,16 @@ namespace Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes
         public SphereShape(ConvexShapeDescription description)
         {
             UpdateConvexShapeInfo(description);
+        }
+
+        //This is a convenience method.  People expect to see a 'radius' of some kind.
+        ///<summary>
+        /// Gets or sets the radius of the sphere.
+        ///</summary>
+        public float Radius
+        {
+            get => collisionMargin;
+            set => CollisionMargin = value;
         }
 
         protected override void OnShapeChanged()

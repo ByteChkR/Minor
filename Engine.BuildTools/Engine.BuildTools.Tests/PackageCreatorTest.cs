@@ -3,7 +3,6 @@ using System.IO;
 using Engine.BuildTools.PackageCreator;
 using Engine.BuildTools.PackageCreator.Versions;
 using Xunit;
-using Assert = Xunit.Assert;
 
 namespace Engine.BuildTools.Tests
 {

@@ -14,7 +14,13 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
     ///</summary>
     public class DetectorVolumeMobileMeshPairHandler : DetectorVolumePairHandler
     {
+        private TriangleShape detectorTriangle = new TriangleShape {collisionMargin = 0};
         private MobileMeshCollidable mesh;
+
+
+        private TriangleShape mobileTriangle = new TriangleShape();
+
+        private RawList<int> overlaps = new RawList<int>(8);
 
         /// <summary>
         /// Gets the entity collidable associated with the pair.
@@ -55,12 +61,6 @@ namespace Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs
 
             mesh = null;
         }
-
-
-        private TriangleShape mobileTriangle = new TriangleShape();
-        private TriangleShape detectorTriangle = new TriangleShape {collisionMargin = 0};
-
-        private RawList<int> overlaps = new RawList<int>(8);
 
         public override void UpdateCollision(float dt)
         {

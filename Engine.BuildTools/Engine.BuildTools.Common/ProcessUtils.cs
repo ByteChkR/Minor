@@ -8,7 +8,7 @@ namespace Engine.BuildTools.Common
     {
         public static void RunActionAsCommand(Action<string[]> action, string args, Action<Exception> onEnd)
         {
-            string[] a = args.Split(new[] {' ', '\n'});
+            string[] a = args.Split(' ', '\n');
             RunActionAsCommand(action, a, onEnd);
         }
 

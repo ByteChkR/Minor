@@ -16,6 +16,20 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
     /// </remarks>
     public class SortAndSweep1D : BroadPhase
     {
+        private RawList<BroadPhaseEntry> backbuffer;
+
+
+        private RawList<BroadPhaseEntry> entries = new RawList<BroadPhaseEntry>();
+
+        private int sortSegmentCount = 4;
+
+        private Action<int> sweepSegment;
+
+
+        //TODO: It is possible to distribute things a bit better.  Instead of lumping all of the remainder into the final, put and 
+
+        private int sweepSegmentCount = 32;
+
         /// <summary>
         /// Constructs a new sort and sweep broad phase.
         /// </summary>
@@ -35,9 +49,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             sweepSegment = Sweep;
             backbuffer = new RawList<BroadPhaseEntry>();
         }
-
-
-        private RawList<BroadPhaseEntry> entries = new RawList<BroadPhaseEntry>();
 
         /// <summary>
         /// Adds an entry to the broad phase.
@@ -87,8 +98,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             base.Remove(entry);
             entries.Remove(entry);
         }
-
-        private Action<int> sweepSegment;
 
         protected override void UpdateMultithreaded()
         {
@@ -187,11 +196,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
             }
         }
 
-
-        //TODO: It is possible to distribute things a bit better.  Instead of lumping all of the remainder into the final, put and 
-
-        private int sweepSegmentCount = 32;
-
         private void Sweep(int segment)
         {
             int intervalLength = entries.Count / sweepSegmentCount;
@@ -220,8 +224,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 }
             }
         }
-
-        private int sortSegmentCount = 4;
 
         private void SortSection(int section)
         {
@@ -254,8 +256,6 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep
                 }
             }
         }
-
-        private RawList<BroadPhaseEntry> backbuffer;
 
         private void MergeSections(int a, int b)
         {

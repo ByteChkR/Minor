@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using Assimp;
 using Engine.AssetPackaging;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.IO;
-using Buffer = System.Buffer;
 
 namespace Engine.DataTypes
 {
@@ -82,9 +79,6 @@ namespace Engine.DataTypes
 
             PrepareManifestFiles(asm);
         }
-
-        private delegate AssemblyFile
-            AssemblyFileFactory(string file, bool compression, Assembly asm, AssetPointer ptr);
 
         private static AssemblyFile FileFactory(string file, bool compression, Assembly asm, AssetPointer ptr)
         {
@@ -345,5 +339,8 @@ namespace Engine.DataTypes
                 File.Delete(UnpackedFiles[i]);
             }
         }
+
+        private delegate AssemblyFile
+            AssemblyFileFactory(string file, bool compression, Assembly asm, AssetPointer ptr);
     }
 }

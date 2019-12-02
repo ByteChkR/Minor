@@ -15,6 +15,22 @@ namespace Engine.Physics.BEPUik
         /// </summary>
         public Vector3 LocalTwistAxis;
 
+        /// <summary>
+        /// Constructs a new constraint which allows relative angular motion around a hinge axis and a twist axis.
+        /// </summary>
+        /// <param name="connectionA">First connection of the pair.</param>
+        /// <param name="connectionB">Second connection of the pair.</param>
+        /// <param name="worldHingeAxis">Hinge axis attached to connectionA.
+        /// The connected bone will be able to rotate around this axis relative to each other.</param>
+        /// <param name="worldTwistAxis">Twist axis attached to connectionB.
+        /// The connected bones will be able to rotate around this axis relative to each other.</param>
+        public IKSwivelHingeJoint(Bone connectionA, Bone connectionB, Vector3 worldHingeAxis, Vector3 worldTwistAxis)
+            : base(connectionA, connectionB)
+        {
+            WorldHingeAxis = worldHingeAxis;
+            WorldTwistAxis = worldTwistAxis;
+        }
+
 
         /// <summary>
         /// Gets or sets the free hinge axis attached to connection A in world space.
@@ -32,22 +48,6 @@ namespace Engine.Physics.BEPUik
         {
             get => Quaternion.Transform(LocalTwistAxis, ConnectionB.Orientation);
             set => LocalTwistAxis = Quaternion.Transform(value, Quaternion.Conjugate(ConnectionB.Orientation));
-        }
-
-        /// <summary>
-        /// Constructs a new constraint which allows relative angular motion around a hinge axis and a twist axis.
-        /// </summary>
-        /// <param name="connectionA">First connection of the pair.</param>
-        /// <param name="connectionB">Second connection of the pair.</param>
-        /// <param name="worldHingeAxis">Hinge axis attached to connectionA.
-        /// The connected bone will be able to rotate around this axis relative to each other.</param>
-        /// <param name="worldTwistAxis">Twist axis attached to connectionB.
-        /// The connected bones will be able to rotate around this axis relative to each other.</param>
-        public IKSwivelHingeJoint(Bone connectionA, Bone connectionB, Vector3 worldHingeAxis, Vector3 worldTwistAxis)
-            : base(connectionA, connectionB)
-        {
-            WorldHingeAxis = worldHingeAxis;
-            WorldTwistAxis = worldTwistAxis;
         }
 
         protected internal override void UpdateJacobiansAndVelocityBias()

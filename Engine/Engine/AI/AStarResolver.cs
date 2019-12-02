@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using OpenTK;
 
 namespace Engine.AI
 {
@@ -33,39 +32,37 @@ namespace Engine.AI
 
                     return ret;
                 }
-                else
+
+                for (int i = 0; i < current.ConnectionCount; i++)
                 {
-                    for (int i = 0; i < current.ConnectionCount; i++)
+                    AINode connection = current.GetConnection(i);
+
+                    if (!connection.Walkable || connection.NodeState == AINodeState.Closed)
                     {
-                        AINode connection = current.GetConnection(i);
+                        continue;
+                    }
 
-                        if (!connection.Walkable || connection.NodeState == AINodeState.Closed)
-                        {
-                            continue;
-                        }
+                    float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length *
+                                  connection.WalkCostMultiplier;
+                    if (connection.NodeState == AINodeState.Unconsidered)
+                    {
+                        connection.ParentNode = current;
 
-                        float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length *
-                                      connection.WalkCostMultiplier;
-                        if (connection.NodeState == AINodeState.Unconsidered)
+                        connection.CurrentCost = current.CurrentCost + connD;
+
+                        connection.EstimatedCost =
+                            (connection.Owner.GetWorldPosition() - endPoint.Owner.GetWorldPosition()).Length;
+                        connection.NodeState = AINodeState.Open;
+                        todo.Enqueue(connection);
+                    }
+
+                    if (current != connection) //Shouldnt be possible. but better check to avoid spinning forever
+                    {
+                        float newCost = current.CurrentCost + connD;
+                        if (newCost < connection.CurrentCost)
                         {
                             connection.ParentNode = current;
-
-                            connection.CurrentCost = current.CurrentCost + connD;
-
-                            connection.EstimatedCost =
-                                (connection.Owner.GetWorldPosition() - endPoint.Owner.GetWorldPosition()).Length;
-                            connection.NodeState = AINodeState.Open;
-                            todo.Enqueue(connection);
-                        }
-
-                        if (current != connection) //Shouldnt be possible. but better check to avoid spinning forever
-                        {
-                            float newCost = current.CurrentCost + connD;
-                            if (newCost < connection.CurrentCost)
-                            {
-                                connection.ParentNode = current;
-                                connection.CurrentCost = newCost;
-                            }
+                            connection.CurrentCost = newCost;
                         }
                     }
                 }

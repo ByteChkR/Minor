@@ -10,13 +10,6 @@ namespace Engine.Physics.BEPUutilities.DataStructures
     ///<typeparam name="TValue">Type of the values in the dictionary.</typeparam>
     public class ObservableDictionary<TKey, TValue>
     {
-        ///<summary>
-        /// Gets or sets the dictionary wrapped by the observable dictionary.
-        /// While the inner dictionary can be changed, making modifications to it will
-        /// not trigger any changed events.
-        ///</summary>
-        public Dictionary<TKey, TValue> WrappedDictionary { get; }
-
         /// <summary>
         /// Constructs a new observable dictionary.
         /// </summary>
@@ -24,6 +17,13 @@ namespace Engine.Physics.BEPUutilities.DataStructures
         {
             WrappedDictionary = new Dictionary<TKey, TValue>();
         }
+
+        ///<summary>
+        /// Gets or sets the dictionary wrapped by the observable dictionary.
+        /// While the inner dictionary can be changed, making modifications to it will
+        /// not trigger any changed events.
+        ///</summary>
+        public Dictionary<TKey, TValue> WrappedDictionary { get; }
 
         ///<summary>
         /// Adds a pair to the dictionary.

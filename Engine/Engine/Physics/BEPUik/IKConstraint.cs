@@ -4,11 +4,6 @@ namespace Engine.Physics.BEPUik
 {
     public abstract class IKConstraint
     {
-        protected float softness;
-
-        protected float errorCorrectionFactor;
-
-
         /// <summary>
         /// The rigidity of a constraint is used to derive the stiffness and damping coefficients using a fixed stiffness:damping ratio.
         /// </summary>
@@ -17,7 +12,14 @@ namespace Engine.Physics.BEPUik
         /// </remarks>
         private const float StiffnessOverDamping = 0.25f;
 
+        protected float errorCorrectionFactor;
+        protected float maximumForce = float.MaxValue;
+
+        protected float maximumImpulse;
+        protected float maximumImpulseSquared;
+
         private float rigidity = 16;
+        protected float softness;
 
         /// <summary>
         /// Gets the rigidity of the constraint. Higher values correspond to more rigid constraints, lower values to less rigid constraints. Must be positive.
@@ -41,10 +43,6 @@ namespace Engine.Physics.BEPUik
                 rigidity = value;
             }
         }
-
-        protected float maximumImpulse;
-        protected float maximumImpulseSquared;
-        protected float maximumForce = float.MaxValue;
 
         /// <summary>
         /// Gets or sets the maximum force that the constraint can apply.

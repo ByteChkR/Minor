@@ -10,6 +10,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
     ///</summary>
     public abstract class ContactManifold
     {
+        protected RawList<int> contactIndicesToRemove;
+        protected internal RawList<Contact> contacts;
+
+        protected UnsafeResourcePool<Contact> unusedContacts;
+
         /// <summary>
         /// Gets or sets whether this pair handler should avoid doing any prefiltering on contacts that might destroy information for the user.
         /// Some pairs, like the convex-mesh types, will operate a little differently when used as a query. This is a hack that should be addressed later.
@@ -20,16 +25,11 @@ namespace Engine.Physics.BEPUphysics.CollisionTests.Manifolds
         /// </remarks>
         public bool IsQuery { get; set; }
 
-        protected RawList<int> contactIndicesToRemove;
-        protected internal RawList<Contact> contacts;
-
 
         ///<summary>
         /// Gets the contacts in the manifold.
         ///</summary>
         public ReadOnlyList<Contact> Contacts => new ReadOnlyList<Contact>(contacts);
-
-        protected UnsafeResourcePool<Contact> unusedContacts;
 
 
         protected void RemoveQueuedContacts()

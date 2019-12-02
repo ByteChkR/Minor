@@ -5,6 +5,12 @@
     /// </summary>
     public class DragControl : Control
     {
+        public DragControl()
+        {
+            LinearMotor = new SingleBoneLinearMotor();
+            LinearMotor.Rigidity = 1;
+        }
+
         /// <summary>
         /// Gets or sets the controlled bone.
         /// </summary>
@@ -19,10 +25,10 @@
         /// </summary>
         public SingleBoneLinearMotor LinearMotor { get; }
 
-        public DragControl()
+        public override float MaximumForce
         {
-            LinearMotor = new SingleBoneLinearMotor();
-            LinearMotor.Rigidity = 1;
+            get => LinearMotor.MaximumForce;
+            set => LinearMotor.MaximumForce = value;
         }
 
         protected internal override void Preupdate(float dt, float updateRate)
@@ -53,12 +59,6 @@
         protected internal override void ClearAccumulatedImpulses()
         {
             LinearMotor.ClearAccumulatedImpulses();
-        }
-
-        public override float MaximumForce
-        {
-            get => LinearMotor.MaximumForce;
-            set => LinearMotor.MaximumForce = value;
         }
     }
 }

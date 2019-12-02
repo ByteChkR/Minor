@@ -11,6 +11,10 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
     ///</summary>
     public abstract class StaticCollidable : Collidable, ISpaceObject, IMaterialOwner, IDeferredEventCreatorOwner
     {
+        internal Material material;
+
+        private Action<Material> materialChangedDelegate;
+
         ///<summary>
         /// Performs common initialization.
         ///</summary>
@@ -27,15 +31,23 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             material.MaterialChanged += materialChangedDelegate;
         }
 
-        protected override void OnShapeChanged(CollisionShape collisionShape)
-        {
-            if (!IgnoreShapeChanges)
-            {
-                UpdateBoundingBox();
-            }
-        }
+        /// <summary>
+        /// Gets whether this collidable is associated with an active entity. Returns false for all static collidables.
+        /// </summary>
+        public override bool IsActive => false;
 
-        internal Material material;
+        ///<summary>
+        /// Gets the space that owns the mesh.
+        ///</summary>
+        public Space Space { get; private set; }
+
+        /// <summary>
+        /// Gets the event creator associated with this collidable.
+        /// </summary>
+        protected abstract IDeferredEventCreator EventCreator { get; }
+
+
+        IDeferredEventCreator IDeferredEventCreatorOwner.EventCreator => EventCreator;
 
         //NOT thread safe due to material change pair update.
         ///<summary>
@@ -61,32 +73,12 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
             }
         }
 
-        private Action<Material> materialChangedDelegate;
-
-        protected virtual void OnMaterialChanged(Material newMaterial)
-        {
-            for (int i = 0; i < pairs.Count; i++)
-            {
-                pairs[i].UpdateMaterialProperties();
-            }
-        }
-
-        /// <summary>
-        /// Gets whether this collidable is associated with an active entity. Returns false for all static collidables.
-        /// </summary>
-        public override bool IsActive => false;
-
 
         Space ISpaceObject.Space
         {
             get => Space;
             set => Space = value;
         }
-
-        ///<summary>
-        /// Gets the space that owns the mesh.
-        ///</summary>
-        public Space Space { get; private set; }
 
         void ISpaceObject.OnAdditionToSpace(Space newSpace)
         {
@@ -96,12 +88,20 @@ namespace Engine.Physics.BEPUphysics.BroadPhaseEntries
         {
         }
 
+        protected override void OnShapeChanged(CollisionShape collisionShape)
+        {
+            if (!IgnoreShapeChanges)
+            {
+                UpdateBoundingBox();
+            }
+        }
 
-        IDeferredEventCreator IDeferredEventCreatorOwner.EventCreator => EventCreator;
-
-        /// <summary>
-        /// Gets the event creator associated with this collidable.
-        /// </summary>
-        protected abstract IDeferredEventCreator EventCreator { get; }
+        protected virtual void OnMaterialChanged(Material newMaterial)
+        {
+            for (int i = 0; i < pairs.Count; i++)
+            {
+                pairs[i].UpdateMaterialProperties();
+            }
+        }
     }
 }

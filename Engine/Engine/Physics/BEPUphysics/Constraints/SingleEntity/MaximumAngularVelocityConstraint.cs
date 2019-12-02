@@ -9,10 +9,10 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
     /// </summary>
     public class MaximumAngularSpeedConstraint : SingleEntityConstraint, I3DImpulseConstraint
     {
+        private Vector3 accumulatedImpulse;
         private Matrix3x3 effectiveMassMatrix;
         private float maxForceDt = float.MaxValue;
         private float maxForceDtSquared = float.MaxValue;
-        private Vector3 accumulatedImpulse;
         private float maximumForce = float.MaxValue;
         private float maximumSpeed;
         private float maximumSpeedSquared;
@@ -85,20 +85,6 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             get => softness;
             set => softness = Math.Max(0, value);
         }
-
-        #region I3DImpulseConstraint Members
-
-        /// <summary>
-        /// Gets the current relative velocity between the connected entities with respect to the constraint.
-        /// </summary>
-        Vector3 I3DImpulseConstraint.RelativeVelocity => entity.angularVelocity;
-
-        /// <summary>
-        /// Gets the total impulse applied by the constraint.
-        /// </summary>
-        public Vector3 TotalImpulse => accumulatedImpulse;
-
-        #endregion
 
         /// <summary>
         /// Calculates and applies corrective impulses.
@@ -188,5 +174,19 @@ namespace Engine.Physics.BEPUphysics.Constraints.SingleEntity
             //Can't do warmstarting due to the strangeness of this constraint (not based on a position error, nor is it really a motor).
             accumulatedImpulse = Toolbox.ZeroVector;
         }
+
+        #region I3DImpulseConstraint Members
+
+        /// <summary>
+        /// Gets the current relative velocity between the connected entities with respect to the constraint.
+        /// </summary>
+        Vector3 I3DImpulseConstraint.RelativeVelocity => entity.angularVelocity;
+
+        /// <summary>
+        /// Gets the total impulse applied by the constraint.
+        /// </summary>
+        public Vector3 TotalImpulse => accumulatedImpulse;
+
+        #endregion
     }
 }

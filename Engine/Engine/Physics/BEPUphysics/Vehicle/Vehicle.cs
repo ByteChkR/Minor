@@ -92,6 +92,17 @@ namespace Engine.Physics.BEPUphysics.Vehicle
         /// </summary>
         public ReadOnlyList<Wheel> Wheels => new ReadOnlyList<Wheel>(wheels);
 
+        void IBeforeNarrowPhaseUpdateable.Update(float dt)
+        {
+            //After broadphase, test for supports.
+            foreach (Wheel wheel in wheels)
+            {
+                wheel.FindSupport();
+            }
+
+            OnInvolvedEntitiesChanged();
+        }
+
 
         /// <summary>
         /// Sets up the vehicle's information when being added to the space.
@@ -121,6 +132,14 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             oldSpace.Remove(Body);
         }
 
+        void IDuringForcesUpdateable.Update(float dt)
+        {
+            foreach (Wheel wheel in wheels)
+            {
+                wheel.UpdateDuringForces(dt);
+            }
+        }
+
         /// <summary>
         /// Performs the end-of-frame update component.
         /// </summary>
@@ -144,25 +163,6 @@ namespace Engine.Physics.BEPUphysics.Vehicle
             foreach (Wheel wheel in Wheels)
             {
                 wheel.UpdateAtEndOfUpdate(dt);
-            }
-        }
-
-        void IBeforeNarrowPhaseUpdateable.Update(float dt)
-        {
-            //After broadphase, test for supports.
-            foreach (Wheel wheel in wheels)
-            {
-                wheel.FindSupport();
-            }
-
-            OnInvolvedEntitiesChanged();
-        }
-
-        void IDuringForcesUpdateable.Update(float dt)
-        {
-            foreach (Wheel wheel in wheels)
-            {
-                wheel.UpdateDuringForces(dt);
             }
         }
 
