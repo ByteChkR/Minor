@@ -11,7 +11,9 @@ namespace Engine.Core
     {
         [ConfigVariable] public static EngineSettings Settings;
 
-
+        /// <summary>
+        /// The Engine Default Settings.
+        /// </summary>
         public static EngineSettings DefaultSettings => new EngineSettings
         {
             DebugSettings = DebugSettings.GetDefault(),

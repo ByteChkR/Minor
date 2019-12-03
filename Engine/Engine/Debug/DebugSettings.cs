@@ -12,6 +12,9 @@ namespace Engine.Debug
     [Serializable]
     public class DebugSettings : IDebugSettings
     {
+        /// <summary>
+        /// The Settings for the single log streams that get hooked up to the debug framework
+        /// </summary>
         [XmlElement(ElementName = "LogStreamConfig")]
         public LogStreamSettings[] LogStreamSettings { get; set; }
 

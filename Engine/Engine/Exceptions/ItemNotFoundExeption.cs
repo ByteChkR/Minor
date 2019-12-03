@@ -2,6 +2,9 @@
 
 namespace Engine.Exceptions
 {
+    /// <summary>
+    /// Occurs when a file is not found.
+    /// </summary>
     public class ItemNotFoundExeption : EngineException
     {
         /// <summary>

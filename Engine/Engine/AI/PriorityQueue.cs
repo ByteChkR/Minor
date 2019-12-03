@@ -3,52 +3,87 @@ using System.Collections.Generic;
 
 namespace Engine.AI
 {
+    /// <summary>
+    /// Simple Priority Queue implementation
+    /// </summary>
+    /// <typeparam name="T">Type of Queue Item</typeparam>
     public class PriorityQueue<T> where T : IComparable<T>
     {
         public readonly bool IsDescending;
 
         //The underlying structure.
-        private List<T> list;
+        private readonly List<T> list;
 
+        /// <summary>
+        /// Default Constructor
+        /// </summary>
         public PriorityQueue()
         {
             list = new List<T>();
         }
 
-        public PriorityQueue(bool isdesc)
-            : this(0, isdesc)
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="isDescending"></param>
+        public PriorityQueue(bool isDescending)
+            : this(0, isDescending)
         {
         }
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="capacity">internal capacity</param>
         public PriorityQueue(int capacity)
             : this(capacity, false)
         {
         }
 
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="collection">Base Collection. Needs to be Sorted</param>
         public PriorityQueue(IEnumerable<T> collection)
             : this(collection, false)
         {
         }
 
-        public PriorityQueue(int capacity, bool isdesc)
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="capacity">internal capacity</param>
+        /// <param name="isDescending"></param>
+        public PriorityQueue(int capacity, bool isDescending)
         {
             list = new List<T>(capacity);
-            IsDescending = isdesc;
+            IsDescending = isDescending;
         }
 
-        public PriorityQueue(IEnumerable<T> collection, bool isdesc)
+        /// <summary>
+        /// Public constructor
+        /// </summary>
+        /// <param name="collection">Base Collection. Needs to be Sorted</param>
+        /// <param name="isDescending"></param>
+        public PriorityQueue(IEnumerable<T> collection, bool isDescending)
             : this()
         {
-            IsDescending = isdesc;
+            IsDescending = isDescending;
             foreach (T item in collection)
             {
                 Enqueue(item);
             }
         }
 
+        /// <summary>
+        /// Number of items in the queue
+        /// </summary>
         public int Count => list.Count;
 
-
+        /// <summary>
+        /// Enqueues an item into a queue
+        /// </summary>
+        /// <param name="x">The item to Enqueue</param>
         public void Enqueue(T x)
         {
             list.Add(x);
@@ -72,6 +107,10 @@ namespace Engine.AI
             }
         }
 
+        /// <summary>
+        /// Dequeues an item
+        /// </summary>
+        /// <returns></returns>
         public T Dequeue()
         {
             T target = Peek(); //Get first in list
@@ -104,6 +143,10 @@ namespace Engine.AI
             return target;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>Item in the first position of the queue</returns>
         public T Peek()
         {
             if (Count == 0)
@@ -114,11 +157,18 @@ namespace Engine.AI
             return list[0];
         }
 
+        /// <summary>
+        /// Clears the complete queue
+        /// </summary>
         public void Clear()
         {
             list.Clear();
         }
 
+        /// <summary>
+        /// Returns all items in the queue
+        /// </summary>
+        /// <returns>the data as a list of type T</returns>
         public List<T> GetData()
         {
             return list;

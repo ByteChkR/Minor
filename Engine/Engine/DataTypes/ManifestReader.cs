@@ -16,6 +16,10 @@ namespace Engine.DataTypes
         private static List<Assembly> _loadedAssemblies = new List<Assembly>();
         private static List<string> _unpackedFiles = new List<string>();
 
+        /// <summary>
+        /// Loads an Assembly List file
+        /// </summary>
+        /// <param name="filepath"></param>
         public static void LoadAssemblyListFromFile(string filepath)
         {
             if (IOManager.Exists(filepath))
@@ -24,6 +28,9 @@ namespace Engine.DataTypes
             }
         }
 
+        /// <summary>
+        /// Logs all Files to the Console
+        /// </summary>
         public static void ListAllFiles()
         {
             foreach (KeyValuePair<string, AssemblyFile> assemblyFile in _assemblyFiles)
@@ -32,6 +39,10 @@ namespace Engine.DataTypes
             }
         }
 
+        /// <summary>
+        /// Loads the Assembly List from a stream
+        /// </summary>
+        /// <param name="data"></param>
         public static void LoadAssemblyList(Stream data)
         {
             TextReader tr = new StreamReader(data);
@@ -51,6 +62,10 @@ namespace Engine.DataTypes
             }
         }
 
+        /// <summary>
+        /// Registers an Assembly into the IO Embedding Process
+        /// </summary>
+        /// <param name="asm"></param>
         public static void RegisterAssembly(Assembly asm)
         {
             if (_loadedAssemblies.Contains(asm))
@@ -79,7 +94,7 @@ namespace Engine.DataTypes
 
             PrepareManifestFiles(asm);
         }
-
+        
         private static AssemblyFile FileFactory(string file, bool compression, Assembly asm, AssetPointer ptr)
         {
             if (asm == null)
@@ -175,7 +190,10 @@ namespace Engine.DataTypes
                     IOManager.GetFiles(loadedAssembly.GetName().Name + "/packs", "*"), loadedAssembly, FileFactory);
             }
         }
-
+        /// <summary>
+        /// Prepares the Assembly Files for the loading process
+        /// </summary>
+        /// <param name="searchFileSystem">Flag to prefer the filesystem over the Assembly when preparing packaged files</param>
         public static void PrepareManifestFiles(bool searchFileSystem)
         {
             if (searchFileSystem)
@@ -194,6 +212,7 @@ namespace Engine.DataTypes
             }
         }
 
+        
         private static void UnpackAssets(Dictionary<string, Tuple<int, MemoryStream>> files)
         {
             Logger.Log($"Parparing to unpack {files.Count} Assets.. ", DebugChannel.Log, 10);
@@ -259,7 +278,11 @@ namespace Engine.DataTypes
             return id;
         }
 
-
+        /// <summary>
+        /// Returns the Manifest Stream by path
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         public static Stream GetStreamByPath(string filepath)
         {
             string path = SanitizeFilename(filepath);
@@ -273,6 +296,11 @@ namespace Engine.DataTypes
             return _assemblyFiles[path].GetFileStream();
         }
 
+        /// <summary>
+        /// Returns true if this directory is existing(has minor trouble with . characters in filenames)
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static bool DirectoryExists(string path)
         {
             string p = SanitizeFilename(path);
@@ -287,7 +315,12 @@ namespace Engine.DataTypes
             return false;
         }
 
-
+        /// <summary>
+        /// Returns a list of files that are in the specified path and satisfy the search pattern
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="searchPattern">* = all files</param>
+        /// <returns></returns>
         public static string[] GetFiles(string path, string searchPattern)
         {
             string[] files = _assemblyFiles.Keys.ToArray();
@@ -305,6 +338,11 @@ namespace Engine.DataTypes
         }
 
 
+        /// <summary>
+        /// Turns a Filepath that refers to an assembly file into a filepath
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         public static string UnSanitizeFilename(string filepath)
         {
             string ret = filepath.Replace(".", "/");
@@ -314,7 +352,11 @@ namespace Engine.DataTypes
 
             return ret;
         }
-
+        /// <summary>
+        /// Turns a Filepath that refers to an file on the filesystem into a filepath for assembly files
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         public static string SanitizeFilename(string filepath)
         {
             if (filepath[0] == '/' || filepath[0] == '\\')
@@ -325,12 +367,20 @@ namespace Engine.DataTypes
             return filepath.Replace("/", ".").Replace("\\", ".");
         }
 
+        /// <summary>
+        /// Returns true if this file exists
+        /// </summary>
+        /// <param name="filepath"></param>
+        /// <returns></returns>
         public static bool Exists(string filepath)
         {
             string p = SanitizeFilename(filepath);
             return _assemblyFiles.ContainsKey(p);
         }
 
+        /// <summary>
+        /// Clears all unpacked files from the filesystem
+        /// </summary>
         public static void ClearUnpackedFiles()
         {
             for (int i = 0; i < _unpackedFiles.Count; i++)

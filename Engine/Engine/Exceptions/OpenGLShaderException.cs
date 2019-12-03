@@ -2,6 +2,11 @@
 
 namespace Engine.Exceptions
 {
+
+
+    /// <summary>
+    /// Occurs when a Shader Fails to compile or some openGL calls went wrong
+    /// </summary>
     public class OpenGLShaderException : EngineException
     {
         /// <summary>

@@ -16,6 +16,9 @@ using TextureWrapMode = OpenTK.Graphics.OpenGL.TextureWrapMode;
 
 namespace Engine.IO
 {
+    /// <summary>
+    /// Contains all Functions to create a Texture Object
+    /// </summary>
     public static class TextureLoader
     {
         /// <summary>

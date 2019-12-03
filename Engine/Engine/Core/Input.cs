@@ -5,11 +5,20 @@ using OpenTK.Input;
 
 namespace Engine.Core
 {
+    /// <summary>
+    /// Input Handler that is Used by the UI System can can be used to check what key is pressed.
+    /// </summary>
     public static class Input
     {
         private static Dictionary<Key, bool> _keymap = new Dictionary<Key, bool>();
         private static GameWindow _wnd;
+        /// <summary>
+        /// Flag for the Right Mouse Button
+        /// </summary>
         public static bool RightMb { get; private set; }
+        /// <summary>
+        /// Flag for the Left Mouse Button
+        /// </summary>
         public static bool LeftMb { get; private set; }
 
 
@@ -48,6 +57,11 @@ namespace Engine.Core
             _keymap[e.Key] = true;
         }
 
+        /// <summary>
+        /// Returns if a specific key has been pressed
+        /// </summary>
+        /// <param name="key">the Key to be checked</param>
+        /// <returns></returns>
         public static bool GetKey(Key key)
         {
             return _keymap[key];

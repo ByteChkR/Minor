@@ -5,14 +5,32 @@ using System.Threading;
 
 namespace Engine.Core
 {
+
+    /// <summary>
+    /// Helper Interface for the generic ThreadManager implementation.
+    /// 
+    /// </summary>
     internal interface IThreadManager
     {
+        /// <summary>
+        /// Type of the Thread Manager 
+        /// </summary>
         Type Type { get; }
+
         bool CheckStates();
     }
 
+
+    /// <summary>
+    /// A reference to a specific task item
+    /// </summary>
+    /// <typeparam name="T">Type of endresult</typeparam>
     public class TaskReference<T>
     {
+        /// <summary>
+        /// Delegate used by the TaskReference implementation
+        /// </summary>
+        /// <returns></returns>
         public delegate T DelTask();
 
         private T ret;
@@ -26,7 +44,11 @@ namespace Engine.Core
             t = new Thread(() => ThreadRun(task));
         }
 
+        /// <summary>
+        /// A flag that is true if the task has been finished
+        /// </summary>
         public bool IsDone => !t.IsAlive;
+
 
         internal void RunTask()
         {
@@ -75,22 +97,36 @@ namespace Engine.Core
         }
     }
 
+    /// <summary>
+    /// Static Implementation of the Thread Manager
+    /// </summary>
     public static class ThreadManager
     {
         private static List<IThreadManager> _managers = new List<IThreadManager>();
 
+        /// <summary>
+        /// Runs a Task on a different thread
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <param name="onFinish"></param>
         public static void RunTask<T>(TaskReference<T>.DelTask task, Action<T> onFinish)
         {
             ThreadManager<T> manager = GetManager<T>();
             manager.RunTask(CreateTask(task, onFinish));
         }
-
+        /// <summary>
+        /// Runs a Task on a different thread
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
         public static void RunTask<T>(TaskReference<T> task)
         {
             ThreadManager<T> manager = GetManager<T>();
             manager.RunTask(task);
         }
 
+        
         internal static void CheckManagerStates()
         {
             for (int i = _managers.Count - 1; i >= 0; i--)
@@ -124,6 +160,13 @@ namespace Engine.Core
             _managers.Remove(manager);
         }
 
+        /// <summary>
+        /// Creates a Task of a specific type
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="task"></param>
+        /// <param name="onFinish"></param>
+        /// <returns></returns>
         public static TaskReference<T> CreateTask<T>(TaskReference<T>.DelTask task, Action<T> onFinish)
         {
             return new TaskReference<T>(task, onFinish);

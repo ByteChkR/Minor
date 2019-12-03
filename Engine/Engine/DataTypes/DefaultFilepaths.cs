@@ -162,8 +162,17 @@ namespace Engine.DataTypes
         private static Dictionary<ShaderType, string> DefaultScreenShaderPath =>
             GetDictionary(_filePaths.defaultScreenShader);
 
+        /// <summary>
+        /// Path to the Default Mesh
+        /// </summary>
         public static string DefaultMeshPath => _filePaths.defaultMesh;
+        /// <summary>
+        /// Path to the Default Texture
+        /// </summary>
         public static string DefaultTexturePath => _filePaths.defaultTexture;
+        /// <summary>
+        /// Path to the Default Font
+        /// </summary>
         public static string DefaultFontPath => _filePaths.defaultFont;
 
         /// <summary>
@@ -176,6 +185,10 @@ namespace Engine.DataTypes
         /// </summary>
         public static Mesh DefaultMesh => _defaultMesh ?? (_defaultMesh = GetDefaultMesh());
 
+
+        /// <summary>
+        /// Path to the Default Texture
+        /// </summary>
         public static Texture DefaultTexture => _defaultTexture ?? (_defaultTexture = GetDefaultTexture());
 
         /// <summary>
@@ -237,6 +250,10 @@ namespace Engine.DataTypes
             return ret;
         }
 
+        /// <summary>
+        /// Loads a XML File Containing the Default Filepath Information
+        /// </summary>
+        /// <param name="path"></param>
         public static void Load(string path)
         {
             if (!IOManager.Exists(path))
@@ -250,7 +267,10 @@ namespace Engine.DataTypes
             _filePaths = (DefaultFilepaths) xs.Deserialize(s);
             s.Close();
         }
-
+        /// <summary>
+        /// Save the Default Filepath Information to a XML File
+        /// </summary>
+        /// <param name="path"></param>
         public static void Save(string path)
         {
             if (File.Exists(path))

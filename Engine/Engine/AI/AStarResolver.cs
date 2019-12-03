@@ -2,8 +2,18 @@
 
 namespace Engine.AI
 {
+    /// <summary>
+    /// The Implementation of the A* Algorithm
+    /// </summary>
     public class AStarResolver
     {
+        /// <summary>
+        /// Finds the path from the start node to the end node
+        /// </summary>
+        /// <param name="startPoint">The point to start the search from</param>
+        /// <param name="endPoint">The target point to reach</param>
+        /// <param name="foundPath">out parameter to indicate if there exists a valid path for the start/end configuration</param>
+        /// <returns>Returns a List of Nodes containing the path from start to finish</returns>
         public static List<AiNode> FindPath(AiNode startPoint, AiNode endPoint,
             out bool foundPath)
         {
@@ -74,6 +84,7 @@ namespace Engine.AI
             return new List<AiNode>();
         }
 
+        
         private static List<AiNode> GeneratePath(AiNode endNode)
         {
             List<AiNode> ret = new List<AiNode>();

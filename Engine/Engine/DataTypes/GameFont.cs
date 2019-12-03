@@ -62,6 +62,11 @@ namespace Engine.DataTypes
             fontAtlas.Clear();
         }
 
+        /// <summary>
+        /// Returns the 2D Bounding box of the text
+        /// </summary>
+        /// <param name="stringValue"></param>
+        /// <returns></returns>
         public Vector2 GetRenderBounds(string stringValue)
         {
             int scrW = GameEngine.Instance.Width;

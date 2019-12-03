@@ -5,7 +5,7 @@ using Engine.Debug;
 using Engine.IO;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
-using Engine.OpenCL.Runner;
+using Engine.OpenFL.Runner;
 using Engine.Rendering;
 
 namespace Engine.OpenFL

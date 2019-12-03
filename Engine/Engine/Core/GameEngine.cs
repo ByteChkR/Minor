@@ -67,10 +67,19 @@ namespace Engine.Core
 
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
         }
-
+        /// <summary>
+        /// Is true when the Game Window has the Focus from the OS(e.g is in the foreground)
+        /// </summary>
         public bool HasFocus => window.Focused;
+
+        /// <summary>
+        /// The Window Position
+        /// </summary>
         public Vector2 WindowPosition => new Vector2(window.Location.X, window.Location.Y);
 
+        /// <summary>
+        /// The Event System used by the Ui Systems
+        /// </summary>
         public EventSystem UiSystem { get; private set; }
 
         /// <summary>
@@ -98,7 +107,14 @@ namespace Engine.Core
         /// </summary>
         public int Height => window.Height;
 
+        /// <summary>
+        /// The Window Size of the Game Window
+        /// </summary>
         public Vector2 WindowSize => new Vector2(Width, Height);
+
+        /// <summary>
+        /// Returns the Window Info associated with the Game Window
+        /// </summary>
         public IWindowInfo WindowInfo => window.WindowInfo;
 
         /// <summary>
@@ -115,12 +131,19 @@ namespace Engine.Core
         /// Mouse Position in pixels
         /// </summary>
         public Vector2 MousePosition { get; private set; }
-
+        
+        /// <summary>
+        /// Sets the Game Window Context as active for the Calling thread.
+        /// </summary>
         public void MakeCurrent()
         {
             window.MakeCurrent();
         }
 
+        /// <summary>
+        /// Applies the Engine Settings (only working when window is not started yet. Undefined behaviour when done so
+        /// </summary>
+        /// <param name="settings">The settings to be applied</param>
         public void SetSettings(EngineSettings settings)
         {
             Settings = settings;
@@ -169,11 +192,15 @@ namespace Engine.Core
             #endregion
         }
 
+        /// <summary>
+        /// Closes the Game Window
+        /// </summary>
         public void Exit()
         {
             window.Close();
         }
 
+        
         private void CurrentDomainOnProcessExit(object sender, EventArgs e)
         {
             ManifestReader.ClearUnpackedFiles();
@@ -212,6 +239,10 @@ namespace Engine.Core
             InitializeScene(typeof(T));
         }
 
+        /// <summary>
+        /// Loads a new Scene
+        /// </summary>
+        /// <param name="sceneType">The Type of Scene</param>
         public void InitializeScene(Type sceneType)
         {
             if (!typeof(AbstractScene).IsAssignableFrom(sceneType))

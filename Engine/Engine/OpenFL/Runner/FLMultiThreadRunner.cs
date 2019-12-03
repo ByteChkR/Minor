@@ -3,17 +3,22 @@ using System.Collections.Generic;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.IO;
+using Engine.OpenCL;
 using OpenTK;
 using OpenTK.Graphics;
 
-namespace Engine.OpenCL.Runner
+namespace Engine.OpenFL.Runner
 {
+
+    /// <summary>
+    /// Implementation of the Runner Class that executes FL Scripts on a different thread
+    /// </summary>
     public class FlMultiThreadRunner : FlRunner
     {
         private GameWindow window;
 
         public FlMultiThreadRunner(Action onFinishQueueCallback,
-            TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.Uchar1, string kernelFolder = "assets/kernel/") : base(
+            OpenCL.TypeEnums.DataTypes dataTypes = OpenCL.TypeEnums.DataTypes.Uchar1, string kernelFolder = "assets/kernel/") : base(
             Clapi.GetInstance(), dataTypes, kernelFolder)
         {
         }

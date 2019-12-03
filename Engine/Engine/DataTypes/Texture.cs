@@ -15,6 +15,7 @@ namespace Engine.DataTypes
         private bool disposed;
 
         private bool dontDispose;
+
         private readonly long bytes;
 
         /// <summary>

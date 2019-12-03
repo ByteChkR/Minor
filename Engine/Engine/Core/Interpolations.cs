@@ -6,13 +6,26 @@ namespace Engine.Core
 {
     public static class Interpolations
     {
+        /// <summary>
+        /// Uses a smart way to approximate a Math.Pow call.
+        /// Only accurrate in range [0,1]
+        /// </summary>
+        /// <param name="basis"></param>
+        /// <param name="exp">exponent</param>
+        /// <returns>basis ^ exponent</returns>
         public static float FakePow(float basis, float exp)
         {
-            float pow = IntPow(basis, (int) exp);
+            float pow = IntPow(basis, (int)exp);
             float powPlus1 = pow * basis;
-            return Mix(pow, powPlus1, (int) exp - exp); //Mix by the remainder: 99% accurate in range [0, 1]
+            return Mix(pow, powPlus1, (int)exp - exp); //Mix by the remainder: 99% accurate in range [0, 1]
         }
 
+        /// <summary>
+        /// Integer Pow Function that is a lot faster than Math.Pow
+        /// </summary>
+        /// <param name="basis"></param>
+        /// <param name="exp">exponent</param>
+        /// <returns>basis ^ exponent</returns>
         public static float IntPow(float basis, int exp)
         {
             float r = 1;
@@ -24,6 +37,13 @@ namespace Engine.Core
             return r;
         }
 
+        /// <summary>
+        /// Performs an inverse lerp between min and max
+        /// </summary>
+        /// <param name="min">minimum value</param>
+        /// <param name="max">maximum value</param>
+        /// <param name="value">T</param>
+        /// <returns></returns>
         public static float InverseLerp(float min, float max, float value)
         {
             if (Math.Abs(max - min) < float.Epsilon)
@@ -34,6 +54,7 @@ namespace Engine.Core
             return (value - min) / (max - min);
         }
 
+        
         public static float Slerp(float t)
         {
             return t * t;
@@ -67,7 +88,7 @@ namespace Engine.Core
 
         public static float SmoothStart(float t, float smoothness = 1)
         {
-            int pow = (int) smoothness;
+            int pow = (int)smoothness;
             return Mix(SmoothStart(t, pow), SmoothStart(t, pow + 1), smoothness - pow);
         }
 
@@ -78,7 +99,7 @@ namespace Engine.Core
 
         public static float SmoothStop(float t, float smoothness = 1)
         {
-            int pow = (int) smoothness;
+            int pow = (int)smoothness;
             return Mix(SmoothStop(t, pow), SmoothStop(t, pow + 1), smoothness - pow);
         }
 
@@ -123,6 +144,12 @@ namespace Engine.Core
             return 3f * b * s2 * t + 3f * c * s * t2 + t3;
         }
 
+        /// <summary>
+        /// Wrapper for the Chaikin Algorithm that enables executing it multiple times and as such increasing the smoothness of the line
+        /// </summary>
+        /// <param name="pts"></param>
+        /// <param name="smoothness"></param>
+        /// <returns></returns>
         public static Vector3[] Chaikin(Vector3[] pts, int smoothness)
         {
             if (smoothness < 1)
@@ -139,6 +166,11 @@ namespace Engine.Core
             return ret;
         }
 
+        /// <summary>
+        /// A not commonly known smoothing algorithm that is really fast
+        /// </summary>
+        /// <param name="pts">the points to smooth</param>
+        /// <returns>the smoothed points(note: the new array size is now (pts.Length - 2) * 2 + 2</returns>
         public static Vector3[] Chaikin(Vector3[] pts)
         {
             Vector3[] newPts = new Vector3[(pts.Length - 2) * 2 + 2];
@@ -156,6 +188,12 @@ namespace Engine.Core
             return newPts;
         }
 
+        /// <summary>
+        /// A more conventional (yet still fast) line smoothing algorithm
+        /// </summary>
+        /// <param name="cornerPoints">the points to smooth</param>
+        /// <param name="smoothness"></param>
+        /// <returns></returns>
         public static List<Vector3> SmoothLine(List<Vector3> cornerPoints, float smoothness)
         {
             if (smoothness < 1)
@@ -166,7 +204,7 @@ namespace Engine.Core
             List<Vector3> smoothedPoints;
             List<Vector3> ret;
             int cornerCount = cornerPoints.Count;
-            int curvedLength = (int) Math.Round(cornerCount * smoothness) - 1;
+            int curvedLength = (int)Math.Round(cornerCount * smoothness) - 1;
             ret = new List<Vector3>(curvedLength);
             float t = 0;
             for (int pointOnCurve = 0; pointOnCurve < curvedLength + 1; pointOnCurve++)
