@@ -118,6 +118,12 @@ namespace Engine.Rendering
             Render(viewMat, projMat, Program);
         }
 
+        /// <summary>
+        /// The Code for rendering a Mesh
+        /// </summary>
+        /// <param name="viewMat">View Matrix</param>
+        /// <param name="projMat">Projection Matrix</param>
+        /// <param name="depthMap">Depth Map to attach</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat, int depthMap)
         {
             Program.Use();
@@ -130,6 +136,13 @@ namespace Engine.Rendering
             Render(viewMat, projMat, Program);
         }
 
+
+        /// <summary>
+        /// Code for Rendering a Mesh
+        /// </summary>
+        /// <param name="viewMat">View Matrix</param>
+        /// <param name="projMat">Projection Matrix</param>
+        /// <param name="prog">ShaderProgram to use</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat, ShaderProgram prog)
         {
             prog.Use();
@@ -203,7 +216,9 @@ namespace Engine.Rendering
             RenderMeshes();
         }
 
-
+        /// <summary>
+        /// Renders the Meshes with the Settings from Render
+        /// </summary>
         protected void RenderMeshes()
         {
             foreach (Mesh gameMesh in Meshes)

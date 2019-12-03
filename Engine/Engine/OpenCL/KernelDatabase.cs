@@ -24,6 +24,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Public constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="folderName">Folder name where the kernels are located</param>
         /// <param name="genDataType">The DataTypes used to compile the FL Database</param>
         public KernelDatabase(Clapi instance, string folderName, TypeEnums.DataTypes genDataType)
@@ -60,6 +61,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Manually adds a Program to the database
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="file">Path fo the file</param>
         public void AddProgram(Clapi instance, string file)
         {

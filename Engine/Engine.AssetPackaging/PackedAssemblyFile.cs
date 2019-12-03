@@ -14,14 +14,14 @@ namespace Engine.AssetPackaging
             base(compression, manifestFilepath,
                 assembly)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
         public PackedAssemblyFile(bool compression, string[] manifestFilepaths, Assembly assembly, AssetPointer ptr) :
             base(compression, manifestFilepaths,
                 assembly)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
 

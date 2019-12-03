@@ -21,7 +21,10 @@ namespace Engine.Core
         /// </summary>
         public static bool LeftMb { get; private set; }
 
-
+        /// <summary>
+        /// Initializes the Input Class with the Game Window to subscribe to all needed events
+        /// </summary>
+        /// <param name="window">window to initialize with</param>
         internal static void Initialize(GameWindow window)
         {
             window.KeyDown += Window_KeyDown;

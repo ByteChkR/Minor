@@ -28,7 +28,7 @@ namespace Engine.IO
         /// <summary>
         /// Returns true if the folder exists on either the disk or in the assembly
         /// </summary>
-        /// <param name="filename"></param>
+        /// <param name="foldername"></param>
         /// <returns></returns>
         public static bool FolderExists(string foldername)
         {

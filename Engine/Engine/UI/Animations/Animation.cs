@@ -7,14 +7,34 @@
     {
         private int frameCount;
         private bool isLoaded;
+        /// <summary>
+        /// Trigger of the Animation
+        /// </summary>
         public AnimationTrigger Trigger { get; set; }
-        public string Type { get; set; }
+        /// <summary>
+        /// Delay before the animation starts
+        /// </summary>
         public float AnimationDelay { get; set; }
         private float TimeSinceAnimationStart { get; set; }
+
+        /// <summary>
+        /// Flag that indicates if the animation is currently playing
+        /// </summary>
         public bool IsAnimating { get; private set; }
 
+        /// <summary>
+        /// Abstract animation implementation
+        /// </summary>
+        /// <param name="target">target of the animation</param>
+        /// <param name="animationStart">the animation start in seconds</param>
+        /// <returns></returns>
         public abstract bool Animate(UiElement target, float animationStart);
 
+        /// <summary>
+        /// Checks the state of the object
+        /// Starts animating when triggered
+        /// </summary>
+        /// <param name="trigger">trigger to check against</param>
         public void CheckState(AnimationTrigger trigger)
         {
             if (Trigger == trigger)
@@ -23,7 +43,11 @@
                 TimeSinceAnimationStart = 0;
             }
         }
-
+        /// <summary>
+        /// Updates a UI Element
+        /// </summary>
+        /// <param name="target">The UI Element to Update</param>
+        /// <param name="deltaTime">Delta Time in seconds</param>
         public void Update(UiElement target, float deltaTime)
         {
             if (!isLoaded && frameCount > 1

@@ -168,6 +168,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Casts the supplied value to the specified type
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="value">the value casted to the required type for the parameter</param>
         /// <returns></returns>
         public object CastToType(Clapi instance, object value)
@@ -274,7 +275,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// returns the Correct DataType max value for the equivalent in the CL Library
         /// </summary>
-        /// <param name="type">the cl type that is used</param>
+        /// <param name="genType">the cl type that is used</param>
         /// <returns>max value of the data type</returns>
         public static float GetDataMaxSize(string genType)
         {
@@ -292,7 +293,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// returns the Correct DataType enum for the equivalent in OpenCL C99
         /// </summary>
-        /// <param name="type"></param>
+        /// <param name="str">String Representation of the CL Type</param>
         /// <returns>The data type</returns>
         public static TypeEnums.DataTypes GetDataType(string str)
         {

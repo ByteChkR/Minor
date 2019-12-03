@@ -17,6 +17,7 @@ namespace Engine.OpenCL.DotNetCore.Memory
         /// Initializes a new <see cref="Pipe"/> instance.
         /// </summary>
         /// <param name="handle">The handle to the OpenCL pipe.</param>
+        ///<param name="bytes">Size of the Memory Object(For Statistics)</param>
         public Pipe(IntPtr handle, long bytes)
             : base(handle, bytes)
         {

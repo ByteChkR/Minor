@@ -17,6 +17,10 @@ namespace Engine.Core
         /// </summary>
         Type Type { get; }
 
+        /// <summary>
+        /// Checks the States of the currently running tasks
+        /// </summary>
+        /// <returns>True if all tasks finished</returns>
         bool CheckStates();
     }
 
@@ -34,10 +38,14 @@ namespace Engine.Core
         public delegate T DelTask();
 
         private T ret;
-
         private Action<T> onFinish;
         private Thread t;
 
+        /// <summary>
+        /// Internal Constructor
+        /// </summary>
+        /// <param name="task">Task to complete</param>
+        /// <param name="onFinish">On Finish Event</param>
         internal TaskReference(DelTask task, Action<T> onFinish)
         {
             this.onFinish = onFinish;
@@ -50,6 +58,9 @@ namespace Engine.Core
         public bool IsDone => !t.IsAlive;
 
 
+        /// <summary>
+        /// Internal Starts the Thread for the Task
+        /// </summary>
         internal void RunTask()
         {
             t.Start();
@@ -73,10 +84,21 @@ namespace Engine.Core
 
     internal class ThreadManager<T> : IThreadManager
     {
+        /// <summary>
+        /// A List of all Running Tasks
+        /// </summary>
         public List<TaskReference<T>> RunningTasks = new List<TaskReference<T>>();
+        /// <summary>
+        /// The Type of the TheadManager
+        /// to comply with the IThreadManager Interface
+        /// </summary>
         public Type Type => typeof(T);
 
 
+        /// <summary>
+        /// Checks the States of the currently running tasks
+        /// </summary>
+        /// <returns>True if all tasks finished</returns>
         public bool CheckStates()
         {
             for (int i = RunningTasks.Count - 1; i >= 0; i--)
@@ -90,6 +112,10 @@ namespace Engine.Core
             return RunningTasks.Count == 0;
         }
 
+        /// <summary>
+        /// Enqueues the Task and runs it
+        /// </summary>
+        /// <param name="task"></param>
         public void RunTask(TaskReference<T> task)
         {
             RunningTasks.Add(task);
@@ -126,7 +152,9 @@ namespace Engine.Core
             manager.RunTask(task);
         }
 
-        
+        /// <summary>
+        /// Checks all ThreadManager Completion States and removes them when they have finished
+        /// </summary>
         internal static void CheckManagerStates()
         {
             for (int i = _managers.Count - 1; i >= 0; i--)
@@ -138,6 +166,11 @@ namespace Engine.Core
             }
         }
 
+        /// <summary>
+        /// Returns a ThreadManager of Type T
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         private static ThreadManager<T> GetManager<T>()
         {
             List<IThreadManager> mgrs = _managers.Where(x => x.Type == typeof(T)).ToList();
@@ -155,6 +188,10 @@ namespace Engine.Core
             return manager;
         }
 
+        /// <summary>
+        /// Removes a manager from the manager list
+        /// </summary>
+        /// <param name="manager"></param>
         internal static void RemoveManager(IThreadManager manager)
         {
             _managers.Remove(manager);

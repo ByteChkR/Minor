@@ -96,6 +96,7 @@ namespace Engine.IO
         /// <summary>
         /// Reads Texture Data from CL into CPU Memory and passes it into the CL implementation
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="tex">Input Texture</param>
         /// <returns>CL Buffer Object containing the image data</returns>
         public static MemoryBuffer TextureToMemoryBuffer(Clapi instance, Texture tex)

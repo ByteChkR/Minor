@@ -23,9 +23,11 @@ namespace Engine.OpenCL
         private readonly string genType;
 
         /// <summary>
-        /// Public constructor
+        /// Public Constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="filePath">The FilePath where the source is located</param>
+        /// <param name="genType">The Gen Type used</param>
         public ClProgram(Clapi instance, string filePath, string genType)
         {
             this.filePath = filePath;

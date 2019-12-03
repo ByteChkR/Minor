@@ -53,12 +53,20 @@ namespace Engine.IO
         /// Loads a model with assimp
         /// </summary>
         /// <param name="stream">the input stream for assimp</param>
+        /// <param name="hint">File extension(obj, fbx, ...)</param>
+        /// <param name="path">Path to the file</param>
         /// <returns></returns>
         internal static List<Mesh> LoadModel(Stream stream, string hint = "", string path = "")
         {
             return LoadAssimpScene(LoadInternalAssimpScene(stream, hint), path);
         }
 
+        /// <summary>
+        /// Loads an Assimp Scene from Stream
+        /// </summary>
+        /// <param name="s">Stream</param>
+        /// <param name="hint">File extension(obj, fbx, ...)</param>
+        /// <returns></returns>
         internal static Scene LoadInternalAssimpScene(Stream s, string hint = "")
         {
             AssimpContext context = new AssimpContext();
@@ -69,7 +77,7 @@ namespace Engine.IO
         /// <summary>
         /// Loads a Assimp Model From File
         /// </summary>
-        /// <param name="filename">The path to the file</param>
+        /// <param name="path">The path to the file</param>
         /// <returns>The loaded AssimpModel</returns>
         private static List<Mesh> LoadModel(string path)
         {

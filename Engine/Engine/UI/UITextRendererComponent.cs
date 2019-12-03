@@ -93,6 +93,9 @@ namespace Engine.UI
             }
         }
 
+        /// <summary>
+        /// Wrapper for the Color Field
+        /// </summary>
         public Color SystemColor
         {
             get => System.Drawing.Color.FromArgb((int) (Color.X * 255), (int) (Color.Y * 255), (int) (Color.Z * 255),

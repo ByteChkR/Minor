@@ -57,8 +57,8 @@ namespace Engine.Physics
         /// <summary>
         /// Modifies the interactable subgroups such that filterB does not interact with the subgroups defined by filter a and vice versa.
         /// </summary>
-        /// <param name="a">Filter from which to remove collisions with filter b's subgroups.</param>
-        /// <param name="b">Filter from which to remove collisions with filter a's subgroups.</param>
+        /// <param name="filterA">Filter from which to remove collisions with filter b's subgroups.</param>
+        /// <param name="filterB">Filter from which to remove collisions with filter a's subgroups.</param>
         public static void DisableCollision(ref Layer filterA, ref Layer filterB)
         {
             filterA.CollidableSubgroups &= (ushort) ~filterB.SubgroupMembership;

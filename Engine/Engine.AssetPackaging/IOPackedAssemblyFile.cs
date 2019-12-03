@@ -12,13 +12,13 @@ namespace Engine.AssetPackaging
         public IoPackedAssemblyFile(bool compressed, string packFilepath, AssetPointer ptr) : base(compressed,
             packFilepath, null)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
         public IoPackedAssemblyFile(bool compressed, string[] packFilepaths, AssetPointer ptr) : base(compressed,
             packFilepaths, null)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
         public override Stream GetResourceStream(int index)

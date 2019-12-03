@@ -7,8 +7,14 @@ namespace Engine.UI.EventSystems
     /// </summary>
     public interface ISelectable
     {
-        int TabStop { get; set; }
+        /// <summary>
+        /// Bounding Box of the Selectable
+        /// </summary>
         Box2 BoundingBox { get; }
+        /// <summary>
+        /// A Function to set the state of the object
+        /// </summary>
+        /// <param name="state">the state to be set</param>
         void SetState(SelectableState state);
     }
 }

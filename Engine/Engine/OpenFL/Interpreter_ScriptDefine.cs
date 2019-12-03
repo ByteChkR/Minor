@@ -16,7 +16,14 @@ namespace Engine.OpenFL
         /// <summary>
         /// Define handler that loads defined scripts
         /// </summary>
-        /// <param name="arg">The Line of the definition</param>
+        /// <param name="instance">Clapi Instance of the Current Thread</param>
+        /// <param name="arg">Args from the FL Script</param>
+        /// <param name="defines">Defines</param>
+        /// <param name="width">width of the input buffer</param>
+        /// <param name="height">height of the input buffer</param>
+        /// <param name="depth">depth of the input buffer</param>
+        /// <param name="channelCount">channel count of the input buffer</param>
+        /// <param name="kernelDb">the kernel database to use</param>
         private static void DefineScript(Clapi instance, string[] arg, Dictionary<string, ClBufferInfo> defines,
             int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)

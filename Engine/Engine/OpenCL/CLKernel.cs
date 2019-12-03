@@ -18,6 +18,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="k">The Compiled and Linked Kernel</param>
         /// <param name="name">The name of the kernel</param>
         /// <param name="parameter">The parsed KernelParameter</param>
@@ -102,6 +103,7 @@ namespace Engine.OpenCL
         /// <param name="cq">Command Queue to be used</param>
         /// <param name="image">The image buffer</param>
         /// <param name="dimensions">The dimensions of the image buffer</param>
+        /// <param name="genTypeMaxVal">Maximum Value that the Type can represent</param>
         /// <param name="enabledChannels">The enabled channels of the input buffer</param>
         /// <param name="channelCount">The number of channels in use</param>
         internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,

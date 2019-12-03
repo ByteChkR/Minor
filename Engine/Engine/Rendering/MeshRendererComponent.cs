@@ -122,6 +122,9 @@ namespace Engine.Rendering
             RenderMeshes();
         }
 
+        /// <summary>
+        /// Renders the Meshes with the Settings from Render
+        /// </summary>
         protected void RenderMeshes()
         {
             foreach (Mesh gameMesh in Meshes)

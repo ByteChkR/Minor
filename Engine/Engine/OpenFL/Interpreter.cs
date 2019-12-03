@@ -216,6 +216,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// A public constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="file">The file containing the source</param>
         /// <param name="input">The input buffer</param>
         /// <param name="width">Width of the input buffer</param>
@@ -249,6 +250,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// A public constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="file">The file containing the source</param>
         /// <param name="genType">The Type of the data the interpreter is operating on</param>
         /// <param name="input">The input buffer</param>
@@ -270,6 +272,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// A public constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="file">The file containing the source</param>
         /// <param name="genType">The Type of the data the interpreter is operating on</param>
         /// <param name="input">The input buffer</param>
@@ -289,6 +292,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// A public constructor
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="file">The file containing the source</param>
         /// <param name="input">The input buffer</param>
         /// <param name="width">Width of the input buffer</param>
@@ -657,6 +661,7 @@ namespace Engine.OpenFL
         /// Loads the source from file
         /// </summary>
         /// <param name="file"></param>
+        /// <param name="channelCount"></param>
         private static List<string> LoadSource(string file, int channelCount)
         {
             Logger.Log("Loading Source..", DebugChannel.Log | DebugChannel.OpenFl | DebugChannel.Io, 9);

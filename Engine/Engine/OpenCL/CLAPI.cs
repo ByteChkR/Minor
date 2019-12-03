@@ -204,6 +204,7 @@ namespace Engine.OpenCL
         /// Writes random values to a MemoryBuffer
         /// </summary>
         /// <typeparam name="T">Type of the values</typeparam>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
@@ -227,6 +228,7 @@ namespace Engine.OpenCL
         /// Writes random values to a Memory Buffer
         /// </summary>
         /// <typeparam name="T">Type of the values</typeparam>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
@@ -241,6 +243,7 @@ namespace Engine.OpenCL
         /// Writes values to a MemoryBuffer
         /// </summary>
         /// <typeparam name="T">Type of the values</typeparam>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="values">The values to be written to the buffer</param>
         public static void WriteToBuffer<T>(Clapi instance, MemoryBuffer buf, T[] values) where T : struct
@@ -252,6 +255,7 @@ namespace Engine.OpenCL
         /// Writes values to a MemoryBuffer
         /// </summary>
         /// <typeparam name="T">Type of the values</typeparam>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="size">The count of structs to be read from the buffer</param>
         /// <returns>The content of the buffer</returns>
@@ -263,6 +267,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Runs a kernel with a valid FL kernel signature
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="kernel">The CLKernel to be executed</param>
         /// <param name="image">The image buffer that serves as input</param>
         /// <param name="dimensions">The dimensions of the input buffer</param>
@@ -303,6 +308,7 @@ namespace Engine.OpenCL
         /// Creates an empty buffer of type T with the specified size and MemoryFlags
         /// </summary>
         /// <typeparam name="T">The type of the struct</typeparam>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="size">The size of the buffer(Total size in bytes: size*sizeof(T)</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
@@ -316,6 +322,7 @@ namespace Engine.OpenCL
         /// Creates a Buffer with the specified content and Memory Flags
         /// </summary>
         /// <typeparam name="T">Type of the struct</typeparam>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="data">The array of T</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
@@ -339,6 +346,7 @@ namespace Engine.OpenCL
         /// <summary>
         /// Creates a buffer with the content of an image and the specified Memory Flags
         /// </summary>
+        /// <param name="instance">Clapi Instance for the current thread</param>
         /// <param name="bmp">The image that holds the data</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>

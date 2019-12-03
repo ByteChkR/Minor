@@ -180,10 +180,11 @@ namespace Engine.UI
         }
 
         /// <summary>
-        /// Loads a font by filename and pixel size
+        /// Loads a font from stream and pixel size
         /// </summary>
-        /// <param name="filename">the filename</param>
+        /// <param name="fileStream">the stream</param>
         /// <param name="pixelSize">The size of the font in pixels</param>
+        /// <param name="path">Path of the Font</param>
         private void LoadFont(Stream fileStream, int pixelSize, string path)
         {
             if (fonts.ContainsKey(path))
@@ -220,10 +221,10 @@ namespace Engine.UI
         }
 
         /// <summary>
-        /// returns a font by name
+        /// returns a font by path
         /// </summary>
-        /// <param name="name">The name of the font</param>
-        /// <returns>The font with the specified name</returns>
+        /// <param name="path">The path of the font</param>
+        /// <returns>The font with the specified path</returns>
         public GameFont GetFontByPath(string path)
         {
             if (!fonts.ContainsKey(path))
