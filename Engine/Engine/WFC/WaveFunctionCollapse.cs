@@ -16,15 +16,15 @@ namespace Engine.WFC
         protected static readonly int[] Dx = {-1, 0, 1, 0};
         protected static readonly int[] Dy = {0, 1, 0, -1};
         private static readonly int[] Opposite = {2, 3, 0, 1};
-        private int[][][] _compatible;
+        private int[][][] compatible;
 
-        private (int, int)[] _stack;
-        private int _stacksize;
-        private double _sumOfWeights, _sumOfWeightLogWeights, _startingEntropy;
+        private (int, int)[] stack;
+        private int stacksize;
+        private double sumOfWeights, sumOfWeightLogWeights, startingEntropy;
 
-        private int[] _sumsOfOnes;
-        private double[] _sumsOfWeights, _sumsOfWeightLogWeights, _entropies;
-        private double[] _weightLogWeights;
+        private int[] sumsOfOnes;
+        private double[] sumsOfWeights, sumsOfWeightLogWeights, entropies;
+        private double[] weightLogWeights;
         protected int Fmx, Fmy, T;
         protected int[] Observed;
         protected bool Periodic;
@@ -46,37 +46,37 @@ namespace Engine.WFC
         private void Init()
         {
             Wave = new bool[Fmx * Fmy][];
-            _compatible = new int[Wave.Length][][];
+            compatible = new int[Wave.Length][][];
             for (int i = 0; i < Wave.Length; i++)
             {
                 Wave[i] = new bool[T];
-                _compatible[i] = new int[T][];
+                compatible[i] = new int[T][];
                 for (int t = 0; t < T; t++)
                 {
-                    _compatible[i][t] = new int[4];
+                    compatible[i][t] = new int[4];
                 }
             }
 
-            _weightLogWeights = new double[T];
-            _sumOfWeights = 0;
-            _sumOfWeightLogWeights = 0;
+            weightLogWeights = new double[T];
+            sumOfWeights = 0;
+            sumOfWeightLogWeights = 0;
 
             for (int t = 0; t < T; t++)
             {
-                _weightLogWeights[t] = Weights[t] * Math.Log(Weights[t]);
-                _sumOfWeights += Weights[t];
-                _sumOfWeightLogWeights += _weightLogWeights[t];
+                weightLogWeights[t] = Weights[t] * Math.Log(Weights[t]);
+                sumOfWeights += Weights[t];
+                sumOfWeightLogWeights += weightLogWeights[t];
             }
 
-            _startingEntropy = Math.Log(_sumOfWeights) - _sumOfWeightLogWeights / _sumOfWeights;
+            startingEntropy = Math.Log(sumOfWeights) - sumOfWeightLogWeights / sumOfWeights;
 
-            _sumsOfOnes = new int[Fmx * Fmy];
-            _sumsOfWeights = new double[Fmx * Fmy];
-            _sumsOfWeightLogWeights = new double[Fmx * Fmy];
-            _entropies = new double[Fmx * Fmy];
+            sumsOfOnes = new int[Fmx * Fmy];
+            sumsOfWeights = new double[Fmx * Fmy];
+            sumsOfWeightLogWeights = new double[Fmx * Fmy];
+            entropies = new double[Fmx * Fmy];
 
-            _stack = new (int, int)[Wave.Length * T];
-            _stacksize = 0;
+            stack = new (int, int)[Wave.Length * T];
+            stacksize = 0;
         }
 
         private bool? Observe()
@@ -91,13 +91,13 @@ namespace Engine.WFC
                     continue;
                 }
 
-                int amount = _sumsOfOnes[i];
+                int amount = sumsOfOnes[i];
                 if (amount == 0)
                 {
                     return false;
                 }
 
-                double entropy = _entropies[i];
+                double entropy = entropies[i];
                 if (amount > 1 && entropy <= min)
                 {
                     double noise = 1E-6 * Random.NextDouble();
@@ -147,10 +147,10 @@ namespace Engine.WFC
 
         protected void Propagate()
         {
-            while (_stacksize > 0)
+            while (stacksize > 0)
             {
-                (int, int) e1 = _stack[_stacksize - 1];
-                _stacksize--;
+                (int, int) e1 = stack[stacksize - 1];
+                stacksize--;
 
                 int i1 = e1.Item1;
                 int x1 = i1 % Fmx, y1 = i1 / Fmx;
@@ -184,7 +184,7 @@ namespace Engine.WFC
 
                     int i2 = x2 + y2 * Fmx;
                     int[] p = Propagator[d][e1.Item2];
-                    int[][] compat = _compatible[i2];
+                    int[][] compat = compatible[i2];
 
                     for (int l = 0; l < p.Length; l++)
                     {
@@ -221,7 +221,7 @@ namespace Engine.WFC
             {
                 if (l % 250 == 0)
                 {
-                    Logger.Log("Starting Iteration: " + l, DebugChannel.Log | DebugChannel.WFC, 6);
+                    Logger.Log("Starting Iteration: " + l, DebugChannel.Log | DebugChannel.Wfc, 6);
                 }
 
                 bool? result = Observe();
@@ -247,21 +247,21 @@ namespace Engine.WFC
         {
             Wave[i][t] = false;
 
-            int[] comp = _compatible[i][t];
+            int[] comp = compatible[i][t];
             for (int d = 0; d < 4; d++)
             {
                 comp[d] = 0;
             }
 
-            _stack[_stacksize] = (i, t);
-            _stacksize++;
+            stack[stacksize] = (i, t);
+            stacksize++;
 
-            _sumsOfOnes[i] -= 1;
-            _sumsOfWeights[i] -= Weights[t];
-            _sumsOfWeightLogWeights[i] -= _weightLogWeights[t];
+            sumsOfOnes[i] -= 1;
+            sumsOfWeights[i] -= Weights[t];
+            sumsOfWeightLogWeights[i] -= weightLogWeights[t];
 
-            double sum = _sumsOfWeights[i];
-            _entropies[i] = Math.Log(sum) - _sumsOfWeightLogWeights[i] / sum;
+            double sum = sumsOfWeights[i];
+            entropies[i] = Math.Log(sum) - sumsOfWeightLogWeights[i] / sum;
         }
 
         protected virtual void Clear()
@@ -273,14 +273,14 @@ namespace Engine.WFC
                     Wave[i][t] = true;
                     for (int d = 0; d < 4; d++)
                     {
-                        _compatible[i][t][d] = Propagator[Opposite[d]][t].Length;
+                        compatible[i][t][d] = Propagator[Opposite[d]][t].Length;
                     }
                 }
 
-                _sumsOfOnes[i] = Weights.Length;
-                _sumsOfWeights[i] = _sumOfWeights;
-                _sumsOfWeightLogWeights[i] = _sumOfWeightLogWeights;
-                _entropies[i] = _startingEntropy;
+                sumsOfOnes[i] = Weights.Length;
+                sumsOfWeights[i] = sumOfWeights;
+                sumsOfWeightLogWeights[i] = sumOfWeightLogWeights;
+                entropies[i] = startingEntropy;
             }
         }
 

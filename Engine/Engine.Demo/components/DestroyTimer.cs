@@ -4,19 +4,19 @@ namespace Engine.Demo.components
 {
     public class DestroyTimer : AbstractComponent
     {
-        private float _destroyTime;
-        private float _time;
+        private float destroyTime;
+        private float time;
 
         public DestroyTimer(float destroyTime)
         {
-            _destroyTime = destroyTime;
+            this.destroyTime = destroyTime;
         }
 
 
         protected override void Update(float deltaTime)
         {
-            _time += deltaTime;
-            if (_time >= _destroyTime)
+            time += deltaTime;
+            if (time >= destroyTime)
             {
                 Owner.Destroy();
             }

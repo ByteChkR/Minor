@@ -2,10 +2,10 @@
 
 namespace Engine.OpenFL.FLDataObjects
 {
-    public struct FLInstructionData
+    public struct FlInstructionData
     {
         public object Instruction;
-        public FLInstructionType InstructionType;
-        public List<FLArgumentData> Arguments;
+        public FlInstructionType InstructionType;
+        public List<FlArgumentData> Arguments;
     }
 }

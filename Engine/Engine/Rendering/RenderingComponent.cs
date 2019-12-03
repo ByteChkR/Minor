@@ -37,12 +37,12 @@ namespace Engine.Rendering
         /// <summary>
         /// Cached version of the ModelView Matrix(is used for ordered rendering
         /// </summary>
-        public Matrix4 MV { get; private set; }
+        public Matrix4 Mv { get; private set; }
 
         /// <summary>
         /// The position of the Object in ModelView Space
         /// </summary>
-        public Vector3 MVPosition { get; private set; }
+        public Vector3 MvPosition { get; private set; }
 
         /// <summary>
         /// The Render type of the context
@@ -94,7 +94,7 @@ namespace Engine.Rendering
             {
                 if (WorldSpace && other.WorldSpace)
                 {
-                    float d = MVPosition.LengthSquared - other.MVPosition.LengthSquared;
+                    float d = MvPosition.LengthSquared - other.MvPosition.LengthSquared;
                     if (d > 0)
                     {
                         return 1;
@@ -134,10 +134,10 @@ namespace Engine.Rendering
         /// Precalculates the ModelView Matrix
         /// </summary>
         /// <param name="view">The view matrix</param>
-        public void PrecalculateMV(Matrix4 view)
+        public void PrecalculateMv(Matrix4 view)
         {
-            MV = Owner._worldTransformCache * view;
-            MVPosition = new Vector3(new Vector4(Vector3.Zero, 1) * MV);
+            Mv = Owner.WorldTransformCache * view;
+            MvPosition = new Vector3(new Vector4(Vector3.Zero, 1) * Mv);
         }
     }
 }

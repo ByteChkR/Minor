@@ -17,7 +17,7 @@ namespace Engine.OpenFL
         /// Define handler that loads defined scripts
         /// </summary>
         /// <param name="arg">The Line of the definition</param>
-        private static void DefineScript(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines,
+        private static void DefineScript(Clapi instance, string[] arg, Dictionary<string, ClBufferInfo> defines,
             int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)
         {
@@ -30,7 +30,7 @@ namespace Engine.OpenFL
             string varname = arg[0].Trim();
             if (defines.ContainsKey(varname))
             {
-                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFL, 10);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFl, 10);
                 defines.Remove(varname);
             }
 
@@ -39,14 +39,14 @@ namespace Engine.OpenFL
 
             string filename = args[0].Trim();
 
-            int InputBufferSize = width * height * depth * channelCount;
+            int inputBufferSize = width * height * depth * channelCount;
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFL, 10);
+                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFl, 10);
 
                 MemoryBuffer buf =
-                    CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite);
+                    Clapi.CreateEmpty<byte>(instance, inputBufferSize, MemoryFlag.ReadWrite);
 
 
                 string fn = filename.Replace(FilepathIndicator, "");
@@ -62,7 +62,7 @@ namespace Engine.OpenFL
                         interpreter.Step();
                     } while (!interpreter.Terminated);
 
-                    CLBufferInfo info = interpreter.GetActiveBufferInternal();
+                    ClBufferInfo info = interpreter.GetActiveBufferInternal();
                     info.SetKey(varname);
                     defines.Add(varname, info);
                     interpreter.ReleaseResources();
@@ -74,8 +74,8 @@ namespace Engine.OpenFL
                             new InvalidFilePathException(fn)),
                         true);
 
-                    CLBufferInfo info = new CLBufferInfo(
-                        CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite),
+                    ClBufferInfo info = new ClBufferInfo(
+                        Clapi.CreateEmpty<byte>(instance, inputBufferSize, MemoryFlag.ReadWrite),
                         true);
                     info.SetKey(varname);
                     defines.Add(varname, info);
@@ -86,8 +86,8 @@ namespace Engine.OpenFL
                 Logger.Crash(new FLInvalidFunctionUseException(ScriptDefineKey, "Not a valid filepath as argument."),
                     true);
 
-                CLBufferInfo info =
-                    new CLBufferInfo(CLAPI.CreateEmpty<byte>(instance, InputBufferSize, MemoryFlag.ReadWrite), true);
+                ClBufferInfo info =
+                    new ClBufferInfo(Clapi.CreateEmpty<byte>(instance, inputBufferSize, MemoryFlag.ReadWrite), true);
                 info.SetKey(varname);
                 defines.Add(varname, info);
             }

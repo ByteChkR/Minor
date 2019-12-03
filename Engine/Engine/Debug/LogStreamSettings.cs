@@ -51,7 +51,7 @@ namespace Engine.Debug
         /// Network Authentication ID
         /// is empy if not a network stream
         /// </summary>
-        public int NetworkAppID { get; set; }
+        public int NetworkAppId { get; set; }
 
         /// <summary>
         /// Assembly Version that is reported to the server.

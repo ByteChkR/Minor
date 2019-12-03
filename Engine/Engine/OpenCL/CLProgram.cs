@@ -10,26 +10,26 @@ namespace Engine.OpenCL
     /// <summary>
     /// A wrapper class for a OpenCL Program.
     /// </summary>
-    public class CLProgram
+    public class ClProgram
     {
         /// <summary>
         /// The filepath of the program source
         /// </summary>
-        private readonly string _filePath;
+        private readonly string filePath;
 
         /// <summary>
         /// The gentype the program source is compiled for
         /// </summary>
-        private readonly string _genType;
+        private readonly string genType;
 
         /// <summary>
         /// Public constructor
         /// </summary>
-        /// <param name="FilePath">The FilePath where the source is located</param>
-        public CLProgram(CLAPI instance, string FilePath, string genType)
+        /// <param name="filePath">The FilePath where the source is located</param>
+        public ClProgram(Clapi instance, string filePath, string genType)
         {
-            _filePath = FilePath;
-            _genType = genType;
+            this.filePath = filePath;
+            this.genType = genType;
 
             ContainedKernels = new Dictionary<string, CLKernel>();
 
@@ -89,21 +89,21 @@ namespace Engine.OpenCL
         /// <summary>
         /// Loads the source and initializes the CLProgram
         /// </summary>
-        private void Initialize(CLAPI instance)
+        private void Initialize(Clapi instance)
         {
-            int vnum = GetVectorNum(_genType);
-            string[] lines = TextProcessorAPI.GenericIncludeToSource(".cl", _filePath, _genType,
+            int vnum = GetVectorNum(genType);
+            string[] lines = TextProcessorApi.GenericIncludeToSource(".cl", filePath, genType,
                 vnum == 0 || vnum == 1 ? "float" : "float" + vnum);
             Dictionary<string, bool> defs = new Dictionary<string, bool> {{"V_" + vnum, true}};
-            string source = TextProcessorAPI.PreprocessSource(lines, _filePath, defs);
+            string source = TextProcessorApi.PreprocessSource(lines, filePath, defs);
             string[] kernelNames = FindKernelNames(source);
 
-            ClProgramHandle = CLAPI.CreateCLProgramFromSource(instance, source);
+            ClProgramHandle = Clapi.CreateClProgramFromSource(instance, source);
 
 
             foreach (string kernelName in kernelNames)
             {
-                Kernel k = CLAPI.CreateKernelFromName(ClProgramHandle, kernelName);
+                Kernel k = Clapi.CreateKernelFromName(ClProgramHandle, kernelName);
                 int kernelNameIndex = source.IndexOf(" " + kernelName + " ", StringComparison.InvariantCulture);
                 kernelNameIndex = kernelNameIndex == -1
                     ? source.IndexOf(" " + kernelName + "(", StringComparison.InvariantCulture)

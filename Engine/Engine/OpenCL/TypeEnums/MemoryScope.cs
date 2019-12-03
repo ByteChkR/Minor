@@ -5,8 +5,8 @@
     /// </summary>
     public enum MemoryScope
     {
-        NONE = 0,
-        GLOBAL = 1,
-        CONSTANT = 2
+        None = 0,
+        Global = 1,
+        Constant = 2
     }
 }

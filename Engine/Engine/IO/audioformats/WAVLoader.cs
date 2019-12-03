@@ -7,7 +7,7 @@ namespace Engine.IO.audioformats
     /// <summary>
     /// Provides the Loading Code for WAV/RIFF Files.
     /// </summary>
-    public class WAVLoader : IAudioFormatLoader
+    public class WavLoader : IAudioFormatLoader
     {
         /// <summary>
         /// Tries to load the specified file and pass the loaded data through the out parameters
@@ -72,8 +72,8 @@ namespace Engine.IO.audioformats
                 }
 
                 // WAVE header
-                string format_signature = new string(reader.ReadChars(4));
-                if (format_signature != "fmt ")
+                string formatSignature = new string(reader.ReadChars(4));
+                if (formatSignature != "fmt ")
                 {
                     Logger.Crash(new AudioFileInvalidException("Specified wave file is not supported."), false);
                 }
@@ -82,16 +82,16 @@ namespace Engine.IO.audioformats
                 reader.ReadInt32();
                 /*int audio_format = */
                 reader.ReadInt16();
-                int num_channels = reader.ReadInt16();
-                int sample_rate = reader.ReadInt32();
+                int numChannels = reader.ReadInt16();
+                int sampleRate = reader.ReadInt32();
                 /*int byte_rate = */
                 reader.ReadInt32();
                 /*int block_align = */
                 reader.ReadInt16();
-                int bits_per_sample = reader.ReadInt16();
+                int bitsPerSample = reader.ReadInt16();
 
-                string data_signature = new string(reader.ReadChars(4));
-                if (data_signature != "data")
+                string dataSignature = new string(reader.ReadChars(4));
+                if (dataSignature != "data")
                 {
                     Logger.Crash(new AudioFileInvalidException("Specified wave file is not supported."), false);
                 }
@@ -99,9 +99,9 @@ namespace Engine.IO.audioformats
                 /*int data_chunk_size = */
                 reader.ReadInt32();
 
-                channel = num_channels;
-                bits = bits_per_sample;
-                bitRate = sample_rate;
+                channel = numChannels;
+                bits = bitsPerSample;
+                bitRate = sampleRate;
                 data = reader.ReadBytes((int) reader.BaseStream.Length);
                 return true;
             }

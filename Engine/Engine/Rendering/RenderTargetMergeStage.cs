@@ -35,7 +35,7 @@ namespace Engine.Rendering
         /// <summary>
         /// The VAO of the Screen quad
         /// </summary>
-        private static int _screenVAO;
+        private static int _screenVao;
 
         /// <summary>
         /// Render target 0 for the pingpong rendering
@@ -66,10 +66,10 @@ namespace Engine.Rendering
         private static void Init()
         {
             _init = true;
-            _screenVAO = GL.GenVertexArray();
-            int _screenVBO = GL.GenBuffer();
-            GL.BindVertexArray(_screenVAO);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
+            _screenVao = GL.GenVertexArray();
+            int screenVbo = GL.GenBuffer();
+            GL.BindVertexArray(_screenVao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, screenVbo);
 
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
@@ -86,7 +86,7 @@ namespace Engine.Rendering
             DefaultFilepaths.DefaultMergeMulShader.AddUniformCache("destinationTexture");
             DefaultFilepaths.DefaultMergeMulShader.AddUniformCache("otherTexture");
 
-            _mergeTypes.Add(RenderTargetMergeType.Multiplikative, DefaultFilepaths.DefaultMergeMulShader);
+            _mergeTypes.Add(RenderTargetMergeType.Multiplicative, DefaultFilepaths.DefaultMergeMulShader);
 
 
             DefaultFilepaths.DefaultScreenShader.AddUniformCache("sourceTexture");
@@ -159,7 +159,7 @@ namespace Engine.Rendering
                 GL.Uniform1(_mergeTypes[renderTarget.MergeType].GetUniformLocation("otherTexture"), 1);
                 GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
 
-                GL.BindVertexArray(_screenVAO);
+                GL.BindVertexArray(_screenVao);
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
 
@@ -187,7 +187,7 @@ namespace Engine.Rendering
             GL.BindTexture(TextureTarget.Texture2D, GetTarget().RenderedTexture);
             
 
-            GL.BindVertexArray(_screenVAO);
+            GL.BindVertexArray(_screenVao);
             
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 

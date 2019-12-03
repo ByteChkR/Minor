@@ -1,6 +1,6 @@
 ﻿namespace Engine.OpenFL.FLDataObjects
 {
-    public enum FLArgumentType
+    public enum FlArgumentType
     {
         Unknown,
         Buffer,

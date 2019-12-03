@@ -1,6 +1,6 @@
 ﻿namespace Engine.Common
 {
-    public interface IIOCallback
+    public interface IIoCallback
     {
         bool FileExists(string file);
         string[] ReadAllLines(string file);

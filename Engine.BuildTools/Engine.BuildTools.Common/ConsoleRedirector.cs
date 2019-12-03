@@ -13,8 +13,8 @@ namespace Engine.BuildTools.Common
         private Thread _errThread;
         private Process _proc;
         private Thread _thread;
-        private object lockObj = new object();
-        private bool quitFlag;
+        private object _lockObj = new object();
+        private bool _quitFlag;
 
 
         public static ConsoleRedirector CreateRedirector(StreamReader consoleOut, StreamReader errorConsoleOut,
@@ -32,7 +32,7 @@ namespace Engine.BuildTools.Common
 
         public void StartThreads()
         {
-            quitFlag = false;
+            _quitFlag = false;
             if (_thread == null)
             {
                 _thread = new Thread(() => Start(_cOut));
@@ -57,9 +57,9 @@ namespace Engine.BuildTools.Common
 
         public void StopThreads()
         {
-            lock (lockObj)
+            lock (_lockObj)
             {
-                quitFlag = true;
+                _quitFlag = true;
             }
         }
 
@@ -84,9 +84,9 @@ namespace Engine.BuildTools.Common
             string txt = "";
             while (!_proc.HasExited)
             {
-                lock (lockObj)
+                lock (_lockObj)
                 {
-                    if (quitFlag)
+                    if (_quitFlag)
                     {
                         Console.WriteLine("Quitting From Loop");
                         return;

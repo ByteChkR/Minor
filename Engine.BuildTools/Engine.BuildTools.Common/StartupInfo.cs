@@ -6,7 +6,7 @@ namespace Engine.BuildTools.Builder
 {
     public class StartupInfo
     {
-        private Dictionary<string, List<string>> values = new Dictionary<string, List<string>>();
+        private Dictionary<string, List<string>> _values = new Dictionary<string, List<string>>();
 
         public StartupInfo(string[] args)
         {
@@ -28,11 +28,11 @@ namespace Engine.BuildTools.Builder
                     if (i == 0 && !args[0].StartsWith("--"))
                     {
                         argValues.Add(args[0]);
-                        values.Add("noflag", argValues);
+                        _values.Add("noflag", argValues);
                     }
                     else
                     {
-                        values.Add(args[i], argValues);
+                        _values.Add(args[i], argValues);
                     }
                 }
             }
@@ -40,17 +40,17 @@ namespace Engine.BuildTools.Builder
 
         public List<string> GetValues(string flag)
         {
-            return values[flag];
+            return _values[flag];
         }
 
         public bool HasFlag(string flag)
         {
-            return values.ContainsKey(flag);
+            return _values.ContainsKey(flag);
         }
 
         public bool HasValueFlag(string flag)
         {
-            return HasFlag(flag) && values[flag].Count != 0;
+            return HasFlag(flag) && _values[flag].Count != 0;
         }
 
         public static List<string> ResolveFileReferences(string arg)

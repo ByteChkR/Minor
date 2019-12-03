@@ -11,7 +11,7 @@ namespace Engine.BuildTools.PackageCreator
 {
     public static class Creator
     {
-        public const string DEFAULT_VERSION = "v1";
+        public const string DefaultVersion = "v1";
 
         private static Dictionary<string, IPackageVersion> _packageVersions = new Dictionary<string, IPackageVersion>
         {
@@ -56,14 +56,14 @@ namespace Engine.BuildTools.PackageCreator
         }
 
         public static void CreateGamePackage(string packageName, string executable, string outputFile,
-            string workingDir, string[] files, string version, string packageVersion = DEFAULT_VERSION)
+            string workingDir, string[] files, string version, string packageVersion = DefaultVersion)
         {
             _packageVersions[packageVersion]
                 .CreateGamePackage(packageName, executable, outputFile, workingDir, files, version);
         }
 
         public static void CreateEnginePackage(string outputFile, string workingDir, string[] files,
-            string packageVersion = DEFAULT_VERSION)
+            string packageVersion = DefaultVersion)
         {
             _packageVersions[packageVersion].CreateEnginePackage(outputFile, workingDir, files);
         }

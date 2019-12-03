@@ -19,17 +19,17 @@ namespace Engine.Player
 {
     internal class EnginePlayer
     {
-        private const int MF_BYCOMMAND = 0x00000000;
-        public const int SC_CLOSE = 0xF060;
-        private static List<string> engineversions = new List<string>();
-        private static Process p;
-        private static bool DontReadLine;
-        private static StartupInfo info;
-        public static WebClient wc = new WebClient();
+        private const int MfBycommand = 0x00000000;
+        public const int ScClose = 0xF060;
+        private static List<string> _engineversions = new List<string>();
+        private static Process _p;
+        private static bool _dontReadLine;
+        private static StartupInfo _info;
+        public static WebClient Wc = new WebClient();
 
-        private static string EngineVersion;
+        private static string _engineVersion;
 
-        private static int last;
+        private static int _last;
 
         [DllImport("user32.dll")]
         public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
@@ -67,7 +67,7 @@ namespace Engine.Player
 
         private static void ReadLine()
         {
-            if (!DontReadLine)
+            if (!_dontReadLine)
             {
                 Console.WriteLine("Press Enter to Continue...");
                 Console.ReadLine();
@@ -104,17 +104,17 @@ namespace Engine.Player
             }
 
             DirectoryInfo di = Directory.CreateDirectory("game");
-            DirectoryInfo _di = Directory.CreateDirectory("_game");
+            DirectoryInfo tempUnpackForGame = Directory.CreateDirectory("_game");
             if ((di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
             {
                 //Add Hidden flag    
                 di.Attributes |= FileAttributes.Hidden;
             }
 
-            if ((_di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
+            if ((tempUnpackForGame.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
             {
                 //Add Hidden flag    
-                _di.Attributes |= FileAttributes.Hidden;
+                tempUnpackForGame.Attributes |= FileAttributes.Hidden;
             }
         }
 
@@ -138,9 +138,9 @@ namespace Engine.Player
                 pm = Creator.ReadManifest(args[0]);
                 Console.Title = pm.Title;
                 string path = pm.Version;
-                if (EngineVersion != null)
+                if (_engineVersion != null)
                 {
-                    path = EngineVersion;
+                    path = _engineVersion;
                 }
 
                 LoadEngine(path);
@@ -156,8 +156,8 @@ namespace Engine.Player
             }
 
             string startCommand = pm.StartCommand;
-            DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), SC_CLOSE, MF_BYCOMMAND);
-            p = new Process();
+            DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), ScClose, MfBycommand);
+            _p = new Process();
 
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = "cmd.exe";
@@ -167,15 +167,15 @@ namespace Engine.Player
             psi.CreateNoWindow = true;
             psi.Arguments = "/C " + startCommand;
             psi.WorkingDirectory = Directory.GetCurrentDirectory() + "/game";
-            p.StartInfo = psi;
-            p.Start();
+            _p.StartInfo = psi;
+            _p.Start();
 
             ConsoleRedirector crd =
-                ConsoleRedirector.CreateRedirector(p.StandardOutput, p.StandardError, p, Console.WriteLine);
+                ConsoleRedirector.CreateRedirector(_p.StandardOutput, _p.StandardError, _p, Console.WriteLine);
 
             crd.StartThreads();
 
-            while (!p.HasExited)
+            while (!_p.HasExited)
             {
                 Thread.Sleep(150);
             }
@@ -225,7 +225,7 @@ namespace Engine.Player
 
         private static void NoHaltCommand(StartupInfo info, string[] args)
         {
-            DontReadLine = true;
+            _dontReadLine = true;
         }
 
         private static void SetDefaultProgramCommand(StartupInfo info, string[] args)
@@ -250,7 +250,7 @@ namespace Engine.Player
             else
             {
                 Console.WriteLine("Overriding Engine Version: " + args[0]);
-                EngineVersion = args[0];
+                _engineVersion = args[0];
             }
         }
 
@@ -263,7 +263,7 @@ namespace Engine.Player
             else
             {
                 Console.WriteLine("Overriding Engine Path: " + args[0]);
-                EngineVersion = "path:" + args[0];
+                _engineVersion = "path:" + args[0];
             }
         }
 
@@ -307,11 +307,11 @@ namespace Engine.Player
 
         private static void Main(string[] args)
         {
-            info = new StartupInfo(args);
+            _info = new StartupInfo(args);
 
 
-            wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
-            wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
+            Wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
+            Wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
 
 
             Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
@@ -322,7 +322,7 @@ namespace Engine.Player
                 Directory.CreateDirectory("engine");
             }
 
-            engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly)
+            _engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly)
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 
 
@@ -385,13 +385,13 @@ namespace Engine.Player
         private static void CheckUpdates()
         {
             Console.WriteLine("Checking for Updates...");
-            string s = wc.DownloadString(
+            string s = Wc.DownloadString(
                 "http://213.109.162.193/apps/EngineArchives/newest.version");
 
-            if (!engineversions.Contains(s))
+            if (!_engineversions.Contains(s))
             {
                 Console.WriteLine("Newest Version is not on Disk...");
-                engineversions.Add(s);
+                _engineversions.Add(s);
                 DownloadEngineVersion(s);
             }
 
@@ -401,10 +401,10 @@ namespace Engine.Player
 
         private static void DownloadEngineVersion(string version)
         {
-            if (IsVersionURLCorrect(version))
+            if (IsVersionUrlCorrect(version))
             {
                 Console.WriteLine("Downloading Version: " + version);
-                wc.DownloadFile(new Uri("http://213.109.162.193/apps/EngineArchives/" + version + ".engine"),
+                Wc.DownloadFile(new Uri("http://213.109.162.193/apps/EngineArchives/" + version + ".engine"),
                     "engine/" + version + ".engine");
             }
         }
@@ -417,9 +417,9 @@ namespace Engine.Player
 
         private static void WcOnDownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
-            if (last < e.ProgressPercentage)
+            if (_last < e.ProgressPercentage)
             {
-                int d = e.ProgressPercentage - last;
+                int d = e.ProgressPercentage - _last;
                 float m = Console.WindowWidth / 100f;
                 int fd = (int) (m * d);
                 for (int j = 0; j < fd; j++)
@@ -427,7 +427,7 @@ namespace Engine.Player
                     Console.Write("#");
                 }
 
-                last = e.ProgressPercentage;
+                _last = e.ProgressPercentage;
             }
         }
 
@@ -437,10 +437,10 @@ namespace Engine.Player
             try
             {
                 IPackageManifest pm = Creator.ReadManifest(path);
-                if (!engineversions.Contains(pm.Version))
+                if (!_engineversions.Contains(pm.Version))
                 {
                     Console.WriteLine("Adding Engine: " + pm);
-                    engineversions.Add(pm.Version);
+                    _engineversions.Add(pm.Version);
                     File.Copy(path, "engine/" + pm.Version + ".engine");
                 }
             }
@@ -491,7 +491,7 @@ namespace Engine.Player
             {
                 if (!IsEngineVersionAvailable(version))
                 {
-                    if (IsVersionURLCorrect(version))
+                    if (IsVersionUrlCorrect(version))
                     {
                         DownloadEngineVersion(version);
                     }
@@ -509,7 +509,7 @@ namespace Engine.Player
             Creator.UnpackPackage(filePath, "game");
         }
 
-        private static bool IsVersionURLCorrect(string version)
+        private static bool IsVersionUrlCorrect(string version)
         {
             string addr = $"http://213.109.162.193/apps/EngineArchives/{version}.engine";
             HttpWebResponse response = null;

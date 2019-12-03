@@ -12,9 +12,9 @@ namespace Engine.DataTypes
 {
     public static class ManifestReader
     {
-        private static Dictionary<string, AssemblyFile> AssemblyFiles = new Dictionary<string, AssemblyFile>();
-        private static List<Assembly> LoadedAssemblies = new List<Assembly>();
-        private static List<string> UnpackedFiles = new List<string>();
+        private static Dictionary<string, AssemblyFile> _assemblyFiles = new Dictionary<string, AssemblyFile>();
+        private static List<Assembly> _loadedAssemblies = new List<Assembly>();
+        private static List<string> _unpackedFiles = new List<string>();
 
         public static void LoadAssemblyListFromFile(string filepath)
         {
@@ -26,7 +26,7 @@ namespace Engine.DataTypes
 
         public static void ListAllFiles()
         {
-            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in AssemblyFiles)
+            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in _assemblyFiles)
             {
                 Logger.Log(assemblyFile.Key, DebugChannel.Log, 10);
             }
@@ -53,27 +53,27 @@ namespace Engine.DataTypes
 
         public static void RegisterAssembly(Assembly asm)
         {
-            if (LoadedAssemblies.Contains(asm))
+            if (_loadedAssemblies.Contains(asm))
             {
                 return;
             }
 
-            LoadedAssemblies.Add(asm);
+            _loadedAssemblies.Add(asm);
             string[] files = asm.GetManifestResourceNames();
             Logger.Log("Adding Assembly: " + asm.GetName().Name,
-                DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 10);
+                DebugChannel.Engine | DebugChannel.Io | DebugChannel.Log, 10);
             for (int i = 0; i < files.Length; i++)
             {
                 string file = files[i].Remove(0, (asm.GetName().Name + ".").Length);
-                if (AssemblyFiles.ContainsKey(file))
+                if (_assemblyFiles.ContainsKey(file))
                 {
                     Logger.Log("Overwriting File: " + file + " with version from assembly: " + asm.GetName().Name,
-                        DebugChannel.Engine | DebugChannel.IO | DebugChannel.Log, 8);
-                    AssemblyFiles[file] = new AssemblyFile(false, files[i], asm);
+                        DebugChannel.Engine | DebugChannel.Io | DebugChannel.Log, 8);
+                    _assemblyFiles[file] = new AssemblyFile(false, files[i], asm);
                 }
                 else
                 {
-                    AssemblyFiles.Add(file, new AssemblyFile(false, files[i], asm));
+                    _assemblyFiles.Add(file, new AssemblyFile(false, files[i], asm));
                 }
             }
 
@@ -88,17 +88,17 @@ namespace Engine.DataTypes
                 string dir = Path.GetDirectoryName(UnSanitizeFilename(file));
                 for (int i = 0; i < files.Length; i++)
                 {
-                    files[i] = dir + "/" + (ptr.PackageID + i) + ".pack";
+                    files[i] = dir + "/" + (ptr.PackageId + i) + ".pack";
                 }
 
-                return new IOPackedAssemblyFile(compression, files, ptr);
+                return new IoPackedAssemblyFile(compression, files, ptr);
             }
 
             string[] f = new string[AssetPointer.GetPackageCount(ptr.Offset, ptr.Length, ptr.PackageSize)];
             string d = Path.GetDirectoryName(UnSanitizeFilename(file));
             for (int i = 0; i < f.Length; i++)
             {
-                f[i] = SanitizeFilename(d + "/" + (ptr.PackageID + i) + ".pack");
+                f[i] = SanitizeFilename(d + "/" + (ptr.PackageId + i) + ".pack");
             }
 
             return new PackedAssemblyFile(compression, f, asm, ptr);
@@ -150,16 +150,16 @@ namespace Engine.DataTypes
             {
                 string assemblyPath = SanitizeFilename(packPrefix + "/" + assetPointer.Item1);
                 string virtualPath = SanitizeFilename(assetPointer.Item2.Path);
-                if (AssemblyFiles.ContainsKey(virtualPath))
+                if (_assemblyFiles.ContainsKey(virtualPath))
                 {
                     Logger.Log("Overwriting File: " + assemblyPath + " => " + virtualPath, DebugChannel.Log, 10);
-                    AssemblyFiles[virtualPath] =
+                    _assemblyFiles[virtualPath] =
                         factory(assemblyPath, compression, asm,
                             assetPointer.Item2); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2);
                 }
                 else
                 {
-                    AssemblyFiles.Add(virtualPath,
+                    _assemblyFiles.Add(virtualPath,
                         factory(assemblyPath, compression, asm,
                             assetPointer.Item2)); //new PackedAssemblyFile(assemblyPath, asm, assetPointer.Item2)
                 }
@@ -187,7 +187,7 @@ namespace Engine.DataTypes
             }
             else
             {
-                foreach (Assembly loadedAssembly in LoadedAssemblies)
+                foreach (Assembly loadedAssembly in _loadedAssemblies)
                 {
                     PrepareManifestFiles(loadedAssembly);
                 }
@@ -199,7 +199,7 @@ namespace Engine.DataTypes
             Logger.Log($"Parparing to unpack {files.Count} Assets.. ", DebugChannel.Log, 10);
             foreach (KeyValuePair<string, Tuple<int, MemoryStream>> memoryStream in files)
             {
-                bool hasUnpackedVersion = UnpackedFiles.Contains(memoryStream.Key);
+                bool hasUnpackedVersion = _unpackedFiles.Contains(memoryStream.Key);
                 if (hasUnpackedVersion)
                 {
                     File.Delete(memoryStream.Key);
@@ -237,7 +237,7 @@ namespace Engine.DataTypes
 
                     if (!hasUnpackedVersion)
                     {
-                        UnpackedFiles.Add(memoryStream.Key);
+                        _unpackedFiles.Add(memoryStream.Key);
                     }
 
                     File.WriteAllBytes(memoryStream.Key, buf);
@@ -264,19 +264,19 @@ namespace Engine.DataTypes
         {
             string path = SanitizeFilename(filepath);
 
-            if (!AssemblyFiles.ContainsKey(path))
+            if (!_assemblyFiles.ContainsKey(path))
             {
                 Logger.Crash(new EngineException("Could not load file: " + filepath), false);
                 return null;
             }
 
-            return AssemblyFiles[path].GetFileStream();
+            return _assemblyFiles[path].GetFileStream();
         }
 
         public static bool DirectoryExists(string path)
         {
             string p = SanitizeFilename(path);
-            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in AssemblyFiles)
+            foreach (KeyValuePair<string, AssemblyFile> assemblyFile in _assemblyFiles)
             {
                 if (assemblyFile.Key.StartsWith(p))
                 {
@@ -290,7 +290,7 @@ namespace Engine.DataTypes
 
         public static string[] GetFiles(string path, string searchPattern)
         {
-            string[] files = AssemblyFiles.Keys.ToArray();
+            string[] files = _assemblyFiles.Keys.ToArray();
             string p = SanitizeFilename(path);
             List<string> ret = new List<string>();
             for (int i = 0; i < files.Length; i++)
@@ -328,15 +328,15 @@ namespace Engine.DataTypes
         public static bool Exists(string filepath)
         {
             string p = SanitizeFilename(filepath);
-            return AssemblyFiles.ContainsKey(p);
+            return _assemblyFiles.ContainsKey(p);
         }
 
         public static void ClearUnpackedFiles()
         {
-            for (int i = 0; i < UnpackedFiles.Count; i++)
+            for (int i = 0; i < _unpackedFiles.Count; i++)
             {
-                Logger.Log("Removing File from Filesystem: " + UnpackedFiles[i], DebugChannel.Log, 8);
-                File.Delete(UnpackedFiles[i]);
+                Logger.Log("Removing File from Filesystem: " + _unpackedFiles[i], DebugChannel.Log, 8);
+                File.Delete(_unpackedFiles[i]);
             }
         }
 

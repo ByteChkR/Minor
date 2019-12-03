@@ -10,7 +10,7 @@
         private float TimeSinceAnimationStart { get; set; }
         public bool IsAnimating { get; private set; }
 
-        public abstract bool Animate(UIElement target, float animationStart);
+        public abstract bool Animate(UiElement target, float animationStart);
 
         public void CheckState(AnimationTrigger trigger)
         {
@@ -21,7 +21,7 @@
             }
         }
 
-        public void Update(UIElement target, float deltaTime)
+        public void Update(UiElement target, float deltaTime)
         {
             if (!isLoaded && frameCount > 1
             ) //To Prevent loading lag we will call OnLoad event after 2 frames. To ensure that delta time is stable

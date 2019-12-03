@@ -6,16 +6,16 @@ using OpenTK;
 
 namespace Engine.UI.EventSystems
 {
-    public class Button : UIImageRendererComponent, ISelectable
+    public class Button : UiImageRendererComponent, ISelectable
     {
         private Texture btnClick;
         private Texture btnHover;
 
         private Texture btnIdle;
-        private Action<Button> OnClick;
-        private Action<Button> OnEnter;
-        private Action<Button> OnHover;
-        private Action<Button> OnLeave;
+        private Action<Button> onClick;
+        private Action<Button> onEnter;
+        private Action<Button> onHover;
+        private Action<Button> onLeave;
 
         public Button(Texture btnIdle, ShaderProgram shader, float alpha, Texture btnClick = null,
             Texture btnHover = null, Action<Button> onClick = null, Action<Button> onEnter = null,
@@ -40,14 +40,14 @@ namespace Engine.UI.EventSystems
                 this.btnHover = btnIdle;
             }
 
-            System = GameEngine.Instance.UISystem;
-            OnClick = onClick;
-            OnEnter = onEnter;
-            OnHover = onHover;
-            OnLeave = onLeave;
+            System = GameEngine.Instance.UiSystem;
+            this.onClick = onClick;
+            this.onEnter = onEnter;
+            this.onHover = onHover;
+            this.onLeave = onLeave;
         }
 
-        public SelectableState state { get; private set; }
+        public SelectableState State { get; private set; }
         public EventSystem System { get; }
 
 
@@ -55,12 +55,12 @@ namespace Engine.UI.EventSystems
         {
             get
             {
-                if (state == SelectableState.Hovered)
+                if (State == SelectableState.Hovered)
                 {
                     return btnHover;
                 }
 
-                if (state == SelectableState.Selected)
+                if (State == SelectableState.Selected)
                 {
                     return btnClick;
                 }
@@ -76,24 +76,24 @@ namespace Engine.UI.EventSystems
 
         public void SetState(SelectableState newState)
         {
-            if (newState == SelectableState.Selected && state != SelectableState.Selected)
+            if (newState == SelectableState.Selected && State != SelectableState.Selected)
             {
-                OnClick?.Invoke(this);
+                onClick?.Invoke(this);
             }
-            else if (newState == SelectableState.Hovered && state == SelectableState.None)
+            else if (newState == SelectableState.Hovered && State == SelectableState.None)
             {
-                OnEnter?.Invoke(this);
+                onEnter?.Invoke(this);
             }
-            else if (newState == SelectableState.Hovered && state == SelectableState.Hovered)
+            else if (newState == SelectableState.Hovered && State == SelectableState.Hovered)
             {
-                OnHover?.Invoke(this);
+                onHover?.Invoke(this);
             }
-            else if (newState == SelectableState.None && state == SelectableState.Hovered)
+            else if (newState == SelectableState.None && State == SelectableState.Hovered)
             {
-                OnLeave?.Invoke(this);
+                onLeave?.Invoke(this);
             }
 
-            state = newState;
+            State = newState;
         }
 
         protected override void Awake()
@@ -127,42 +127,42 @@ namespace Engine.UI.EventSystems
 
         public void AddToClickEvent(Action<Button> action)
         {
-            AddToEvent(ref OnClick, action);
+            AddToEvent(ref onClick, action);
         }
 
         public void RemoveFromClickEvent(Action<Button> action)
         {
-            RemoveFromEvent(ref OnClick, action);
+            RemoveFromEvent(ref onClick, action);
         }
 
         public void AddToEnterEvent(Action<Button> action)
         {
-            AddToEvent(ref OnEnter, action);
+            AddToEvent(ref onEnter, action);
         }
 
         public void RemoveFromEnterEvent(Action<Button> action)
         {
-            RemoveFromEvent(ref OnEnter, action);
+            RemoveFromEvent(ref onEnter, action);
         }
 
         public void AddToHoverEvent(Action<Button> action)
         {
-            AddToEvent(ref OnHover, action);
+            AddToEvent(ref onHover, action);
         }
 
         public void RemoveFromHoverEvent(Action<Button> action)
         {
-            RemoveFromEvent(ref OnHover, action);
+            RemoveFromEvent(ref onHover, action);
         }
 
         public void AddToLeaveEvent(Action<Button> action)
         {
-            AddToEvent(ref OnLeave, action);
+            AddToEvent(ref onLeave, action);
         }
 
         public void RemoveFromLeaveEvent(Action<Button> action)
         {
-            RemoveFromEvent(ref OnLeave, action);
+            RemoveFromEvent(ref onLeave, action);
         }
 
 

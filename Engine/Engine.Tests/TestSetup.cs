@@ -8,19 +8,19 @@ namespace Engine.Tests
 {
     public static class TestSetup
     {
-        private static KernelDatabase kernelDB;
+        private static KernelDatabase _kernelDb;
 
-        public static KernelDatabase KernelDB
+        public static KernelDatabase KernelDb
         {
             get
             {
-                if (kernelDB == null)
+                if (_kernelDb == null)
                 {
-                    kernelDB = new KernelDatabase(CLAPI.MainThread, "resources/kernel",
-                        OpenCL.TypeEnums.DataTypes.UCHAR1);
+                    _kernelDb = new KernelDatabase(Clapi.MainThread, "resources/kernel",
+                        OpenCL.TypeEnums.DataTypes.Uchar1);
                 }
 
-                return kernelDB;
+                return _kernelDb;
             }
         }
 

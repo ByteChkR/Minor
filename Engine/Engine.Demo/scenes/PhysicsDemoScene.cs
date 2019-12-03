@@ -20,7 +20,7 @@ namespace Engine.Demo.scenes
 
         private static string cmd_NextScene(string[] args)
         {
-            GameEngine.Instance.InitializeScene<FLDemoScene>();
+            GameEngine.Instance.InitializeScene<FlDemoScene>();
             return "Loading FL Demo Scene";
         }
 

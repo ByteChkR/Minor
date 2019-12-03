@@ -10,7 +10,7 @@ namespace Engine.Rendering
     /// </summary>
     public class MeshRendererComponent : RenderingComponent
     {
-        protected bool _init;
+        protected bool IsInitialized;
 
         /// <summary>
         /// Public constructor
@@ -77,7 +77,7 @@ namespace Engine.Rendering
 
         private void Init()
         {
-            _init = true;
+            IsInitialized = true;
             Program.AddUniformCache("modelMatrix");
             Program.AddUniformCache("viewMatrix");
             Program.AddUniformCache("projectionMatrix");
@@ -104,12 +104,12 @@ namespace Engine.Rendering
         {
             Program.Use();
 
-            if (!_init)
+            if (!IsInitialized)
             {
                 Init();
             }
 
-            Matrix4 mat = Owner._worldTransformCache;
+            Matrix4 mat = Owner.WorldTransformCache;
             GL.UniformMatrix4(Program.GetUniformLocation("modelMatrix"), false, ref mat);
             GL.UniformMatrix4(Program.GetUniformLocation("viewMatrix"), false, ref viewMat);
             GL.UniformMatrix4(Program.GetUniformLocation("projectionMatrix"), false, ref projMat);
@@ -179,7 +179,7 @@ namespace Engine.Rendering
                 }
 
 
-                GL.BindVertexArray(gameMesh._vao);
+                GL.BindVertexArray(gameMesh.Vao);
                 GL.DrawElements(PrimitiveType.Triangles, gameMesh.DrawCount, DrawElementsType.UnsignedInt, 0);
 
 

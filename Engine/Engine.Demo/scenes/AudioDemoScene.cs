@@ -12,21 +12,21 @@ namespace Engine.Demo.scenes
 {
     public class AudioDemoScene : AbstractScene
     {
-        private LookAtComponent _camLookCommandComponent;
-        private GameObject _sourceCube;
+        private LookAtComponent camLookCommandComponent;
+        private GameObject sourceCube;
 
         private string cmd_LookAtAudioSource(string[] args)
         {
-            if (_camLookCommandComponent.IsLooking)
+            if (camLookCommandComponent.IsLooking)
             {
-                _camLookCommandComponent.SetTarget(null);
+                camLookCommandComponent.SetTarget(null);
             }
             else
             {
-                _camLookCommandComponent.SetTarget(_sourceCube);
+                camLookCommandComponent.SetTarget(sourceCube);
             }
 
-            return "Changed Look behaviour to: " + _camLookCommandComponent.IsLooking;
+            return "Changed Look behaviour to: " + camLookCommandComponent.IsLooking;
         }
 
 
@@ -129,17 +129,17 @@ namespace Engine.Demo.scenes
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
                     GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             c.Translate(new Vector3(0, 4, 0));
-            _camLookCommandComponent = new LookAtComponent();
+            camLookCommandComponent = new LookAtComponent();
 
-            c.AddComponent(_camLookCommandComponent);
+            c.AddComponent(camLookCommandComponent);
 
-            _sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
+            this.sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
 
             Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             AudioSourceComponent source = new AudioSourceComponent();
-            _sourceCube.AddComponent(source);
-            _sourceCube.AddComponent(new RotateAroundComponent());
-            _sourceCube.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, sourceCube,
+            this.sourceCube.AddComponent(source);
+            this.sourceCube.AddComponent(new RotateAroundComponent());
+            this.sourceCube.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, sourceCube,
                 TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
             if (!AudioLoader.TryLoad("assets/sounds/test_mono_16.wav", out AudioFile clip))
             {
@@ -149,7 +149,7 @@ namespace Engine.Demo.scenes
             source.Clip = clip;
             source.Looping = true;
             source.Play();
-            GameEngine.Instance.CurrentScene.Add(_sourceCube);
+            GameEngine.Instance.CurrentScene.Add(this.sourceCube);
 
             AudioListener listener = new AudioListener();
             c.AddComponent(listener);

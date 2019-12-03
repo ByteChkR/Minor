@@ -1,11 +1,11 @@
 ﻿namespace Engine.OpenFL.FLDataObjects
 {
-    public enum FLInstructionType
+    public enum FlInstructionType
     {
         Unknown,
-        FLFunction,
-        CLKernel,
+        FlFunction,
+        ClKernel,
         FunctionHeader,
-        NOP
+        Nop
     }
 }

@@ -19,7 +19,7 @@ namespace Engine.Common
 
         //NetworkSpecific:
         int NetworkPort { get; set; }
-        int NetworkAppID { get; set; }
+        int NetworkAppId { get; set; }
         Version NetworkAuthVersion { get; set; }
     }
 }

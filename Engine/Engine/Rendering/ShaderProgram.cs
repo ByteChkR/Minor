@@ -16,18 +16,18 @@ namespace Engine.Rendering
     /// </summary>
     public class ShaderProgram : IDisposable
     {
-        private static int _lastUsedPrgID = -1;
+        private static int _lastUsedPrgId = -1;
 
-        private static void changeLastProgID(ShaderProgram prog)
+        private static void ChangeLastProgId(ShaderProgram prog)
         {
-            _lastUsedPrgID = prog._prgId;
+            _lastUsedPrgId = prog.prgId;
         }
 
 
         /// <summary>
         /// The program id of the shader
         /// </summary>
-        private readonly int _prgId;
+        private readonly int prgId;
 
         private readonly Dictionary<string, int> uniformCache = new Dictionary<string, int>();
 
@@ -36,7 +36,7 @@ namespace Engine.Rendering
         /// </summary>
         private ShaderProgram()
         {
-            _prgId = GL.CreateProgram();
+            prgId = GL.CreateProgram();
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace Engine.Rendering
         /// </summary>
         public void Dispose()
         {
-            GL.DeleteProgram(_prgId);
+            GL.DeleteProgram(prgId);
         }
 
         internal static bool TryCreateFromSource(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
@@ -69,16 +69,16 @@ namespace Engine.Rendering
             {
                 Logger.Log("Attaching Shader to Program: " + subshaders.ElementAt(i).Key,
                     DebugChannel.Log | DebugChannel.EngineRendering, 6);
-                GL.AttachShader(program._prgId, shaders[i]);
+                GL.AttachShader(program.prgId, shaders[i]);
             }
 
             Logger.Log("Linking Program...", DebugChannel.Log | DebugChannel.EngineRendering, 5);
-            GL.LinkProgram(program._prgId);
+            GL.LinkProgram(program.prgId);
 
-            GL.GetProgram(program._prgId, GetProgramParameterName.LinkStatus, out int success);
+            GL.GetProgram(program.prgId, GetProgramParameterName.LinkStatus, out int success);
             if (success == 0)
             {
-                Logger.Crash(new OpenGLShaderException(GL.GetProgramInfoLog(program._prgId)), true);
+                Logger.Crash(new OpenGLShaderException(GL.GetProgramInfoLog(program.prgId)), true);
                 return false;
             }
 
@@ -101,7 +101,7 @@ namespace Engine.Rendering
                 TextReader tr = new StreamReader(s);
                 string dirName = Path.GetDirectoryName(subshader.Value);
                 StringBuilder src = new StringBuilder();
-                string[] lines = TextProcessorAPI.PreprocessLines(tr.ReadToEnd().Split('\n'), dirName, null);
+                string[] lines = TextProcessorApi.PreprocessLines(tr.ReadToEnd().Split('\n'), dirName, null);
                 tr.Close();
                 for (int i = 0; i < lines.Length; i++)
                 {
@@ -119,13 +119,13 @@ namespace Engine.Rendering
         /// </summary>
         public void Use()
         {
-            if (_lastUsedPrgID == _prgId)
+            if (_lastUsedPrgId == prgId)
             {
                 return;
             }
 
-            changeLastProgID(this);
-            GL.UseProgram(_prgId);
+            ChangeLastProgId(this);
+            GL.UseProgram(prgId);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace Engine.Rendering
         /// <returns>Attribute Location</returns>
         public int GetAttribLocation(string name)
         {
-            int loc = GL.GetAttribLocation(_prgId, name);
+            int loc = GL.GetAttribLocation(prgId, name);
             return loc;
         }
 
@@ -146,7 +146,7 @@ namespace Engine.Rendering
                 return;
             }
 
-            int loc = GL.GetUniformLocation(_prgId, name);
+            int loc = GL.GetUniformLocation(prgId, name);
             uniformCache.Add(name, loc);
         }
 
@@ -166,7 +166,7 @@ namespace Engine.Rendering
         public int GetUniformLocationUncached(string name)
 
         {
-            return GL.GetUniformLocation(_prgId, name);
+            return GL.GetUniformLocation(prgId, name);
         }
 
         /// <summary>
@@ -174,17 +174,17 @@ namespace Engine.Rendering
         /// </summary>
         /// <param name="type">The shader type</param>
         /// <param name="source">The source</param>
-        /// <param name="shaderID">the Returned shader Handle</param>
+        /// <param name="shaderId">the Returned shader Handle</param>
         /// <returns>False if there were compile errors</returns>
-        private static bool TryCompileShader(ShaderType type, string source, out int shaderID)
+        private static bool TryCompileShader(ShaderType type, string source, out int shaderId)
         {
-            shaderID = GL.CreateShader(type);
-            GL.ShaderSource(shaderID, source);
-            GL.CompileShader(shaderID);
-            GL.GetShader(shaderID, ShaderParameter.CompileStatus, out int success);
+            shaderId = GL.CreateShader(type);
+            GL.ShaderSource(shaderId, source);
+            GL.CompileShader(shaderId);
+            GL.GetShader(shaderId, ShaderParameter.CompileStatus, out int success);
             if (success == 0)
             {
-                Logger.Crash(new OpenGLShaderException(GL.GetShaderInfoLog(shaderID)), true);
+                Logger.Crash(new OpenGLShaderException(GL.GetShaderInfoLog(shaderId)), true);
 
                 return false;
             }

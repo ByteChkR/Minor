@@ -15,12 +15,12 @@ namespace Engine.DataTypes
         /// <summary>
         /// The internal font atlas that is used to map Text Characters to the OpenGL Abstraction (TextCharacter)
         /// </summary>
-        private readonly Dictionary<char, TextCharacter> _fontAtlas;
+        private readonly Dictionary<char, TextCharacter> fontAtlas;
 
         /// <summary>
         /// Private field for the font this GameFont has been loaded from. Not needed perse, but it is convenient
         /// </summary>
-        private readonly FontFace _fontFace;
+        private readonly FontFace fontFace;
 
 
         /// <summary>
@@ -29,14 +29,14 @@ namespace Engine.DataTypes
         internal GameFont(FontFace ff, int size, Dictionary<char, TextCharacter> fontAtlas)
         {
             Size = size;
-            _fontFace = ff;
-            _fontAtlas = fontAtlas;
+            fontFace = ff;
+            this.fontAtlas = fontAtlas;
         }
 
         /// <summary>
         /// The Name of the Font. This is the key you can load Fonts by.
         /// </summary>
-        public string Name => _fontFace.FullName;
+        public string Name => fontFace.FullName;
 
         /// <summary>
         /// The Pixel size that has been used to Load the font into the GPU Memory
@@ -47,19 +47,19 @@ namespace Engine.DataTypes
         /// The Font Metrics Associated with the Game Font
         /// Is used for getting the LineHeight when rendering line breaks and other characters.
         /// </summary>
-        public FaceMetrics Metrics => _fontFace.GetFaceMetrics(Size);
+        public FaceMetrics Metrics => fontFace.GetFaceMetrics(Size);
 
         /// <summary>
         /// Disposable implementation to free the Texture Atlas once it is no longer needed.
         /// </summary>
         public void Dispose()
         {
-            foreach (KeyValuePair<char, TextCharacter> textCharacter in _fontAtlas)
+            foreach (KeyValuePair<char, TextCharacter> textCharacter in fontAtlas)
             {
                 textCharacter.Value.Dispose();
             }
 
-            _fontAtlas.Clear();
+            fontAtlas.Clear();
         }
 
         public Vector2 GetRenderBounds(string stringValue)
@@ -83,8 +83,8 @@ namespace Engine.DataTypes
                 if (stringValue[i] == '\t')
                 {
                     float len = x - pos.X;
-                    float count = UITextRendererComponent.TabToSpaceCount -
-                                  len % UITextRendererComponent.TabToSpaceCount;
+                    float count = UiTextRendererComponent.TabToSpaceCount -
+                                  len % UiTextRendererComponent.TabToSpaceCount;
                     float val = count;
                     x += val;
                     continue;
@@ -112,7 +112,7 @@ namespace Engine.DataTypes
         /// <returns>True if the Character has been found</returns>
         public bool TryGetCharacter(char character, out TextCharacter charInfo)
         {
-            return _fontAtlas.TryGetValue(character, out charInfo);
+            return fontAtlas.TryGetValue(character, out charInfo);
         }
     }
 }

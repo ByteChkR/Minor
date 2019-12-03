@@ -22,7 +22,7 @@ namespace Engine.UI
         /// <summary>
         /// Table of game fonts
         /// </summary>
-        private readonly Dictionary<string, Tuple<string, GameFont>> _fonts;
+        private readonly Dictionary<string, Tuple<string, GameFont>> fonts;
 
 
         /// <summary>
@@ -31,7 +31,7 @@ namespace Engine.UI
         /// <param name="folderPath">the specified folder</param>
         public FontLibrary(string folderPath)
         {
-            _fonts = new Dictionary<string, Tuple<string, GameFont>>();
+            fonts = new Dictionary<string, Tuple<string, GameFont>>();
             List<string> files = new List<string>();
 
             files.AddRange(IOManager.GetFiles(folderPath, "*.ttf"));
@@ -186,14 +186,14 @@ namespace Engine.UI
         /// <param name="pixelSize">The size of the font in pixels</param>
         private void LoadFont(Stream fileStream, int pixelSize, string path)
         {
-            if (_fonts.ContainsKey(path))
+            if (fonts.ContainsKey(path))
             {
                 return;
             }
 
             GameFont font = LoadFontInternal(fileStream, pixelSize, out string name);
 
-            _fonts.Add(path, new Tuple<string, GameFont>(name, font));
+            fonts.Add(path, new Tuple<string, GameFont>(name, font));
         }
 
         /// <summary>
@@ -203,7 +203,7 @@ namespace Engine.UI
         /// <returns>The font with the specified name</returns>
         public GameFont GetFont(string name)
         {
-            foreach (KeyValuePair<string, Tuple<string, GameFont>> font in _fonts)
+            foreach (KeyValuePair<string, Tuple<string, GameFont>> font in fonts)
             {
                 if (name == font.Value.Item1)
                 {
@@ -226,13 +226,13 @@ namespace Engine.UI
         /// <returns>The font with the specified name</returns>
         public GameFont GetFontByPath(string path)
         {
-            if (!_fonts.ContainsKey(path))
+            if (!fonts.ContainsKey(path))
             {
                 Logger.Crash(new ItemNotFoundExeption("Font", "There is no font loaded with this path: " + path), true);
                 return DefaultFilepaths.DefaultFont;
             }
 
-            return _fonts[path].Item2;
+            return fonts[path].Item2;
         }
     }
 }

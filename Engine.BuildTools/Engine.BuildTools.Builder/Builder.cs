@@ -170,7 +170,7 @@ namespace Engine.BuildTools.Builder
 
                     if (bs.CreateGamePackage)
                     {
-                        string packagerVersion = Creator.DEFAULT_VERSION;
+                        string packagerVersion = Creator.DefaultVersion;
                         if (info.HasValueFlag("--packager-version"))
                         {
                             packagerVersion = info.GetValues("--packager-version")[0];
@@ -305,7 +305,7 @@ namespace Engine.BuildTools.Builder
                     Directory.Delete(folder + "/obj", true);
                 }
 
-                string packagerVersion = Creator.DEFAULT_VERSION;
+                string packagerVersion = Creator.DefaultVersion;
                 if (info.HasValueFlag("--packager-version"))
                 {
                     packagerVersion = info.GetValues("--packager-version")[0];
@@ -360,7 +360,7 @@ namespace Engine.BuildTools.Builder
                 }
 
                 bool standalone = version == "standalone";
-                string packagerVersion = Creator.DEFAULT_VERSION;
+                string packagerVersion = Creator.DefaultVersion;
                 string startArg = args[1] + ".dll";
                 if (info.HasValueFlag("--packager-version"))
                 {
@@ -457,7 +457,7 @@ namespace Engine.BuildTools.Builder
                 
 
                 //Making sure that the root path Path is existing
-                IOUtils.CreateDirectoryPath(Path.GetFullPath(args[1]));
+                IoUtils.CreateDirectoryPath(Path.GetFullPath(args[1]));
                 Directory.Delete(Path.GetFullPath(args[1]), true);
 
                 Directory.Move(publishFolder, Path.GetFullPath(args[1]));
@@ -531,7 +531,7 @@ namespace Engine.BuildTools.Builder
         private static void PackAssets(string outputFolder, int packSize, string memoryFileExts,
             string unpackedFileExts, string assetFolder, bool compression)
         {
-            AssetPacker.MAXSIZE_KILOBYTES = packSize;
+            AssetPacker.MaxsizeKilobytes = packSize;
 
             Console.WriteLine("Parsing File info...");
 

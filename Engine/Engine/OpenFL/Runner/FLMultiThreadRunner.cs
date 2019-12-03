@@ -8,17 +8,17 @@ using OpenTK.Graphics;
 
 namespace Engine.OpenCL.Runner
 {
-    public class FLMultiThreadRunner : FLRunner
+    public class FlMultiThreadRunner : FlRunner
     {
         private GameWindow window;
 
-        public FLMultiThreadRunner(Action onFinishQueueCallback,
-            TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.UCHAR1, string kernelFolder = "assets/kernel/") : base(
-            CLAPI.GetInstance(), dataTypes, kernelFolder)
+        public FlMultiThreadRunner(Action onFinishQueueCallback,
+            TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.Uchar1, string kernelFolder = "assets/kernel/") : base(
+            Clapi.GetInstance(), dataTypes, kernelFolder)
         {
         }
 
-        private void FLFinished(Dictionary<Texture, byte[]> result)
+        private void FlFinished(Dictionary<Texture, byte[]> result)
         {
             foreach (KeyValuePair<Texture, byte[]> keyValuePair in result)
             {
@@ -27,15 +27,15 @@ namespace Engine.OpenCL.Runner
             }
         }
 
-        public override void Enqueue(FLExecutionContext context)
+        public override void Enqueue(FlExecutionContext context)
         {
             if (context.OnFinishCallback == null)
             {
-                context.OnFinishCallback = FLFinished;
+                context.OnFinishCallback = FlFinished;
             }
             else
             {
-                context.OnFinishCallback += FLFinished;
+                context.OnFinishCallback += FlFinished;
             }
 
             base.Enqueue(context);
@@ -45,7 +45,7 @@ namespace Engine.OpenCL.Runner
         {
             ThreadManager.RunTask(() => _proc(onFinish), x =>
             {
-                foreach (KeyValuePair<FLExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
+                foreach (KeyValuePair<FlExecutionContext, Dictionary<Texture, byte[]>> textureUpdate in x)
                 {
                     foreach (KeyValuePair<Texture, byte[]> bytese in textureUpdate.Value)
                     {
@@ -55,15 +55,15 @@ namespace Engine.OpenCL.Runner
             });
         }
 
-        private Dictionary<FLExecutionContext, Dictionary<Texture, byte[]>> _proc(Action onFinish = null)
+        private Dictionary<FlExecutionContext, Dictionary<Texture, byte[]>> _proc(Action onFinish = null)
         {
             window = new GameWindow(100, 100, GraphicsMode.Default, "FLRunner");
             window.MakeCurrent();
-            Dictionary<FLExecutionContext, Dictionary<Texture, byte[]>> ret =
-                new Dictionary<FLExecutionContext, Dictionary<Texture, byte[]>>();
-            while (_processQueue.Count != 0)
+            Dictionary<FlExecutionContext, Dictionary<Texture, byte[]>> ret =
+                new Dictionary<FlExecutionContext, Dictionary<Texture, byte[]>>();
+            while (ProcessQueue.Count != 0)
             {
-                FLExecutionContext fle = _processQueue.Dequeue();
+                FlExecutionContext fle = ProcessQueue.Dequeue();
                 Dictionary<string, byte[]> texUpdate = Process(fle);
                 Dictionary<Texture, byte[]> texMap = new Dictionary<Texture, byte[]>();
                 foreach (KeyValuePair<string, byte[]> bytese in texUpdate)

@@ -6,11 +6,11 @@ using OpenTK;
 
 namespace Engine.Demo.components
 {
-    public class UIMovingComponent : UIImageRendererComponent
+    public class UiMovingComponent : UiImageRendererComponent
     {
         private float time;
 
-        public UIMovingComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
+        public UiMovingComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
             texture, worldSpace, alpha, shader)
         {
         }

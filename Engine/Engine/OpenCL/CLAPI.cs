@@ -20,7 +20,7 @@ namespace Engine.OpenCL
     /// <summary>
     /// A wrapper class that is handling all the CL operations.
     /// </summary>
-    public class CLAPI : IDisposable
+    public class Clapi : IDisposable
     {
         /// <summary>
         /// A Delegate to create random numbers for every data type
@@ -32,32 +32,32 @@ namespace Engine.OpenCL
         /// <summary>
         /// Field that holds the instance of the CL wrapper
         /// </summary>
-        private static CLAPI _instance;
+        private static Clapi _instance;
 
         /// <summary>
         /// The Command queue that the wrapper is using
         /// </summary>
-        private CommandQueue _commandQueue;
+        private CommandQueue commandQueue;
 
         /// <summary>
         /// The CL Context that the wrapper is using
         /// </summary>
-        private Context _context;
+        private Context context;
 
         /// <summary>
         /// Private constructor
         /// </summary>
-        private CLAPI()
+        private Clapi()
         {
-            InitializeOpenCL();
+            InitializeOpenCl();
         }
 
         /// <summary>
         /// Helpful property for initializing the singleton
         /// </summary>
-        public static CLAPI MainThread => _instance ?? (_instance = new CLAPI());
+        public static Clapi MainThread => _instance ?? (_instance = new Clapi());
 
-        private static void apiDisposed(CLAPI obj)
+        private static void ApiDisposed(Clapi obj)
         {
             if (obj == _instance)
             {
@@ -67,25 +67,25 @@ namespace Engine.OpenCL
 
         public void Dispose()
         {
-            apiDisposed(this);
+            ApiDisposed(this);
 
 
-            _context.Dispose();
-            _commandQueue.Dispose();
+            context.Dispose();
+            commandQueue.Dispose();
         }
 
         /// <summary>
         /// Returns the Command queue(dont use, its just for debugging if something is wrong)
         /// </summary>
         /// <returns>The Internal Command queue</returns>
-        internal static CommandQueue GetQueue(CLAPI instance)
+        internal static CommandQueue GetQueue(Clapi instance)
         {
-            return instance._commandQueue;
+            return instance.commandQueue;
         }
 
-        internal static CLAPI GetInstance()
+        internal static Clapi GetInstance()
         {
-            return new CLAPI();
+            return new Clapi();
         }
 
         /// <summary>
@@ -94,22 +94,22 @@ namespace Engine.OpenCL
         /// </summary>
         public static void Reinitialize()
         {
-            _instance = new CLAPI();
+            _instance = new Clapi();
         }
 
         /// <summary>
         /// Initializes the OpenCL API
         /// </summary>
-        private void InitializeOpenCL()
+        private void InitializeOpenCl()
         {
 
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
             Device chosenDevice = platforms.FirstOrDefault()?.GetDevices(DeviceType.All).FirstOrDefault();
 
-            _context = Context.CreateContext(chosenDevice);
-            Device CLDevice = chosenDevice;
-            _commandQueue = CommandQueue.CreateCommandQueue(_context, CLDevice);
+            context = Context.CreateContext(chosenDevice);
+            Device clDevice = chosenDevice;
+            commandQueue = CommandQueue.CreateCommandQueue(context, clDevice);
         }
 
 
@@ -208,19 +208,19 @@ namespace Engine.OpenCL
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
         /// <param name="uniform">Should every channel receive the same value on the same pixel?</param>
-        public static void WriteRandom<T>(CLAPI instance, MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels,
+        public static void WriteRandom<T>(Clapi instance, MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels,
             bool uniform)
             where T : struct
         {
 
             MemoryBuffer buffer = buf;
 
-            T[] data = instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int)buffer.Size);
+            T[] data = instance.commandQueue.EnqueueReadBuffer<T>(buffer, (int)buffer.Size);
 
 
             WriteRandom(data, enabledChannels, rnd, uniform);
 
-            instance._commandQueue.EnqueueWriteBuffer(buffer, data);
+            instance.commandQueue.EnqueueWriteBuffer(buffer, data);
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Engine.OpenCL
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="rnd">the RandomFunc delegate providing the random numbers.</param>
         /// <param name="enabledChannels">the channels that are enables(aka. get written with bytes)</param>
-        public static void WriteRandom<T>(CLAPI instance, MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels)
+        public static void WriteRandom<T>(Clapi instance, MemoryBuffer buf, RandomFunc<T> rnd, byte[] enabledChannels)
             where T : struct
         {
             WriteRandom(instance, buf, rnd, enabledChannels, true);
@@ -243,9 +243,9 @@ namespace Engine.OpenCL
         /// <typeparam name="T">Type of the values</typeparam>
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="values">The values to be written to the buffer</param>
-        public static void WriteToBuffer<T>(CLAPI instance, MemoryBuffer buf, T[] values) where T : struct
+        public static void WriteToBuffer<T>(Clapi instance, MemoryBuffer buf, T[] values) where T : struct
         {
-            instance._commandQueue.EnqueueWriteBuffer(buf, values);
+            instance.commandQueue.EnqueueWriteBuffer(buf, values);
         }
 
         /// <summary>
@@ -255,9 +255,9 @@ namespace Engine.OpenCL
         /// <param name="buf">MemoryBuffer containing the values to overwrite</param>
         /// <param name="size">The count of structs to be read from the buffer</param>
         /// <returns>The content of the buffer</returns>
-        public static T[] ReadBuffer<T>(CLAPI instance, MemoryBuffer buf, int size) where T : struct
+        public static T[] ReadBuffer<T>(Clapi instance, MemoryBuffer buf, int size) where T : struct
         {
-            return instance._commandQueue.EnqueueReadBuffer<T>(buf, size);
+            return instance.commandQueue.EnqueueReadBuffer<T>(buf, size);
         }
 
         /// <summary>
@@ -269,22 +269,22 @@ namespace Engine.OpenCL
         /// <param name="genTypeMaxVal">The max valuee of the generic type that is used.(byte = 255)</param>
         /// <param name="enabledChannels">The enabled channels for the kernel</param>
         /// <param name="channelCount">The amount of active channels.</param>
-        public static void Run(CLAPI instance, CLKernel kernel, MemoryBuffer image, int3 dimensions,
+        public static void Run(Clapi instance, CLKernel kernel, MemoryBuffer image, int3 dimensions,
             float genTypeMaxVal,
             MemoryBuffer enabledChannels,
             int channelCount)
         {
-            kernel.Run(instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
+            kernel.Run(instance.commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
         }
 
         #region Instance Functions
 
-        internal static Program CreateCLProgramFromSource(CLAPI instance, string source)
+        internal static Program CreateClProgramFromSource(Clapi instance, string source)
         {
 
             try
             {
-                return instance._context.CreateAndBuildProgramFromString(source);
+                return instance.context.CreateAndBuildProgramFromString(source);
             }
             catch (Exception e)
             {
@@ -294,9 +294,9 @@ namespace Engine.OpenCL
 
         }
 
-        internal static Program CreateCLProgramFromSource(CLAPI instance, string[] source)
+        internal static Program CreateClProgramFromSource(Clapi instance, string[] source)
         {
-            return instance._context.CreateAndBuildProgramFromString(source);
+            return instance.context.CreateAndBuildProgramFromString(source);
         }
 
         /// <summary>
@@ -306,7 +306,7 @@ namespace Engine.OpenCL
         /// <param name="size">The size of the buffer(Total size in bytes: size*sizeof(T)</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static MemoryBuffer CreateEmpty<T>(CLAPI instance, int size, MemoryFlag flags) where T : struct
+        public static MemoryBuffer CreateEmpty<T>(Clapi instance, int size, MemoryFlag flags) where T : struct
         {
             T[] arr = new T[size];
             return CreateBuffer(instance, arr, flags);
@@ -319,19 +319,19 @@ namespace Engine.OpenCL
         /// <param name="data">The array of T</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static MemoryBuffer CreateBuffer<T>(CLAPI instance, T[] data, MemoryFlag flags) where T : struct
+        public static MemoryBuffer CreateBuffer<T>(Clapi instance, T[] data, MemoryFlag flags) where T : struct
         {
             object[] arr = Array.ConvertAll(data, x => (object)x);
             return CreateBuffer(instance, arr, typeof(T), flags);
         }
 
-        public static MemoryBuffer CreateBuffer(CLAPI instance, object[] data, Type t, MemoryFlag flags)
+        public static MemoryBuffer CreateBuffer(Clapi instance, object[] data, Type t, MemoryFlag flags)
         {
 
             long bytes = data.Length * Marshal.SizeOf(data[0]);
-            EngineStatisticsManager.CLObjectCreated(bytes);
+            EngineStatisticsManager.ClObjectCreated(bytes);
             MemoryBuffer mb =
-                instance._context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
+                instance.context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
 
             return mb;
         }
@@ -342,7 +342,7 @@ namespace Engine.OpenCL
         /// <param name="bmp">The image that holds the data</param>
         /// <param name="flags">The memory flags for the buffer creation</param>
         /// <returns></returns>
-        public static MemoryBuffer CreateFromImage(CLAPI instance, Bitmap bmp, MemoryFlag flags)
+        public static MemoryBuffer CreateFromImage(Clapi instance, Bitmap bmp, MemoryFlag flags)
         {
             bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 

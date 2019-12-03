@@ -1,6 +1,6 @@
 ﻿namespace Engine.AI
 {
-    public enum AINodeState
+    public enum AiNodeState
     {
         Unconsidered,
         Open,

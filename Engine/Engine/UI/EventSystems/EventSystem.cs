@@ -37,7 +37,7 @@ namespace Engine.UI.EventSystems
             {
                 if (selectables[i].BoundingBox.Contains(mpos))
                 {
-                    if (Input.LeftMB)
+                    if (Input.LeftMb)
                     {
                         selectables[i].SetState(SelectableState.Selected);
                         Logger.Log("Clicking", DebugChannel.Log, 10);

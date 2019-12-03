@@ -12,22 +12,22 @@ namespace Engine.UI
     /// <summary>
     /// Implements A Text Renderer Component
     /// </summary>
-    public class UITextRendererComponent : UIElement
+    public class UiTextRendererComponent : UiElement
     {
         /// <summary>
         /// The VBO of the Quad used to draw each character
         /// </summary>
-        protected static int _vbo;
+        protected static int Vbo;
 
         /// <summary>
         /// The VAO of the Quad used to draw each character
         /// </summary>
-        protected static int _vao;
+        protected static int Vao;
 
         /// <summary>
         /// Initialization flag
         /// </summary>
-        protected static bool _init;
+        protected static bool Init;
 
         /// <summary>
         /// The Length of a single \t in UV coordinates
@@ -37,12 +37,12 @@ namespace Engine.UI
         /// <summary>
         /// the Font that is used to draw
         /// </summary>
-        private readonly GameFont Font;
+        private readonly GameFont font;
 
         /// <summary>
         /// the backing field for Text
         /// </summary>
-        private string _text = "HELLO";
+        private string text = "HELLO";
 
         private bool cached;
 
@@ -57,10 +57,10 @@ namespace Engine.UI
         /// <param name="worldSpace">Is the Object in world space</param>
         /// <param name="alpha">Alpha value of the image</param>
         /// <param name="shader">The shader to be used</param>
-        public UITextRendererComponent(string fontName, bool worldSpace, float alpha, ShaderProgram shader) : base(
+        public UiTextRendererComponent(string fontName, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {
-            Font = DefaultFilepaths.DefaultFont;
+            font = DefaultFilepaths.DefaultFont;
         }
 
 
@@ -71,10 +71,10 @@ namespace Engine.UI
         /// <param name="worldSpace">Is the Object in world space</param>
         /// <param name="alpha">Alpha value of the image</param>
         /// <param name="shader">The shader to be used</param>
-        public UITextRendererComponent(GameFont font, bool worldSpace, float alpha, ShaderProgram shader) : base(
+        public UiTextRendererComponent(GameFont font, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {
-            Font = font;
+            this.font = font;
         }
 
         /// <summary>
@@ -82,13 +82,13 @@ namespace Engine.UI
         /// </summary>
         public string Text
         {
-            get => _text;
+            get => text;
             set
             {
-                if (!string.Equals(_text, value))
+                if (!string.Equals(text, value))
                 {
                     ContextInvalid = true;
-                    _text = value;
+                    text = value;
                 }
             }
         }
@@ -105,11 +105,11 @@ namespace Engine.UI
         /// </summary>
         private static void SetUpTextResources()
         {
-            _init = true;
-            _vao = GL.GenVertexArray();
-            _vbo = GL.GenBuffer();
-            GL.BindVertexArray(_vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
+            Init = true;
+            Vao = GL.GenVertexArray();
+            Vbo = GL.GenBuffer();
+            GL.BindVertexArray(Vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, Vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, sizeof(float) * 6 * 4, IntPtr.Zero, BufferUsageHint.DynamicDraw);
 
             GL.EnableVertexAttribArray(0);
@@ -128,7 +128,7 @@ namespace Engine.UI
         /// <param name="projMat">View matrix of the camera(unused)</param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
-            if (!_init)
+            if (!Init)
             {
                 SetUpTextResources();
             }
@@ -159,12 +159,12 @@ namespace Engine.UI
             GL.Uniform3(Program.GetUniformLocation("textColor"), Color.X, Color.Y, Color.Z);
             GL.Uniform1(Program.GetUniformLocation("sourceTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindVertexArray(_vao);
+            GL.BindVertexArray(Vao);
             Vector2 pos = Position; //Hacked
 
             if (Center)
             {
-                Vector2 v = Font.GetRenderBounds(Text);
+                Vector2 v = font.GetRenderBounds(Text);
                 v.X *= Scale.X;
                 v.Y *= Scale.Y;
                 pos = Position - v / 2;
@@ -176,7 +176,7 @@ namespace Engine.UI
             {
                 if (Text[i] == '\n')
                 {
-                    FaceMetrics fm = Font.Metrics;
+                    FaceMetrics fm = font.Metrics;
                     x = pos.X;
                     y -= fm.LineHeight / scrH * Scale.Y;
                     continue;
@@ -193,9 +193,9 @@ namespace Engine.UI
                 }
 
 
-                if (!Font.TryGetCharacter(Text[i], out TextCharacter chr))
+                if (!font.TryGetCharacter(Text[i], out TextCharacter chr))
                 {
-                    Font.TryGetCharacter('?', out chr);
+                    font.TryGetCharacter('?', out chr);
                 }
 
                 float xpos = x + chr.BearingX / scrW * Scale.X;
@@ -223,7 +223,7 @@ namespace Engine.UI
                 if (chr.GlTexture != null)
                 {
                     GL.BindTexture(TextureTarget.Texture2D, chr.GlTexture.TextureId);
-                    GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
+                    GL.BindBuffer(BufferTarget.ArrayBuffer, Vbo);
                     GL.BufferSubData(BufferTarget.ArrayBuffer, IntPtr.Zero, (IntPtr) (sizeof(float) * verts.Length),
                         verts);
 

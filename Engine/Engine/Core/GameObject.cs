@@ -26,7 +26,7 @@ namespace Engine.Core
         /// <summary>
         /// Internal cache of objects with colliders to loop through them quickly
         /// </summary>
-        private static Dictionary<Collidable, Collider> ObjsWithAttachedColliders =
+        private static Dictionary<Collidable, Collider> _objsWithAttachedColliders =
             new Dictionary<Collidable, Collider>();
 
         /// <summary>
@@ -37,33 +37,33 @@ namespace Engine.Core
         /// <summary>
         /// The list of children of this object
         /// </summary>
-        private readonly List<GameObject> _children = new List<GameObject>();
+        private readonly List<GameObject> children = new List<GameObject>();
 
         /// <summary>
         /// the list of components in the object
         /// </summary>
-        private readonly Dictionary<Type, AbstractComponent> _components = new Dictionary<Type, AbstractComponent>();
+        private readonly Dictionary<Type, AbstractComponent> components = new Dictionary<Type, AbstractComponent>();
 
         /// <summary>
         /// Private flag that indicates that the object has been destroyed but is not yet removed from the systems
         /// </summary>
-        private bool _destructionPending;
+        private bool destructionPending;
 
 
         /// <summary>
         /// Internal flag that is used to increase performance by not calculating matrices for objects that wont show up anyway
         /// </summary>
-        private bool _hasRendererInHierarchy;
+        private bool hasRendererInHierarchy;
 
-        private Physics.BEPUutilities.Vector3 _localPosition;
-        private Physics.BEPUutilities.Quaternion _rotation = Quaternion.Identity;
-        private Physics.BEPUutilities.Vector3 _scale = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
-        private Matrix4 _transform = Matrix4.Identity;
+        private Physics.BEPUutilities.Vector3 localPosition;
+        private Physics.BEPUutilities.Quaternion rotation = Quaternion.Identity;
+        private Physics.BEPUutilities.Vector3 scale = new Physics.BEPUutilities.Vector3(1f, 1f, 1f);
+        private Matrix4 transform = Matrix4.Identity;
 
         /// <summary>
         /// Internal cache for the world transform
         /// </summary>
-        internal Matrix4 _worldTransformCache;
+        internal Matrix4 WorldTransformCache;
 
         private bool transformChanged = true;
 
@@ -75,7 +75,7 @@ namespace Engine.Core
         /// <param name="parent">The parent of the object</param>
         public GameObject(Vector3 localPosition, string name, GameObject parent)
         {
-            _worldTransformCache = Matrix4.Identity;
+            WorldTransformCache = Matrix4.Identity;
 
             LocalPosition = localPosition;
             Parent = parent;
@@ -83,7 +83,7 @@ namespace Engine.Core
             if (name == string.Empty)
             {
                 Name = "Gameobject" + _objId;
-                addObjCount();
+                AddObjCount();
             }
             else
             {
@@ -122,18 +122,18 @@ namespace Engine.Core
             {
                 if (transformChanged)
                 {
-                    _transform = Matrix4.Identity;
+                    transform = Matrix4.Identity;
                     if (Scale != Physics.BEPUutilities.Vector3.Zero)
                     {
-                        _transform *= Matrix4.CreateScale(Scale);
+                        transform *= Matrix4.CreateScale(Scale);
                     }
 
-                    _transform *= Matrix4.CreateFromQuaternion(Rotation);
-                    _transform *= Matrix4.CreateTranslation(LocalPosition);
+                    transform *= Matrix4.CreateFromQuaternion(Rotation);
+                    transform *= Matrix4.CreateTranslation(LocalPosition);
                     transformChanged = false;
                 }
 
-                return _transform;
+                return transform;
             }
         }
 
@@ -144,11 +144,11 @@ namespace Engine.Core
         [XmlElement(Order = 1)]
         public Engine.Physics.BEPUutilities.Vector3 LocalPosition
         {
-            get => _localPosition;
+            get => localPosition;
             set
             {
                 transformChanged = true;
-                _localPosition = value;
+                localPosition = value;
             }
         }
 
@@ -159,11 +159,11 @@ namespace Engine.Core
         [XmlElement(Order = 2)]
         public Engine.Physics.BEPUutilities.Vector3 Scale
         {
-            get => _scale;
+            get => scale;
             set
             {
                 transformChanged = true;
-                _scale = value;
+                scale = value;
             }
         }
 
@@ -172,11 +172,11 @@ namespace Engine.Core
         /// </summary>
         public Engine.Physics.BEPUutilities.Quaternion Rotation
         {
-            get => _rotation;
+            get => rotation;
             set
             {
                 transformChanged = true;
-                _rotation = value;
+                rotation = value;
             }
         }
 
@@ -195,7 +195,7 @@ namespace Engine.Core
         /// <summary>
         /// The amount of children in this object
         /// </summary>
-        public int ChildCount => _children.Count;
+        public int ChildCount => children.Count;
 
         /// <summary>
         /// Flag that indicates if an object is truly removed from all systems
@@ -223,13 +223,13 @@ namespace Engine.Core
         /// </summary>
         public void Destroy()
         {
-            _destructionPending = true;
-            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            destructionPending = true;
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
             {
                 abstractComponent.Value.Destroy();
             }
 
-            foreach (GameObject gameObject in _children)
+            foreach (GameObject gameObject in children)
             {
                 gameObject.Destroy();
             }
@@ -290,7 +290,7 @@ namespace Engine.Core
                 Remove(this);
             }
             
-            GameObject[] objs = new List<GameObject>(_children).ToArray();
+            GameObject[] objs = new List<GameObject>(children).ToArray();
 
             foreach (GameObject gameObject in objs)
             {
@@ -299,14 +299,14 @@ namespace Engine.Core
 
 
             KeyValuePair<Type, AbstractComponent>[] comps =
-                new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
+                new List<KeyValuePair<Type, AbstractComponent>>(components).ToArray();
 
             foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in comps)
             {
                 if (abstractComponent.Value is Collider collider)
                 {
-                    ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
-                    unregisterCollider(collider);
+                    _objsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                    UnregisterCollider(collider);
                 }
 
                 abstractComponent.Value._Destroy();
@@ -317,7 +317,7 @@ namespace Engine.Core
         /// Adds the object count
         /// is used for giving objects names that are different
         /// </summary>
-        private static void addObjCount()
+        private static void AddObjCount()
         {
             _objId++;
         }
@@ -329,21 +329,21 @@ namespace Engine.Core
         public void AddComponent(AbstractComponent component)
         {
             Type t = component.GetType();
-            if (!_components.ContainsKey(t))
+            if (!components.ContainsKey(t))
             {
                 if (typeof(RenderingComponent).IsAssignableFrom(t))
                 {
-                    applyRenderHierarchy(true);
+                    ApplyRenderHierarchy(true);
                     ObjsWithAttachedRenderers.Add(this);
                     RenderingComponent = (RenderingComponent) component;
                 }
                 else if (component is Collider collider)
                 {
-                    ObjsWithAttachedColliders.Add(collider.PhysicsCollider.CollisionInformation, collider);
-                    registerCollider(collider);
+                    _objsWithAttachedColliders.Add(collider.PhysicsCollider.CollisionInformation, collider);
+                    RegisterCollider(collider);
                 }
 
-                _components.Add(t, component);
+                components.Add(t, component);
                 component.Owner = this;
             }
         }
@@ -353,30 +353,30 @@ namespace Engine.Core
         /// </summary>
         internal void RemoveDestroyedObjects()
         {
-            if (_destructionPending) //Either Remove the object as a whole
+            if (destructionPending) //Either Remove the object as a whole
             {
                 _Destroy();
             }
             else //Or check every component if it needs removal
             {
                 KeyValuePair<Type, AbstractComponent>[] comps =
-                    new List<KeyValuePair<Type, AbstractComponent>>(_components).ToArray();
+                    new List<KeyValuePair<Type, AbstractComponent>>(components).ToArray();
 
                 foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in comps)
                 {
-                    if (abstractComponent.Value._destructionPending)
+                    if (abstractComponent.Value.DestructionPending)
                     {
                         if (abstractComponent.Value is Collider collider)
                         {
-                            ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
-                            unregisterCollider(collider);
+                            _objsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                            UnregisterCollider(collider);
                         }
 
                         abstractComponent.Value._Destroy();
                     }
                 }
 
-                List<GameObject> go = new List<GameObject>(_children);
+                List<GameObject> go = new List<GameObject>(children);
 
                 foreach (GameObject gameObject in go)
                 {
@@ -403,24 +403,24 @@ namespace Engine.Core
         public void RemoveComponent(Type componentType)
         {
             Type t = componentType;
-            if (_components.ContainsKey(t))
+            if (components.ContainsKey(t))
             {
                 if (typeof(RenderingComponent).IsAssignableFrom(t))
                 {
-                    applyRenderHierarchy(false);
+                    ApplyRenderHierarchy(false);
                     RemoveFromRenderLoop();
                     RenderingComponent = null;
                 }
 
-                AbstractComponent component = _components[t];
+                AbstractComponent component = components[t];
 
                 if (component is Collider collider)
                 {
-                    ObjsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
-                    unregisterCollider(collider);
+                    _objsWithAttachedColliders.Remove(collider.PhysicsCollider.CollisionInformation);
+                    UnregisterCollider(collider);
                 }
 
-                _components.Remove(t);
+                components.Remove(t);
                 component.Owner = null;
             }
         }
@@ -443,7 +443,7 @@ namespace Engine.Core
         /// <returns>The component; if not found it returns null</returns>
         public T GetComponentIterative<T>() where T : AbstractComponent
         {
-            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
             {
                 if (typeof(T).IsAssignableFrom(abstractComponent.Key))
                 {
@@ -461,9 +461,9 @@ namespace Engine.Core
         /// <returns>The component; if not found it returns null</returns>
         public T GetComponent<T>() where T : AbstractComponent
         {
-            if (_components.ContainsKey(typeof(T)))
+            if (components.ContainsKey(typeof(T)))
             {
-                return (T) _components[typeof(T)];
+                return (T) components[typeof(T)];
             }
 
             return null;
@@ -476,10 +476,10 @@ namespace Engine.Core
         /// <param name="parentTransform"></param>
         public void ComputeWorldTransformCache(Matrix4 parentTransform)
         {
-            _worldTransformCache = Transform * parentTransform;
-            foreach (GameObject gameObject in _children)
+            WorldTransformCache = Transform * parentTransform;
+            foreach (GameObject gameObject in children)
             {
-                if (gameObject._hasRendererInHierarchy) //We only need to update the worldspace cache when we need to
+                if (gameObject.hasRendererInHierarchy) //We only need to update the worldspace cache when we need to
                 {
                     gameObject.ComputeWorldTransformCache(Transform);
                 }
@@ -491,13 +491,13 @@ namespace Engine.Core
         /// internal function that removes the child from the _children list and sets the parent to null
         /// </summary>
         /// <param name="child">The child to remove</param>
-        private void innerRemove(GameObject child)
+        private void InnerRemove(GameObject child)
         {
-            for (int i = _children.Count - 1; i >= 0; i--)
+            for (int i = children.Count - 1; i >= 0; i--)
             {
-                if (_children[i] == child)
+                if (children[i] == child)
                 {
-                    _children.RemoveAt(i);
+                    children.RemoveAt(i);
                     child.Parent = null;
                     return;
                 }
@@ -512,11 +512,11 @@ namespace Engine.Core
         /// </summary>
         /// <param name="hasRenderer"></param>
         private void
-            applyRenderHierarchy(
+            ApplyRenderHierarchy(
                 bool hasRenderer) //This gets called from the AddComponent/RemoveComponent function and recursively from applyRenderHierarchyFromBelow
         {
-            _hasRendererInHierarchy = hasRenderer;
-            Parent?.applyRenderHierarchyFromBelow(hasRenderer); //Call the parent 
+            hasRendererInHierarchy = hasRenderer;
+            Parent?.ApplyRenderHierarchyFromBelow(hasRenderer); //Call the parent 
         }
 
         /// <summary>
@@ -526,18 +526,18 @@ namespace Engine.Core
         /// This way we know which matrixes we need to compute and which ones we can discard since they wont show up in the renderer anyway
         /// </summary>
         /// <param name="hasRenderer"></param>
-        private void applyRenderHierarchyFromBelow(bool hasRenderer) //The child calls this
+        private void ApplyRenderHierarchyFromBelow(bool hasRenderer) //The child calls this
         {
-            if (hasRenderer && !_hasRendererInHierarchy) //A child attached a render and we dont have the flag set
+            if (hasRenderer && !hasRendererInHierarchy) //A child attached a render and we dont have the flag set
             {
-                applyRenderHierarchy(hasRenderer);
+                ApplyRenderHierarchy(hasRenderer);
             }
-            else if (!hasRenderer && _hasRendererInHierarchy) //A child removed a renderer and now we need to check if we can set the flag to false(if all the childs dont have renderers)
+            else if (!hasRenderer && hasRendererInHierarchy) //A child removed a renderer and now we need to check if we can set the flag to false(if all the childs dont have renderers)
             {
                 bool childhaveRenderers = false;
-                foreach (GameObject gameObject in _children)
+                foreach (GameObject gameObject in children)
                 {
-                    if (gameObject._hasRendererInHierarchy)
+                    if (gameObject.hasRendererInHierarchy)
                     {
                         childhaveRenderers = true;
                         break;
@@ -546,7 +546,7 @@ namespace Engine.Core
 
                 if (!childhaveRenderers)
                 {
-                    applyRenderHierarchy(hasRenderer);
+                    ApplyRenderHierarchy(hasRenderer);
                 }
             }
         }
@@ -555,9 +555,9 @@ namespace Engine.Core
         /// internal function that adds the child to the _children list and sets the parent
         /// </summary>
         /// <param name="child">The child to add</param>
-        private void innerAdd(GameObject child)
+        private void InnerAdd(GameObject child)
         {
-            _children.Add(child);
+            children.Add(child);
             child.Parent = this;
         }
 
@@ -567,9 +567,9 @@ namespace Engine.Core
         /// <param name="child">The object to add</param>
         public void Add(GameObject child)
         {
-            if (child._hasRendererInHierarchy)
+            if (child.hasRendererInHierarchy)
             {
-                applyRenderHierarchy(true);
+                ApplyRenderHierarchy(true);
             }
 
             child.SetParent(this);
@@ -590,7 +590,7 @@ namespace Engine.Core
         /// </summary>
         public void DestroyAllChildren()
         {
-            foreach (GameObject child in _children)
+            foreach (GameObject child in children)
             {
                 child.Destroy();
             }
@@ -602,16 +602,16 @@ namespace Engine.Core
         /// <param name="newParent">The new Parent object</param>
         public void SetParent(GameObject newParent)
         {
-            Parent?.innerRemove(this);
-            newParent?.innerAdd(this);
+            Parent?.InnerRemove(this);
+            newParent?.InnerAdd(this);
 
             if (Parent != null)
             {
-                setSceneRecursively(Parent.Scene);
+                SetSceneRecursively(Parent.Scene);
             }
             else
             {
-                setSceneRecursively(null);
+                SetSceneRecursively(null);
             }
         }
 
@@ -619,7 +619,7 @@ namespace Engine.Core
         /// Registers a collider from the game object.
         /// </summary>
         /// <param name="coll">The Collider to be registered</param>
-        internal void registerCollider(Collider coll)
+        internal void RegisterCollider(Collider coll)
         {
             coll.PhysicsCollider.CollisionInformation.Events.ContactCreated += Events_ContactCreated;
             coll.PhysicsCollider.CollisionInformation.Events.ContactRemoved += Events_ContactRemoved;
@@ -632,7 +632,7 @@ namespace Engine.Core
         /// Unregisters a collider from the game object.
         /// </summary>
         /// <param name="coll">The Collider to be unregistered</param>
-        internal void unregisterCollider(Collider coll)
+        internal void UnregisterCollider(Collider coll)
         {
             coll.PhysicsCollider.CollisionInformation.Events.ContactCreated -= Events_ContactCreated;
             coll.PhysicsCollider.CollisionInformation.Events.ContactRemoved -= Events_ContactRemoved;
@@ -650,11 +650,11 @@ namespace Engine.Core
         private void Events_InitialCollisionDetected(EntityCollidable sender, Collidable other,
             CollidablePairHandler pair)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+            if (_objsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
                 {
-                    abstractComponent.Value.onInitialCollisionDetected(otherCol, pair);
+                    abstractComponent.Value.InternalOnInitialCollisionDetected(otherCol, pair);
                 }
             }
         }
@@ -667,11 +667,11 @@ namespace Engine.Core
         /// <param name="pair">The Pair Handler</param>
         private void Events_CollisionEnded(EntityCollidable sender, Collidable other, CollidablePairHandler pair)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+            if (_objsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
                 {
-                    abstractComponent.Value.onCollisionEnded(otherCol, pair);
+                    abstractComponent.Value.InternalOnCollisionEnded(otherCol, pair);
                 }
             }
         }
@@ -686,11 +686,11 @@ namespace Engine.Core
         private void Events_ContactRemoved(EntityCollidable sender, Collidable other, CollidablePairHandler pair,
             ContactData contact)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+            if (_objsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
                 {
-                    abstractComponent.Value.onContactRemoved(otherCol, pair, contact);
+                    abstractComponent.Value.InternalOnContactRemoved(otherCol, pair, contact);
                 }
             }
         }
@@ -706,11 +706,11 @@ namespace Engine.Core
         private void Events_ContactCreated(EntityCollidable sender, Collidable other, CollidablePairHandler pair,
             ContactData contact)
         {
-            if (ObjsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
+            if (_objsWithAttachedColliders.TryGetValue(other, out Collider otherCol))
             {
-                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+                foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
                 {
-                    abstractComponent.Value.onContactCreated(otherCol, pair, contact);
+                    abstractComponent.Value.InternalOnContactCreated(otherCol, pair, contact);
                 }
             }
         }
@@ -722,14 +722,14 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
             {
-                abstractComponent.Value.onPress(sender, e);
+                abstractComponent.Value.InternalOnPress(sender, e);
             }
 
-            for (int i = 0; i < _children.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                _children[i].OnKeyPress(sender, e);
+                children[i].OnKeyPress(sender, e);
             }
         }
 
@@ -740,14 +740,14 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnKeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
             {
-                abstractComponent.Value.onKeyUp(sender, e);
+                abstractComponent.Value.InternalOnKeyUp(sender, e);
             }
 
-            for (int i = 0; i < _children.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                _children[i].OnKeyUp(sender, e);
+                children[i].OnKeyUp(sender, e);
             }
         }
 
@@ -759,14 +759,14 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnKeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
             {
-                abstractComponent.Value.onKeyDown(sender, e);
+                abstractComponent.Value.InternalOnKeyDown(sender, e);
             }
 
-            for (int i = 0; i < _children.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                _children[i].OnKeyDown(sender, e);
+                children[i].OnKeyDown(sender, e);
             }
         }
 
@@ -776,14 +776,14 @@ namespace Engine.Core
         /// <param name="deltaTime">Delta Time in Seconds</param>
         public void Update(float deltaTime)
         {
-            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in _components)
+            foreach (KeyValuePair<Type, AbstractComponent> abstractComponent in components)
             {
-                abstractComponent.Value.updateObject(deltaTime);
+                abstractComponent.Value.UpdateObject(deltaTime);
             }
 
-            for (int i = 0; i < _children.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                _children[i].Update(deltaTime);
+                children[i].Update(deltaTime);
             }
         }
 
@@ -791,13 +791,13 @@ namespace Engine.Core
         /// Sets the scene recursively for all children
         /// </summary>
         /// <param name="newScene">Scene to set</param>
-        private void setSceneRecursively(AbstractScene newScene)
+        private void SetSceneRecursively(AbstractScene newScene)
         {
             Scene = newScene;
 
-            for (int i = 0; i < _children.Count; i++)
+            for (int i = 0; i < children.Count; i++)
             {
-                _children[i].setSceneRecursively(newScene);
+                children[i].SetSceneRecursively(newScene);
             }
         }
 
@@ -809,9 +809,9 @@ namespace Engine.Core
         /// <returns>The child; if not found it returns null</returns>
         public GameObject GetChildAt(int idx)
         {
-            if (idx >= 0 && idx < _children.Count)
+            if (idx >= 0 && idx < children.Count)
             {
-                return _children[idx];
+                return children[idx];
             }
 
             return null;
@@ -829,7 +829,7 @@ namespace Engine.Core
                 return this;
             }
 
-            foreach (GameObject gameObject in _children)
+            foreach (GameObject gameObject in children)
             {
                 GameObject ret = gameObject.GetChildWithName(name);
                 if (ret != null)

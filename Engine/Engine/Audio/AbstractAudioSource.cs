@@ -20,7 +20,7 @@ namespace Engine.Audio
         /// <summary>
         /// Backing field for the Public Property Clip
         /// </summary>
-        private AudioFile _clip;
+        private AudioFile clip;
 
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace Engine.Audio
         /// </summary>
         public AudioFile Clip
         {
-            get => _clip;
+            get => clip;
             set
             {
-                if (_clip != null && _clip.Buffer == value.Buffer)
+                if (clip != null && clip.Buffer == value.Buffer)
                 {
                     return;
                 }
@@ -56,10 +56,10 @@ namespace Engine.Audio
                     Stop();
                 }
 
-                _clip = value;
+                clip = value;
 
 
-                AL.Source(source, ALSourcei.Buffer, _clip.Buffer);
+                AL.Source(source, ALSourcei.Buffer, clip.Buffer);
                 if (wasPlaying)
                 {
                     Play();

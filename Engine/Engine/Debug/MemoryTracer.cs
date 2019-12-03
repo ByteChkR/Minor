@@ -7,6 +7,10 @@ namespace Engine.Debug
     /// </summary>
     public static class MemoryTracer
     {
+        /// <summary>
+        /// List of the last frames informations
+        /// </summary>
+        private static List<EngineStageInformation> _informationCollection = new List<EngineStageInformation>();
 
         /// <summary>
         /// The Console
@@ -39,7 +43,7 @@ namespace Engine.Debug
         /// </summary>
         /// <param name="args">Parameters provided by the user(0)</param>
         /// <returns>Command Result</returns>
-        public static string cmdListMemoryInfo(string[] args)
+        public static string CmdListMemoryInfo(string[] args)
         {
 #if LEAK_TRACE
             string ret = "";
@@ -62,7 +66,7 @@ namespace Engine.Debug
         /// </summary>
         /// <param name="args">Parameters provided by the user(0)</param>
         /// <returns>Command Result</returns>
-        public static string cmdListLastMemoryInfo(string[] args)
+        public static string CmdListLastMemoryInfo(string[] args)
         {
 #if LEAK_TRACE
             if (_informationCollection.Count < 2)

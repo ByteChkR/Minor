@@ -7,18 +7,18 @@ namespace Engine.UI
     /// <summary>
     /// Implements Common Properties between UI Elements
     /// </summary>
-    public abstract class UIElement : RenderingComponent
+    public abstract class UiElement : RenderingComponent
     {
         /// <summary>
         /// Backing field for alpha
         /// </summary>
-        private float _alpha;
+        private float alpha;
 
 
         /// <summary>
         /// backing field for the Render Mask
         /// </summary>
-        private int _renderMask;
+        private int renderMask;
 
         /// <summary>
         /// Flag if the context has changed and needs an update
@@ -32,7 +32,7 @@ namespace Engine.UI
         /// <param name="shader">The Shader to be used</param>
         /// <param name="worldSpace">Is the Element in world space?</param>
         /// <param name="alpha">Initial ALpha value(0 = transparent; 1 = opaque)</param>
-        protected UIElement(ShaderProgram shader, bool worldSpace, float alpha) : base(shader, worldSpace,
+        protected UiElement(ShaderProgram shader, bool worldSpace, float alpha) : base(shader, worldSpace,
             Renderer.RenderType.Transparent, 1 << 30)
         {
             Alpha = alpha;
@@ -44,7 +44,7 @@ namespace Engine.UI
             }
             else
             {
-                Program = DefaultFilepaths.DefaultUIImageShader;
+                Program = DefaultFilepaths.DefaultUiImageShader;
             }
         }
 
@@ -53,10 +53,10 @@ namespace Engine.UI
         /// </summary>
         public int RenderMask
         {
-            get => _renderMask;
+            get => renderMask;
             set
             {
-                _renderMask = value;
+                renderMask = value;
                 ContextInvalid = true;
             }
         }
@@ -96,10 +96,10 @@ namespace Engine.UI
         /// </summary>
         public float Alpha
         {
-            get => _alpha;
+            get => alpha;
             set
             {
-                _alpha = value;
+                alpha = value;
                 ContextInvalid = true;
             }
         }

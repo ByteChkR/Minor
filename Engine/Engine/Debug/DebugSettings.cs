@@ -13,7 +13,7 @@ namespace Engine.Debug
     public class DebugSettings : IDebugSettings
     {
         [XmlElement(ElementName = "LogStreamConfig")]
-        public LogStreamSettings[] _streams;
+        public LogStreamSettings[] LogStreamSettings;
 
         /// <summary>
         /// Should we send logs in the first place?
@@ -58,8 +58,8 @@ namespace Engine.Debug
         [XmlIgnore]
         public ILogStreamSettings[] Streams
         {
-            get => _streams.Cast<ILogStreamSettings>().ToArray();
-            set => _streams = value.Cast<LogStreamSettings>().ToArray();
+            get => LogStreamSettings.Cast<ILogStreamSettings>().ToArray();
+            set => LogStreamSettings = value.Cast<LogStreamSettings>().ToArray();
         }
 
         /// <summary>

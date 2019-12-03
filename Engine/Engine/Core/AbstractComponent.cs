@@ -14,12 +14,12 @@ namespace Engine.Core
         /// <summary>
         /// A private flag indicating if the object is awake
         /// </summary>
-        private bool _awake;
+        private bool awake;
 
         /// <summary>
         /// Internal flag that is set to true if the Component or the owning game object is beeing destroyed
         /// </summary>
-        internal bool _destructionPending;
+        internal bool DestructionPending;
 
         /// <summary>
         /// The Owner of the component(null if not attached to any Game object)
@@ -36,12 +36,12 @@ namespace Engine.Core
         /// </summary>
         public void Destroy()
         {
-            if (_destructionPending)
+            if (DestructionPending)
             {
                 return;
             }
 
-            _destructionPending = true;
+            DestructionPending = true;
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace Engine.Core
             }
 
             Destroyed = true;
-            _awake = false;
+            awake = false;
         }
 
         /// <summary>
@@ -107,12 +107,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal void onPress(object sender, KeyPressEventArgs e)
+        internal void InternalOnPress(object sender, KeyPressEventArgs e)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnKeyPress(sender, e);
@@ -123,12 +123,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal void onKeyDown(object sender, KeyboardKeyEventArgs e)
+        internal void InternalOnKeyDown(object sender, KeyboardKeyEventArgs e)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnKeyDown(sender, e);
@@ -139,12 +139,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal void onKeyUp(object sender, KeyboardKeyEventArgs e)
+        internal void InternalOnKeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnKeyUp(sender, e);
@@ -163,12 +163,12 @@ namespace Engine.Core
         /// internal function that redirects the update call but checks if the object has been woken up first
         /// </summary>
         /// <param name="deltaTime">Delta Time in Seconds</param>
-        internal void updateObject(float deltaTime)
+        internal void UpdateObject(float deltaTime)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             Update(deltaTime);
@@ -215,12 +215,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
-        internal void onInitialCollisionDetected(Collider other, CollidablePairHandler handler)
+        internal void InternalOnInitialCollisionDetected(Collider other, CollidablePairHandler handler)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnInitialCollisionDetected(other, handler);
@@ -231,12 +231,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
-        internal void onCollisionEnded(Collider other, CollidablePairHandler handler)
+        internal void InternalOnCollisionEnded(Collider other, CollidablePairHandler handler)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnCollisionEnded(other, handler);
@@ -247,12 +247,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
-        internal void onContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
+        internal void InternalOnContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnContactRemoved(other, handler, contact);
@@ -263,12 +263,12 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
-        internal void onContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
+        internal void InternalOnContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
         {
-            if (!_awake)
+            if (!awake)
             {
                 Awake();
-                _awake = true;
+                awake = true;
             }
 
             OnContactCreated(other, handler, contact);

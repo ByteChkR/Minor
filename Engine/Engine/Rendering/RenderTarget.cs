@@ -14,13 +14,13 @@ namespace Engine.Rendering
         /// Public Constructor
         /// </summary>
         /// <param name="cam">The Camera associated with the Render Target</param>
-        /// <param name="PassMask">The Mask for the Render Target</param>
-        /// <param name="ClearColor">The Clear color that is used to clear the framebuffer</param>
+        /// <param name="passMask">The Mask for the Render Target</param>
+        /// <param name="clearColor">The Clear color that is used to clear the framebuffer</param>
         /// <param name="noDepth">if true there will be no depth attachment to the Framebuffer</param>
-        public RenderTarget(ICamera cam, int PassMask, Color ClearColor, bool noDepth = false)
+        public RenderTarget(ICamera cam, int passMask, Color clearColor, bool noDepth = false)
         {
-            this.PassMask = PassMask;
-            this.ClearColor = ClearColor;
+            PassMask = passMask;
+            ClearColor = clearColor;
 
             PassCamera = cam;
 

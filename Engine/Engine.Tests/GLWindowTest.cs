@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Engine.Tests
 {
-    public static class GLWindowTest
+    public static class GlWindowTest
     {
         [Fact]
         public static void WindowTest()

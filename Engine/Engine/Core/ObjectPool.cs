@@ -88,23 +88,23 @@ namespace Engine.Core
         /// <summary>
         /// The Factory that is creating new instances of type T
         /// </summary>
-        private readonly CreateNew _factory;
+        private readonly CreateNew factory;
 
         /// <summary>
         /// The Maximum amount of items allowed
         /// </summary>
-        private readonly int _maxItems;
+        private readonly int maxItems;
 
         /// <summary>
         /// The internal list of pooled objects
         /// </summary>
-        private List<PooledObject<T>> _InternalList = new List<PooledObject<T>>();
+        private List<PooledObject<T>> internalList = new List<PooledObject<T>>();
 
         /// <summary>
         /// The last objects index + 1
         /// serves as a starting point for the next unused item
         /// </summary>
-        private int _nextID;
+        private int nextId;
 
         /// <summary>
         /// Public Constructor
@@ -125,9 +125,9 @@ namespace Engine.Core
             }
 
 
-            _factory = factory;
+            this.factory = factory;
 
-            _maxItems = Math.Min(maxSize, size);
+            maxItems = Math.Min(maxSize, size);
             InitializeSize(size);
         }
 
@@ -145,12 +145,12 @@ namespace Engine.Core
         /// </summary>
         public void Dispose()
         {
-            for (int i = 0; i < _InternalList.Count; i++)
+            for (int i = 0; i < internalList.Count; i++)
             {
-                _InternalList[i].Object.Dispose();
+                internalList[i].Object.Dispose();
             }
 
-            _InternalList.Clear();
+            internalList.Clear();
         }
 
         /// <summary>
@@ -161,9 +161,9 @@ namespace Engine.Core
         {
             for (int i = 0; i < size; i++)
             {
-                T ret = _factory();
+                T ret = factory();
 
-                _InternalList.Add(new PooledObject<T>(ret, this, i));
+                internalList.Add(new PooledObject<T>(ret, this, i));
             }
         }
 
@@ -174,11 +174,11 @@ namespace Engine.Core
         /// </summary>
         /// <param name="startidx">the start index of the search operation</param>
         /// <returns>The index of the next free object; -1 if there is none</returns>
-        private int findNext(int startidx)
+        private int FindNext(int startidx)
         {
-            for (int i = startidx; i < _InternalList.Count; i++)
+            for (int i = startidx; i < internalList.Count; i++)
             {
-                if (!_InternalList[i].IsUsed)
+                if (!internalList[i].IsUsed)
                 {
                     return i;
                 }
@@ -186,7 +186,7 @@ namespace Engine.Core
 
             for (int i = 0; i < startidx - 1; i++)
             {
-                if (!_InternalList[i].IsUsed)
+                if (!internalList[i].IsUsed)
                 {
                     return i;
                 }
@@ -200,18 +200,18 @@ namespace Engine.Core
         /// Adds to the list if not maxcount if no objects have been found
         /// </summary>
         /// <returns>index of a free object</returns>
-        private int GetFreeID()
+        private int GetFreeId()
         {
-            if (_nextID >= _InternalList.Count)
+            if (nextId >= internalList.Count)
             {
-                _nextID = 0;
+                nextId = 0;
             }
 
-            int id = findNext(_nextID);
-            if (id == -1 && _InternalList.Count < _maxItems) //No free objects found
+            int id = FindNext(nextId);
+            if (id == -1 && internalList.Count < maxItems) //No free objects found
             {
-                id = _InternalList.Count;
-                _InternalList.Add(new PooledObject<T>(_factory(), this, id));
+                id = internalList.Count;
+                internalList.Add(new PooledObject<T>(factory(), this, id));
             }
 
             return id;
@@ -224,9 +224,9 @@ namespace Engine.Core
         /// <param name="item"></param>
         public void Give(PooledObject<T> item)
         {
-            if (item.ContainingPool == this && item.PoolHandle != -1 && item.PoolHandle < _InternalList.Count)
+            if (item.ContainingPool == this && item.PoolHandle != -1 && item.PoolHandle < internalList.Count)
             {
-                _InternalList[item.PoolHandle].SetIsUsed(false);
+                internalList[item.PoolHandle].SetIsUsed(false);
             }
         }
 
@@ -237,18 +237,18 @@ namespace Engine.Core
         /// <returns>An object</returns>
         public PooledObject<T> Take()
         {
-            int id = GetFreeID();
+            int id = GetFreeId();
             if (id == -1)
             {
                 Logger.Log("Object Pool is full, returning Unmanaged Instance.",
                     DebugChannel.Warning | DebugChannel.EngineCore, 10);
-                PooledObject<T> item = new PooledObject<T>(_factory(), null, -1);
+                PooledObject<T> item = new PooledObject<T>(factory(), null, -1);
 
                 return item;
             }
 
-            _InternalList[id].SetIsUsed(true);
-            return _InternalList[id];
+            internalList[id].SetIsUsed(true);
+            return internalList[id];
         }
 
         /// <summary>
@@ -256,12 +256,12 @@ namespace Engine.Core
         /// </summary>
         public void Clean()
         {
-            for (int i = _InternalList.Count - 1; i >= 0; i--)
+            for (int i = internalList.Count - 1; i >= 0; i--)
             {
-                if (!_InternalList[i].IsUsed)
+                if (!internalList[i].IsUsed)
                 {
-                    _InternalList[i].Object.Dispose();
-                    _InternalList.RemoveAt(i);
+                    internalList[i].Object.Dispose();
+                    internalList.RemoveAt(i);
                 }
             }
         }

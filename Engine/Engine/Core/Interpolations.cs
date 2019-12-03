@@ -114,13 +114,13 @@ namespace Engine.Core
             return SmoothStart(t, smoothness) * SmoothStop(t, smoothness);
         }
 
-        public static float NormalizedBezier(float B, float C, float t)
+        public static float NormalizedBezier(float b, float c, float t)
         {
             float s = 1f - t;
             float t2 = t * t;
             float s2 = s * s;
             float t3 = t2 * t;
-            return 3f * B * s2 * t + 3f * C * s * t2 + t3;
+            return 3f * b * s2 * t + 3f * c * s * t2 + t3;
         }
 
         public static Vector3[] Chaikin(Vector3[] pts, int smoothness)

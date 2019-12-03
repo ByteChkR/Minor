@@ -33,9 +33,9 @@ namespace Engine.AssetPackaging
 
             AssetPointer ap = new AssetPointer
             {
-                PackageID = firstPack,
+                PackageId = firstPack,
                 Offset = packs[firstPack].content.Count,
-                PackageSize = AssetPacker.PACK_SIZE,
+                PackageSize = AssetPacker.PackSize,
                 Length = (int) s.Length,
                 Path = packPath,
                 PackageType = type

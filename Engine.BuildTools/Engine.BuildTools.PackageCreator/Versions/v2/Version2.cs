@@ -9,7 +9,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
 {
     public class Version2 : IPackageVersion
     {
-        private MD5 md5 = MD5.Create();
+        private MD5 _md5 = MD5.Create();
         public string ManifestPath => "PackageManifest.xml";
         public string PackageVersion => "v2";
 
@@ -161,12 +161,12 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
 
         private string ComputeHash(Stream content)
         {
-            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
+            return BitConverter.ToString(_md5.ComputeHash(content)).Replace("-", "");
         }
 
         private string ComputeHash(byte[] content)
         {
-            return BitConverter.ToString(md5.ComputeHash(content)).Replace("-", "");
+            return BitConverter.ToString(_md5.ComputeHash(content)).Replace("-", "");
         }
 
         private bool CompareHash(string should, byte[] content)

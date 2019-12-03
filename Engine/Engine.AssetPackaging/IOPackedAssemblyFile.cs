@@ -2,17 +2,17 @@
 
 namespace Engine.AssetPackaging
 {
-    public class IOPackedAssemblyFile : AssemblyFile
+    public class IoPackedAssemblyFile : AssemblyFile
     {
         private AssetPointer ptr;
 
-        public IOPackedAssemblyFile(bool compressed, string packFilepath, AssetPointer ptr) : base(compressed,
+        public IoPackedAssemblyFile(bool compressed, string packFilepath, AssetPointer ptr) : base(compressed,
             packFilepath, null)
         {
             this.ptr = ptr;
         }
 
-        public IOPackedAssemblyFile(bool compressed, string[] packFilepaths, AssetPointer ptr) : base(compressed,
+        public IoPackedAssemblyFile(bool compressed, string[] packFilepaths, AssetPointer ptr) : base(compressed,
             packFilepaths, null)
         {
             this.ptr = ptr;

@@ -62,7 +62,7 @@ namespace Engine.OpenCL.DotNetCore.Memory
             // Checks if the memory object has already been disposed of, if not, then the memory object is disposed of
             if (!IsDisposed)
             {
-                EngineStatisticsManager.CLObjectDestroyed(bytes);
+                EngineStatisticsManager.ClObjectDestroyed(bytes);
                 MemoryNativeApi.ReleaseMemoryObject(Handle);
             }
 
@@ -84,7 +84,7 @@ namespace Engine.OpenCL.DotNetCore.Memory
             this.bytes = bytes;
         }
 
-        private long bytes;
+        private readonly long bytes;
 
         #endregion
 

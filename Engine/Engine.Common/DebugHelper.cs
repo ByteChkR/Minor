@@ -23,7 +23,7 @@ namespace Engine.Common
             Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
 
-            IOCallbacks.Callback = new PPCallbacks();
+            IOCallbacks.Callback = new PpCallbacks();
 
             Debug.PrefixLookupMode = (PrefixLookupSettings) settings.PrefixLookupFlags;
 
@@ -72,7 +72,7 @@ namespace Engine.Common
 
         private static LogStream OpenNetworkStream(ILogStreamSettings settings)
         {
-            NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppID, settings.NetworkAuthVersion,
+            NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppId, settings.NetworkAuthVersion,
                 settings.Destination, settings.NetworkPort, settings.Mask, (MatchType) settings.MatchMode,
                 settings.Timestamp);
             return nls;

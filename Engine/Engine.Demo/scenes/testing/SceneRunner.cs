@@ -8,25 +8,25 @@ namespace Engine.Demo.scenes.testing
     public class SceneRunner
     {
         public static SceneRunner Instance;
-        private int CurrrentScene;
-        private GameEngine Engine;
-        private List<Type> Scenes = new List<Type>();
-        private bool TerminateOnFinish = true;
+        private int currrentScene;
+        private GameEngine engine;
+        private List<Type> scenes = new List<Type>();
+        private bool terminateOnFinish = true;
 
         public SceneRunner(GameEngine engine, Assembly asm, string nameSpace)
         {
-            Engine = engine;
+            this.engine = engine;
             Instance = this;
-            Scenes = GetScenesFromNamespace(asm, nameSpace);
+            scenes = GetScenesFromNamespace(asm, nameSpace);
         }
 
         public SceneRunner(GameEngine engine, Assembly asm, string[] nameSpaces)
         {
-            Engine = engine;
+            this.engine = engine;
             Instance = this;
             for (int i = 0; i < nameSpaces.Length; i++)
             {
-                Scenes.AddRange(GetScenesFromNamespace(asm, nameSpaces[i]));
+                scenes.AddRange(GetScenesFromNamespace(asm, nameSpaces[i]));
             }
         }
 
@@ -50,19 +50,19 @@ namespace Engine.Demo.scenes.testing
 
         public void NextScene()
         {
-            if (CurrrentScene >= Scenes.Count)
+            if (currrentScene >= scenes.Count)
             {
-                CurrrentScene = 0;
+                currrentScene = 0;
                 Finished = true;
-                if (TerminateOnFinish)
+                if (terminateOnFinish)
                 {
-                    Engine.Exit();
+                    engine.Exit();
                     return;
                 }
             }
 
-            Engine.InitializeScene(Scenes[CurrrentScene]);
-            CurrrentScene++;
+            engine.InitializeScene(scenes[currrentScene]);
+            currrentScene++;
         }
     }
 }

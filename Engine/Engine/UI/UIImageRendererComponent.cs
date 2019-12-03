@@ -10,7 +10,7 @@ namespace Engine.UI
     /// <summary>
     /// A Component that is rendering an image in camera space
     /// </summary>
-    public class UIImageRendererComponent : UIElement
+    public class UiImageRendererComponent : UiElement
     {
         /// <summary>
         /// Screen space quad
@@ -31,9 +31,9 @@ namespace Engine.UI
         /// <summary>
         /// Private flag if the Screen Space Quad has been loaded
         /// </summary>
-        private bool _init;
+        private bool init;
 
-        private int _vao;
+        private int vao;
 
         /// <summary>
         /// public contstructor
@@ -43,7 +43,7 @@ namespace Engine.UI
         /// <param name="worldSpace">Is the image in world space</param>
         /// <param name="alpha">The alpha value of the image</param>
         /// <param name="shader">The shader that is used to draw</param>
-        public UIImageRendererComponent(int width, int height, bool worldSpace, float alpha, ShaderProgram shader) :
+        public UiImageRendererComponent(int width, int height, bool worldSpace, float alpha, ShaderProgram shader) :
             this(
                 TextureLoader.ParameterToTexture(width, height), worldSpace,
                 alpha, shader)
@@ -57,7 +57,7 @@ namespace Engine.UI
         /// <param name="worldSpace">Is the image in world space</param>
         /// <param name="alpha">The alpha value of the image</param>
         /// <param name="shader">The shader that is used to draw</param>
-        public UIImageRendererComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
+        public UiImageRendererComponent(Texture texture, bool worldSpace, float alpha, ShaderProgram shader) : base(
             shader, worldSpace, alpha)
         {
             Texture = texture;
@@ -79,13 +79,13 @@ namespace Engine.UI
         /// <summary>
         /// Sets up the Screen Space Quad
         /// </summary>
-        private void SetUpGLBuffers()
+        private void SetUpGlBuffers()
         {
-            _init = true;
-            _vao = GL.GenVertexArray();
-            int _screenVBO = GL.GenBuffer();
-            GL.BindVertexArray(_vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _screenVBO);
+            init = true;
+            vao = GL.GenVertexArray();
+            int screenVbo = GL.GenBuffer();
+            GL.BindVertexArray(vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, screenVbo);
 
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (_screenQuadVertexData.Length * sizeof(float)),
                 _screenQuadVertexData, BufferUsageHint.StaticDraw);
@@ -109,9 +109,9 @@ namespace Engine.UI
         /// <param name="projMat"></param>
         public override void Render(Matrix4 viewMat, Matrix4 projMat)
         {
-            if (!_init)
+            if (!init)
             {
-                SetUpGLBuffers();
+                SetUpGlBuffers();
             }
 
             GL.Enable(EnableCap.Blend);
@@ -123,11 +123,11 @@ namespace Engine.UI
 
             if (WorldSpace)
             {
-                mat = Owner._worldTransformCache * viewMat * projMat;
+                mat = Owner.WorldTransformCache * viewMat * projMat;
             }
             else
             {
-                mat = Owner._worldTransformCache;
+                mat = Owner.WorldTransformCache;
             }
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref mat);
@@ -138,7 +138,7 @@ namespace Engine.UI
 
             GL.Uniform1(Program.GetUniformLocation("uiTexture"), 0);
             GL.ActiveTexture(TextureUnit.Texture0);
-            GL.BindVertexArray(_vao);
+            GL.BindVertexArray(vao);
             GL.BindTexture(TextureTarget.Texture2D, Texture.TextureId);
 
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);

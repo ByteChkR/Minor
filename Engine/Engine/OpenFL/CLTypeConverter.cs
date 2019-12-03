@@ -9,180 +9,180 @@ namespace Engine.OpenFL
     /// Used to magically convert VectorN into VectorN of different type.
     /// 
     /// </summary>
-    public static class CLTypeConverter
+    public static class ClTypeConverter
     {
         //private delegate decimal ConvertRange(decimal value, decimal max);
         /// <summary>
         /// Dictionary containing the ToConverter
         /// From Array of objects(need to be implicitly converted into to the specifed base type)
         /// </summary>
-        private static Dictionary<OpenCL.TypeEnums.DataTypes, ConvertToN> ToConverter =
+        private static Dictionary<OpenCL.TypeEnums.DataTypes, ConvertToN> _toConverter =
             new Dictionary<OpenCL.TypeEnums.DataTypes, ConvertToN>
             {
-                {OpenCL.TypeEnums.DataTypes.UCHAR2, create_byte2},
-                {OpenCL.TypeEnums.DataTypes.UCHAR3, create_byte3},
-                {OpenCL.TypeEnums.DataTypes.UCHAR4, create_byte4},
-                {OpenCL.TypeEnums.DataTypes.UCHAR8, create_byte8},
-                {OpenCL.TypeEnums.DataTypes.UCHAR16, create_byte16},
-                {OpenCL.TypeEnums.DataTypes.CHAR2, create_sbyte2},
-                {OpenCL.TypeEnums.DataTypes.CHAR3, create_sbyte3},
-                {OpenCL.TypeEnums.DataTypes.CHAR4, create_sbyte4},
-                {OpenCL.TypeEnums.DataTypes.CHAR8, create_sbyte8},
-                {OpenCL.TypeEnums.DataTypes.CHAR16, create_sbyte16},
+                {OpenCL.TypeEnums.DataTypes.Uchar2, create_byte2},
+                {OpenCL.TypeEnums.DataTypes.Uchar3, create_byte3},
+                {OpenCL.TypeEnums.DataTypes.Uchar4, create_byte4},
+                {OpenCL.TypeEnums.DataTypes.Uchar8, create_byte8},
+                {OpenCL.TypeEnums.DataTypes.Uchar16, create_byte16},
+                {OpenCL.TypeEnums.DataTypes.Char2, create_sbyte2},
+                {OpenCL.TypeEnums.DataTypes.Char3, create_sbyte3},
+                {OpenCL.TypeEnums.DataTypes.Char4, create_sbyte4},
+                {OpenCL.TypeEnums.DataTypes.Char8, create_sbyte8},
+                {OpenCL.TypeEnums.DataTypes.Char16, create_sbyte16},
 
-                {OpenCL.TypeEnums.DataTypes.ULONG2, create_ulong2},
-                {OpenCL.TypeEnums.DataTypes.ULONG3, create_ulong3},
-                {OpenCL.TypeEnums.DataTypes.ULONG4, create_ulong4},
-                {OpenCL.TypeEnums.DataTypes.ULONG8, create_ulong8},
-                {OpenCL.TypeEnums.DataTypes.ULONG16, create_ulong16},
-                {OpenCL.TypeEnums.DataTypes.LONG2, create_long2},
-                {OpenCL.TypeEnums.DataTypes.LONG3, create_long3},
-                {OpenCL.TypeEnums.DataTypes.LONG4, create_long4},
-                {OpenCL.TypeEnums.DataTypes.LONG8, create_long8},
-                {OpenCL.TypeEnums.DataTypes.LONG16, create_long16},
+                {OpenCL.TypeEnums.DataTypes.Ulong2, create_ulong2},
+                {OpenCL.TypeEnums.DataTypes.Ulong3, create_ulong3},
+                {OpenCL.TypeEnums.DataTypes.Ulong4, create_ulong4},
+                {OpenCL.TypeEnums.DataTypes.Ulong8, create_ulong8},
+                {OpenCL.TypeEnums.DataTypes.Ulong16, create_ulong16},
+                {OpenCL.TypeEnums.DataTypes.Long2, create_long2},
+                {OpenCL.TypeEnums.DataTypes.Long3, create_long3},
+                {OpenCL.TypeEnums.DataTypes.Long4, create_long4},
+                {OpenCL.TypeEnums.DataTypes.Long8, create_long8},
+                {OpenCL.TypeEnums.DataTypes.Long16, create_long16},
 
-                {OpenCL.TypeEnums.DataTypes.UINT2, create_uint2},
-                {OpenCL.TypeEnums.DataTypes.UINT3, create_uint3},
-                {OpenCL.TypeEnums.DataTypes.UINT4, create_uint4},
-                {OpenCL.TypeEnums.DataTypes.UINT8, create_uint8},
-                {OpenCL.TypeEnums.DataTypes.UINT16, create_uint16},
-                {OpenCL.TypeEnums.DataTypes.INT2, create_int2},
-                {OpenCL.TypeEnums.DataTypes.INT3, create_int3},
-                {OpenCL.TypeEnums.DataTypes.INT4, create_int4},
-                {OpenCL.TypeEnums.DataTypes.INT8, create_int8},
-                {OpenCL.TypeEnums.DataTypes.INT16, create_int16},
+                {OpenCL.TypeEnums.DataTypes.Uint2, create_uint2},
+                {OpenCL.TypeEnums.DataTypes.Uint3, create_uint3},
+                {OpenCL.TypeEnums.DataTypes.Uint4, create_uint4},
+                {OpenCL.TypeEnums.DataTypes.Uint8, create_uint8},
+                {OpenCL.TypeEnums.DataTypes.Uint16, create_uint16},
+                {OpenCL.TypeEnums.DataTypes.Int2, create_int2},
+                {OpenCL.TypeEnums.DataTypes.Int3, create_int3},
+                {OpenCL.TypeEnums.DataTypes.Int4, create_int4},
+                {OpenCL.TypeEnums.DataTypes.Int8, create_int8},
+                {OpenCL.TypeEnums.DataTypes.Int16, create_int16},
 
-                {OpenCL.TypeEnums.DataTypes.USHORT2, create_ushort2},
-                {OpenCL.TypeEnums.DataTypes.USHORT3, create_ushort3},
-                {OpenCL.TypeEnums.DataTypes.USHORT4, create_short4},
-                {OpenCL.TypeEnums.DataTypes.USHORT8, create_ushort8},
-                {OpenCL.TypeEnums.DataTypes.USHORT16, create_ushort16},
-                {OpenCL.TypeEnums.DataTypes.SHORT2, create_short2},
-                {OpenCL.TypeEnums.DataTypes.SHORT3, create_short3},
-                {OpenCL.TypeEnums.DataTypes.SHORT4, create_short4},
-                {OpenCL.TypeEnums.DataTypes.SHORT8, create_short8},
-                {OpenCL.TypeEnums.DataTypes.SHORT16, create_short16},
+                {OpenCL.TypeEnums.DataTypes.Ushort2, create_ushort2},
+                {OpenCL.TypeEnums.DataTypes.Ushort3, create_ushort3},
+                {OpenCL.TypeEnums.DataTypes.Ushort4, create_short4},
+                {OpenCL.TypeEnums.DataTypes.Ushort8, create_ushort8},
+                {OpenCL.TypeEnums.DataTypes.Ushort16, create_ushort16},
+                {OpenCL.TypeEnums.DataTypes.Short2, create_short2},
+                {OpenCL.TypeEnums.DataTypes.Short3, create_short3},
+                {OpenCL.TypeEnums.DataTypes.Short4, create_short4},
+                {OpenCL.TypeEnums.DataTypes.Short8, create_short8},
+                {OpenCL.TypeEnums.DataTypes.Short16, create_short16},
 
-                {OpenCL.TypeEnums.DataTypes.FLOAT2, create_float2},
-                {OpenCL.TypeEnums.DataTypes.FLOAT3, create_float3},
-                {OpenCL.TypeEnums.DataTypes.FLOAT4, create_float4},
-                {OpenCL.TypeEnums.DataTypes.FLOAT8, create_float8},
-                {OpenCL.TypeEnums.DataTypes.FLOAT16, create_float16}
+                {OpenCL.TypeEnums.DataTypes.Float2, create_float2},
+                {OpenCL.TypeEnums.DataTypes.Float3, create_float3},
+                {OpenCL.TypeEnums.DataTypes.Float4, create_float4},
+                {OpenCL.TypeEnums.DataTypes.Float8, create_float8},
+                {OpenCL.TypeEnums.DataTypes.Float16, create_float16}
             };
 
         /// <summary>
         /// A dictionary containing the Base types for the different CL typee
         /// </summary>
-        private static Dictionary<OpenCL.TypeEnums.DataTypes, Type> BaseTypes =
+        private static Dictionary<OpenCL.TypeEnums.DataTypes, Type> _baseTypes =
             new Dictionary<OpenCL.TypeEnums.DataTypes, Type>
             {
-                {OpenCL.TypeEnums.DataTypes.UCHAR2, typeof(byte)},
-                {OpenCL.TypeEnums.DataTypes.UCHAR3, typeof(byte)},
-                {OpenCL.TypeEnums.DataTypes.UCHAR4, typeof(byte)},
-                {OpenCL.TypeEnums.DataTypes.UCHAR8, typeof(byte)},
-                {OpenCL.TypeEnums.DataTypes.UCHAR16, typeof(byte)},
-                {OpenCL.TypeEnums.DataTypes.CHAR2, typeof(sbyte)},
-                {OpenCL.TypeEnums.DataTypes.CHAR3, typeof(sbyte)},
-                {OpenCL.TypeEnums.DataTypes.CHAR4, typeof(sbyte)},
-                {OpenCL.TypeEnums.DataTypes.CHAR8, typeof(sbyte)},
-                {OpenCL.TypeEnums.DataTypes.CHAR16, typeof(sbyte)},
+                {OpenCL.TypeEnums.DataTypes.Uchar2, typeof(byte)},
+                {OpenCL.TypeEnums.DataTypes.Uchar3, typeof(byte)},
+                {OpenCL.TypeEnums.DataTypes.Uchar4, typeof(byte)},
+                {OpenCL.TypeEnums.DataTypes.Uchar8, typeof(byte)},
+                {OpenCL.TypeEnums.DataTypes.Uchar16, typeof(byte)},
+                {OpenCL.TypeEnums.DataTypes.Char2, typeof(sbyte)},
+                {OpenCL.TypeEnums.DataTypes.Char3, typeof(sbyte)},
+                {OpenCL.TypeEnums.DataTypes.Char4, typeof(sbyte)},
+                {OpenCL.TypeEnums.DataTypes.Char8, typeof(sbyte)},
+                {OpenCL.TypeEnums.DataTypes.Char16, typeof(sbyte)},
 
-                {OpenCL.TypeEnums.DataTypes.ULONG2, typeof(ulong)},
-                {OpenCL.TypeEnums.DataTypes.ULONG3, typeof(ulong)},
-                {OpenCL.TypeEnums.DataTypes.ULONG4, typeof(ulong)},
-                {OpenCL.TypeEnums.DataTypes.ULONG8, typeof(ulong)},
-                {OpenCL.TypeEnums.DataTypes.ULONG16, typeof(ulong)},
-                {OpenCL.TypeEnums.DataTypes.LONG2, typeof(long)},
-                {OpenCL.TypeEnums.DataTypes.LONG3, typeof(long)},
-                {OpenCL.TypeEnums.DataTypes.LONG4, typeof(long)},
-                {OpenCL.TypeEnums.DataTypes.LONG8, typeof(long)},
-                {OpenCL.TypeEnums.DataTypes.LONG16, typeof(long)},
+                {OpenCL.TypeEnums.DataTypes.Ulong2, typeof(ulong)},
+                {OpenCL.TypeEnums.DataTypes.Ulong3, typeof(ulong)},
+                {OpenCL.TypeEnums.DataTypes.Ulong4, typeof(ulong)},
+                {OpenCL.TypeEnums.DataTypes.Ulong8, typeof(ulong)},
+                {OpenCL.TypeEnums.DataTypes.Ulong16, typeof(ulong)},
+                {OpenCL.TypeEnums.DataTypes.Long2, typeof(long)},
+                {OpenCL.TypeEnums.DataTypes.Long3, typeof(long)},
+                {OpenCL.TypeEnums.DataTypes.Long4, typeof(long)},
+                {OpenCL.TypeEnums.DataTypes.Long8, typeof(long)},
+                {OpenCL.TypeEnums.DataTypes.Long16, typeof(long)},
 
-                {OpenCL.TypeEnums.DataTypes.UINT2, typeof(uint)},
-                {OpenCL.TypeEnums.DataTypes.UINT3, typeof(uint)},
-                {OpenCL.TypeEnums.DataTypes.UINT4, typeof(uint)},
-                {OpenCL.TypeEnums.DataTypes.UINT8, typeof(uint)},
-                {OpenCL.TypeEnums.DataTypes.UINT16, typeof(uint)},
-                {OpenCL.TypeEnums.DataTypes.INT2, typeof(int)},
-                {OpenCL.TypeEnums.DataTypes.INT3, typeof(int)},
-                {OpenCL.TypeEnums.DataTypes.INT4, typeof(int)},
-                {OpenCL.TypeEnums.DataTypes.INT8, typeof(int)},
-                {OpenCL.TypeEnums.DataTypes.INT16, typeof(int)},
+                {OpenCL.TypeEnums.DataTypes.Uint2, typeof(uint)},
+                {OpenCL.TypeEnums.DataTypes.Uint3, typeof(uint)},
+                {OpenCL.TypeEnums.DataTypes.Uint4, typeof(uint)},
+                {OpenCL.TypeEnums.DataTypes.Uint8, typeof(uint)},
+                {OpenCL.TypeEnums.DataTypes.Uint16, typeof(uint)},
+                {OpenCL.TypeEnums.DataTypes.Int2, typeof(int)},
+                {OpenCL.TypeEnums.DataTypes.Int3, typeof(int)},
+                {OpenCL.TypeEnums.DataTypes.Int4, typeof(int)},
+                {OpenCL.TypeEnums.DataTypes.Int8, typeof(int)},
+                {OpenCL.TypeEnums.DataTypes.Int16, typeof(int)},
 
-                {OpenCL.TypeEnums.DataTypes.USHORT2, typeof(ushort)},
-                {OpenCL.TypeEnums.DataTypes.USHORT3, typeof(ushort)},
-                {OpenCL.TypeEnums.DataTypes.USHORT4, typeof(short)},
-                {OpenCL.TypeEnums.DataTypes.USHORT8, typeof(ushort)},
-                {OpenCL.TypeEnums.DataTypes.USHORT16, typeof(ushort)},
-                {OpenCL.TypeEnums.DataTypes.SHORT2, typeof(short)},
-                {OpenCL.TypeEnums.DataTypes.SHORT3, typeof(short)},
-                {OpenCL.TypeEnums.DataTypes.SHORT4, typeof(short)},
-                {OpenCL.TypeEnums.DataTypes.SHORT8, typeof(short)},
-                {OpenCL.TypeEnums.DataTypes.SHORT16, typeof(short)},
+                {OpenCL.TypeEnums.DataTypes.Ushort2, typeof(ushort)},
+                {OpenCL.TypeEnums.DataTypes.Ushort3, typeof(ushort)},
+                {OpenCL.TypeEnums.DataTypes.Ushort4, typeof(short)},
+                {OpenCL.TypeEnums.DataTypes.Ushort8, typeof(ushort)},
+                {OpenCL.TypeEnums.DataTypes.Ushort16, typeof(ushort)},
+                {OpenCL.TypeEnums.DataTypes.Short2, typeof(short)},
+                {OpenCL.TypeEnums.DataTypes.Short3, typeof(short)},
+                {OpenCL.TypeEnums.DataTypes.Short4, typeof(short)},
+                {OpenCL.TypeEnums.DataTypes.Short8, typeof(short)},
+                {OpenCL.TypeEnums.DataTypes.Short16, typeof(short)},
 
-                {OpenCL.TypeEnums.DataTypes.FLOAT2, typeof(float)},
-                {OpenCL.TypeEnums.DataTypes.FLOAT3, typeof(float)},
-                {OpenCL.TypeEnums.DataTypes.FLOAT4, typeof(float)},
-                {OpenCL.TypeEnums.DataTypes.FLOAT8, typeof(float)},
-                {OpenCL.TypeEnums.DataTypes.FLOAT16, typeof(float)}
+                {OpenCL.TypeEnums.DataTypes.Float2, typeof(float)},
+                {OpenCL.TypeEnums.DataTypes.Float3, typeof(float)},
+                {OpenCL.TypeEnums.DataTypes.Float4, typeof(float)},
+                {OpenCL.TypeEnums.DataTypes.Float8, typeof(float)},
+                {OpenCL.TypeEnums.DataTypes.Float16, typeof(float)}
             };
 
         /// <summary>
         /// Dictionary containing the FromConverter
         /// From the CL Type to an Array of objects
         /// </summary>
-        private static Dictionary<OpenCL.TypeEnums.DataTypes, ConvertFromN> FromConverter =
+        private static Dictionary<OpenCL.TypeEnums.DataTypes, ConvertFromN> _fromConverter =
             new Dictionary<OpenCL.TypeEnums.DataTypes, ConvertFromN>
             {
-                {OpenCL.TypeEnums.DataTypes.UCHAR2, from_byte2},
-                {OpenCL.TypeEnums.DataTypes.UCHAR3, from_byte3},
-                {OpenCL.TypeEnums.DataTypes.UCHAR4, from_byte4},
-                {OpenCL.TypeEnums.DataTypes.UCHAR8, from_byte8},
-                {OpenCL.TypeEnums.DataTypes.UCHAR16, from_byte16},
-                {OpenCL.TypeEnums.DataTypes.CHAR2, from_sbyte2},
-                {OpenCL.TypeEnums.DataTypes.CHAR3, from_sbyte3},
-                {OpenCL.TypeEnums.DataTypes.CHAR4, from_sbyte4},
-                {OpenCL.TypeEnums.DataTypes.CHAR8, from_sbyte8},
-                {OpenCL.TypeEnums.DataTypes.CHAR16, from_sbyte16},
+                {OpenCL.TypeEnums.DataTypes.Uchar2, from_byte2},
+                {OpenCL.TypeEnums.DataTypes.Uchar3, from_byte3},
+                {OpenCL.TypeEnums.DataTypes.Uchar4, from_byte4},
+                {OpenCL.TypeEnums.DataTypes.Uchar8, from_byte8},
+                {OpenCL.TypeEnums.DataTypes.Uchar16, from_byte16},
+                {OpenCL.TypeEnums.DataTypes.Char2, from_sbyte2},
+                {OpenCL.TypeEnums.DataTypes.Char3, from_sbyte3},
+                {OpenCL.TypeEnums.DataTypes.Char4, from_sbyte4},
+                {OpenCL.TypeEnums.DataTypes.Char8, from_sbyte8},
+                {OpenCL.TypeEnums.DataTypes.Char16, from_sbyte16},
 
-                {OpenCL.TypeEnums.DataTypes.ULONG2, from_ulong2},
-                {OpenCL.TypeEnums.DataTypes.ULONG3, from_ulong3},
-                {OpenCL.TypeEnums.DataTypes.ULONG4, from_ulong4},
-                {OpenCL.TypeEnums.DataTypes.ULONG8, from_ulong8},
-                {OpenCL.TypeEnums.DataTypes.ULONG16, from_ulong16},
-                {OpenCL.TypeEnums.DataTypes.LONG2, from_long2},
-                {OpenCL.TypeEnums.DataTypes.LONG3, from_long3},
-                {OpenCL.TypeEnums.DataTypes.LONG4, from_long4},
-                {OpenCL.TypeEnums.DataTypes.LONG8, from_long8},
-                {OpenCL.TypeEnums.DataTypes.LONG16, from_long16},
+                {OpenCL.TypeEnums.DataTypes.Ulong2, from_ulong2},
+                {OpenCL.TypeEnums.DataTypes.Ulong3, from_ulong3},
+                {OpenCL.TypeEnums.DataTypes.Ulong4, from_ulong4},
+                {OpenCL.TypeEnums.DataTypes.Ulong8, from_ulong8},
+                {OpenCL.TypeEnums.DataTypes.Ulong16, from_ulong16},
+                {OpenCL.TypeEnums.DataTypes.Long2, from_long2},
+                {OpenCL.TypeEnums.DataTypes.Long3, from_long3},
+                {OpenCL.TypeEnums.DataTypes.Long4, from_long4},
+                {OpenCL.TypeEnums.DataTypes.Long8, from_long8},
+                {OpenCL.TypeEnums.DataTypes.Long16, from_long16},
 
-                {OpenCL.TypeEnums.DataTypes.UINT2, from_uint2},
-                {OpenCL.TypeEnums.DataTypes.UINT3, from_uint3},
-                {OpenCL.TypeEnums.DataTypes.UINT4, from_uint4},
-                {OpenCL.TypeEnums.DataTypes.UINT8, from_uint8},
-                {OpenCL.TypeEnums.DataTypes.UINT16, from_uint16},
-                {OpenCL.TypeEnums.DataTypes.INT2, from_int2},
-                {OpenCL.TypeEnums.DataTypes.INT3, from_int3},
-                {OpenCL.TypeEnums.DataTypes.INT4, from_int4},
-                {OpenCL.TypeEnums.DataTypes.INT8, from_int8},
-                {OpenCL.TypeEnums.DataTypes.INT16, from_int16},
+                {OpenCL.TypeEnums.DataTypes.Uint2, from_uint2},
+                {OpenCL.TypeEnums.DataTypes.Uint3, from_uint3},
+                {OpenCL.TypeEnums.DataTypes.Uint4, from_uint4},
+                {OpenCL.TypeEnums.DataTypes.Uint8, from_uint8},
+                {OpenCL.TypeEnums.DataTypes.Uint16, from_uint16},
+                {OpenCL.TypeEnums.DataTypes.Int2, from_int2},
+                {OpenCL.TypeEnums.DataTypes.Int3, from_int3},
+                {OpenCL.TypeEnums.DataTypes.Int4, from_int4},
+                {OpenCL.TypeEnums.DataTypes.Int8, from_int8},
+                {OpenCL.TypeEnums.DataTypes.Int16, from_int16},
 
-                {OpenCL.TypeEnums.DataTypes.USHORT2, from_ushort2},
-                {OpenCL.TypeEnums.DataTypes.USHORT3, from_ushort3},
-                {OpenCL.TypeEnums.DataTypes.USHORT4, from_short4},
-                {OpenCL.TypeEnums.DataTypes.USHORT8, from_ushort8},
-                {OpenCL.TypeEnums.DataTypes.USHORT16, from_ushort16},
-                {OpenCL.TypeEnums.DataTypes.SHORT2, from_short2},
-                {OpenCL.TypeEnums.DataTypes.SHORT3, from_short3},
-                {OpenCL.TypeEnums.DataTypes.SHORT4, from_short4},
-                {OpenCL.TypeEnums.DataTypes.SHORT8, from_short8},
-                {OpenCL.TypeEnums.DataTypes.SHORT16, from_short16},
+                {OpenCL.TypeEnums.DataTypes.Ushort2, from_ushort2},
+                {OpenCL.TypeEnums.DataTypes.Ushort3, from_ushort3},
+                {OpenCL.TypeEnums.DataTypes.Ushort4, from_short4},
+                {OpenCL.TypeEnums.DataTypes.Ushort8, from_ushort8},
+                {OpenCL.TypeEnums.DataTypes.Ushort16, from_ushort16},
+                {OpenCL.TypeEnums.DataTypes.Short2, from_short2},
+                {OpenCL.TypeEnums.DataTypes.Short3, from_short3},
+                {OpenCL.TypeEnums.DataTypes.Short4, from_short4},
+                {OpenCL.TypeEnums.DataTypes.Short8, from_short8},
+                {OpenCL.TypeEnums.DataTypes.Short16, from_short16},
 
-                {OpenCL.TypeEnums.DataTypes.FLOAT2, from_float2},
-                {OpenCL.TypeEnums.DataTypes.FLOAT3, from_float3},
-                {OpenCL.TypeEnums.DataTypes.FLOAT4, from_float4},
-                {OpenCL.TypeEnums.DataTypes.FLOAT8, from_float8},
-                {OpenCL.TypeEnums.DataTypes.FLOAT16, from_float16}
+                {OpenCL.TypeEnums.DataTypes.Float2, from_float2},
+                {OpenCL.TypeEnums.DataTypes.Float3, from_float3},
+                {OpenCL.TypeEnums.DataTypes.Float4, from_float4},
+                {OpenCL.TypeEnums.DataTypes.Float8, from_float8},
+                {OpenCL.TypeEnums.DataTypes.Float16, from_float16}
             };
 
         /// <summary>
@@ -214,24 +214,24 @@ namespace Engine.OpenFL
 
             float oldMax = KernelParameter.GetDataMaxSize(oldName);
             float newMax = KernelParameter.GetDataMaxSize(newName);
-            int w = CLProgram.GetVectorNum(oldName);
+            int w = ClProgram.GetVectorNum(oldName);
             if (w == 1)
             {
                 return System.Convert.ChangeType(
                     ConvertRange((float) System.Convert.ChangeType(value, typeof(float)), oldMax, newMax), newType);
             }
 
-            object[] objs = FromConverter[olddt](value);
+            object[] objs = _fromConverter[olddt](value);
 
 
             for (int i = 0; i < objs.Length; i++)
             {
                 objs[i] = System.Convert.ChangeType(
                     ConvertRange((float) System.Convert.ChangeType(objs[i], typeof(float)), oldMax, newMax),
-                    BaseTypes[dt]);
+                    _baseTypes[dt]);
             }
 
-            return ToConverter[dt](objs);
+            return _toConverter[dt](objs);
         }
 
         /// <summary>

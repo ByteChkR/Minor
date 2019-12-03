@@ -17,28 +17,28 @@ namespace Engine.Debug
     /// <summary>
     /// Graph Drawing Component
     /// </summary>
-    public class GraphDrawingComponent : UIElement
+    public class GraphDrawingComponent : UiElement
     {
         /// <summary>
         /// A flag that indicates if we need to push the points to the gpu
         /// </summary>
-        private bool _bufferDirty = true;
+        private bool bufferDirty = true;
         
 
         /// <summary>
         /// Flag that is used to initialize things on creation
         /// </summary>
-        private bool _init;
+        private bool init;
 
         /// <summary>
         /// Backing field of the graph data
         /// </summary>
-        private Vector2[] _points;
+        private Vector2[] points;
 
         /// <summary>
         /// The VBO of the screen quad
         /// </summary>
-        private int _vbo, _vao;
+        private int vbo, vao;
 
         /// <summary>
         /// Public constructor
@@ -49,7 +49,7 @@ namespace Engine.Debug
         public GraphDrawingComponent(ShaderProgram shader, bool worldSpace, float alpha) :
             base(shader, worldSpace, alpha)
         {
-            _points = new Vector2[0];
+            points = new Vector2[0];
         }
 
 
@@ -58,13 +58,13 @@ namespace Engine.Debug
         /// </summary>
         public Vector2[] Points
         {
-            get => _points;
+            get => points;
             set
             {
-                _bufferDirty = true;
+                bufferDirty = true;
                 if (Owner != null)
                 {
-                    _points = ComputeUVPos(Position, Scale, value);
+                    points = ComputeUvPos(Position, Scale, value);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace Engine.Debug
         /// Computes the UVs of the Quad that will contain the graph data
         /// </summary>
         /// <returns></returns>
-        private static Vector2[] ComputeUVPos(Vector2 position, Vector2 scale, Vector2[] points)
+        private static Vector2[] ComputeUvPos(Vector2 position, Vector2 scale, Vector2[] points)
         {
             Vector2[] ret = new Vector2[points.Length];
             float max = 16f;
@@ -101,11 +101,11 @@ namespace Engine.Debug
         /// </summary>
         private void Initialize()
         {
-            _init = true;
-            _vao = GL.GenVertexArray();
-            _vbo = GL.GenBuffer();
-            GL.BindVertexArray(_vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
+            init = true;
+            vao = GL.GenVertexArray();
+            vbo = GL.GenBuffer();
+            GL.BindVertexArray(vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 
 
             GL.EnableVertexAttribArray(0);
@@ -124,8 +124,8 @@ namespace Engine.Debug
         /// </summary>
         private void UpdateBuffer()
         {
-            GL.BindVertexArray(_vao);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
+            GL.BindVertexArray(vao);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr) (Points.Length * sizeof(float) * 2),
                 Points, BufferUsageHint.StaticDraw);
             GL.BindVertexArray(0);
@@ -144,12 +144,12 @@ namespace Engine.Debug
                 return;
             }
 
-            if (!_init)
+            if (!init)
             {
                 Initialize();
             }
 
-            if (_bufferDirty)
+            if (bufferDirty)
             {
                 UpdateBuffer();
             }
@@ -162,23 +162,23 @@ namespace Engine.Debug
 
             Program.Use();
 
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vbo);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
 
             Matrix4 mat = Matrix4.Identity;
 
             if (WorldSpace)
             {
-                mat = Owner._worldTransformCache * viewMat * projMat;
+                mat = Owner.WorldTransformCache * viewMat * projMat;
             }
             else
             {
-                mat = Owner._worldTransformCache;
+                mat = Owner.WorldTransformCache;
             }
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref mat);
             GL.Uniform4(Program.GetUniformLocation("lineColor"), new Vector4(red, green, blue, 1));
 
-            GL.BindVertexArray(_vao);
+            GL.BindVertexArray(vao);
 
             GL.DrawArrays(PrimitiveType.LineStrip, 0, Points.Length);
 

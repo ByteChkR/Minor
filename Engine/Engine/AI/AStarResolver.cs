@@ -4,30 +4,30 @@ namespace Engine.AI
 {
     public class AStarResolver
     {
-        public static List<AINode> FindPath(AINode startPoint, AINode endPoint,
+        public static List<AiNode> FindPath(AiNode startPoint, AiNode endPoint,
             out bool foundPath)
         {
             if (startPoint == endPoint)
             {
                 foundPath = true;
-                return new List<AINode>();
+                return new List<AiNode>();
             }
 
             foundPath = false;
 
-            PriorityQueue<AINode> todo = new PriorityQueue<AINode>();
-            List<AINode> doneList = new List<AINode>();
+            PriorityQueue<AiNode> todo = new PriorityQueue<AiNode>();
+            List<AiNode> doneList = new List<AiNode>();
             todo.Enqueue(startPoint);
 
             while (todo.Count != 0)
             {
-                AINode current = todo.Dequeue();
+                AiNode current = todo.Dequeue();
                 doneList.Add(current);
-                current.NodeState = AINodeState.Closed;
+                current.NodeState = AiNodeState.Closed;
                 if (current == endPoint)
                 {
                     foundPath = true;
-                    List<AINode> ret = GeneratePath(endPoint);
+                    List<AiNode> ret = GeneratePath(endPoint);
                     ResetNodes(todo, doneList);
 
                     return ret;
@@ -35,16 +35,16 @@ namespace Engine.AI
 
                 for (int i = 0; i < current.ConnectionCount; i++)
                 {
-                    AINode connection = current.GetConnection(i);
+                    AiNode connection = current.GetConnection(i);
 
-                    if (!connection.Walkable || connection.NodeState == AINodeState.Closed)
+                    if (!connection.Walkable || connection.NodeState == AiNodeState.Closed)
                     {
                         continue;
                     }
 
                     float connD = (connection.Owner.GetWorldPosition() - current.Owner.GetWorldPosition()).Length *
                                   connection.WalkCostMultiplier;
-                    if (connection.NodeState == AINodeState.Unconsidered)
+                    if (connection.NodeState == AiNodeState.Unconsidered)
                     {
                         connection.ParentNode = current;
 
@@ -52,7 +52,7 @@ namespace Engine.AI
 
                         connection.EstimatedCost =
                             (connection.Owner.GetWorldPosition() - endPoint.Owner.GetWorldPosition()).Length;
-                        connection.NodeState = AINodeState.Open;
+                        connection.NodeState = AiNodeState.Open;
                         todo.Enqueue(connection);
                     }
 
@@ -71,13 +71,13 @@ namespace Engine.AI
 
             ResetNodes(todo, doneList);
             foundPath = false;
-            return new List<AINode>();
+            return new List<AiNode>();
         }
 
-        private static List<AINode> GeneratePath(AINode endNode)
+        private static List<AiNode> GeneratePath(AiNode endNode)
         {
-            List<AINode> ret = new List<AINode>();
-            AINode current = endNode;
+            List<AiNode> ret = new List<AiNode>();
+            AiNode current = endNode;
             while (current != null)
             {
                 ret.Add(current);
@@ -89,7 +89,7 @@ namespace Engine.AI
         }
 
 
-        private static void ResetNodes(PriorityQueue<AINode> todo, List<AINode> done)
+        private static void ResetNodes(PriorityQueue<AiNode> todo, List<AiNode> done)
         {
             while (todo.Count != 0)
             {
@@ -102,12 +102,12 @@ namespace Engine.AI
             }
         }
 
-        private static void ResetNode(AINode node)
+        private static void ResetNode(AiNode node)
         {
             node.ParentNode = null;
             node.CurrentCost = 0;
             node.EstimatedCost = 0;
-            node.NodeState = AINodeState.Unconsidered;
+            node.NodeState = AiNodeState.Unconsidered;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Engine.IO
         /// </summary>
         private static Dictionary<string, Type> _formats = new Dictionary<string, Type>
         {
-            {".wav", typeof(WAVLoader)}
+            {".wav", typeof(WavLoader)}
         };
 
         /// <summary>

@@ -6,56 +6,56 @@ using Engine.Exceptions;
 
 namespace Engine.AI
 {
-    public class AINode : AbstractComponent, IComparable<AINode>
+    public class AiNode : AbstractComponent, IComparable<AiNode>
     {
-        private readonly List<AINode> Connections;
+        private readonly List<AiNode> connections;
 
 
         public float CurrentCost;
         public float EstimatedCost;
-        public AINodeState NodeState;
+        public AiNodeState NodeState;
 
 
         //Search Specific
-        public AINode ParentNode;
+        public AiNode ParentNode;
         public bool Walkable;
         public float WalkCostMultiplier = 1;
 
-        public AINode(bool walkable)
+        public AiNode(bool walkable)
         {
-            Connections = new List<AINode>();
+            connections = new List<AiNode>();
             Walkable = walkable;
         }
 
         public float TotalCost => CurrentCost + EstimatedCost;
-        public int ConnectionCount => Connections.Count;
+        public int ConnectionCount => connections.Count;
 
-        public int CompareTo(AINode other)
+        public int CompareTo(AiNode other)
         {
             return TotalCost.CompareTo(other.TotalCost);
         }
 
-        public AINode GetConnection(int index)
+        public AiNode GetConnection(int index)
         {
-            if (index < 0 || index >= Connections.Count)
+            if (index < 0 || index >= connections.Count)
             {
                 Logger.Crash(new ItemNotFoundExeption("AI Node", "Could not find the AI Node at index: " + index),
                     true);
                 return null;
             }
 
-            return Connections[index];
+            return connections[index];
         }
 
-        public void AddConnection(AINode other, bool addReverse = true)
+        public void AddConnection(AiNode other, bool addReverse = true)
         {
-            if (Connections.Contains(other))
+            if (connections.Contains(other))
             {
                 Logger.Log("Connection already established in AI node.", DebugChannel.Warning, 10);
                 return;
             }
 
-            Connections.Add(other);
+            connections.Add(other);
             if (addReverse)
             {
                 other.AddConnection(this, false); //Add the other way around
@@ -63,15 +63,15 @@ namespace Engine.AI
         }
 
 
-        public void RemoveConnection(AINode other, bool removeReverse = true)
+        public void RemoveConnection(AiNode other, bool removeReverse = true)
         {
-            if (!Connections.Contains(other))
+            if (!connections.Contains(other))
             {
                 Logger.Log("Connection not found in AI node.", DebugChannel.Warning, 10);
                 return;
             }
 
-            Connections.Remove(other);
+            connections.Remove(other);
             if (removeReverse)
             {
                 other.RemoveConnection(this, false);

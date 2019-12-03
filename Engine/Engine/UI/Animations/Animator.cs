@@ -7,15 +7,15 @@ namespace Engine.UI.Animations
     public class Animator : AbstractComponent
     {
         private List<Animation> animators = new List<Animation>();
-        protected List<UIElement> Targets = new List<UIElement>();
+        protected List<UiElement> Targets = new List<UiElement>();
 
-        public Animator(List<Animation> animatorList, params UIElement[] targets)
+        public Animator(List<Animation> animatorList, params UiElement[] targets)
         {
             animators = animatorList;
             AddTargets(targets);
         }
 
-        public void AddTargets(params UIElement[] elements)
+        public void AddTargets(params UiElement[] elements)
         {
             for (int i = 0; i < elements.Length; i++)
             {
@@ -23,7 +23,7 @@ namespace Engine.UI.Animations
             }
         }
 
-        public void AddTarget(UIElement target)
+        public void AddTarget(UiElement target)
         {
             Targets.Add(target);
             if (target is Button btn)
@@ -35,7 +35,7 @@ namespace Engine.UI.Animations
             }
         }
 
-        private void RemoveTarget(UIElement target)
+        private void RemoveTarget(UiElement target)
         {
             if (Targets.Contains(target))
             {
@@ -96,7 +96,7 @@ namespace Engine.UI.Animations
             base.Update(deltaTime);
             foreach (Animation animation in animators)
             {
-                foreach (UIElement uiElement in Targets)
+                foreach (UiElement uiElement in Targets)
                 {
                     animation.Update(uiElement, deltaTime);
                 }

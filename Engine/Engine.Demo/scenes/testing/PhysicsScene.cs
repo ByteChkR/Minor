@@ -14,20 +14,20 @@ namespace Engine.Demo.scenes.testing
 {
     public class PhysicsScene : AbstractScene
     {
-        private Mesh Box;
-        private int ObjCount = 1000;
-        private Random Rnd;
-        private Mesh Sphere;
-        private int StaticObjCount = 7500;
-        private Texture Tex;
+        private Mesh box;
+        private int objCount = 1000;
+        private Random rnd;
+        private Mesh sphere;
+        private int staticObjCount = 7500;
+        private Texture tex;
 
         protected override void InitializeScene()
         {
-            Tex = TextureLoader.ColorToTexture(Color.Red);
-            Sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
-            Box = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
+            tex = TextureLoader.ColorToTexture(Color.Red);
+            sphere = MeshLoader.FileToMesh("assets/models/sphere_smooth.obj");
+            box = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
-            Rnd = new Random();
+            rnd = new Random();
 
 
             BasicCamera mainCamera =
@@ -47,41 +47,41 @@ namespace Engine.Demo.scenes.testing
             Collider c = new Collider(new Box(Vector3.Zero, 1000, 100, 1000), "physics");
             ground.AddComponent(c);
             MeshRendererComponent mrc =
-                new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Box,
+                new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, box,
                     TextureLoader.ColorToTexture(Color.Blue), 1);
             ground.AddComponent(mrc);
             Add(ground);
             ground.Scale = new Vector3(500, 50, 500);
             ground.LocalPosition = new Vector3(0, -150, 0);
 
-            for (int i = 0; i < StaticObjCount; i++)
+            for (int i = 0; i < staticObjCount; i++)
             {
                 GameObject obj = new GameObject("StaticColl");
                 Collider objColl = new Collider(new Sphere(Vector3.Zero, 1), "physics");
                 obj.AddComponent(objColl);
                 LitMeshRendererComponent objMrc =
-                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Sphere,
+                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, sphere,
                         TextureLoader.ColorToTexture(Color.Green), 1);
                 obj.AddComponent(objMrc);
                 Add(obj);
-                obj.LocalPosition = new Vector3((float) (Rnd.NextDouble() * 100 - 50),
-                    (float) (Rnd.NextDouble() * 25 + 1), (float) (Rnd.NextDouble() * 100 - 50));
+                obj.LocalPosition = new Vector3((float) (rnd.NextDouble() * 100 - 50),
+                    (float) (rnd.NextDouble() * 25 + 1), (float) (rnd.NextDouble() * 100 - 50));
             }
 
 
-            for (int i = 0; i < ObjCount; i++)
+            for (int i = 0; i < objCount; i++)
             {
                 GameObject obj = new GameObject("DynamicColl");
-                Collider objColl = new Collider(new Box(Vector3.Zero, 2, 2, 2, (float) Rnd.NextDouble() * 2 + 1),
+                Collider objColl = new Collider(new Box(Vector3.Zero, 2, 2, 2, (float) rnd.NextDouble() * 2 + 1),
                     "physics");
                 obj.AddComponent(objColl);
                 LitMeshRendererComponent objMrc =
-                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, Box,
+                    new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, box,
                         TextureLoader.ColorToTexture(Color.Red), 1);
                 obj.AddComponent(objMrc);
                 Add(obj);
-                obj.LocalPosition = new Vector3((float) (Rnd.NextDouble() * 100 - 50),
-                    (float) (Rnd.NextDouble() * 10 + 25), (float) (Rnd.NextDouble() * 100 - 50));
+                obj.LocalPosition = new Vector3((float) (rnd.NextDouble() * 100 - 50),
+                    (float) (rnd.NextDouble() * 10 + 25), (float) (rnd.NextDouble() * 100 - 50));
             }
 
             GameObject helper = new GameObject("SceneHelper");

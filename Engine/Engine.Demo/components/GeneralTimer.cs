@@ -5,23 +5,23 @@ namespace Engine.Demo.components
 {
     public class GeneralTimer : AbstractComponent
     {
-        private float _destroyTime;
-        private Action _onTrigger;
-        private float _time;
+        private float destroyTime;
+        private Action onTrigger;
+        private float time;
 
         public GeneralTimer(float destroyTime, Action onTrigger)
         {
-            _destroyTime = destroyTime;
-            _onTrigger = onTrigger;
+            this.destroyTime = destroyTime;
+            this.onTrigger = onTrigger;
         }
 
 
         protected override void Update(float deltaTime)
         {
-            _time += deltaTime;
-            if (_time >= _destroyTime)
+            time += deltaTime;
+            if (time >= destroyTime)
             {
-                _onTrigger?.Invoke();
+                onTrigger?.Invoke();
             }
         }
     }

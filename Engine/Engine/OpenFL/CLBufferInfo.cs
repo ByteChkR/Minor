@@ -5,7 +5,7 @@ namespace Engine.OpenFL
     /// <summary>
     /// Wrapper for the Memory Buffer holding some useful additional data
     /// </summary>
-    public class CLBufferInfo
+    public class ClBufferInfo
     {
         /// <summary>
         /// The buffer
@@ -17,7 +17,7 @@ namespace Engine.OpenFL
         /// </summary>
         /// <param name="buffer">The inner buffer</param>
         /// <param name="isInternal">a flag indicating if the buffer is for internal use</param>
-        internal CLBufferInfo(MemoryBuffer buffer, bool isInternal)
+        internal ClBufferInfo(MemoryBuffer buffer, bool isInternal)
         {
             IsInternal = isInternal;
             Buffer = buffer;

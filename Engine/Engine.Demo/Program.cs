@@ -114,7 +114,7 @@ namespace Engine.Demo
 
 
             engine.Initialize();
-            engine.InitializeScene<FLDemoScene>();
+            engine.InitializeScene<FlDemoScene>();
             engine.Run();
         }
     }

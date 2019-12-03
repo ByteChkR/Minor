@@ -7,7 +7,7 @@ namespace Engine.AssetPackaging
     {
         public int Length;
         public int Offset;
-        public int PackageID;
+        public int PackageId;
         public int PackageSize;
         public AssetPackageType PackageType;
         public string Path;
@@ -26,7 +26,7 @@ namespace Engine.AssetPackaging
 
         public override string ToString()
         {
-            return $"Path: {Path}, PID: {PackageID}, Offset: {Offset}, Length: {Length}";
+            return $"Path: {Path}, PID: {PackageId}, Offset: {Offset}, Length: {Length}";
         }
     }
 }

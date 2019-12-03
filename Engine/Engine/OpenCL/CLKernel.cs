@@ -13,7 +13,7 @@ namespace Engine.OpenCL
     /// </summary>
     public class CLKernel
     {
-        private CLAPI _instance;
+        private Clapi _instance;
 
         /// <summary>
         /// Constructor
@@ -21,7 +21,7 @@ namespace Engine.OpenCL
         /// <param name="k">The Compiled and Linked Kernel</param>
         /// <param name="name">The name of the kernel</param>
         /// <param name="parameter">The parsed KernelParameter</param>
-        public CLKernel(CLAPI instance, Kernel k, string name, KernelParameter[] parameter)
+        public CLKernel(Clapi instance, Kernel k, string name, KernelParameter[] parameter)
         {
             _instance = instance;
             Kernel = k;

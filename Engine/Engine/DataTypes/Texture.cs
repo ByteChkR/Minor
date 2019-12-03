@@ -12,10 +12,10 @@ namespace Engine.DataTypes
         /// <summary>
         /// Private flag to keep from disposing the texture twice
         /// </summary>
-        private bool _disposed;
+        private bool disposed;
 
-        private bool _dontDispose;
-        private long bytes;
+        private bool dontDispose;
+        private readonly long bytes;
 
         /// <summary>
         /// Internal Constructor to Create a Texture Object from a GL Texture Handle
@@ -72,13 +72,13 @@ namespace Engine.DataTypes
         /// </summary>
         public void Dispose()
         {
-            if (_disposed || _dontDispose)
+            if (disposed || dontDispose)
             {
                 return;
             }
 
-            EngineStatisticsManager.GLObjectDestroyed(bytes);
-            _disposed = true;
+            EngineStatisticsManager.GlObjectDestroyed(bytes);
+            disposed = true;
             GL.DeleteTexture(TextureId);
         }
 
@@ -92,7 +92,7 @@ namespace Engine.DataTypes
         {
             return new Texture(TextureId, bytes)
             {
-                _dontDispose = true
+                dontDispose = true
             };
         }
     }

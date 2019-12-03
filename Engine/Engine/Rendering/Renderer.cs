@@ -24,12 +24,12 @@ namespace Engine.Rendering
         /// <summary>
         ///  A list of render targets
         /// </summary>
-        private readonly List<RenderTarget> Targets = new List<RenderTarget>();
+        private readonly List<RenderTarget> targets = new List<RenderTarget>();
 
         /// <summary>
         /// The Clear color of the two standard Render targets(World/UI)
         /// </summary>
-        private Color _clearColor = Color.FromArgb(0, 0, 0, 0);
+        private Color clearColor = Color.FromArgb(0, 0, 0, 0);
 
         /// <summary>
         /// Default Render Target(Game World)
@@ -52,11 +52,12 @@ namespace Engine.Rendering
             GL.Enable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
-            rt = new RenderTarget(null, 1, _clearColor);
-            rt.MergeType = RenderTargetMergeType.Additive;
+            rt = new RenderTarget(null, 1, clearColor) {MergeType = RenderTargetMergeType.Additive};
             AddRenderTarget(rt);
-            rt1 = new RenderTarget(new ScreenCamera(), 1 << 30, _clearColor);
-            rt1.MergeType = RenderTargetMergeType.Additive;
+            rt1 = new RenderTarget(new ScreenCamera(), 1 << 30, clearColor)
+            {
+                MergeType = RenderTargetMergeType.Additive
+            };
             AddRenderTarget(rt1);
         }
 
@@ -72,10 +73,10 @@ namespace Engine.Rendering
         {
             set
             {
-                _clearColor = value;
-                rt1.ClearColor = rt.ClearColor = _clearColor;
+                clearColor = value;
+                rt1.ClearColor = rt.ClearColor = clearColor;
             }
-            get => _clearColor;
+            get => clearColor;
         }
 
         /// <summary>
@@ -84,8 +85,8 @@ namespace Engine.Rendering
         /// <param name="target">The Target to Add</param>
         public void AddRenderTarget(RenderTarget target)
         {
-            Targets.Add(target);
-            Targets.Sort();
+            targets.Add(target);
+            targets.Sort();
         }
 
         /// <summary>
@@ -94,12 +95,12 @@ namespace Engine.Rendering
         /// <param name="target">The Target to Remove</param>
         public void RemoveRenderTarget(RenderTarget target)
         {
-            for (int i = Targets.Count - 1; i >= 0; i--)
+            for (int i = targets.Count - 1; i >= 0; i--)
             {
-                RenderTarget renderTarget = Targets[i];
+                RenderTarget renderTarget = targets[i];
                 if (renderTarget.FrameBuffer == target.FrameBuffer)
                 {
-                    Targets.RemoveAt(i);
+                    targets.RemoveAt(i);
                 }
             }
         }
@@ -114,20 +115,20 @@ namespace Engine.Rendering
         /// <returns>A sorted list of renderer contexts</returns>
         private static List<RenderingComponent> CreateRenderQueue(int renderTarget, Matrix4 view, RenderType type)
         {
-            List<RenderingComponent> Contexts = new List<RenderingComponent>();
+            List<RenderingComponent> contexts = new List<RenderingComponent>();
             foreach (GameObject renderer in GameObject.ObjsWithAttachedRenderers)
             {
                 RenderingComponent context = renderer.RenderingComponent;
                 if (MaskHelper.IsContainedInMask(renderer.RenderingComponent.RenderQueue, renderTarget, false) &&
                     context.RenderType == type)
                 {
-                    context.PrecalculateMV(view);
-                    Contexts.Add(context);
+                    context.PrecalculateMv(view);
+                    contexts.Add(context);
                 }
             }
 
-            Contexts.Sort();
-            return Contexts;
+            contexts.Sort();
+            return contexts;
         }
 
         /// <summary>
@@ -140,11 +141,11 @@ namespace Engine.Rendering
 
 
             MemoryTracer.AddSubStage("Render Target loop");
-            for (int i = 0; i < Targets.Count; i++)
+            for (int i = 0; i < targets.Count; i++)
             {
                 MemoryTracer.NextStage("Rendering Render Target: " + i);
                 CurrentTarget = i;
-                RenderTarget target = Targets[i];
+                RenderTarget target = targets[i];
 
                 ICamera c = target.PassCamera ?? scene.Camera;
 
@@ -159,11 +160,11 @@ namespace Engine.Rendering
 
                     Matrix4 vmat = c.ViewMatrix;
 
-                    List<RenderingComponent> _opaque = CreateRenderQueue(target.PassMask, vmat, RenderType.Opaque);
-                    Render(_opaque, vmat, c);
-                    List<RenderingComponent> _transparent =
+                    List<RenderingComponent> opaque = CreateRenderQueue(target.PassMask, vmat, RenderType.Opaque);
+                    Render(opaque, vmat, c);
+                    List<RenderingComponent> transparent =
                         CreateRenderQueue(target.PassMask, vmat, RenderType.Transparent);
-                    Render(_transparent, vmat, c);
+                    Render(transparent, vmat, c);
 
 
                     GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
@@ -173,7 +174,7 @@ namespace Engine.Rendering
             MemoryTracer.ReturnFromSubStage();
 
             
-            RenderTargetMergeStage.MergeAndDisplayTargets(Targets.Where(x => x.MergeType != RenderTargetMergeType.None)
+            RenderTargetMergeStage.MergeAndDisplayTargets(targets.Where(x => x.MergeType != RenderTargetMergeType.None)
                 .ToList());
         }
 

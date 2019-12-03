@@ -23,17 +23,17 @@ namespace Engine.Core
         /// <summary>
         /// Private flag if the there is a scene change in progress
         /// </summary>
-        private bool _changeScene;
+        private bool changeScene;
 
         /// <summary>
         /// The Next scene to be initialized
         /// </summary>
-        private Type _nextScene;
+        private Type nextScene;
 
         /// <summary>
         /// An internal update frame counter
         /// </summary>
-        private int FrameCounter;
+        private int frameCounter;
 
         /// <summary>
         /// Renderer Instance
@@ -43,12 +43,12 @@ namespace Engine.Core
         /// <summary>
         /// An internal render frame counter
         /// </summary>
-        private int RenderFrameCounter;
+        private int renderFrameCounter;
 
         /// <summary>
         /// The Window used to render
         /// </summary>
-        private GameWindow Window;
+        private GameWindow window;
 
         /// <summary>
         /// Public constructor
@@ -58,7 +58,7 @@ namespace Engine.Core
         {
             Instance = this;
 
-            TextProcessorAPI.PPCallback = new PPIOCallbacks();
+            TextProcessorApi.PpCallback = new PPIOCallbacks();
 
             if (settings != null)
             {
@@ -68,10 +68,10 @@ namespace Engine.Core
             ManifestReader.RegisterAssembly(Assembly.GetExecutingAssembly());
         }
 
-        public bool HasFocus => Window.Focused;
-        public Vector2 WindowPosition => new Vector2(Window.Location.X, Window.Location.Y);
+        public bool HasFocus => window.Focused;
+        public Vector2 WindowPosition => new Vector2(window.Location.X, window.Location.Y);
 
-        public EventSystem UISystem { get; private set; }
+        public EventSystem UiSystem { get; private set; }
 
         /// <summary>
         /// The Settings the engine has been started with
@@ -91,15 +91,15 @@ namespace Engine.Core
         /// <summary>
         /// Window Width
         /// </summary>
-        public int Width => Window.Width;
+        public int Width => window.Width;
 
         /// <summary>
         /// Window Height
         /// </summary>
-        public int Height => Window.Height;
+        public int Height => window.Height;
 
         public Vector2 WindowSize => new Vector2(Width, Height);
-        public IWindowInfo WindowInfo => Window.WindowInfo;
+        public IWindowInfo WindowInfo => window.WindowInfo;
 
         /// <summary>
         /// Property that returns the current AspectRatio
@@ -118,7 +118,7 @@ namespace Engine.Core
 
         public void MakeCurrent()
         {
-            Window.MakeCurrent();
+            window.MakeCurrent();
         }
 
         public void SetSettings(EngineSettings settings)
@@ -140,7 +140,7 @@ namespace Engine.Core
             AudioManager.Initialize();
 
             PhysicsEngine.Initialize();
-            UISystem = new EventSystem();
+            UiSystem = new EventSystem();
         }
 
 
@@ -153,17 +153,17 @@ namespace Engine.Core
             Logger.Log(
                 $"Width: {Settings.InitWidth} Height: {Settings.InitHeight}, Title: {Settings.Title}, FSAA Samples: {Settings.Mode.Samples}, Physics Threads: {Settings.PhysicsThreadCount}",
                 DebugChannel.Log | DebugChannel.EngineCore, 9);
-            Window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title,
+            window = new GameWindow(Settings.InitWidth, Settings.InitHeight, Settings.Mode, Settings.Title,
                 Settings.WindowFlags);
 
             #region WindowHandles
 
-            Input.Initialize(Window);
-            Window.UpdateFrame += Update;
-            Window.Resize += OnResize;
-            Window.KeyDown += GameObject._KeyDown;
-            Window.KeyUp += GameObject._KeyUp;
-            Window.KeyPress += GameObject._KeyPress;
+            Input.Initialize(window);
+            window.UpdateFrame += Update;
+            window.Resize += OnResize;
+            window.KeyDown += GameObject._KeyDown;
+            window.KeyUp += GameObject._KeyUp;
+            window.KeyPress += GameObject._KeyPress;
             AppDomain.CurrentDomain.ProcessExit += CurrentDomainOnProcessExit;
 
             #endregion
@@ -171,7 +171,7 @@ namespace Engine.Core
 
         public void Exit()
         {
-            Window.Close();
+            window.Close();
         }
 
         private void CurrentDomainOnProcessExit(object sender, EventArgs e)
@@ -189,8 +189,8 @@ namespace Engine.Core
 
             Logger.Log("Initializing Renderer..", DebugChannel.Log | DebugChannel.EngineCore, 10);
             Renderer = new Renderer();
-            Window.RenderFrame += OnRender;
-            Window.MouseMove += Window_MouseMove;
+            window.RenderFrame += OnRender;
+            window.MouseMove += Window_MouseMove;
         }
 
         /// <summary>
@@ -219,8 +219,8 @@ namespace Engine.Core
                 return;
             }
 
-            _changeScene = true;
-            _nextScene = sceneType;
+            changeScene = true;
+            nextScene = sceneType;
             Logger.Log("Initializing Scene..", DebugChannel.Log | DebugChannel.EngineCore, 9);
         }
 
@@ -248,8 +248,8 @@ namespace Engine.Core
         public void Run()
         {
             Logger.Log("Running GameEngine Loop..", DebugChannel.Log | DebugChannel.EngineCore, 10);
-            Window.VSync = VSyncMode.Off;
-            Window.Run(0, 0);
+            window.VSync = VSyncMode.Off;
+            window.Run(0, 0);
         }
 
         /// <summary>
@@ -309,12 +309,12 @@ namespace Engine.Core
         /// <param name="e"></param>
         protected virtual void Update(object sender, FrameEventArgs e)
         {
-            FrameCounter++;
+            frameCounter++;
 
-            MemoryTracer.NextStage("Update Frame: " + FrameCounter);
+            MemoryTracer.NextStage("Update Frame: " + frameCounter);
 
 
-            UISystem.Update();
+            UiSystem.Update();
 
             MemoryTracer.AddSubStage("Scene Update");
             CurrentScene?.Update((float) e.Time);
@@ -327,10 +327,10 @@ namespace Engine.Core
             MemoryTracer.NextStage("ThreadManager Update");
             ThreadManager.CheckManagerStates();
 
-            if (_changeScene)
+            if (changeScene)
             {
                 MemoryTracer.NextStage("Scene Intialization");
-                _changeScene = false;
+                changeScene = false;
 
 
                 MemoryTracer.AddSubStage("Removing Old Scene");
@@ -346,7 +346,7 @@ namespace Engine.Core
 
                 MemoryTracer.NextStage("Create New Scene");
 
-                CurrentScene = (AbstractScene) Activator.CreateInstance(_nextScene);
+                CurrentScene = (AbstractScene) Activator.CreateInstance(nextScene);
 
                 MemoryTracer.NextStage("Initialize New Scene");
 
@@ -369,7 +369,7 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnResize(object o, EventArgs e)
         {
-            GL.Viewport(0, 0, Window.Width, Window.Height);
+            GL.Viewport(0, 0, window.Width, window.Height);
         }
 
         /// <summary>
@@ -379,9 +379,9 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void OnRender(object o, FrameEventArgs e)
         {
-            RenderFrameCounter++;
+            renderFrameCounter++;
 
-            MemoryTracer.NextStage("Render Frame: " + RenderFrameCounter);
+            MemoryTracer.NextStage("Render Frame: " + renderFrameCounter);
 
             MemoryTracer.AddSubStage("Rendering Render Targets");
 
@@ -389,7 +389,7 @@ namespace Engine.Core
 
             MemoryTracer.NextStage("Swapping Window Buffers");
 
-            Window.SwapBuffers();
+            window.SwapBuffers();
 
             EngineStatisticsManager.Render((float) e.Time);
 

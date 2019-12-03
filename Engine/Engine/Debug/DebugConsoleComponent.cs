@@ -38,104 +38,104 @@ namespace Engine.Debug
         /// <summary>
         /// The maximum time the cursor stays idle before changing its visible state.
         /// </summary>
-        private readonly float _blinkMaxTime = 0.5f;
+        private readonly float blinkMaxTime = 0.5f;
 
         /// <summary>
         /// A list used to store previous inputs from the user
         /// To provide a more "console~ish" feel
         /// </summary>
-        private readonly List<string> _commandHistory = new List<string>();
+        private readonly List<string> commandHistory = new List<string>();
 
         /// <summary>
         /// Internal List of Commands
         /// </summary>
-        private readonly Dictionary<string, ConsoleCommand> _commands = new Dictionary<string, ConsoleCommand>();
+        private readonly Dictionary<string, ConsoleCommand> commands = new Dictionary<string, ConsoleCommand>();
 
         /// <summary>
         /// Reference to the Background Image Renderer Component
         /// </summary>
-        private UIImageRendererComponent _bgImage;
+        private UiImageRendererComponent bgImage;
 
         /// <summary>
         /// If the Text Cursor will be shown
         /// </summary>
-        private bool _blinkActive;
+        private bool blinkActive;
 
         /// <summary>
         /// The current time for the blinking
         /// </summary>
-        private float _blinkTime;
+        private float blinkTime;
 
         /// <summary>
         /// Reference to the Console Input Renderer Component
         /// </summary>
-        private UITextRendererComponent _consoleInput;
+        private UiTextRendererComponent consoleInput;
 
         /// <summary>
         /// Queue that is storing the Log Text
         /// </summary>
-        private Queue<string> _consoleOutBuffer;
+        private Queue<string> consoleOutBuffer;
 
         /// <summary>
         /// Reference to the Console Output Renderer Component
         /// </summary>
-        private UITextRendererComponent _consoleOutput;
+        private UiTextRendererComponent consoleOutput;
 
         /// <summary>
         /// Reference to the Console output background Renderer Component
         /// </summary>
-        private UIImageRendererComponent _consoleOutputImage;
+        private UiImageRendererComponent consoleOutputImage;
 
         /// <summary>
         /// The current Index in the command history
         /// </summary>
-        private int _currentId;
+        private int currentId;
 
         /// <summary>
         /// The Graph component
         /// </summary>
-        private GraphDrawingComponent _graph;
+        private GraphDrawingComponent graph;
 
         /// <summary>
         /// the Graph data stored.
         /// </summary>
-        private Queue<float> _graphData;
+        private Queue<float> graphData;
 
         /// <summary>
         /// Reference to the Hint Text Renderer Component
         /// </summary>
-        private UITextRendererComponent _hintText;
+        private UiTextRendererComponent hintText;
 
         /// <summary>
         /// Flag used to indicate that the console window has changed and we need to redraw it
         /// </summary>
-        private bool _invalidate;
+        private bool invalidate;
 
         /// <summary>
         /// The Maximum amount of graph data stored
         /// </summary>
-        private int _maxGraphCount = 1600;
+        private readonly int maxGraphCount = 1600;
 
         /// <summary>
         /// String builder used for outputs to the console.
         /// </summary>
-        private StringBuilder _outSB;
+        private StringBuilder outSb;
 
         /// <summary>
         /// String builder used for inputs from the used
         /// </summary>
-        private StringBuilder _sb;
+        private StringBuilder sb;
 
         /// <summary>
         /// Flag to show/disable the console
         /// Also disables character input
         /// </summary>
-        private bool _showConsole;
+        private bool showConsole;
 
         /// <summary>
         /// Reference to the Title Renderer Component
         /// </summary>
-        private UITextRendererComponent _title;
+        private UiTextRendererComponent title;
 
         private int fps;
         private float frames;
@@ -170,93 +170,93 @@ namespace Engine.Debug
             GameObject obj = new GameObject("Console");
             GameObject _in = new GameObject("ConsoleInput");
             GameObject _out = new GameObject("ConsoleOutput");
-            GameObject _titleObj = new GameObject("Title");
-            GameObject _bgObj = new GameObject("BackgroundImage");
-            GameObject _bgOutObj = new GameObject("BackgroundOutputImage");
-            GameObject _hint = new GameObject("HintText");
-            GameObject _graph = new GameObject("Graph");
+            GameObject titleObj = new GameObject("Title");
+            GameObject bgObj = new GameObject("BackgroundImage");
+            GameObject bgOutObj = new GameObject("BackgroundOutputImage");
+            GameObject hint = new GameObject("HintText");
+            GameObject graph = new GameObject("Graph");
 
             obj.Add(_in);
             obj.Add(_out);
-            obj.Add(_titleObj);
-            obj.Add(_bgObj);
-            obj.Add(_hint);
-            obj.Add(_bgOutObj);
-            obj.Add(_graph);
+            obj.Add(titleObj);
+            obj.Add(bgObj);
+            obj.Add(hint);
+            obj.Add(bgOutObj);
+            obj.Add(graph);
 
             Bitmap bmp = new Bitmap(1, 1);
             bmp.SetPixel(0, 0, Color.Black);
 
-            UIImageRendererComponent _bgImage =
-                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f,
-                    DefaultFilepaths.DefaultUIImageShader);
+            UiImageRendererComponent bgImage =
+                new UiImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.65f,
+                    DefaultFilepaths.DefaultUiImageShader);
 
-            UIImageRendererComponent _bgOutImage =
-                new UIImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.4f,
-                    DefaultFilepaths.DefaultUIImageShader);
+            UiImageRendererComponent bgOutImage =
+                new UiImageRendererComponent(TextureLoader.BitmapToTexture(bmp), false, 0.4f,
+                    DefaultFilepaths.DefaultUiImageShader);
 
 
-            UITextRendererComponent _tText =
-                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
-                    DefaultFilepaths.DefaultUITextShader)
+            UiTextRendererComponent tText =
+                new UiTextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUiTextShader)
                 {
                     Text = "GameEngine Console:"
                 };
-            UITextRendererComponent _tHint =
-                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
-                    DefaultFilepaths.DefaultUITextShader)
+            UiTextRendererComponent tHint =
+                new UiTextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUiTextShader)
                 {
                     Text = "GameEngine Console:"
                 };
 
-            UITextRendererComponent _tIn =
-                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
-                    DefaultFilepaths.DefaultUITextShader)
+            UiTextRendererComponent tIn =
+                new UiTextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUiTextShader)
                 {
                     Text = ""
                 };
 
-            UITextRendererComponent _tOut =
-                new UITextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
-                    DefaultFilepaths.DefaultUITextShader)
+            UiTextRendererComponent tOut =
+                new UiTextRendererComponent(DefaultFilepaths.DefaultFont, false, 1f,
+                    DefaultFilepaths.DefaultUiTextShader)
                 {
                     Text = "Console Initialized.."
                 };
 
-            GraphDrawingComponent _gDraw = new GraphDrawingComponent(DefaultFilepaths.DefaultUIGraphShader, false, 1f);
+            GraphDrawingComponent gDraw = new GraphDrawingComponent(DefaultFilepaths.DefaultUiGraphShader, false, 1f);
 
-            _bgOutObj.AddComponent(_bgOutImage);
-            _bgObj.AddComponent(_bgImage);
-            _graph.AddComponent(_gDraw);
-            _in.AddComponent(_tIn);
-            _out.AddComponent(_tOut);
-            _titleObj.AddComponent(_tText);
-            _hint.AddComponent(_tHint);
+            bgOutObj.AddComponent(bgOutImage);
+            bgObj.AddComponent(bgImage);
+            graph.AddComponent(gDraw);
+            _in.AddComponent(tIn);
+            _out.AddComponent(tOut);
+            titleObj.AddComponent(tText);
+            hint.AddComponent(tHint);
 
-            _gDraw.Scale = new Vector2(0.5f, 0.5f);
-            _gDraw.Position = new Vector2(0.5f);
-            _gDraw.Points = new[]
+            gDraw.Scale = new Vector2(0.5f, 0.5f);
+            gDraw.Position = new Vector2(0.5f);
+            gDraw.Points = new[]
             {
                 new Vector2(0f, 0f),
                 new Vector2(1f, 1f)
             };
 
-            _tText.Position = new Vector2(-0.39f, 0.353f) * 2;
-            _tText.Scale = new Vector2(2f, 2f);
+            tText.Position = new Vector2(-0.39f, 0.353f) * 2;
+            tText.Scale = new Vector2(2f, 2f);
 
-            _tOut.Position = new Vector2(-0.33f, 0.31f) * 2;
-            _tOut.Scale = new Vector2(0.8f, 0.8f);
+            tOut.Position = new Vector2(-0.33f, 0.31f) * 2;
+            tOut.Scale = new Vector2(0.8f, 0.8f);
 
-            _tIn.Position = new Vector2(-0.39f, -0.39f) * 2;
-            _tIn.Scale = new Vector2(1.5f, 1.5f);
-
-
-            _tHint.Position = new Vector2(-0.46f, -0.46f) * 2;
-            _tHint.Scale = new Vector2(1.5f, 1.5f);
+            tIn.Position = new Vector2(-0.39f, -0.39f) * 2;
+            tIn.Scale = new Vector2(1.5f, 1.5f);
 
 
-            _bgImage.Scale = new Vector2(0.8f);
-            _bgOutImage.Scale = new Vector2(0.7f);
+            tHint.Position = new Vector2(-0.46f, -0.46f) * 2;
+            tHint.Scale = new Vector2(1.5f, 1.5f);
+
+
+            bgImage.Scale = new Vector2(0.8f);
+            bgOutImage.Scale = new Vector2(0.7f);
 
             obj.AddComponent(new DebugConsoleComponent());
             return obj;
@@ -267,15 +267,15 @@ namespace Engine.Debug
         /// </summary>
         private void UpdateGraph()
         {
-            Vector2[] pts = new Vector2[_graphData.Count];
-            float[] _pts = _graphData.ToArray();
-            float xInc = 1f / pts.Length;
-            for (int i = 0; i < pts.Length; i++)
+            Vector2[] graphPoints = new Vector2[graphData.Count];
+            float[] serializedComponents = graphData.ToArray();
+            float xInc = 1f / graphPoints.Length;
+            for (int i = 0; i < graphPoints.Length; i++)
             {
-                pts[i] = new Vector2(xInc * i, _pts[i]);
+                graphPoints[i] = new Vector2(xInc * i, serializedComponents[i]);
             }
 
-            _graph.Points = pts;
+            graph.Points = graphPoints;
         }
 
 
@@ -285,10 +285,10 @@ namespace Engine.Debug
         /// <param name="yValue"></param>
         public void AddGraphValue(float yValue)
         {
-            _graphData.Enqueue(yValue);
-            while (_graphData.Count >= _maxGraphCount)
+            graphData.Enqueue(yValue);
+            while (graphData.Count >= maxGraphCount)
             {
-                _graphData.Dequeue();
+                graphData.Dequeue();
             }
 
             UpdateGraph();
@@ -303,12 +303,12 @@ namespace Engine.Debug
             string[] arr = text.Split('\n', StringSplitOptions.RemoveEmptyEntries);
             foreach (string s in arr)
             {
-                _consoleOutBuffer.Enqueue(s);
+                consoleOutBuffer.Enqueue(s);
             }
 
-            while (_consoleOutBuffer.Count > MaxConsoleLines)
+            while (consoleOutBuffer.Count > MaxConsoleLines)
             {
-                _consoleOutBuffer.Dequeue();
+                consoleOutBuffer.Dequeue();
             }
         }
 
@@ -319,14 +319,14 @@ namespace Engine.Debug
         /// <returns></returns>
         private string ToConsoleText()
         {
-            _outSB.Clear();
+            outSb.Clear();
 
-            foreach (string line in _consoleOutBuffer)
+            foreach (string line in consoleOutBuffer)
             {
-                _outSB.Append(line + "\n");
+                outSb.Append(line + "\n");
             }
 
-            return _outSB.ToString();
+            return outSb.ToString();
         }
 
         /// <summary>
@@ -334,21 +334,21 @@ namespace Engine.Debug
         /// </summary>
         protected override void Awake()
         {
-            _graphData = new Queue<float>();
+            graphData = new Queue<float>();
             MemoryTracer.SetDebugComponent(this);
-            _consoleOutBuffer = new Queue<string>();
-            _consoleOutBuffer.Enqueue("Console Initialized..");
-            _title = Owner.GetChildWithName("Title").GetComponent<UITextRendererComponent>();
-            _consoleInput = Owner.GetChildWithName("ConsoleInput").GetComponent<UITextRendererComponent>();
-            _consoleOutput = Owner.GetChildWithName("ConsoleOutput").GetComponent<UITextRendererComponent>();
-            _bgImage = Owner.GetChildWithName("BackgroundImage").GetComponent<UIImageRendererComponent>();
-            _hintText = Owner.GetChildWithName("HintText").GetComponent<UITextRendererComponent>();
-            _graph = Owner.GetChildWithName("Graph").GetComponent<GraphDrawingComponent>();
-            _graph.Enabled = false;
-            _consoleOutputImage =
-                Owner.GetChildWithName("BackgroundOutputImage").GetComponent<UIImageRendererComponent>();
-            _sb = new StringBuilder();
-            _outSB = new StringBuilder();
+            consoleOutBuffer = new Queue<string>();
+            consoleOutBuffer.Enqueue("Console Initialized..");
+            title = Owner.GetChildWithName("Title").GetComponent<UiTextRendererComponent>();
+            consoleInput = Owner.GetChildWithName("ConsoleInput").GetComponent<UiTextRendererComponent>();
+            consoleOutput = Owner.GetChildWithName("ConsoleOutput").GetComponent<UiTextRendererComponent>();
+            bgImage = Owner.GetChildWithName("BackgroundImage").GetComponent<UiImageRendererComponent>();
+            hintText = Owner.GetChildWithName("HintText").GetComponent<UiTextRendererComponent>();
+            graph = Owner.GetChildWithName("Graph").GetComponent<GraphDrawingComponent>();
+            graph.Enabled = false;
+            consoleOutputImage =
+                Owner.GetChildWithName("BackgroundOutputImage").GetComponent<UiImageRendererComponent>();
+            sb = new StringBuilder();
+            outSb = new StringBuilder();
             AddCommand("help", cmd_ListCmds);
             AddCommand("h", cmd_ListCmds);
             AddCommand("q", cmd_Exit);
@@ -356,9 +356,9 @@ namespace Engine.Debug
             AddCommand("quit", cmd_Exit);
             AddCommand("cls", cmd_Clear);
             AddCommand("clear", cmd_Clear);
-            AddCommand("lmem", MemoryTracer.cmdListMemoryInfo);
-            AddCommand("llmem", MemoryTracer.cmdListLastMemoryInfo);
-            AddCommand("cmd", cmdExOnConsole);
+            AddCommand("lmem", MemoryTracer.CmdListMemoryInfo);
+            AddCommand("llmem", MemoryTracer.CmdListLastMemoryInfo);
+            AddCommand("cmd", CmdExOnConsole);
             AddCommand("tg", cmd_ToggleGraph);
             AddCommand("togglegraph", cmd_ToggleGraph);
         }
@@ -371,8 +371,8 @@ namespace Engine.Debug
         /// <returns>Result of Command</returns>
         private string cmd_ToggleGraph(string[] args)
         {
-            _graph.Enabled = !_graph.Enabled;
-            return "Enabled Graph: " + _graph.Enabled;
+            graph.Enabled = !graph.Enabled;
+            return "Enabled Graph: " + graph.Enabled;
         }
 
         /// <summary>
@@ -394,7 +394,7 @@ namespace Engine.Debug
         /// <returns>Result of Command</returns>
         private string cmd_Clear(string[] args)
         {
-            _consoleOutBuffer.Clear();
+            consoleOutBuffer.Clear();
             return "Cleared Output";
         }
 
@@ -407,26 +407,26 @@ namespace Engine.Debug
         /// <returns>Result of Command</returns>
         private string cmd_ListCmds(string[] args)
         {
-            _sb.Clear();
-            _sb.Append("Commands:");
+            sb.Clear();
+            sb.Append("Commands:");
             int col = 10;
             int count = 0;
-            foreach (KeyValuePair<string, ConsoleCommand> consoleCommand in _commands)
+            foreach (KeyValuePair<string, ConsoleCommand> consoleCommand in commands)
             {
                 count++;
                 if (count % col == 0)
                 {
-                    _sb.Append("\n ");
+                    sb.Append("\n ");
                 }
                 else
                 {
-                    _sb.Append("   ");
+                    sb.Append("   ");
                 }
 
-                _sb.Append(consoleCommand.Key);
+                sb.Append(consoleCommand.Key);
             }
 
-            return _sb.ToString();
+            return sb.ToString();
         }
 
         /// <summary>
@@ -436,9 +436,9 @@ namespace Engine.Debug
         /// <param name="command">The Command associated with the Name</param>
         public void AddCommand(string name, ConsoleCommand command)
         {
-            if (!_commands.ContainsKey(name))
+            if (!commands.ContainsKey(name))
             {
-                _commands.Add(name, command);
+                commands.Add(name, command);
             }
         }
 
@@ -449,22 +449,22 @@ namespace Engine.Debug
         /// <param name="e">Contains info about the KeyPress that has been occured</param>
         protected override void OnKeyPress(object sender, KeyPressEventArgs e)
         {
-            if (_showConsole)
+            if (showConsole)
             {
-                if (inputIndex >= _sb.Length)
+                if (inputIndex >= sb.Length)
                 {
-                    _sb.Append(e.KeyChar);
+                    sb.Append(e.KeyChar);
                 }
                 else
                 {
-                    _sb.Insert(inputIndex, e.KeyChar);
+                    sb.Insert(inputIndex, e.KeyChar);
                 }
 
                 inputIndex++;
 
-                _invalidate = true;
+                invalidate = true;
 
-                _currentId = _commandHistory.Count;
+                currentId = commandHistory.Count;
             }
         }
 
@@ -475,7 +475,7 @@ namespace Engine.Debug
         /// </summary>
         /// <param name="args">argument to redirect & parameters passed to the argument</param>
         /// <returns>Result of Command</returns>
-        private string cmdExOnConsole(string[] args)
+        private string CmdExOnConsole(string[] args)
         {
             if (args.Length == 0)
             {
@@ -485,7 +485,7 @@ namespace Engine.Debug
             string ret = args[0] + "\n";
 
             List<string> words = args.ToList();
-            if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
+            if (commands.TryGetValue(words[0], out ConsoleCommand cmd))
             {
                 words.RemoveAt(0);
                 string s = cmd?.Invoke(words.ToArray());
@@ -516,14 +516,14 @@ namespace Engine.Debug
         /// <param name="e">Contains info about the Key Event that has been raised</param>
         protected override void OnKeyUp(object sender, KeyboardKeyEventArgs e)
         {
-            if (_showConsole)
+            if (showConsole)
             {
                 if (e.Key == Key.Enter)
                 {
-                    WriteToConsole(_sb.ToString());
-                    List<string> words = _sb.ToString().Split(' ').ToList();
+                    WriteToConsole(sb.ToString());
+                    List<string> words = sb.ToString().Split(' ').ToList();
 
-                    if (_commands.TryGetValue(words[0], out ConsoleCommand cmd))
+                    if (commands.TryGetValue(words[0], out ConsoleCommand cmd))
                     {
                         words.RemoveAt(0);
                         string s = cmd?.Invoke(words.ToArray());
@@ -540,12 +540,12 @@ namespace Engine.Debug
                     }
 
                     inputIndex = 0;
-                    _commandHistory.Add(_sb.ToString());
-                    _currentId = _commandHistory.Count;
-                    _invalidate = true;
-                    _sb.Clear();
+                    commandHistory.Add(sb.ToString());
+                    currentId = commandHistory.Count;
+                    invalidate = true;
+                    sb.Clear();
                 }
-                else if (e.Key == Key.Right && inputIndex < _sb.Length)
+                else if (e.Key == Key.Right && inputIndex < sb.Length)
                 {
                     inputIndex++;
                 }
@@ -553,56 +553,56 @@ namespace Engine.Debug
                 {
                     inputIndex--;
                 }
-                else if (e.Key == Key.Up && _currentId != 0)
+                else if (e.Key == Key.Up && currentId != 0)
                 {
-                    _currentId--;
+                    currentId--;
 
 
-                    _sb.Clear();
-                    _sb.Append(_commandHistory[_currentId]);
-                    inputIndex = _sb.Length;
+                    sb.Clear();
+                    sb.Append(commandHistory[currentId]);
+                    inputIndex = sb.Length;
                 }
-                else if (e.Key == Key.Down && _currentId != _commandHistory.Count)
+                else if (e.Key == Key.Down && currentId != commandHistory.Count)
                 {
-                    _currentId++;
+                    currentId++;
 
-                    if (_currentId != _commandHistory.Count)
+                    if (currentId != commandHistory.Count)
                     {
-                        _sb.Clear();
+                        sb.Clear();
 
-                        _sb.Append(_commandHistory[_currentId]);
-                        inputIndex = _sb.Length;
+                        sb.Append(commandHistory[currentId]);
+                        inputIndex = sb.Length;
                     }
                 }
                 else if (inputIndex > 0 && e.Key == Key.BackSpace)
                 {
-                    if (inputIndex == _sb.Length)
+                    if (inputIndex == sb.Length)
                     {
-                        _sb.Remove(_sb.Length - 1, 1);
+                        sb.Remove(sb.Length - 1, 1);
                     }
                     else
                     {
-                        _sb.Remove(inputIndex - 1, 1);
+                        sb.Remove(inputIndex - 1, 1);
                     }
 
-                    _currentId = _commandHistory.Count;
+                    currentId = commandHistory.Count;
                     inputIndex--;
 
-                    _invalidate = true;
+                    invalidate = true;
                 }
-                else if (e.Key == Key.Escape && _sb.Length == 0)
+                else if (e.Key == Key.Escape && sb.Length == 0)
                 {
                     ToggleConsole(false);
 
-                    _invalidate = true;
+                    invalidate = true;
                 }
                 else if (e.Key == Key.Escape)
                 {
-                    _sb.Clear();
+                    sb.Clear();
 
                     inputIndex = 0;
 
-                    _invalidate = true;
+                    invalidate = true;
                 }
             }
             else
@@ -613,7 +613,7 @@ namespace Engine.Debug
 
                     inputIndex = 0;
 
-                    _invalidate = true;
+                    invalidate = true;
                 }
             }
         }
@@ -632,16 +632,16 @@ namespace Engine.Debug
                 time = fps = 0;
             }
 
-            _blinkTime += deltaTime;
-            if (_blinkTime >= _blinkMaxTime)
+            blinkTime += deltaTime;
+            if (blinkTime >= blinkMaxTime)
             {
-                _blinkTime = 0;
-                _blinkActive = !_blinkActive;
-                _invalidate = true;
+                blinkTime = 0;
+                blinkActive = !blinkActive;
+                invalidate = true;
             }
 
 
-            if (_invalidate)
+            if (invalidate)
             {
                 Invalidate();
             }
@@ -654,20 +654,20 @@ namespace Engine.Debug
         /// <param name="state"></param>
         private void ToggleConsole(bool state)
         {
-            if (_showConsole == state)
+            if (showConsole == state)
             {
                 return;
             }
 
-            if (_showConsole)
+            if (showConsole)
             {
-                _consoleInput.Text = "";
-                _title.Text = HelpText;
-                _consoleOutput.Text = "";
+                consoleInput.Text = "";
+                title.Text = HelpText;
+                consoleOutput.Text = "";
             }
 
-            _invalidate = true;
-            _showConsole = state;
+            invalidate = true;
+            showConsole = state;
         }
 
         /// <summary>
@@ -675,22 +675,22 @@ namespace Engine.Debug
         /// </summary>
         private void Invalidate()
         {
-            _invalidate = false;
-            if (_showConsole)
+            invalidate = false;
+            if (showConsole)
             {
                 string input = "Something Went Wrong.";
-                if (_currentId == _commandHistory.Count)
+                if (currentId == commandHistory.Count)
                 {
-                    input = _sb.ToString();
+                    input = sb.ToString();
                 }
-                else if (_currentId >= 0)
+                else if (currentId >= 0)
                 {
-                    input = _commandHistory[_currentId];
+                    input = commandHistory[currentId];
                 }
 
                 string inputCursor;
 
-                if (_blinkActive)
+                if (blinkActive)
                 {
                     inputCursor = "|";
                 }
@@ -708,18 +708,18 @@ namespace Engine.Debug
                     input = input.Insert(inputIndex, inputCursor);
                 }
 
-                _consoleInput.Text = ">>> " + input;
+                consoleInput.Text = ">>> " + input;
             }
 
-            _bgImage.Alpha = _showConsole ? 0.65f : 0;
-            _consoleOutputImage.Alpha = _showConsole ? 0.75f : 0;
+            bgImage.Alpha = showConsole ? 0.65f : 0;
+            consoleOutputImage.Alpha = showConsole ? 0.75f : 0;
 
 
-            _hintText.Text = _showConsole ? "FPS: " + frames : HelpText;
+            hintText.Text = showConsole ? "FPS: " + frames : HelpText;
 
-            _title.Text = _showConsole ? ConsoleTitle : "";
+            title.Text = showConsole ? ConsoleTitle : "";
 
-            _consoleOutput.Text = _showConsole ? ToConsoleText() : "";
+            consoleOutput.Text = showConsole ? ToConsoleText() : "";
         }
     }
 }

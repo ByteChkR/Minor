@@ -18,8 +18,8 @@ namespace Engine.Demo.scenes
         private Texture beginTex;
         private Texture blockTex;
         private Texture endTex;
-        private AINode[,] nodes;
-        private List<AINode> path;
+        private AiNode[,] nodes;
+        private List<AiNode> path;
         private Texture tex;
 
         protected override void InitializeScene()
@@ -38,18 +38,16 @@ namespace Engine.Demo.scenes
 
             EngineConfig.LoadConfig("assets/configs/camera_astardemo.xml", ref mc);
 
-            GameObject _sourceCube = new GameObject(new Vector3(0, 0, 0), "Light Source");
-            GameObject _hackCube = new GameObject(new Vector3(0, 8, -50), "Workaround");
-            Add(_sourceCube);
-            Add(_hackCube);
-            Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
-            _sourceCube.AddComponent(new LightComponent());
+            GameObject sourceCube = new GameObject(new Vector3(0, 0, 0), "Light Source");
+            GameObject hackCube = new GameObject(new Vector3(0, 8, -50), "Workaround");
+            Add(sourceCube);
+            Add(hackCube);
+            sourceCube.AddComponent(new LightComponent());
 
 
-            mainCamera.AddComponent(new CameraRaycaster(_sourceCube, 3, _hackCube));
+            mainCamera.AddComponent(new CameraRaycaster(sourceCube, 3, hackCube));
 
-            GameObject bgObj = new GameObject(new Vector3(0, -3, -32), "BG");
-            bgObj.Scale = new Vector3(32, 1, 32);
+            GameObject bgObj = new GameObject(new Vector3(0, -3, -32), "BG") {Scale = new Vector3(32, 1, 32)};
 
             Collider groundCol = new Collider(new Box(Vector3.Zero, 64, 1, 64), hybLayer);
             Texture bgTex = TextureLoader.FileToTexture("assets/textures/ground4k.png");
@@ -100,7 +98,7 @@ namespace Engine.Demo.scenes
         {
             if (path != null)
             {
-                foreach (AINode aiNode in path)
+                foreach (AiNode aiNode in path)
                 {
                     if (aiNode.Walkable)
                     {
@@ -112,8 +110,8 @@ namespace Engine.Demo.scenes
             }
 
             Random rnd = new Random();
-            AINode startNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
-            AINode endNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
+            AiNode startNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
+            AiNode endNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
             while (!startNode.Walkable)
             {
                 startNode = nodes[rnd.Next(0, 64), rnd.Next(0, 64)];
@@ -138,17 +136,19 @@ namespace Engine.Demo.scenes
             return "Success: " + found;
         }
 
-        private AINode[,] GenerateNodeGraph(int width, int length)
+        private AiNode[,] GenerateNodeGraph(int width, int length)
         {
-            AINode[,] nodes = new AINode[width, length];
+            AiNode[,] nodes = new AiNode[width, length];
 
             for (int i = 0; i < width; i++)
             {
                 for (int j = 0; j < length; j++)
                 {
-                    GameObject obj = new GameObject("NodeW" + i + "L:" + j);
-                    obj.LocalPosition = new Physics.BEPUutilities.Vector3(i - width / 2, 0, -j);
-                    AINode node = new AINode(true);
+                    GameObject obj = new GameObject("NodeW" + i + "L:" + j)
+                    {
+                        LocalPosition = new Physics.BEPUutilities.Vector3(i - width / 2, 0, -j)
+                    };
+                    AiNode node = new AiNode(true);
                     obj.AddComponent(node);
                     nodes[i, j] = node;
                 }
@@ -158,7 +158,7 @@ namespace Engine.Demo.scenes
             {
                 for (int j = 0; j < length; j++)
                 {
-                    AINode current = nodes[i, j];
+                    AiNode current = nodes[i, j];
                     for (int k = -1; k < 1; k++)
                     {
                         for (int s = -1; s < 1; s++)

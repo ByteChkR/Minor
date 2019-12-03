@@ -12,18 +12,18 @@ namespace Engine.DataTypes
         /// <summary>
         /// Element Buffer Object used to store the Indices of the Mesh Vertexes
         /// </summary>
-        public readonly int _ebo;
+        public readonly int Ebo;
 
         /// <summary>
         /// The Buffer used to connect _ebo, _vbo.
         /// In Theory you only need this buffer, but it is convenient to have the others sticking around as well.
         /// </summary>
-        public readonly int _vao;
+        public readonly int Vao;
 
         /// <summary>
         /// The Buffer used to store the actual vertex data
         /// </summary>
-        public readonly int _vbo;
+        public readonly int Vbo;
 
         private readonly long bytes;
 
@@ -35,12 +35,12 @@ namespace Engine.DataTypes
         /// <summary>
         /// Private flag that is used to prevent deleing the buffers more than once.
         /// </summary>
-        private bool _disposed;
+        private bool disposed;
 
         /// <summary>
         /// Flag that is set to true by the Copy function which is used to not dispose the mesh data
         /// </summary>
-        private bool _dontDispose;
+        private bool dontDispose;
 
         /// <summary>
         /// Internal Constructor to create a Mesh Data object.
@@ -48,9 +48,9 @@ namespace Engine.DataTypes
         internal Mesh(int ebo, int vbo, int vao, int drawCount, long bytes)
         {
             this.bytes = bytes;
-            _ebo = ebo;
-            _vbo = vbo;
-            _vao = vao;
+            Ebo = ebo;
+            Vbo = vbo;
+            Vao = vao;
             DrawCount = drawCount;
         }
 
@@ -60,16 +60,16 @@ namespace Engine.DataTypes
         /// </summary>
         public void Dispose()
         {
-            if (_disposed || _dontDispose)
+            if (disposed || dontDispose)
             {
                 return;
             }
 
-            EngineStatisticsManager.GLObjectDestroyed(bytes);
-            _disposed = true;
-            GL.DeleteBuffer(_ebo);
-            GL.DeleteBuffer(_vbo);
-            GL.DeleteVertexArray(_vao);
+            EngineStatisticsManager.GlObjectDestroyed(bytes);
+            disposed = true;
+            GL.DeleteBuffer(Ebo);
+            GL.DeleteBuffer(Vbo);
+            GL.DeleteVertexArray(Vao);
         }
 
         /// <summary>
@@ -80,9 +80,9 @@ namespace Engine.DataTypes
         /// <returns>A Copy of this Mesh Object</returns>
         public Mesh Copy()
         {
-            return new Mesh(_ebo, _vbo, _vao, DrawCount, bytes)
+            return new Mesh(Ebo, Vbo, Vao, DrawCount, bytes)
             {
-                _dontDispose = true
+                dontDispose = true
             };
         }
     }

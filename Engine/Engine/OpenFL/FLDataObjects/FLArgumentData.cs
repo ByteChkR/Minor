@@ -1,8 +1,8 @@
 ﻿namespace Engine.OpenFL.FLDataObjects
 {
-    public struct FLArgumentData
+    public struct FlArgumentData
     {
         public object value;
-        public FLArgumentType argType;
+        public FlArgumentType argType;
     }
 }

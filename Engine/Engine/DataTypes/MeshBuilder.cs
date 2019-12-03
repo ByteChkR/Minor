@@ -8,12 +8,12 @@ namespace Engine.DataTypes
     public class MeshBuilder
     {
         private List<uint> indices = new List<uint>();
-        private List<Vertex> Vertices = new List<Vertex>();
+        private List<Vertex> vertices = new List<Vertex>();
 
 
         public void AddVertex(Vertex v)
         {
-            Vertices.Add(v);
+            vertices.Add(v);
             indices.Add((uint) indices.Count);
         }
 
@@ -27,9 +27,9 @@ namespace Engine.DataTypes
 
         public Mesh ToMesh()
         {
-            MeshLoader.setupMesh(indices.ToArray(), Vertices.ToArray(), out int vao, out int vbo, out int ebo);
-            long bytes = sizeof(uint) * indices.Count + Vertex.VERTEX_BYTE_SIZE * Vertices.Count;
-            EngineStatisticsManager.GLObjectCreated(bytes);
+            MeshLoader.setupMesh(indices.ToArray(), vertices.ToArray(), out int vao, out int vbo, out int ebo);
+            long bytes = sizeof(uint) * indices.Count + Vertex.VERTEX_BYTE_SIZE * vertices.Count;
+            EngineStatisticsManager.GlObjectCreated(bytes);
             return new Mesh(ebo, vbo, vao, indices.Count, bytes);
         }
     }

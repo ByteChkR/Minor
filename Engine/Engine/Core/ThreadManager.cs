@@ -7,7 +7,7 @@ namespace Engine.Core
 {
     internal interface IThreadManager
     {
-        Type type { get; }
+        Type Type { get; }
         bool CheckStates();
     }
 
@@ -15,14 +15,14 @@ namespace Engine.Core
     {
         public delegate T DelTask();
 
-        private T _ret;
+        private T ret;
 
-        private Action<T> OnFinish;
+        private Action<T> onFinish;
         private Thread t;
 
         internal TaskReference(DelTask task, Action<T> onFinish)
         {
-            OnFinish = onFinish;
+            this.onFinish = onFinish;
             t = new Thread(() => ThreadRun(task));
         }
 
@@ -35,14 +35,14 @@ namespace Engine.Core
 
         private void ThreadRun(DelTask task)
         {
-            _ret = task.Invoke();
+            ret = task.Invoke();
         }
 
         internal bool CheckState()
         {
             if (IsDone)
             {
-                OnFinish?.Invoke(_ret);
+                onFinish?.Invoke(ret);
             }
 
             return IsDone;
@@ -52,7 +52,7 @@ namespace Engine.Core
     internal class ThreadManager<T> : IThreadManager
     {
         public List<TaskReference<T>> RunningTasks = new List<TaskReference<T>>();
-        public Type type => typeof(T);
+        public Type Type => typeof(T);
 
 
         public bool CheckStates()
@@ -77,7 +77,7 @@ namespace Engine.Core
 
     public static class ThreadManager
     {
-        private static List<IThreadManager> managers = new List<IThreadManager>();
+        private static List<IThreadManager> _managers = new List<IThreadManager>();
 
         public static void RunTask<T>(TaskReference<T>.DelTask task, Action<T> onFinish)
         {
@@ -93,23 +93,23 @@ namespace Engine.Core
 
         internal static void CheckManagerStates()
         {
-            for (int i = managers.Count - 1; i >= 0; i--)
+            for (int i = _managers.Count - 1; i >= 0; i--)
             {
-                if (managers[i].CheckStates())
+                if (_managers[i].CheckStates())
                 {
-                    managers.RemoveAt(i);
+                    _managers.RemoveAt(i);
                 }
             }
         }
 
         private static ThreadManager<T> GetManager<T>()
         {
-            List<IThreadManager> mgrs = managers.Where(x => x.type == typeof(T)).ToList();
+            List<IThreadManager> mgrs = _managers.Where(x => x.Type == typeof(T)).ToList();
             ThreadManager<T> manager;
             if (mgrs.Count == 0)
             {
                 manager = new ThreadManager<T>();
-                managers.Add(manager);
+                _managers.Add(manager);
             }
             else
             {
@@ -121,7 +121,7 @@ namespace Engine.Core
 
         internal static void RemoveManager(IThreadManager manager)
         {
-            managers.Remove(manager);
+            _managers.Remove(manager);
         }
 
         public static TaskReference<T> CreateTask<T>(TaskReference<T>.DelTask task, Action<T> onFinish)

@@ -11,7 +11,7 @@ namespace Engine.Rendering
     /// </summary>
     public class LitMeshRendererComponent : RenderingComponent
     {
-        private bool _init;
+        private bool init;
 
         /// <summary>
         /// Public constructor
@@ -77,7 +77,7 @@ namespace Engine.Rendering
 
         private void Init()
         {
-            _init = true;
+            init = true;
             Program.AddUniformCache("modelMatrix");
             Program.AddUniformCache("viewMatrix");
             Program.AddUniformCache("projectionMatrix");
@@ -134,12 +134,12 @@ namespace Engine.Rendering
         {
             prog.Use();
 
-            if (!_init)
+            if (!init)
             {
                 Init();
             }
 
-            Matrix4 mat = Owner._worldTransformCache;
+            Matrix4 mat = Owner.WorldTransformCache;
             GL.UniformMatrix4(prog.GetUniformLocation("modelMatrix"), false, ref mat);
             GL.UniformMatrix4(prog.GetUniformLocation("viewMatrix"), false, ref viewMat);
             GL.UniformMatrix4(prog.GetUniformLocation("projectionMatrix"), false, ref projMat);
@@ -261,7 +261,7 @@ namespace Engine.Rendering
                 }
 
 
-                GL.BindVertexArray(gameMesh._vao);
+                GL.BindVertexArray(gameMesh.Vao);
                 GL.DrawElements(PrimitiveType.Triangles, gameMesh.DrawCount, DrawElementsType.UnsignedInt, 0);
 
 

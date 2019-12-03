@@ -10,26 +10,26 @@ using Xunit;
 
 namespace Engine.Tests
 {
-    public class FLInterpreter
+    public class FlInterpreter
     {
-        public FLInterpreter()
+        public FlInterpreter()
         {
             TestSetup.ApplyDebugSettings();
         }
 
         [Fact]
-        public void FLComments()
+        public void FlComments()
         {
             DebugHelper.ThrowOnAllExceptions = true;
             string file = Path.GetFullPath("resources/filter/comments/test.fl");
-            Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+            Interpreter p = new Interpreter(Clapi.MainThread, file,
+                Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                     MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                 1,
-                4, new KernelDatabase(CLAPI.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1)); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
-            while (!P.Terminated)
+                4, new KernelDatabase(Clapi.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.Uchar1)); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
+            while (!p.Terminated)
             {
-                P.Step();
+                p.Step();
             }
         }
 
@@ -46,12 +46,12 @@ namespace Engine.Tests
                 DebugHelper.ThrowOnAllExceptions = i == 0;
                 try
                 {
-                    Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                        CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                    Interpreter p = new Interpreter(Clapi.MainThread, file,
+                        Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                             MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                         128,
                         1,
-                        4, TestSetup.KernelDB);
+                        4, TestSetup.KernelDb);
                     Assert.True(!DebugHelper.ThrowOnAllExceptions);
                 }
                 catch (Exception e)
@@ -68,18 +68,18 @@ namespace Engine.Tests
         }
 
         [Fact]
-        public void FLDefines()
+        public void FlDefines()
         {
             DebugHelper.ThrowOnAllExceptions = true;
 
             string file = Path.GetFullPath("resources/filter/defines/test.fl");
-            Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+            Interpreter p = new Interpreter(Clapi.MainThread, file,
+                Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                     MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                 1,
-                4, TestSetup.KernelDB);
+                4, TestSetup.KernelDb);
 
-            InterpreterStepResult ret = P.Step();
+            InterpreterStepResult ret = p.Step();
 
 
             Assert.True(ret.DefinedBuffers.Count == 5);
@@ -101,12 +101,12 @@ namespace Engine.Tests
             {
                 try
                 {
-                    Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                        CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                    Interpreter p = new Interpreter(Clapi.MainThread, file,
+                        Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                             MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                         128,
                         1,
-                        4, TestSetup.KernelDB);
+                        4, TestSetup.KernelDb);
                     Assert.True(!DebugHelper.ThrowOnAllExceptions);
                 }
                 catch (Exception e)
@@ -135,12 +135,12 @@ namespace Engine.Tests
             {
                 try
                 {
-                    Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                        CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                    Interpreter p = new Interpreter(Clapi.MainThread, file,
+                        Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                             MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128,
                         128,
                         1,
-                        4, TestSetup.KernelDB);
+                        4, TestSetup.KernelDb);
                     Assert.True(!DebugHelper.ThrowOnAllExceptions);
                 }
                 catch (Exception e)
@@ -157,24 +157,24 @@ namespace Engine.Tests
         }
 
         [Fact]
-        public void FLKernels()
+        public void FlKernels()
         {
             DebugHelper.ThrowOnAllExceptions = true;
             DebugHelper.SeverityFilter = 10;
             string path = "resources/filter/tests";
             string[] files = Directory.GetFiles(path, "*.fl");
             KernelDatabase db =
-                new KernelDatabase(CLAPI.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.UCHAR1);
+                new KernelDatabase(Clapi.MainThread, "resources/kernel", OpenCL.TypeEnums.DataTypes.Uchar1);
             foreach (string file in files)
             {
-                Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                    CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                Interpreter p = new Interpreter(Clapi.MainThread, file,
+                    Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                         MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite), 128, 128,
                     1,
                     4, db); //We need to Create a "fresh" database since xunit is making the cl context invalid when changing the test
-                while (!P.Terminated)
+                while (!p.Terminated)
                 {
-                    P.Step();
+                    p.Step();
                 }
             }
         }
@@ -194,13 +194,13 @@ namespace Engine.Tests
                 {
                     try
                     {
-                        Interpreter P = new Interpreter(CLAPI.MainThread, file,
-                            CLAPI.CreateEmpty<byte>(CLAPI.MainThread, 128 * 128 * 4,
+                        Interpreter p = new Interpreter(Clapi.MainThread, file,
+                            Clapi.CreateEmpty<byte>(Clapi.MainThread, 128 * 128 * 4,
                                 MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite),
                             128,
                             128,
                             1,
-                            4, TestSetup.KernelDB);
+                            4, TestSetup.KernelDb);
                         Assert.True(!DebugHelper.ThrowOnAllExceptions);
                     }
                     catch (Exception e)
@@ -221,9 +221,9 @@ namespace Engine.Tests
         public void TypeConversion()
         {
             float f = float.MaxValue / 2;
-            byte b = (byte) CLTypeConverter.Convert(typeof(byte), f);
+            byte b = (byte) ClTypeConverter.Convert(typeof(byte), f);
             float4 f4 = new float4(f);
-            uchar4 i4 = (uchar4) CLTypeConverter.Convert(typeof(uchar4), f4);
+            uchar4 i4 = (uchar4) ClTypeConverter.Convert(typeof(uchar4), f4);
             Assert.True(b == 128);
 
             for (int i = 0; i < 4; i++)

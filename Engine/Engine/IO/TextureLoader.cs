@@ -37,7 +37,7 @@ namespace Engine.IO
             DefaultTexParameter();
             GL.BindTexture(TextureTarget.Texture2D, 0);
             long bytes = width * height * 4;
-            EngineStatisticsManager.GLObjectCreated(bytes);
+            EngineStatisticsManager.GlObjectCreated(bytes);
             return new Texture(texID, bytes);
             ;
         }
@@ -95,10 +95,10 @@ namespace Engine.IO
         /// </summary>
         /// <param name="tex">Input Texture</param>
         /// <returns>CL Buffer Object containing the image data</returns>
-        public static MemoryBuffer TextureToMemoryBuffer(CLAPI instance, Texture tex)
+        public static MemoryBuffer TextureToMemoryBuffer(Clapi instance, Texture tex)
         {
             byte[] buffer = TextureToByteArray(tex);
-            return CLAPI.CreateBuffer(instance, buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+            return Clapi.CreateBuffer(instance, buffer, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
         }
 
         /// <summary>
@@ -278,11 +278,10 @@ namespace Engine.IO
             List<Texture> ret = new List<Texture>();
 
             Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
-                DebugChannel.Log | DebugChannel.IO, 1);
+                DebugChannel.Log | DebugChannel.Io, 1);
             for (int i = 0; i < m.GetMaterialTextureCount((Assimp.TextureType) texType); i++)
             {
-                TextureSlot s;
-                m.GetMaterialTexture((Assimp.TextureType) texType, i, out s);
+                m.GetMaterialTexture((Assimp.TextureType) texType, i, out TextureSlot s);
                 Texture tx = FileToTexture(dir + s.FilePath);
                 tx.TexType = texType;
                 ret.Add(tx);

@@ -7,9 +7,9 @@ namespace Engine.AssetPackaging
 {
     public static class AssetPacker
     {
-        public const int KILOBYTE = 1024;
-        public static int MAXSIZE_KILOBYTES = 1024;
-        public static int PACK_SIZE => KILOBYTE * MAXSIZE_KILOBYTES;
+        public const int Kilobyte = 1024;
+        public static int MaxsizeKilobytes = 1024;
+        public static int PackSize => Kilobyte * MaxsizeKilobytes;
 
         public static AssetResult
             PackAssets(string assetFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
@@ -56,7 +56,7 @@ namespace Engine.AssetPackaging
                     continue;
                 }
 
-                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetID(packPaths, r.indexList[i].PackageID)],
+                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetId(packPaths, r.indexList[i].PackageId)],
                     r.indexList[i]));
             }
 
@@ -64,7 +64,7 @@ namespace Engine.AssetPackaging
             return assetList;
         }
 
-        private static int GetID(string[] path, int id)
+        private static int GetId(string[] path, int id)
         {
             for (int i = 0; i < path.Length; i++)
             {
@@ -90,9 +90,9 @@ namespace Engine.AssetPackaging
 
                 MemoryStream ms = new MemoryStream(r.indexList[i].Length);
 
-                byte[] buf = new byte[packs[r.indexList[i].PackageID].Length];
-                packs[r.indexList[i].PackageID].Position = r.indexList[i].Offset;
-                packs[r.indexList[i].PackageID].Read(buf, 0, buf.Length);
+                byte[] buf = new byte[packs[r.indexList[i].PackageId].Length];
+                packs[r.indexList[i].PackageId].Position = r.indexList[i].Offset;
+                packs[r.indexList[i].PackageId].Read(buf, 0, buf.Length);
 
                 ms.Write(buf, 0, buf.Length);
                 ms.Position = 0;

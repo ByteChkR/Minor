@@ -10,10 +10,10 @@
         public static float SmallestRenderTime { get; private set; }
         public static float TimeSinceStartup { get; private set; }
         public static float TotalRenderTime { get; private set; }
-        public static float OpenGLObjectsKB { get; private set; }
-        public static int OpenGLObjectCount { get; private set; }
-        public static float OpenCLObjectsKB { get; private set; }
-        public static int OpenCLObjectCount { get; private set; }
+        public static float OpenGlObjectsKb { get; private set; }
+        public static int OpenGlObjectCount { get; private set; }
+        public static float OpenClObjectsKb { get; private set; }
+        public static int OpenClObjectCount { get; private set; }
 
         internal static void Update(float deltaTime)
         {
@@ -45,28 +45,28 @@
             TotalRenderTime += renderTime;
         }
 
-        internal static void GLObjectCreated(long bytes)
+        internal static void GlObjectCreated(long bytes)
         {
-            OpenGLObjectCount++;
-            OpenGLObjectsKB += bytes / (float) 1028;
+            OpenGlObjectCount++;
+            OpenGlObjectsKb += bytes / (float) 1028;
         }
 
-        internal static void GLObjectDestroyed(long bytes)
+        internal static void GlObjectDestroyed(long bytes)
         {
-            OpenGLObjectCount--;
-            OpenGLObjectsKB -= bytes / (float) 1028;
+            OpenGlObjectCount--;
+            OpenGlObjectsKb -= bytes / (float) 1028;
         }
 
-        internal static void CLObjectCreated(long bytes)
+        internal static void ClObjectCreated(long bytes)
         {
-            OpenCLObjectCount++;
-            OpenCLObjectsKB += bytes / (float) 1028;
+            OpenClObjectCount++;
+            OpenClObjectsKb += bytes / (float) 1028;
         }
 
-        internal static void CLObjectDestroyed(long bytes)
+        internal static void ClObjectDestroyed(long bytes)
         {
-            OpenCLObjectCount--;
-            OpenCLObjectsKB -= bytes / (float) 1028;
+            OpenClObjectCount--;
+            OpenClObjectsKb -= bytes / (float) 1028;
         }
     }
 }

@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Engine.BuildTools.Common
 {
-    public static class IOUtils
+    public static class IoUtils
     {
         public static void CreateDirectoryPath(string dirPath)
         {

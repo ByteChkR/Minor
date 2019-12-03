@@ -6,7 +6,7 @@ namespace Engine.UI.Animations
     {
         public delegate float Interpolate(float input);
 
-        private List<Interpolator> SubInterpolators = new List<Interpolator>();
+        private List<Interpolator> subInterpolators = new List<Interpolator>();
 
         public Interpolator()
         {
@@ -14,12 +14,12 @@ namespace Engine.UI.Animations
 
         protected Interpolator(List<Interpolator> subInterpolators)
         {
-            SubInterpolators = subInterpolators;
+            this.subInterpolators = subInterpolators;
         }
 
         public float GetValue(float input)
         {
-            foreach (Interpolator subInterpolator in SubInterpolators)
+            foreach (Interpolator subInterpolator in subInterpolators)
             {
                 input = subInterpolator.GetValue(input);
             }

@@ -9,55 +9,55 @@ using ext_pp_plugins;
 
 namespace Engine.Common
 {
-    public class PPCallbacks : IOCallbacks
+    public class PpCallbacks : IOCallbacks
     {
         public override bool FileExists(string file)
         {
-            if (TextProcessorAPI.PPCallback == null)
+            if (TextProcessorApi.PpCallback == null)
             {
                 return base.FileExists(file);
             }
 
             string p = Path.GetRelativePath(Directory.GetCurrentDirectory(), file);
-            return TextProcessorAPI.PPCallback.FileExists(p);
+            return TextProcessorApi.PpCallback.FileExists(p);
         }
 
         public override string[] ReadAllLines(string file)
         {
-            if (TextProcessorAPI.PPCallback == null)
+            if (TextProcessorApi.PpCallback == null)
             {
                 return base.ReadAllLines(file);
             }
 
             string p = Path.GetRelativePath(Directory.GetCurrentDirectory(), file);
-            return TextProcessorAPI.PPCallback.ReadAllLines(p);
+            return TextProcessorApi.PpCallback.ReadAllLines(p);
         }
 
         public override string[] GetFiles(string path, string searchPattern = "*")
         {
-            if (TextProcessorAPI.PPCallback == null)
+            if (TextProcessorApi.PpCallback == null)
             {
                 return base.GetFiles(path, searchPattern);
             }
 
             string p = Path.GetRelativePath(Directory.GetCurrentDirectory(), path);
-            return TextProcessorAPI.PPCallback.GetFiles(p, searchPattern);
+            return TextProcessorApi.PpCallback.GetFiles(p, searchPattern);
         }
     }
 
     /// <summary>
     /// A static Wrapper class around the ext_pp project.
     /// </summary>
-    public static class TextProcessorAPI
+    public static class TextProcessorApi
     {
-        public static IIOCallback PPCallback = null;
+        public static IIoCallback PpCallback = null;
 
         private static Dictionary<string, APreProcessorConfig> _configs = new Dictionary<string, APreProcessorConfig>
         {
-            {".fl", new FLPreProcessorConfig()},
-            {".vs", new GLCLPreProcessorConfig()},
-            {".fs", new GLCLPreProcessorConfig()},
-            {".cl", new GLCLPreProcessorConfig()},
+            {".fl", new FlPreProcessorConfig()},
+            {".vs", new GlclPreProcessorConfig()},
+            {".fs", new GlclPreProcessorConfig()},
+            {".cl", new GlclPreProcessorConfig()},
             {"***", new DefaultPreProcessorConfig()}
         };
 
@@ -121,22 +121,22 @@ namespace Engine.Common
 
         public class FileContent : IFileContent // For the commits on ext_pp repo that are not ready yet.
         {
-            private readonly string _incDir;
-            private readonly string[] _lines;
+            private readonly string incDir;
+            private readonly string[] lines;
 
             public FileContent(string[] lines, string incDir)
             {
-                _lines = lines;
-                _incDir = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(incDir));
+                this.lines = lines;
+                this.incDir = System.IO.Path.GetFullPath(System.IO.Path.GetDirectoryName(incDir));
             }
 
-            private string Key => _incDir + "/memoryFile";
-            private string Path => _incDir + "/memoryFile";
+            private string Key => incDir + "/memoryFile";
+            private string Path => incDir + "/memoryFile";
             public bool HasValidFilepath => false;
 
             public bool TryGetLines(out string[] lines)
             {
-                lines = _lines;
+                lines = this.lines;
                 return true;
             }
 
@@ -231,7 +231,7 @@ namespace Engine.Common
             }
         }
 
-        public class GLCLPreProcessorConfig : APreProcessorConfig
+        public class GlclPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();
             protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
@@ -261,7 +261,7 @@ namespace Engine.Common
             }
         }
 
-        public class FLPreProcessorConfig : APreProcessorConfig
+        public class FlPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();
             protected override Verbosity VerbosityLevel { get; } = Verbosity.SILENT;
@@ -270,16 +270,19 @@ namespace Engine.Common
             {
                 get
                 {
-                    IncludePlugin inc = new IncludePlugin();
-                    inc.IncludeInlineKeyword = "pp_includeinl:";
-                    inc.IncludeKeyword = "pp_include:";
-                    ConditionalPlugin cond = new ConditionalPlugin();
-                    cond.StartCondition = "pp_if:";
-                    cond.ElseIfCondition = "pp_elseif:";
-                    cond.ElseCondition = "pp_else:";
-                    cond.EndCondition = "pp_endif:";
-                    cond.DefineKeyword = "pp_define:";
-                    cond.UndefineKeyword = "pp_undefine:";
+                    IncludePlugin inc = new IncludePlugin
+                    {
+                        IncludeInlineKeyword = "pp_includeinl:", IncludeKeyword = "pp_include:"
+                    };
+                    ConditionalPlugin cond = new ConditionalPlugin
+                    {
+                        StartCondition = "pp_if:",
+                        ElseIfCondition = "pp_elseif:",
+                        ElseCondition = "pp_else:",
+                        EndCondition = "pp_endif:",
+                        DefineKeyword = "pp_define:",
+                        UndefineKeyword = "pp_undefine:"
+                    };
 
                     return new List<AbstractPlugin>
                     {

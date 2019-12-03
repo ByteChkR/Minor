@@ -15,33 +15,33 @@ using Engine.IO;
 
 namespace Engine.WFC
 {
-    public class WFCOverlayMode : WaveFunctionCollapse
+    public class WfcOverlayMode : WaveFunctionCollapse
     {
-        private readonly List<Color> _colors;
-        private readonly int _ground;
-        private readonly int _n;
-        private readonly byte[][] _patterns;
+        private readonly List<Color> colors;
+        private readonly int ground;
+        private readonly int n;
+        private readonly byte[][] patterns;
 
-        public WFCOverlayMode(Bitmap bitmap, int N, int width, int height, bool periodicInput, bool periodicOutput,
+        public WfcOverlayMode(Bitmap bitmap, int n, int width, int height, bool periodicInput, bool periodicOutput,
             int symmetry, int ground)
             : base(width, height)
         {
-            _n = N;
+            n = n;
             Periodic = periodicOutput;
 
             Success = true;
 
-            int SMX = bitmap.Width, SMY = bitmap.Height;
-            byte[,] sample = new byte[SMX, SMY];
-            _colors = new List<Color>();
+            int smx = bitmap.Width, smy = bitmap.Height;
+            byte[,] sample = new byte[smx, smy];
+            colors = new List<Color>();
 
-            for (int y = 0; y < SMY; y++)
-            for (int x = 0; x < SMX; x++)
+            for (int y = 0; y < smy; y++)
+            for (int x = 0; x < smx; x++)
             {
                 Color color = bitmap.GetPixel(x, y);
 
                 int i = 0;
-                foreach (Color c in _colors)
+                foreach (Color c in colors)
                 {
                     if (c == color)
                     {
@@ -51,65 +51,65 @@ namespace Engine.WFC
                     i++;
                 }
 
-                if (i == _colors.Count)
+                if (i == colors.Count)
                 {
-                    _colors.Add(color);
+                    colors.Add(color);
                 }
 
                 sample[x, y] = (byte) i;
             }
 
-            Logger.Log("Color Patterns found: " + _colors.Count, DebugChannel.Log | DebugChannel.WFC, 3);
-            int C = _colors.Count;
-            long W = WaveCollapseUtils.Power(C, N * N);
+            Logger.Log("Color Patterns found: " + colors.Count, DebugChannel.Log | DebugChannel.Wfc, 3);
+            int colorsCount = colors.Count;
+            long nPow = WaveCollapseUtils.Power(colorsCount, n * n);
 
-            byte[] pattern(Func<int, int, byte> f)
+            byte[] Pattern(Func<int, int, byte> f)
             {
-                byte[] result = new byte[N * N];
-                for (int y = 0; y < N; y++)
-                for (int x = 0; x < N; x++)
+                byte[] result = new byte[n * n];
+                for (int y = 0; y < n; y++)
+                for (int x = 0; x < n; x++)
                 {
-                    result[x + y * N] = f(x, y);
+                    result[x + y * n] = f(x, y);
                 }
 
                 return result;
             }
 
-            byte[] patternFromSample(int x, int y)
+            byte[] PatternFromSample(int x, int y)
             {
-                return pattern((dx, dy) => sample[(x + dx) % SMX, (y + dy) % SMY]);
+                return Pattern((dx, dy) => sample[(x + dx) % smx, (y + dy) % smy]);
             }
 
-            byte[] rotate(byte[] p)
+            byte[] Rotate(byte[] p)
             {
-                return pattern((x, y) => p[N - 1 - y + x * N]);
+                return Pattern((x, y) => p[n - 1 - y + x * n]);
             }
 
-            byte[] reflect(byte[] p)
+            byte[] Reflect(byte[] p)
             {
-                return pattern((x, y) => p[N - 1 - x + y * N]);
+                return Pattern((x, y) => p[n - 1 - x + y * n]);
             }
 
-            long index(byte[] p)
+            long Index(byte[] p)
             {
                 long result = 0, power = 1;
                 for (int i = 0; i < p.Length; i++)
                 {
                     result += p[p.Length - 1 - i] * power;
-                    power *= C;
+                    power *= colorsCount;
                 }
 
                 return result;
             }
 
-            byte[] patternFromIndex(long ind)
+            byte[] PatternFromIndex(long ind)
             {
-                long residue = ind, power = W;
-                byte[] result = new byte[N * N];
+                long residue = ind, power = nPow;
+                byte[] result = new byte[n * n];
 
                 for (int i = 0; i < result.Length; i++)
                 {
-                    power /= C;
+                    power /= colorsCount;
                     int count = 0;
 
                     if (power == 0)
@@ -123,7 +123,7 @@ namespace Engine.WFC
                         count++;
                     }
 
-                    result[i] = (byte) (count % _colors.Count);
+                    result[i] = (byte) (count % colors.Count);
                 }
 
                 return result;
@@ -132,23 +132,23 @@ namespace Engine.WFC
             Dictionary<long, int> weights = new Dictionary<long, int>();
             List<long> ordering = new List<long>();
 
-            for (int y = 0; y < (periodicInput ? SMY : SMY - N + 1); y++)
-            for (int x = 0; x < (periodicInput ? SMX : SMX - N + 1); x++)
+            for (int y = 0; y < (periodicInput ? smy : smy - n + 1); y++)
+            for (int x = 0; x < (periodicInput ? smx : smx - n + 1); x++)
             {
                 byte[][] ps = new byte[8][];
 
-                ps[0] = patternFromSample(x, y);
-                ps[1] = reflect(ps[0]);
-                ps[2] = rotate(ps[0]);
-                ps[3] = reflect(ps[2]);
-                ps[4] = rotate(ps[2]);
-                ps[5] = reflect(ps[4]);
-                ps[6] = rotate(ps[4]);
-                ps[7] = reflect(ps[6]);
+                ps[0] = PatternFromSample(x, y);
+                ps[1] = Reflect(ps[0]);
+                ps[2] = Rotate(ps[0]);
+                ps[3] = Reflect(ps[2]);
+                ps[4] = Rotate(ps[2]);
+                ps[5] = Reflect(ps[4]);
+                ps[6] = Rotate(ps[4]);
+                ps[7] = Reflect(ps[6]);
 
                 for (int k = 0; k < symmetry; k++)
                 {
-                    long ind = index(ps[k]);
+                    long ind = Index(ps[k]);
                     if (weights.ContainsKey(ind))
                     {
                         weights[ind]++;
@@ -162,28 +162,28 @@ namespace Engine.WFC
             }
 
             T = weights.Count;
-            _ground = (ground + T) % T;
-            _patterns = new byte[T][];
+            this.ground = (ground + T) % T;
+            patterns = new byte[T][];
             Weights = new double[T];
 
             int counter = 0;
             foreach (long w in ordering)
             {
-                _patterns[counter] = patternFromIndex(w);
+                patterns[counter] = PatternFromIndex(w);
                 Weights[counter] = weights[w];
                 counter++;
             }
 
-            bool agrees(byte[] p1, byte[] p2, int dx, int dy)
+            bool Agrees(byte[] p1, byte[] p2, int dx, int dy)
             {
                 int xmin = dx < 0 ? 0 : dx,
-                    xmax = dx < 0 ? dx + N : N,
+                    xmax = dx < 0 ? dx + n : n,
                     ymin = dy < 0 ? 0 : dy,
-                    ymax = dy < 0 ? dy + N : N;
+                    ymax = dy < 0 ? dy + n : n;
                 for (int y = ymin; y < ymax; y++)
                 for (int x = xmin; x < xmax; x++)
                 {
-                    if (p1[x + N * y] != p2[x - dx + N * (y - dy)])
+                    if (p1[x + n * y] != p2[x - dx + n * (y - dy)])
                     {
                         return false;
                     }
@@ -201,7 +201,7 @@ namespace Engine.WFC
                     List<int> list = new List<int>();
                     for (int t2 = 0; t2 < T; t2++)
                     {
-                        if (agrees(_patterns[t], _patterns[t2], Dx[d], Dy[d]))
+                        if (Agrees(patterns[t], patterns[t2], Dx[d], Dy[d]))
                         {
                             list.Add(t2);
                         }
@@ -216,9 +216,9 @@ namespace Engine.WFC
             }
         }
 
-        public WFCOverlayMode(string filename, int N, int width, int height, bool periodicInput, bool periodicOutput,
+        public WfcOverlayMode(string filename, int n, int width, int height, bool periodicInput, bool periodicOutput,
             int symmetry, int ground)
-            : this(new Bitmap(IOManager.GetStream(filename)), N, width, height, periodicInput, periodicOutput, symmetry,
+            : this(new Bitmap(IOManager.GetStream(filename)), n, width, height, periodicInput, periodicOutput, symmetry,
                 ground)
         {
         }
@@ -227,7 +227,7 @@ namespace Engine.WFC
 
         protected override bool OnBoundary(int x, int y)
         {
-            return !Periodic && (x + _n > Fmx || y + _n > Fmy || x < 0 || y < 0);
+            return !Periodic && (x + n > Fmx || y + n > Fmy || x < 0 || y < 0);
         }
 
         public override Bitmap Graphics()
@@ -242,11 +242,11 @@ namespace Engine.WFC
             {
                 for (int y = 0; y < Fmy; y++)
                 {
-                    int dy = y < Fmy - _n + 1 ? 0 : _n - 1;
+                    int dy = y < Fmy - n + 1 ? 0 : n - 1;
                     for (int x = 0; x < Fmx; x++)
                     {
-                        int dx = x < Fmx - _n + 1 ? 0 : _n - 1;
-                        Color c = _colors[_patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * _n]];
+                        int dx = x < Fmx - n + 1 ? 0 : n - 1;
+                        Color c = colors[patterns[Observed[x - dx + (y - dy) * Fmx]][dx + dy * n]];
                         bitmapData[x + y * Fmx] = unchecked((int) 0xff000000 | (c.R << 16) | (c.G << 8) | c.B);
                     }
                 }
@@ -258,8 +258,8 @@ namespace Engine.WFC
                     int contributors = 0, r = 0, g = 0, b = 0;
                     int x = i % Fmx, y = i / Fmx;
 
-                    for (int dy = 0; dy < _n; dy++)
-                    for (int dx = 0; dx < _n; dx++)
+                    for (int dy = 0; dy < n; dy++)
+                    for (int dx = 0; dx < n; dx++)
                     {
                         int sx = x - dx;
                         if (sx < 0)
@@ -284,7 +284,7 @@ namespace Engine.WFC
                             if (Wave[s][t])
                             {
                                 contributors++;
-                                Color color = _colors[_patterns[t][dx + dy * _n]];
+                                Color color = colors[patterns[t][dx + dy * n]];
                                 r += color.R;
                                 g += color.G;
                                 b += color.B;
@@ -315,13 +315,13 @@ namespace Engine.WFC
         {
             base.Clear();
 
-            if (_ground != 0)
+            if (ground != 0)
             {
                 for (int x = 0; x < Fmx; x++)
                 {
                     for (int t = 0; t < T; t++)
                     {
-                        if (t != _ground)
+                        if (t != ground)
                         {
                             Ban(x + (Fmy - 1) * Fmx, t);
                         }
@@ -329,7 +329,7 @@ namespace Engine.WFC
 
                     for (int y = 0; y < Fmy - 1; y++)
                     {
-                        Ban(x + y * Fmx, _ground);
+                        Ban(x + y * Fmx, ground);
                     }
                 }
 

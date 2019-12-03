@@ -3,7 +3,7 @@ using Engine.Common;
 
 namespace Engine.IO
 {
-    public class PPIOCallbacks : IIOCallback
+    public class PPIOCallbacks : IIoCallback
     {
         public bool FileExists(string file)
         {

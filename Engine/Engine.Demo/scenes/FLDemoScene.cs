@@ -15,13 +15,13 @@ using OpenTK;
 
 namespace Engine.Demo.scenes
 {
-    public class FLDemoScene : AbstractScene
+    public class FlDemoScene : AbstractScene
     {
         private RenderTarget splitCam;
 
         private static string cmd_ReLoadScene(string[] args)
         {
-            GameEngine.Instance.InitializeScene<FLDemoScene>();
+            GameEngine.Instance.InitializeScene<FlDemoScene>();
             return "Reloaded";
         }
 
@@ -38,18 +38,17 @@ namespace Engine.Demo.scenes
                 return "Invalid Arguments";
             }
 
-            float x, y, z;
-            if (!float.TryParse(args[0], out x))
+            if (!float.TryParse(args[0], out float x))
             {
                 return "Invalid Arguments";
             }
 
-            if (!float.TryParse(args[1], out y))
+            if (!float.TryParse(args[1], out float y))
             {
                 return "Invalid Arguments";
             }
 
-            if (!float.TryParse(args[2], out z))
+            if (!float.TryParse(args[2], out float z))
             {
                 return "Invalid Arguments";
             }
@@ -67,23 +66,22 @@ namespace Engine.Demo.scenes
                 return "Invalid Arguments";
             }
 
-            float x, y, z, angle;
-            if (!float.TryParse(args[0], out x))
+            if (!float.TryParse(args[0], out float x))
             {
                 return "Invalid Arguments";
             }
 
-            if (!float.TryParse(args[1], out y))
+            if (!float.TryParse(args[1], out float y))
             {
                 return "Invalid Arguments";
             }
 
-            if (!float.TryParse(args[2], out z))
+            if (!float.TryParse(args[2], out float z))
             {
                 return "Invalid Arguments";
             }
 
-            if (!float.TryParse(args[3], out angle))
+            if (!float.TryParse(args[3], out float angle))
             {
                 return "Invalid Arguments";
             }
@@ -119,23 +117,23 @@ namespace Engine.Demo.scenes
 
             objQuad.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(45));
 
-            GameObject _sourceCube = new GameObject(new Vector3(0, 10, 10), "Light Source");
+            GameObject sourceCube = new GameObject(new Vector3(0, 10, 10), "Light Source");
 
-            Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
-            _sourceCube.AddComponent(new LightComponent());
-            _sourceCube.AddComponent(new RotateAroundComponent {Slow = 0.15f});
-            _sourceCube.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, sourceCube,
+            Mesh cubeMesh = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
+            sourceCube.AddComponent(new LightComponent());
+            sourceCube.AddComponent(new RotateAroundComponent {Slow = 0.15f});
+            sourceCube.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, cubeMesh,
                 TextureLoader.ColorToTexture(Color.White), 1));
 
             GameObject uiText = new GameObject(new Vector3(0), "UIText");
-            uiText.AddComponent(new FLGeneratorComponent(new List<LitMeshRendererComponent>
+            uiText.AddComponent(new FlGeneratorComponent(new List<LitMeshRendererComponent>
                 {
                     objSphere.GetComponent<LitMeshRendererComponent>(), objQuad.GetComponent<LitMeshRendererComponent>()
                 },
                 512,
                 512, true));
 
-            Add(_sourceCube);
+            Add(sourceCube);
             GameEngine.Instance.CurrentScene.Add(uiText);
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
@@ -146,8 +144,7 @@ namespace Engine.Demo.scenes
             GameEngine.Instance.CurrentScene.Add(objSphere);
             GameEngine.Instance.CurrentScene.Add(objQuad);
 
-            GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
-            bgObj.Scale = new Vector3(25, 1, 25);
+            GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG") {Scale = new Vector3(25, 1, 25)};
 
             Texture bgTex = TextureLoader.FileToTexture("assets/textures/ground4k.png");
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
@@ -201,21 +198,25 @@ namespace Engine.Demo.scenes
             Texture btnIdle = TextureLoader.ColorToTexture(Color.Green);
             Texture btnHover = TextureLoader.ColorToTexture(Color.Red);
             Texture btnClick = TextureLoader.ColorToTexture(Color.Blue);
-            Button btn = new Button(btnIdle, DefaultFilepaths.DefaultUIImageShader, 1, btnClick, btnHover);
-            LinearAnimation loadAnim = new LinearAnimation();
-            loadAnim.Interpolator = new SmoothInterpolator();
-            loadAnim.StartPos = Vector2.Zero + Vector2.UnitY * 1;
-            loadAnim.EndPos = Vector2.Zero;
-            loadAnim.MaxAnimationTime = 1;
-            loadAnim.Trigger = AnimationTrigger.OnLoad;
-            loadAnim.AnimationDelay = 1f;
+            Button btn = new Button(btnIdle, DefaultFilepaths.DefaultUiImageShader, 1, btnClick, btnHover);
+            LinearAnimation loadAnim = new LinearAnimation
+            {
+                Interpolator = new SmoothInterpolator(),
+                StartPos = Vector2.Zero + Vector2.UnitY * 1,
+                EndPos = Vector2.Zero,
+                MaxAnimationTime = 1,
+                Trigger = AnimationTrigger.OnLoad,
+                AnimationDelay = 1f
+            };
 
-            LinearAnimation clickAnim = new LinearAnimation();
-            clickAnim.Interpolator = new Arc2Interpolator();
-            clickAnim.StartPos = Vector2.Zero;
-            clickAnim.EndPos = Vector2.Zero + Vector2.UnitY * 1;
-            clickAnim.MaxAnimationTime = 1;
-            clickAnim.Trigger = AnimationTrigger.OnClick;
+            LinearAnimation clickAnim = new LinearAnimation
+            {
+                Interpolator = new Arc2Interpolator(),
+                StartPos = Vector2.Zero,
+                EndPos = Vector2.Zero + Vector2.UnitY * 1,
+                MaxAnimationTime = 1,
+                Trigger = AnimationTrigger.OnClick
+            };
 
             Animator anim = new Animator(new List<Animation> {loadAnim, clickAnim}, btn);
 

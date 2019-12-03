@@ -8,7 +8,7 @@
         /// <summary>
         /// Everything worked, Increase the Program Counter
         /// </summary>
-        IncreasePC,
+        IncreasePc,
 
         /// <summary>
         /// We encountered a problem(log the problem and continue if recoverable

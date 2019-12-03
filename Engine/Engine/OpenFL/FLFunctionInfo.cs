@@ -3,7 +3,7 @@
     /// <summary>
     /// Info object around a FLFunction Delegate
     /// </summary>
-    public struct FLFunctionInfo
+    public struct FlFunctionInfo
     {
         /// <summary>
         /// A delegate used for special functions in the interpreter
@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="flFunc">The FLFunction</param>
         /// <param name="leaveStack">Flag if the stack shouldbe left</param>
-        public FLFunctionInfo(FlFunction flFunc, bool leaveStack)
+        public FlFunctionInfo(FlFunction flFunc, bool leaveStack)
         {
             Function = flFunc;
             LeaveStack = leaveStack;

@@ -7,9 +7,9 @@ using Xunit;
 namespace Engine.Tests
 {
 #if !NO_CL
-    public class CLBuffers
+    public class ClBuffers
     {
-        public CLBuffers()
+        public ClBuffers()
         {
             TestSetup.ApplyDebugSettings();
         }
@@ -33,7 +33,7 @@ namespace Engine.Tests
         [Fact]
         public void CreateBuffer()
         {
-            CLAPI.Reinitialize();
+            Clapi.Reinitialize();
             DebugHelper.ThrowOnAllExceptions = true;
             byte[] b = new byte[255];
             for (int i = 0; i < b.Length; i++)
@@ -42,7 +42,7 @@ namespace Engine.Tests
             }
 
             MemoryBuffer buffer =
-                CLAPI.CreateBuffer(CLAPI.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+                Clapi.CreateBuffer(Clapi.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
             Assert.True(buffer != null);
             Assert.True(buffer.Size == 255);
@@ -51,7 +51,7 @@ namespace Engine.Tests
         [Fact]
         public void ReadBuffer()
         {
-            CLAPI.Reinitialize();
+            Clapi.Reinitialize();
             DebugHelper.ThrowOnAllExceptions = true;
             float[] b = new float[255];
             for (int i = 0; i < b.Length; i++)
@@ -60,9 +60,9 @@ namespace Engine.Tests
             }
 
             MemoryBuffer buffer =
-                CLAPI.CreateBuffer(CLAPI.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
+                Clapi.CreateBuffer(Clapi.MainThread, b, MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
-            float[] c = CLAPI.ReadBuffer<float>(CLAPI.MainThread, buffer, b.Length);
+            float[] c = Clapi.ReadBuffer<float>(Clapi.MainThread, buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));
@@ -71,7 +71,7 @@ namespace Engine.Tests
         [Fact]
         public void WriteBuffer()
         {
-            CLAPI.Reinitialize();
+            Clapi.Reinitialize();
             DebugHelper.ThrowOnAllExceptions = true;
             float[] b = new float[255];
             for (int i = 0; i < b.Length; i++)
@@ -79,13 +79,13 @@ namespace Engine.Tests
                 b[i] = i;
             }
 
-            MemoryBuffer buffer = CLAPI.CreateEmpty<float>(CLAPI.MainThread, b.Length,
+            MemoryBuffer buffer = Clapi.CreateEmpty<float>(Clapi.MainThread, b.Length,
                 MemoryFlag.CopyHostPointer | MemoryFlag.ReadWrite);
 
 
-            CLAPI.WriteToBuffer(CLAPI.MainThread, buffer, b);
+            Clapi.WriteToBuffer(Clapi.MainThread, buffer, b);
 
-            float[] c = CLAPI.ReadBuffer<float>(CLAPI.MainThread, buffer, b.Length);
+            float[] c = Clapi.ReadBuffer<float>(Clapi.MainThread, buffer, b.Length);
 
 
             Assert.True(CheckValues(c, b));

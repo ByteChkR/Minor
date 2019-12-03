@@ -4,9 +4,9 @@ using Xunit;
 
 namespace Engine.Tests
 {
-    public class IOLoader
+    public class IoLoader
     {
-        public IOLoader()
+        public IoLoader()
         {
             TestSetup.ApplyDebugSettings();
         }

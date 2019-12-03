@@ -11,6 +11,6 @@ namespace Engine.AssetPackaging
             content = new List<byte>();
         }
 
-        public int SpaceLeft => AssetPacker.MAXSIZE_KILOBYTES * AssetPacker.KILOBYTE - content.Count;
+        public int SpaceLeft => AssetPacker.MaxsizeKilobytes * AssetPacker.Kilobyte - content.Count;
     }
 }

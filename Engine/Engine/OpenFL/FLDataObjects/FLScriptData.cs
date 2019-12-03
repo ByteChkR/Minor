@@ -2,19 +2,19 @@
 
 namespace Engine.OpenFL.FLDataObjects
 {
-    public struct FLScriptData
+    public struct FlScriptData
     {
         public List<string> Source;
-        public Dictionary<string, CLBufferInfo> Defines;
+        public Dictionary<string, ClBufferInfo> Defines;
         public Dictionary<string, int> JumpLocations;
-        public List<FLInstructionData> ParsedSource;
+        public List<FlInstructionData> ParsedSource;
 
-        public FLScriptData(List<string> source)
+        public FlScriptData(List<string> source)
         {
             Source = source;
-            Defines = new Dictionary<string, CLBufferInfo>();
+            Defines = new Dictionary<string, ClBufferInfo>();
             JumpLocations = new Dictionary<string, int>();
-            ParsedSource = new List<FLInstructionData>();
+            ParsedSource = new List<FlInstructionData>();
         }
     }
 }

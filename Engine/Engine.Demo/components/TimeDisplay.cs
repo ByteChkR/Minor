@@ -10,12 +10,12 @@ namespace Engine.Demo.components
         private int fpsFrames;
         private float frameTime;
         private float time;
-        private UITextRendererComponent tr;
+        private UiTextRendererComponent tr;
 
         protected override void Awake()
         {
             base.Awake();
-            tr = Owner.GetComponent<UITextRendererComponent>();
+            tr = Owner.GetComponent<UiTextRendererComponent>();
         }
 
         protected override void Update(float deltaTime)

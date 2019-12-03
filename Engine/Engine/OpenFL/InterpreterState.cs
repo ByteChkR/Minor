@@ -14,7 +14,7 @@ namespace Engine.OpenFL
         /// <param name="line">The line where the interpreter is</param>
         /// <param name="activeBuffer">The active buffer</param>
         /// <param name="argumentStack">The unfinished argument stack</param>
-        internal InterpreterState(int line, CLBufferInfo activeBuffer, Stack<object> argumentStack)
+        internal InterpreterState(int line, ClBufferInfo activeBuffer, Stack<object> argumentStack)
         {
             Line = line;
             ActiveBuffer = activeBuffer;
@@ -29,7 +29,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// The active buffer
         /// </summary>
-        public CLBufferInfo ActiveBuffer { get; }
+        public ClBufferInfo ActiveBuffer { get; }
 
         /// <summary>
         /// The unfinished argument stack

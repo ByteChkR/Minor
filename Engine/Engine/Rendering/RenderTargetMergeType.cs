@@ -18,6 +18,6 @@
         /// <summary>
         /// If Selected it will multiply the drawn image pixels with the one in this render target
         /// </summary>
-        Multiplikative
+        Multiplicative
     }
 }

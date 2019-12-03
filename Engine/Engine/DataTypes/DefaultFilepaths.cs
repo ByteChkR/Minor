@@ -22,7 +22,7 @@ namespace Engine.DataTypes
     [Serializable]
     public class DefaultFilepaths
     {
-        private static DefaultFilepaths FilePaths = new DefaultFilepaths();
+        private static DefaultFilepaths _filePaths = new DefaultFilepaths();
 
 
         /// <summary>
@@ -54,17 +54,17 @@ namespace Engine.DataTypes
         /// <summary>
         /// Backing field of the Default shader
         /// </summary>
-        private static ShaderProgram _defaultUITextShader;
+        private static ShaderProgram _defaultUiTextShader;
 
         /// <summary>
         /// Backing field of the Default shader
         /// </summary>
-        private static ShaderProgram _defaultUIImageShader;
+        private static ShaderProgram _defaultUiImageShader;
 
         /// <summary>
         /// Backing field of the Default shader
         /// </summary>
-        private static ShaderProgram _defaultUIGraphShader;
+        private static ShaderProgram _defaultUiGraphShader;
 
         /// <summary>
         /// Backing field of the Default shader
@@ -81,90 +81,90 @@ namespace Engine.DataTypes
         /// </summary>
         private static ShaderProgram _defaultScreenShader;
 
-        private string _DefaultFont = "assets/fonts/default_font.ttf";
+        private string defaultFont = "assets/fonts/default_font.ttf";
 
 
-        private List<ShaderPath> _DefaultLitShader = new List<ShaderPath>
+        private List<ShaderPath> defaultLitShader = new List<ShaderPath>
         {
             new ShaderPath {Type = ShaderType.FragmentShader, Path = "assets/shader/lit/shader.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/lit/shader.vs"}
         };
 
-        private List<ShaderPath> _DefaultMergeAddShader = new List<ShaderPath>
+        private List<ShaderPath> defaultMergeAddShader = new List<ShaderPath>
         {
             new ShaderPath
                 {Type = ShaderType.FragmentShader, Path = "assets/shader/internal/merge_stage/merge_shader_add.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/internal/merge_stage/merge_shader.vs"}
         };
 
-        private List<ShaderPath> _DefaultMergeMulShader = new List<ShaderPath>
+        private List<ShaderPath> defaultMergeMulShader = new List<ShaderPath>
         {
             new ShaderPath
                 {Type = ShaderType.FragmentShader, Path = "assets/shader/internal/merge_stage/merge_shader_mul.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/internal/merge_stage/merge_shader.vs"}
         };
 
-        private string _DefaultMesh = "assets/models/default_mesh.obj";
+        private string defaultMesh = "assets/models/default_mesh.obj";
 
-        private List<ShaderPath> _DefaultScreenShader = new List<ShaderPath>
+        private List<ShaderPath> defaultScreenShader = new List<ShaderPath>
         {
             new ShaderPath {Type = ShaderType.FragmentShader, Path = "assets/shader/internal/screen_stage/shader.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/internal/screen_stage/shader.vs"}
         };
 
-        private string _DefaultTexture = "assets/textures/default_texture.bmp";
+        private string defaultTexture = "assets/textures/default_texture.bmp";
 
-        private List<ShaderPath> _DefaultUIGraphShader = new List<ShaderPath>
+        private List<ShaderPath> defaultUiGraphShader = new List<ShaderPath>
         {
             new ShaderPath {Type = ShaderType.FragmentShader, Path = "assets/shader/ui/graph/shader.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/ui/graph/shader.vs"}
         };
 
-        private List<ShaderPath> _DefaultUIImageShader = new List<ShaderPath>
+        private List<ShaderPath> defaultUiImageShader = new List<ShaderPath>
         {
             new ShaderPath {Type = ShaderType.FragmentShader, Path = "assets/shader/ui/image/shader.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/ui/image/shader.vs"}
         };
 
-        private List<ShaderPath> _DefaultUITextShader = new List<ShaderPath>
+        private List<ShaderPath> defaultUiTextShader = new List<ShaderPath>
         {
             new ShaderPath {Type = ShaderType.FragmentShader, Path = "assets/shader/ui/text/shader.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/ui/text/shader.vs"}
         };
 
-        private List<ShaderPath> _DefaultUnlitShader = new List<ShaderPath>
+        private List<ShaderPath> defaultUnlitShader = new List<ShaderPath>
         {
             new ShaderPath {Type = ShaderType.FragmentShader, Path = "assets/shader/unlit/shader.fs"},
             new ShaderPath {Type = ShaderType.VertexShader, Path = "assets/shader/unlit/shader.vs"}
         };
 
         private static Dictionary<ShaderType, string> DefaultLitShaderPath =>
-            GetDictionary(FilePaths._DefaultLitShader);
+            GetDictionary(_filePaths.defaultLitShader);
 
         private static Dictionary<ShaderType, string> DefaultUnlitShaderPath =>
-            GetDictionary(FilePaths._DefaultUnlitShader);
+            GetDictionary(_filePaths.defaultUnlitShader);
 
-        private static Dictionary<ShaderType, string> DefaultUITextShaderPath =>
-            GetDictionary(FilePaths._DefaultUITextShader);
+        private static Dictionary<ShaderType, string> DefaultUiTextShaderPath =>
+            GetDictionary(_filePaths.defaultUiTextShader);
 
-        private static Dictionary<ShaderType, string> DefaultUIImageShaderPath =>
-            GetDictionary(FilePaths._DefaultUIImageShader);
+        private static Dictionary<ShaderType, string> DefaultUiImageShaderPath =>
+            GetDictionary(_filePaths.defaultUiImageShader);
 
-        private static Dictionary<ShaderType, string> DefaultUIGraphShaderPath =>
-            GetDictionary(FilePaths._DefaultUIGraphShader);
+        private static Dictionary<ShaderType, string> DefaultUiGraphShaderPath =>
+            GetDictionary(_filePaths.defaultUiGraphShader);
 
         private static Dictionary<ShaderType, string> DefaultMergeAddShaderPath =>
-            GetDictionary(FilePaths._DefaultMergeAddShader);
+            GetDictionary(_filePaths.defaultMergeAddShader);
 
         private static Dictionary<ShaderType, string> DefaultMergeMulShaderPath =>
-            GetDictionary(FilePaths._DefaultMergeMulShader);
+            GetDictionary(_filePaths.defaultMergeMulShader);
 
         private static Dictionary<ShaderType, string> DefaultScreenShaderPath =>
-            GetDictionary(FilePaths._DefaultScreenShader);
+            GetDictionary(_filePaths.defaultScreenShader);
 
-        public static string DefaultMeshPath => FilePaths._DefaultMesh;
-        public static string DefaultTexturePath => FilePaths._DefaultTexture;
-        public static string DefaultFontPath => FilePaths._DefaultFont;
+        public static string DefaultMeshPath => _filePaths.defaultMesh;
+        public static string DefaultTexturePath => _filePaths.defaultTexture;
+        public static string DefaultFontPath => _filePaths.defaultFont;
 
         /// <summary>
         /// The default font
@@ -193,20 +193,20 @@ namespace Engine.DataTypes
         /// <summary>
         /// The default shader
         /// </summary>
-        public static ShaderProgram DefaultUITextShader =>
-            _defaultUITextShader ?? (_defaultUITextShader = GetDefaultUITextShader());
+        public static ShaderProgram DefaultUiTextShader =>
+            _defaultUiTextShader ?? (_defaultUiTextShader = GetDefaultUiTextShader());
 
         /// <summary>
         /// The default shader
         /// </summary>
-        public static ShaderProgram DefaultUIImageShader =>
-            _defaultUIImageShader ?? (_defaultUIImageShader = GetDefaultUIImageShader());
+        public static ShaderProgram DefaultUiImageShader =>
+            _defaultUiImageShader ?? (_defaultUiImageShader = GetDefaultUiImageShader());
 
         /// <summary>
         /// The default shader
         /// </summary>
-        public static ShaderProgram DefaultUIGraphShader =>
-            _defaultUIGraphShader ?? (_defaultUIGraphShader = GetDefaultUIGraphShader());
+        public static ShaderProgram DefaultUiGraphShader =>
+            _defaultUiGraphShader ?? (_defaultUiGraphShader = GetDefaultUiGraphShader());
 
         /// <summary>
         /// The default shader
@@ -247,7 +247,7 @@ namespace Engine.DataTypes
 
             XmlSerializer xs = new XmlSerializer(typeof(DefaultFilepaths));
             Stream s = IOManager.GetStream(path);
-            FilePaths = (DefaultFilepaths) xs.Deserialize(s);
+            _filePaths = (DefaultFilepaths) xs.Deserialize(s);
             s.Close();
         }
 
@@ -261,7 +261,7 @@ namespace Engine.DataTypes
 
             XmlSerializer xs = new XmlSerializer(typeof(DefaultFilepaths));
             Stream s = File.Open(path, FileMode.Create);
-            xs.Serialize(s, FilePaths);
+            xs.Serialize(s, _filePaths);
             s.Close();
         }
 
@@ -316,9 +316,9 @@ namespace Engine.DataTypes
         /// Creates the default Shader from embedded program resources
         /// </summary>
         /// <returns>The Default Shader</returns>
-        private static ShaderProgram GetDefaultUITextShader()
+        private static ShaderProgram GetDefaultUiTextShader()
         {
-            ShaderProgram.TryCreate(DefaultUITextShaderPath, out ShaderProgram shader);
+            ShaderProgram.TryCreate(DefaultUiTextShaderPath, out ShaderProgram shader);
             return shader;
         }
 
@@ -326,9 +326,9 @@ namespace Engine.DataTypes
         /// Creates the default Shader from embedded program resources
         /// </summary>
         /// <returns>The Default Shader</returns>
-        private static ShaderProgram GetDefaultUIImageShader()
+        private static ShaderProgram GetDefaultUiImageShader()
         {
-            ShaderProgram.TryCreate(DefaultUIImageShaderPath, out ShaderProgram shader);
+            ShaderProgram.TryCreate(DefaultUiImageShaderPath, out ShaderProgram shader);
             return shader;
         }
 
@@ -336,9 +336,9 @@ namespace Engine.DataTypes
         /// Creates the default Shader from embedded program resources
         /// </summary>
         /// <returns>The Default Shader</returns>
-        private static ShaderProgram GetDefaultUIGraphShader()
+        private static ShaderProgram GetDefaultUiGraphShader()
         {
-            ShaderProgram.TryCreate(DefaultUIGraphShaderPath, out ShaderProgram shader);
+            ShaderProgram.TryCreate(DefaultUiGraphShaderPath, out ShaderProgram shader);
             return shader;
         }
 
