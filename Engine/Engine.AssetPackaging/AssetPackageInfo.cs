@@ -4,6 +4,6 @@ namespace Engine.AssetPackaging
 {
     public class AssetPackageInfo
     {
-        public Dictionary<string, AssetFileInfo> FileInfos = new Dictionary<string, AssetFileInfo>();
+        public Dictionary<string, AssetFileInfo> FileInfos { get; set; } = new Dictionary<string, AssetFileInfo>();
     }
 }

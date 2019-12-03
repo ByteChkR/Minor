@@ -13,7 +13,7 @@ namespace Engine.AssetPackaging
         public readonly string[] ManifestFilepaths;
 
 
-        public bool Compression;
+        public bool Compression { get; }
 
         public AssemblyFile(bool compression, string manifestFilepath, Assembly assembly) : this(compression,
             new[] {manifestFilepath}, assembly)

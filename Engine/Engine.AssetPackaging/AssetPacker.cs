@@ -21,7 +21,7 @@ namespace Engine.AssetPackaging
             {
                 Console.WriteLine("Checking Folder: " + assetFolder + " with pattern: " + assetFileInfo.Key);
                 string[] files = Directory.GetFiles(assetFolder, assetFileInfo.Key, SearchOption.AllDirectories);
-                AssetPackageType type = assetFileInfo.Value.packageType;
+                AssetPackageType type = assetFileInfo.Value.PackageType;
 
                 for (int i = 0; i < files.Length; i++)
                 {
@@ -48,16 +48,16 @@ namespace Engine.AssetPackaging
         {
             AssetResult r = ParseResult(indexList);
             List<Tuple<string, AssetPointer>> assetList = new List<Tuple<string, AssetPointer>>();
-            for (int i = 0; i < r.indexList.Count; i++)
+            for (int i = 0; i < r.IndexList.Count; i++)
             {
-                if (r.indexList[i].PackageType == AssetPackageType.Unpack)
+                if (r.IndexList[i].PackageType == AssetPackageType.Unpack)
                 {
                     Console.WriteLine("Skipping File Parsing");
                     continue;
                 }
 
-                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetId(packPaths, r.indexList[i].PackageId)],
-                    r.indexList[i]));
+                assetList.Add(new Tuple<string, AssetPointer>(packPaths[GetId(packPaths, r.IndexList[i].PackageId)],
+                    r.IndexList[i]));
             }
 
             compression = r.Compression;
@@ -81,22 +81,22 @@ namespace Engine.AssetPackaging
         {
             AssetResult r = ParseResult(indexList);
             Dictionary<string, Tuple<int, MemoryStream>> assetList = new Dictionary<string, Tuple<int, MemoryStream>>();
-            for (int i = 0; i < r.indexList.Count; i++)
+            for (int i = 0; i < r.IndexList.Count; i++)
             {
-                if (r.indexList[i].PackageType == AssetPackageType.Memory)
+                if (r.IndexList[i].PackageType == AssetPackageType.Memory)
                 {
                     continue;
                 }
 
-                MemoryStream ms = new MemoryStream(r.indexList[i].Length);
+                MemoryStream ms = new MemoryStream(r.IndexList[i].Length);
 
-                byte[] buf = new byte[packs[r.indexList[i].PackageId].Length];
-                packs[r.indexList[i].PackageId].Position = r.indexList[i].Offset;
-                packs[r.indexList[i].PackageId].Read(buf, 0, buf.Length);
+                byte[] buf = new byte[packs[r.IndexList[i].PackageId].Length];
+                packs[r.IndexList[i].PackageId].Position = r.IndexList[i].Offset;
+                packs[r.IndexList[i].PackageId].Read(buf, 0, buf.Length);
 
                 ms.Write(buf, 0, buf.Length);
                 ms.Position = 0;
-                assetList.Add(r.indexList[i].Path, new Tuple<int, MemoryStream>(r.indexList[i].Length, ms));
+                assetList.Add(r.IndexList[i].Path, new Tuple<int, MemoryStream>(r.IndexList[i].Length, ms));
             }
 
             for (int i = 0; i < packs.Length; i++)

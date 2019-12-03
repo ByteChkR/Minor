@@ -110,12 +110,6 @@ namespace Engine.BuildTools.Common
                 {
                     for (int j = 1; j < kvp.Length; j++)
                     {
-                        string pattern = kvp[j];
-                        if (pattern.StartsWith("*"))
-                        {
-                            pattern = pattern.Remove(0, 1);
-                        }
-
                         ret.Add(new Tuple<string, string>(kvp[0], kvp[j]));
                     }
                 }

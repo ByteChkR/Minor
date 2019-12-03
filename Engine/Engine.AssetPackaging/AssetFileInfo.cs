@@ -2,6 +2,6 @@
 {
     public class AssetFileInfo
     {
-        public AssetPackageType packageType;
+        public AssetPackageType PackageType { get; set; }
     }
 }

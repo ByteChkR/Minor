@@ -10,13 +10,13 @@ namespace Engine.AssetPackaging
     public class AssetResult
     {
         [XmlElement(ElementName = "AssetIndexList")]
-        public List<AssetPointer> indexList = new List<AssetPointer>();
+        public List<AssetPointer> IndexList = new List<AssetPointer>();
 
         [XmlElement(ElementName = "Compression")]
         public bool Compression;
 
 
-        [XmlIgnore] public List<AssetPack> packs = new List<AssetPack>();
+        [XmlIgnore] public List<AssetPack> Packs = new List<AssetPack>();
 
         public void AddFile(string file, string packPath, AssetPackageType type)
         {
@@ -34,14 +34,14 @@ namespace Engine.AssetPackaging
             AssetPointer ap = new AssetPointer
             {
                 PackageId = firstPack,
-                Offset = packs[firstPack].content.Count,
+                Offset = Packs[firstPack].Content.Count,
                 PackageSize = AssetPacker.PackSize,
                 Length = (int) s.Length,
                 Path = packPath,
                 PackageType = type
             };
 
-            indexList.Add(ap);
+            IndexList.Add(ap);
 
 
             int packid = firstPack;
@@ -49,14 +49,14 @@ namespace Engine.AssetPackaging
             do
             {
                 int write = bytesLeft;
-                if (write > packs[packid].SpaceLeft)
+                if (write > Packs[packid].SpaceLeft)
                 {
-                    write = packs[packid].SpaceLeft;
+                    write = Packs[packid].SpaceLeft;
                 }
 
                 byte[] b = new byte[write];
                 s.Read(b, 0, write);
-                packs[packid].content.AddRange(b);
+                Packs[packid].Content.AddRange(b);
                 bytesLeft -= write;
                 if (bytesLeft != 0)
                 {
@@ -69,12 +69,12 @@ namespace Engine.AssetPackaging
 
         private int FindAssetPackWithSpace()
         {
-            if (packs.Count == 0 || packs[packs.Count - 1].SpaceLeft == 0)
+            if (Packs.Count == 0 || Packs[Packs.Count - 1].SpaceLeft == 0)
             {
-                packs.Add(new AssetPack());
+                Packs.Add(new AssetPack());
             }
 
-            return packs.Count - 1;
+            return Packs.Count - 1;
         }
 
         public void Save(string outputFolder)
@@ -93,10 +93,10 @@ namespace Engine.AssetPackaging
             FileStream fs = new FileStream(outputFolder + "\\packs\\index.xml", FileMode.Create);
             xs.Serialize(fs, this);
             fs.Close();
-            for (int i = 0; i < packs.Count; i++)
+            for (int i = 0; i < Packs.Count; i++)
             {
                 string path = outputFolder + "\\packs\\" + i + ".pack";
-                byte[] buf = packs[i].content.ToArray();
+                byte[] buf = Packs[i].Content.ToArray();
                 if (Compression)
                 {
                     MemoryStream ms = new MemoryStream();

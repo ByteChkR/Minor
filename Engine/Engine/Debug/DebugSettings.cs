@@ -13,7 +13,7 @@ namespace Engine.Debug
     public class DebugSettings : IDebugSettings
     {
         [XmlElement(ElementName = "LogStreamConfig")]
-        public LogStreamSettings[] LogStreamSettings;
+        public LogStreamSettings[] LogStreamSettings { get; set; }
 
         /// <summary>
         /// Should we send logs in the first place?

@@ -51,7 +51,7 @@ namespace Engine.BuildTools.Common
 
             if (info.HasFlag("noflag"))
             {
-                _default?.CommandAction?.Invoke(info, info.GetValues("noflag").ToArray());
+                _default.CommandAction?.Invoke(info, info.GetValues("noflag").ToArray());
             }
         }
     }

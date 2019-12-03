@@ -13,42 +13,42 @@ namespace Engine.Debug
         /// <summary>
         /// The GC Collection at the end of the stage
         /// </summary>
-        public long After;
+        public long After { get; set; }
 
         /// <summary>
         /// The GC Collection at the end of the stage after GC.Collect has been called.
         /// </summary>
-        public long AfterGarbageCollection;
+        public long AfterGarbageCollection { get; set; }
 
         /// <summary>
         /// The GC Collection at the start of the stage
         /// </summary>
-        public long Before;
+        public long Before { get; set; }
 
         /// <summary>
         /// Name of the Stage
         /// </summary>
-        public string Name;
+        public string Name { get; set; }
 
         /// <summary>
         /// The Parent Stage(null if its A root stage
         /// </summary>
-        public EngineStageInformation Parent;
+        public EngineStageInformation Parent { get; set; }
 
         /// <summary>
         /// List of substages
         /// </summary>
-        public List<EngineStageInformation> SubStages;
+        public List<EngineStageInformation> SubStages { get; set; }
 
         /// <summary>
         /// Timer that is used to keep track on how long the stage has been running
         /// </summary>
-        public Stopwatch Timer;
+        public Stopwatch Timer { get; set; }
 
         /// <summary>
         /// The Timing information about the current stage
         /// </summary>
-        public TimeSpan TimeSpentInStage;
+        public TimeSpan TimeSpentInStage { get; set; }
 
         /// <summary>
         /// Internal Constructor to create a Stage Information object.

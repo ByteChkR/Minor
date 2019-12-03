@@ -244,13 +244,13 @@ namespace Engine.BuildTools.Builder
             int ret = BuildCommand(filepath);
             if (ret != 0)
             {
-                throw new Exception("Compilation Command Failed.");
+                throw new ApplicationException("Compilation Command Failed.");
             }
 
             ret = PublishCommand(filepath);
             if (ret != 0)
             {
-                throw new Exception("Publish Command Failed.");
+                throw new ApplicationException("Publish Command Failed.");
             }
         }
 
@@ -515,14 +515,14 @@ namespace Engine.BuildTools.Builder
                 .ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo { packageType = AssetPackageType.Unpack });
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo { PackageType = AssetPackageType.Unpack });
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo { packageType = AssetPackageType.Memory });
+                info.FileInfos.Add(packExts[i], new AssetFileInfo { PackageType = AssetPackageType.Memory });
             }
 
             return info;
@@ -539,7 +539,7 @@ namespace Engine.BuildTools.Builder
 
             Console.WriteLine("Creating Asset Pack(" + assetFolder + ")...");
             AssetResult ret = AssetPacker.PackAssets(assetFolder, info, compression);
-            Console.WriteLine("Packaging " + ret.indexList.Count + " Assets in " + ret.packs.Count + " Packs.");
+            Console.WriteLine("Packaging " + ret.IndexList.Count + " Assets in " + ret.Packs.Count + " Packs.");
 
             Console.WriteLine("Saving Asset Pack to " + outputFolder);
             ret.Save(outputFolder);

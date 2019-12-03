@@ -2,7 +2,7 @@
 {
     public class StaticInterpolator : Interpolator
     {
-        public float Value = 0;
+        public float Value { get; set; } = 0;
 
         protected override float _GetValue(float input)
         {

@@ -4,7 +4,7 @@ namespace Engine.UI.Animations.Interpolators
 {
     public class BellInterpolator : Interpolator
     {
-        public Interpolator Smoothness = new StaticInterpolator();
+        public Interpolator Smoothness { get; set; } = new StaticInterpolator();
 
         protected override float _GetValue(float input)
         {

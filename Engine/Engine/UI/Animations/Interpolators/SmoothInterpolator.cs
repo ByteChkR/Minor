@@ -4,8 +4,8 @@ namespace Engine.UI.Animations.Interpolators
 {
     public class SmoothInterpolator : Interpolator
     {
-        public Interpolator SmoothnessStart = new StaticInterpolator();
-        public Interpolator SmoothnessStop = new StaticInterpolator {Value = 1};
+        public Interpolator SmoothnessStart { get; set; } = new StaticInterpolator();
+        public Interpolator SmoothnessStop { get; set; } = new StaticInterpolator {Value = 1};
 
         protected override float _GetValue(float input)
         {

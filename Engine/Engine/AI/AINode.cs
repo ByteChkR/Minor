@@ -11,15 +11,15 @@ namespace Engine.AI
         private readonly List<AiNode> connections;
 
 
-        public float CurrentCost;
-        public float EstimatedCost;
-        public AiNodeState NodeState;
+        public float CurrentCost { get; set; }
+        public float EstimatedCost { get; set; }
+        public AiNodeState NodeState { get; set; }
 
 
         //Search Specific
-        public AiNode ParentNode;
-        public bool Walkable;
-        public float WalkCostMultiplier = 1;
+        public AiNode ParentNode { get; set; }
+        public bool Walkable { get; set; }
+        public float WalkCostMultiplier { get; set; } = 1;
 
         public AiNode(bool walkable)
         {

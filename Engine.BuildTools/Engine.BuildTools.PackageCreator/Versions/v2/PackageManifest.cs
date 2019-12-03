@@ -6,8 +6,8 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
     [Serializable]
     public struct HashEntry
     {
-        public string File;
-        public string Hash;
+        public string File { get; set; }
+        public string Hash { get; set; }
     }
 
     [Serializable]
