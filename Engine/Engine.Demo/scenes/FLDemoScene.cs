@@ -101,18 +101,6 @@ namespace Engine.Demo.scenes
             Mesh plane = MeshLoader.FileToMesh("assets/models/plane.obj");
             Mesh bgBox = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
-            //MeshBuilder mb = new MeshBuilder();
-
-            //mb.AddTriangle(
-            //    new Vector3(-1, 0, -1),
-            //    new Vector3(1, 0, 1),
-            //    new Vector3(1, 0, -1));
-            //mb.AddTriangle(
-            //    new Vector3(-1, 0, 1),
-            //    new Vector3(1, 0, 1),
-            //    new Vector3(-1, 0, -1));
-            //plane.Dispose();
-            //plane = mb.ToMesh();
 
 
             GameObject objSphere = new GameObject(new Vector3(1, 1, 0), "SphereDisplay");

@@ -144,15 +144,13 @@ namespace Engine.UI
 
             int scrW = GameEngine.Instance.Width;
             int scrH = GameEngine.Instance.Height;
-
-            //GL.Disable(EnableCap.Blend);
+            
             GL.Enable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
             Program.Use();
 
-
-            Matrix4 trmat = Matrix4.CreateTranslation(Position.X, Position.Y, 0);
+            
             Matrix4 m = Matrix4.Identity;
 
             GL.UniformMatrix4(Program.GetUniformLocation("transform"), false, ref m);
@@ -193,7 +191,6 @@ namespace Engine.UI
                     x += val;
                     continue;
                 }
-                //x-pos.x
 
 
                 if (!Font.TryGetCharacter(Text[i], out TextCharacter chr))

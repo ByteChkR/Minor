@@ -475,9 +475,6 @@ namespace Engine.BuildTools.Builder.GUI
             buildFailed = false;
             ProcessUtils.RunActionAsCommand(Builder.RunCommand,
                 $"{useExperimental} --create-engine-package {engineProjectFile} {outputPath}", EnginePackagerFinished);
-            //ProcessUtils.RunProcess("cmd.exe",
-            //  $"/C dotnet Engine.BuildTools.Builder.dll {useExperimental} --create-engine-package {engineProjectFile} {outputPath}",
-            //   Application.DoEvents, WriteOutput);
         }
 
         private void SetState(State state)
@@ -547,10 +544,6 @@ namespace Engine.BuildTools.Builder.GUI
             buildFailed = false;
             ProcessUtils.RunActionAsCommand(Builder.RunCommand, SaveLocation + " " + packagerVersion + versionSpecific,
                 XMLBuildFinished);
-            //Lib.Builder.RunCommand(SaveLocation + " " + useExperimental);
-            //ProcessUtils.RunProcess("cmd.exe",
-            //   "/C dotnet Engine.BuildTools.Builder.dll " + SaveLocation + " " + useExperimental, Application.DoEvents,
-            //   WriteOutput);
         }
 
         private void XMLBuildFinished(Exception ex)

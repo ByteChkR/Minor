@@ -45,16 +45,13 @@ namespace Engine.OpenCL.Runner
     public class FLRunner
     {
         protected KernelDatabase _db;
-
-        //protected Action<FLExecutionContext, Dictionary<Texture, byte[]>> _onFinishQueueCallback;
+        
         protected CLAPI _instance;
         protected Queue<FLExecutionContext> _processQueue;
 
         public FLRunner(
-            CLAPI instance, /*Action<FLExecutionContext, Dictionary<string, byte[]>> onFinishQueueCallback,*/
-            TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.UCHAR1, string kernelFolder = "assets/kernel/")
+            CLAPI instance, TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.UCHAR1, string kernelFolder = "assets/kernel/")
         {
-            //_onFinishQueueCallback = onFinishQueueCallback;
             _instance = instance;
             _db = new KernelDatabase(instance, kernelFolder, dataTypes);
             _processQueue = new Queue<FLExecutionContext>();
@@ -90,7 +87,6 @@ namespace Engine.OpenCL.Runner
             }
 
             onFinish?.Invoke();
-            //_onFinishQueueCallback?.Invoke();
         }
 
         protected Dictionary<string, byte[]> Process(FLExecutionContext context)
@@ -108,7 +104,6 @@ namespace Engine.OpenCL.Runner
             byte[] buffer = ret.GetResult<byte>();
             Dictionary<string, byte[]> result = new Dictionary<string, byte[]>();
             result.Add("result", buffer);
-            //TextureLoader.Update(context.Input, buffer, context.Width, context.Height);
 
             foreach (KeyValuePair<string, Texture> keyValuePair in context.TextureMap)
             {
@@ -120,7 +115,6 @@ namespace Engine.OpenCL.Runner
 
                 byte[] spec = CLAPI.ReadBuffer<byte>(_instance, mbuf.Buffer, (int) mbuf.Buffer.Size);
                 result.Add(keyValuePair.Key, spec);
-                //TextureLoader.Update(keyValuePair.Value, spec, (int)keyValuePair.Value.Width, (int)keyValuePair.Value.Height);
                 mbuf.Buffer.Dispose();
             }
 

@@ -23,9 +23,7 @@ namespace Engine.Debug
         /// A flag that indicates if we need to push the points to the gpu
         /// </summary>
         private bool _bufferDirty = true;
-
-        //This as data object for how the graph should be oriented
-        private GraphLayout _currentLayout;
+        
 
         /// <summary>
         /// Flag that is used to initialize things on creation

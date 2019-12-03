@@ -49,7 +49,6 @@ namespace Engine.Rendering
             GL.FrontFace(FrontFaceDirection.Ccw);
             GL.Enable(EnableCap.CullFace);
             GL.CullFace(CullFaceMode.Back);
-            //GL.Enable(EnableCap.Blend);
             GL.Enable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
 
@@ -141,7 +140,6 @@ namespace Engine.Rendering
 
 
             MemoryTracer.AddSubStage("Render Target loop");
-            //GL.Enable(EnableCap.ScissorTest);
             for (int i = 0; i < Targets.Count; i++)
             {
                 MemoryTracer.NextStage("Rendering Render Target: " + i);
@@ -152,7 +150,6 @@ namespace Engine.Rendering
 
                 if (c != null)
                 {
-                    //GL.Scissor(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
                     GL.Viewport(target.ViewPort.X, target.ViewPort.Y, target.ViewPort.Width, target.ViewPort.Height);
                     GL.BindFramebuffer(FramebufferTarget.Framebuffer, target.FrameBuffer);
 
@@ -169,23 +166,15 @@ namespace Engine.Rendering
                     Render(_transparent, vmat, c);
 
 
-                    //Render(target.PassMask, c);
-
-
                     GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
-                    //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
                 }
             }
 
             MemoryTracer.ReturnFromSubStage();
 
-
-            //GL.Disable(EnableCap.ScissorTest);
+            
             RenderTargetMergeStage.MergeAndDisplayTargets(Targets.Where(x => x.MergeType != RenderTargetMergeType.None)
                 .ToList());
-            //TODO: WRITE RENDERING TO THE SCREEN(COMBINE THE RENDER TARGETS)
-            //Maybe its useful to have a flag that defines if the rendertarget should be merged into the screen output
-            //To Merge i need a vertex and fragment shader that can iterate over variable amounts of samplers(Can start out with 2)
         }
 
         /// <summary>

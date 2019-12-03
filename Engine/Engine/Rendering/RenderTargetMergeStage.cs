@@ -131,15 +131,11 @@ namespace Engine.Rendering
 
 
             MemoryTracer.AddSubStage("Merge Framebuffers");
-            int divideCount = targets.Count;
-
-            //GL.Enable(EnableCap.ScissorTest);
-
+            
             GL.Enable(EnableCap.Blend);
             GL.Disable(EnableCap.DepthTest);
             GL.BlendFunc(BlendingFactor.SrcAlpha, BlendingFactor.OneMinusSrcAlpha);
-
-            //GL.Enable(EnableCap.ScissorTest);
+            
             foreach (RenderTarget renderTarget in targets)
             {
                 MemoryTracer.NextStage("Merge Framebuffer: " + renderTarget.PassMask);
@@ -149,9 +145,7 @@ namespace Engine.Rendering
                 _mergeTypes[renderTarget.MergeType].Use();
 
                 GL.BindFramebuffer(FramebufferTarget.Framebuffer, dst.FrameBuffer);
-
-                //GL.Scissor(renderTarget.ViewPort.X, renderTarget.ViewPort.Y, renderTarget.ViewPort.Width, renderTarget.ViewPort.Height);
-                //GL.Viewport(renderTarget.ViewPort.X, renderTarget.ViewPort.Y, renderTarget.ViewPort.Width, renderTarget.ViewPort.Height);
+                
                 GL.ClearColor(dst.ClearColor);
                 GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -167,14 +161,11 @@ namespace Engine.Rendering
 
                 GL.BindVertexArray(_screenVAO);
                 GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
-                //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
-                //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
 
 
                 Ping();
 
-
-                //GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
+                
             }
 
             MemoryTracer.ReturnFromSubStage();
@@ -186,9 +177,6 @@ namespace Engine.Rendering
             DefaultFilepaths.DefaultScreenShader.Use();
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            //GL.Disable(EnableCap.DepthTest);
-
-            //GL.Disable(EnableCap.ScissorTest);
 
             GL.ClearColor(Color.FromArgb(168, 143, 50, 255));
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
@@ -197,26 +185,14 @@ namespace Engine.Rendering
             GL.ActiveTexture(TextureUnit.Texture0);
             GL.Uniform1(DefaultFilepaths.DefaultScreenShader.GetUniformLocation("sourceTexture"), 0);
             GL.BindTexture(TextureTarget.Texture2D, GetTarget().RenderedTexture);
-
-            //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
-
-
-            //GL.ActiveTexture(TextureUnit.Texture1);
-            //GL.Uniform1(_mergeShader.GetUniformLocation("otherTexture"), 1);
-            //GL.BindTexture(TextureTarget.Texture2D, renderTarget.RenderedTexture);
+            
 
             GL.BindVertexArray(_screenVAO);
-
-            //GL.Viewport(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
-            //GL.Scissor(0, 0, GameEngine.Instance.Width, GameEngine.Instance.Height);
+            
             GL.DrawArrays(PrimitiveType.Triangles, 0, 6);
 
             GL.BindVertexArray(0);
             GL.ActiveTexture(TextureUnit.Texture0);
-
-
-            //GL.BindVertexArray(0);
-            //GL.ActiveTexture(TextureUnit.Texture0);
 
 
             //Clear the ping pong buffers after rendering them to the screen

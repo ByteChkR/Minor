@@ -112,25 +112,21 @@ namespace Engine.Rendering
                 {
                     return 1;
                 }
-
-                //If !WorldSpace && !other.WorldSpace
+                
 
                 int ret = RenderQueue.CompareTo(other.RenderQueue);
                 return ret;
             }
 
-            if (other.RenderType == Renderer.RenderType.Transparent) //&& RenderType != Renderer.RenderType.Transparent
+            if (other.RenderType == Renderer.RenderType.Transparent)
             {
                 return 1;
             }
 
-            if (RenderType == Renderer.RenderType.Transparent) //&& other.RenderType != Renderer.RenderType.Transparent
+            if (RenderType == Renderer.RenderType.Transparent)
             {
                 return -1;
             }
-
-            //if other.RenderType != Renderer.RenderType.Transparent && RenderType != Renderer.RenderType.Transparent
-            //Let z buffer do the ordering
             return 0;
         }
 

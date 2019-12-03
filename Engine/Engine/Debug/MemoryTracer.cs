@@ -7,10 +7,6 @@ namespace Engine.Debug
     /// </summary>
     public static class MemoryTracer
     {
-        /// <summary>
-        /// List of the last frames informations
-        /// </summary>
-        private static List<EngineStageInformation> _informationCollection = new List<EngineStageInformation>();
 
         /// <summary>
         /// The Console

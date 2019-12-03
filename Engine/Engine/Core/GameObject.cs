@@ -289,8 +289,7 @@ namespace Engine.Core
             {
                 Remove(this);
             }
-
-            //this.Log("Destroying GameObject: " + Name, DebugChannel.Log);
+            
             GameObject[] objs = new List<GameObject>(_children).ToArray();
 
             foreach (GameObject gameObject in objs)
@@ -531,11 +530,9 @@ namespace Engine.Core
         {
             if (hasRenderer && !_hasRendererInHierarchy) //A child attached a render and we dont have the flag set
             {
-                //_hasRendererInHierarchy = true;
                 applyRenderHierarchy(hasRenderer);
             }
-            else if (!hasRenderer && _hasRendererInHierarchy
-            ) //A child removed a renderer and now we need to check if we can set the flag to false(if all the childs dont have renderers)
+            else if (!hasRenderer && _hasRendererInHierarchy) //A child removed a renderer and now we need to check if we can set the flag to false(if all the childs dont have renderers)
             {
                 bool childhaveRenderers = false;
                 foreach (GameObject gameObject in _children)

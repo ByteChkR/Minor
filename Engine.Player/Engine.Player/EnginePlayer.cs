@@ -125,7 +125,6 @@ namespace Engine.Player
 
         private static void RunGameCommand(StartupInfo info, string[] args)
         {
-            //ParseArgs(args);
             if (args.Length == 0 || !args[0].EndsWith(".game") || !File.Exists(args[0]))
             {
                 Console.WriteLine("Could not load Game File");

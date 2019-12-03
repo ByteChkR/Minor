@@ -33,7 +33,6 @@ namespace Engine.UI.EventSystems
             mpos.Y /= GameEngine.Instance.Height;
             mpos.Y *= -1;
             mpos *= 2;
-            //Logger.Log("MousePos: "+ mpos, DebugChannel.Log, 10);
             for (int i = 0; i < selectables.Count; i++)
             {
                 if (selectables[i].BoundingBox.Contains(mpos))

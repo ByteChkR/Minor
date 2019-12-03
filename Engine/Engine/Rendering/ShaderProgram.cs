@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Engine.Common;
 using Engine.Debug;
 using Engine.Exceptions;
@@ -16,6 +17,11 @@ namespace Engine.Rendering
     public class ShaderProgram : IDisposable
     {
         private static int _lastUsedPrgID = -1;
+
+        private static void changeLastProgID(ShaderProgram prog)
+        {
+            _lastUsedPrgID = prog._prgId;
+        }
 
 
         /// <summary>
@@ -94,15 +100,15 @@ namespace Engine.Rendering
                 Stream s = IOManager.GetStream(subshader.Value);
                 TextReader tr = new StreamReader(s);
                 string dirName = Path.GetDirectoryName(subshader.Value);
-                string src = "";
+                StringBuilder src = new StringBuilder();
                 string[] lines = TextProcessorAPI.PreprocessLines(tr.ReadToEnd().Split('\n'), dirName, null);
                 tr.Close();
                 for (int i = 0; i < lines.Length; i++)
                 {
-                    src += lines[i] + '\n';
+                    src.AppendLine(lines[i]);
                 }
 
-                ret.Add(subshader.Key, src);
+                ret.Add(subshader.Key, src.ToString());
             }
 
             return TryCreateFromSource(ret, out program);
@@ -118,7 +124,7 @@ namespace Engine.Rendering
                 return;
             }
 
-            _lastUsedPrgID = _prgId;
+            changeLastProgID(this);
             GL.UseProgram(_prgId);
         }
 

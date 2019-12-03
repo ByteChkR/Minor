@@ -26,7 +26,6 @@ namespace Engine.Demo.components
 
         protected override void Awake()
         {
-            //Physics.AddBoxStatic(System.Numerics.Vector3.UnitY * -4, new System.Numerics.Vector3(50, 10, 50), 1, 3);
 
             base.Awake();
             DebugConsoleComponent comp = Owner.Scene.GetChildWithName("Console")
@@ -64,9 +63,7 @@ namespace Engine.Demo.components
             {
                 return "Wrong Z Component";
             }
-
-            //Physics.Gravity = new System.Numerics.Vector3(x, y, z);
-
+            
             return "Gravity Set to: "; // + Physics.Gravity;
         }
 

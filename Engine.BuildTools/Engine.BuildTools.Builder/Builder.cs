@@ -17,7 +17,7 @@ namespace Engine.BuildTools.Builder
         {
             XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
             FileStream fs = new FileStream(path, FileMode.Open);
-            BuildSettings bs = (BuildSettings) xs.Deserialize(fs);
+            BuildSettings bs = (BuildSettings)xs.Deserialize(fs);
             fs.Close();
             return bs;
         }
@@ -210,32 +210,32 @@ namespace Engine.BuildTools.Builder
         {
             if (info.HasValueFlag("--packer"))
             {
-                _PackAssets(info.GetValues("--packer").ToArray(), info);
+                _PackAssets(info);
             }
 
             if (info.HasValueFlag("--embed"))
             {
-                _EmbedFiles(info.GetValues("--embed").ToArray(), info);
+                _EmbedFiles(info);
             }
 
             if (info.HasValueFlag("--build"))
             {
-                _Build(info.GetValues("--build").ToArray(), info);
+                _Build(info);
             }
 
             if (info.HasValueFlag("--unembed"))
             {
-                _UnembedFiles(info.GetValues("--unembed").ToArray(), info);
+                _UnembedFiles(info);
             }
 
             if (info.HasValueFlag("--create-package"))
             {
-                _CreateGamePackage(info.GetValues("--create-package").ToArray(), info);
+                _CreateGamePackage(info);
             }
 
             if (info.HasValueFlag("--create-engine-package"))
             {
-                _CreateEnginePackage(info.GetValues("--create-engine-package").ToArray(), info);
+                _CreateEnginePackage(info);
             }
         }
 
@@ -266,7 +266,7 @@ namespace Engine.BuildTools.Builder
                 null);
         }
 
-        private static void _CreateEnginePackage(string[] args, StartupInfo info)
+        private static void _CreateEnginePackage(StartupInfo info)
         {
             //1 Directory of unpacked game build
             //2 The Project Name(Must have the same name as the dll that is used to start)
@@ -274,7 +274,7 @@ namespace Engine.BuildTools.Builder
             //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
             //5 Optional File List
 
-
+            string[] args = info.GetValues("--create-engine-package").ToArray();
             try
             {
                 Console.WriteLine(Path.GetFullPath(args[0]));
@@ -324,7 +324,7 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        private static void _CreateGamePackage(string[] args, StartupInfo info)
+        private static void _CreateGamePackage(StartupInfo info)
         {
             //1 Directory of unpacked game build
             //2 The Project Name(Must have the same name as the dll that is used to start)
@@ -332,7 +332,7 @@ namespace Engine.BuildTools.Builder
             //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
             //5 Optional File List
 
-
+            string[] args = info.GetValues("--create-package").ToArray();
             try
             {
                 Console.WriteLine(Path.GetFullPath(args[0]));
@@ -399,8 +399,9 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        private static void _EmbedFiles(string[] args, StartupInfo info)
+        private static void _EmbedFiles(StartupInfo info)
         {
+            string[] args = info.GetValues("--embed").ToArray();
             try
             {
                 string[] files = Directory.GetFiles(Path.GetFullPath(args[1]), "*", SearchOption.AllDirectories);
@@ -416,8 +417,9 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        private static void _UnembedFiles(string[] args, StartupInfo info)
+        private static void _UnembedFiles(StartupInfo info)
         {
+            string[] args = info.GetValues("--unembed").ToArray();
             try
             {
                 AssemblyEmbedder.UnEmbedFilesFromProject(Path.GetFullPath(args[0]));
@@ -431,8 +433,9 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        private static void _Build(string[] args, StartupInfo info)
+        private static void _Build(StartupInfo info)
         {
+            string[] args = info.GetValues("--build").ToArray();
             try
             {
                 string projectFolder = Path.GetDirectoryName(Path.GetFullPath(args[0]));
@@ -451,8 +454,7 @@ namespace Engine.BuildTools.Builder
                 }
 
                 BuildProject(args[0]);
-                //ProcessUtils.RunProcess(AppDomain.CurrentDomain.BaseDirectory + "resources/project_build.bat", args[0],
-                //    null);
+                
 
                 //Making sure that the root path Path is existing
                 IOUtils.CreateDirectoryPath(Path.GetFullPath(args[1]));
@@ -475,8 +477,9 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        private static void _PackAssets(string[] args, StartupInfo info)
+        private static void _PackAssets(StartupInfo info)
         {
+            string[] args = info.GetValues("--packer").ToArray();
             try
             {
                 PackAssets(Path.GetFullPath(args[0]), int.Parse(args[1]), args[2], args[3],
@@ -494,7 +497,7 @@ namespace Engine.BuildTools.Builder
 
         public static string[] CreateFileList(string path, string searchPatterns, char separator = '+')
         {
-            string[] patterns = searchPatterns.Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries);
+            string[] patterns = searchPatterns.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
             List<string> ret = new List<string>();
             for (int i = 0; i < patterns.Length; i++)
             {
@@ -508,18 +511,18 @@ namespace Engine.BuildTools.Builder
             char separator = '+')
         {
             AssetPackageInfo info = new AssetPackageInfo();
-            List<string> unpackExts = unpackedFileExts.Split(new[] {separator}, StringSplitOptions.RemoveEmptyEntries)
+            List<string> unpackExts = unpackedFileExts.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < unpackExts.Count; i++)
             {
-                info.FileInfos.Add(unpackExts[i], new AssetFileInfo {packageType = AssetPackageType.Unpack});
+                info.FileInfos.Add(unpackExts[i], new AssetFileInfo { packageType = AssetPackageType.Unpack });
             }
 
             List<string> packExts = memoryFileExts.Split("+".ToCharArray(), StringSplitOptions.RemoveEmptyEntries)
                 .ToList();
             for (int i = 0; i < packExts.Count; i++)
             {
-                info.FileInfos.Add(packExts[i], new AssetFileInfo {packageType = AssetPackageType.Memory});
+                info.FileInfos.Add(packExts[i], new AssetFileInfo { packageType = AssetPackageType.Memory });
             }
 
             return info;
@@ -604,8 +607,7 @@ namespace Engine.BuildTools.Builder
                 {
                     f.Add(helper);
                 }
-
-                //f.AddRange(Directory.GetFiles(projectFolder+"/", "System*.dll"));
+                
                 if (isStandalone)
                 {
                     string[] ff = ParseEngineFileList(fileList, projectFolder);

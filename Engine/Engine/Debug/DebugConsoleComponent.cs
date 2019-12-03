@@ -152,21 +152,13 @@ namespace Engine.Debug
         /// </summary>
         private static int MaxConsoleLines => (GameEngine.Instance.Height - 100) / 20;
 
-        /// <summary>
-        /// Render targets for the Background Textures(Used as a workaround because wierd UI rendering issues)
-        /// I think Texture buffer gets updated with wrong blending that will overwrite the pixel data even with alpha 0
-        /// </summary>
-        // private static RenderTarget rt, rt2;
 
         /// <summary>
         /// OnDestroy Implementation that will remove the two render targets from the system
         /// </summary>
         protected override void OnDestroy()
         {
-            //GameEngine.Instance.RemoveRenderTarget(rt);
-            //rt.Dispose();
-            //GameEngine.Instance.RemoveRenderTarget(rt2);
-            //rt2.Dispose();
+            //TODO Dispose correct objects if not attached to a gameobject
         }
 
         /// <summary>
@@ -191,12 +183,6 @@ namespace Engine.Debug
             obj.Add(_hint);
             obj.Add(_bgOutObj);
             obj.Add(_graph);
-
-            //rt = new RenderTarget(null, 1 << 29, new Color(0, 0, 0, 0));
-            //GameEngine.Instance.AddRenderTarget(rt);
-
-            //rt2 = new RenderTarget(null, 1 << 28, new Color(0, 0, 0, 0));
-            //GameEngine.Instance.AddRenderTarget(rt2);
 
             Bitmap bmp = new Bitmap(1, 1);
             bmp.SetPixel(0, 0, Color.Black);

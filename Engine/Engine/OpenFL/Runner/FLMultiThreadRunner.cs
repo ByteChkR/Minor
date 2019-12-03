@@ -53,10 +53,6 @@ namespace Engine.OpenCL.Runner
                     }
                 }
             });
-            //Thread t = new Thread(ThreadProcess);
-            //t.Priority = ThreadPriority.Lowest;
-            //t.Start();
-            //_onFinishQueueCallback?.Invoke();
         }
 
         private Dictionary<FLExecutionContext, Dictionary<Texture, byte[]>> _proc(Action onFinish = null)

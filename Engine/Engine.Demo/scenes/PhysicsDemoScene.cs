@@ -90,7 +90,6 @@ namespace Engine.Demo.scenes
 
         protected override void InitializeScene()
         {
-            Texture test = TextureLoader.FileToTexture("textures/ground4k.png");
 
 
             int rayLayer = LayerManager.RegisterLayer("raycast", new Layer(1, 2));

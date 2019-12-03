@@ -5,10 +5,6 @@ using Engine.OpenCL.DotNetCore.DataTypes;
 using Engine.OpenCL.DotNetCore.Kernels;
 using Engine.OpenCL.DotNetCore.Memory;
 
-#if NO_CL
-using Engine.Debug;
-
-#endif
 
 namespace Engine.OpenCL
 {
@@ -76,11 +72,8 @@ namespace Engine.OpenCL
         /// <param name="obj">The buffer to be set</param>
         public void SetBuffer(int index, MemoryObject obj)
         {
-#if NO_CL
-            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning, 10);
-#else
+
             Kernel.SetKernelArgument(index, obj);
-#endif
         }
 
         /// <summary>
@@ -98,11 +91,9 @@ namespace Engine.OpenCL
             }
 
 
-#if NO_CL
-            Logger.Log("Setting Kernel Argument " + index, DebugChannel.Warning, 10);
-#else
+
             Kernel.SetKernelArgumentVal(index, Parameter.ElementAt(index).Value.CastToType(_instance, value));
-#endif
+
         }
 
         /// <summary>
@@ -116,7 +107,7 @@ namespace Engine.OpenCL
         internal void Run(CommandQueue cq, MemoryBuffer image, int3 dimensions, float genTypeMaxVal,
             MemoryBuffer enabledChannels, int channelCount)
         {
-#if !NO_CL
+
             int size = dimensions.x * dimensions.y * dimensions.z * channelCount;
 
 
@@ -126,7 +117,7 @@ namespace Engine.OpenCL
             SetArg(3, genTypeMaxVal);
             SetArg(4, enabledChannels);
             Run(cq, 1, size);
-#endif
+
         }
 
 

@@ -360,7 +360,6 @@ namespace Engine.Core
             MemoryTracer.NextStage("Clean up Destroyed Objects");
             CurrentScene?.RemoveDestroyedObjects();
             MemoryTracer.ReturnFromSubStage(); //Returning to root.
-            //ResourceManager.ProcessDeleteQueue();
         }
 
         /// <summary>

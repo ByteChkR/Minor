@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text;
 
 namespace Engine.Debug
 {
@@ -92,28 +93,27 @@ namespace Engine.Debug
         /// <returns></returns>
         public static string ToConsoleText(EngineStageInformation info, int depth)
         {
-            string ind = "\t";
+            StringBuilder ind = new StringBuilder("\t");
             for (int i = 0; i < depth; i++)
             {
-                ind += "\t";
+                ind.Append("\t");
             }
 
-
-            string ret = info.Name + "\n";
-            ret += ind + "KB Used Before: " + info.Before + "\n";
-            ret += ind + "KB Used After: " + info.After + "\n";
-            ret += ind + "KB Used After(post GC): " + info.AfterGarbageCollection + "\n";
-            ret += ind + "Elapsed Time(MS): " + info.TimeSpentInStage.TotalMilliseconds + "\n";
-            ret += ind + "Substep Count: " + info.SubStages.Count + "\n";
-            ret += ind + "Substeps: \n";
+            StringBuilder ret = new StringBuilder(info.Name + "\n");
+            ret.AppendLine($"{ind}KB Used Before: {info.Before}");
+            ret.AppendLine($"{ind}KB Used After: {info.After}");
+            ret.AppendLine($"{ind}KB Used After(post GC): {info.AfterGarbageCollection}");
+            ret.AppendLine($"{ind}Elapsed Time(MS): {info.TimeSpentInStage.TotalMilliseconds}");
+            ret.AppendLine($"{ind}Substep Count: {info.SubStages.Count}");
+            ret.AppendLine($"{ind}Substeps:");
 
 
             foreach (EngineStageInformation stepMemoryInformation in info.SubStages)
             {
-                ret += ToConsoleText(stepMemoryInformation, depth + 1);
+                ret.Append(ToConsoleText(stepMemoryInformation, depth + 1));
             }
 
-            return ret;
+            return ret.ToString();
         }
 
         /// <summary>

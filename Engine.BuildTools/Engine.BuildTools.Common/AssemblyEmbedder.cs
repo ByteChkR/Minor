@@ -126,7 +126,6 @@ namespace Engine.BuildTools.Common
 
         private static XmlNode FindTag(XmlDocument doc)
         {
-            string s1 = doc.Name;
             XmlNode s = doc.FirstChild;
 
             for (int i = 0; i < s.ChildNodes.Count; i++)

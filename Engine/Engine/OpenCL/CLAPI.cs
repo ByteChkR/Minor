@@ -57,12 +57,18 @@ namespace Engine.OpenCL
         /// </summary>
         public static CLAPI MainThread => _instance ?? (_instance = new CLAPI());
 
-        public void Dispose()
+        private static void apiDisposed(CLAPI obj)
         {
-            if (this == _instance)
+            if (obj == _instance)
             {
                 _instance = null;
             }
+        }
+
+        public void Dispose()
+        {
+            apiDisposed(this);
+
 
             _context.Dispose();
             _commandQueue.Dispose();
@@ -96,9 +102,7 @@ namespace Engine.OpenCL
         /// </summary>
         private void InitializeOpenCL()
         {
-#if NO_CL
-            Logger.Log("Starting in NO_CL Mode", DebugChannel.Warning, 10);
-#else
+
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
 
             Device chosenDevice = platforms.FirstOrDefault()?.GetDevices(DeviceType.All).FirstOrDefault();
@@ -106,7 +110,6 @@ namespace Engine.OpenCL
             _context = Context.CreateContext(chosenDevice);
             Device CLDevice = chosenDevice;
             _commandQueue = CommandQueue.CreateCommandQueue(_context, CLDevice);
-#endif
         }
 
 
@@ -118,17 +121,13 @@ namespace Engine.OpenCL
         /// <returns>The Compiled and Linked Kernel</returns>
         internal static Kernel CreateKernelFromName(Program program, string name)
         {
-#if NO_CL
-            Logger.Log("Creating CL Kernel From Name", DebugChannel.Warning, 10);
-            return null;
-#else
+
             if (program == null)
             {
                 return null;
             }
 
             return program.CreateKernel(name);
-#endif
         }
 
         /// <summary>
@@ -213,22 +212,15 @@ namespace Engine.OpenCL
             bool uniform)
             where T : struct
         {
-#if NO_CL
-            T[] data = new T[1];
-#else
 
             MemoryBuffer buffer = buf;
 
-            T[] data = instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int) buffer.Size);
-#endif
+            T[] data = instance._commandQueue.EnqueueReadBuffer<T>(buffer, (int)buffer.Size);
+
 
             WriteRandom(data, enabledChannels, rnd, uniform);
 
-#if NO_CL
-            Logger.Log("Writing Random Data to Buffer", DebugChannel.Warning, 10);
-#else
             instance._commandQueue.EnqueueWriteBuffer(buffer, data);
-#endif
         }
 
         /// <summary>
@@ -253,11 +245,7 @@ namespace Engine.OpenCL
         /// <param name="values">The values to be written to the buffer</param>
         public static void WriteToBuffer<T>(CLAPI instance, MemoryBuffer buf, T[] values) where T : struct
         {
-#if NO_CL
-            Logger.Log("Writing To Buffer..", DebugChannel.Warning, 10);
-#else
             instance._commandQueue.EnqueueWriteBuffer(buf, values);
-#endif
         }
 
         /// <summary>
@@ -269,12 +257,7 @@ namespace Engine.OpenCL
         /// <returns>The content of the buffer</returns>
         public static T[] ReadBuffer<T>(CLAPI instance, MemoryBuffer buf, int size) where T : struct
         {
-#if NO_CL
-            Logger.Log("Reading From Buffer..", DebugChannel.Warning, 10);
-            return new T[size];
-#else
             return instance._commandQueue.EnqueueReadBuffer<T>(buf, size);
-#endif
         }
 
         /// <summary>
@@ -291,21 +274,14 @@ namespace Engine.OpenCL
             MemoryBuffer enabledChannels,
             int channelCount)
         {
-#if NO_CL
-            Logger.Log("Running CL Kernel: " + kernel.Name, DebugChannel.Warning, 10);
-#else
             kernel.Run(instance._commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
-#endif
         }
 
         #region Instance Functions
 
         internal static Program CreateCLProgramFromSource(CLAPI instance, string source)
         {
-#if NO_CL
-            Logger.Log("Creating CL Program", DebugChannel.Warning, 10);
-            return null;
-#else
+
             try
             {
                 return instance._context.CreateAndBuildProgramFromString(source);
@@ -315,17 +291,12 @@ namespace Engine.OpenCL
                 Logger.Crash(new CLProgramException("Could not compile file", e), true);
                 return null;
             }
-#endif
+
         }
 
         internal static Program CreateCLProgramFromSource(CLAPI instance, string[] source)
         {
-#if NO_CL
-            Logger.Log("Creating CL Program", DebugChannel.Warning, 10);
-            return null;
-#else
             return instance._context.CreateAndBuildProgramFromString(source);
-#endif
         }
 
         /// <summary>
@@ -350,16 +321,12 @@ namespace Engine.OpenCL
         /// <returns></returns>
         public static MemoryBuffer CreateBuffer<T>(CLAPI instance, T[] data, MemoryFlag flags) where T : struct
         {
-            object[] arr = Array.ConvertAll(data, x => (object) x);
+            object[] arr = Array.ConvertAll(data, x => (object)x);
             return CreateBuffer(instance, arr, typeof(T), flags);
         }
 
         public static MemoryBuffer CreateBuffer(CLAPI instance, object[] data, Type t, MemoryFlag flags)
         {
-#if NO_CL
-            Logger.Log("Creating CL Buffer of Type: " + t, DebugChannel.Warning, 10);
-            return null;
-#else
 
             long bytes = data.Length * Marshal.SizeOf(data[0]);
             EngineStatisticsManager.CLObjectCreated(bytes);
@@ -367,7 +334,6 @@ namespace Engine.OpenCL
                 instance._context.CreateBuffer(flags | MemoryFlag.CopyHostPointer, t, data);
 
             return mb;
-#endif
         }
 
         /// <summary>
@@ -385,13 +351,9 @@ namespace Engine.OpenCL
             byte[] buffer = new byte[bmp.Width * bmp.Height * 4];
             Marshal.Copy(data.Scan0, buffer, 0, buffer.Length);
             bmp.UnlockBits(data);
-#if NO_CL
-            Logger.Log("Creating CL Buffer from Image", DebugChannel.Warning, 10);
-            return null;
-#else
+
             MemoryBuffer mb = CreateBuffer(instance, buffer, flags);
             return mb;
-#endif
         }
 
         #endregion

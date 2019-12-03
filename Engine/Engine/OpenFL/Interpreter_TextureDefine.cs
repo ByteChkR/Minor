@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Text;
 using Engine.Debug;
 using Engine.Exceptions;
 using Engine.IO;
@@ -19,7 +20,14 @@ namespace Engine.OpenFL
         /// <summary>
         /// Define handler that loads defined textures
         /// </summary>
-        /// <param name="arg">The Line of the definition</param>
+        /// <param name="instance"></param>
+        /// <param name="arg"></param>
+        /// <param name="defines"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="depth"></param>
+        /// <param name="channelCount"></param>
+        /// <param name="kernelDb"></param>
         private static void DefineTexture(CLAPI instance, string[] arg, Dictionary<string, CLBufferInfo> defines,
             int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)
@@ -72,7 +80,7 @@ namespace Engine.OpenFL
                 string fn = filename.Replace(FilepathIndicator, "");
                 if (File.Exists(fn))
                 {
-                    Bitmap bmp = new Bitmap((Bitmap) System.Drawing.Image.FromFile(fn), width, height);
+                    Bitmap bmp = new Bitmap((Bitmap)System.Drawing.Image.FromFile(fn), width, height);
                     CLBufferInfo info = new CLBufferInfo(CLAPI.CreateFromImage(instance, bmp,
                         MemoryFlag.CopyHostPointer | flags), true);
                     info.SetKey(varname);
@@ -243,10 +251,10 @@ namespace Engine.OpenFL
 
             else
             {
-                string s = "";
+                StringBuilder s = new StringBuilder();
                 foreach (string s1 in args)
                 {
-                    s += s1 + " ";
+                    s.Append(s1 + " ");
                 }
 
                 Logger.Crash(new FLInvalidFunctionUseException(DefineKey, "Define statement wrong: " + s), true);

@@ -41,8 +41,7 @@ namespace Engine.WFC
             Fmx = width;
             Fmy = height;
         }
-
-        //If having a fixed random buffer the size is: limit*wave.length+limit
+        
 
         private void Init()
         {
