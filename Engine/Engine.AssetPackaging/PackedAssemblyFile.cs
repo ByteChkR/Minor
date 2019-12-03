@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// Assembly File Class that is used when the pack files are embedded in an assembly
+    /// </summary>
     public class PackedAssemblyFile : AssemblyFile
     {
         private AssetPointer _ptr;

@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v2
 {
+    /// <summary>
+    /// Package Version 2
+    /// </summary>
     public class Version2 : IPackageVersion
     {
         private MD5 _md5 = MD5.Create();

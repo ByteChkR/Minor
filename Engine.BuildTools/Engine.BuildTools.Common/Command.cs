@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Text;
-using Engine.BuildTools.Builder;
 
 namespace Engine.BuildTools.Common
 {
+
+    /// <summary>
+    /// Contains Abstraction for Commands that will be executed by the Command Runner
+    /// </summary>
     public class Command
     {
         public Action<StartupInfo, string[]> CommandAction { get; }

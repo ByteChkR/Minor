@@ -3,6 +3,9 @@ using OpenTK;
 
 namespace Engine.UI.Animations.AnimationTypes
 {
+    /// <summary>
+    /// Implementation for a linear animation
+    /// </summary>
     public class LinearAnimation : Animation
     {
         public Vector2 EndPos;

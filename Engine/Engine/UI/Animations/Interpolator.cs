@@ -2,6 +2,9 @@
 
 namespace Engine.UI.Animations
 {
+    /// <summary>
+    /// Class used to interpolate between two values
+    /// </summary>
     public abstract class Interpolator
     {
         public delegate float Interpolate(float input);

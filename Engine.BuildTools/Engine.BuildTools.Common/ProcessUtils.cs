@@ -4,6 +4,9 @@ using System.Threading;
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Class that enables starting processes and have callbacks when they finished
+    /// </summary>
     public static class ProcessUtils
     {
         public static void RunActionAsCommand(Action<string[]> action, string args, Action<Exception> onEnd)

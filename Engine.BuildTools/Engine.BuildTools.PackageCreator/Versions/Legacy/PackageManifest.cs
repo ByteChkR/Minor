@@ -3,6 +3,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.Legacy
 {
+    /// <summary>
+    /// Legacy Package Manifest
+    /// </summary>
     [Serializable]
     public class PackageManifest : IPackageManifest
     {

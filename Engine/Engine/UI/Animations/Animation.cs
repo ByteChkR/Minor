@@ -1,5 +1,8 @@
 ﻿namespace Engine.UI.Animations
 {
+    /// <summary>
+    /// The Abstract Animation Class that is used for Animating UI Elements
+    /// </summary>
     public abstract class Animation
     {
         private int frameCount;

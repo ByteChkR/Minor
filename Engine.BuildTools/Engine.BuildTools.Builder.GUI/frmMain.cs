@@ -9,6 +9,9 @@ using Engine.BuildTools.Common;
 
 namespace Engine.BuildTools.Builder.GUI
 {
+    /// <summary>
+    /// The Windows Form used as the GUI Interface
+    /// </summary>
     public partial class frmMain : Form
     {
         private BuildSettings bs;

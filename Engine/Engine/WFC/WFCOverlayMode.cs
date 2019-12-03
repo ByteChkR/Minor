@@ -15,6 +15,9 @@ using Engine.IO;
 
 namespace Engine.WFC
 {
+    /// <summary>
+    /// The Implementation of the Wave Collapse Function using a Training Image
+    /// </summary>
     public class WfcOverlayMode : WaveFunctionCollapse
     {
         private readonly List<Color> colors;

@@ -5,6 +5,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v1
 {
+    /// <summary>
+    /// Package Version 1
+    /// </summary>
     public class Version1 : IPackageVersion
     {
         public string ManifestPath => "PackageManifest.xml";

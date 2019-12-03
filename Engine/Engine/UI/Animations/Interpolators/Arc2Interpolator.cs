@@ -3,6 +3,9 @@ using Engine.Core;
 
 namespace Engine.UI.Animations.Interpolators
 {
+    /// <summary>
+    /// Arc2 Interpolator implementation
+    /// </summary>
     public class Arc2Interpolator : Interpolator
     {
         public Arc2Interpolator()

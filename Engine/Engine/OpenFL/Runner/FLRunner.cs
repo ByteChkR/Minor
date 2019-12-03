@@ -8,6 +8,9 @@ using Engine.OpenFL;
 
 namespace Engine.OpenFL.Runner
 {
+    /// <summary>
+    /// Contains the Context in which the FL Runner is executing the enqueued items
+    /// </summary>
     public struct FlExecutionContext
     {
         public string Filename;

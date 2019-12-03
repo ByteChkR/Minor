@@ -2,6 +2,9 @@
 
 namespace Engine.UI.Animations.Interpolators
 {
+    /// <summary>
+    /// Smooth Interpolator implementation
+    /// </summary>
     public class SmoothInterpolator : Interpolator
     {
         public Interpolator SmoothnessStart { get; set; } = new StaticInterpolator();

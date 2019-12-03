@@ -4,6 +4,9 @@ using OpenTK;
 
 namespace Engine.Core
 {
+    /// <summary>
+    /// A Class containing smoothing functions and other smoothing related functionality
+    /// </summary>
     public static class Interpolations
     {
         /// <summary>

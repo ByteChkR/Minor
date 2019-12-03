@@ -6,6 +6,9 @@ using OpenTK;
 
 namespace Engine.UI.EventSystems
 {
+    /// <summary>
+    /// UI Component implementing a typical button implementation
+    /// </summary>
     public class Button : UiImageRendererComponent, ISelectable
     {
         private Texture btnClick;

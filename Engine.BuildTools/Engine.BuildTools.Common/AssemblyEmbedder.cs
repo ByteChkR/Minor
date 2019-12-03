@@ -6,6 +6,9 @@ using System.Xml;
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Class containing the logic for Embedding and unembedding Files into .csproj files 
+    /// </summary>
     public static class AssemblyEmbedder
     {
         public static void UnEmbedFilesFromProject(string csFile)

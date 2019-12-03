@@ -12,6 +12,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.DataTypes
 {
+    /// <summary>
+    /// A Struct used for linking a file to a specific shader type
+    /// </summary>
     [Serializable]
     internal struct ShaderPath
     {
@@ -19,6 +22,9 @@ namespace Engine.DataTypes
         public string Path;
     }
 
+    /// <summary>
+    /// A Class that has all default resources as fields
+    /// </summary>
     [Serializable]
     public class DefaultFilepaths
     {

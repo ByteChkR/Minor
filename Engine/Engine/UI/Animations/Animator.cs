@@ -4,6 +4,9 @@ using Engine.UI.EventSystems;
 
 namespace Engine.UI.Animations
 {
+    /// <summary>
+    /// Class used to play back animations once an animation is triggered
+    /// </summary>
     public class Animator : AbstractComponent
     {
         private List<Animation> animators = new List<Animation>();

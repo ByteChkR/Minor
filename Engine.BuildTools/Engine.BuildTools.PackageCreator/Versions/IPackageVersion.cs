@@ -2,6 +2,9 @@
 
 namespace Engine.BuildTools.PackageCreator.Versions
 {
+    /// <summary>
+    /// Interface of a Package Version
+    /// </summary>
     public interface IPackageVersion
     {
         string ManifestPath { get; }

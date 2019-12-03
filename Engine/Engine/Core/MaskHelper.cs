@@ -1,5 +1,8 @@
 ﻿namespace Engine.Core
 {
+    /// <summary>
+    /// Contains Helping Functions for using mask operations
+    /// </summary>
     public static class MaskHelper
     {
         /// <summary>

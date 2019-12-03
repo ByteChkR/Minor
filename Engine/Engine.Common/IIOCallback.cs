@@ -1,5 +1,8 @@
 ﻿namespace Engine.Common
 {
+    /// <summary>
+    /// Interface for the TextProcessor IO Callbacks.
+    /// </summary>
     public interface IIoCallback
     {
         bool FileExists(string file);

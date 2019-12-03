@@ -6,15 +6,33 @@ using System.Reflection;
 
 namespace Engine.AssetPackaging
 {
+
+    /// <summary>
+    /// Container Class used to Group Files by Assembly
+    /// </summary>
     public class AssemblyFile
     {
+        /// <summary>
+        /// The Assembly containing all files in this object
+        /// </summary>
         public readonly Assembly Assembly;
 
+        /// <summary>
+        /// All files in this object
+        /// </summary>
         public readonly string[] ManifestFilepaths;
 
-
+        /// <summary>
+        /// If the assembly has compressed files
+        /// </summary>
         public bool Compression { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="compression"></param>
+        /// <param name="manifestFilepath"></param>
+        /// <param name="assembly"></param>
         public AssemblyFile(bool compression, string manifestFilepath, Assembly assembly) : this(compression,
             new[] {manifestFilepath}, assembly)
         {

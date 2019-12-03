@@ -9,6 +9,9 @@ using Engine.BuildTools.PackageCreator.Versions.v2;
 
 namespace Engine.BuildTools.PackageCreator
 {
+    /// <summary>
+    /// Class used to Create a game or engine package
+    /// </summary>
     public static class Creator
     {
         public const string DefaultVersion = "v1";

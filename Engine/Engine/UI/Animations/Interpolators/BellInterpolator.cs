@@ -2,6 +2,9 @@
 
 namespace Engine.UI.Animations.Interpolators
 {
+    /// <summary>
+    /// Bell Interpolator implementation
+    /// </summary>
     public class BellInterpolator : Interpolator
     {
         public Interpolator Smoothness { get; set; } = new StaticInterpolator();

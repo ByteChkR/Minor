@@ -11,6 +11,9 @@ The software is provided "as is", without warranty of any kind, express or impli
 
 namespace Engine.WFC
 {
+    /// <summary>
+    /// The Implementation of the base Wave Collapse Function
+    /// </summary>
     public abstract class WaveFunctionCollapse
     {
         protected static readonly int[] Dx = {-1, 0, 1, 0};

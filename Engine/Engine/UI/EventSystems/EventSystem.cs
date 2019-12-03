@@ -5,6 +5,9 @@ using OpenTK;
 
 namespace Engine.UI.EventSystems
 {
+    /// <summary>
+    /// EventSystem handles all Selectable UI Elements in the Game
+    /// </summary>
     public class EventSystem
     {
         private List<ISelectable> selectables = new List<ISelectable>();

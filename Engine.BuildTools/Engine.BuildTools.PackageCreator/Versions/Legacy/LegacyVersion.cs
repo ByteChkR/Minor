@@ -5,6 +5,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.Legacy
 {
+    /// <summary>
+    /// Legacy Package Version
+    /// </summary>
     public class LegacyVersion : IPackageVersion
     {
         public string ManifestPath => "EngineVersion";

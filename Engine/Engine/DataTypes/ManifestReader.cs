@@ -10,6 +10,9 @@ using Engine.IO;
 
 namespace Engine.DataTypes
 {
+    /// <summary>
+    /// Class that implements reading resources from an Assembly Manifest
+    /// </summary>
     public static class ManifestReader
     {
         private static Dictionary<string, AssemblyFile> _assemblyFiles = new Dictionary<string, AssemblyFile>();

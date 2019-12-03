@@ -2,6 +2,9 @@
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// Assembly File Class that is used when the pack file is on disk
+    /// </summary>
     public class IoPackedAssemblyFile : AssemblyFile
     {
         private AssetPointer _ptr;

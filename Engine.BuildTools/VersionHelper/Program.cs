@@ -3,6 +3,9 @@ using System.Xml;
 
 namespace VersionHelper
 {
+    /// <summary>
+    /// Small Internal Program that increases a .csproj files Assembly and File Version
+    /// </summary>
     internal class Program
     {
         private static void Main(string[] args)

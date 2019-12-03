@@ -4,6 +4,10 @@ using OpenTK;
 
 namespace Engine.Rendering
 {
+
+    /// <summary>
+    /// Component used to represent a point light in the current scene
+    /// </summary>
     public class LightComponent : AbstractComponent
     {
         private bool last;

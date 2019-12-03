@@ -11,6 +11,9 @@ using MatchType = ADL.MatchType;
 
 namespace Engine.Common
 {
+    /// <summary>
+    /// Helper Class that Communicates with the ADL Library
+    /// </summary>
     public static class DebugHelper
     {
         public static int SeverityFilter;

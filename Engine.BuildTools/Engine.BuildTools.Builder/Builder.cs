@@ -11,6 +11,10 @@ using Engine.BuildTools.PackageCreator;
 
 namespace Engine.BuildTools.Builder
 {
+
+    /// <summary>
+    /// Class Containing the Building Logic that is used in the CLI and GUI Wrappers
+    /// </summary>
     public static class Builder
     {
         private static BuildSettings LoadSettings(string path)

@@ -3,6 +3,9 @@ using System.Windows.Forms;
 
 namespace Engine.BuildTools.Builder.GUI
 {
+    /// <summary>
+    /// CLI Wrapper for the Engine.BuildTools.Builder Library
+    /// </summary>
     internal static class Program
     {
         /// <summary>

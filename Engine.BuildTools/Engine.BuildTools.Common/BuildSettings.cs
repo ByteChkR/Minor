@@ -2,6 +2,9 @@
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Contains all settings needed to build a csproj file with the game engine
+    /// </summary>
     [Serializable]
     public class BuildSettings
     {

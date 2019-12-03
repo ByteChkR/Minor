@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v2
 {
+    /// <summary>
+    /// Containing the Hash for a file
+    /// </summary>
     [Serializable]
     public struct HashEntry
     {
@@ -10,6 +13,9 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
         public string Hash { get; set; }
     }
 
+    /// <summary>
+    /// Package Manifest Version 2
+    /// </summary>
     [Serializable]
     public class PackageManifest : IPackageManifest
     {

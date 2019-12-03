@@ -3,6 +3,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v1
 {
+    /// <summary>
+    /// Package Manifest Version 1
+    /// </summary>
     [Serializable]
     public class PackageManifest : IPackageManifest
     {

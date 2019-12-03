@@ -2,6 +2,9 @@
 
 namespace Engine.UI.EventSystems
 {
+    /// <summary>
+    /// ISelectable Interface for UI Elements
+    /// </summary>
     public interface ISelectable
     {
         int TabStop { get; set; }

@@ -2,6 +2,9 @@
 
 namespace Engine.OpenFL.FLDataObjects
 {
+    /// <summary>
+    /// Contains information on a single FL Instruction
+    /// </summary>
     public struct FlInstructionData
     {
         public object Instruction;
