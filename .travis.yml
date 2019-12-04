@@ -39,7 +39,7 @@ script:
   - dotnet build ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj -c $BUILDCONFIG
   - dotnet build ADL/ADL/ADL.UnitTests/ADL.UnitTests.csproj -c $BUILDCONFIG
   - dotnet build ext-pp/ext_pp.sln -c $BUILDCONFIG
-  - dotnet build $SOLUTION -c $BUILDCONFIG
+  - dotnet build $SOLUTION -c $BUILDCONFIG /p:PreBuildEvent= /p:PostBuildEvent=
 
 #Testing all included projects.
 after_script:
