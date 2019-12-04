@@ -210,8 +210,105 @@ namespace Engine.BuildTools.Builder
             }
         }
 
+        private static void _CreatePatch(StartupInfo info)
+        {
+            List<string> args = info.GetValues("--create-patch");
+            if (args.Count != 2)
+            {
+                Console.WriteLine("arguments for --create-patch: <folder> <outputFile>");
+                return;
+            }
+
+            try
+            {
+                Creator.CreatePatchFromFolder(args[0], args[1]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("arguments for --create-patch: <folder> <outputFile>");
+            }
+        }
+
+        private static void _PatchPackage(StartupInfo info)
+        {
+            List<string> args = info.GetValues("--patch");
+            if (args.Count != 2)
+            {
+                Console.WriteLine("arguments for --patch: <mainFile> <patchFile>");
+                return;
+            }
+
+            try
+            {
+                Creator.PatchPackage(args[0], args[1]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("arguments for --patch: <mainFile> <patchFile>");
+            }
+        }
+
+        private static void _PatchPackagePermanent(StartupInfo info)
+        {
+            List<string> args = info.GetValues("--patch-permanent");
+            if (args.Count != 2)
+            {
+                Console.WriteLine("arguments for --patch-permanent: <mainFile> <patchFile>");
+                return;
+            }
+
+            try
+            {
+                Creator.PatchPackagePermanent(args[0], args[1]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("arguments for --patch-permanent: <mainFile> <patchFile>");
+            }
+        }
+
+        private static void _CreatePatchDelta(StartupInfo info)
+        {
+            List<string> args = info.GetValues("--create-patch-delta");
+            if (args.Count != 3)
+            {
+                Console.WriteLine("arguments for --create-patch-delta: <oldFile> <newFile> <outputFile>");
+                return;
+            }
+
+            try
+            {
+                Creator.CreatePatchFromDelta(args[0], args[1], args[2]);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("arguments for --create-patch-delta: <oldFile> <newFile> <outputFile>");
+            }
+        }
+
+
         private static void _Main(StartupInfo info)
         {
+            if (info.HasValueFlag("--create-patch"))
+            {
+                _CreatePatch(info);
+            }
+
+            if (info.HasValueFlag("--create-patch-delta"))
+            {
+                _CreatePatchDelta(info);
+            }
+
+            if (info.HasValueFlag("--patch"))
+            {
+                _PatchPackage(info);
+            }
+
+            if (info.HasValueFlag("--patch-permanent"))
+            {
+                _PatchPackagePermanent(info);
+            }
+
             if (info.HasValueFlag("--packer"))
             {
                 _PackAssets(info);

@@ -25,6 +25,11 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             {
                 Console.WriteLine("Checksum verification failed!");
             }
+
+            if (Directory.Exists(outPutDir + "/patches"))
+            {
+                Creator.ApplyPatches(outPutDir);
+            }
         }
 
         public bool IsVersion(string path)
@@ -60,13 +65,19 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             xs.Serialize(s, manifest);
         }
 
+        public IPackageManifest ReadManifest(Stream s)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
+            PackageManifest pm = (PackageManifest) xs.Deserialize(s);
+            s.Close();
+            return pm;
+        }
+
         public IPackageManifest GetPackageManifest(string path)
         {
             ZipArchive pack = ZipFile.OpenRead(path);
             Stream s = pack.GetEntry(ManifestPath).Open();
-            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
-            PackageManifest pm = (PackageManifest) xs.Deserialize(s);
-            s.Close();
+            PackageManifest pm = (PackageManifest) ReadManifest(s);
             pack.Dispose();
             return pm;
         }

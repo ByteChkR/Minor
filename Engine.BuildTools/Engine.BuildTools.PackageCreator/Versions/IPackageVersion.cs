@@ -20,6 +20,8 @@ namespace Engine.BuildTools.PackageCreator.Versions
         void UnpackPackage(string file, string outPutDir);
         IPackageManifest GetPackageManifest(string path);
 
+        IPackageManifest ReadManifest(Stream s);
+
         void WriteManifest(Stream s, IPackageManifest manifest);
     }
 }

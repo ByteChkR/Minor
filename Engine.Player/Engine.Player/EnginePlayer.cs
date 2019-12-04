@@ -9,7 +9,6 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Engine.BuildTools.Builder;
 using Engine.BuildTools.Common;
 using Engine.BuildTools.PackageCreator;
 using Engine.BuildTools.PackageCreator.Versions;
@@ -506,6 +505,7 @@ namespace Engine.Player
 
 
             Console.WriteLine("Loading Engine Version: " + version);
+
             Creator.UnpackPackage(filePath, "game");
         }
 
