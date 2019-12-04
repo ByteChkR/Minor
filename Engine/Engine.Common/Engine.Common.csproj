@@ -9,7 +9,7 @@
     <RootNamespace>Engine.Common</RootNamespace>
     <AssemblyVersion>0.2.0.7</AssemblyVersion>
     <FileVersion>0.2.0.7</FileVersion>
-    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_TravisTest|AnyCPU'">
     <DefineConstants>TRACE;TRAVIS_TEST</DefineConstants>
