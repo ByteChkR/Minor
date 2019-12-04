@@ -192,4 +192,7 @@
     <ProjectReference Include="..\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
     <ProjectReference Include="..\Engine.Common\Engine.Common.csproj" />
   </ItemGroup>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if $(ConfigurationName) == Debug (&#xD;&#xA;  $(ProjectDir)..\..\version_helper\Engine.BuildTools.VersionHelper.exe --pattern $(ProjectPath) X.X.X.+&#xD;&#xA;)" />
+  </Target>
 </Project>

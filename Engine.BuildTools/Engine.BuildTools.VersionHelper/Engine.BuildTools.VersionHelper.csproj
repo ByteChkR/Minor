@@ -4,16 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1C992786-DEAA-4952-A8F5-1CCD1CC316F1}</ProjectGuid>
+    <ProjectGuid>{E2327A6F-74B6-4100-9FDC-D6DB25579047}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Engine.BuildTools.Builder.CLI</RootNamespace>
-    <AssemblyName>Engine.BuildTools.Builder.CLI</AssemblyName>
+    <RootNamespace>Engine.BuildTools.VersionHelper</RootNamespace>
+    <AssemblyName>Engine.BuildTools.VersionHelper</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -34,9 +32,6 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <ApplicationIcon>icons8-support-480.ico</ApplicationIcon>
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -54,18 +49,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Engine.BuildTools.Builder\Engine.BuildTools.Builder.csproj">
-      <Project>{ad3b4573-823b-4071-be46-b302cdc6e10a}</Project>
-      <Name>Engine.BuildTools.Builder</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="icons8-support-480.ico" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>xcopy $(ProjectDir)$(OutDir)Engine.BuildTools.VersionHelper.exe $(ProjectDir)..\..\version_helper\ /Y /F</PostBuildEvent>
   </PropertyGroup>
 </Project>

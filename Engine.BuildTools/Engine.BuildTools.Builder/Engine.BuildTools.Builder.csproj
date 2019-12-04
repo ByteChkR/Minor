@@ -1,13 +1,15 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyVersion>1.0.0.9</AssemblyVersion>
+    <FileVersion>1.0.0.9</FileVersion>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
     <ProjectReference Include="..\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj" />
     <ProjectReference Include="..\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj" />
   </ItemGroup>
-
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="if $(ConfigurationName) == Debug (&#xD;&#xA;  $(ProjectDir)..\..\version_helper\Engine.BuildTools.VersionHelper.exe --pattern $(ProjectPath) X.X.X.+&#xD;&#xA;)" />
+  </Target>
 </Project>
