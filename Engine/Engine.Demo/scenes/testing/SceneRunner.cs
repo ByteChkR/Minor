@@ -62,6 +62,7 @@ namespace Engine.Demo.scenes.testing
             }
 
             engine.InitializeScene(scenes[currrentScene]);
+
             currrentScene++;
         }
     }

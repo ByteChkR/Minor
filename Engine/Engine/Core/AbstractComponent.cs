@@ -1,4 +1,5 @@
-﻿using Engine.Physics;
+﻿using Engine.Debug;
+using Engine.Physics;
 using Engine.Physics.BEPUphysics.CollisionTests;
 using Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs;
 using OpenTK;
@@ -40,7 +41,7 @@ namespace Engine.Core
             {
                 return;
             }
-
+            Logger.Log($"Adding {this} to Remove List", DebugChannel.EngineCore|DebugChannel.Log, 7);
             DestructionPending = true;
         }
 

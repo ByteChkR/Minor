@@ -97,15 +97,23 @@ namespace Engine.AI
         /// <param name="addReverse">adds the same connection in reverse to allow traveling in reverse</param>
         public void AddConnection(AiNode other, bool addReverse = true)
         {
-            if (connections.Contains(other))
+            Logger.Log($"Creating Connection {this} => {other}",DebugChannel.EngineAI| DebugChannel.Log, 5);
+            bool thisContains = connections.Contains(other);
+            bool otherContains = other.connections.Contains(this);
+            if (thisContains && (!addReverse || otherContains))
             {
-                Logger.Log("Connection already established in AI node.", DebugChannel.Warning, 10);
-                return;
+                Logger.Log($"Connection already established in {this}", DebugChannel.EngineAI | DebugChannel.Warning, 10);
+            }
+            else if (!thisContains)
+            {
+                Logger.Log($"Connection already established in {this}" , DebugChannel.EngineAI | DebugChannel.Warning, 10);
+                connections.Add(other);
             }
 
-            connections.Add(other);
-            if (addReverse)
+            if (!otherContains && addReverse)
             {
+
+                Logger.Log($"Adding Node Connection in reverse.", DebugChannel.EngineAI | DebugChannel.Log, 5);
                 other.AddConnection(this, false); //Add the other way around
             }
         }
@@ -119,13 +127,15 @@ namespace Engine.AI
         {
             if (!connections.Contains(other))
             {
-                Logger.Log("Connection not found in AI node.", DebugChannel.Warning, 10);
+                Logger.Log($"Connection not found in {this}", DebugChannel.EngineAI | DebugChannel.Warning, 10);
                 return;
             }
 
+            Logger.Log($"Removing Connection in {this}", DebugChannel.EngineAI | DebugChannel.Log, 5);
             connections.Remove(other);
             if (removeReverse)
             {
+                Logger.Log($"Removing reverse Node Connection.", DebugChannel.EngineAI | DebugChannel.Log, 5);
                 other.RemoveConnection(this, false);
             }
         }

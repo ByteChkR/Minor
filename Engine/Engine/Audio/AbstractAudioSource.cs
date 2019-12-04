@@ -1,6 +1,7 @@
 ﻿using System;
 using Engine.Core;
 using Engine.DataTypes;
+using Engine.Debug;
 using OpenTK.Audio.OpenAL;
 
 namespace Engine.Audio
@@ -28,6 +29,9 @@ namespace Engine.Audio
         /// </summary>
         protected AbstractAudioSource()
         {
+
+            Logger.Log("Creating Audio Source",DebugChannel.EngineAudio| DebugChannel.Log, 9);
+
             source = AL.GenSource(); //Generating Audio Source
 
             //Setting Default Values
@@ -45,8 +49,10 @@ namespace Engine.Audio
             get => clip;
             set
             {
+                Logger.Log($"Changing Clip: {clip} => {value}", DebugChannel.EngineAudio| DebugChannel.Log, 8);
                 if (clip != null && clip.Buffer == value.Buffer)
                 {
+                    Logger.Log("New clip is the same, skipping.", DebugChannel.EngineAudio|DebugChannel.Warning, 6);
                     return;
                 }
 
@@ -95,6 +101,7 @@ namespace Engine.Audio
         /// </summary>
         public void Play()
         {
+            Logger.Log($"Playing {clip} from {source}", DebugChannel.EngineAudio | DebugChannel.Log, 7);
             AL.SourcePlay(source);
         }
 
@@ -103,6 +110,7 @@ namespace Engine.Audio
         /// </summary>
         public void Pause()
         {
+            Logger.Log($"Pausing {clip} from {source}", DebugChannel.EngineAudio | DebugChannel.Log, 7);
             AL.SourcePause(source);
         }
 
@@ -111,6 +119,7 @@ namespace Engine.Audio
         /// </summary>
         public void Stop()
         {
+            Logger.Log($"Stopping {clip} from {source}", DebugChannel.EngineAudio | DebugChannel.Log, 7);
             AL.SourceStop(source);
             TrackPosition = 0;
         }
