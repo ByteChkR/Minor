@@ -55,6 +55,8 @@
     </PreBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
-    <PostBuildEvent>xcopy $(ProjectDir)$(OutDir)Engine.BuildTools.VersionHelper.exe $(ProjectDir)..\..\version_helper\ /Y /F</PostBuildEvent>
+    <PostBuildEvent>if $(ConfigurationName) == Release (
+xcopy $(ProjectDir)$(OutDir)Engine.BuildTools.VersionHelper.exe $(ProjectDir)..\..\version_helper\ /Y /F
+)</PostBuildEvent>
   </PropertyGroup>
 </Project>
