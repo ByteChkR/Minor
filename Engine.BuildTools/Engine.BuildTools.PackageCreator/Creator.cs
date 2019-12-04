@@ -106,13 +106,17 @@ namespace Engine.BuildTools.PackageCreator
         private static string UnpackForPatching(string mainFile)
         {
 
+
             string path = Path.GetTempPath() + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
+            Console.WriteLine("Creating Temp Folder: " + path);
             if (Directory.Exists(path))
             {
                 Directory.Delete(path, true);
             }
 
             Directory.CreateDirectory(path);
+
+            Console.WriteLine("Extracting Main File to " + path);
             ZipFile.ExtractToDirectory(mainFile, path);
 
             return path;
@@ -121,9 +125,11 @@ namespace Engine.BuildTools.PackageCreator
 
         public static void ApplyPatches(string folder)
         {
+            Console.WriteLine("Applying Patches on folder " + folder);
             string[] patches = Directory.GetFiles(folder + "/patches", "*.patch");
             for (int i = 0; i < patches.Length; i++)
             {
+                Console.WriteLine("Applying Patch:" + patches[i]);
                 PatchFolder(folder, patches[i]);
             }
         }
@@ -147,6 +153,7 @@ namespace Engine.BuildTools.PackageCreator
         {
 
 
+            Console.WriteLine($"Detecting File Changes between {oldFile} <=> {newFile}");
 
             string dirOld = UnpackForPatching(oldFile);
             newFilePath = UnpackForPatching(newFile);
@@ -168,6 +175,7 @@ namespace Engine.BuildTools.PackageCreator
             {
                 if (!oldFiles.Contains(newFiles[i]) || IsFileDifferent(newFilePath + newFiles[i], dirOld + newFiles[i]))
                 {
+                    Console.WriteLine($"Found File Change: {newFiles[i]}");
                     fileList.Add(newFilePath + newFiles[i]);
                 }
             }
@@ -180,29 +188,36 @@ namespace Engine.BuildTools.PackageCreator
 
         public static void CreatePatchFromFolder(string folder, string output)
         {
+            Console.WriteLine("Creating Patch from Folder: " + folder);
             ZipFile.CreateFromDirectory(folder, output);
         }
 
         private static void CreatePatchFromFileList(string[] fileList, string workingDir, string output)
         {
+            Console.WriteLine("Creating Patch from File List...");
             for (int i = 0; i < fileList.Length; i++)
             {
-                fileList[i] = fileList[i].Replace(workingDir+"\\", "");
+                fileList[i] = fileList[i].Replace(workingDir + "\\", "");
             }
-            if(File.Exists(output))File.Delete(output);
+            if (File.Exists(output)) File.Delete(output);
+
+            Console.WriteLine("Creating Patch File");
             ZipFile.CreateFromDirectory(workingDir, output);
             Stream packStream = new FileStream(output, FileMode.Open);
             ZipArchive za = new ZipArchive(packStream, ZipArchiveMode.Update);
-            
 
+
+            Console.WriteLine("Remove duplicate Files");
             for (int i = za.Entries.Count - 1; i >= 0; i--)
             {
                 if (!fileList.Contains(za.Entries[i].FullName))
                 {
+                    Console.WriteLine("Removing File: "+ za.Entries[i].FullName);
                     za.Entries[i].Delete();
                 }
             }
-            
+
+
             za.Dispose();
             packStream.Close();
 
@@ -216,14 +231,18 @@ namespace Engine.BuildTools.PackageCreator
 
         public static void PatchPackagePermanent(string mainFile, string patchFile)
         {
+
+            Console.WriteLine($"Permanently Applying {patchFile} to {mainFile}");
             string dirPath = UnpackForPatching(mainFile);
             PatchFolder(dirPath, Path.GetFullPath(patchFile));
             File.Delete(Path.GetFullPath(mainFile));
+            Console.WriteLine($"Repackaging {mainFile}");
             ZipFile.CreateFromDirectory(dirPath, Path.GetFullPath(mainFile));
         }
 
         public static void PatchPackage(string mainFile, string patchFile)
         {
+            Console.WriteLine($"Adding {patchFile} to {mainFile}");
             string dirPath = UnpackForPatching(mainFile);
 
             if (!Directory.Exists(dirPath + "/patches"))
@@ -239,19 +258,26 @@ namespace Engine.BuildTools.PackageCreator
 
             string p = Path.GetFullPath(mainFile);
             File.Delete(p);
+
+
+            Console.WriteLine($"Repackaging {mainFile}");
             ZipFile.CreateFromDirectory(dirPath, mainFile);
         }
 
         public static void PatchFolder(string folder, string patchFile)
         {
+
+            Console.WriteLine($"Patching Folder {patchFile} => {folder}");
             using (ZipArchive zip1 = ZipFile.OpenRead(patchFile))
             {
                 for (int i = 0; i < zip1.Entries.Count; i++)
                 {
-                    zip1.Entries[i].ExtractToFile(folder+"/"+zip1.Entries[i].FullName, true);
+
+                    Console.WriteLine($"Patching File {zip1.Entries[i].FullName}");
+                    zip1.Entries[i].ExtractToFile(folder + "/" + zip1.Entries[i].FullName, true);
                     // here, we extract every entry, but we could extract conditionally
                     // based on entry name, size, date, checkbox status, etc.  
-                    
+
                 }
             }
             //ZipFile.ExtractToDirectory(patchFile, folder);
