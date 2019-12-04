@@ -74,20 +74,20 @@ namespace Engine.OpenCL
 
             string path = Path.GetFullPath(file);
 
-            Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Log | DebugChannel.OpenCl, 7);
+            Logger.Log("Creating CLProgram from file: " + file, DebugChannel.Log | DebugChannel.EngineOpenCL, 7);
             ClProgram program = new ClProgram(instance, path, GenDataType);
 
             foreach (KeyValuePair<string, CLKernel> containedKernel in program.ContainedKernels)
             {
                 if (!LoadedKernels.ContainsKey(containedKernel.Key))
                 {
-                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log | DebugChannel.OpenCl, 6);
+                    Logger.Log("Adding Kernel: " + containedKernel.Key, DebugChannel.Log | DebugChannel.EngineOpenCL, 6);
                     LoadedKernels.Add(containedKernel.Key, containedKernel.Value);
                 }
                 else
                 {
                     Logger.Log("Kernel with name: " + containedKernel.Key + " is already loaded. Skipping...",
-                        DebugChannel.Log | DebugChannel.OpenCl, 7);
+                        DebugChannel.Log | DebugChannel.EngineOpenCL, 7);
                 }
             }
         }

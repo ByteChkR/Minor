@@ -43,7 +43,7 @@ namespace Engine.OpenFL
 
             if (defines.ContainsKey(varname))
             {
-                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFl, 10);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.EngineOpenFL, 10);
                 defines.Remove(varname);
             }
 

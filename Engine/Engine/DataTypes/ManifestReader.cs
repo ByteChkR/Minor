@@ -78,15 +78,14 @@ namespace Engine.DataTypes
 
             _loadedAssemblies.Add(asm);
             string[] files = asm.GetManifestResourceNames();
-            Logger.Log("Adding Assembly: " + asm.GetName().Name,
-                DebugChannel.Engine | DebugChannel.Io | DebugChannel.Log, 10);
+            Logger.Log("Adding Assembly: " + asm.GetName().Name, DebugChannel.EngineIO | DebugChannel.Log, 10);
             for (int i = 0; i < files.Length; i++)
             {
                 string file = files[i].Remove(0, (asm.GetName().Name + ".").Length);
                 if (_assemblyFiles.ContainsKey(file))
                 {
                     Logger.Log("Overwriting File: " + file + " with version from assembly: " + asm.GetName().Name,
-                        DebugChannel.Engine | DebugChannel.Io | DebugChannel.Log, 8);
+                        DebugChannel.EngineIO | DebugChannel.Log, 8);
                     _assemblyFiles[file] = new AssemblyFile(false, files[i], asm);
                 }
                 else

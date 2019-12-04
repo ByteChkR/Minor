@@ -29,7 +29,7 @@ namespace Engine.WFC
             int symmetry, int ground)
             : base(width, height)
         {
-            n = n;
+            this.n = n;
             Periodic = periodicOutput;
 
             Success = true;
@@ -62,7 +62,7 @@ namespace Engine.WFC
                 sample[x, y] = (byte) i;
             }
 
-            Logger.Log("Color Patterns found: " + colors.Count, DebugChannel.Log | DebugChannel.Wfc, 3);
+            Logger.Log("Color Patterns found: " + colors.Count, DebugChannel.Log | DebugChannel.EngineWFC, 3);
             int colorsCount = colors.Count;
             long nPow = WaveCollapseUtils.Power(colorsCount, n * n);
 

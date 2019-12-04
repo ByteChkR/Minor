@@ -282,7 +282,7 @@ namespace Engine.IO
             List<Texture> ret = new List<Texture>();
 
             Logger.Log("Loading Baked Material Textures of type: " + Enum.GetName(typeof(TextureType), texType),
-                DebugChannel.Log | DebugChannel.Io, 1);
+                DebugChannel.Log | DebugChannel.EngineIO, 1);
             for (int i = 0; i < m.GetMaterialTextureCount((Assimp.TextureType) texType); i++)
             {
                 m.GetMaterialTexture((Assimp.TextureType) texType, i, out TextureSlot s);

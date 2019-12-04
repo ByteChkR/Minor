@@ -224,7 +224,7 @@ namespace Engine.WFC
             {
                 if (l % 250 == 0)
                 {
-                    Logger.Log("Starting Iteration: " + l, DebugChannel.Log | DebugChannel.Wfc, 6);
+                    Logger.Log("Starting Iteration: " + l, DebugChannel.Log | DebugChannel.EngineWFC, 6);
                 }
 
                 bool? result = Observe();

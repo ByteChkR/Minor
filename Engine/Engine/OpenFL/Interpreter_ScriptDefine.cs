@@ -37,7 +37,7 @@ namespace Engine.OpenFL
             string varname = arg[0].Trim();
             if (defines.ContainsKey(varname))
             {
-                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFl, 10);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.EngineOpenFL, 10);
                 defines.Remove(varname);
             }
 
@@ -50,7 +50,7 @@ namespace Engine.OpenFL
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFl, 10);
+                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.EngineOpenFL, 10);
 
                 MemoryBuffer buf =
                     Clapi.CreateEmpty<byte>(instance, inputBufferSize, MemoryFlag.ReadWrite);
