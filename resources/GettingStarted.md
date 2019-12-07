@@ -22,10 +22,16 @@ Execute the build_project.bat in the repository. It will build all nessecary lib
 ### Get the Binaries
 Download the Version you would like to use from this [website](http://213.109.162.193/apps/EngineArchives/)
 Unpack this file with your zip unpacker of choice
+#### Setting Up
+Make sure that the following Nuget Packages are Installed:
+![Required NugetPackages](gettingstarted/NuGetPacks_Binary.png "The View of the package manaager after seting up properly.")
 
 ## Adding the Reference
 ### As source code
 You can add the engine as an existing project to the game solution, and then add the reference from the .csproj file located at ./Minor/Engine/Engine/
+The following Projects are required for the Engine.dll to compile:
+![Solution View](gettingstarted/References_Source.png "The view of the Solution when set up correctly.")
+
 ### As binary
 Add a new reference to the file ./Minor/Engine/Engine/bin/Release/netcoreappX.X/Engine.dll
 
