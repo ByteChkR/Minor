@@ -7,8 +7,8 @@
     <PackageId>Engine.Common</PackageId>
     <AssemblyName>Engine.Common</AssemblyName>
     <RootNamespace>Engine.Common</RootNamespace>
-    <AssemblyVersion>0.2.0.7</AssemblyVersion>
-    <FileVersion>0.2.0.7</FileVersion>
+    <AssemblyVersion>0.2.0.48</AssemblyVersion>
+    <FileVersion>0.2.0.48</FileVersion>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_TravisTest|AnyCPU'">

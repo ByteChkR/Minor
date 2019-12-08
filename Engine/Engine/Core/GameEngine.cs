@@ -72,10 +72,22 @@ namespace Engine.Core
         /// </summary>
         public bool HasFocus => window.Focused;
 
+        public bool ShowMouseCursor
+        {
+            get => window.CursorVisible;
+            set => window.CursorVisible = value;
+        }
+
         /// <summary>
         /// The Window Position
         /// </summary>
-        public Vector2 WindowPosition => new Vector2(window.Location.X, window.Location.Y);
+        public Vector2 WindowPosition
+        {
+            get
+            {
+                return new Vector2(window.Location.X, window.Location.Y);
+            }
+        }
 
         /// <summary>
         /// The Event System used by the Ui Systems
@@ -120,7 +132,7 @@ namespace Engine.Core
         /// <summary>
         /// Property that returns the current AspectRatio
         /// </summary>
-        public float AspectRatio => Width / (float) Height;
+        public float AspectRatio => Width / (float)Height;
 
         /// <summary>
         /// Default Settings
@@ -131,7 +143,9 @@ namespace Engine.Core
         /// Mouse Position in pixels
         /// </summary>
         public Vector2 MousePosition { get; private set; }
-        
+
+        public Vector2 MouseDelta { get; private set; }
+
         /// <summary>
         /// Sets the Game Window Context as active for the Calling thread.
         /// </summary>
@@ -200,7 +214,7 @@ namespace Engine.Core
             window.Close();
         }
 
-        
+
         private void CurrentDomainOnProcessExit(object sender, EventArgs e)
         {
             ManifestReader.ClearUnpackedFiles();
@@ -227,6 +241,7 @@ namespace Engine.Core
         /// <param name="e"></param>
         private void Window_MouseMove(object sender, OpenTK.Input.MouseMoveEventArgs e)
         {
+            MouseDelta = new Vector2(e.XDelta, e.YDelta);
             MousePosition = new Vector2(e.X, e.Y);
         }
 
@@ -348,15 +363,18 @@ namespace Engine.Core
             UiSystem.Update();
 
             MemoryTracer.AddSubStage("Scene Update");
-            CurrentScene?.Update((float) e.Time);
+            CurrentScene?.Update((float)e.Time);
 
             MemoryTracer.NextStage("Physics Update");
-            PhysicsEngine.Update((float) e.Time);
+            PhysicsEngine.Update((float)e.Time);
 
-            EngineStatisticsManager.Update((float) e.Time);
+
+            EngineStatisticsManager.Update((float)e.Time);
 
             MemoryTracer.NextStage("ThreadManager Update");
             ThreadManager.CheckManagerStates();
+
+            MouseDelta = Vector2.Zero;
 
             if (changeScene)
             {
@@ -377,7 +395,7 @@ namespace Engine.Core
 
                 MemoryTracer.NextStage("Create New Scene");
 
-                CurrentScene = (AbstractScene) Activator.CreateInstance(nextScene);
+                CurrentScene = (AbstractScene)Activator.CreateInstance(nextScene);
 
                 MemoryTracer.NextStage("Initialize New Scene");
 
@@ -422,7 +440,7 @@ namespace Engine.Core
 
             window.SwapBuffers();
 
-            EngineStatisticsManager.Render((float) e.Time);
+            EngineStatisticsManager.Render((float)e.Time);
 
             MemoryTracer.ReturnFromSubStage();
         }
