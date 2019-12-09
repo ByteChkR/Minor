@@ -5,5 +5,5 @@ C:\Engine.Player\Engine.Player.exe -l %~dp0..\EngineBuildOutput\%1.engine -nH
 if exist ..\UploadFiles\upload.bat (
 	copy %~dp0..\EngineBuildOutput\%1.engine ..\UploadFiles\%1.engine
 	cd ..\UploadFiles\
-	call upload.bat %1
+	call upload.bat %1 %2
 )
