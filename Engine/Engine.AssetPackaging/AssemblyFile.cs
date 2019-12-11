@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Text;
 
 namespace Engine.AssetPackaging
 {
@@ -105,10 +106,12 @@ namespace Engine.AssetPackaging
                 Stream str = GetResourceStream(i);
                 if (i == 0)
                 {
+                    int readLength = ptr.PackageSize - ptr.Offset;
                     str.Position = ptr.Offset;
                     byte[] rbuf = new byte[ptr.PackageSize - ptr.Offset];
                     str.Read(rbuf, 0, rbuf.Length);
                     ret.AddRange(rbuf);
+                    bytesRead += readLength;
                 }
                 else
                 {
@@ -127,6 +130,7 @@ namespace Engine.AssetPackaging
                 str.Close();
             }
 
+            string r = Encoding.UTF8.GetString(ret.ToArray());
             return new MemoryStream(ret.ToArray());
         }
     }
