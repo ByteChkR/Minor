@@ -96,8 +96,7 @@ namespace Engine.BuildTools.Builder.GUI
                 File.Delete(fileName);
             }
 
-            bs.MemoryFiles = PackFileString(rtbPackedExts.Text);
-            bs.UnpackFiles = PackFileString(rtbUnpackedExts.Text);
+            MakeSaveReady();
             FileStream fs = new FileStream(fileName, FileMode.Create);
             xs.Serialize(fs, bs);
             fs.Close();
@@ -130,7 +129,7 @@ namespace Engine.BuildTools.Builder.GUI
                 try
                 {
                     FileStream fs = new FileStream(ofdBuildSettings.FileName, FileMode.Open);
-                    bs = (BuildSettings) xs.Deserialize(fs);
+                    bs = (BuildSettings)xs.Deserialize(fs);
                     fs.Close();
                     SaveLocation = ofdBuildSettings.FileName;
                     Initialize();
@@ -185,15 +184,15 @@ namespace Engine.BuildTools.Builder.GUI
 
         private void InvalidateFormOnContent()
         {
-            if (cbBuildFlags.SelectedIndex == (int) BuildType.PackOnly)
+            if (cbBuildFlags.SelectedIndex == (int)BuildType.PackOnly)
             {
                 nudPackageSize.Enabled = true;
             }
-            else if (cbBuildFlags.SelectedIndex == (int) BuildType.Embed)
+            else if (cbBuildFlags.SelectedIndex == (int)BuildType.Embed)
             {
                 nudPackageSize.Enabled = false;
             }
-            else if (cbBuildFlags.SelectedIndex == (int) BuildType.PackEmbed)
+            else if (cbBuildFlags.SelectedIndex == (int)BuildType.PackEmbed)
             {
                 nudPackageSize.Enabled = true;
             }
@@ -211,10 +210,11 @@ namespace Engine.BuildTools.Builder.GUI
         private void InvalidateForm()
         {
             tbAssetFolder.Text = bs.AssetFolder;
+            nudPackageSize.Value = bs.PackSize;
             tbProject.Text = bs.Project;
             tbOutputFolder.Text = bs.OutputFolder;
             tbEngineProject.Text = bs.EngineProject;
-            cbBuildFlags.SelectedIndex = (int) bs.BuildFlags;
+            cbBuildFlags.SelectedIndex = (int)bs.BuildFlags;
             cbCreateEnginePackage.Checked = bs.CreateEnginePackage;
             cbCreateGamePackage.Checked = bs.CreateGamePackage;
             rtbPackedExts.Text = UnpackFileString(bs.MemoryFiles);
@@ -222,28 +222,21 @@ namespace Engine.BuildTools.Builder.GUI
             tbFileList.Text = bs.GamePackageFileList;
         }
 
-        private void InvalidateSettings()
+        private void MakeSaveReady()
         {
-            bs.AssetFolder = tbAssetFolder.Text;
-            bs.Project = tbProject.Text;
-            bs.OutputFolder = tbOutputFolder.Text;
-            bs.EngineProject = tbEngineProject.Text;
-            bs.BuildFlags = (BuildType) cbBuildFlags.SelectedIndex;
+            string fullPath = Path.GetFullPath(SaveLocation);
+            bs.EngineProject = GetRelativePath(fullPath, tbEngineProject.Text);
+            bs.Project = GetRelativePath(fullPath, tbProject.Text);
+            bs.OutputFolder = GetRelativePath(fullPath, tbOutputFolder.Text);
+            bs.AssetFolder = GetRelativePath(fullPath, tbAssetFolder.Text);
+            if (tbFileList.Text != "" && tbFileList.Text != "autodetect")
+                bs.GamePackageFileList = GetRelativePath(fullPath, tbFileList.Text);
+            bs.BuildFlags = (BuildType)cbBuildFlags.SelectedIndex;
             bs.CreateEnginePackage = cbCreateEnginePackage.Checked;
             bs.CreateGamePackage = cbCreateGamePackage.Checked;
             bs.MemoryFiles = PackFileString(rtbPackedExts.Text);
             bs.UnpackFiles = PackFileString(rtbUnpackedExts.Text);
-            bs.GamePackageFileList = tbFileList.Text;
-        }
-
-        private void MakeSaveReady()
-        {
-            string fullPath = Path.GetFullPath(SaveLocation);
-            bs.EngineProject = GetRelativePath(fullPath, bs.EngineProject);
-            bs.Project = GetRelativePath(fullPath, bs.Project);
-            bs.OutputFolder = GetRelativePath(fullPath, bs.OutputFolder);
-            bs.AssetFolder = GetRelativePath(fullPath, bs.AssetFolder);
-            bs.GamePackageFileList = GetRelativePath(fullPath, bs.GamePackageFileList);
+            bs.PackSize = (int)nudPackageSize.Value;
         }
 
         private static bool FileExists(string fileInRoot, string file)
@@ -266,15 +259,19 @@ namespace Engine.BuildTools.Builder.GUI
         private static string GetRelativePath(string fileInRoot, string file)
         {
             string dir = Path.GetDirectoryName(Path.GetFullPath(fileInRoot));
+            string oldDir = Directory.GetCurrentDirectory();
+            Directory.SetCurrentDirectory(dir);
             string fi = Path.GetFullPath(file);
             Uri d = new Uri(dir + '/');
             Uri f = new Uri(fi);
-            return d.MakeRelativeUri(f).ToString();
+            string ret = d.MakeRelativeUri(f).ToString();
+            Directory.SetCurrentDirectory(oldDir);
+            return ret;
         }
 
         private string UnpackFileString(string fileExts)
         {
-            string[] r = fileExts.Split(new[] {'+'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] r = fileExts.Split(new[] { '+' }, StringSplitOptions.RemoveEmptyEntries);
             StringBuilder sb = new StringBuilder("");
             for (int i = 0; i < r.Length; i++)
             {
@@ -286,7 +283,7 @@ namespace Engine.BuildTools.Builder.GUI
 
         private string PackFileString(string fileExts)
         {
-            string[] r = fileExts.Split(new[] {'\n'}, StringSplitOptions.RemoveEmptyEntries);
+            string[] r = fileExts.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             StringBuilder sb = new StringBuilder("");
 
             if (r.Length > 0)
@@ -632,5 +629,6 @@ namespace Engine.BuildTools.Builder.GUI
             Busy,
             Error
         }
+
     }
 }

@@ -32,6 +32,11 @@
             this.gbBuildSettings = new System.Windows.Forms.GroupBox();
             this.pbidle = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.cbEnableStartArg = new System.Windows.Forms.CheckBox();
+            this.tbStartCmd = new System.Windows.Forms.TextBox();
+            this.rbUseLegacy = new System.Windows.Forms.RadioButton();
+            this.rbUseV2 = new System.Windows.Forms.RadioButton();
+            this.rbUseV1 = new System.Windows.Forms.RadioButton();
             this.cbCreateGamePackage = new System.Windows.Forms.CheckBox();
             this.btnCreateEnginePackage = new System.Windows.Forms.Button();
             this.cbCreateEnginePackage = new System.Windows.Forms.CheckBox();
@@ -73,11 +78,6 @@
             this.ofdProjectFile = new System.Windows.Forms.OpenFileDialog();
             this.fbdAssetFolder = new System.Windows.Forms.FolderBrowserDialog();
             this.fbdOutputFolder = new System.Windows.Forms.FolderBrowserDialog();
-            this.rbUseV1 = new System.Windows.Forms.RadioButton();
-            this.rbUseV2 = new System.Windows.Forms.RadioButton();
-            this.rbUseLegacy = new System.Windows.Forms.RadioButton();
-            this.tbStartCmd = new System.Windows.Forms.TextBox();
-            this.cbEnableStartArg = new System.Windows.Forms.CheckBox();
             this.gbBuildSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbidle)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -155,6 +155,62 @@
             this.groupBox1.TabIndex = 32;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Build Packaging";
+            // 
+            // cbEnableStartArg
+            // 
+            this.cbEnableStartArg.AutoSize = true;
+            this.cbEnableStartArg.Enabled = false;
+            this.cbEnableStartArg.Location = new System.Drawing.Point(140, 114);
+            this.cbEnableStartArg.Name = "cbEnableStartArg";
+            this.cbEnableStartArg.Size = new System.Drawing.Size(150, 17);
+            this.cbEnableStartArg.TabIndex = 36;
+            this.cbEnableStartArg.Text = "Enable Custom Command:";
+            this.cbEnableStartArg.UseVisualStyleBackColor = true;
+            // 
+            // tbStartCmd
+            // 
+            this.tbStartCmd.Enabled = false;
+            this.tbStartCmd.Location = new System.Drawing.Point(301, 112);
+            this.tbStartCmd.Name = "tbStartCmd";
+            this.tbStartCmd.Size = new System.Drawing.Size(751, 20);
+            this.tbStartCmd.TabIndex = 35;
+            this.tbStartCmd.Text = "dotnet $ProjectName.dll";
+            // 
+            // rbUseLegacy
+            // 
+            this.rbUseLegacy.AutoSize = true;
+            this.rbUseLegacy.Enabled = false;
+            this.rbUseLegacy.Location = new System.Drawing.Point(6, 66);
+            this.rbUseLegacy.Name = "rbUseLegacy";
+            this.rbUseLegacy.Size = new System.Drawing.Size(131, 17);
+            this.rbUseLegacy.TabIndex = 34;
+            this.rbUseLegacy.Text = "Use Legacy Packager";
+            this.rbUseLegacy.UseVisualStyleBackColor = true;
+            // 
+            // rbUseV2
+            // 
+            this.rbUseV2.AutoSize = true;
+            this.rbUseV2.Enabled = false;
+            this.rbUseV2.Location = new System.Drawing.Point(6, 112);
+            this.rbUseV2.Name = "rbUseV2";
+            this.rbUseV2.Size = new System.Drawing.Size(109, 17);
+            this.rbUseV2.TabIndex = 33;
+            this.rbUseV2.Text = "Use V2 Packager";
+            this.rbUseV2.UseVisualStyleBackColor = true;
+            this.rbUseV2.CheckedChanged += new System.EventHandler(this.rbUseV2_CheckedChanged);
+            // 
+            // rbUseV1
+            // 
+            this.rbUseV1.AutoSize = true;
+            this.rbUseV1.Checked = true;
+            this.rbUseV1.Enabled = false;
+            this.rbUseV1.Location = new System.Drawing.Point(6, 89);
+            this.rbUseV1.Name = "rbUseV1";
+            this.rbUseV1.Size = new System.Drawing.Size(109, 17);
+            this.rbUseV1.TabIndex = 32;
+            this.rbUseV1.TabStop = true;
+            this.rbUseV1.Text = "Use V1 Packager";
+            this.rbUseV1.UseVisualStyleBackColor = true;
             // 
             // cbCreateGamePackage
             // 
@@ -555,61 +611,6 @@
             // fbdOutputFolder
             // 
             this.fbdOutputFolder.Description = "Select the Folder Containing the Game Assets";
-            // 
-            // rbUseV1
-            // 
-            this.rbUseV1.AutoSize = true;
-            this.rbUseV1.Checked = true;
-            this.rbUseV1.Enabled = false;
-            this.rbUseV1.Location = new System.Drawing.Point(6, 89);
-            this.rbUseV1.Name = "rbUseV1";
-            this.rbUseV1.Size = new System.Drawing.Size(109, 17);
-            this.rbUseV1.TabIndex = 32;
-            this.rbUseV1.Text = "Use V1 Packager";
-            this.rbUseV1.UseVisualStyleBackColor = true;
-            // 
-            // rbUseV2
-            // 
-            this.rbUseV2.AutoSize = true;
-            this.rbUseV2.Enabled = false;
-            this.rbUseV2.Location = new System.Drawing.Point(6, 112);
-            this.rbUseV2.Name = "rbUseV2";
-            this.rbUseV2.Size = new System.Drawing.Size(109, 17);
-            this.rbUseV2.TabIndex = 33;
-            this.rbUseV2.Text = "Use V2 Packager";
-            this.rbUseV2.UseVisualStyleBackColor = true;
-            this.rbUseV2.CheckedChanged += new System.EventHandler(this.rbUseV2_CheckedChanged);
-            // 
-            // rbUseLegacy
-            // 
-            this.rbUseLegacy.AutoSize = true;
-            this.rbUseLegacy.Enabled = false;
-            this.rbUseLegacy.Location = new System.Drawing.Point(6, 66);
-            this.rbUseLegacy.Name = "rbUseLegacy";
-            this.rbUseLegacy.Size = new System.Drawing.Size(131, 17);
-            this.rbUseLegacy.TabIndex = 34;
-            this.rbUseLegacy.Text = "Use Legacy Packager";
-            this.rbUseLegacy.UseVisualStyleBackColor = true;
-            // 
-            // tbStartCmd
-            // 
-            this.tbStartCmd.Enabled = false;
-            this.tbStartCmd.Location = new System.Drawing.Point(301, 112);
-            this.tbStartCmd.Name = "tbStartCmd";
-            this.tbStartCmd.Size = new System.Drawing.Size(751, 20);
-            this.tbStartCmd.TabIndex = 35;
-            this.tbStartCmd.Text = "dotnet $ProjectName.dll";
-            // 
-            // cbEnableStartArg
-            // 
-            this.cbEnableStartArg.AutoSize = true;
-            this.cbEnableStartArg.Enabled = false;
-            this.cbEnableStartArg.Location = new System.Drawing.Point(140, 114);
-            this.cbEnableStartArg.Name = "cbEnableStartArg";
-            this.cbEnableStartArg.Size = new System.Drawing.Size(150, 17);
-            this.cbEnableStartArg.TabIndex = 36;
-            this.cbEnableStartArg.Text = "Enable Custom Command:";
-            this.cbEnableStartArg.UseVisualStyleBackColor = true;
             // 
             // frmMain
             // 
