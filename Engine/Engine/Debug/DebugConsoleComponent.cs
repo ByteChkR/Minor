@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using Engine.Core;
 using Engine.DataTypes;
@@ -361,6 +362,72 @@ namespace Engine.Debug
             AddCommand("cmd", CmdExOnConsole);
             AddCommand("tg", cmd_ToggleGraph);
             AddCommand("togglegraph", cmd_ToggleGraph);
+            AddCommand("reload", cmd_ReLoadScene);
+            AddCommand("load", cmd_LoadScene);
+            AddCommand("listscenes", cmd_ListScenes);
+            AddCommand("ls", cmd_ListScenes);
+        }
+
+        private static Dictionary<string, Type> SceneList
+        {
+            get
+            {
+                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                Dictionary<string, Type> ret = new Dictionary<string, Type>();
+                for (int i = 0; i < assemblies.Length; i++)
+                {
+                    Type[] types = assemblies[i].GetTypes();
+                    foreach (Type type in types)
+                    {
+                        if (typeof(AbstractScene).IsAssignableFrom(type))
+                        {
+                            if (!ret.ContainsKey(type.Name))
+                                ret.Add(type.Name, type);
+                            else if (type != ret[type.Name])
+                            {
+                                Type t1 = ret[type.Name];
+                                ret.Remove(type.Name);
+                                ret.Add(t1.FullName, t1);
+                                ret.Add(type.FullName, type);
+                            }
+                        }
+                    }
+
+                }
+
+                return ret;
+            }
+        }
+
+        private static string cmd_ListScenes(string[] args)
+        {
+            string ret = "";
+            foreach (KeyValuePair<string, Type> keyValuePair in SceneList)
+            {
+                ret += keyValuePair.Key + "\n";
+            }
+
+            return ret;
+        }
+
+        private static string cmd_LoadScene(string[] args)
+        {
+            if (args.Length < 1 || !SceneList.ContainsKey(args[0]))
+            {
+                return "Scene Not found";
+            }
+            else
+            {
+                GameEngine.Instance.InitializeScene(SceneList[args[0]]);
+
+                return "Scene Loaded";
+            }
+        }
+
+        private static string cmd_ReLoadScene(string[] args)
+        {
+            GameEngine.Instance.InitializeScene(GameEngine.Instance.CurrentScene.GetType());
+            return "Reloaded";
         }
 
         /// <summary>

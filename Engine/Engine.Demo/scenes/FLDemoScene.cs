@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Reflection;
 using Engine.Core;
 using Engine.DataTypes;
 using Engine.Debug;
@@ -19,17 +22,7 @@ namespace Engine.Demo.scenes
     {
         private RenderTarget splitCam;
 
-        private static string cmd_ReLoadScene(string[] args)
-        {
-            GameEngine.Instance.InitializeScene<FlDemoScene>();
-            return "Reloaded";
-        }
-
-        private static string cmd_NextScene(string[] args)
-        {
-            GameEngine.Instance.InitializeScene<AudioDemoScene>();
-            return "Loading Audio Demo Scene";
-        }
+        
 
         private static string cmd_ChangeCameraPos(string[] args)
         {
@@ -121,7 +114,7 @@ namespace Engine.Demo.scenes
 
             Mesh cubeMesh = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
             sourceCube.AddComponent(new LightComponent());
-            sourceCube.AddComponent(new RotateAroundComponent {Slow = 0.15f});
+            sourceCube.AddComponent(new RotateAroundComponent { Slow = 0.15f });
             sourceCube.AddComponent(new LitMeshRendererComponent(DefaultFilepaths.DefaultLitShader, cubeMesh,
                 TextureLoader.ColorToTexture(Color.White), 1));
 
@@ -138,13 +131,11 @@ namespace Engine.Demo.scenes
             DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
             dbg.AddCommand("mov", cmd_ChangeCameraPos);
             dbg.AddCommand("rot", cmd_ChangeCameraRot);
-            dbg.AddCommand("reload", cmd_ReLoadScene);
-            dbg.AddCommand("next", cmd_NextScene);
             GameEngine.Instance.CurrentScene.Add(dbg.Owner);
             GameEngine.Instance.CurrentScene.Add(objSphere);
             GameEngine.Instance.CurrentScene.Add(objQuad);
 
-            GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG") {Scale = new Vector3(25, 1, 25)};
+            GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG") { Scale = new Vector3(25, 1, 25) };
 
             Texture bgTex = TextureLoader.FileToTexture("assets/textures/ground4k.png");
             //BufferOperations.GetRegion<byte>(buf, new int3(), )
@@ -157,7 +148,7 @@ namespace Engine.Demo.scenes
             BasicCamera mainCamera =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                        GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                        GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
 
             object mc = mainCamera;
 
@@ -172,7 +163,7 @@ namespace Engine.Demo.scenes
             BasicCamera inPicCam =
                 new BasicCamera(
                     Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
-                        GameEngine.Instance.Width / (float) GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
+                        GameEngine.Instance.Width / (float)GameEngine.Instance.Height, 0.01f, 1000f), Vector3.Zero);
             inPicCam.Rotate(new Vector3(1, 0, 0), MathHelper.DegreesToRadians(0));
             inPicCam.Translate(new Vector3(0, 2, 4));
             inPicCam.AddComponent(new RotateAroundComponent());
@@ -187,8 +178,8 @@ namespace Engine.Demo.scenes
             splitCam = new RenderTarget(inPicCam, 1, Color.FromArgb(0, 0, 0, 0))
             {
                 MergeType = RenderTargetMergeType.Additive,
-                ViewPort = new Rectangle(0, 0, (int) (GameEngine.Instance.Width * 0.3f),
-                    (int) (GameEngine.Instance.Height * 0.3f))
+                ViewPort = new Rectangle(0, 0, (int)(GameEngine.Instance.Width * 0.3f),
+                    (int)(GameEngine.Instance.Height * 0.3f))
             };
 
             GameEngine.Instance.CurrentScene.Add(camContainer);
@@ -218,7 +209,7 @@ namespace Engine.Demo.scenes
                 Trigger = AnimationTrigger.OnClick
             };
 
-            Animator anim = new Animator(new List<Animation> {loadAnim, clickAnim}, btn);
+            Animator anim = new Animator(new List<Animation> { loadAnim, clickAnim }, btn);
 
             obj.AddComponent(anim);
             obj.AddComponent(btn);
