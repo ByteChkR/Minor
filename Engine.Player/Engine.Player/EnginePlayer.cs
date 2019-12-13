@@ -23,7 +23,6 @@ namespace Engine.Player
         private static List<string> _engineversions = new List<string>();
         private static Process _p;
         private static bool _dontReadLine;
-        private static StartupInfo _info;
         public static WebClient Wc = new WebClient();
 
         private static string _engineVersion;
@@ -304,7 +303,6 @@ namespace Engine.Player
 
         private static void Main(string[] args)
         {
-            _info = new StartupInfo(args);
 
 
             Wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
@@ -324,20 +322,20 @@ namespace Engine.Player
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 
 
-            Command def = Command.CreateCommand(DefaultCommand, "--run");
+            Command def = Command.CreateCommand(DefaultCommand,"--run <Path/To/File.game>", "--run");
             CommandRunner.SetDefaultCommand(def);
 
-            CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "--set-default-program", "-sD"));
-            CommandRunner.AddCommand(Command.CreateCommand(NoHaltCommand, "--no-halt", "-nH"));
-            CommandRunner.AddCommand(Command.CreateCommand(HelpCommand, "--help", "-h"));
-            CommandRunner.AddCommand(Command.CreateCommand(SetEnginePathCommand, "--engine-path", "-eP"));
-            CommandRunner.AddCommand(Command.CreateCommand(SetEngineVersionCommand, "--engine", "-e"));
-            CommandRunner.AddCommand(Command.CreateCommand(ListPackageInfo, "--list-info", "-l"));
+            CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "Requires Admin Permissions", "--set-default-program", "-sD"));
+            CommandRunner.AddCommand(Command.CreateCommand(NoHaltCommand, "Does not wait for user input before exiting", "--no-halt", "-nH"));
+            CommandRunner.AddCommand(Command.CreateCommand(HelpCommand, "Display this help message", "--help", "-h"));
+            CommandRunner.AddCommand(Command.CreateCommand(SetEnginePathCommand, "--engine-path <Path/To/File.game>\nSpecify a manual path to a .engine file", "--engine-path", "-eP"));
+            CommandRunner.AddCommand(Command.CreateCommand(SetEngineVersionCommand, "--engine <Version>\nSpecify a manual version", "--engine", "-e"));
+            CommandRunner.AddCommand(Command.CreateCommand(ListPackageInfo, "--list-info <<Path/To/File>\nLists Information about the .engine or .game file.", "--list-info", "-l"));
 
-            CommandRunner.AddCommand(Command.CreateCommand(RemoveEngineCommand, "--remove-engine", "-r"));
-            CommandRunner.AddCommand(Command.CreateCommand(ClearCacheCommand, "--clear-cache", "-cC"));
-            CommandRunner.AddCommand(Command.CreateCommand(AddEngineCommand, "--add-engine", "-a"));
-            CommandRunner.AddCommand(Command.CreateCommand(DownloadEngineCommand, "--download-engine", "-d"));
+            CommandRunner.AddCommand(Command.CreateCommand(RemoveEngineCommand , "--remove-engine <Version>\nRemoves an engine Version from the engine cache", "--remove-engine", "-r"));
+            CommandRunner.AddCommand(Command.CreateCommand(ClearCacheCommand, "--clear-cache\nClears all engines in the cache", "--clear-cache", "-cC"));
+            CommandRunner.AddCommand(Command.CreateCommand(AddEngineCommand, "--add-engine <<Path/To/File.engine>\nAdds an engine file to the engine cache", "--add-engine", "-a"));
+            CommandRunner.AddCommand(Command.CreateCommand(DownloadEngineCommand, "--download-engine <Version>\n Tries to download a specified engine version", "--download-engine", "-d"));
 
             CommandRunner.AddCommand(def);
 
