@@ -159,9 +159,9 @@ namespace Engine.Demo.scenes
                 for (int j = 0; j < length; j++)
                 {
                     AiNode current = nodes[i, j];
-                    for (int k = -1; k < 1; k++)
+                    for (int k = -1; k <= 1; k++)
                     {
-                        for (int s = -1; s < 1; s++)
+                        for (int s = -1; s <= 1; s++)
                         {
                             if (i + k < 0 || i + k >= width || j + s < 0 || j + s >= length || k == 0 && s == 0)
                             {
