@@ -282,6 +282,11 @@ namespace Engine.OpenCL
             kernel.Run(instance.commandQueue, image, dimensions, genTypeMaxVal, enabledChannels, channelCount);
         }
 
+        public static void Run(Clapi instance, CLKernel kernel, int groupSize)
+        {
+            kernel.Run(instance.commandQueue, 1,groupSize);
+        }
+
         #region Instance Functions
 
         internal static Program CreateClProgramFromSource(Clapi instance, string source)
