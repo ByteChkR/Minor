@@ -96,7 +96,7 @@ namespace Engine.DataTypes
 
             PrepareManifestFiles(asm);
         }
-        
+
         private static AssemblyFile FileFactory(string file, bool compression, Assembly asm, AssetPointer ptr)
         {
             if (asm == null)
@@ -214,7 +214,7 @@ namespace Engine.DataTypes
             }
         }
 
-        
+
         private static void UnpackAssets(Dictionary<string, Tuple<int, MemoryStream>> files)
         {
             Logger.Log($"Parparing to unpack {files.Count} Assets.. ", DebugChannel.Log, 10);
@@ -365,6 +365,12 @@ namespace Engine.DataTypes
             {
                 filepath = filepath.Remove(0, 1);
             }
+
+            if (filepath[filepath.Length - 1] == '/' || filepath[filepath.Length - 1] == '\\')
+            {
+                filepath = filepath.Remove(filepath.Length - 1, 1);
+            }
+
 
             return filepath.Replace("/", ".").Replace("\\", ".");
         }
