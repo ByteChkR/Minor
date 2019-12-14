@@ -55,7 +55,7 @@ namespace Engine.OpenFL.Runner
         
         protected Clapi Instance;
         protected Queue<FlExecutionContext> ProcessQueue;
-
+        public int ItemsInQueue => ProcessQueue.Count;
         public FlRunner(
             Clapi instance, OpenCL.TypeEnums.DataTypes dataTypes = OpenCL.TypeEnums.DataTypes.Uchar1, string kernelFolder = "assets/kernel/")
         {

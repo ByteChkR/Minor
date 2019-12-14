@@ -53,3 +53,15 @@ This can be done by using the TextureLoader class.
 		512); //And height.
 	Note: Channel count can be ommitted, since the engine is only working with 4 channel textures
 ```
+
+# Continue Reading
+* [AI](AI.md)
+* [Audio](Audio.md)
+* [Creating A Scene](CreatingAScene.md)
+* [Deploying](Deploying.md)
+* [General Info](GeneralInfo.md)
+* [Getting Started](GettingStarted.md)
+* [OpenFL](OpenFL.md)
+* [OpenFL Advanced](OpenFL_Advanced.md)
+* [OpenFL Instructions and Built-in Kernels](OpenFLInstructionsAndBuiltInKernels.md)
+* [Physics](Physics.md)
