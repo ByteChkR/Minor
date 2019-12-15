@@ -379,7 +379,7 @@ namespace Engine.Debug
                     Type[] types = assemblies[i].GetTypes();
                     foreach (Type type in types)
                     {
-                        if (typeof(AbstractScene).IsAssignableFrom(type))
+                        if (typeof(AbstractScene) != type && typeof(AbstractScene).IsAssignableFrom(type))
                         {
                             if (!ret.ContainsKey(type.Name))
                                 ret.Add(type.Name, type);
