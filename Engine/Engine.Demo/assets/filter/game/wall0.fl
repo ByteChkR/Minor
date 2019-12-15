@@ -1,7 +1,0 @@
---define texture mask: "textures/pointinsquare_smooth.png"
---define texture result: "textures/wood1.jpg"
---define texture tex: "textures/stone1.jpg"
-
-Main:
-  setactive result 0 1 2
-  mixt tex mask

@@ -1,0 +1,28 @@
+--define texture temp: empty
+
+Perlin: #Creates perlin noise
+  setactive 0 1 2
+  urnd
+  perlin 0.4 4
+
+Main:
+  setv 1
+  set Perlin
+  add in
+  adjustlevelrescale 0.5 0.6
+
+  setactive temp 0 1 2
+  set in
+  invert
+  setactive 0 2
+  setv 0
+  setactive 0 1 2
+  mulv 0.3
+
+  setactive in 0 2
+  setv 0
+  setactive 0 1 2 
+  setactive 0 1 2
+  mulv 0.6
+  add temp
+

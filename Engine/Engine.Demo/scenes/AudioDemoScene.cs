@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using Engine.Audio;
 using Engine.Core;
 using Engine.DataTypes;
@@ -15,115 +16,19 @@ namespace Engine.Demo.scenes
         private LookAtComponent camLookCommandComponent;
         private GameObject sourceCube;
 
-        private string cmd_LookAtAudioSource(string[] args)
-        {
-            if (camLookCommandComponent.IsLooking)
-            {
-                camLookCommandComponent.SetTarget(null);
-            }
-            else
-            {
-                camLookCommandComponent.SetTarget(sourceCube);
-            }
-
-            return "Changed Look behaviour to: " + camLookCommandComponent.IsLooking;
-        }
-
-
-        private static string cmd_ReLoadScene(string[] args)
-        {
-            GameEngine.Instance.InitializeScene<AudioDemoScene>();
-            return "Reloaded";
-        }
-
-        private static string cmd_NextScene(string[] args)
-        {
-            GameEngine.Instance.InitializeScene<PhysicsDemoScene>();
-            return "Loading Physics Demo Scene";
-        }
-
-        private static string cmd_ChangeCameraPos(string[] args)
-        {
-            if (args.Length != 3)
-            {
-                return "Invalid Arguments";
-            }
-
-            float x, y, z;
-            if (!float.TryParse(args[0], out x))
-            {
-                return "Invalid Arguments";
-            }
-
-            if (!float.TryParse(args[1], out y))
-            {
-                return "Invalid Arguments";
-            }
-
-            if (!float.TryParse(args[2], out z))
-            {
-                return "Invalid Arguments";
-            }
-
-            Vector3 pos = new Vector3(x, y, z);
-            GameEngine.Instance.CurrentScene.Camera.Translate(pos);
-            pos = GameEngine.Instance.CurrentScene.Camera.GetLocalPosition();
-            return "New LocalPosition: " + pos.X + ":" + pos.Z + ":" + pos.Y;
-        }
-
-        private static string cmd_ChangeCameraRot(string[] args)
-        {
-            if (args.Length != 4)
-            {
-                return "Invalid Arguments";
-            }
-
-            float x, y, z, angle;
-            if (!float.TryParse(args[0], out x))
-            {
-                return "Invalid Arguments";
-            }
-
-            if (!float.TryParse(args[1], out y))
-            {
-                return "Invalid Arguments";
-            }
-
-            if (!float.TryParse(args[2], out z))
-            {
-                return "Invalid Arguments";
-            }
-
-            if (!float.TryParse(args[3], out angle))
-            {
-                return "Invalid Arguments";
-            }
-
-            Vector3 pos = new Vector3(x, y, z);
-            GameEngine.Instance.CurrentScene.Camera.Rotate(pos, MathHelper.DegreesToRadians(angle));
-
-            return "Rotating " + angle + " degrees on Axis: " + pos.X + ":" + pos.Z + ":" + pos.Y;
-        }
 
 
         protected override void InitializeScene()
         {
-            Mesh bgBox = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
 
 
-            DebugConsoleComponent dbg = DebugConsoleComponent.CreateConsole().GetComponent<DebugConsoleComponent>();
-            dbg.AddCommand("mov", cmd_ChangeCameraPos);
-            dbg.AddCommand("rot", cmd_ChangeCameraRot);
-            dbg.AddCommand("reload", cmd_ReLoadScene);
-            dbg.AddCommand("next", cmd_NextScene);
-            dbg.AddCommand("lookat", cmd_LookAtAudioSource);
-            GameEngine.Instance.CurrentScene.Add(dbg.Owner);
+            Add(DebugConsoleComponent.CreateConsole());
 
             GameObject bgObj = new GameObject(Vector3.UnitY * -3, "BG");
             bgObj.Scale = new Vector3(25, 1, 25);
-            bgObj.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, bgBox,
-                TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
-            GameEngine.Instance.CurrentScene.Add(bgObj);
+            bgObj.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Prefabs.Cube,
+                TextureLoader.ColorToTexture(Color.MediumPurple), 1));
+            Add(bgObj);
 
             BasicCamera c = new BasicCamera(
                 Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(75f),
@@ -133,14 +38,13 @@ namespace Engine.Demo.scenes
 
             c.AddComponent(camLookCommandComponent);
 
-            this.sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
-
-            Mesh sourceCube = MeshLoader.FileToMesh("assets/models/cube_flat.obj");
+            sourceCube = new GameObject(Vector3.UnitZ * -5, "Audio Source");
+            
             AudioSourceComponent source = new AudioSourceComponent();
-            this.sourceCube.AddComponent(source);
-            this.sourceCube.AddComponent(new RotateAroundComponent());
-            this.sourceCube.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, sourceCube,
-                TextureLoader.FileToTexture("assets/textures/ground4k.png"), 1));
+            sourceCube.AddComponent(source);
+            sourceCube.AddComponent(new RotateAroundComponent());
+            sourceCube.AddComponent(new MeshRendererComponent(DefaultFilepaths.DefaultUnlitShader, Prefabs.Cube,
+                DefaultFilepaths.DefaultTexture, 1));
             if (!AudioLoader.TryLoad("assets/sounds/test_mono_16.wav", out AudioFile clip))
             {
                 Console.ReadLine();
@@ -149,12 +53,12 @@ namespace Engine.Demo.scenes
             source.Clip = clip;
             source.Looping = true;
             source.Play();
-            GameEngine.Instance.CurrentScene.Add(this.sourceCube);
+            Add(sourceCube);
 
             AudioListener listener = new AudioListener();
             c.AddComponent(listener);
-            GameEngine.Instance.CurrentScene.Add(c);
-            GameEngine.Instance.CurrentScene.SetCamera(c);
+            Add(c);
+            SetCamera(c);
         }
     }
 }

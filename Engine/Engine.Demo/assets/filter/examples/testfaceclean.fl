@@ -1,0 +1,12 @@
+--define texture maintexture: "assets/textures/TEST.png"
+
+
+PlainPerlin:
+	setactive 3
+	setv 1
+	setactive 0 1 2
+	rnd
+	perlin 0.7 6 #There are "baked" functions like noises
+
+Main:
+	set maintexture

@@ -1,0 +1,10 @@
+Main:
+	setv 1
+	setactive 0 1 2
+	rnd
+	perlin 0.8 6
+
+
+
+	
+	

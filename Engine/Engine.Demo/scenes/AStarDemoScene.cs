@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using Engine.AI;
 using Engine.Core;
 using Engine.DataTypes;
@@ -50,7 +51,7 @@ namespace Engine.Demo.scenes
             GameObject bgObj = new GameObject(new Vector3(0, -3, -32), "BG") {Scale = new Vector3(32, 1, 32)};
 
             Collider groundCol = new Collider(new Box(Vector3.Zero, 64, 1, 64), hybLayer);
-            Texture bgTex = TextureLoader.FileToTexture("assets/textures/ground4k.png");
+            Texture bgTex = TextureLoader.ColorToTexture(Color.Yellow);
             bgTex.TexType = TextureType.Diffuse;
             bgObj.AddComponent(groundCol);
 

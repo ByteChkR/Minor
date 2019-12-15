@@ -8,18 +8,10 @@ using Engine.Demo.scenes.testing;
 using Engine.IO;
 
 namespace Engine.Demo
-{
-    public struct TestStruct
-    {
-        public string NestedText;
-    }
+{ 
 
     internal class Program
     {
-        [ConfigVariable] public static string TestString = "This is a text.";
-
-        [ConfigVariable]
-        public static TestStruct TestVec = new TestStruct {NestedText = "I am a member of Test Struct"};
 
         private static bool AskForDebugLogSending()
         {
@@ -49,10 +41,6 @@ namespace Engine.Demo
 
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
             SceneRunner sr = new SceneRunner(engine, asm, scenes);
-
-            //ManifestReader.PrepareManifestFiles(true);
-
-            //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
 
 
             engine.SetSettings(EngineSettings.Settings);
@@ -99,19 +87,10 @@ namespace Engine.Demo
                 ManifestReader.LoadAssemblyListFromFile("assemblyList.txt");
             }
 
-            EngineConfig.LoadConfig("assets/configs/engine_settings.xml", Assembly.GetAssembly(typeof(GameEngine)),
-                "Engine.Core");
-
 
             GameEngine engine = new GameEngine(EngineSettings.DefaultSettings);
 
-            //ManifestReader.PrepareManifestFiles(true);
-
-            //EngineConfig.CreateConfig(Assembly.GetAssembly(typeof(GameEngine)), "Engine.Core" , "configs/engine.settings.xml");
-
-
-            engine.SetSettings(EngineSettings.Settings);
-
+            
 
             engine.Initialize();
             engine.InitializeScene<FlDemoScene>();

@@ -596,11 +596,7 @@ namespace Engine.OpenFL
             jumpStack.Push(new InterpreterState(currentIndex, currentBuffer, currentArgStack));
             stepResult.HasJumped = true;
 
-#if NO_CL
-            int size = 1;
-#else
             int size = (int) currentBuffer.Buffer.Size;
-#endif
 
 
             if (!leaveBuffer)
