@@ -81,6 +81,7 @@ namespace Engine.BuildTools.Common
 
         private static List<Tuple<string, string>> ParseFileList(string[] args)
         {
+            if(args == null || args.Length==0)return  new List<Tuple<string, string>>();
             string[] lines;
             if (args[0].StartsWith("@"))
             {

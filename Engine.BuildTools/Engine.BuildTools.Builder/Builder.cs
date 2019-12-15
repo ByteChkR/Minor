@@ -123,7 +123,7 @@ namespace Engine.BuildTools.Builder
 
 
                     bool packsCreated = false;
-                    if (bs.BuildFlags == BuildType.PackEmbed || bs.BuildFlags == BuildType.PackOnly)
+                    if ((bs.BuildFlags == BuildType.PackEmbed || bs.BuildFlags == BuildType.PackOnly) && Directory.Exists(assetFolder))
                     {
                         PackAssets(packFolder, bs.PackSize, bs.MemoryFiles, bs.UnpackFiles,
                             assetFolder, false);
