@@ -142,6 +142,9 @@ namespace Engine.BuildTools.Builder.GUI
             rtbPackedExts.Text = UnpackFileString(bs.MemoryFiles);
             rtbUnpackedExts.Text = UnpackFileString(bs.UnpackFiles);
             tbFileList.Text = bs.GamePackageFileList;
+            rbUseV2.Checked = bs.PackagerVersion == "v2";
+            rbUseV1.Checked = bs.PackagerVersion == "v1";
+            rbUseLegacy.Checked = bs.PackagerVersion == "legacy";
         }
 
         private void MakeSaveReady()
@@ -630,6 +633,7 @@ namespace Engine.BuildTools.Builder.GUI
 
         private void rbUseV2_CheckedChanged(object sender, EventArgs e)
         {
+            bs.PackagerVersion = "v2";
             InvalidateFormOnContent();
         }
 
@@ -658,5 +662,15 @@ namespace Engine.BuildTools.Builder.GUI
 
 
         #endregion
+
+        private void rbUseV1_CheckedChanged(object sender, EventArgs e)
+        {
+            bs.PackagerVersion = "v1";
+        }
+
+        private void rbUseLegacy_CheckedChanged(object sender, EventArgs e)
+        {
+            bs.PackagerVersion = "legacy";
+        }
     }
 }

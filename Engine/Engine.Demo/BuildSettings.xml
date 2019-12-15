@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <BuildSettings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <AssetFolder>assets</AssetFolder>
-  <BuildFlags>PackOnly</BuildFlags>
-  <CreateEnginePackage>true</CreateEnginePackage>
+  <BuildFlags>Embed</BuildFlags>
+  <CreateEnginePackage>false</CreateEnginePackage>
   <CreateGamePackage>true</CreateGamePackage>
   <EngineProject>../Engine/Engine.csproj</EngineProject>
   <GamePackageFileList />

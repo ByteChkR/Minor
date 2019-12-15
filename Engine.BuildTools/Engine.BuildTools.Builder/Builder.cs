@@ -56,7 +56,7 @@ namespace Engine.BuildTools.Builder
 
 
             CommandRunner.RunCommands(args);
-            
+
         }
 
         private static void _HelpCommand(StartupInfo info, string[] args)
@@ -68,7 +68,7 @@ namespace Engine.BuildTools.Builder
             }
         }
 
-        
+
         private static void BuildWithXML(StartupInfo info, string[] args)
         {
             if (args.Length != 0)
@@ -183,10 +183,23 @@ namespace Engine.BuildTools.Builder
                         Directory.Delete(projectFolder + outputPackFolder, true);
                     }
 
+                    if (bs.BuildFlags == BuildType.Copy)
+                    {
+                        Console.WriteLine("Copying Assets to output");
+                        foreach (string dirPath in Directory.GetDirectories(assetFolder, "*",
+                            SearchOption.AllDirectories))
+                            Directory.CreateDirectory(dirPath.Replace(projectFolder, buildOutput));
+
+                        //Copy all the files & Replaces any files with the same name
+                        foreach (string newPath in Directory.GetFiles(assetFolder, "*.*",
+                            SearchOption.AllDirectories))
+                            File.Copy(newPath, newPath.Replace(projectFolder, buildOutput), true);
+                    }
+
 
                     if (bs.CreateGamePackage)
                     {
-                        string packagerVersion = Creator.DefaultVersion;
+                        string packagerVersion = string.IsNullOrEmpty(bs.PackagerVersion) ? Creator.DefaultVersion : bs.PackagerVersion;
                         if (info.HasValueFlag("--packager-version"))
                         {
                             packagerVersion = info.GetValues("--packager-version")[0];
@@ -213,7 +226,7 @@ namespace Engine.BuildTools.Builder
 
                         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                         string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
-                            bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly, false);
+                            bs.BuildFlags == BuildType.Copy, bs.BuildFlags == BuildType.PackOnly, false);
                         Creator.CreateGamePackage(projectName, startArg, outputFolder + "/" + projectName + ".game",
                             buildOutput, files,
                             fvi.FileVersion, packagerVersion);
@@ -244,7 +257,7 @@ namespace Engine.BuildTools.Builder
             if (args.Length != 2)
             {
                 throw new ApplicationException("Invalid Input");
-                
+
             }
 
             try
@@ -379,7 +392,7 @@ namespace Engine.BuildTools.Builder
             //3 The OutputFile
             //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
             //5 Optional File List
-            
+
             try
             {
                 Console.WriteLine(Path.GetFullPath(args[0]));
@@ -434,7 +447,7 @@ namespace Engine.BuildTools.Builder
             //3 The OutputFile
             //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
             //5 Optional File List
-            
+
             try
             {
                 Console.WriteLine(Path.GetFullPath(args[0]));
@@ -545,7 +558,7 @@ namespace Engine.BuildTools.Builder
                 }
 
                 BuildProject(args[0]);
-                
+
 
                 //Making sure that the root path Path is existing
                 IoUtils.CreateDirectoryPath(Path.GetFullPath(args[1]));
@@ -693,7 +706,7 @@ namespace Engine.BuildTools.Builder
                 {
                     f.Add(helper);
                 }
-                
+
                 if (isStandalone)
                 {
                     string[] ff = ParseEngineFileList(fileList, projectFolder);

@@ -187,6 +187,7 @@
             this.rbUseLegacy.TabIndex = 34;
             this.rbUseLegacy.Text = "Use Legacy Packager";
             this.rbUseLegacy.UseVisualStyleBackColor = true;
+            this.rbUseLegacy.CheckedChanged += new System.EventHandler(this.rbUseLegacy_CheckedChanged);
             // 
             // rbUseV2
             // 
@@ -212,6 +213,7 @@
             this.rbUseV1.TabIndex = 32;
             this.rbUseV1.Text = "Use V1 Packager";
             this.rbUseV1.UseVisualStyleBackColor = true;
+            this.rbUseV1.CheckedChanged += new System.EventHandler(this.rbUseV1_CheckedChanged);
             // 
             // cbCreateGamePackage
             // 
@@ -482,7 +484,8 @@
             this.cbBuildFlags.Items.AddRange(new object[] {
             "PackOnly",
             "PackEmbed",
-            "Embed"});
+            "Embed",
+            "Copy"});
             this.cbBuildFlags.Location = new System.Drawing.Point(76, 48);
             this.cbBuildFlags.Name = "cbBuildFlags";
             this.cbBuildFlags.Size = new System.Drawing.Size(121, 21);

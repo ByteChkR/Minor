@@ -7,6 +7,7 @@
     {
         PackOnly,
         PackEmbed,
-        Embed
+        Embed,
+        Copy
     }
 }

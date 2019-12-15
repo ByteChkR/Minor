@@ -19,5 +19,7 @@ namespace Engine.BuildTools.Common
         public int PackSize { get; set; } = 1024;
         public string Project { get; set; } = "";
         public string UnpackFiles { get; set; } = "";
+        public string PackagerVersion { get; set; } = "v2";
+
     }
 }
