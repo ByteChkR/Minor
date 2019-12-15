@@ -166,6 +166,7 @@
             this.cbEnableStartArg.TabIndex = 36;
             this.cbEnableStartArg.Text = "Enable Custom Command:";
             this.cbEnableStartArg.UseVisualStyleBackColor = true;
+            this.cbEnableStartArg.CheckedChanged += new System.EventHandler(this.cbEnableStartArg_CheckedChanged);
             // 
             // tbStartCmd
             // 
@@ -190,11 +191,13 @@
             // rbUseV2
             // 
             this.rbUseV2.AutoSize = true;
+            this.rbUseV2.Checked = true;
             this.rbUseV2.Enabled = false;
             this.rbUseV2.Location = new System.Drawing.Point(6, 112);
             this.rbUseV2.Name = "rbUseV2";
             this.rbUseV2.Size = new System.Drawing.Size(109, 17);
             this.rbUseV2.TabIndex = 33;
+            this.rbUseV2.TabStop = true;
             this.rbUseV2.Text = "Use V2 Packager";
             this.rbUseV2.UseVisualStyleBackColor = true;
             this.rbUseV2.CheckedChanged += new System.EventHandler(this.rbUseV2_CheckedChanged);
@@ -202,13 +205,11 @@
             // rbUseV1
             // 
             this.rbUseV1.AutoSize = true;
-            this.rbUseV1.Checked = true;
             this.rbUseV1.Enabled = false;
             this.rbUseV1.Location = new System.Drawing.Point(6, 89);
             this.rbUseV1.Name = "rbUseV1";
             this.rbUseV1.Size = new System.Drawing.Size(109, 17);
             this.rbUseV1.TabIndex = 32;
-            this.rbUseV1.TabStop = true;
             this.rbUseV1.Text = "Use V1 Packager";
             this.rbUseV1.UseVisualStyleBackColor = true;
             // 
