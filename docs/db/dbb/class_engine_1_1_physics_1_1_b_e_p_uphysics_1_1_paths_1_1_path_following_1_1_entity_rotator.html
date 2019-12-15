@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,8 +90,6 @@ $(document).ready(function(){initNavTree('db/dbb/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../da/d38/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_path_following_1_1_entity_rotator-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Paths.PathFollowing.EntityRotator Class Reference</div>  </div>
@@ -154,10 +152,8 @@ Properties</h2></td></tr>
 <tr class="memitem:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aa0bbc0ac8f31f06d970e307f7c566ae4">IsUpdating</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets and sets whether or not the updateable should be updated by its manager.  <a href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aa0bbc0ac8f31f06d970e307f7c566ae4">More...</a><br /></td></tr>
 <tr class="separator:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa4e18a9d919a2b42975b02d5e125c9e inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> ISpaceObject.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aaa4e18a9d919a2b42975b02d5e125c9e">Space</a><code> [get, set]</code></td></tr>
-<tr class="separator:aaa4e18a9d919a2b42975b02d5e125c9e inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ce25afdd55f39cfd61d863c18410e85 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top"><a id="a2ce25afdd55f39cfd61d863c18410e85"></a>
-<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Space</b><code> [get, private set]</code></td></tr>
+<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Space</b><code> [get]</code></td></tr>
 <tr class="separator:a2ce25afdd55f39cfd61d863c18410e85 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4827e811e50dec509acb5348f251d3ab inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#a4827e811e50dec509acb5348f251d3ab">Tag</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a4827e811e50dec509acb5348f251d3ab inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the user data associated with this object.  <a href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#a4827e811e50dec509acb5348f251d3ab">More...</a><br /></td></tr>
@@ -179,18 +175,6 @@ List&lt; <a class="el" href="../../d8/d24/class_engine_1_1_physics_1_1_b_e_p_uph
 <tr class="memitem:a43263a794fa3a05afb752ddd3396ed41 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d60/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object.html#a43263a794fa3a05afb752ddd3396ed41">Tag</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a43263a794fa3a05afb752ddd3396ed41 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the user data associated with this object.  <a href="../../d0/d60/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object.html#a43263a794fa3a05afb752ddd3396ed41">More...</a><br /></td></tr>
 <tr class="separator:a43263a794fa3a05afb752ddd3396ed41 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a34e22ce590df3508e85ac8cd37200512"><td class="memItemLeft" align="right" valign="top">void IDuringForcesUpdateable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_path_following_1_1_entity_rotator.html#a34e22ce590df3508e85ac8cd37200512">Update</a> (float dt)</td></tr>
-<tr class="memdesc:a34e22ce590df3508e85ac8cd37200512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called automatically by the space.  <a href="#a34e22ce590df3508e85ac8cd37200512">More...</a><br /></td></tr>
-<tr class="separator:a34e22ce590df3508e85ac8cd37200512"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a956e1de03e35ab08d6fe9b0a4a0e1235"><td class="memItemLeft" align="right" valign="top"><a id="a956e1de03e35ab08d6fe9b0a4a0e1235"></a>
-<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>entity</b></td></tr>
-<tr class="separator:a956e1de03e35ab08d6fe9b0a4a0e1235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Changes the angular velocity of an entity to reach goal orientations. </p>
@@ -369,42 +353,6 @@ Private Attributes</h2></td></tr>
 <p>Removes the motors from the solver. Called automatically. </p>
 
 <p>Reimplemented from <a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#ae52539a07331c710b9ecd0eb3245228e">Engine.Physics.BEPUphysics.UpdateableSystems.Updateable</a>.</p>
-
-</div>
-</div>
-<a id="a34e22ce590df3508e85ac8cd37200512"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34e22ce590df3508e85ac8cd37200512">&#9670;&nbsp;</a></span>Update()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void IDuringForcesUpdateable. Engine.Physics.BEPUphysics.Paths.PathFollowing.EntityRotator.Update </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Called automatically by the space. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dt</td><td>Simulation timestep.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="../../d0/de6/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_i_during_forces_updateable.html#a5e278e72a132277a7fab48cbad85be45">Engine.Physics.BEPUphysics.UpdateableSystems.IDuringForcesUpdateable</a>.</p>
 
 </div>
 </div>

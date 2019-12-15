@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,12 +89,14 @@ $(document).ready(function(){initNavTree('d8/d84/class_engine_1_1_i_o_1_1_textur
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pac-static-methods">Static Package Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../dd/d48/class_engine_1_1_i_o_1_1_texture_loader-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.IO.TextureLoader Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Contains all Functions to create a Texture Object  
+ <a href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -107,9 +109,9 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:abd12ba45b1360ed880c90309d5dc454c"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#abd12ba45b1360ed880c90309d5dc454c">ParameterToTexture</a> (int width, int height)</td></tr>
 <tr class="memdesc:abd12ba45b1360ed880c90309d5dc454c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a 4 Channel Texture from width and height  <a href="#abd12ba45b1360ed880c90309d5dc454c">More...</a><br /></td></tr>
 <tr class="separator:abd12ba45b1360ed880c90309d5dc454c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acefbaa6fb0796dc4a30e8fb9393e2a0a"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#acefbaa6fb0796dc4a30e8fb9393e2a0a">TextureToMemoryBuffer</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> tex)</td></tr>
-<tr class="memdesc:acefbaa6fb0796dc4a30e8fb9393e2a0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads Texture Data from CL into CPU Memory and passes it into the CL implementation  <a href="#acefbaa6fb0796dc4a30e8fb9393e2a0a">More...</a><br /></td></tr>
-<tr class="separator:acefbaa6fb0796dc4a30e8fb9393e2a0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0213dfb3f04c1101757058577b3689e3"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a0213dfb3f04c1101757058577b3689e3">TextureToMemoryBuffer</a> (<a class="el" href="../../d4/d8c/class_engine_1_1_open_c_l_1_1_clapi.html">Clapi</a> instance, <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> tex)</td></tr>
+<tr class="memdesc:a0213dfb3f04c1101757058577b3689e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads Texture Data from CL into CPU Memory and passes it into the CL implementation  <a href="#a0213dfb3f04c1101757058577b3689e3">More...</a><br /></td></tr>
+<tr class="separator:a0213dfb3f04c1101757058577b3689e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af186a723d46c442c65686f4e2a9e60"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a5af186a723d46c442c65686f4e2a9e60">Update</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> tex, byte[] data, int width, int height)</td></tr>
 <tr class="separator:a5af186a723d46c442c65686f4e2a9e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1e02771a29b381c71552c6dde8c0e8a6"><td class="memItemLeft" align="right" valign="top">static byte []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a1e02771a29b381c71552c6dde8c0e8a6">BitmapToBytes</a> (Bitmap bmp)</td></tr>
@@ -133,29 +135,10 @@ Static Package Functions</h2></td></tr>
 <tr class="memitem:afb9663f021398ee18b7aba81fef39e19"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#afb9663f021398ee18b7aba81fef39e19">LoadMaterialTextures</a> (Material m, <a class="el" href="../../d2/df0/namespace_engine_1_1_data_types.html#aaf0c48e251c4afa5d02fbee1f816fc39">TextureType</a> texType, string dir)</td></tr>
 <tr class="memdesc:afb9663f021398ee18b7aba81fef39e19"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads Textures from AssimpMaterials  <a href="#afb9663f021398ee18b7aba81fef39e19">More...</a><br /></td></tr>
 <tr class="separator:afb9663f021398ee18b7aba81fef39e19"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ab39b01cbf64ad90aba0d95d0c199c173"><td class="memItemLeft" align="right" valign="top">static byte []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#ab39b01cbf64ad90aba0d95d0c199c173">TextureToByteArray</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> tex)</td></tr>
-<tr class="memdesc:ab39b01cbf64ad90aba0d95d0c199c173"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads Texture Data from GPU into CPU Memory  <a href="#ab39b01cbf64ad90aba0d95d0c199c173">More...</a><br /></td></tr>
-<tr class="separator:ab39b01cbf64ad90aba0d95d0c199c173"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4ecaaf9202135b4f8b6d25f61185f64"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#af4ecaaf9202135b4f8b6d25f61185f64">AssimpSceneToTextures</a> (Scene scene)</td></tr>
-<tr class="memdesc:af4ecaaf9202135b4f8b6d25f61185f64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Loads all textures from a specified Assimp Scene.  <a href="#af4ecaaf9202135b4f8b6d25f61185f64">More...</a><br /></td></tr>
-<tr class="separator:af4ecaaf9202135b4f8b6d25f61185f64"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd88857f16daf0c444e56d3d20b87b6c"><td class="memItemLeft" align="right" valign="top">static byte []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#acd88857f16daf0c444e56d3d20b87b6c">flattenImageData</a> (Texel[] imageData)</td></tr>
-<tr class="memdesc:acd88857f16daf0c444e56d3d20b87b6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a flat byte array out of a list of Texels from assimp  <a href="#acd88857f16daf0c444e56d3d20b87b6c">More...</a><br /></td></tr>
-<tr class="separator:acd88857f16daf0c444e56d3d20b87b6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a118c713c6308699ba8e62bd805176f6a"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a118c713c6308699ba8e62bd805176f6a">TexelToByteSequence</a> (int startidx, byte[] arr, Texel txl)</td></tr>
-<tr class="memdesc:a118c713c6308699ba8e62bd805176f6a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a flat byte array sequence out of a texel  <a href="#a118c713c6308699ba8e62bd805176f6a">More...</a><br /></td></tr>
-<tr class="separator:a118c713c6308699ba8e62bd805176f6a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5b2adaeb9aee841f0b33e9504ba2f26c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a5b2adaeb9aee841f0b33e9504ba2f26c">DefaultTexParameter</a> ()</td></tr>
-<tr class="memdesc:a5b2adaeb9aee841f0b33e9504ba2f26c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the Default texParameters to the loaded objects  <a href="#a5b2adaeb9aee841f0b33e9504ba2f26c">More...</a><br /></td></tr>
-<tr class="separator:a5b2adaeb9aee841f0b33e9504ba2f26c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e4e5fecc7aca5e77ac553acba0fd5dc"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html#a9e4e5fecc7aca5e77ac553acba0fd5dc">Copy</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> other)</td></tr>
-<tr class="memdesc:a9e4e5fecc7aca5e77ac553acba0fd5dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies a Texture by copying the byte arrays  <a href="#a9e4e5fecc7aca5e77ac553acba0fd5dc">More...</a><br /></td></tr>
-<tr class="separator:a9e4e5fecc7aca5e77ac553acba0fd5dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Function Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Contains all Functions to create a Texture Object </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="af4cd77d484ad4dc9c32b8d07830af3b9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af4cd77d484ad4dc9c32b8d07830af3b9">&#9670;&nbsp;</a></span>AssimpEmbeddedToTexture()</h2>
 
@@ -188,41 +171,6 @@ Static Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>GL Texure</dd></dl>
-
-</div>
-</div>
-<a id="af4ecaaf9202135b4f8b6d25f61185f64"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4ecaaf9202135b4f8b6d25f61185f64">&#9670;&nbsp;</a></span>AssimpSceneToTextures()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> [] Engine.IO.TextureLoader.AssimpSceneToTextures </td>
-          <td>(</td>
-          <td class="paramtype">Scene&#160;</td>
-          <td class="paramname"><em>scene</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Loads all textures from a specified Assimp Scene. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">scene</td><td>The Assimp Scene</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>An array of all textures contained in the scene</dd></dl>
 
 </div>
 </div>
@@ -402,68 +350,6 @@ Static Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a9e4e5fecc7aca5e77ac553acba0fd5dc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e4e5fecc7aca5e77ac553acba0fd5dc">&#9670;&nbsp;</a></span>Copy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> Engine.IO.TextureLoader.Copy </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
-          <td class="paramname"><em>other</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Copies a Texture by copying the byte arrays </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The texture to copy</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>A copy of Other</dd></dl>
-
-</div>
-</div>
-<a id="a5b2adaeb9aee841f0b33e9504ba2f26c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b2adaeb9aee841f0b33e9504ba2f26c">&#9670;&nbsp;</a></span>DefaultTexParameter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.IO.TextureLoader.DefaultTexParameter </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Applies the Default texParameters to the loaded objects </p>
-
-</div>
-</div>
 <a id="ac018b8c3823425c5f81bf1471bf1c89b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac018b8c3823425c5f81bf1471bf1c89b">&#9670;&nbsp;</a></span>FileToTexture()</h2>
 
@@ -496,41 +382,6 @@ Static Private Member Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The GL Texture</dd></dl>
-
-</div>
-</div>
-<a id="acd88857f16daf0c444e56d3d20b87b6c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd88857f16daf0c444e56d3d20b87b6c">&#9670;&nbsp;</a></span>flattenImageData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static byte [] Engine.IO.TextureLoader.flattenImageData </td>
-          <td>(</td>
-          <td class="paramtype">Texel []&#160;</td>
-          <td class="paramname"><em>imageData</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a flat byte array out of a list of Texels from assimp </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">imageData</td><td>The texels to convert</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Flat byte array containing the data</dd></dl>
 
 </div>
 </div>
@@ -633,95 +484,8 @@ Static Private Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a118c713c6308699ba8e62bd805176f6a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a118c713c6308699ba8e62bd805176f6a">&#9670;&nbsp;</a></span>TexelToByteSequence()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.IO.TextureLoader.TexelToByteSequence </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>startidx</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">byte []&#160;</td>
-          <td class="paramname"><em>arr</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">Texel&#160;</td>
-          <td class="paramname"><em>txl</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Creates a flat byte array sequence out of a texel </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">txl</td><td>The texel to convert</td></tr>
-    <tr><td class="paramname">arr</td><td>the output array</td></tr>
-    <tr><td class="paramname">startidx</td><td>The index to start inserting the texel data</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab39b01cbf64ad90aba0d95d0c199c173"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab39b01cbf64ad90aba0d95d0c199c173">&#9670;&nbsp;</a></span>TextureToByteArray()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static byte [] Engine.IO.TextureLoader.TextureToByteArray </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
-          <td class="paramname"><em>tex</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reads Texture Data from GPU into CPU Memory </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">tex</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<a id="acefbaa6fb0796dc4a30e8fb9393e2a0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acefbaa6fb0796dc4a30e8fb9393e2a0a">&#9670;&nbsp;</a></span>TextureToMemoryBuffer()</h2>
+<a id="a0213dfb3f04c1101757058577b3689e3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0213dfb3f04c1101757058577b3689e3">&#9670;&nbsp;</a></span>TextureToMemoryBuffer()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -732,9 +496,19 @@ Static Private Member Functions</h2></td></tr>
         <tr>
           <td class="memname">static <a class="el" href="../../db/d11/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_memory_1_1_memory_buffer.html">MemoryBuffer</a> Engine.IO.TextureLoader.TextureToMemoryBuffer </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
-          <td class="paramname"><em>tex</em></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d4/d8c/class_engine_1_1_open_c_l_1_1_clapi.html">Clapi</a>&#160;</td>
+          <td class="paramname"><em>instance</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
+          <td class="paramname"><em>tex</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
@@ -747,6 +521,7 @@ Static Private Member Functions</h2></td></tr>
 <p>Reads Texture Data from CL into CPU Memory and passes it into the CL implementation </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
+    <tr><td class="paramname">instance</td><td>Clapi Instance for the current thread</td></tr>
     <tr><td class="paramname">tex</td><td>Input Texture</td></tr>
   </table>
   </dd>

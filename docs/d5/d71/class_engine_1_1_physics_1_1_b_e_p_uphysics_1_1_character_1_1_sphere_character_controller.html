@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,8 +89,6 @@ $(document).ready(function(){initNavTree('d5/d71/class_engine_1_1_physics_1_1_b_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../df/d91/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Character.SphereCharacterController Class Reference</div>  </div>
@@ -119,15 +117,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a76021d8d1b0a123e16f3d0af84ae59e5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#a76021d8d1b0a123e16f3d0af84ae59e5">SphereCharacterController</a> (<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> position=new <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>(), float radius=.85f, float mass=10f, float maximumTractionSlope=0.8f, float maximumSupportSlope=1.3f, float speed=8f, float tractionForce=1000, float slidingSpeed=6, float slidingForce=50, float airSpeed=1, float airForce=250, float jumpSpeed=4.5f, float slidingJumpSpeed=3, float maximumGlueForce=5000)</td></tr>
 <tr class="memdesc:a76021d8d1b0a123e16f3d0af84ae59e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new character controller.  <a href="#a76021d8d1b0a123e16f3d0af84ae59e5">More...</a><br /></td></tr>
 <tr class="separator:a76021d8d1b0a123e16f3d0af84ae59e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9d36a2c235f809f70fd8a7d64052e82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#ad9d36a2c235f809f70fd8a7d64052e82">Jump</a> ()</td></tr>
-<tr class="memdesc:ad9d36a2c235f809f70fd8a7d64052e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jumps the character off of whatever it's currently standing on. If it has traction, it will go straight up. If it doesn't have traction, but is still supported by something, it will jump in the direction of the surface normal.  <a href="#ad9d36a2c235f809f70fd8a7d64052e82">More...</a><br /></td></tr>
-<tr class="separator:ad9d36a2c235f809f70fd8a7d64052e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8b0a2a03010e07183779d904d8e4ac34"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#a8b0a2a03010e07183779d904d8e4ac34">OnAdditionToSpace</a> (<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> newSpace)</td></tr>
 <tr class="memdesc:a8b0a2a03010e07183779d904d8e4ac34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after the object is added to a space.  <a href="#a8b0a2a03010e07183779d904d8e4ac34">More...</a><br /></td></tr>
 <tr class="separator:a8b0a2a03010e07183779d904d8e4ac34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a19879b062b29f2b4b43a5e8156942b5e"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#a19879b062b29f2b4b43a5e8156942b5e">OnRemovalFromSpace</a> (<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> oldSpace)</td></tr>
 <tr class="memdesc:a19879b062b29f2b4b43a5e8156942b5e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before an object is removed from its space.  <a href="#a19879b062b29f2b4b43a5e8156942b5e">More...</a><br /></td></tr>
 <tr class="separator:a19879b062b29f2b4b43a5e8156942b5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad9d36a2c235f809f70fd8a7d64052e82"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#ad9d36a2c235f809f70fd8a7d64052e82">Jump</a> ()</td></tr>
+<tr class="memdesc:ad9d36a2c235f809f70fd8a7d64052e82"><td class="mdescLeft">&#160;</td><td class="mdescRight">Jumps the character off of whatever it's currently standing on. If it has traction, it will go straight up. If it doesn't have traction, but is still supported by something, it will jump in the direction of the surface normal.  <a href="#ad9d36a2c235f809f70fd8a7d64052e82">More...</a><br /></td></tr>
+<tr class="separator:ad9d36a2c235f809f70fd8a7d64052e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -146,9 +144,6 @@ Properties</h2></td></tr>
 <tr class="memitem:ad603c4ae670019362aed1dbc7446d816"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../df/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_vertical_motion_constraint.html">VerticalMotionConstraint</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#ad603c4ae670019362aed1dbc7446d816">VerticalMotionConstraint</a><code> [get]</code></td></tr>
 <tr class="memdesc:ad603c4ae670019362aed1dbc7446d816"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the constraint used by the character to stay glued to surfaces it stands on.  <a href="#ad603c4ae670019362aed1dbc7446d816">More...</a><br /></td></tr>
 <tr class="separator:ad603c4ae670019362aed1dbc7446d816"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07cbdd6baadb970a0132f8b09d069d77"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/d41/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_pair_locker.html">CharacterPairLocker</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#a07cbdd6baadb970a0132f8b09d069d77">PairLocker</a><code> [get]</code></td></tr>
-<tr class="memdesc:a07cbdd6baadb970a0132f8b09d069d77"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the pair locker used by the character controller to avoid interfering with the behavior of other characters.  <a href="#a07cbdd6baadb970a0132f8b09d069d77">More...</a><br /></td></tr>
-<tr class="separator:a07cbdd6baadb970a0132f8b09d069d77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66763947caa6897def8ca3d72c2f8d70"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#a66763947caa6897def8ca3d72c2f8d70">Down</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a66763947caa6897def8ca3d72c2f8d70"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the down direction of the character. Controls the interpretation of movement and support finding.  <a href="#a66763947caa6897def8ca3d72c2f8d70">More...</a><br /></td></tr>
 <tr class="separator:a66763947caa6897def8ca3d72c2f8d70"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,10 +190,8 @@ Properties</h2></td></tr>
 <tr class="memitem:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aa0bbc0ac8f31f06d970e307f7c566ae4">IsUpdating</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets and sets whether or not the updateable should be updated by its manager.  <a href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aa0bbc0ac8f31f06d970e307f7c566ae4">More...</a><br /></td></tr>
 <tr class="separator:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa4e18a9d919a2b42975b02d5e125c9e inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> ISpaceObject.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aaa4e18a9d919a2b42975b02d5e125c9e">Space</a><code> [get, set]</code></td></tr>
-<tr class="separator:aaa4e18a9d919a2b42975b02d5e125c9e inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ce25afdd55f39cfd61d863c18410e85 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top"><a id="a2ce25afdd55f39cfd61d863c18410e85"></a>
-<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Space</b><code> [get, private set]</code></td></tr>
+<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Space</b><code> [get]</code></td></tr>
 <tr class="separator:a2ce25afdd55f39cfd61d863c18410e85 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4827e811e50dec509acb5348f251d3ab inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#a4827e811e50dec509acb5348f251d3ab">Tag</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a4827e811e50dec509acb5348f251d3ab inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the user data associated with this object.  <a href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#a4827e811e50dec509acb5348f251d3ab">More...</a><br /></td></tr>
@@ -220,64 +213,6 @@ List&lt; <a class="el" href="../../d8/d24/class_engine_1_1_physics_1_1_b_e_p_uph
 <tr class="memitem:a43263a794fa3a05afb752ddd3396ed41 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d60/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object.html#a43263a794fa3a05afb752ddd3396ed41">Tag</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a43263a794fa3a05afb752ddd3396ed41 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the user data associated with this object.  <a href="../../d0/d60/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object.html#a43263a794fa3a05afb752ddd3396ed41">More...</a><br /></td></tr>
 <tr class="separator:a43263a794fa3a05afb752ddd3396ed41 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_i_space_object"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ad34e6d9b605fa3b799f4fb766973c200"><td class="memItemLeft" align="right" valign="top"><a id="ad34e6d9b605fa3b799f4fb766973c200"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveFriction</b> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> sender, <a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a> other, <a class="el" href="../../dc/d66/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_narrow_phase_pair.html">NarrowPhasePair</a> pair)</td></tr>
-<tr class="separator:ad34e6d9b605fa3b799f4fb766973c200"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94e38980ef634f2bd907f1ca0caf1e99"><td class="memItemLeft" align="right" valign="top"><a id="a94e38980ef634f2bd907f1ca0caf1e99"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ExpandBoundingBox</b> ()</td></tr>
-<tr class="separator:a94e38980ef634f2bd907f1ca0caf1e99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad32a850b2ceee96807bc3a3a905e2653"><td class="memItemLeft" align="right" valign="top"><a id="ad32a850b2ceee96807bc3a3a905e2653"></a>
-void IBeforeSolverUpdateable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#ad32a850b2ceee96807bc3a3a905e2653">Update</a> (float dt)</td></tr>
-<tr class="memdesc:ad32a850b2ceee96807bc3a3a905e2653"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the updateable before the solver. /summary&gt; param name="dt"&gt;Time step duration.<br /></td></tr>
-<tr class="separator:ad32a850b2ceee96807bc3a3a905e2653"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ec77365f0e1fde5a96eee11c6931030"><td class="memItemLeft" align="right" valign="top"><a id="a1ec77365f0e1fde5a96eee11c6931030"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeRelativeVelocity</b> (ref <a class="el" href="../../d7/dc2/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_data.html">SupportData</a> supportData, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> relativeVelocity)</td></tr>
-<tr class="separator:a1ec77365f0e1fde5a96eee11c6931030"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a79595570678d62eb74dc8d203480b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d71/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_sphere_character_controller.html#a0a79595570678d62eb74dc8d203480b3">ApplyJumpVelocity</a> (ref <a class="el" href="../../d7/dc2/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_data.html">SupportData</a> supportData, <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> velocityChange, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> relativeVelocity)</td></tr>
-<tr class="memdesc:a0a79595570678d62eb74dc8d203480b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the relative velocity between the character and its support.  <a href="#a0a79595570678d62eb74dc8d203480b3">More...</a><br /></td></tr>
-<tr class="separator:a0a79595570678d62eb74dc8d203480b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a7aa27d746cd86d2a26224ff5242a9769"><td class="memItemLeft" align="right" valign="top"><a id="a7aa27d746cd86d2a26224ff5242a9769"></a>
-<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>down</b> = new <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>(0, -1, 0)</td></tr>
-<tr class="separator:a7aa27d746cd86d2a26224ff5242a9769"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a25a6dc0b92efdd28800fac5ea312bba1"><td class="memItemLeft" align="right" valign="top"><a id="a25a6dc0b92efdd28800fac5ea312bba1"></a>
-<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>viewDirection</b> = new <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>(0, 0, -1)</td></tr>
-<tr class="separator:a25a6dc0b92efdd28800fac5ea312bba1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73bf357299145c483391a17da4aeeea5"><td class="memItemLeft" align="right" valign="top"><a id="a73bf357299145c483391a17da4aeeea5"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>jumpSpeed</b></td></tr>
-<tr class="separator:a73bf357299145c483391a17da4aeeea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a943aab5c09d129be4507a4a919e6609d"><td class="memItemLeft" align="right" valign="top"><a id="a943aab5c09d129be4507a4a919e6609d"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>slidingJumpSpeed</b></td></tr>
-<tr class="separator:a943aab5c09d129be4507a4a919e6609d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3f775ae63da1d9215a3a614527a92b88"><td class="memItemLeft" align="right" valign="top"><a id="a3f775ae63da1d9215a3a614527a92b88"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>jumpForceFactor</b> = 1f</td></tr>
-<tr class="separator:a3f775ae63da1d9215a3a614527a92b88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:addf2ed7db3f2a6a48495f036abb926a8"><td class="memItemLeft" align="right" valign="top"><a id="addf2ed7db3f2a6a48495f036abb926a8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>speed</b></td></tr>
-<tr class="separator:addf2ed7db3f2a6a48495f036abb926a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f0a930f2567726324d6c570901fea34"><td class="memItemLeft" align="right" valign="top"><a id="a2f0a930f2567726324d6c570901fea34"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>tractionForce</b></td></tr>
-<tr class="separator:a2f0a930f2567726324d6c570901fea34"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1fff69ba66cd4a7414c19c2475e4eec"><td class="memItemLeft" align="right" valign="top"><a id="ab1fff69ba66cd4a7414c19c2475e4eec"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>slidingSpeed</b></td></tr>
-<tr class="separator:ab1fff69ba66cd4a7414c19c2475e4eec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74fe7ae027d77175f589edc6e61c8720"><td class="memItemLeft" align="right" valign="top"><a id="a74fe7ae027d77175f589edc6e61c8720"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>slidingForce</b></td></tr>
-<tr class="separator:a74fe7ae027d77175f589edc6e61c8720"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a0e9591db44cb74ee63ee33a5772c8b"><td class="memItemLeft" align="right" valign="top"><a id="a7a0e9591db44cb74ee63ee33a5772c8b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>airSpeed</b></td></tr>
-<tr class="separator:a7a0e9591db44cb74ee63ee33a5772c8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7caedb93f38ebcbe7c909d1f43a3ee41"><td class="memItemLeft" align="right" valign="top"><a id="a7caedb93f38ebcbe7c909d1f43a3ee41"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>airForce</b></td></tr>
-<tr class="separator:a7caedb93f38ebcbe7c909d1f43a3ee41"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43c03d03b7f726b7b50789e54d5230b0"><td class="memItemLeft" align="right" valign="top"><a id="a43c03d03b7f726b7b50789e54d5230b0"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>tryToJump</b></td></tr>
-<tr class="separator:a43c03d03b7f726b7b50789e54d5230b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Gives a physical object simple and cheap FPS-like control. This character has less features than the full <a class="el" href="../../da/d55/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_controller.html" title="Gives a physical object FPS-like control, including stepping and jumping. ">CharacterController</a> but is a little bit faster. </p>
@@ -404,58 +339,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>tryToJump</b></td></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0a79595570678d62eb74dc8d203480b3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a79595570678d62eb74dc8d203480b3">&#9670;&nbsp;</a></span>ApplyJumpVelocity()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Physics.BEPUphysics.Character.SphereCharacterController.ApplyJumpVelocity </td>
-          <td>(</td>
-          <td class="paramtype">ref <a class="el" href="../../d7/dc2/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_data.html">SupportData</a>&#160;</td>
-          <td class="paramname"><em>supportData</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>velocityChange</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>relativeVelocity</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Changes the relative velocity between the character and its support. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">supportData</td><td>Support data to use to jump.</td></tr>
-    <tr><td class="paramname">velocityChange</td><td>Change to apply to the character and support relative velocity.</td></tr>
-    <tr><td class="paramname">relativeVelocity</td><td>Relative velocity to update.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="ad9d36a2c235f809f70fd8a7d64052e82"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad9d36a2c235f809f70fd8a7d64052e82">&#9670;&nbsp;</a></span>Jump()</h2>
 
@@ -737,30 +620,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>tryToJump</b></td></t
 </div><div class="memdoc">
 
 <p>Gets or sets the speed at which the character leaves the ground when it jumps. </p>
-
-</div>
-</div>
-<a id="a07cbdd6baadb970a0132f8b09d069d77"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07cbdd6baadb970a0132f8b09d069d77">&#9670;&nbsp;</a></span>PairLocker</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d5/d41/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_pair_locker.html">CharacterPairLocker</a> Engine.Physics.BEPUphysics.Character.SphereCharacterController.PairLocker</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets or sets the pair locker used by the character controller to avoid interfering with the behavior of other characters. </p>
 
 </div>
 </div>

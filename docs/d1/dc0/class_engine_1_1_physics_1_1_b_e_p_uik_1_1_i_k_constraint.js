@@ -10,9 +10,7 @@ var class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint =
     [ "maximumForce", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#ac8a8abc5775710db1d7e13b5f28aa9a2", null ],
     [ "maximumImpulse", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#ad257c23140d2219781289829ce62ccd6", null ],
     [ "maximumImpulseSquared", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#a4b74d3501b06cfc6741cb556c9a987c1", null ],
-    [ "rigidity", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#abc0c0d640248b11454cd02bbbc8f3d9f", null ],
     [ "softness", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#ab9d13680004de99b05d4a9dee3885b2d", null ],
-    [ "StiffnessOverDamping", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#a2a04b9cd083e1aece6582579c823bddd", null ],
     [ "MaximumForce", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#a106690fa547644fb47ea4951bcdc2616", null ],
     [ "Rigidity", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html#a55962daa979014bb966e20b7dd78b644", null ]
 ];

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('d0/d29/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="../../de/d2d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.WrappedShape Class Reference</div>  </div>
@@ -114,6 +113,7 @@ Inheritance diagram for Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5751d872a4a9ee4301e94d5c9365e329"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html#a5751d872a4a9ee4301e94d5c9365e329">WrappedShape</a> (<a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> firstShape, <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> secondShape)</td></tr>
+<tr class="memdesc:a5751d872a4a9ee4301e94d5c9365e329"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a wrapped shape. A constructor is also available which takes a list of objects rather than just a pair. The shape will be recentered. If the center is needed, use the other constructor. /summary&gt; param name="firstShape"&gt;First shape in the wrapped shape.param name="secondShape"&gt;Second shape in the wrapped shape. <a href="#a5751d872a4a9ee4301e94d5c9365e329">More...</a><br /></td></tr>
 <tr class="separator:a5751d872a4a9ee4301e94d5c9365e329"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f9e43f671cf0102b0da03448cab29c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html#a6f9e43f671cf0102b0da03448cab29c7">WrappedShape</a> (<a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> firstShape, <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> secondShape, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> center)</td></tr>
 <tr class="separator:a6f9e43f671cf0102b0da03448cab29c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -121,8 +121,7 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a8189ebc57dfd15f6c0455ff10ec9198f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24b1eea7d77abc3e6fd84b5f57f89f22"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html#a24b1eea7d77abc3e6fd84b5f57f89f22">WrappedShape</a> (IList&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt; shapeEntries, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> center)</td></tr>
 <tr class="separator:a24b1eea7d77abc3e6fd84b5f57f89f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a739cabae759761a68f6ab340a7e217fc"><td class="memItemLeft" align="right" valign="top"><a id="a739cabae759761a68f6ab340a7e217fc"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>WrappedShape</b> (IList&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt; shapeEntries, <a class="el" href="../../de/d8f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_description.html">ConvexShapeDescription</a> description)</td></tr>
+<tr class="memitem:a739cabae759761a68f6ab340a7e217fc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html#a739cabae759761a68f6ab340a7e217fc">WrappedShape</a> (IList&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt; shapeEntries, <a class="el" href="../../de/d8f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_description.html">ConvexShapeDescription</a> description)</td></tr>
 <tr class="separator:a739cabae759761a68f6ab340a7e217fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a11705fee93ec08954adb6b692f5711ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html#a11705fee93ec08954adb6b692f5711ea">UpdateConvexShapeInfo</a> (out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> center)</td></tr>
 <tr class="memdesc:a11705fee93ec08954adb6b692f5711ea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and applies a convex shape description for this <a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html" title="Shape that wraps other convex shapes in a convex hull. One way to think of it is to collect a bunch o...">WrappedShape</a>.  <a href="#a11705fee93ec08954adb6b692f5711ea">More...</a><br /></td></tr>
@@ -168,8 +167,7 @@ Protected Member Functions</h2></td></tr>
 override void&#160;</td><td class="memItemRight" valign="bottom"><b>OnShapeChanged</b> ()</td></tr>
 <tr class="separator:a330dd983e6664a01fc8d6ce0f26f7c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.ConvexShape</a></td></tr>
-<tr class="memitem:af0f579f31d55a99dd357cc8d8dc9d4b8 inherit pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape"><td class="memItemLeft" align="right" valign="top"><a id="af0f579f31d55a99dd357cc8d8dc9d4b8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateConvexShapeInfo</b> (<a class="el" href="../../de/d8f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_description.html">ConvexShapeDescription</a> description)</td></tr>
+<tr class="memitem:af0f579f31d55a99dd357cc8d8dc9d4b8 inherit pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html#af0f579f31d55a99dd357cc8d8dc9d4b8">UpdateConvexShapeInfo</a> (<a class="el" href="../../de/d8f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_description.html">ConvexShapeDescription</a> description)</td></tr>
 <tr class="separator:af0f579f31d55a99dd357cc8d8dc9d4b8 inherit pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d5/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape.html">Engine.Physics.BEPUphysics.CollisionShapes.EntityShape</a></td></tr>
 <tr class="memitem:a91b1f7f4cfc187df33f7b9fbf0d83d1c inherit pro_methods_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="memItemLeft" align="right" valign="top"><a id="a91b1f7f4cfc187df33f7b9fbf0d83d1c"></a>
@@ -181,8 +179,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateEntityShapeVolu
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a13236783d58f21d81d528a00e041c9a8"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html#a13236783d58f21d81d528a00e041c9a8">Shapes</a> = new <a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt;<a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a>&gt;()<code> [get]</code></td></tr>
-<tr class="memdesc:a13236783d58f21d81d528a00e041c9a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the shapes in wrapped shape. /summary&gt;  <a href="#a13236783d58f21d81d528a00e041c9a8">More...</a><br /></td></tr>
+<tr class="memitem:a13236783d58f21d81d528a00e041c9a8"><td class="memItemLeft" align="right" valign="top"><a id="a13236783d58f21d81d528a00e041c9a8"></a>
+<a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Shapes</b> = new <a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt;<a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a>&gt;()<code> [get]</code></td></tr>
 <tr class="separator:a13236783d58f21d81d528a00e041c9a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.ConvexShape</a></td></tr>
 <tr class="memitem:a28131fc6f3dfc43b0c974e548982fb21 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape"><td class="memItemLeft" align="right" valign="top"><a id="a28131fc6f3dfc43b0c974e548982fb21"></a>
@@ -198,12 +196,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>CollisionMargin</b><
 <tr class="memitem:a41a3c0ab7de4410499fb8887fbf5313d inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape.html#a41a3c0ab7de4410499fb8887fbf5313d">Volume</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a41a3c0ab7de4410499fb8887fbf5313d inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the volume of the shape.  <a href="../../d5/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape.html#a41a3c0ab7de4410499fb8887fbf5313d">More...</a><br /></td></tr>
 <tr class="separator:a41a3c0ab7de4410499fb8887fbf5313d inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a7ae94075dc3afdc8f635d89e0184574f"><td class="memItemLeft" align="right" valign="top"><a id="a7ae94075dc3afdc8f635d89e0184574f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ShapesChanged</b> (<a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt; list)</td></tr>
-<tr class="separator:a7ae94075dc3afdc8f635d89e0184574f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -228,7 +220,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 <div class="textblock"><p>Shape that wraps other convex shapes in a convex hull. One way to think of it is to collect a bunch of items and wrap shrinkwrap around them. That surface is the shape of the <a class="el" href="../../d0/d29/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_wrapped_shape.html" title="Shape that wraps other convex shapes in a convex hull. One way to think of it is to collect a bunch o...">WrappedShape</a>. /summary&gt; </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a5751d872a4a9ee4301e94d5c9365e329"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5751d872a4a9ee4301e94d5c9365e329">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[1/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a5751d872a4a9ee4301e94d5c9365e329">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,6 +244,8 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Constructs a wrapped shape. A constructor is also available which takes a list of objects rather than just a pair. The shape will be recentered. If the center is needed, use the other constructor. /summary&gt; param name="firstShape"&gt;First shape in the wrapped shape.param name="secondShape"&gt;Second shape in the wrapped shape.</p>
 <p>summary&gt; Constructs a wrapped shape. A constructor is also available which takes a list of objects rather than just a pair. The shape will be recentered. /summary&gt; param name="firstShape"&gt;First shape in the wrapped shape.</p>
 <p>param name="secondShape"&gt;Second shape in the wrapped shape.</p>
 <p>param name="center"&gt;Center of the shape before recentering..</p>
@@ -259,7 +253,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 </div>
 </div>
 <a id="a6f9e43f671cf0102b0da03448cab29c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6f9e43f671cf0102b0da03448cab29c7">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[2/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f9e43f671cf0102b0da03448cab29c7">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -295,7 +289,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 </div>
 </div>
 <a id="a8189ebc57dfd15f6c0455ff10ec9198f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8189ebc57dfd15f6c0455ff10ec9198f">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[3/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a8189ebc57dfd15f6c0455ff10ec9198f">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -321,7 +315,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 </div>
 </div>
 <a id="a24b1eea7d77abc3e6fd84b5f57f89f22"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24b1eea7d77abc3e6fd84b5f57f89f22">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[4/4]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a24b1eea7d77abc3e6fd84b5f57f89f22">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -353,6 +347,35 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
   </dd>
 </dl>
 <p>exception cref="Exception"&gt;Thrown when the shape list is empty.</p>
+
+</div>
+</div>
+<a id="a739cabae759761a68f6ab340a7e217fc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a739cabae759761a68f6ab340a7e217fc">&#9670;&nbsp;</a></span>WrappedShape() <span class="overload">[5/5]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.WrappedShape.WrappedShape </td>
+          <td>(</td>
+          <td class="paramtype">IList&lt; <a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a> &gt;&#160;</td>
+          <td class="paramname"><em>shapeEntries</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../de/d8f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_description.html">ConvexShapeDescription</a>&#160;</td>
+          <td class="paramname"><em>description</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>summary&gt; Gets the shapes in wrapped shape. /summary&gt; </p>
 
 </div>
 </div>
@@ -545,33 +568,6 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a13236783d58f21d81d528a00e041c9a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13236783d58f21d81d528a00e041c9a8">&#9670;&nbsp;</a></span>Shapes</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt;<a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a>&gt; Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.WrappedShape.Shapes = new <a class="el" href="../../d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html">ObservableList</a>&lt;<a class="el" href="../../d6/d89/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape_entry.html">ConvexShapeEntry</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the shapes in wrapped shape. /summary&gt; </p>
-<p>summary&gt; Constructs a wrapped shape. A constructor is also available which takes a list of objects rather than just a pair. The shape will be recentered. If the center is needed, use the other constructor. /summary&gt; param name="firstShape"&gt;First shape in the wrapped shape.</p>
-<p>param name="secondShape"&gt;Second shape in the wrapped shape.</p>
 
 </div>
 </div>

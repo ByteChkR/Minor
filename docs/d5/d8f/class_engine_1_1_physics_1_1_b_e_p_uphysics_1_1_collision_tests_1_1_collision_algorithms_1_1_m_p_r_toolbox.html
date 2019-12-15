@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -91,8 +91,6 @@ $(document).ready(function(){initNavTree('d5/d8f/class_engine_1_1_physics_1_1_b_
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#pac-static-methods">Static Package Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../d5/ddd/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_m_p_r_toolbox-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.MPRToolbox Class Reference</div>  </div>
@@ -176,39 +174,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a8285e931e4a0cffa58f9b34809db409d"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d8f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_m_p_r_toolbox.html#a8285e931e4a0cffa58f9b34809db409d">MaximumDepthRefinementIterations</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8285e931e4a0cffa58f9b34809db409d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the maximum number of iterations to use to reach the local penetration depth minimum when using the RefinePenetration function. Increasing this allows the system to work longer to find local penetration minima. The change will likely only be visible on curved shapes, since polytopes will converge extremely rapidly to a precise local minimum. Defaults to 3.  <a href="#a8285e931e4a0cffa58f9b34809db409d">More...</a><br /></td></tr>
 <tr class="separator:a8285e931e4a0cffa58f9b34809db409d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a3cf9d943ab47c23db5e9666f708439f0"><td class="memItemLeft" align="right" valign="top"><a id="a3cf9d943ab47c23db5e9666f708439f0"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>VerifySimplex</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> v0, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> v1, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> v2, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> v3, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> direction)</td></tr>
-<tr class="separator:a3cf9d943ab47c23db5e9666f708439f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d8ee41091500b1d40e27bf6774edc18"><td class="memItemLeft" align="right" valign="top"><a id="a1d8ee41091500b1d40e27bf6774edc18"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>LocalSweepCast</b> (<a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shape, <a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shapeB, float sweepLength, float rayLengthSquared, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> localDirection, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sweep, ref <a class="el" href="../../d0/d84/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_rigid_transform.html">RigidTransform</a> localTransformB, out <a class="el" href="../../d5/dca/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_ray_hit.html">RayHit</a> hit)</td></tr>
-<tr class="separator:a1d8ee41091500b1d40e27bf6774edc18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8152c6994b2a313f5427e996ed2d1f40"><td class="memItemLeft" align="right" valign="top"><a id="a8152c6994b2a313f5427e996ed2d1f40"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSweptExtremePoint</b> (<a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shapeA, <a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shapeB, ref <a class="el" href="../../d0/d84/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_rigid_transform.html">RigidTransform</a> localTransformB, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sweep, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> extremePointDirection, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> extremePointA, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> extremePoint)</td></tr>
-<tr class="separator:a8152c6994b2a313f5427e996ed2d1f40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acfd924d9d5b7df6832e2802fdc3fdcb0"><td class="memItemLeft" align="right" valign="top"><a id="acfd924d9d5b7df6832e2802fdc3fdcb0"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>LocalSweepCast</b> (<a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shape, float sweepLength, float rayLengthSquared, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> localDirection, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sweep, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> rayOrigin, out <a class="el" href="../../d5/dca/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_ray_hit.html">RayHit</a> hit)</td></tr>
-<tr class="separator:acfd924d9d5b7df6832e2802fdc3fdcb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf0f5ad968db01f51d964dad717778cb"><td class="memItemLeft" align="right" valign="top"><a id="aaf0f5ad968db01f51d964dad717778cb"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSweptExtremePoint</b> (<a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shape, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> point, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sweep, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> extremePointDirection, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> extremePoint)</td></tr>
-<tr class="separator:aaf0f5ad968db01f51d964dad717778cb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:ac743196ea70b2075d4023e94aa37989c"><td class="memItemLeft" align="right" valign="top"><a id="ac743196ea70b2075d4023e94aa37989c"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>surfaceEpsilon</b> = 1e-7f</td></tr>
-<tr class="separator:ac743196ea70b2075d4023e94aa37989c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ffcb380fe18dfbe16c0a8ca44982579"><td class="memItemLeft" align="right" valign="top"><a id="a3ffcb380fe18dfbe16c0a8ca44982579"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>depthRefinementEpsilon</b> = 1e-4f</td></tr>
-<tr class="separator:a3ffcb380fe18dfbe16c0a8ca44982579"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa270b65089416ff86174bb35db1f4106"><td class="memItemLeft" align="right" valign="top"><a id="aa270b65089416ff86174bb35db1f4106"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>rayCastSurfaceEpsilon</b> = 1e-9f</td></tr>
-<tr class="separator:aa270b65089416ff86174bb35db1f4106"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d1871adf56100b5a1bba4b7927d4e2e"><td class="memItemLeft" align="right" valign="top"><a id="a0d1871adf56100b5a1bba4b7927d4e2e"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>maximumDepthRefinementIterations</b> = 3</td></tr>
-<tr class="separator:a0d1871adf56100b5a1bba4b7927d4e2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains a variety of queries and computation methods that make use of minkowski portal refinement. </p>

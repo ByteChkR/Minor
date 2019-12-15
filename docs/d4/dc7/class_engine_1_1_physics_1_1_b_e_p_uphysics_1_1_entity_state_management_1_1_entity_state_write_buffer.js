@@ -12,6 +12,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_
     [ "EnqueueLinearVelocity", "d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#acb39a1f07b8cab6cbaa09e9f8087fdae", null ],
     [ "EnqueueOrientation", "d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#a3bde7c1ab3f95c2bc49d595c11cfac3b", null ],
     [ "EnqueuePosition", "d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#ae0ee7f16147c0e2fc4cf04b64e839f47", null ],
-    [ "UpdateStage", "d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#aaa86345377f26db133e113a3d075d2a9", null ],
-    [ "stateChanges", "d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#a8d1941bf5a5ee8c99fdd47d0a566f171", null ]
+    [ "UpdateStage", "d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#aaa86345377f26db133e113a3d075d2a9", null ]
 ];

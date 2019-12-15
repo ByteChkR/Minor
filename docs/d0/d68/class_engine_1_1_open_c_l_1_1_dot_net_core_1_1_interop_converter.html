@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('d0/d68/class_engine_1_1_open_c_l_1_1_d
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../db/d98/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_converter-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.OpenCL.DotNetCore.InteropConverter Class Reference</div>  </div>
@@ -118,12 +117,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:af4c32952794fc9d04490bf2db94d546b"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d68/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_converter.html#af4c32952794fc9d04490bf2db94d546b">ToString</a> (byte[] data)</td></tr>
 <tr class="memdesc:af4c32952794fc9d04490bf2db94d546b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a byte array to a string value.  <a href="#af4c32952794fc9d04490bf2db94d546b">More...</a><br /></td></tr>
 <tr class="separator:af4c32952794fc9d04490bf2db94d546b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a15c04ad4bfd30d9e3ceb42a1ad85ccde"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; Type, Func&lt; byte[], object &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d68/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_converter.html#a15c04ad4bfd30d9e3ceb42a1ad85ccde">converterMap</a></td></tr>
-<tr class="memdesc:a15c04ad4bfd30d9e3ceb42a1ad85ccde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a map, which maps a data type to a converter that is able to convert it.  <a href="#a15c04ad4bfd30d9e3ceb42a1ad85ccde">More...</a><br /></td></tr>
-<tr class="separator:a15c04ad4bfd30d9e3ceb42a1ad85ccde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Represents a converter, which is used to convert byte arrays into several different CLR data types. </p>
@@ -347,31 +340,6 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Returns the converted data.</dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a15c04ad4bfd30d9e3ceb42a1ad85ccde"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a15c04ad4bfd30d9e3ceb42a1ad85ccde">&#9670;&nbsp;</a></span>converterMap</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Dictionary&lt;Type, Func&lt;byte[], object&gt; &gt; Engine.OpenCL.DotNetCore.InteropConverter.converterMap</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <span class="keyword">new</span> Dictionary&lt;Type, Func&lt;byte[], object&gt;&gt;()</div></div><!-- fragment -->
-<p>Contains a map, which maps a data type to a converter that is able to convert it. </p>
 
 </div>
 </div>

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -92,7 +92,6 @@ $(document).ready(function(){initNavTree('da/df4/class_engine_1_1_physics_1_1_b_
 <a href="#pac-methods">Package Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d6/df1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_suspension-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Vehicle.WheelSuspension Class Reference</div>  </div>
@@ -156,18 +155,21 @@ Package Attributes</h2></td></tr>
 <tr class="memitem:a318f035c0cf7dddca0777d95656c2355"><td class="memItemLeft" align="right" valign="top"><a id="a318f035c0cf7dddca0777d95656c2355"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>accumulatedImpulse</b></td></tr>
 <tr class="separator:a318f035c0cf7dddca0777d95656c2355"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf5b47a05c804460b5491559aedc0b72"><td class="memItemLeft" align="right" valign="top"><a id="adf5b47a05c804460b5491559aedc0b72"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b> = true</td></tr>
-<tr class="separator:adf5b47a05c804460b5491559aedc0b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accb275c94539465082b2e1b2abb88627"><td class="memItemLeft" align="right" valign="top"><a id="accb275c94539465082b2e1b2abb88627"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>currentLength</b></td></tr>
 <tr class="separator:accb275c94539465082b2e1b2abb88627"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adf5b47a05c804460b5491559aedc0b72"><td class="memItemLeft" align="right" valign="top"><a id="adf5b47a05c804460b5491559aedc0b72"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b> = true</td></tr>
+<tr class="separator:adf5b47a05c804460b5491559aedc0b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adc141fd9d2f9009302947e008cf32607"><td class="memItemLeft" align="right" valign="top"><a id="adc141fd9d2f9009302947e008cf32607"></a>
 <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>localAttachmentPoint</b></td></tr>
 <tr class="separator:adc141fd9d2f9009302947e008cf32607"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67a48e34a0a7815a663602d187ff8707"><td class="memItemLeft" align="right" valign="top"><a id="a67a48e34a0a7815a663602d187ff8707"></a>
 <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>localDirection</b></td></tr>
 <tr class="separator:a67a48e34a0a7815a663602d187ff8707"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7e0aac0e24540c022c737a986f1bc42"><td class="memItemLeft" align="right" valign="top"><a id="ab7e0aac0e24540c022c737a986f1bc42"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numIterationsAtZeroImpulse</b></td></tr>
+<tr class="separator:ab7e0aac0e24540c022c737a986f1bc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a65e621a1e789e98dba0d8a289342ec17"><td class="memItemLeft" align="right" valign="top"><a id="a65e621a1e789e98dba0d8a289342ec17"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>restLength</b></td></tr>
 <tr class="separator:a65e621a1e789e98dba0d8a289342ec17"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,9 +182,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>restLength</b></td><
 <tr class="memitem:acac83afe081c57a91710b8c5d23baef8"><td class="memItemLeft" align="right" valign="top"><a id="acac83afe081c57a91710b8c5d23baef8"></a>
 <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>worldDirection</b></td></tr>
 <tr class="separator:acac83afe081c57a91710b8c5d23baef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab7e0aac0e24540c022c737a986f1bc42"><td class="memItemLeft" align="right" valign="top"><a id="ab7e0aac0e24540c022c737a986f1bc42"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>numIterationsAtZeroImpulse</b></td></tr>
-<tr class="separator:ab7e0aac0e24540c022c737a986f1bc42"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -213,12 +212,12 @@ Properties</h2></td></tr>
 <tr class="memitem:a7fbedbed40556b5ecdc7af263e2d0635"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_suspension.html#a7fbedbed40556b5ecdc7af263e2d0635">WorldDirection</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a7fbedbed40556b5ecdc7af263e2d0635"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the direction of the wheel suspension in the world space of the vehicle body.  <a href="#a7fbedbed40556b5ecdc7af263e2d0635">More...</a><br /></td></tr>
 <tr class="separator:a7fbedbed40556b5ecdc7af263e2d0635"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6dfa4d5a3752cd15bcdf1bbdb1a15e3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html">SpringSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_suspension.html#a6dfa4d5a3752cd15bcdf1bbdb1a15e3d">SpringSettings</a> = new <a class="el" href="../../d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html">SpringSettings</a>()<code> [get]</code></td></tr>
-<tr class="memdesc:a6dfa4d5a3752cd15bcdf1bbdb1a15e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the spring settings that define the behavior of the suspension.  <a href="#a6dfa4d5a3752cd15bcdf1bbdb1a15e3d">More...</a><br /></td></tr>
-<tr class="separator:a6dfa4d5a3752cd15bcdf1bbdb1a15e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af0814bc934709a337c26bb871f611d9f"><td class="memItemLeft" align="right" valign="top"><a id="af0814bc934709a337c26bb871f611d9f"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>RelativeVelocity</b><code> [get]</code></td></tr>
 <tr class="separator:af0814bc934709a337c26bb871f611d9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6dfa4d5a3752cd15bcdf1bbdb1a15e3d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html">SpringSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/df4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_suspension.html#a6dfa4d5a3752cd15bcdf1bbdb1a15e3d">SpringSettings</a> = new <a class="el" href="../../d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html">SpringSettings</a>()<code> [get]</code></td></tr>
+<tr class="memdesc:a6dfa4d5a3752cd15bcdf1bbdb1a15e3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the spring settings that define the behavior of the suspension.  <a href="#a6dfa4d5a3752cd15bcdf1bbdb1a15e3d">More...</a><br /></td></tr>
+<tr class="separator:a6dfa4d5a3752cd15bcdf1bbdb1a15e3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d8/d15/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings.html">Engine.Physics.BEPUphysics.Constraints.ISpringSettings</a></td></tr>
 <tr class="memitem:af83da2ea1bc62aa76c8bbcabc0e61c86 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html">SpringSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d15/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings.html#af83da2ea1bc62aa76c8bbcabc0e61c86">SpringSettings</a><code> [get]</code></td></tr>
 <tr class="memdesc:af83da2ea1bc62aa76c8bbcabc0e61c86 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the spring settings used by the constraint.  <a href="../../d8/d15/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_spring_settings.html#af83da2ea1bc62aa76c8bbcabc0e61c86">More...</a><br /></td></tr>
@@ -227,63 +226,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>RelativeVelocity</b>
 <tr class="memitem:af9984e2928b2d56c9bca37d1573c77d9 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d4e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_settings.html">SolverSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc2/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings.html#af9984e2928b2d56c9bca37d1573c77d9">SolverSettings</a><code> [get]</code></td></tr>
 <tr class="memdesc:af9984e2928b2d56c9bca37d1573c77d9 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the solver settings for this constraint.  <a href="../../d5/dc2/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings.html#af9984e2928b2d56c9bca37d1573c77d9">More...</a><br /></td></tr>
 <tr class="separator:af9984e2928b2d56c9bca37d1573c77d9 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a68070d022d89c36a29b93c73a8098317"><td class="memItemLeft" align="right" valign="top"><a id="a68070d022d89c36a29b93c73a8098317"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularAX</b></td></tr>
-<tr class="separator:a68070d022d89c36a29b93c73a8098317"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9176217ba56b7e044f7429cf83b1f6d8"><td class="memItemLeft" align="right" valign="top"><a id="a9176217ba56b7e044f7429cf83b1f6d8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularAY</b></td></tr>
-<tr class="separator:a9176217ba56b7e044f7429cf83b1f6d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeebfa57b45a4bf94a103748e3a4f583e"><td class="memItemLeft" align="right" valign="top"><a id="aeebfa57b45a4bf94a103748e3a4f583e"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularAZ</b></td></tr>
-<tr class="separator:aeebfa57b45a4bf94a103748e3a4f583e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63fa023e5aba79afb73bf24ece227e0e"><td class="memItemLeft" align="right" valign="top"><a id="a63fa023e5aba79afb73bf24ece227e0e"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularBX</b></td></tr>
-<tr class="separator:a63fa023e5aba79afb73bf24ece227e0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa928584c67d50f077cc7b7c9be41f12c"><td class="memItemLeft" align="right" valign="top"><a id="aa928584c67d50f077cc7b7c9be41f12c"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularBY</b></td></tr>
-<tr class="separator:aa928584c67d50f077cc7b7c9be41f12c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a45625d923bccb4b7811c96c579649807"><td class="memItemLeft" align="right" valign="top"><a id="a45625d923bccb4b7811c96c579649807"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularBZ</b></td></tr>
-<tr class="separator:a45625d923bccb4b7811c96c579649807"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeae1e655aa651f9bf4177273b417e046"><td class="memItemLeft" align="right" valign="top"><a id="aeae1e655aa651f9bf4177273b417e046"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>bias</b></td></tr>
-<tr class="separator:aeae1e655aa651f9bf4177273b417e046"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d8b9f350f46b2f4de4e1a5943cc5d1d"><td class="memItemLeft" align="right" valign="top"><a id="a6d8b9f350f46b2f4de4e1a5943cc5d1d"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>linearAX</b></td></tr>
-<tr class="separator:a6d8b9f350f46b2f4de4e1a5943cc5d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89d88a62e4834cdb96fd1f7ebc17b1d0"><td class="memItemLeft" align="right" valign="top"><a id="a89d88a62e4834cdb96fd1f7ebc17b1d0"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>linearAY</b></td></tr>
-<tr class="separator:a89d88a62e4834cdb96fd1f7ebc17b1d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe8f085a36792713cfb761d838e77283"><td class="memItemLeft" align="right" valign="top"><a id="afe8f085a36792713cfb761d838e77283"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>linearAZ</b></td></tr>
-<tr class="separator:afe8f085a36792713cfb761d838e77283"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3583fa4b6655780d7c126ca61ce5cc16"><td class="memItemLeft" align="right" valign="top"><a id="a3583fa4b6655780d7c126ca61ce5cc16"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>allowedCompression</b> = .01f</td></tr>
-<tr class="separator:a3583fa4b6655780d7c126ca61ce5cc16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a027a4f511e9da2ac9423b51921c44676"><td class="memItemLeft" align="right" valign="top"><a id="a027a4f511e9da2ac9423b51921c44676"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>maximumSpringCorrectionSpeed</b> = float.MaxValue</td></tr>
-<tr class="separator:a027a4f511e9da2ac9423b51921c44676"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c268e3141b7f77ad6ec1fa8e2e5d626"><td class="memItemLeft" align="right" valign="top"><a id="a5c268e3141b7f77ad6ec1fa8e2e5d626"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>maximumSpringForce</b> = float.MaxValue</td></tr>
-<tr class="separator:a5c268e3141b7f77ad6ec1fa8e2e5d626"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e6d0721579b5618f53f7f8243ef6ad2"><td class="memItemLeft" align="right" valign="top"><a id="a0e6d0721579b5618f53f7f8243ef6ad2"></a>
-<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>vehicleEntity</b></td></tr>
-<tr class="separator:a0e6d0721579b5618f53f7f8243ef6ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0da2827d5dfee54e0657b2e2975b9ea"><td class="memItemLeft" align="right" valign="top"><a id="ac0da2827d5dfee54e0657b2e2975b9ea"></a>
-<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>supportEntity</b></td></tr>
-<tr class="separator:ac0da2827d5dfee54e0657b2e2975b9ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c48b31694721c9def4dabe077c51d29"><td class="memItemLeft" align="right" valign="top"><a id="a1c48b31694721c9def4dabe077c51d29"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>softness</b></td></tr>
-<tr class="separator:a1c48b31694721c9def4dabe077c51d29"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61d81b9960c6dbe0874ca0f89e16f053"><td class="memItemLeft" align="right" valign="top"><a id="a61d81b9960c6dbe0874ca0f89e16f053"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityToImpulse</b></td></tr>
-<tr class="separator:a61d81b9960c6dbe0874ca0f89e16f053"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa02d1d3cd11fa6f57980234808190e61"><td class="memItemLeft" align="right" valign="top"><a id="aa02d1d3cd11fa6f57980234808190e61"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>supportIsDynamic</b></td></tr>
-<tr class="separator:aa02d1d3cd11fa6f57980234808190e61"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Allows the connected wheel and vehicle to smoothly absorb bumps. </p>
@@ -561,7 +503,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>supportIsDynamic</b><
 </div><div class="memdoc">
 
 <p>Gets the spring settings that define the behavior of the suspension. </p>
-<p>summary&gt; Gets the relative velocity along the support normal at the contact point. /summary&gt; </p>
 
 </div>
 </div>
@@ -634,6 +575,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>supportIsDynamic</b><
 </div><div class="memdoc">
 
 <p>Gets or sets the direction of the wheel suspension in the world space of the vehicle body. </p>
+<p>summary&gt; Gets the relative velocity along the support normal at the contact point. /summary&gt; </p>
 
 </div>
 </div>

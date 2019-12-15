@@ -1,6 +1,5 @@
 var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable =
 [
-    [ "EntityComparer", "d3/d04/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable_1_1_entity_comparer.html", "d3/d04/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable_1_1_entity_comparer" ],
     [ "SolverUpdateable", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#ac1ffb05824e42d2c144abb32e594929d", null ],
     [ "ActivateInvolvedEntities", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#a0cdbcc81f63563e909499c5674c91e6f", null ],
     [ "CollectInvolvedEntities", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#a8e8e9f8e901733833ca11f8926f61af1", null ],
@@ -17,9 +16,7 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updat
     [ "SortInvolvedEntities", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#a557ff6ccc3f095da9bed402aa004da3b", null ],
     [ "TryEnterLock", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#ae4c6b1b6f15407f134c16dc36311daa8", null ],
     [ "Update", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#a5901706166df2e83f335026284bb06b3", null ],
-    [ "UpdateConnectedMembers", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#abce5960089af03959905f9d23974fb6e", null ],
     [ "UpdateSolverActivity", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#a46518b9ad4bf1b2627d531ebb14dd7f8", null ],
-    [ "comparer", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#acc0ad3618b1ffcff4c0c3bcf11efd90b", null ],
     [ "involvedEntities", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#a4734ab68d62adcf26ba40aa7f33d2f68", null ],
     [ "InvolvedEntities", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#ac3f8a0703170fbf12e28239d9b8abf33", null ],
     [ "isActive", "d4/daf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable.html#af2d6990159cd4031972c187c60ed9ae5", null ],

@@ -1,7 +1,6 @@
 var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager =
 [
     [ "AddToEventfuls", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ad755def70a26754633550f96277ee31c", null ],
-    [ "DispatchEvents", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ac801a0a48a4520bf50976e18f18322a3", null ],
     [ "DispatchEvents", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a4da051b83b287cc31bb15010c7c9aedf", null ],
     [ "EventsAreInactive", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a27cf58b4e1e431198d3db57cb516ca88", null ],
     [ "OnPairCreated", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ab65fa376987f95e46d2e0b87c2ddcc11", null ],
@@ -10,13 +9,7 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_even
     [ "RemoveAllEvents", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ac934ecd536cfb67e6e5db7ec66e814c4", null ],
     [ "VerifyEventStatus", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ab6fb59903a693364d35e8b6f168ff566", null ],
     [ "childDeferredEventCreators", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#aaa42c3eb1536448f7cf58ab3dbbcf734", null ],
-    [ "deferredEventDispatcher", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#aeb116b94aca1cf7487c86930b1703e6d", null ],
-    [ "eventStoragePairCreated", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a1bacb7c0dcb3bb521427cd9062ee0da8", null ],
-    [ "eventStoragePairRemoved", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a445980837b23f91fe395c5300781be59", null ],
-    [ "eventStoragePairUpdated", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a6b36b81479b63561b64ff47203427098", null ],
-    [ "isActive", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#aea515af8659cefbe90a0be31ce0c27df", null ],
     [ "owner", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ac3c335d797394d22f5aa65075a1e3b8b", null ],
-    [ "parent", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a8d0e084b847a75d7071a34f184174eb5", null ],
     [ "ChildDeferredEventCreators", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#adb7796ce92332eb4a777b61f6c036e51", null ],
     [ "DeferredEventDispatcher", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ad055dfef815a03cfe0ee5d4ac80c8576", null ],
     [ "IsActive", "d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a8904d14be62085934279685f967c43c5", null ],

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,31 +88,77 @@ $(document).ready(function(){initNavTree('df/d31/class_engine_1_1_a_i_1_1_a_star
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../d7/d70/class_engine_1_1_a_i_1_1_a_star_resolver-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.AI.AStarResolver Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>The Implementation of the A* Algorithm  
+ <a href="../../df/d31/class_engine_1_1_a_i_1_1_a_star_resolver.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a71a828d07efaa86e60b40f909bfb9fb9"><td class="memItemLeft" align="right" valign="top"><a id="a71a828d07efaa86e60b40f909bfb9fb9"></a>
-static List&lt; <a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>FindPath</b> (<a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> startPoint, <a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> endPoint, out bool foundPath)</td></tr>
-<tr class="separator:a71a828d07efaa86e60b40f909bfb9fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a94b8ed6223b5d692d28deb23e689ee53"><td class="memItemLeft" align="right" valign="top"><a id="a94b8ed6223b5d692d28deb23e689ee53"></a>
-static List&lt; <a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GeneratePath</b> (<a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> endNode)</td></tr>
-<tr class="separator:a94b8ed6223b5d692d28deb23e689ee53"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03d7002d30661fb10ab1a7cf2135e3d6"><td class="memItemLeft" align="right" valign="top"><a id="a03d7002d30661fb10ab1a7cf2135e3d6"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetNodes</b> (<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a>&lt; <a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> &gt; todo, List&lt; <a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> &gt; done)</td></tr>
-<tr class="separator:a03d7002d30661fb10ab1a7cf2135e3d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b2f95ef7ae0e6c3a7e2a792298dfddb"><td class="memItemLeft" align="right" valign="top"><a id="a2b2f95ef7ae0e6c3a7e2a792298dfddb"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetNode</b> (<a class="el" href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html">AINode</a> node)</td></tr>
-<tr class="separator:a2b2f95ef7ae0e6c3a7e2a792298dfddb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa1ab8abb3907dcb91b005369b765e2"><td class="memItemLeft" align="right" valign="top">static List&lt; <a class="el" href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html">AiNode</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d31/class_engine_1_1_a_i_1_1_a_star_resolver.html#a0fa1ab8abb3907dcb91b005369b765e2">FindPath</a> (<a class="el" href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html">AiNode</a> startPoint, <a class="el" href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html">AiNode</a> endPoint, out bool foundPath)</td></tr>
+<tr class="memdesc:a0fa1ab8abb3907dcb91b005369b765e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the path from the start node to the end node  <a href="#a0fa1ab8abb3907dcb91b005369b765e2">More...</a><br /></td></tr>
+<tr class="separator:a0fa1ab8abb3907dcb91b005369b765e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The Implementation of the A* Algorithm </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0fa1ab8abb3907dcb91b005369b765e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa1ab8abb3907dcb91b005369b765e2">&#9670;&nbsp;</a></span>FindPath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static List&lt;<a class="el" href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html">AiNode</a>&gt; Engine.AI.AStarResolver.FindPath </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html">AiNode</a>&#160;</td>
+          <td class="paramname"><em>startPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html">AiNode</a>&#160;</td>
+          <td class="paramname"><em>endPoint</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">out bool&#160;</td>
+          <td class="paramname"><em>foundPath</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Finds the path from the start node to the end node </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">startPoint</td><td>The point to start the search from</td></tr>
+    <tr><td class="paramname">endPoint</td><td>The target point to reach</td></tr>
+    <tr><td class="paramname">foundPath</td><td>out parameter to indicate if there exists a valid path for the start/end configuration</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Returns a List of Nodes containing the path from start to finish</dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine/AI/AStarResolver.cs</li>
 </ul>

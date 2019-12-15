@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -91,29 +91,33 @@ $(document).ready(function(){initNavTree('d3/d83/class_engine_1_1_asset_packagin
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="../../de/db0/class_engine_1_1_asset_packaging_1_1_assembly_file-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.AssetPackaging.AssemblyFile Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Container Class used to Group Files by Assembly  
+ <a href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Engine.AssetPackaging.AssemblyFile:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.png" usemap="#Engine.AssetPackaging.AssemblyFile_map" alt=""/>
   <map id="Engine.AssetPackaging.AssemblyFile_map" name="Engine.AssetPackaging.AssemblyFile_map">
-<area href="../../d3/d2f/class_engine_1_1_asset_packaging_1_1_i_o_packed_assembly_file.html" alt="Engine.AssetPackaging.IOPackedAssemblyFile" shape="rect" coords="0,56,279,80"/>
-<area href="../../d4/d5b/class_engine_1_1_asset_packaging_1_1_packed_assembly_file.html" alt="Engine.AssetPackaging.PackedAssemblyFile" shape="rect" coords="289,56,568,80"/>
+<area href="../../d0/d23/class_engine_1_1_asset_packaging_1_1_io_packed_assembly_file.html" title="Assembly File Class that is used when the pack file is on disk " alt="Engine.AssetPackaging.IoPackedAssemblyFile" shape="rect" coords="0,56,276,80"/>
+<area href="../../d4/d5b/class_engine_1_1_asset_packaging_1_1_packed_assembly_file.html" title="Assembly File Class that is used when the pack files are embedded in an assembly " alt="Engine.AssetPackaging.PackedAssemblyFile" shape="rect" coords="286,56,562,80"/>
 </map>
  </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ac658cc95f60cbe825e058b5cde2c6833"><td class="memItemLeft" align="right" valign="top"><a id="ac658cc95f60cbe825e058b5cde2c6833"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AssemblyFile</b> (bool compression, string manifestFilepath, Assembly assembly)</td></tr>
+<tr class="memitem:ac658cc95f60cbe825e058b5cde2c6833"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ac658cc95f60cbe825e058b5cde2c6833">AssemblyFile</a> (bool compression, string manifestFilepath, <a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ae8a19a4569ffa32f5580cabe470611c9">Assembly</a> assembly)</td></tr>
+<tr class="memdesc:ac658cc95f60cbe825e058b5cde2c6833"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor  <a href="#ac658cc95f60cbe825e058b5cde2c6833">More...</a><br /></td></tr>
 <tr class="separator:ac658cc95f60cbe825e058b5cde2c6833"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e1c3017788847ac398e0233643b20c1"><td class="memItemLeft" align="right" valign="top"><a id="a8e1c3017788847ac398e0233643b20c1"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AssemblyFile</b> (bool compression, string[] manifestFilepaths, Assembly assembly)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>AssemblyFile</b> (bool compression, string[] manifestFilepaths, <a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ae8a19a4569ffa32f5580cabe470611c9">Assembly</a> assembly)</td></tr>
 <tr class="separator:a8e1c3017788847ac398e0233643b20c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37c9437195e2bb371c9e9445b0c04941"><td class="memItemLeft" align="right" valign="top"><a id="a37c9437195e2bb371c9e9445b0c04941"></a>
 virtual Stream&#160;</td><td class="memItemRight" valign="bottom"><b>GetResourceStream</b> (int index)</td></tr>
@@ -130,22 +134,130 @@ static Stream&#160;</td><td class="memItemRight" valign="bottom"><b>UncompressZi
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ae8a19a4569ffa32f5580cabe470611c9"><td class="memItemLeft" align="right" valign="top"><a id="ae8a19a4569ffa32f5580cabe470611c9"></a>
-readonly Assembly&#160;</td><td class="memItemRight" valign="bottom"><b>Assembly</b></td></tr>
+<tr class="memitem:ae8a19a4569ffa32f5580cabe470611c9"><td class="memItemLeft" align="right" valign="top">readonly Assembly&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ae8a19a4569ffa32f5580cabe470611c9">Assembly</a></td></tr>
+<tr class="memdesc:ae8a19a4569ffa32f5580cabe470611c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Assembly containing all files in this object  <a href="#ae8a19a4569ffa32f5580cabe470611c9">More...</a><br /></td></tr>
 <tr class="separator:ae8a19a4569ffa32f5580cabe470611c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc6fe126cbdaa4c0fa5588ebf80f1123"><td class="memItemLeft" align="right" valign="top"><a id="abc6fe126cbdaa4c0fa5588ebf80f1123"></a>
-readonly string []&#160;</td><td class="memItemRight" valign="bottom"><b>ManifestFilepaths</b></td></tr>
+<tr class="memitem:abc6fe126cbdaa4c0fa5588ebf80f1123"><td class="memItemLeft" align="right" valign="top">readonly string []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#abc6fe126cbdaa4c0fa5588ebf80f1123">ManifestFilepaths</a></td></tr>
+<tr class="memdesc:abc6fe126cbdaa4c0fa5588ebf80f1123"><td class="mdescLeft">&#160;</td><td class="mdescRight">All files in this object  <a href="#abc6fe126cbdaa4c0fa5588ebf80f1123">More...</a><br /></td></tr>
 <tr class="separator:abc6fe126cbdaa4c0fa5588ebf80f1123"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d945408e6f239e327852ba3f990e8bd"><td class="memItemLeft" align="right" valign="top"><a id="a6d945408e6f239e327852ba3f990e8bd"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Compression</b></td></tr>
-<tr class="separator:a6d945408e6f239e327852ba3f990e8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:ab91ae2b48280468dc5091db8712db5c6"><td class="memItemLeft" align="right" valign="top"><a id="ab91ae2b48280468dc5091db8712db5c6"></a>
 Stream&#160;</td><td class="memItemRight" valign="bottom"><b>ReadSplittedFile</b> (<a class="el" href="../../d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer.html">AssetPointer</a> ptr)</td></tr>
 <tr class="separator:ab91ae2b48280468dc5091db8712db5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a6d945408e6f239e327852ba3f990e8bd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#a6d945408e6f239e327852ba3f990e8bd">Compression</a><code> [get]</code></td></tr>
+<tr class="memdesc:a6d945408e6f239e327852ba3f990e8bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">If the assembly has compressed files  <a href="#a6d945408e6f239e327852ba3f990e8bd">More...</a><br /></td></tr>
+<tr class="separator:a6d945408e6f239e327852ba3f990e8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Container Class used to Group Files by Assembly </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ac658cc95f60cbe825e058b5cde2c6833"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac658cc95f60cbe825e058b5cde2c6833">&#9670;&nbsp;</a></span>AssemblyFile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Engine.AssetPackaging.AssemblyFile.AssemblyFile </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>compression</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>manifestFilepath</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ae8a19a4569ffa32f5580cabe470611c9">Assembly</a>&#160;</td>
+          <td class="paramname"><em>assembly</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">compression</td><td></td></tr>
+    <tr><td class="paramname">manifestFilepath</td><td></td></tr>
+    <tr><td class="paramname">assembly</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ae8a19a4569ffa32f5580cabe470611c9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae8a19a4569ffa32f5580cabe470611c9">&#9670;&nbsp;</a></span>Assembly</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Assembly Engine.AssetPackaging.AssemblyFile.Assembly</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Assembly containing all files in this object </p>
+
+</div>
+</div>
+<a id="abc6fe126cbdaa4c0fa5588ebf80f1123"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc6fe126cbdaa4c0fa5588ebf80f1123">&#9670;&nbsp;</a></span>ManifestFilepaths</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly string [] Engine.AssetPackaging.AssemblyFile.ManifestFilepaths</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>All files in this object </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a6d945408e6f239e327852ba3f990e8bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6d945408e6f239e327852ba3f990e8bd">&#9670;&nbsp;</a></span>Compression</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.AssetPackaging.AssemblyFile.Compression</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>If the assembly has compressed files </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine.AssetPackaging/AssemblyFile.cs</li>
 </ul>

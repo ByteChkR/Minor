@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,7 +89,6 @@ $(document).ready(function(){initNavTree('d8/de5/class_engine_1_1_audio_1_1_audi
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../d7/d3d/class_engine_1_1_audio_1_1_audio_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Audio.AudioManager Class Reference</div>  </div>
@@ -107,15 +106,9 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:ae27810badbfc35506591e95b8fd578e9"><td class="memItemLeft" align="right" valign="top">static AlcError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de5/class_engine_1_1_audio_1_1_audio_manager.html#ae27810badbfc35506591e95b8fd578e9">GetCurrentALcError</a> =&gt; <a class="el" href="../../d8/de5/class_engine_1_1_audio_1_1_audio_manager.html#a645d8fabc3855128ac71e900875bf3aa">_context</a>?.CurrentError ?? AlcError.InvalidContext</td></tr>
+<tr class="memitem:ae27810badbfc35506591e95b8fd578e9"><td class="memItemLeft" align="right" valign="top">static AlcError&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de5/class_engine_1_1_audio_1_1_audio_manager.html#ae27810badbfc35506591e95b8fd578e9">GetCurrentALcError</a> =&gt; _context?.CurrentError ?? AlcError.InvalidContext</td></tr>
 <tr class="memdesc:ae27810badbfc35506591e95b8fd578e9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Useful Property to check if something has gone wrong with OpenAL  <a href="#ae27810badbfc35506591e95b8fd578e9">More...</a><br /></td></tr>
 <tr class="separator:ae27810badbfc35506591e95b8fd578e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a645d8fabc3855128ac71e900875bf3aa"><td class="memItemLeft" align="right" valign="top">static AudioContext&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de5/class_engine_1_1_audio_1_1_audio_manager.html#a645d8fabc3855128ac71e900875bf3aa">_context</a></td></tr>
-<tr class="memdesc:a645d8fabc3855128ac71e900875bf3aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private field for the audio context  <a href="#a645d8fabc3855128ac71e900875bf3aa">More...</a><br /></td></tr>
-<tr class="separator:a645d8fabc3855128ac71e900875bf3aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Static Class that contains the OpenAL Initialization code and some useful properties to query information to the OpenAL Api </p>
@@ -148,30 +141,6 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a645d8fabc3855128ac71e900875bf3aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a645d8fabc3855128ac71e900875bf3aa">&#9670;&nbsp;</a></span>_context</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">AudioContext Engine.Audio.AudioManager._context</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Private field for the audio context </p>
-
-</div>
-</div>
 <a id="ae27810badbfc35506591e95b8fd578e9"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae27810badbfc35506591e95b8fd578e9">&#9670;&nbsp;</a></span>GetCurrentALcError</h2>
 
@@ -182,7 +151,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">AlcError Engine.Audio.AudioManager.GetCurrentALcError =&gt; <a class="el" href="../../d8/de5/class_engine_1_1_audio_1_1_audio_manager.html#a645d8fabc3855128ac71e900875bf3aa">_context</a>?.CurrentError ?? AlcError.InvalidContext</td>
+          <td class="memname">AlcError Engine.Audio.AudioManager.GetCurrentALcError =&gt; _context?.CurrentError ?? AlcError.InvalidContext</td>
         </tr>
       </table>
   </td>

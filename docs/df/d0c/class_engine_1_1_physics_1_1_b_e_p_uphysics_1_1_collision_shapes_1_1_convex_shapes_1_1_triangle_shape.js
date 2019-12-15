@@ -15,8 +15,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_
     [ "ToString", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#a92845c31de171bfb966e885e7b759208", null ],
     [ "sidedness", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#a6c9d2c361cb6d23ecc825eea64d5ab53", null ],
     [ "vA", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#a10047ec9b5fb1396f065b3a90c810bd8", null ],
-    [ "vB", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#a30728fecce7f2ede9ce4949c8c7f5d2a", null ],
-    [ "vC", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#ac0708ed61ff5918fcfa639b9dddee46f", null ],
     [ "Sidedness", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#a7941bb30aac5975ab6a768c118817f68", null ],
     [ "VertexA", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#a57e713fe04fe3058c9fc70eb0bf69680", null ],
     [ "VertexB", "df/d0c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_triangle_shape.html#aded13a1672692e57b50a803aecc41f89", null ],

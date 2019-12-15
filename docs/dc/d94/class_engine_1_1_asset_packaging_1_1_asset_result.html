@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,17 +89,19 @@ $(document).ready(function(){initNavTree('dc/d94/class_engine_1_1_asset_packagin
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="../../db/d67/class_engine_1_1_asset_packaging_1_1_asset_result-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.AssetPackaging.AssetResult Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>The Result Class for the Packing Process  
+ <a href="../../dc/d94/class_engine_1_1_asset_packaging_1_1_asset_result.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a5f75152b6d3c46918cd5c26a4b7d3c58"><td class="memItemLeft" align="right" valign="top"><a id="a5f75152b6d3c46918cd5c26a4b7d3c58"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFile</b> (string file, string packPath, AssetPackageType type)</td></tr>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddFile</b> (string file, string packPath, <a class="el" href="../../df/dd9/namespace_engine_1_1_asset_packaging.html#acb17cac2788408d39d5efe809eb88600">AssetPackageType</a> type)</td></tr>
 <tr class="separator:a5f75152b6d3c46918cd5c26a4b7d3c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a151c93716df476a49df01f8e25554e12"><td class="memItemLeft" align="right" valign="top"><a id="a151c93716df476a49df01f8e25554e12"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Save</b> (string outputFolder)</td></tr>
@@ -107,26 +109,19 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Save</b> (string outp
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aad0227ef8b7180b17f44779618b1d51f"><td class="memItemLeft" align="right" valign="top"><a id="aad0227ef8b7180b17f44779618b1d51f"></a>
-List&lt; <a class="el" href="../../d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer.html">AssetPointer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>indexList</b> = new List&lt;<a class="el" href="../../d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer.html">AssetPointer</a>&gt;()</td></tr>
-<tr class="separator:aad0227ef8b7180b17f44779618b1d51f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9ecb21f2055add7e0e36a147d07b564"><td class="memItemLeft" align="right" valign="top"><a id="aa9ecb21f2055add7e0e36a147d07b564"></a>
+List&lt; <a class="el" href="../../d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer.html">AssetPointer</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>IndexList</b> = new List&lt;<a class="el" href="../../d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer.html">AssetPointer</a>&gt;()</td></tr>
+<tr class="separator:aa9ecb21f2055add7e0e36a147d07b564"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3e0ed42d8b04f9b9b85c31e33e3effa1"><td class="memItemLeft" align="right" valign="top"><a id="a3e0ed42d8b04f9b9b85c31e33e3effa1"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Compression</b> = false</td></tr>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>Compression</b></td></tr>
 <tr class="separator:a3e0ed42d8b04f9b9b85c31e33e3effa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa65ae8bc2ce9d9dcb07edeab8a2f1715"><td class="memItemLeft" align="right" valign="top"><a id="aa65ae8bc2ce9d9dcb07edeab8a2f1715"></a>
-List&lt; <a class="el" href="../../d7/d46/class_engine_1_1_asset_packaging_1_1_asset_pack.html">AssetPack</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>packs</b> = new List&lt;<a class="el" href="../../d7/d46/class_engine_1_1_asset_packaging_1_1_asset_pack.html">AssetPack</a>&gt;()</td></tr>
-<tr class="separator:aa65ae8bc2ce9d9dcb07edeab8a2f1715"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ae0a95dc25084481b37db654f467cef83"><td class="memItemLeft" align="right" valign="top"><a id="ae0a95dc25084481b37db654f467cef83"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>StoreInPackages</b> (Stream s, string file, string packPath, AssetPackageType type)</td></tr>
-<tr class="separator:ae0a95dc25084481b37db654f467cef83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8d04a634913a3cdce378393194a81e6"><td class="memItemLeft" align="right" valign="top"><a id="af8d04a634913a3cdce378393194a81e6"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>FindAssetPackWithSpace</b> (int space)</td></tr>
-<tr class="separator:af8d04a634913a3cdce378393194a81e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af9905734c26e3b96d14e6372780497aa"><td class="memItemLeft" align="right" valign="top"><a id="af9905734c26e3b96d14e6372780497aa"></a>
+List&lt; <a class="el" href="../../d7/d46/class_engine_1_1_asset_packaging_1_1_asset_pack.html">AssetPack</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Packs</b> = new List&lt;<a class="el" href="../../d7/d46/class_engine_1_1_asset_packaging_1_1_asset_pack.html">AssetPack</a>&gt;()</td></tr>
+<tr class="separator:af9905734c26e3b96d14e6372780497aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The Result Class for the Packing Process </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine.AssetPackaging/AssetResult.cs</li>
 </ul>
 </div><!-- contents -->

@@ -2,7 +2,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_fac
 [
     [ "Factories", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html#a539dd85415a5c2b19a1dcd7b89143a39", null ],
     [ "All", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html#a63eddb96c0759c596e837c0689f288c8", null ],
-    [ "factories", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html#a8da8ee03f0c6e7f9e5055c984533260f", null ],
     [ "BoxBox", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html#a90fe6c648e1e11a177ee22d80a0b076f", null ],
     [ "BoxSphere", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html#a05bd8f4eff779869cd5f340bfb180b87", null ],
     [ "CompoundCompound", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html#a9dd13d956efafbd22bc0df9bc0a7b716", null ],

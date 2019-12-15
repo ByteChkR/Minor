@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -91,7 +91,6 @@ $(document).ready(function(){initNavTree('db/d2e/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../de/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.OtherSpaceStages.SpaceObjectBuffer Class Reference</div>  </div>
@@ -110,11 +109,6 @@ Inheritance diagram for Engine.Physics.BEPUphysics.OtherSpaceStages.SpaceObjectB
 </map>
  </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/dd4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer_1_1_space_object_change.html">SpaceObjectChange</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ab638da9d864e0f63e406d28578125bf0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer.html#ab638da9d864e0f63e406d28578125bf0">SpaceObjectBuffer</a> (<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> space)</td></tr>
@@ -145,11 +139,6 @@ Properties</h2></td></tr>
 <tr class="memdesc:a6c1ab8977ac524327734f74f8ef12f67 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_processing_stage"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets whether or not the stage should update. /summary&gt;  <a href="../../db/d74/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_processing_stage.html#a6c1ab8977ac524327734f74f8ef12f67">More...</a><br /></td></tr>
 <tr class="separator:a6c1ab8977ac524327734f74f8ef12f67 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_processing_stage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a7a3aac9e7ed343cae1edb06fea25af46"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt; <a class="el" href="../../dc/dd4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer_1_1_space_object_change.html">SpaceObjectChange</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer.html#a7a3aac9e7ed343cae1edb06fea25af46">objectsToChange</a> = new <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../dc/dd4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer_1_1_space_object_change.html">SpaceObjectChange</a>&gt;()</td></tr>
-<tr class="separator:a7a3aac9e7ed343cae1edb06fea25af46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header events_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_processing_stage"><td colspan="2" onclick="javascript:toggleInherit('events_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_processing_stage')"><img src="../../closed.png" alt="-"/>&#160;Events inherited from <a class="el" href="../../db/d74/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_processing_stage.html">Engine.Physics.BEPUphysics.ProcessingStage</a></td></tr>
@@ -176,7 +165,7 @@ Additional Inherited Members</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>summary&gt; Adds a space object to the buffer. It will be added to the space the next time the buffer is flushed. /summary&gt; param name="spaceObject"&gt;<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a> object to add.</p>
+<p>summary&gt; Gets the space which owns this buffer. /summary&gt; </p>
 
 </div>
 </div>
@@ -207,30 +196,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a7a3aac9e7ed343cae1edb06fea25af46"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a3aac9e7ed343cae1edb06fea25af46">&#9670;&nbsp;</a></span>objectsToChange</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../dc/dd4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer_1_1_space_object_change.html">SpaceObjectChange</a>&gt; Engine.Physics.BEPUphysics.OtherSpaceStages.SpaceObjectBuffer.objectsToChange = new <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../dc/dd4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer_1_1_space_object_change.html">SpaceObjectChange</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets the space which owns this buffer. /summary&gt; </p>
-
-</div>
-</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a3ae0bf5574af601bca7880864552db3b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ae0bf5574af601bca7880864552db3b">&#9670;&nbsp;</a></span>Space</h2>
@@ -251,7 +216,7 @@ Additional Inherited Members</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Constructs the buffer. /summary&gt; param name="space"&gt;<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a> that owns the buffer.</p>
+<p>summary&gt; Adds a space object to the buffer. It will be added to the space the next time the buffer is flushed. /summary&gt; param name="spaceObject"&gt;<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a> object to add.</p>
 
 </div>
 </div>

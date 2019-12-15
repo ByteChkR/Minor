@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -93,8 +93,6 @@ $(document).ready(function(){initNavTree('d8/dda/class_engine_1_1_physics_1_1_b_
 <a href="#pac-methods">Package Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d8/d9c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_mobile_mesh_shape-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionShapes.MobileMeshShape Class Reference</div>  </div>
@@ -187,39 +185,13 @@ Properties</h2></td></tr>
 <tr class="memitem:a88c456c1ac4600f2254ec7bc9d46c98c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/deb/namespace_engine_1_1_physics_1_1_b_e_p_uutilities.html#a44729c8d8caf77d43d6bbbe897059b8c">TriangleSidedness</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dda/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_mobile_mesh_shape.html#a88c456c1ac4600f2254ec7bc9d46c98c">Sidedness</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a88c456c1ac4600f2254ec7bc9d46c98c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the sidedness of the shape. This is a convenience property based on the Solidity property. If the shape is solid, this returns whatever sidedness is computed to make the triangles of the shape face outward. If the shape is solid, setting this property will change the sidedness that is used while the shape is solid.  <a href="#a88c456c1ac4600f2254ec7bc9d46c98c">More...</a><br /></td></tr>
 <tr class="separator:a88c456c1ac4600f2254ec7bc9d46c98c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1b5a7467dfd79e4b318a50adb020e504"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/deb/namespace_engine_1_1_physics_1_1_b_e_p_uutilities.html#a44729c8d8caf77d43d6bbbe897059b8c">TriangleSidedness</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dda/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_mobile_mesh_shape.html#a1b5a7467dfd79e4b318a50adb020e504">SidednessWhenSolid</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a1b5a7467dfd79e4b318a50adb020e504"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/deb/namespace_engine_1_1_physics_1_1_b_e_p_uutilities.html#a44729c8d8caf77d43d6bbbe897059b8c">TriangleSidedness</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dda/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_mobile_mesh_shape.html#a1b5a7467dfd79e4b318a50adb020e504">SidednessWhenSolid</a><code> [get]</code></td></tr>
 <tr class="memdesc:a1b5a7467dfd79e4b318a50adb020e504"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the triangle sidedness required if the mesh is in solid mode. If the windings were reversed or double sided, the solidity would fight against shell contacts, leading to very bad jittering.  <a href="#a1b5a7467dfd79e4b318a50adb020e504">More...</a><br /></td></tr>
 <tr class="separator:a1b5a7467dfd79e4b318a50adb020e504"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d5/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape.html">Engine.Physics.BEPUphysics.CollisionShapes.EntityShape</a></td></tr>
 <tr class="memitem:a41a3c0ab7de4410499fb8887fbf5313d inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape.html#a41a3c0ab7de4410499fb8887fbf5313d">Volume</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a41a3c0ab7de4410499fb8887fbf5313d inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the volume of the shape.  <a href="../../d5/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape.html#a41a3c0ab7de4410499fb8887fbf5313d">More...</a><br /></td></tr>
 <tr class="separator:a41a3c0ab7de4410499fb8887fbf5313d inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_entity_shape"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a30726f6fcdd5f9b22460d6f8fd333282"><td class="memItemLeft" align="right" valign="top"><a id="a30726f6fcdd5f9b22460d6f8fd333282"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeSolidSidedness</b> ()</td></tr>
-<tr class="separator:a30726f6fcdd5f9b22460d6f8fd333282"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4e1cc187f58823cb1cdb7c39ff61366"><td class="memItemLeft" align="right" valign="top"><a id="aa4e1cc187f58823cb1cdb7c39ff61366"></a>
-<a class="el" href="../../d8/deb/namespace_engine_1_1_physics_1_1_b_e_p_uutilities.html#a44729c8d8caf77d43d6bbbe897059b8c">TriangleSidedness</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeSolidSidednessHelper</b> (<a class="el" href="../../df/d79/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_ray.html">Ray</a> ray)</td></tr>
-<tr class="separator:aa4e1cc187f58823cb1cdb7c39ff61366"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abec2085a341cb8bc70884c9cd6ecfdfb"><td class="memItemLeft" align="right" valign="top"><a id="abec2085a341cb8bc70884c9cd6ecfdfb"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSurfaceVertices</b> ()</td></tr>
-<tr class="separator:abec2085a341cb8bc70884c9cd6ecfdfb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78b0a1887c563f36df17f72b9819e2dd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/d2f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_shape_distribution_information.html">ShapeDistributionInformation</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dda/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_mobile_mesh_shape.html#a78b0a1887c563f36df17f72b9819e2dd">ComputeVolumeDistribution</a> (<a class="el" href="../../db/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_transformable_mesh_data.html">TransformableMeshData</a> data)</td></tr>
-<tr class="memdesc:a78b0a1887c563f36df17f72b9819e2dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recenters the triangle data and computes the volume distribution.  <a href="#a78b0a1887c563f36df17f72b9819e2dd">More...</a><br /></td></tr>
-<tr class="separator:a78b0a1887c563f36df17f72b9819e2dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af092220c936eb151b663a7a63ee00621"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dda/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_mobile_mesh_shape.html#af092220c936eb151b663a7a63ee00621">GetBoundingBox</a> (ref <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a> o, out <a class="el" href="../../d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html">BoundingBox</a> boundingBox)</td></tr>
-<tr class="separator:af092220c936eb151b663a7a63ee00621"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a736beabcaefc5f495a86c16914b2ffa8"><td class="memItemLeft" align="right" valign="top"><a id="a736beabcaefc5f495a86c16914b2ffa8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>meshCollisionMargin</b> = CollisionDetectionSettings.DefaultMargin</td></tr>
-<tr class="separator:a736beabcaefc5f495a86c16914b2ffa8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acaa206ab4d8e4e67f0677600bc3372e8"><td class="memItemLeft" align="right" valign="top"><a id="acaa206ab4d8e4e67f0677600bc3372e8"></a>
-<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>hullVertices</b> = new <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt;<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&gt;()</td></tr>
-<tr class="separator:acaa206ab4d8e4e67f0677600bc3372e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -356,81 +328,8 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a78b0a1887c563f36df17f72b9819e2dd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78b0a1887c563f36df17f72b9819e2dd">&#9670;&nbsp;</a></span>ComputeVolumeDistribution()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../de/d2f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_shape_distribution_information.html">ShapeDistributionInformation</a> Engine.Physics.BEPUphysics.CollisionShapes.MobileMeshShape.ComputeVolumeDistribution </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../db/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_transformable_mesh_data.html">TransformableMeshData</a>&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Recenters the triangle data and computes the volume distribution. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>Mesh data to analyze.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Computed center, volume, and volume distribution.</dd></dl>
-
-</div>
-</div>
-<a id="af092220c936eb151b663a7a63ee00621"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af092220c936eb151b663a7a63ee00621">&#9670;&nbsp;</a></span>GetBoundingBox() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Physics.BEPUphysics.CollisionShapes.MobileMeshShape.GetBoundingBox </td>
-          <td>(</td>
-          <td class="paramtype">ref <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a>&#160;</td>
-          <td class="paramname"><em>o</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out <a class="el" href="../../d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html">BoundingBox</a>&#160;</td>
-          <td class="paramname"><em>boundingBox</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Computes the bounding box of the transformed mesh shape. /summary&gt; param name="shapeTransform"&gt;Transform to apply to the shape during the bounding box calculation.</p>
-<p>param name="boundingBox"&gt;Bounding box containing the transformed mesh shape.</p>
-
-</div>
-</div>
 <a id="aec83566f04a25172347ec7b2e7c454c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec83566f04a25172347ec7b2e7c454c5">&#9670;&nbsp;</a></span>GetBoundingBox() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aec83566f04a25172347ec7b2e7c454c5">&#9670;&nbsp;</a></span>GetBoundingBox()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -653,6 +552,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 </div><div class="memdoc">
 
 <p>Gets the list of vertices on the convex hull of the mesh used to compute the bounding box. </p>
+<p>summary&gt; Gets the solidity of the mesh. /summary&gt; </p>
 
 </div>
 </div>
@@ -699,7 +599,10 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets the solidity of the mesh. /summary&gt; </p>
+<p>summary&gt; Constructs a new mobile mesh shape. /summary&gt; param name="vertices"&gt;Vertices of the mesh.</p>
+<p>param name="indices"&gt;Indices of the mesh.</p>
+<p>param name="localTransform"&gt;Local transform to apply to the shape.</p>
+<p>param name="solidity"&gt;Solidity state of the shape.</p>
 
 </div>
 </div>
@@ -766,10 +669,6 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 </div><div class="memdoc">
 
 <p>Gets or sets the sidedness of the shape. This is a convenience property based on the Solidity property. If the shape is solid, this returns whatever sidedness is computed to make the triangles of the shape face outward. If the shape is solid, setting this property will change the sidedness that is used while the shape is solid. </p>
-<p>summary&gt; Constructs a new mobile mesh shape. /summary&gt; param name="vertices"&gt;Vertices of the mesh.</p>
-<p>param name="indices"&gt;Indices of the mesh.</p>
-<p>param name="localTransform"&gt;Local transform to apply to the shape.</p>
-<p>param name="solidity"&gt;Solidity state of the shape.</p>
 
 </div>
 </div>
@@ -788,7 +687,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

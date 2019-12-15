@@ -22,7 +22,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel =
     [ "localForwardDirection", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#a7662497d023d6e10e241e715601bb702", null ],
     [ "normal", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#a8224a0086119b0ad8d1345ca63fac05a", null ],
     [ "ra", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#af8b69d17d1235b2ec1a39eff1c8ee1c2", null ],
-    [ "rb", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#acb1f95a980fee78d5bfcf4c3f8702c2a", null ],
     [ "shape", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#a0fd1f375561c40271e5e9215a490632e", null ],
     [ "slidingFriction", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#a3a83f0f542ded21a521a2fa4c7a758ad", null ],
     [ "supportingCollidable", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html#a13637ff77a663836b252cc3092d82bd8", null ],

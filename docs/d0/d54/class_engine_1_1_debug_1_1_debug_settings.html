@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('d0/d54/class_engine_1_1_debug_1_1_debu
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="../../d3/df4/class_engine_1_1_debug_1_1_debug_settings-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -104,7 +103,7 @@ Inheritance diagram for Engine.Debug.DebugSettings:</div>
  <div class="center">
   <img src="../../d0/d54/class_engine_1_1_debug_1_1_debug_settings.png" usemap="#Engine.Debug.DebugSettings_map" alt=""/>
   <map id="Engine.Debug.DebugSettings_map" name="Engine.Debug.DebugSettings_map">
-<area href="../../d2/dc7/interface_engine_1_1_common_1_1_i_debug_settings.html" alt="Engine.Common.IDebugSettings" shape="rect" coords="0,0,191,24"/>
+<area href="../../d2/dc7/interface_engine_1_1_common_1_1_i_debug_settings.html" title="Interface of a Debug Setting File " alt="Engine.Common.IDebugSettings" shape="rect" coords="0,0,191,24"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -114,14 +113,11 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memdesc:a7fd3fac26efc593befbdafec299cb0fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Funcction that returns the default settings for debug logging.  <a href="#a7fd3fac26efc593befbdafec299cb0fa">More...</a><br /></td></tr>
 <tr class="separator:a7fd3fac26efc593befbdafec299cb0fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:af564d96cf93e64b678829231d82bdedb"><td class="memItemLeft" align="right" valign="top"><a id="af564d96cf93e64b678829231d82bdedb"></a>
-<a class="el" href="../../d6/ded/struct_engine_1_1_debug_1_1_log_stream_settings.html">LogStreamSettings</a> []&#160;</td><td class="memItemRight" valign="bottom"><b>_streams</b></td></tr>
-<tr class="separator:af564d96cf93e64b678829231d82bdedb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
+<tr class="memitem:a0ba96cea7c33ba070cdb149d1ee25bf9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/ded/struct_engine_1_1_debug_1_1_log_stream_settings.html">LogStreamSettings</a> []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d54/class_engine_1_1_debug_1_1_debug_settings.html#a0ba96cea7c33ba070cdb149d1ee25bf9">LogStreamSettings</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0ba96cea7c33ba070cdb149d1ee25bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Settings for the single log streams that get hooked up to the debug framework  <a href="#a0ba96cea7c33ba070cdb149d1ee25bf9">More...</a><br /></td></tr>
+<tr class="separator:a0ba96cea7c33ba070cdb149d1ee25bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac42fb766a58d3ee6f9a2c4883171c75a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d54/class_engine_1_1_debug_1_1_debug_settings.html#ac42fb766a58d3ee6f9a2c4883171c75a">Enabled</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ac42fb766a58d3ee6f9a2c4883171c75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Should we send logs in the first place?  <a href="#ac42fb766a58d3ee6f9a2c4883171c75a">More...</a><br /></td></tr>
 <tr class="separator:ac42fb766a58d3ee6f9a2c4883171c75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -248,6 +244,30 @@ string []&#160;</td><td class="memItemRight" valign="bottom"><b>StageNames</b><c
 </div><div class="memdoc">
 
 <p>The mask that the DebugFramework uses to inform the user about an update </p>
+
+</div>
+</div>
+<a id="a0ba96cea7c33ba070cdb149d1ee25bf9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ba96cea7c33ba070cdb149d1ee25bf9">&#9670;&nbsp;</a></span>LogStreamSettings</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d6/ded/struct_engine_1_1_debug_1_1_log_stream_settings.html">LogStreamSettings</a> [] Engine.Debug.DebugSettings.LogStreamSettings</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The Settings for the single log streams that get hooked up to the debug framework </p>
 
 </div>
 </div>

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,7 +89,6 @@ $(document).ready(function(){initNavTree('de/d85/class_engine_1_1_physics_1_1_b_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="../../d4/df3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_transformable_entity-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Entities.Prefabs.TransformableEntity Class Reference</div>  </div>
@@ -125,20 +124,10 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a169489700de524ea0e42fe4b90bc6641"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d85/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_transformable_entity.html#a169489700de524ea0e42fe4b90bc6641">Shape</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a169489700de524ea0e42fe4b90bc6641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the shape on which the transformable shape is based. /summary&gt;  <a href="#a169489700de524ea0e42fe4b90bc6641">More...</a><br /></td></tr>
 <tr class="separator:a169489700de524ea0e42fe4b90bc6641"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a71a6fac2d7f7f4cb56501ea1802e2bae"><td class="memItemLeft" align="right" valign="top"><a id="a71a6fac2d7f7f4cb56501ea1802e2bae"></a>
 <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Transform</b><code> [get, set]</code></td></tr>
 <tr class="separator:a71a6fac2d7f7f4cb56501ea1802e2bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a3908048680fff047594d2c38b6d697b4"><td class="memItemLeft" align="right" valign="top"><a id="a3908048680fff047594d2c38b6d697b4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TransformableEntity</b> (<a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shape, <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a> transform)</td></tr>
-<tr class="separator:a3908048680fff047594d2c38b6d697b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad438bf2a5a28106bc54fe8d95b7ad4db"><td class="memItemLeft" align="right" valign="top"><a id="ad438bf2a5a28106bc54fe8d95b7ad4db"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>TransformableEntity</b> (<a class="el" href="../../d2/d96/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_shape.html">ConvexShape</a> shape, <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a> transform, float mass)</td></tr>
-<tr class="separator:ad438bf2a5a28106bc54fe8d95b7ad4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Ball-shaped object that can collide and move. After making an entity, add it to a <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a> so that the engine can manage it. </p>
@@ -330,6 +319,7 @@ Private Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
+<p>summary&gt; Gets the shape on which the transformable shape is based. /summary&gt; </p>
 
 </div>
 </div>
@@ -353,8 +343,6 @@ Private Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Gets the shape on which the transformable shape is based. /summary&gt; </p>
 <p>summary&gt; Gets the linear transform that the shape uses to transform its base shape. /summary&gt; </p>
 
 </div>

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,12 +90,14 @@ $(document).ready(function(){initNavTree('dc/d0c/class_engine_1_1_common_1_1_deb
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../dd/d58/class_engine_1_1_common_1_1_debug_helper-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Common.DebugHelper Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Helper Class that Communicates with the ADL Library  
+ <a href="../../dc/d0c/class_engine_1_1_common_1_1_debug_helper.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -115,7 +117,7 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>Log</b> (strin
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
 <tr class="memitem:a404b2a114fe1bec83826ad543bec04ee"><td class="memItemLeft" align="right" valign="top"><a id="a404b2a114fe1bec83826ad543bec04ee"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>SeverityFilter</b> = 0</td></tr>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>SeverityFilter</b></td></tr>
 <tr class="separator:a404b2a114fe1bec83826ad543bec04ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10cfeb1cc105cafc252c0ae3f40d8a60"><td class="memItemLeft" align="right" valign="top"><a id="a10cfeb1cc105cafc252c0ae3f40d8a60"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ThrowOnAllExceptions</b> = true</td></tr>
@@ -124,25 +126,12 @@ static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ThrowOnAllExce
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:ac29e67c267e988ef77a03eb858b46b7f"><td class="memItemLeft" align="right" valign="top"><a id="ac29e67c267e988ef77a03eb858b46b7f"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Init</b><code> [get, private set]</code></td></tr>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Init</b><code> [get]</code></td></tr>
 <tr class="separator:ac29e67c267e988ef77a03eb858b46b7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ae0a147a39c7b118992cf0be5c871f5e8"><td class="memItemLeft" align="right" valign="top"><a id="ae0a147a39c7b118992cf0be5c871f5e8"></a>
-static LogStream&#160;</td><td class="memItemRight" valign="bottom"><b>OpenFileStream</b> (<a class="el" href="../../d9/d3f/interface_engine_1_1_common_1_1_i_log_stream_settings.html">ILogStreamSettings</a> settings)</td></tr>
-<tr class="separator:ae0a147a39c7b118992cf0be5c871f5e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3c3009122b76bac8327be45f5890b63f"><td class="memItemLeft" align="right" valign="top"><a id="a3c3009122b76bac8327be45f5890b63f"></a>
-static LogStream&#160;</td><td class="memItemRight" valign="bottom"><b>OpenConsoleStream</b> (<a class="el" href="../../d9/d3f/interface_engine_1_1_common_1_1_i_log_stream_settings.html">ILogStreamSettings</a> settings)</td></tr>
-<tr class="separator:a3c3009122b76bac8327be45f5890b63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05299b15eeb3ce6668578eadb6c3a087"><td class="memItemLeft" align="right" valign="top"><a id="a05299b15eeb3ce6668578eadb6c3a087"></a>
-static LogStream&#160;</td><td class="memItemRight" valign="bottom"><b>OpenNetworkStream</b> (<a class="el" href="../../d9/d3f/interface_engine_1_1_common_1_1_i_log_stream_settings.html">ILogStreamSettings</a> settings)</td></tr>
-<tr class="separator:a05299b15eeb3ce6668578eadb6c3a087"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47a74e7ff96c64e665e5b0241fd91047"><td class="memItemLeft" align="right" valign="top"><a id="a47a74e7ff96c64e665e5b0241fd91047"></a>
-static LogStream&#160;</td><td class="memItemRight" valign="bottom"><b>OpenStream</b> (<a class="el" href="../../d9/d3f/interface_engine_1_1_common_1_1_i_log_stream_settings.html">ILogStreamSettings</a> settings)</td></tr>
-<tr class="separator:a47a74e7ff96c64e665e5b0241fd91047"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Helper Class that Communicates with the ADL Library </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine.Common/DebugHelper.cs</li>
 </ul>
 </div><!-- contents -->

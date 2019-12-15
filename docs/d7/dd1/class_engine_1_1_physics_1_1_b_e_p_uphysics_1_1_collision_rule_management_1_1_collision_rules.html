@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -95,7 +95,6 @@ $(document).ready(function(){initNavTree('d7/dd1/class_engine_1_1_physics_1_1_b_
 <a href="#pac-static-attribs">Static Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#events">Events</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d6/ddd/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionRuleManagement.CollisionRules Class Reference</div>  </div>
@@ -175,7 +174,7 @@ Package Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-attribs"></a>
 Static Package Attributes</h2></td></tr>
-<tr class="memitem:a0962c11a6d9c1ac964c0078455aaf109"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379">CollisionRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a0962c11a6d9c1ac964c0078455aaf109">collisionRuleCalculator</a></td></tr>
+<tr class="memitem:a0962c11a6d9c1ac964c0078455aaf109"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379">CollisionRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>collisionRuleCalculator</b></td></tr>
 <tr class="separator:a0962c11a6d9c1ac964c0078455aaf109"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -189,24 +188,14 @@ Properties</h2></td></tr>
 <tr class="memitem:a12098b4a11fa24d18dd8ba6648274b9b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/d1f/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_dictionary.html">ObservableDictionary</a>&lt; <a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html">CollisionRules</a>, <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379">CollisionRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a12098b4a11fa24d18dd8ba6648274b9b">Specific</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a12098b4a11fa24d18dd8ba6648274b9b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Specifies how the object owning this instance should react to other individual objects. Any rules defined in this collection will take priority over the Personal collision rule and the collision group's collision rules. Objects that are not in this collection are considered to have a relationship of <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379aa6c82656255dd03988eee0df651c1405" title="Yields the interaction type&#39;s determination to a later stage. ">CollisionRule.Defer</a>.  <a href="#a12098b4a11fa24d18dd8ba6648274b9b">More...</a><br /></td></tr>
 <tr class="separator:a12098b4a11fa24d18dd8ba6648274b9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a31ae956d4763b98ae6f99642d3b12f3a"><td class="memItemLeft" align="right" valign="top"><a id="a31ae956d4763b98ae6f99642d3b12f3a"></a>
-static Func&lt; <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379">CollisionRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>CollisionRuleCalculator</b><code> [get, set]</code></td></tr>
+<tr class="memitem:a31ae956d4763b98ae6f99642d3b12f3a"><td class="memItemLeft" align="right" valign="top">static Func&lt; <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379">CollisionRule</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a31ae956d4763b98ae6f99642d3b12f3a">CollisionRuleCalculator</a><code> [get, set]</code></td></tr>
 <tr class="separator:a31ae956d4763b98ae6f99642d3b12f3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="events"></a>
 Events</h2></td></tr>
-<tr class="memitem:adbee9ce3ed6f5f6df07f4d1e13ea06d2"><td class="memItemLeft" align="right" valign="top">Action&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#adbee9ce3ed6f5f6df07f4d1e13ea06d2">CollisionRulesChanged</a></td></tr>
-<tr class="memdesc:adbee9ce3ed6f5f6df07f4d1e13ea06d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when the contained collision rules are altered. /summary&gt;  <a href="#adbee9ce3ed6f5f6df07f4d1e13ea06d2">More...</a><br /></td></tr>
+<tr class="memitem:adbee9ce3ed6f5f6df07f4d1e13ea06d2"><td class="memItemLeft" align="right" valign="top"><a id="adbee9ce3ed6f5f6df07f4d1e13ea06d2"></a>
+Action&#160;</td><td class="memItemRight" valign="bottom"><b>CollisionRulesChanged</b></td></tr>
 <tr class="separator:adbee9ce3ed6f5f6df07f4d1e13ea06d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a9d2a355a7327a64a8d7a5070faea96bf"><td class="memItemLeft" align="right" valign="top"><a id="a9d2a355a7327a64a8d7a5070faea96bf"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>hashCode</b></td></tr>
-<tr class="separator:a9d2a355a7327a64a8d7a5070faea96bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae6e92323307680cc520c4fc46bc004b6"><td class="memItemLeft" align="right" valign="top"><a id="ae6e92323307680cc520c4fc46bc004b6"></a>
-Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnChangedDelegate</b></td></tr>
-<tr class="separator:ae6e92323307680cc520c4fc46bc004b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Stores how an object can interact with other objects through collisions. </p>
@@ -661,8 +650,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnChangedDelegate</
   </tr>
 </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <a class="code" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a9536c395be85afa25646e679004066f1">GetCollisionRuleDefault</a></div></div><!-- fragment --><p>summary&gt; Gets or sets the delegate used to calculate collision rules. Defaults to <a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a9536c395be85afa25646e679004066f1" title="Determines what collision rule governs the interaction between the two objects. ">CollisionRules.GetCollisionRuleDefault</a>. /summary&gt; </p>
-
+<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <a class="code" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a9536c395be85afa25646e679004066f1">GetCollisionRuleDefault</a></div></div><!-- fragment -->
 </div>
 </div>
 <a id="ac49a2b6cb1ac1304697c846ca20556bd"></a>
@@ -761,6 +749,29 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnChangedDelegate</
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
+<a id="a31ae956d4763b98ae6f99642d3b12f3a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31ae956d4763b98ae6f99642d3b12f3a">&#9670;&nbsp;</a></span>CollisionRuleCalculator</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Func&lt;<a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html">ICollisionRulesOwner</a>, <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379">CollisionRule</a>&gt; Engine.Physics.BEPUphysics.CollisionRuleManagement.CollisionRules.CollisionRuleCalculator</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>summary&gt; Fires when the contained collision rules are altered. /summary&gt; </p>
+
+</div>
+</div>
 <a id="a6555b6f6235eeeac8dd0b9bc577a6bc2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6555b6f6235eeeac8dd0b9bc577a6bc2">&#9670;&nbsp;</a></span>Group</h2>
 
@@ -830,24 +841,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnChangedDelegate</
 </div><div class="memdoc">
 
 <p>Specifies how the object owning this instance should react to other individual objects. Any rules defined in this collection will take priority over the Personal collision rule and the collision group's collision rules. Objects that are not in this collection are considered to have a relationship of <a class="el" href="../../da/d0b/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management.html#a3ce47cfb34647cd575d73c6104bfe379aa6c82656255dd03988eee0df651c1405" title="Yields the interaction type&#39;s determination to a later stage. ">CollisionRule.Defer</a>. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Event Documentation</h2>
-<a id="adbee9ce3ed6f5f6df07f4d1e13ea06d2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adbee9ce3ed6f5f6df07f4d1e13ea06d2">&#9670;&nbsp;</a></span>CollisionRulesChanged</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Action Engine.Physics.BEPUphysics.CollisionRuleManagement.CollisionRules.CollisionRulesChanged</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Fires when the contained collision rules are altered. /summary&gt; </p>
-<p>summary&gt; Constructs a new <a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html" title="Stores how an object can interact with other objects through collisions. ">CollisionRules</a> instance. /summary&gt; </p>
+<p>summary&gt; Gets or sets the delegate used to calculate collision rules. Defaults to <a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html#a9536c395be85afa25646e679004066f1" title="Determines what collision rule governs the interaction between the two objects. ">CollisionRules.GetCollisionRuleDefault</a>. /summary&gt; </p>
 
 </div>
 </div>

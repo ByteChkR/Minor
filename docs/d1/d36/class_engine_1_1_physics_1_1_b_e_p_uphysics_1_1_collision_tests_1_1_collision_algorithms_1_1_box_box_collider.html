@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('d1/d36/class_engine_1_1_physics_1_1_b_
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pac-static-methods">Static Package Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../d7/d41/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxBoxCollider Class Reference</div>  </div>
@@ -100,13 +99,6 @@ $(document).ready(function(){initNavTree('d1/d36/class_engine_1_1_physics_1_1_b_
 <p>Contains helper methods for testing collisions between boxes.  
  <a href="../../d1/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d35/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_box_face.html">BoxFace</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dbd/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_face_edge.html">FaceEdge</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a75b82c777de5a0d5cbd14a974be97b16"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider.html#a75b82c777de5a0d5cbd14a974be97b16">AreBoxesColliding</a> (<a class="el" href="../../d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html">BoxShape</a> a, <a class="el" href="../../d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html">BoxShape</a> b, ref <a class="el" href="../../d0/d84/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_rigid_transform.html">RigidTransform</a> transformA, ref <a class="el" href="../../d0/d84/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_rigid_transform.html">RigidTransform</a> transformB)</td></tr>
@@ -130,39 +122,6 @@ static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetEdgeEdgeCon
 <tr class="memitem:af91e6e1e2f1d69d10aad50b4a69e2658"><td class="memItemLeft" align="right" valign="top"><a id="af91e6e1e2f1d69d10aad50b4a69e2658"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetFaceContacts</b> (<a class="el" href="../../d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html">BoxShape</a> a, <a class="el" href="../../d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html">BoxShape</a> b, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> positionA, ref <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a> orientationA, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> positionB, ref <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a> orientationB, bool aIsFaceOwner, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> mtd, out <a class="el" href="../../d6/d7a/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_tiny_struct_list.html">TinyStructList</a>&lt; <a class="el" href="../../de/d95/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_contact_data.html">BoxContactData</a> &gt; contactData)</td></tr>
 <tr class="separator:af91e6e1e2f1d69d10aad50b4a69e2658"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ac83947aa5233e724febccfa9b5ee563c"><td class="memItemLeft" align="right" valign="top"><a id="ac83947aa5233e724febccfa9b5ee563c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetEdgeData</b> (int index, int axis, float x, float y, float z, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> edgeStart, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> edgeEnd, out int edgeStartId, out int edgeEndId)</td></tr>
-<tr class="separator:ac83947aa5233e724febccfa9b5ee563c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a61e43f7cde30a5a7be5dfe3d3cb6a5a2"><td class="memItemLeft" align="right" valign="top"><a id="a61e43f7cde30a5a7be5dfe3d3cb6a5a2"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>FindHighestIndices</b> (ref <a class="el" href="../../d9/db0/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_tiny_list.html">TinyList</a>&lt; float &gt; dots, out int highestIndex, out int secondHighestIndex)</td></tr>
-<tr class="separator:a61e43f7cde30a5a7be5dfe3d3cb6a5a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a687d4d40bb783b89f67a98a7dab841"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider.html#a3a687d4d40bb783b89f67a98a7dab841">GetClosestPointsBetweenSegments</a> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> p1, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> q1, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> p2, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> q2, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> c1, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> c2)</td></tr>
-<tr class="memdesc:a3a687d4d40bb783b89f67a98a7dab841"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes closest points c1 and c2 betwen segments p1q1 and p2q2.  <a href="#a3a687d4d40bb783b89f67a98a7dab841">More...</a><br /></td></tr>
-<tr class="separator:a3a687d4d40bb783b89f67a98a7dab841"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a214c031f38fa358df965f41707958a91"><td class="memItemLeft" align="right" valign="top"><a id="a214c031f38fa358df965f41707958a91"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>PruneContactsMaxDistance</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> mtd, <a class="el" href="../../d6/d7a/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_tiny_struct_list.html">TinyStructList</a>&lt; <a class="el" href="../../de/d95/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_contact_data.html">BoxContactData</a> &gt; input, out <a class="el" href="../../d6/d7a/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_tiny_struct_list.html">TinyStructList</a>&lt; <a class="el" href="../../de/d95/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_contact_data.html">BoxContactData</a> &gt; output)</td></tr>
-<tr class="separator:a214c031f38fa358df965f41707958a91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf95f8b7794a63b4e9df878a1f85c32c"><td class="memItemLeft" align="right" valign="top"><a id="acf95f8b7794a63b4e9df878a1f85c32c"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ClipFacesDirect</b> (ref <a class="el" href="../../d2/d35/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_box_face.html">BoxFace</a> clipFace, ref <a class="el" href="../../d2/d35/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_box_face.html">BoxFace</a> face, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> mtd, out <a class="el" href="../../d6/d7a/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_tiny_struct_list.html">TinyStructList</a>&lt; <a class="el" href="../../de/d95/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_contact_data.html">BoxContactData</a> &gt; contactData)</td></tr>
-<tr class="separator:acf95f8b7794a63b4e9df878a1f85c32c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7e7e6497ec7b0a7c295cc9505c38c02"><td class="memItemLeft" align="right" valign="top"><a id="af7e7e6497ec7b0a7c295cc9505c38c02"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeIntersection</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> edgeA1, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> edgeA2, ref <a class="el" href="../../d6/dbd/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_face_edge.html">FaceEdge</a> clippingEdge, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> intersection)</td></tr>
-<tr class="separator:af7e7e6497ec7b0a7c295cc9505c38c02"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab451e3e6ed0bc74d966cf4c5274a6c40"><td class="memItemLeft" align="right" valign="top"><a id="ab451e3e6ed0bc74d966cf4c5274a6c40"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetNearestFace</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> position, ref <a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a> orientation, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> mtd, float halfWidth, float halfHeight, float halfLength, out <a class="el" href="../../d2/d35/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_box_face.html">BoxFace</a> boxFace)</td></tr>
-<tr class="separator:ab451e3e6ed0bc74d966cf4c5274a6c40"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f286b5f6471dd9049103bde12245494"><td class="memItemLeft" align="right" valign="top"><a id="a8f286b5f6471dd9049103bde12245494"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetContactId</b> (int vertexAEdgeA, int vertexBEdgeA, int vertexAEdgeB, int vertexBEdgeB)</td></tr>
-<tr class="separator:a8f286b5f6471dd9049103bde12245494"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0350b0ff10ad2afc5bac4f6bea94bdbf"><td class="memItemLeft" align="right" valign="top"><a id="a0350b0ff10ad2afc5bac4f6bea94bdbf"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetContactId</b> (int vertexAEdgeA, int vertexBEdgeA, ref <a class="el" href="../../d6/dbd/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_face_edge.html">FaceEdge</a> clippingEdge)</td></tr>
-<tr class="separator:a0350b0ff10ad2afc5bac4f6bea94bdbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8a395cac1c2c2288699805a75557f46"><td class="memItemLeft" align="right" valign="top"><a id="ac8a395cac1c2c2288699805a75557f46"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetEdgeId</b> (int id1, int id2)</td></tr>
-<tr class="separator:ac8a395cac1c2c2288699805a75557f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains helper methods for testing collisions between boxes. </p>
@@ -453,79 +412,6 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetEdgeId</b> (
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not the boxes collide.</dd></dl>
-
-</div>
-</div>
-<a id="a3a687d4d40bb783b89f67a98a7dab841"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a687d4d40bb783b89f67a98a7dab841">&#9670;&nbsp;</a></span>GetClosestPointsBetweenSegments()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxBoxCollider.GetClosestPointsBetweenSegments </td>
-          <td>(</td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>p1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>q1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>p2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>q2</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>c1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>c2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes closest points c1 and c2 betwen segments p1q1 and p2q2. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">p1</td><td>First point of first segment.</td></tr>
-    <tr><td class="paramname">q1</td><td>Second point of first segment.</td></tr>
-    <tr><td class="paramname">p2</td><td>First point of second segment.</td></tr>
-    <tr><td class="paramname">q2</td><td>Second point of second segment.</td></tr>
-    <tr><td class="paramname">c1</td><td>Closest point on first segment.</td></tr>
-    <tr><td class="paramname">c2</td><td>Closest point on second segment.</td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>

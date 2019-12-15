@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,25 +88,28 @@ $(document).ready(function(){initNavTree('da/dde/class_engine_1_1_u_i_1_1_event_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../dd/d1d/class_engine_1_1_u_i_1_1_event_systems_1_1_button-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.UI.EventSystems.Button Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p><a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> Component implementing a typical button implementation  
+ <a href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Engine.UI.EventSystems.Button:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.png" usemap="#Engine.UI.EventSystems.Button_map" alt=""/>
   <map id="Engine.UI.EventSystems.Button_map" name="Engine.UI.EventSystems.Button_map">
-<area href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html" title="A Component that is rendering an image in camera space " alt="Engine.UI.UIImageRendererComponent" shape="rect" coords="124,224,362,248"/>
-<area href="../../dd/d2b/interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable.html" alt="Engine.UI.EventSystems.ISelectable" shape="rect" coords="372,224,610,248"/>
-<area href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html" title="Implements Common Properties between UI Elements " alt="Engine.UI.UIElement" shape="rect" coords="124,168,362,192"/>
-<area href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html" alt="Engine.Rendering.RenderingComponent" shape="rect" coords="124,112,362,136"/>
+<area href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html" title="A Component that is rendering an image in camera space " alt="Engine.UI.UiImageRendererComponent" shape="rect" coords="124,224,362,248"/>
+<area href="../../dd/d2b/interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable.html" title="ISelectable Interface for UI Elements " alt="Engine.UI.EventSystems.ISelectable" shape="rect" coords="372,224,610,248"/>
+<area href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html" title="Implements Common Properties between UI Elements " alt="Engine.UI.UiElement" shape="rect" coords="124,168,362,192"/>
+<area href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html" title="Abstract Rendering Component that implements all tasks that all renderer components have in common ..." alt="Engine.Rendering.RenderingComponent" shape="rect" coords="124,112,362,136"/>
 <area href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html" title="Base class of every component " alt="Engine.Core.AbstractComponent" shape="rect" coords="0,56,238,80"/>
 <area href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html" title="Interface used by Objects in the engine that have to be removed from some kind of system ..." alt="Engine.Core.IDestroyable" shape="rect" coords="0,0,238,24"/>
 </map>
@@ -114,64 +117,97 @@ Inheritance diagram for Engine.UI.EventSystems.Button:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a50d6f82ab963e471d001eb753790b09c"><td class="memItemLeft" align="right" valign="top"><a id="a50d6f82ab963e471d001eb753790b09c"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Button</b> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> btnIdle, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader, float alpha, <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> btnClick=null, <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> btnHover=null, Action onClick=null)</td></tr>
-<tr class="separator:a50d6f82ab963e471d001eb753790b09c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9baf3d650ba9731e49c16cc2f68d3b89"><td class="memItemLeft" align="right" valign="top"><a id="a9baf3d650ba9731e49c16cc2f68d3b89"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetState</b> (SelectableState newState)</td></tr>
+<tr class="memitem:a27a5e1a105215d73cf375430358ca0a6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a27a5e1a105215d73cf375430358ca0a6">Button</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> btnIdle, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader, float alpha, <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> btnClick=null, <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> btnHover=null, Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; onClick=null, Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; onEnter=null, Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; onHover=null, Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; onLeave=null)</td></tr>
+<tr class="memdesc:a27a5e1a105215d73cf375430358ca0a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor  <a href="#a27a5e1a105215d73cf375430358ca0a6">More...</a><br /></td></tr>
+<tr class="separator:a27a5e1a105215d73cf375430358ca0a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9baf3d650ba9731e49c16cc2f68d3b89"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a9baf3d650ba9731e49c16cc2f68d3b89">SetState</a> (<a class="el" href="../../d3/de2/namespace_engine_1_1_u_i_1_1_event_systems.html#aae32555f140a5d2be92733f43c5d6287">SelectableState</a> newState)</td></tr>
+<tr class="memdesc:a9baf3d650ba9731e49c16cc2f68d3b89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function to set the state of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a>  <a href="#a9baf3d650ba9731e49c16cc2f68d3b89">More...</a><br /></td></tr>
 <tr class="separator:a9baf3d650ba9731e49c16cc2f68d3b89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html">Engine.UI.UIImageRendererComponent</a></td></tr>
-<tr class="memitem:ae2030c5ada5aa71ed1804f45933e4b14 inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#ae2030c5ada5aa71ed1804f45933e4b14">UIImageRendererComponent</a> (int width, int height, bool worldSpace, float alpha, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader)</td></tr>
-<tr class="memdesc:ae2030c5ada5aa71ed1804f45933e4b14 inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">public contstructor  <a href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#ae2030c5ada5aa71ed1804f45933e4b14">More...</a><br /></td></tr>
-<tr class="separator:ae2030c5ada5aa71ed1804f45933e4b14 inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a24cd989a8c38ba29c605cdab59bb9956 inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#a24cd989a8c38ba29c605cdab59bb9956">UIImageRendererComponent</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> texture, bool worldSpace, float alpha, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader)</td></tr>
-<tr class="memdesc:a24cd989a8c38ba29c605cdab59bb9956 inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">public constructor  <a href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#a24cd989a8c38ba29c605cdab59bb9956">More...</a><br /></td></tr>
-<tr class="separator:a24cd989a8c38ba29c605cdab59bb9956 inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04ed1b1d0cf8f0d565ba1c172557e61f inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#a04ed1b1d0cf8f0d565ba1c172557e61f">Render</a> (Matrix4 viewMat, Matrix4 projMat)</td></tr>
-<tr class="memdesc:a04ed1b1d0cf8f0d565ba1c172557e61f inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders the image on the screen  <a href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#a04ed1b1d0cf8f0d565ba1c172557e61f">More...</a><br /></td></tr>
-<tr class="separator:a04ed1b1d0cf8f0d565ba1c172557e61f inherit pub_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95bfe04f56ffec04306f828346c2b4da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a95bfe04f56ffec04306f828346c2b4da">AddToClickEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a95bfe04f56ffec04306f828346c2b4da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an OnClick Event  <a href="#a95bfe04f56ffec04306f828346c2b4da">More...</a><br /></td></tr>
+<tr class="separator:a95bfe04f56ffec04306f828346c2b4da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a620503985a77bdf74aa2fa457a53d796"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a620503985a77bdf74aa2fa457a53d796">RemoveFromClickEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a620503985a77bdf74aa2fa457a53d796"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an OnClick Event  <a href="#a620503985a77bdf74aa2fa457a53d796">More...</a><br /></td></tr>
+<tr class="separator:a620503985a77bdf74aa2fa457a53d796"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34b7b84b22c5015931ed800a774fb687"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a34b7b84b22c5015931ed800a774fb687">AddToEnterEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a34b7b84b22c5015931ed800a774fb687"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an OnEnter Event  <a href="#a34b7b84b22c5015931ed800a774fb687">More...</a><br /></td></tr>
+<tr class="separator:a34b7b84b22c5015931ed800a774fb687"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a95dea71262dc18936b827e0ac41f0c67"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a95dea71262dc18936b827e0ac41f0c67">RemoveFromEnterEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a95dea71262dc18936b827e0ac41f0c67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an OnEnter Event  <a href="#a95dea71262dc18936b827e0ac41f0c67">More...</a><br /></td></tr>
+<tr class="separator:a95dea71262dc18936b827e0ac41f0c67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad53114c2f163f629cfb6edb9e3824a5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#ad53114c2f163f629cfb6edb9e3824a5b">AddToHoverEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:ad53114c2f163f629cfb6edb9e3824a5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an OnHover Event  <a href="#ad53114c2f163f629cfb6edb9e3824a5b">More...</a><br /></td></tr>
+<tr class="separator:ad53114c2f163f629cfb6edb9e3824a5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f215d34e1f6043e08d4000382694ff9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a1f215d34e1f6043e08d4000382694ff9">RemoveFromHoverEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a1f215d34e1f6043e08d4000382694ff9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an OnHover Event  <a href="#a1f215d34e1f6043e08d4000382694ff9">More...</a><br /></td></tr>
+<tr class="separator:a1f215d34e1f6043e08d4000382694ff9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b26af61a0f5005195b6347afcff2101"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a4b26af61a0f5005195b6347afcff2101">AddToLeaveEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a4b26af61a0f5005195b6347afcff2101"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds an OnLeave Event  <a href="#a4b26af61a0f5005195b6347afcff2101">More...</a><br /></td></tr>
+<tr class="separator:a4b26af61a0f5005195b6347afcff2101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6610c8ba23df18489cd1d80708befb00"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a6610c8ba23df18489cd1d80708befb00">RemoveFromLeaveEvent</a> (Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a6610c8ba23df18489cd1d80708befb00"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an OnLeave Event  <a href="#a6610c8ba23df18489cd1d80708befb00">More...</a><br /></td></tr>
+<tr class="separator:a6610c8ba23df18489cd1d80708befb00"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html">Engine.UI.UiImageRendererComponent</a></td></tr>
+<tr class="memitem:a13c47e651ed0a9e9e430c1a6354ffef8 inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a13c47e651ed0a9e9e430c1a6354ffef8">UiImageRendererComponent</a> (int width, int height, bool worldSpace, float alpha, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader)</td></tr>
+<tr class="memdesc:a13c47e651ed0a9e9e430c1a6354ffef8 inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">public contstructor  <a href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a13c47e651ed0a9e9e430c1a6354ffef8">More...</a><br /></td></tr>
+<tr class="separator:a13c47e651ed0a9e9e430c1a6354ffef8 inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4a9755cbd4c6853dd7969a3dc9d9803d inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a4a9755cbd4c6853dd7969a3dc9d9803d">UiImageRendererComponent</a> (<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> texture, bool worldSpace, float alpha, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader)</td></tr>
+<tr class="memdesc:a4a9755cbd4c6853dd7969a3dc9d9803d inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">public constructor  <a href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a4a9755cbd4c6853dd7969a3dc9d9803d">More...</a><br /></td></tr>
+<tr class="separator:a4a9755cbd4c6853dd7969a3dc9d9803d inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4700a1c9838dfe6b64341a1b57efe10 inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#ac4700a1c9838dfe6b64341a1b57efe10">Render</a> (Matrix4 viewMat, Matrix4 projMat)</td></tr>
+<tr class="memdesc:ac4700a1c9838dfe6b64341a1b57efe10 inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">renders the image on the screen  <a href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#ac4700a1c9838dfe6b64341a1b57efe10">More...</a><br /></td></tr>
+<tr class="separator:ac4700a1c9838dfe6b64341a1b57efe10 inherit pub_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_engine_1_1_rendering_1_1_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">Engine.Rendering.RenderingComponent</a></td></tr>
+<tr class="memitem:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a75d1c7d1b294dc94a626dff965a8d7e0">CompareTo</a> (<a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">RenderingComponent</a> other)</td></tr>
+<tr class="memdesc:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">CompareTo Implementation If both transparent and in camera space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a75d1c7d1b294dc94a626dff965a8d7e0">More...</a><br /></td></tr>
+<tr class="separator:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3b9acab1f3f4a000f200fa162ff3f17 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a id="ae3b9acab1f3f4a000f200fa162ff3f17"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Render</b> (Matrix4 viewMat, Matrix4 projMat, int depthMap)</td></tr>
 <tr class="separator:ae3b9acab1f3f4a000f200fa162ff3f17 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8c8660178b58c5b282a0ac0b762ba9b inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a id="ac8c8660178b58c5b282a0ac0b762ba9b"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Render</b> (Matrix4 viewMat, Matrix4 projMat, <a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> prog)</td></tr>
 <tr class="separator:ac8c8660178b58c5b282a0ac0b762ba9b inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a75d1c7d1b294dc94a626dff965a8d7e0">CompareTo</a> (<a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">RenderingComponent</a> other)</td></tr>
-<tr class="memdesc:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">CompareTo Implementation If both transparent and in camera space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a75d1c7d1b294dc94a626dff965a8d7e0">More...</a><br /></td></tr>
-<tr class="separator:a75d1c7d1b294dc94a626dff965a8d7e0 inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9519ae68cdcd5b8283641eb0ed6dff5d inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a9519ae68cdcd5b8283641eb0ed6dff5d">PrecalculateMV</a> (Matrix4 view)</td></tr>
-<tr class="memdesc:a9519ae68cdcd5b8283641eb0ed6dff5d inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Precalculates the ModelView Matrix  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a9519ae68cdcd5b8283641eb0ed6dff5d">More...</a><br /></td></tr>
-<tr class="separator:a9519ae68cdcd5b8283641eb0ed6dff5d inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e409a10041676df461492f833471cfc inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a7e409a10041676df461492f833471cfc">PrecalculateMv</a> (Matrix4 view)</td></tr>
+<tr class="memdesc:a7e409a10041676df461492f833471cfc inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Precalculates the ModelView Matrix  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a7e409a10041676df461492f833471cfc">More...</a><br /></td></tr>
+<tr class="separator:a7e409a10041676df461492f833471cfc inherit pub_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
 <tr class="memitem:a471df664279bf736164c6cb689de0b7c inherit pub_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a471df664279bf736164c6cb689de0b7c">Destroy</a> ()</td></tr>
 <tr class="memdesc:a471df664279bf736164c6cb689de0b7c inherit pub_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this component to the list of components that will be removed at the end of the frame  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a471df664279bf736164c6cb689de0b7c">More...</a><br /></td></tr>
 <tr class="separator:a471df664279bf736164c6cb689de0b7c inherit pub_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a4e2e6a0324d4ad5ea93db4b902a70ace"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a4e2e6a0324d4ad5ea93db4b902a70ace">AddToEvent</a> (ref Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; ev, Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a4e2e6a0324d4ad5ea93db4b902a70ace"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper that Adds the action to the ev variable ev can be null, in this case ev = action  <a href="#a4e2e6a0324d4ad5ea93db4b902a70ace">More...</a><br /></td></tr>
+<tr class="separator:a4e2e6a0324d4ad5ea93db4b902a70ace"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5baf010421608e95fadcd96dafd6620f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a5baf010421608e95fadcd96dafd6620f">RemoveFromEvent</a> (ref Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; ev, Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt; action)</td></tr>
+<tr class="memdesc:a5baf010421608e95fadcd96dafd6620f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper that Removes the action from the ev variable ev can be null, in this case nothing is done  <a href="#a5baf010421608e95fadcd96dafd6620f">More...</a><br /></td></tr>
+<tr class="separator:a5baf010421608e95fadcd96dafd6620f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a36eef62a24fd0f2ab00f40403f2bf5ae"><td class="memItemLeft" align="right" valign="top"><a id="a36eef62a24fd0f2ab00f40403f2bf5ae"></a>
-Box2&#160;</td><td class="memItemRight" valign="bottom"><b>BoundingBox</b> =&gt; new Box2(<a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ae809a0d38f5b8a8e2dc4d0f8fa62eb54">Position</a> - <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a4b87669fea889c01da9ec873af5450eb">Scale</a>, <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ae809a0d38f5b8a8e2dc4d0f8fa62eb54">Position</a> + <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a4b87669fea889c01da9ec873af5450eb">Scale</a>)</td></tr>
+<tr class="memitem:a36eef62a24fd0f2ab00f40403f2bf5ae"><td class="memItemLeft" align="right" valign="top">Box2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a36eef62a24fd0f2ab00f40403f2bf5ae">BoundingBox</a> =&gt; new Box2(<a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#aef86d0a009258504b3812671cc433dd1">Position</a> - <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a89cc1e7cfec86d56a1060222a9a214a9">Scale</a>, <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#aef86d0a009258504b3812671cc433dd1">Position</a> + <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a89cc1e7cfec86d56a1060222a9a214a9">Scale</a>)</td></tr>
+<tr class="memdesc:a36eef62a24fd0f2ab00f40403f2bf5ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Bounding Box of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a>  <a href="#a36eef62a24fd0f2ab00f40403f2bf5ae">More...</a><br /></td></tr>
 <tr class="separator:a36eef62a24fd0f2ab00f40403f2bf5ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a0cfd0d2c9c52f21209b182613da4a725"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a0cfd0d2c9c52f21209b182613da4a725">Awake</a> ()</td></tr>
-<tr class="memdesc:a0cfd0d2c9c52f21209b182613da4a725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Virtual Function that gets called when the script is used by the system for the first time  <a href="#a0cfd0d2c9c52f21209b182613da4a725">More...</a><br /></td></tr>
+<tr class="memdesc:a0cfd0d2c9c52f21209b182613da4a725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers to Event System  <a href="#a0cfd0d2c9c52f21209b182613da4a725">More...</a><br /></td></tr>
 <tr class="separator:a0cfd0d2c9c52f21209b182613da4a725"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6bf171fdf108223f67dbf634c2ec74c2"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a6bf171fdf108223f67dbf634c2ec74c2">OnDestroy</a> ()</td></tr>
-<tr class="memdesc:a6bf171fdf108223f67dbf634c2ec74c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">On Destroy gets called at the end of the frame when the destroyed objects are collected from the system.  <a href="#a6bf171fdf108223f67dbf634c2ec74c2">More...</a><br /></td></tr>
+<tr class="memdesc:a6bf171fdf108223f67dbf634c2ec74c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters from the Event System  <a href="#a6bf171fdf108223f67dbf634c2ec74c2">More...</a><br /></td></tr>
 <tr class="separator:a6bf171fdf108223f67dbf634c2ec74c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html">Engine.UI.UIImageRendererComponent</a></td></tr>
-<tr class="memitem:aa6447add40c0e19ff9d926a72277e4d5 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#aa6447add40c0e19ff9d926a72277e4d5">OnDestroy</a> ()</td></tr>
-<tr class="memdesc:aa6447add40c0e19ff9d926a72277e4d5 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disposes th Texture used by the context  <a href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#aa6447add40c0e19ff9d926a72277e4d5">More...</a><br /></td></tr>
-<tr class="separator:aa6447add40c0e19ff9d926a72277e4d5 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_u_i_1_1_u_i_element')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html">Engine.UI.UIElement</a></td></tr>
-<tr class="memitem:a1745514f5df8b5a2f7136a8d5e398479 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a1745514f5df8b5a2f7136a8d5e398479">UIElement</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader, bool worldSpace, float alpha)</td></tr>
-<tr class="memdesc:a1745514f5df8b5a2f7136a8d5e398479 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> Element Constructor  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a1745514f5df8b5a2f7136a8d5e398479">More...</a><br /></td></tr>
-<tr class="separator:a1745514f5df8b5a2f7136a8d5e398479 inherit pro_methods_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html">Engine.UI.UiImageRendererComponent</a></td></tr>
+<tr class="memitem:a63f15a9c1f262a190e26958e8458011f inherit pro_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a63f15a9c1f262a190e26958e8458011f">OnDestroy</a> ()</td></tr>
+<tr class="memdesc:a63f15a9c1f262a190e26958e8458011f inherit pro_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Disposes th Texture used by the context  <a href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a63f15a9c1f262a190e26958e8458011f">More...</a><br /></td></tr>
+<tr class="separator:a63f15a9c1f262a190e26958e8458011f inherit pro_methods_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_class_engine_1_1_u_i_1_1_ui_element"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_u_i_1_1_ui_element')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html">Engine.UI.UiElement</a></td></tr>
+<tr class="memitem:ad458e5393c940fd8aa67ab23280b52ef inherit pro_methods_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#ad458e5393c940fd8aa67ab23280b52ef">UiElement</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> shader, bool worldSpace, float alpha)</td></tr>
+<tr class="memdesc:ad458e5393c940fd8aa67ab23280b52ef inherit pro_methods_class_engine_1_1_u_i_1_1_ui_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> Element Constructor  <a href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#ad458e5393c940fd8aa67ab23280b52ef">More...</a><br /></td></tr>
+<tr class="separator:ad458e5393c940fd8aa67ab23280b52ef inherit pro_methods_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_rendering_1_1_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">Engine.Rendering.RenderingComponent</a></td></tr>
-<tr class="memitem:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ae4a10ed234a13d95b19518aa02b01948">RenderingComponent</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> program, bool worldSpace, Renderer.RenderType renderType, int renderQueue)</td></tr>
+<tr class="memitem:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ae4a10ed234a13d95b19518aa02b01948">RenderingComponent</a> (<a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a> program, bool worldSpace, <a class="el" href="../../d9/d69/class_engine_1_1_rendering_1_1_renderer.html#a006bf12919a7a015a1dd3316ac38fac5">Renderer.RenderType</a> renderType, int renderQueue)</td></tr>
 <tr class="memdesc:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for a render context  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ae4a10ed234a13d95b19518aa02b01948">More...</a><br /></td></tr>
 <tr class="separator:ae4a10ed234a13d95b19518aa02b01948 inherit pro_methods_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_methods_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
@@ -202,38 +238,38 @@ Protected Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:aaafa047f4780643d9adaa806cb186d9b"><td class="memItemLeft" align="right" valign="top"><a id="aaafa047f4780643d9adaa806cb186d9b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>TabStop</b><code> [get, set]</code></td></tr>
-<tr class="separator:aaafa047f4780643d9adaa806cb186d9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacd8bac1adce1ab95ea7dc60e15bad7f"><td class="memItemLeft" align="right" valign="top"><a id="aacd8bac1adce1ab95ea7dc60e15bad7f"></a>
-<a class="el" href="../../d3/d12/class_engine_1_1_u_i_1_1_event_systems_1_1_event_system.html">EventSystem</a>&#160;</td><td class="memItemRight" valign="bottom"><b>System</b><code> [get]</code></td></tr>
+<tr class="memitem:a7efd792e1c7e16c3c736a2f7e1a9f063"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/de2/namespace_engine_1_1_u_i_1_1_event_systems.html#aae32555f140a5d2be92733f43c5d6287">SelectableState</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a7efd792e1c7e16c3c736a2f7e1a9f063">State</a><code> [get]</code></td></tr>
+<tr class="memdesc:a7efd792e1c7e16c3c736a2f7e1a9f063"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Current state of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a>  <a href="#a7efd792e1c7e16c3c736a2f7e1a9f063">More...</a><br /></td></tr>
+<tr class="separator:a7efd792e1c7e16c3c736a2f7e1a9f063"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacd8bac1adce1ab95ea7dc60e15bad7f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/d12/class_engine_1_1_u_i_1_1_event_systems_1_1_event_system.html">EventSystem</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#aacd8bac1adce1ab95ea7dc60e15bad7f">System</a><code> [get]</code></td></tr>
+<tr class="memdesc:aacd8bac1adce1ab95ea7dc60e15bad7f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A reference of the Event System used with this button  <a href="#aacd8bac1adce1ab95ea7dc60e15bad7f">More...</a><br /></td></tr>
 <tr class="separator:aacd8bac1adce1ab95ea7dc60e15bad7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac2f1648a6b5421b6fa9acbcce75087fd"><td class="memItemLeft" align="right" valign="top"><a id="ac2f1648a6b5421b6fa9acbcce75087fd"></a>
-override <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Texture</b><code> [get]</code></td></tr>
+<tr class="memitem:ac2f1648a6b5421b6fa9acbcce75087fd"><td class="memItemLeft" align="right" valign="top">override <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#ac2f1648a6b5421b6fa9acbcce75087fd">Texture</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac2f1648a6b5421b6fa9acbcce75087fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper that returns the right texture depending on the State of the button  <a href="#ac2f1648a6b5421b6fa9acbcce75087fd">More...</a><br /></td></tr>
 <tr class="separator:ac2f1648a6b5421b6fa9acbcce75087fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_u_i_1_1_u_i_image_renderer_component')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html">Engine.UI.UIImageRendererComponent</a></td></tr>
-<tr class="memitem:a0584017345de3e055314a17caaa374cf inherit properties_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#a0584017345de3e055314a17caaa374cf">Texture</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a0584017345de3e055314a17caaa374cf inherit properties_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The image that will be drawn to the screen  <a href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#a0584017345de3e055314a17caaa374cf">More...</a><br /></td></tr>
-<tr class="separator:a0584017345de3e055314a17caaa374cf inherit properties_class_engine_1_1_u_i_1_1_u_i_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="inherit_header properties_class_engine_1_1_u_i_1_1_u_i_element"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_u_i_1_1_u_i_element')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html">Engine.UI.UIElement</a></td></tr>
-<tr class="memitem:a336f378b3d3e6f0aa80ca147a157d54c inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a336f378b3d3e6f0aa80ca147a157d54c">RenderMask</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a336f378b3d3e6f0aa80ca147a157d54c inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The render mask that this element belongs to  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a336f378b3d3e6f0aa80ca147a157d54c">More...</a><br /></td></tr>
-<tr class="separator:a336f378b3d3e6f0aa80ca147a157d54c inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae809a0d38f5b8a8e2dc4d0f8fa62eb54 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ae809a0d38f5b8a8e2dc4d0f8fa62eb54">Position</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:ae809a0d38f5b8a8e2dc4d0f8fa62eb54 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> element in uv coordinates  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ae809a0d38f5b8a8e2dc4d0f8fa62eb54">More...</a><br /></td></tr>
-<tr class="separator:ae809a0d38f5b8a8e2dc4d0f8fa62eb54 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b87669fea889c01da9ec873af5450eb inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a4b87669fea889c01da9ec873af5450eb">Scale</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a4b87669fea889c01da9ec873af5450eb inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> element  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a4b87669fea889c01da9ec873af5450eb">More...</a><br /></td></tr>
-<tr class="separator:a4b87669fea889c01da9ec873af5450eb inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d610d1a1bf48e8748dfb48f0fdf60b6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a4d610d1a1bf48e8748dfb48f0fdf60b6"></a>
+<tr class="inherit_header properties_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_u_i_1_1_ui_image_renderer_component')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html">Engine.UI.UiImageRendererComponent</a></td></tr>
+<tr class="memitem:a0e7d15f724a3e25e883fb7b1d2b14074 inherit properties_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a0e7d15f724a3e25e883fb7b1d2b14074">Texture</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0e7d15f724a3e25e883fb7b1d2b14074 inherit properties_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The image that will be drawn to the screen  <a href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a0e7d15f724a3e25e883fb7b1d2b14074">More...</a><br /></td></tr>
+<tr class="separator:a0e7d15f724a3e25e883fb7b1d2b14074 inherit properties_class_engine_1_1_u_i_1_1_ui_image_renderer_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header properties_class_engine_1_1_u_i_1_1_ui_element"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_u_i_1_1_ui_element')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html">Engine.UI.UiElement</a></td></tr>
+<tr class="memitem:a28405cf3cd8c5757daced274b24d16b2 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a28405cf3cd8c5757daced274b24d16b2">RenderMask</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a28405cf3cd8c5757daced274b24d16b2 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The render mask that this element belongs to  <a href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a28405cf3cd8c5757daced274b24d16b2">More...</a><br /></td></tr>
+<tr class="separator:a28405cf3cd8c5757daced274b24d16b2 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef86d0a009258504b3812671cc433dd1 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#aef86d0a009258504b3812671cc433dd1">Position</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:aef86d0a009258504b3812671cc433dd1 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> element in uv coordinates  <a href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#aef86d0a009258504b3812671cc433dd1">More...</a><br /></td></tr>
+<tr class="separator:aef86d0a009258504b3812671cc433dd1 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89cc1e7cfec86d56a1060222a9a214a9 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top">Vector2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a89cc1e7cfec86d56a1060222a9a214a9">Scale</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a89cc1e7cfec86d56a1060222a9a214a9 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the <a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> element  <a href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a89cc1e7cfec86d56a1060222a9a214a9">More...</a><br /></td></tr>
+<tr class="separator:a89cc1e7cfec86d56a1060222a9a214a9 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a3e2fd1f57c61c90a9ecaf319d36b39 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top"><a id="a3a3e2fd1f57c61c90a9ecaf319d36b39"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Tiling</b> = Vector2.One<code> [get, set]</code></td></tr>
-<tr class="separator:a4d610d1a1bf48e8748dfb48f0fdf60b6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c1ba89b0e14a98f75b1e462c6f54717 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top"><a id="a8c1ba89b0e14a98f75b1e462c6f54717"></a>
+<tr class="separator:a3a3e2fd1f57c61c90a9ecaf319d36b39 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8f76da140defe406b6a720914db2b92 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top"><a id="ac8f76da140defe406b6a720914db2b92"></a>
 Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Offset</b> = Vector2.Zero<code> [get, set]</code></td></tr>
-<tr class="separator:a8c1ba89b0e14a98f75b1e462c6f54717 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8083350d855886ba24a8d337cfbe7ee6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a8083350d855886ba24a8d337cfbe7ee6">Alpha</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a8083350d855886ba24a8d337cfbe7ee6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alpha value of the texture  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#a8083350d855886ba24a8d337cfbe7ee6">More...</a><br /></td></tr>
-<tr class="separator:a8083350d855886ba24a8d337cfbe7ee6 inherit properties_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ac8f76da140defe406b6a720914db2b92 inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a712cdb2eb4f48aa571b3bd3e79db36fb inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a712cdb2eb4f48aa571b3bd3e79db36fb">Alpha</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a712cdb2eb4f48aa571b3bd3e79db36fb inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Alpha value of the texture  <a href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a712cdb2eb4f48aa571b3bd3e79db36fb">More...</a><br /></td></tr>
+<tr class="separator:a712cdb2eb4f48aa571b3bd3e79db36fb inherit properties_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_class_engine_1_1_rendering_1_1_rendering_component"><td colspan="2" onclick="javascript:toggleInherit('properties_class_engine_1_1_rendering_1_1_rendering_component')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">Engine.Rendering.RenderingComponent</a></td></tr>
 <tr class="memitem:a169e1e0a84eb0d9820b31af717a81393 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a169e1e0a84eb0d9820b31af717a81393">Program</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a169e1e0a84eb0d9820b31af717a81393 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">the shader program that is used  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a169e1e0a84eb0d9820b31af717a81393">More...</a><br /></td></tr>
@@ -241,13 +277,13 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Offset</b> = Vecto
 <tr class="memitem:ac105a75478b227dbba14425ae35180f2 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac105a75478b227dbba14425ae35180f2">RenderQueue</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ac105a75478b227dbba14425ae35180f2 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">the render queue that determines the order in which the objects are drawn This only applies to Screen space Render Contexts. For World space the ordering is worked out by the distance to the camera.  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac105a75478b227dbba14425ae35180f2">More...</a><br /></td></tr>
 <tr class="separator:ac105a75478b227dbba14425ae35180f2 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a590f098662bf9eb6a4776ce61df26733 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a590f098662bf9eb6a4776ce61df26733">MV</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a590f098662bf9eb6a4776ce61df26733 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached version of the ModelView Matrix(is used for ordered rendering  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a590f098662bf9eb6a4776ce61df26733">More...</a><br /></td></tr>
-<tr class="separator:a590f098662bf9eb6a4776ce61df26733 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f41ee3ae2240540bbdafb7ea207ec17 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a0f41ee3ae2240540bbdafb7ea207ec17">MVPosition</a><code> [get, private set]</code></td></tr>
-<tr class="memdesc:a0f41ee3ae2240540bbdafb7ea207ec17 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the Object in ModelView Space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a0f41ee3ae2240540bbdafb7ea207ec17">More...</a><br /></td></tr>
-<tr class="separator:a0f41ee3ae2240540bbdafb7ea207ec17 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Renderer.RenderType&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ab3b7a7685806cc343b504797488fd5ef">RenderType</a><code> [get, set]</code></td></tr>
+<tr class="memitem:af56d096747d151115755369a609427fa inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#af56d096747d151115755369a609427fa">Mv</a><code> [get]</code></td></tr>
+<tr class="memdesc:af56d096747d151115755369a609427fa inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cached version of the ModelView Matrix(is used for ordered rendering  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#af56d096747d151115755369a609427fa">More...</a><br /></td></tr>
+<tr class="separator:af56d096747d151115755369a609427fa inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3e3ed95ab8333feb0a16acb1b298869 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">Vector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac3e3ed95ab8333feb0a16acb1b298869">MvPosition</a><code> [get]</code></td></tr>
+<tr class="memdesc:ac3e3ed95ab8333feb0a16acb1b298869 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The position of the Object in ModelView Space  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ac3e3ed95ab8333feb0a16acb1b298869">More...</a><br /></td></tr>
+<tr class="separator:ac3e3ed95ab8333feb0a16acb1b298869 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/d69/class_engine_1_1_rendering_1_1_renderer.html#a006bf12919a7a015a1dd3316ac38fac5">Renderer.RenderType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ab3b7a7685806cc343b504797488fd5ef">RenderType</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Render type of the context  <a href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#ab3b7a7685806cc343b504797488fd5ef">More...</a><br /></td></tr>
 <tr class="separator:ab3b7a7685806cc343b504797488fd5ef inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5967dd878cb2a81fc938497172edd728 inherit properties_class_engine_1_1_rendering_1_1_rendering_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html#a5967dd878cb2a81fc938497172edd728">WorldSpace</a><code> [get, set]</code></td></tr>
@@ -257,75 +293,292 @@ Vector2&#160;</td><td class="memItemRight" valign="bottom"><b>Offset</b> = Vecto
 <tr class="memitem:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">Owner</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Owner of the component(null if not attached to any Game object)  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">More...</a><br /></td></tr>
 <tr class="separator:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get]</code></td></tr>
 <tr class="memdesc:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">A public flag that is set to true when the object has been truely removed from the systems  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">More...</a><br /></td></tr>
 <tr class="separator:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../dd/d2b/interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable.html">Engine.UI.EventSystems.ISelectable</a></td></tr>
-<tr class="memitem:a2f57c1aa67e1c5fb6f70d1e6d47b5cc5 inherit properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td class="memItemLeft" align="right" valign="top"><a id="a2f57c1aa67e1c5fb6f70d1e6d47b5cc5"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>TabStop</b><code> [get, set]</code></td></tr>
-<tr class="separator:a2f57c1aa67e1c5fb6f70d1e6d47b5cc5 inherit properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01a4bcc1b291bb6163d510fbabd7b12f inherit properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td class="memItemLeft" align="right" valign="top"><a id="a01a4bcc1b291bb6163d510fbabd7b12f"></a>
-Box2&#160;</td><td class="memItemRight" valign="bottom"><b>BoundingBox</b><code> [get]</code></td></tr>
+<tr class="memitem:a01a4bcc1b291bb6163d510fbabd7b12f inherit properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td class="memItemLeft" align="right" valign="top">Box2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d2b/interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable.html#a01a4bcc1b291bb6163d510fbabd7b12f">BoundingBox</a><code> [get]</code></td></tr>
+<tr class="memdesc:a01a4bcc1b291bb6163d510fbabd7b12f inherit properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding Box of the Selectable  <a href="../../dd/d2b/interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable.html#a01a4bcc1b291bb6163d510fbabd7b12f">More...</a><br /></td></tr>
 <tr class="separator:a01a4bcc1b291bb6163d510fbabd7b12f inherit properties_interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ad9d04a7f43de848a9fb26679232fe4f1"><td class="memItemLeft" align="right" valign="top"><a id="ad9d04a7f43de848a9fb26679232fe4f1"></a>
-SelectableState&#160;</td><td class="memItemRight" valign="bottom"><b>state</b></td></tr>
-<tr class="separator:ad9d04a7f43de848a9fb26679232fe4f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab627609e6fdbafb9c85b5f8c9c1a531c"><td class="memItemLeft" align="right" valign="top"><a id="ab627609e6fdbafb9c85b5f8c9c1a531c"></a>
-<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>btnIdle</b></td></tr>
-<tr class="separator:ab627609e6fdbafb9c85b5f8c9c1a531c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0bf5a42853da02f9fa53566412941e91"><td class="memItemLeft" align="right" valign="top"><a id="a0bf5a42853da02f9fa53566412941e91"></a>
-<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>btnHover</b></td></tr>
-<tr class="separator:a0bf5a42853da02f9fa53566412941e91"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e0be504a60d2130195cca4d8f75fb22"><td class="memItemLeft" align="right" valign="top"><a id="a9e0be504a60d2130195cca4d8f75fb22"></a>
-<a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td><td class="memItemRight" valign="bottom"><b>btnClick</b></td></tr>
-<tr class="separator:a9e0be504a60d2130195cca4d8f75fb22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f9d72a8ee89860e83c26f736648fcbe"><td class="memItemLeft" align="right" valign="top"><a id="a9f9d72a8ee89860e83c26f736648fcbe"></a>
-Action&#160;</td><td class="memItemRight" valign="bottom"><b>OnClick</b></td></tr>
-<tr class="separator:a9f9d72a8ee89860e83c26f736648fcbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pro_attribs_class_engine_1_1_u_i_1_1_u_i_element"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_engine_1_1_u_i_1_1_u_i_element')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html">Engine.UI.UIElement</a></td></tr>
-<tr class="memitem:ac53b10bb567f264599754f5463d7bd5d inherit pro_attribs_class_engine_1_1_u_i_1_1_u_i_element"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ac53b10bb567f264599754f5463d7bd5d">ContextInvalid</a> = true</td></tr>
-<tr class="memdesc:ac53b10bb567f264599754f5463d7bd5d inherit pro_attribs_class_engine_1_1_u_i_1_1_u_i_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag if the context has changed and needs an update  <a href="../../d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html#ac53b10bb567f264599754f5463d7bd5d">More...</a><br /></td></tr>
-<tr class="separator:ac53b10bb567f264599754f5463d7bd5d inherit pro_attribs_class_engine_1_1_u_i_1_1_u_i_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_class_engine_1_1_u_i_1_1_ui_element"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_engine_1_1_u_i_1_1_ui_element')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html">Engine.UI.UiElement</a></td></tr>
+<tr class="memitem:afbdcc5ffd5e36dd0c1f2674fc154cd3e inherit pro_attribs_class_engine_1_1_u_i_1_1_ui_element"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#afbdcc5ffd5e36dd0c1f2674fc154cd3e">ContextInvalid</a> = true</td></tr>
+<tr class="memdesc:afbdcc5ffd5e36dd0c1f2674fc154cd3e inherit pro_attribs_class_engine_1_1_u_i_1_1_ui_element"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag if the context has changed and needs an update  <a href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#afbdcc5ffd5e36dd0c1f2674fc154cd3e">More...</a><br /></td></tr>
+<tr class="separator:afbdcc5ffd5e36dd0c1f2674fc154cd3e inherit pro_attribs_class_engine_1_1_u_i_1_1_ui_element"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pac_methods_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pac_methods_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Package Functions inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
 <tr class="memitem:a53903ba0c98df9345f882b62fd7bace1 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a53903ba0c98df9345f882b62fd7bace1">_Destroy</a> ()</td></tr>
 <tr class="memdesc:a53903ba0c98df9345f882b62fd7bace1 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal _Destroy function that will completely remove the component from the system This will get called outside any update loop. so its save to remove stuff here  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a53903ba0c98df9345f882b62fd7bace1">More...</a><br /></td></tr>
 <tr class="separator:a53903ba0c98df9345f882b62fd7bace1 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac990bd6ad84871b08af768e523c6d3c6 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac990bd6ad84871b08af768e523c6d3c6">onPress</a> (object sender, KeyPressEventArgs e)</td></tr>
-<tr class="memdesc:ac990bd6ad84871b08af768e523c6d3c6 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac990bd6ad84871b08af768e523c6d3c6">More...</a><br /></td></tr>
-<tr class="separator:ac990bd6ad84871b08af768e523c6d3c6 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7507468248c97348dca71e2050baed8b inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a7507468248c97348dca71e2050baed8b">onKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a7507468248c97348dca71e2050baed8b inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a7507468248c97348dca71e2050baed8b">More...</a><br /></td></tr>
-<tr class="separator:a7507468248c97348dca71e2050baed8b inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4712a11c52389f3c20d361f3f44ed809 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a4712a11c52389f3c20d361f3f44ed809">onKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a4712a11c52389f3c20d361f3f44ed809 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a4712a11c52389f3c20d361f3f44ed809">More...</a><br /></td></tr>
-<tr class="separator:a4712a11c52389f3c20d361f3f44ed809 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7556e803681d761064d967773c226a0 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af7556e803681d761064d967773c226a0">updateObject</a> (float deltaTime)</td></tr>
-<tr class="memdesc:af7556e803681d761064d967773c226a0 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that redirects the update call but checks if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af7556e803681d761064d967773c226a0">More...</a><br /></td></tr>
-<tr class="separator:af7556e803681d761064d967773c226a0 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a862472cd1a1c08fe6a00fc7b5a1ecb01 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a862472cd1a1c08fe6a00fc7b5a1ecb01">onInitialCollisionDetected</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
-<tr class="memdesc:a862472cd1a1c08fe6a00fc7b5a1ecb01 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a862472cd1a1c08fe6a00fc7b5a1ecb01">More...</a><br /></td></tr>
-<tr class="separator:a862472cd1a1c08fe6a00fc7b5a1ecb01 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f5c27e0a1e2485e2db38004774bb0d inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a69f5c27e0a1e2485e2db38004774bb0d">onCollisionEnded</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
-<tr class="memdesc:a69f5c27e0a1e2485e2db38004774bb0d inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a69f5c27e0a1e2485e2db38004774bb0d">More...</a><br /></td></tr>
-<tr class="separator:a69f5c27e0a1e2485e2db38004774bb0d inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a710ec4c2d4ee31cf4cc3d890d0d74eab inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a710ec4c2d4ee31cf4cc3d890d0d74eab">onContactRemoved</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a710ec4c2d4ee31cf4cc3d890d0d74eab inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a710ec4c2d4ee31cf4cc3d890d0d74eab">More...</a><br /></td></tr>
-<tr class="separator:a710ec4c2d4ee31cf4cc3d890d0d74eab inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a092e2c72aa901906b78fb93e949379d4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a092e2c72aa901906b78fb93e949379d4">onContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a092e2c72aa901906b78fb93e949379d4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a092e2c72aa901906b78fb93e949379d4">More...</a><br /></td></tr>
-<tr class="separator:a092e2c72aa901906b78fb93e949379d4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4976c51107aee832703a73d4e5d9a5f inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aa4976c51107aee832703a73d4e5d9a5f">InternalOnPress</a> (object sender, KeyPressEventArgs e)</td></tr>
+<tr class="memdesc:aa4976c51107aee832703a73d4e5d9a5f inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aa4976c51107aee832703a73d4e5d9a5f">More...</a><br /></td></tr>
+<tr class="separator:aa4976c51107aee832703a73d4e5d9a5f inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a671ef648ced4a6dffee6b01f9634ef30 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a671ef648ced4a6dffee6b01f9634ef30">InternalOnKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
+<tr class="memdesc:a671ef648ced4a6dffee6b01f9634ef30 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a671ef648ced4a6dffee6b01f9634ef30">More...</a><br /></td></tr>
+<tr class="separator:a671ef648ced4a6dffee6b01f9634ef30 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff31bd1477ca5f8c1c149e366f2c7b4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2ff31bd1477ca5f8c1c149e366f2c7b4">InternalOnKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
+<tr class="memdesc:a2ff31bd1477ca5f8c1c149e366f2c7b4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2ff31bd1477ca5f8c1c149e366f2c7b4">More...</a><br /></td></tr>
+<tr class="separator:a2ff31bd1477ca5f8c1c149e366f2c7b4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a979ee47492bad6df63ba32b9dbb1c704 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a979ee47492bad6df63ba32b9dbb1c704">UpdateObject</a> (float deltaTime)</td></tr>
+<tr class="memdesc:a979ee47492bad6df63ba32b9dbb1c704 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that redirects the update call but checks if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a979ee47492bad6df63ba32b9dbb1c704">More...</a><br /></td></tr>
+<tr class="separator:a979ee47492bad6df63ba32b9dbb1c704 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93e0af97c09b5a4bb6b7d21abc4e8350 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a93e0af97c09b5a4bb6b7d21abc4e8350">InternalOnInitialCollisionDetected</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
+<tr class="memdesc:a93e0af97c09b5a4bb6b7d21abc4e8350 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a93e0af97c09b5a4bb6b7d21abc4e8350">More...</a><br /></td></tr>
+<tr class="separator:a93e0af97c09b5a4bb6b7d21abc4e8350 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a927f618d553d6eaeada24c096ad62abd inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a927f618d553d6eaeada24c096ad62abd">InternalOnCollisionEnded</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
+<tr class="memdesc:a927f618d553d6eaeada24c096ad62abd inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a927f618d553d6eaeada24c096ad62abd">More...</a><br /></td></tr>
+<tr class="separator:a927f618d553d6eaeada24c096ad62abd inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dd16b173ac8e708da957ddefc0d8804 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a1dd16b173ac8e708da957ddefc0d8804">InternalOnContactRemoved</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
+<tr class="memdesc:a1dd16b173ac8e708da957ddefc0d8804 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a1dd16b173ac8e708da957ddefc0d8804">More...</a><br /></td></tr>
+<tr class="separator:a1dd16b173ac8e708da957ddefc0d8804 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc20f2d6087d8ad5b400f761e70feb5 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aedc20f2d6087d8ad5b400f761e70feb5">InternalOnContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
+<tr class="memdesc:aedc20f2d6087d8ad5b400f761e70feb5 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aedc20f2d6087d8ad5b400f761e70feb5">More...</a><br /></td></tr>
+<tr class="separator:aedc20f2d6087d8ad5b400f761e70feb5 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pac_attribs_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Package Attributes inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
-<tr class="memitem:af85b8ed2cf54afdc62ff26c97327f747 inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af85b8ed2cf54afdc62ff26c97327f747">_destructionPending</a></td></tr>
-<tr class="memdesc:af85b8ed2cf54afdc62ff26c97327f747 inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is set to true if the Component or the owning game object is beeing destroyed  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af85b8ed2cf54afdc62ff26c97327f747">More...</a><br /></td></tr>
-<tr class="separator:af85b8ed2cf54afdc62ff26c97327f747 inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5268f3a62a905de3ef98d17f423824fd inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a5268f3a62a905de3ef98d17f423824fd">DestructionPending</a></td></tr>
+<tr class="memdesc:a5268f3a62a905de3ef98d17f423824fd inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is set to true if the Component or the owning game object is beeing destroyed  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a5268f3a62a905de3ef98d17f423824fd">More...</a><br /></td></tr>
+<tr class="separator:a5268f3a62a905de3ef98d17f423824fd inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p><a class="el" href="../../da/dcd/namespace_engine_1_1_u_i.html">UI</a> Component implementing a typical button implementation </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a27a5e1a105215d73cf375430358ca0a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a27a5e1a105215d73cf375430358ca0a6">&#9670;&nbsp;</a></span>Button()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Engine.UI.EventSystems.Button.Button </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
+          <td class="paramname"><em>btnIdle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d8/d9a/class_engine_1_1_rendering_1_1_shader_program.html">ShaderProgram</a>&#160;</td>
+          <td class="paramname"><em>shader</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>alpha</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
+          <td class="paramname"><em>btnClick</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a>&#160;</td>
+          <td class="paramname"><em>btnHover</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>onClick</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>onEnter</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>onHover</em> = <code>null</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>onLeave</em> = <code>null</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">btnIdle</td><td>Texture when Idle</td></tr>
+    <tr><td class="paramname">shader</td><td>Shader Used</td></tr>
+    <tr><td class="paramname">alpha</td><td>Alpha Component of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a></td></tr>
+    <tr><td class="paramname">btnClick</td><td>Texture when Clicked</td></tr>
+    <tr><td class="paramname">btnHover</td><td>Texture when Hovered</td></tr>
+    <tr><td class="paramname">onClick</td><td>Event OnClick</td></tr>
+    <tr><td class="paramname">onEnter</td><td>Event OnEnter</td></tr>
+    <tr><td class="paramname">onHover</td><td>Event OnHover</td></tr>
+    <tr><td class="paramname">onLeave</td><td>Event OnLeave</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a95bfe04f56ffec04306f828346c2b4da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95bfe04f56ffec04306f828346c2b4da">&#9670;&nbsp;</a></span>AddToClickEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.AddToClickEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds an OnClick Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Add</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a34b7b84b22c5015931ed800a774fb687"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34b7b84b22c5015931ed800a774fb687">&#9670;&nbsp;</a></span>AddToEnterEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.AddToEnterEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds an OnEnter Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Add</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4e2e6a0324d4ad5ea93db4b902a70ace"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e2e6a0324d4ad5ea93db4b902a70ace">&#9670;&nbsp;</a></span>AddToEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Engine.UI.EventSystems.Button.AddToEvent </td>
+          <td>(</td>
+          <td class="paramtype">ref Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>ev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wrapper that Adds the action to the ev variable ev can be null, in this case ev = action </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ev</td><td>Event to add to</td></tr>
+    <tr><td class="paramname">action</td><td>Event to add</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ad53114c2f163f629cfb6edb9e3824a5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad53114c2f163f629cfb6edb9e3824a5b">&#9670;&nbsp;</a></span>AddToHoverEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.AddToHoverEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds an OnHover Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Add</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4b26af61a0f5005195b6347afcff2101"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b26af61a0f5005195b6347afcff2101">&#9670;&nbsp;</a></span>AddToLeaveEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.AddToLeaveEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds an OnLeave Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Add</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="a0cfd0d2c9c52f21209b182613da4a725"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0cfd0d2c9c52f21209b182613da4a725">&#9670;&nbsp;</a></span>Awake()</h2>
 
@@ -349,7 +602,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Virtual Function that gets called when the script is used by the system for the first time </p>
+<p>Registers to Event System </p>
 
 <p>Reimplemented from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac08030b2dc64ba2616e2f0169783ac94">Engine.Core.AbstractComponent</a>.</p>
 
@@ -378,9 +631,276 @@ Additional Inherited Members</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>On Destroy gets called at the end of the frame when the destroyed objects are collected from the system. </p>
+<p>Unregisters from the Event System </p>
 
 <p>Reimplemented from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a78b50a4571affc1c1b2d071a1984930d">Engine.Core.AbstractComponent</a>.</p>
+
+</div>
+</div>
+<a id="a620503985a77bdf74aa2fa457a53d796"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a620503985a77bdf74aa2fa457a53d796">&#9670;&nbsp;</a></span>RemoveFromClickEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.RemoveFromClickEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes an OnClick Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Remove</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a95dea71262dc18936b827e0ac41f0c67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95dea71262dc18936b827e0ac41f0c67">&#9670;&nbsp;</a></span>RemoveFromEnterEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.RemoveFromEnterEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes an OnEnter Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Remove</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5baf010421608e95fadcd96dafd6620f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5baf010421608e95fadcd96dafd6620f">&#9670;&nbsp;</a></span>RemoveFromEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void Engine.UI.EventSystems.Button.RemoveFromEvent </td>
+          <td>(</td>
+          <td class="paramtype">ref Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>ev</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wrapper that Removes the action from the ev variable ev can be null, in this case nothing is done </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">ev</td><td>Event to remove from</td></tr>
+    <tr><td class="paramname">action</td><td>Event to remove</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1f215d34e1f6043e08d4000382694ff9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f215d34e1f6043e08d4000382694ff9">&#9670;&nbsp;</a></span>RemoveFromHoverEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.RemoveFromHoverEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes an OnHover Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Remove</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a6610c8ba23df18489cd1d80708befb00"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6610c8ba23df18489cd1d80708befb00">&#9670;&nbsp;</a></span>RemoveFromLeaveEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.RemoveFromLeaveEvent </td>
+          <td>(</td>
+          <td class="paramtype">Action&lt; <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html">Button</a> &gt;&#160;</td>
+          <td class="paramname"><em>action</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Removes an OnLeave Event </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">action</td><td>The Event To Remove</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9baf3d650ba9731e49c16cc2f68d3b89"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9baf3d650ba9731e49c16cc2f68d3b89">&#9670;&nbsp;</a></span>SetState()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.UI.EventSystems.Button.SetState </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d3/de2/namespace_engine_1_1_u_i_1_1_event_systems.html#aae32555f140a5d2be92733f43c5d6287">SelectableState</a>&#160;</td>
+          <td class="paramname"><em>newState</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Function to set the state of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a> </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">newState</td><td>The new State</td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="../../dd/d2b/interface_engine_1_1_u_i_1_1_event_systems_1_1_i_selectable.html#a7dd0162c90464626b75beb6f0e267ed4">Engine.UI.EventSystems.ISelectable</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a36eef62a24fd0f2ab00f40403f2bf5ae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36eef62a24fd0f2ab00f40403f2bf5ae">&#9670;&nbsp;</a></span>BoundingBox</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Box2 Engine.UI.EventSystems.Button.BoundingBox =&gt; new Box2(<a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#aef86d0a009258504b3812671cc433dd1">Position</a> - <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a89cc1e7cfec86d56a1060222a9a214a9">Scale</a>, <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#aef86d0a009258504b3812671cc433dd1">Position</a> + <a class="el" href="../../d6/d95/class_engine_1_1_u_i_1_1_ui_element.html#a89cc1e7cfec86d56a1060222a9a214a9">Scale</a>)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>The Bounding Box of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a> </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a7efd792e1c7e16c3c736a2f7e1a9f063"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7efd792e1c7e16c3c736a2f7e1a9f063">&#9670;&nbsp;</a></span>State</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d3/de2/namespace_engine_1_1_u_i_1_1_event_systems.html#aae32555f140a5d2be92733f43c5d6287">SelectableState</a> Engine.UI.EventSystems.Button.State</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The Current state of the <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html" title="UI Component implementing a typical button implementation ">Button</a> </p>
+
+</div>
+</div>
+<a id="aacd8bac1adce1ab95ea7dc60e15bad7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacd8bac1adce1ab95ea7dc60e15bad7f">&#9670;&nbsp;</a></span>System</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d3/d12/class_engine_1_1_u_i_1_1_event_systems_1_1_event_system.html">EventSystem</a> Engine.UI.EventSystems.Button.System</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A reference of the Event System used with this button </p>
+
+</div>
+</div>
+<a id="ac2f1648a6b5421b6fa9acbcce75087fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2f1648a6b5421b6fa9acbcce75087fd">&#9670;&nbsp;</a></span>Texture</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">override <a class="el" href="../../df/de2/class_engine_1_1_data_types_1_1_texture.html">Texture</a> Engine.UI.EventSystems.Button.Texture</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wrapper that returns the right texture depending on the State of the button </p>
 
 </div>
 </div>

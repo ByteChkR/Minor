@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -91,8 +91,6 @@ $(document).ready(function(){initNavTree('d5/dcb/struct_engine_1_1_physics_1_1_b
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../dc/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUutilities.DataStructures.QuickDictionary&lt; TKey, TValue &gt; Struct Template Reference</div>  </div>
@@ -171,48 +169,12 @@ Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a501d65051793c5ba8add9b84e6d2e956"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html#a501d65051793c5ba8add9b84e6d2e956">Count</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a501d65051793c5ba8add9b84e6d2e956"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html#a501d65051793c5ba8add9b84e6d2e956">Count</a><code> [get]</code></td></tr>
 <tr class="memdesc:a501d65051793c5ba8add9b84e6d2e956"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of elements in the set.  <a href="#a501d65051793c5ba8add9b84e6d2e956">More...</a><br /></td></tr>
 <tr class="separator:a501d65051793c5ba8add9b84e6d2e956"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94def8e1e26ce56cc3683cedabc1e43d"><td class="memItemLeft" align="right" valign="top">KeyValuePair&lt; TKey, TValue &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html#a94def8e1e26ce56cc3683cedabc1e43d">this[int index]</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a94def8e1e26ce56cc3683cedabc1e43d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets a key-value pair at the given index in the list representation.  <a href="#a94def8e1e26ce56cc3683cedabc1e43d">More...</a><br /></td></tr>
 <tr class="separator:a94def8e1e26ce56cc3683cedabc1e43d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a716b1e9fad95e7f8062499d911ae1659"><td class="memItemLeft" align="right" valign="top"><a id="a716b1e9fad95e7f8062499d911ae1659"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Resize</b> (int newObjectPoolIndex, int newTablePoolIndex)</td></tr>
-<tr class="separator:a716b1e9fad95e7f8062499d911ae1659"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a381cc0b876ecfefcbddbfaf151673294"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html#a381cc0b876ecfefcbddbfaf151673294">GetIndices</a> (TKey element, out int tableIndex, out int elementIndex)</td></tr>
-<tr class="memdesc:a381cc0b876ecfefcbddbfaf151673294"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the index of the element in the table.  <a href="#a381cc0b876ecfefcbddbfaf151673294">More...</a><br /></td></tr>
-<tr class="separator:a381cc0b876ecfefcbddbfaf151673294"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a21ba014e59253512937693bdf9269d67"><td class="memItemLeft" align="right" valign="top"><a id="a21ba014e59253512937693bdf9269d67"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Validate</b> ()</td></tr>
-<tr class="separator:a21ba014e59253512937693bdf9269d67"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ac333bc97df6988c9c0f71f5376543828"><td class="memItemLeft" align="right" valign="top"><a id="ac333bc97df6988c9c0f71f5376543828"></a>
-int []&#160;</td><td class="memItemRight" valign="bottom"><b>table</b></td></tr>
-<tr class="separator:ac333bc97df6988c9c0f71f5376543828"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abde4009f21d4db268a967cf288d90eb3"><td class="memItemLeft" align="right" valign="top"><a id="abde4009f21d4db268a967cf288d90eb3"></a>
-readonly <a class="el" href="../../d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html">BufferPool</a>&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>tablePool</b></td></tr>
-<tr class="separator:abde4009f21d4db268a967cf288d90eb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acea32496af6100f2362282824a1e695c"><td class="memItemLeft" align="right" valign="top"><a id="acea32496af6100f2362282824a1e695c"></a>
-readonly <a class="el" href="../../d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html">BufferPool</a>&lt; TKey &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>keyPool</b></td></tr>
-<tr class="separator:acea32496af6100f2362282824a1e695c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf0afcdf06afc641d1efffe01838268f"><td class="memItemLeft" align="right" valign="top"><a id="aaf0afcdf06afc641d1efffe01838268f"></a>
-readonly <a class="el" href="../../d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html">BufferPool</a>&lt; TValue &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>valuePool</b></td></tr>
-<tr class="separator:aaf0afcdf06afc641d1efffe01838268f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f97646154cc34fb62f187dd1e33915e"><td class="memItemLeft" align="right" valign="top"><a id="a5f97646154cc34fb62f187dd1e33915e"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>pairPoolIndex</b></td></tr>
-<tr class="separator:a5f97646154cc34fb62f187dd1e33915e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa99a649758d145440db2d7d923932fc7"><td class="memItemLeft" align="right" valign="top"><a id="aa99a649758d145440db2d7d923932fc7"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>tablePoolIndex</b></td></tr>
-<tr class="separator:aa99a649758d145440db2d7d923932fc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65827e1b8da364859b78e60d9875a8a2"><td class="memItemLeft" align="right" valign="top"><a id="a65827e1b8da364859b78e60d9875a8a2"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>tableMask</b></td></tr>
-<tr class="separator:a65827e1b8da364859b78e60d9875a8a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Container supporting constant time adds and removes of key-value pairs while preserving fast iteration times. Offers very direct access to information at the cost of safety. </p>
@@ -499,59 +461,6 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>tableMask</b></td></tr
 
 </div>
 </div>
-<a id="a381cc0b876ecfefcbddbfaf151673294"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a381cc0b876ecfefcbddbfaf151673294">&#9670;&nbsp;</a></span>GetIndices()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool <a class="el" href="../../d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html">Engine.Physics.BEPUutilities.DataStructures.QuickDictionary</a>&lt; TKey, TValue &gt;.GetIndices </td>
-          <td>(</td>
-          <td class="paramtype">TKey&#160;</td>
-          <td class="paramname"><em>element</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out int&#160;</td>
-          <td class="paramname"><em>tableIndex</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out int&#160;</td>
-          <td class="paramname"><em>elementIndex</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets the index of the element in the table. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">element</td><td>Element to look up.</td></tr>
-    <tr><td class="paramname">tableIndex</td><td>Index of the element in the redirect table, or if it is not present, the index of where it would be added.</td></tr>
-    <tr><td class="paramname">elementIndex</td><td>The index of the element in the element arrays, if it exists; -1 otherwise.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the element is present in the set, false if it is not.</dd></dl>
-
-</div>
-</div>
 <a id="a3ba270939e31af6d5ed2797466c53b50"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a3ba270939e31af6d5ed2797466c53b50">&#9670;&nbsp;</a></span>IndexOf()</h2>
 
@@ -666,7 +575,7 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>tableMask</b></td></tr
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

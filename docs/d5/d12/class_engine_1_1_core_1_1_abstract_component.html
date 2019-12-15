@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -92,7 +92,6 @@ $(document).ready(function(){initNavTree('d5/d12/class_engine_1_1_core_1_1_abstr
 <a href="#pac-methods">Package Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../da/d14/class_engine_1_1_core_1_1_abstract_component-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Core.AbstractComponent Class Reference</div>  </div>
@@ -108,14 +107,15 @@ Inheritance diagram for Engine.Core.AbstractComponent:</div>
   <img src="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.png" usemap="#Engine.Core.AbstractComponent_map" alt=""/>
   <map id="Engine.Core.AbstractComponent_map" name="Engine.Core.AbstractComponent_map">
 <area href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html" title="Interface used by Objects in the engine that have to be removed from some kind of system ..." alt="Engine.Core.IDestroyable" shape="rect" coords="0,0,242,24"/>
-<area href="../../d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html" alt="Engine.AI.AINode" shape="rect" coords="252,112,494,136"/>
+<area href="../../d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html" title="The AiNode class is used by the A* implementation " alt="Engine.AI.AiNode" shape="rect" coords="252,112,494,136"/>
 <area href="../../d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html" title="Abstract Component that implements the AL Bindings to play sounds The Component is available as Backg..." alt="Engine.Audio.AbstractAudioSource" shape="rect" coords="252,168,494,192"/>
 <area href="../../d6/dad/class_engine_1_1_audio_1_1_audio_listener.html" title="Simple component that updates the Audio Listener position and sends it to OpenAL for 3D Sound ..." alt="Engine.Audio.AudioListener" shape="rect" coords="252,224,494,248"/>
 <area href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html" title="A Convenient Debug Console that is quite versatile " alt="Engine.Debug.DebugConsoleComponent" shape="rect" coords="252,280,494,304"/>
-<area href="../../d7/d9a/class_engine_1_1_open_f_l_1_1_f_l_generator_component.html" title="FLGeneratorComponent that implements a Demo usecase of OpenFL " alt="Engine.OpenFL.FLGeneratorComponent" shape="rect" coords="252,336,494,360"/>
+<area href="../../d9/daa/class_engine_1_1_open_f_l_1_1_fl_generator_component.html" title="FLGeneratorComponent that implements a Demo usecase of OpenFL " alt="Engine.OpenFL.FlGeneratorComponent" shape="rect" coords="252,336,494,360"/>
 <area href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html" title="Collider Component that is used to Connect the physics engine to the game systems ..." alt="Engine.Physics.Collider" shape="rect" coords="252,392,494,416"/>
-<area href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html" alt="Engine.Rendering.LightComponent" shape="rect" coords="252,448,494,472"/>
-<area href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html" alt="Engine.Rendering.RenderingComponent" shape="rect" coords="252,504,494,528"/>
+<area href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html" title="Component used to represent a point light in the current scene " alt="Engine.Rendering.LightComponent" shape="rect" coords="252,448,494,472"/>
+<area href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html" title="Abstract Rendering Component that implements all tasks that all renderer components have in common ..." alt="Engine.Rendering.RenderingComponent" shape="rect" coords="252,504,494,528"/>
+<area href="../../d3/d25/class_engine_1_1_u_i_1_1_animations_1_1_animator.html" title="Class used to play back animations once an animation is triggered " alt="Engine.UI.Animations.Animator" shape="rect" coords="252,560,494,584"/>
 </map>
  </div></div>
 <table class="memberdecls">
@@ -163,51 +163,45 @@ Package Functions</h2></td></tr>
 <tr class="memitem:a53903ba0c98df9345f882b62fd7bace1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a53903ba0c98df9345f882b62fd7bace1">_Destroy</a> ()</td></tr>
 <tr class="memdesc:a53903ba0c98df9345f882b62fd7bace1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal _Destroy function that will completely remove the component from the system This will get called outside any update loop. so its save to remove stuff here  <a href="#a53903ba0c98df9345f882b62fd7bace1">More...</a><br /></td></tr>
 <tr class="separator:a53903ba0c98df9345f882b62fd7bace1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac990bd6ad84871b08af768e523c6d3c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac990bd6ad84871b08af768e523c6d3c6">onPress</a> (object sender, KeyPressEventArgs e)</td></tr>
-<tr class="memdesc:ac990bd6ad84871b08af768e523c6d3c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#ac990bd6ad84871b08af768e523c6d3c6">More...</a><br /></td></tr>
-<tr class="separator:ac990bd6ad84871b08af768e523c6d3c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7507468248c97348dca71e2050baed8b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a7507468248c97348dca71e2050baed8b">onKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a7507468248c97348dca71e2050baed8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a7507468248c97348dca71e2050baed8b">More...</a><br /></td></tr>
-<tr class="separator:a7507468248c97348dca71e2050baed8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4712a11c52389f3c20d361f3f44ed809"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a4712a11c52389f3c20d361f3f44ed809">onKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a4712a11c52389f3c20d361f3f44ed809"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a4712a11c52389f3c20d361f3f44ed809">More...</a><br /></td></tr>
-<tr class="separator:a4712a11c52389f3c20d361f3f44ed809"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7556e803681d761064d967773c226a0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af7556e803681d761064d967773c226a0">updateObject</a> (float deltaTime)</td></tr>
-<tr class="memdesc:af7556e803681d761064d967773c226a0"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that redirects the update call but checks if the object has been woken up first  <a href="#af7556e803681d761064d967773c226a0">More...</a><br /></td></tr>
-<tr class="separator:af7556e803681d761064d967773c226a0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a862472cd1a1c08fe6a00fc7b5a1ecb01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a862472cd1a1c08fe6a00fc7b5a1ecb01">onInitialCollisionDetected</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
-<tr class="memdesc:a862472cd1a1c08fe6a00fc7b5a1ecb01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a862472cd1a1c08fe6a00fc7b5a1ecb01">More...</a><br /></td></tr>
-<tr class="separator:a862472cd1a1c08fe6a00fc7b5a1ecb01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f5c27e0a1e2485e2db38004774bb0d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a69f5c27e0a1e2485e2db38004774bb0d">onCollisionEnded</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
-<tr class="memdesc:a69f5c27e0a1e2485e2db38004774bb0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a69f5c27e0a1e2485e2db38004774bb0d">More...</a><br /></td></tr>
-<tr class="separator:a69f5c27e0a1e2485e2db38004774bb0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a710ec4c2d4ee31cf4cc3d890d0d74eab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a710ec4c2d4ee31cf4cc3d890d0d74eab">onContactRemoved</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a710ec4c2d4ee31cf4cc3d890d0d74eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a710ec4c2d4ee31cf4cc3d890d0d74eab">More...</a><br /></td></tr>
-<tr class="separator:a710ec4c2d4ee31cf4cc3d890d0d74eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a092e2c72aa901906b78fb93e949379d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a092e2c72aa901906b78fb93e949379d4">onContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a092e2c72aa901906b78fb93e949379d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a092e2c72aa901906b78fb93e949379d4">More...</a><br /></td></tr>
-<tr class="separator:a092e2c72aa901906b78fb93e949379d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4976c51107aee832703a73d4e5d9a5f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aa4976c51107aee832703a73d4e5d9a5f">InternalOnPress</a> (object sender, KeyPressEventArgs e)</td></tr>
+<tr class="memdesc:aa4976c51107aee832703a73d4e5d9a5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#aa4976c51107aee832703a73d4e5d9a5f">More...</a><br /></td></tr>
+<tr class="separator:aa4976c51107aee832703a73d4e5d9a5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a671ef648ced4a6dffee6b01f9634ef30"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a671ef648ced4a6dffee6b01f9634ef30">InternalOnKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
+<tr class="memdesc:a671ef648ced4a6dffee6b01f9634ef30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a671ef648ced4a6dffee6b01f9634ef30">More...</a><br /></td></tr>
+<tr class="separator:a671ef648ced4a6dffee6b01f9634ef30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff31bd1477ca5f8c1c149e366f2c7b4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2ff31bd1477ca5f8c1c149e366f2c7b4">InternalOnKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
+<tr class="memdesc:a2ff31bd1477ca5f8c1c149e366f2c7b4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a2ff31bd1477ca5f8c1c149e366f2c7b4">More...</a><br /></td></tr>
+<tr class="separator:a2ff31bd1477ca5f8c1c149e366f2c7b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a979ee47492bad6df63ba32b9dbb1c704"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a979ee47492bad6df63ba32b9dbb1c704">UpdateObject</a> (float deltaTime)</td></tr>
+<tr class="memdesc:a979ee47492bad6df63ba32b9dbb1c704"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that redirects the update call but checks if the object has been woken up first  <a href="#a979ee47492bad6df63ba32b9dbb1c704">More...</a><br /></td></tr>
+<tr class="separator:a979ee47492bad6df63ba32b9dbb1c704"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93e0af97c09b5a4bb6b7d21abc4e8350"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a93e0af97c09b5a4bb6b7d21abc4e8350">InternalOnInitialCollisionDetected</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
+<tr class="memdesc:a93e0af97c09b5a4bb6b7d21abc4e8350"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a93e0af97c09b5a4bb6b7d21abc4e8350">More...</a><br /></td></tr>
+<tr class="separator:a93e0af97c09b5a4bb6b7d21abc4e8350"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a927f618d553d6eaeada24c096ad62abd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a927f618d553d6eaeada24c096ad62abd">InternalOnCollisionEnded</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
+<tr class="memdesc:a927f618d553d6eaeada24c096ad62abd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a927f618d553d6eaeada24c096ad62abd">More...</a><br /></td></tr>
+<tr class="separator:a927f618d553d6eaeada24c096ad62abd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dd16b173ac8e708da957ddefc0d8804"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a1dd16b173ac8e708da957ddefc0d8804">InternalOnContactRemoved</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
+<tr class="memdesc:a1dd16b173ac8e708da957ddefc0d8804"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#a1dd16b173ac8e708da957ddefc0d8804">More...</a><br /></td></tr>
+<tr class="separator:a1dd16b173ac8e708da957ddefc0d8804"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc20f2d6087d8ad5b400f761e70feb5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aedc20f2d6087d8ad5b400f761e70feb5">InternalOnContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
+<tr class="memdesc:aedc20f2d6087d8ad5b400f761e70feb5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="#aedc20f2d6087d8ad5b400f761e70feb5">More...</a><br /></td></tr>
+<tr class="separator:aedc20f2d6087d8ad5b400f761e70feb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-attribs"></a>
 Package Attributes</h2></td></tr>
-<tr class="memitem:af85b8ed2cf54afdc62ff26c97327f747"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af85b8ed2cf54afdc62ff26c97327f747">_destructionPending</a></td></tr>
-<tr class="memdesc:af85b8ed2cf54afdc62ff26c97327f747"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is set to true if the Component or the owning game object is beeing destroyed  <a href="#af85b8ed2cf54afdc62ff26c97327f747">More...</a><br /></td></tr>
-<tr class="separator:af85b8ed2cf54afdc62ff26c97327f747"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5268f3a62a905de3ef98d17f423824fd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a5268f3a62a905de3ef98d17f423824fd">DestructionPending</a></td></tr>
+<tr class="memdesc:a5268f3a62a905de3ef98d17f423824fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is set to true if the Component or the owning game object is beeing destroyed  <a href="#a5268f3a62a905de3ef98d17f423824fd">More...</a><br /></td></tr>
+<tr class="separator:a5268f3a62a905de3ef98d17f423824fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a3a0c60daabec22ece46380583533fdf2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">Owner</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a3a0c60daabec22ece46380583533fdf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Owner of the component(null if not attached to any Game object)  <a href="#a3a0c60daabec22ece46380583533fdf2">More...</a><br /></td></tr>
 <tr class="separator:a3a0c60daabec22ece46380583533fdf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get]</code></td></tr>
 <tr class="memdesc:a788ef132870b1f40b77e7fd8824cfbc3"><td class="mdescLeft">&#160;</td><td class="mdescRight">A public flag that is set to true when the object has been truely removed from the systems  <a href="#a788ef132870b1f40b77e7fd8824cfbc3">More...</a><br /></td></tr>
 <tr class="separator:a788ef132870b1f40b77e7fd8824cfbc3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ab055bcc0f7ce75007688bd840bde5998"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ab055bcc0f7ce75007688bd840bde5998">_awake</a></td></tr>
-<tr class="memdesc:ab055bcc0f7ce75007688bd840bde5998"><td class="mdescLeft">&#160;</td><td class="mdescRight">A private flag indicating if the object is awake  <a href="#ab055bcc0f7ce75007688bd840bde5998">More...</a><br /></td></tr>
-<tr class="separator:ab055bcc0f7ce75007688bd840bde5998"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Base class of every component </p>
@@ -264,7 +258,7 @@ Private Attributes</h2></td></tr>
 
 <p>Virtual Function that gets called when the script is used by the system for the first time </p>
 
-<p>Reimplemented in <a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a77422cd58cddfe5d729c59c35a56c596">Engine.Debug.DebugConsoleComponent</a>, <a class="el" href="../../d7/d9a/class_engine_1_1_open_f_l_1_1_f_l_generator_component.html#ad338842f70b50cefd3260363ef2573ff">Engine.OpenFL.FLGeneratorComponent</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a21902074545a798453c3772718995ebf">Engine.Physics.Collider</a>, <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a0cfd0d2c9c52f21209b182613da4a725">Engine.UI.EventSystems.Button</a>, and <a class="el" href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html#a2d0fd1ba4a9caf0db635885712a66d85">Engine.Rendering.LightComponent</a>.</p>
+<p>Reimplemented in <a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a77422cd58cddfe5d729c59c35a56c596">Engine.Debug.DebugConsoleComponent</a>, <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a0cfd0d2c9c52f21209b182613da4a725">Engine.UI.EventSystems.Button</a>, <a class="el" href="../../d9/daa/class_engine_1_1_open_f_l_1_1_fl_generator_component.html#aa94c2f1f23f0455a7d17a21797fc2b18">Engine.OpenFL.FlGeneratorComponent</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a21902074545a798453c3772718995ebf">Engine.Physics.Collider</a>, and <a class="el" href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html#a2d0fd1ba4a9caf0db635885712a66d85">Engine.Rendering.LightComponent</a>.</p>
 
 </div>
 </div>
@@ -286,6 +280,335 @@ Private Attributes</h2></td></tr>
 <p>Adds this component to the list of components that will be removed at the end of the frame </p>
 
 <p>Implements <a class="el" href="../../dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html#ad275e8ada9b03cc80c3d2c419833e00c">Engine.Core.IDestroyable</a>.</p>
+
+</div>
+</div>
+<a id="a927f618d553d6eaeada24c096ad62abd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927f618d553d6eaeada24c096ad62abd">&#9670;&nbsp;</a></span>InternalOnCollisionEnded()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnCollisionEnded </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
+          <td class="paramname"><em>handler</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The other game object</td></tr>
+    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aedc20f2d6087d8ad5b400f761e70feb5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedc20f2d6087d8ad5b400f761e70feb5">&#9670;&nbsp;</a></span>InternalOnContactCreated()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnContactCreated </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&#160;</td>
+          <td class="paramname"><em>contact</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The other game object</td></tr>
+    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
+    <tr><td class="paramname">contact</td><td>The Contact point that was added</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a1dd16b173ac8e708da957ddefc0d8804"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1dd16b173ac8e708da957ddefc0d8804">&#9670;&nbsp;</a></span>InternalOnContactRemoved()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnContactRemoved </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
+          <td class="paramname"><em>handler</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&#160;</td>
+          <td class="paramname"><em>contact</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The other game object</td></tr>
+    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
+    <tr><td class="paramname">contact</td><td>The Contact point that was removed</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a93e0af97c09b5a4bb6b7d21abc4e8350"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93e0af97c09b5a4bb6b7d21abc4e8350">&#9670;&nbsp;</a></span>InternalOnInitialCollisionDetected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnInitialCollisionDetected </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
+          <td class="paramname"><em>other</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
+          <td class="paramname"><em>handler</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The other game object</td></tr>
+    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a671ef648ced4a6dffee6b01f9634ef30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a671ef648ced4a6dffee6b01f9634ef30">&#9670;&nbsp;</a></span>InternalOnKeyDown()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnKeyDown </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>sender</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">KeyboardKeyEventArgs&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sender</td><td></td></tr>
+    <tr><td class="paramname">e</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a2ff31bd1477ca5f8c1c149e366f2c7b4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ff31bd1477ca5f8c1c149e366f2c7b4">&#9670;&nbsp;</a></span>InternalOnKeyUp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnKeyUp </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>sender</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">KeyboardKeyEventArgs&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sender</td><td></td></tr>
+    <tr><td class="paramname">e</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aa4976c51107aee832703a73d4e5d9a5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4976c51107aee832703a73d4e5d9a5f">&#9670;&nbsp;</a></span>InternalOnPress()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Engine.Core.AbstractComponent.InternalOnPress </td>
+          <td>(</td>
+          <td class="paramtype">object&#160;</td>
+          <td class="paramname"><em>sender</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">KeyPressEventArgs&#160;</td>
+          <td class="paramname"><em>e</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">sender</td><td></td></tr>
+    <tr><td class="paramname">e</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -324,51 +647,6 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets called whenever a the object goes from contactpoints &gt; 0 to contact points == 0 </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The other game object</td></tr>
-    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a69f5c27e0a1e2485e2db38004774bb0d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69f5c27e0a1e2485e2db38004774bb0d">&#9670;&nbsp;</a></span>onCollisionEnded()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onCollisionEnded </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>handler</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">other</td><td>The other game object</td></tr>
@@ -424,57 +702,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">other</td><td>The other game object</td></tr>
     <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a092e2c72aa901906b78fb93e949379d4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a092e2c72aa901906b78fb93e949379d4">&#9670;&nbsp;</a></span>onContactCreated()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onContactCreated </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>handler</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&#160;</td>
-          <td class="paramname"><em>contact</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The other game object</td></tr>
-    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
+    <tr><td class="paramname">contact</td><td>The Contact point that was added</td></tr>
   </table>
   </dd>
 </dl>
@@ -526,57 +754,7 @@ Private Attributes</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">other</td><td>The other game object</td></tr>
     <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a710ec4c2d4ee31cf4cc3d890d0d74eab"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a710ec4c2d4ee31cf4cc3d890d0d74eab">&#9670;&nbsp;</a></span>onContactRemoved()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onContactRemoved </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>handler</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&#160;</td>
-          <td class="paramname"><em>contact</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The other game object</td></tr>
-    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
+    <tr><td class="paramname">contact</td><td>The Contact Point that is removed</td></tr>
   </table>
   </dd>
 </dl>
@@ -608,7 +786,7 @@ Private Attributes</h2></td></tr>
 
 <p>On Destroy gets called at the end of the frame when the destroyed objects are collected from the system. </p>
 
-<p>Reimplemented in <a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a758e732504bbae2b63988a2553503663">Engine.Debug.DebugConsoleComponent</a>, <a class="el" href="../../d7/d9a/class_engine_1_1_open_f_l_1_1_f_l_generator_component.html#acd42782e741ee3bbf6ce07e2f6f8be05">Engine.OpenFL.FLGeneratorComponent</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a2d254a9b610badbcbad1532ba5179d84">Engine.Physics.Collider</a>, <a class="el" href="../../d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html#aa6447add40c0e19ff9d926a72277e4d5">Engine.UI.UIImageRendererComponent</a>, <a class="el" href="../../dd/d75/class_engine_1_1_rendering_1_1_lit_mesh_renderer_component.html#a5b48f9de1a185f987eec35b3dd4b39d4">Engine.Rendering.LitMeshRendererComponent</a>, <a class="el" href="../../d8/d9c/class_engine_1_1_rendering_1_1_mesh_renderer_component.html#a4d8ded5e6fe2ba3020a569c763adf457">Engine.Rendering.MeshRendererComponent</a>, <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a6bf171fdf108223f67dbf634c2ec74c2">Engine.UI.EventSystems.Button</a>, <a class="el" href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html#a6ad1f0b03a53325274037e48434b2426">Engine.Rendering.LightComponent</a>, and <a class="el" href="../../d2/d30/class_engine_1_1_audio_1_1_audio_source_component.html#a21f38ca4bf0a1c1424b63555590ffff7">Engine.Audio.AudioSourceComponent</a>.</p>
+<p>Reimplemented in <a class="el" href="../../da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html#a6bf171fdf108223f67dbf634c2ec74c2">Engine.UI.EventSystems.Button</a>, <a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a758e732504bbae2b63988a2553503663">Engine.Debug.DebugConsoleComponent</a>, <a class="el" href="../../d9/daa/class_engine_1_1_open_f_l_1_1_fl_generator_component.html#aeaa8a8db3c8a802b78c753c43ca8f6fc">Engine.OpenFL.FlGeneratorComponent</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a2d254a9b610badbcbad1532ba5179d84">Engine.Physics.Collider</a>, <a class="el" href="../../d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a63f15a9c1f262a190e26958e8458011f">Engine.UI.UiImageRendererComponent</a>, <a class="el" href="../../dd/d75/class_engine_1_1_rendering_1_1_lit_mesh_renderer_component.html#a5b48f9de1a185f987eec35b3dd4b39d4">Engine.Rendering.LitMeshRendererComponent</a>, <a class="el" href="../../d8/d9c/class_engine_1_1_rendering_1_1_mesh_renderer_component.html#a4d8ded5e6fe2ba3020a569c763adf457">Engine.Rendering.MeshRendererComponent</a>, <a class="el" href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html#a6ad1f0b03a53325274037e48434b2426">Engine.Rendering.LightComponent</a>, and <a class="el" href="../../d2/d30/class_engine_1_1_audio_1_1_audio_source_component.html#a21f38ca4bf0a1c1424b63555590ffff7">Engine.Audio.AudioSourceComponent</a>.</p>
 
 </div>
 </div>
@@ -657,51 +835,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a862472cd1a1c08fe6a00fc7b5a1ecb01"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a862472cd1a1c08fe6a00fc7b5a1ecb01">&#9670;&nbsp;</a></span>onInitialCollisionDetected()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onInitialCollisionDetected </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>handler</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">other</td><td>The other game object</td></tr>
-    <tr><td class="paramname">handler</td><td>The Handler Containing Collision Data</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a0896bf6ddf85ef4c67aca23edf5ee429"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0896bf6ddf85ef4c67aca23edf5ee429">&#9670;&nbsp;</a></span>OnKeyDown()</h2>
 
@@ -737,51 +870,6 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets Called whenever a KeyDown Event gets raised </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td></td></tr>
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a7507468248c97348dca71e2050baed8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7507468248c97348dca71e2050baed8b">&#9670;&nbsp;</a></span>onKeyDown()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onKeyDown </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">KeyboardKeyEventArgs&#160;</td>
-          <td class="paramname"><em>e</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">sender</td><td></td></tr>
@@ -886,96 +974,6 @@ Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a4712a11c52389f3c20d361f3f44ed809"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4712a11c52389f3c20d361f3f44ed809">&#9670;&nbsp;</a></span>onKeyUp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onKeyUp </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">KeyboardKeyEventArgs&#160;</td>
-          <td class="paramname"><em>e</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td></td></tr>
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac990bd6ad84871b08af768e523c6d3c6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac990bd6ad84871b08af768e523c6d3c6">&#9670;&nbsp;</a></span>onPress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.onPress </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">KeyPressEventArgs&#160;</td>
-          <td class="paramname"><em>e</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal Function that is redirecting the Event but checking if the object has been woken up first </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td></td></tr>
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a722ed3fc01bf56e3cfca6a25c80f8b81"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a722ed3fc01bf56e3cfca6a25c80f8b81">&#9670;&nbsp;</a></span>Update()</h2>
 
@@ -1008,12 +1006,12 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p>Reimplemented in <a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a6357afa7ebeb39b5037f7118ba2026ae">Engine.Debug.DebugConsoleComponent</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a0b579ff2f09b12662e2c3ea2a90668db">Engine.Physics.Collider</a>, <a class="el" href="../../d2/d30/class_engine_1_1_audio_1_1_audio_source_component.html#aee796a28c1bc92ad6f99417e1d2509f6">Engine.Audio.AudioSourceComponent</a>, <a class="el" href="../../d3/d41/class_engine_1_1_rendering_1_1_light_component.html#a47ec635914e95dfb507c1adfe8dfce22">Engine.Rendering.LightComponent</a>, and <a class="el" href="../../d6/dad/class_engine_1_1_audio_1_1_audio_listener.html#a5032eaa975f5c76efbd78b78225e84a6">Engine.Audio.AudioListener</a>.</p>
+<p>Reimplemented in <a class="el" href="../../d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html#a6357afa7ebeb39b5037f7118ba2026ae">Engine.Debug.DebugConsoleComponent</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a0b579ff2f09b12662e2c3ea2a90668db">Engine.Physics.Collider</a>, <a class="el" href="../../d3/d25/class_engine_1_1_u_i_1_1_animations_1_1_animator.html#a9d2f1864b395a1c00073c08a96fb1309">Engine.UI.Animations.Animator</a>, <a class="el" href="../../d2/d30/class_engine_1_1_audio_1_1_audio_source_component.html#aee796a28c1bc92ad6f99417e1d2509f6">Engine.Audio.AudioSourceComponent</a>, and <a class="el" href="../../d6/dad/class_engine_1_1_audio_1_1_audio_listener.html#a5032eaa975f5c76efbd78b78225e84a6">Engine.Audio.AudioListener</a>.</p>
 
 </div>
 </div>
-<a id="af7556e803681d761064d967773c226a0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af7556e803681d761064d967773c226a0">&#9670;&nbsp;</a></span>updateObject()</h2>
+<a id="a979ee47492bad6df63ba32b9dbb1c704"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a979ee47492bad6df63ba32b9dbb1c704">&#9670;&nbsp;</a></span>UpdateObject()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1022,7 +1020,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.Core.AbstractComponent.updateObject </td>
+          <td class="memname">void Engine.Core.AbstractComponent.UpdateObject </td>
           <td>(</td>
           <td class="paramtype">float&#160;</td>
           <td class="paramname"><em>deltaTime</em></td><td>)</td>
@@ -1047,8 +1045,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab055bcc0f7ce75007688bd840bde5998"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab055bcc0f7ce75007688bd840bde5998">&#9670;&nbsp;</a></span>_awake</h2>
+<a id="a5268f3a62a905de3ef98d17f423824fd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5268f3a62a905de3ef98d17f423824fd">&#9670;&nbsp;</a></span>DestructionPending</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1057,31 +1055,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Engine.Core.AbstractComponent._awake</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A private flag indicating if the object is awake </p>
-
-</div>
-</div>
-<a id="af85b8ed2cf54afdc62ff26c97327f747"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af85b8ed2cf54afdc62ff26c97327f747">&#9670;&nbsp;</a></span>_destructionPending</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Core.AbstractComponent._destructionPending</td>
+          <td class="memname">bool Engine.Core.AbstractComponent.DestructionPending</td>
         </tr>
       </table>
   </td>
@@ -1111,7 +1085,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

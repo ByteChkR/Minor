@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -93,14 +93,25 @@ $(document).ready(function(){initNavTree('d8/dcf/class_engine_1_1_build_tools_1_
 <div class="title">Engine.BuildTools.Common.ProcessUtils Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Class that enables starting processes and have callbacks when they finished  
+ <a href="../../d8/dcf/class_engine_1_1_build_tools_1_1_common_1_1_process_utils.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac300c287b21354b81b8e436dc3675c31"><td class="memItemLeft" align="right" valign="top"><a id="ac300c287b21354b81b8e436dc3675c31"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>RunProcess</b> (string file, string args, Action waitAction)</td></tr>
-<tr class="separator:ac300c287b21354b81b8e436dc3675c31"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed36a398371f5d906a5b0cd80db12b87"><td class="memItemLeft" align="right" valign="top"><a id="aed36a398371f5d906a5b0cd80db12b87"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>RunActionAsCommand</b> (Action&lt; string[]&gt; action, string args, Action&lt; Exception &gt; onEnd)</td></tr>
+<tr class="separator:aed36a398371f5d906a5b0cd80db12b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad70aa7e308d00a7dc1d3163a71789d86"><td class="memItemLeft" align="right" valign="top"><a id="ad70aa7e308d00a7dc1d3163a71789d86"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>RunActionAsCommand</b> (Action&lt; string[]&gt; action, string[] args, Action&lt; Exception &gt; onEnd)</td></tr>
+<tr class="separator:ad70aa7e308d00a7dc1d3163a71789d86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab0640bcf8a895d476060f1cb6c12db"><td class="memItemLeft" align="right" valign="top"><a id="a0ab0640bcf8a895d476060f1cb6c12db"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>RunProcess</b> (string file, string args, Action waitAction, Action&lt; string &gt; writeLine=null)</td></tr>
+<tr class="separator:a0ab0640bcf8a895d476060f1cb6c12db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Class that enables starting processes and have callbacks when they finished </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine.BuildTools/Engine.BuildTools.Common/ProcessUtils.cs</li>
 </ul>
 </div><!-- contents -->

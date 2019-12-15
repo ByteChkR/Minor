@@ -7,7 +7,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_bu
     [ "GiveBack", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a1f9c3dea9bff41aea6c7db2d84853338", null ],
     [ "GiveBack", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a7096fe7c8caa1955dd985b0958bc4500", null ],
     [ "Take", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a8018df199313be5b5a4ff1ce3991010a", null ],
-    [ "TakeFromPoolIndex", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a743f3d5ea7ebd2cd9d7c471a9db56017", null ],
-    [ "MaximumPoolIndex", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a57d6fc040beab18228b314d3b9ebd07c", null ],
-    [ "pools", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a700bf64bb22c05759d55350fb3aa3085", null ]
+    [ "TakeFromPoolIndex", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html#a743f3d5ea7ebd2cd9d7c471a9db56017", null ]
 ];

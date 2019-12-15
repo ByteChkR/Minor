@@ -8,18 +8,7 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_
     [ "SolveIteration", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a563d680896fe0f9f3ef1d8b667ca2b9d", null ],
     [ "Update", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a8e980a7c4d19d23d915d8d993dcbf901", null ],
     [ "accumulatedImpulse", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#adc16776b81e17dcb23ac17fdf33901b1", null ],
-    [ "angularX", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#affeabbcdaec5deced96de01afb4ab9d2", null ],
-    [ "angularY", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#ae447f8a401d5ff9c51b188488852782f", null ],
-    [ "angularZ", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a6817635a09bacf7150675b6a2b99e694", null ],
-    [ "contactCount", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#acae1743ab8a34b63055901f9eef60f5e", null ],
-    [ "entityA", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a4d06fd461c9387d08ecc427c3f5fc59f", null ],
-    [ "entityADynamic", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#ad7249aacee4221222630662bf03cec2c", null ],
-    [ "entityB", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#af34b506af638e0a209f7863e67e9820c", null ],
-    [ "entityBDynamic", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a8ecd9ac5b2e0f33d0f0923403702f7aa", null ],
-    [ "friction", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#adcddcff55e3826e68f38300af2621ee3", null ],
-    [ "leverArms", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#ae335fe4afa8ca8dca8ffc97a1ed2558e", null ],
     [ "TotalTorque", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#acc7862a328af3417f86087f0f24815ae", null ],
-    [ "velocityToImpulse", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a0e7cb96898e859d249c52d750e68926c", null ],
     [ "ContactManifoldConstraint", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#a7c57562fb8c251b43d49d35a740b7108", null ],
     [ "RelativeVelocity", "dd/da5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_collision_1_1_twist_friction_constraint.html#af8be2b4be40a99dc593096ab9a516fd5", null ]
 ];

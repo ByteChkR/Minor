@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,8 +90,6 @@ $(document).ready(function(){initNavTree('dc/d20/class_engine_1_1_physics_1_1_co
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d2/dc4/class_engine_1_1_physics_1_1_collider-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.Collider Class Reference</div>  </div>
@@ -175,6 +173,12 @@ Properties</h2></td></tr>
 <tr class="memitem:a4d6c64a2d6a440dfc5464c09eee5e772"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a4d6c64a2d6a440dfc5464c09eee5e772">CollisionLayer</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a4d6c64a2d6a440dfc5464c09eee5e772"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Collision layer  <a href="#a4d6c64a2d6a440dfc5464c09eee5e772">More...</a><br /></td></tr>
 <tr class="separator:a4d6c64a2d6a440dfc5464c09eee5e772"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac986c26a22ce7225287cec25d4942ad3"><td class="memItemLeft" align="right" valign="top"><a id="ac986c26a22ce7225287cec25d4942ad3"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateRotation</b> = true<code> [get, set]</code></td></tr>
+<tr class="separator:ac986c26a22ce7225287cec25d4942ad3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a904b2207911c0a3206ef38e1842b3d23"><td class="memItemLeft" align="right" valign="top"><a id="a904b2207911c0a3206ef38e1842b3d23"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateTranslation</b> = true<code> [get, set]</code></td></tr>
+<tr class="separator:a904b2207911c0a3206ef38e1842b3d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab2b2bec435d1e058be3d44f3aa764206"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#ab2b2bec435d1e058be3d44f3aa764206">IsTrigger</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ab2b2bec435d1e058be3d44f3aa764206"><td class="mdescLeft">&#160;</td><td class="mdescRight">Property to get/set the collider state IsTrigger = true -&gt; No Collision solving. IsTrigger = false -&gt; Collision Solving  <a href="#ab2b2bec435d1e058be3d44f3aa764206">More...</a><br /></td></tr>
 <tr class="separator:ab2b2bec435d1e058be3d44f3aa764206"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -182,27 +186,9 @@ Properties</h2></td></tr>
 <tr class="memitem:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">Owner</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Owner of the component(null if not attached to any Game object)  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a3a0c60daabec22ece46380583533fdf2">More...</a><br /></td></tr>
 <tr class="separator:a3a0c60daabec22ece46380583533fdf2 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">Destroyed</a><code> [get]</code></td></tr>
 <tr class="memdesc:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">A public flag that is set to true when the object has been truely removed from the systems  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a788ef132870b1f40b77e7fd8824cfbc3">More...</a><br /></td></tr>
 <tr class="separator:a788ef132870b1f40b77e7fd8824cfbc3 inherit properties_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:aaec632d66d8a2a602830eab289f29c56"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#aaec632d66d8a2a602830eab289f29c56">~Collider</a> ()</td></tr>
-<tr class="memdesc:aaec632d66d8a2a602830eab289f29c56"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that will log a crash when the collider was not removed when the object is being garbage collected  <a href="#aaec632d66d8a2a602830eab289f29c56">More...</a><br /></td></tr>
-<tr class="separator:aaec632d66d8a2a602830eab289f29c56"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae963c5a3a45183b683f7bbef63fe176a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#ae963c5a3a45183b683f7bbef63fe176a">enforceTranslationConstraints</a> ()</td></tr>
-<tr class="memdesc:ae963c5a3a45183b683f7bbef63fe176a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that will modify the linear velocity to satisfy the constraints  <a href="#ae963c5a3a45183b683f7bbef63fe176a">More...</a><br /></td></tr>
-<tr class="separator:ae963c5a3a45183b683f7bbef63fe176a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af901e9a04c984c1a4b31ac5c8f484429"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#af901e9a04c984c1a4b31ac5c8f484429">enforceRotationConstraints</a> ()</td></tr>
-<tr class="memdesc:af901e9a04c984c1a4b31ac5c8f484429"><td class="mdescLeft">&#160;</td><td class="mdescRight">Function that will modify the angular velocity(indirectly) to satisfy the constraints by setting the InertiaTensorInverse to 0 on the specified axes(effectively having infinite rotational friction)  <a href="#af901e9a04c984c1a4b31ac5c8f484429">More...</a><br /></td></tr>
-<tr class="separator:af901e9a04c984c1a4b31ac5c8f484429"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a1fa792c371c2d46bd6191fea762f45a4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html#a1fa792c371c2d46bd6191fea762f45a4">_colliderRemoved</a></td></tr>
-<tr class="memdesc:a1fa792c371c2d46bd6191fea762f45a4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private flag if the collider has been removed from the physics engine  <a href="#a1fa792c371c2d46bd6191fea762f45a4">More...</a><br /></td></tr>
-<tr class="separator:a1fa792c371c2d46bd6191fea762f45a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -210,34 +196,34 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:a53903ba0c98df9345f882b62fd7bace1 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a53903ba0c98df9345f882b62fd7bace1">_Destroy</a> ()</td></tr>
 <tr class="memdesc:a53903ba0c98df9345f882b62fd7bace1 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal _Destroy function that will completely remove the component from the system This will get called outside any update loop. so its save to remove stuff here  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a53903ba0c98df9345f882b62fd7bace1">More...</a><br /></td></tr>
 <tr class="separator:a53903ba0c98df9345f882b62fd7bace1 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac990bd6ad84871b08af768e523c6d3c6 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac990bd6ad84871b08af768e523c6d3c6">onPress</a> (object sender, KeyPressEventArgs e)</td></tr>
-<tr class="memdesc:ac990bd6ad84871b08af768e523c6d3c6 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac990bd6ad84871b08af768e523c6d3c6">More...</a><br /></td></tr>
-<tr class="separator:ac990bd6ad84871b08af768e523c6d3c6 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7507468248c97348dca71e2050baed8b inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a7507468248c97348dca71e2050baed8b">onKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a7507468248c97348dca71e2050baed8b inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a7507468248c97348dca71e2050baed8b">More...</a><br /></td></tr>
-<tr class="separator:a7507468248c97348dca71e2050baed8b inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4712a11c52389f3c20d361f3f44ed809 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a4712a11c52389f3c20d361f3f44ed809">onKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a4712a11c52389f3c20d361f3f44ed809 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a4712a11c52389f3c20d361f3f44ed809">More...</a><br /></td></tr>
-<tr class="separator:a4712a11c52389f3c20d361f3f44ed809 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7556e803681d761064d967773c226a0 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af7556e803681d761064d967773c226a0">updateObject</a> (float deltaTime)</td></tr>
-<tr class="memdesc:af7556e803681d761064d967773c226a0 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that redirects the update call but checks if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af7556e803681d761064d967773c226a0">More...</a><br /></td></tr>
-<tr class="separator:af7556e803681d761064d967773c226a0 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a862472cd1a1c08fe6a00fc7b5a1ecb01 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a862472cd1a1c08fe6a00fc7b5a1ecb01">onInitialCollisionDetected</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
-<tr class="memdesc:a862472cd1a1c08fe6a00fc7b5a1ecb01 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a862472cd1a1c08fe6a00fc7b5a1ecb01">More...</a><br /></td></tr>
-<tr class="separator:a862472cd1a1c08fe6a00fc7b5a1ecb01 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a69f5c27e0a1e2485e2db38004774bb0d inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a69f5c27e0a1e2485e2db38004774bb0d">onCollisionEnded</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
-<tr class="memdesc:a69f5c27e0a1e2485e2db38004774bb0d inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a69f5c27e0a1e2485e2db38004774bb0d">More...</a><br /></td></tr>
-<tr class="separator:a69f5c27e0a1e2485e2db38004774bb0d inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a710ec4c2d4ee31cf4cc3d890d0d74eab inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a710ec4c2d4ee31cf4cc3d890d0d74eab">onContactRemoved</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a710ec4c2d4ee31cf4cc3d890d0d74eab inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a710ec4c2d4ee31cf4cc3d890d0d74eab">More...</a><br /></td></tr>
-<tr class="separator:a710ec4c2d4ee31cf4cc3d890d0d74eab inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a092e2c72aa901906b78fb93e949379d4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a092e2c72aa901906b78fb93e949379d4">onContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a092e2c72aa901906b78fb93e949379d4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a092e2c72aa901906b78fb93e949379d4">More...</a><br /></td></tr>
-<tr class="separator:a092e2c72aa901906b78fb93e949379d4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4976c51107aee832703a73d4e5d9a5f inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aa4976c51107aee832703a73d4e5d9a5f">InternalOnPress</a> (object sender, KeyPressEventArgs e)</td></tr>
+<tr class="memdesc:aa4976c51107aee832703a73d4e5d9a5f inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aa4976c51107aee832703a73d4e5d9a5f">More...</a><br /></td></tr>
+<tr class="separator:aa4976c51107aee832703a73d4e5d9a5f inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a671ef648ced4a6dffee6b01f9634ef30 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a671ef648ced4a6dffee6b01f9634ef30">InternalOnKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
+<tr class="memdesc:a671ef648ced4a6dffee6b01f9634ef30 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a671ef648ced4a6dffee6b01f9634ef30">More...</a><br /></td></tr>
+<tr class="separator:a671ef648ced4a6dffee6b01f9634ef30 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ff31bd1477ca5f8c1c149e366f2c7b4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2ff31bd1477ca5f8c1c149e366f2c7b4">InternalOnKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
+<tr class="memdesc:a2ff31bd1477ca5f8c1c149e366f2c7b4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a2ff31bd1477ca5f8c1c149e366f2c7b4">More...</a><br /></td></tr>
+<tr class="separator:a2ff31bd1477ca5f8c1c149e366f2c7b4 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a979ee47492bad6df63ba32b9dbb1c704 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a979ee47492bad6df63ba32b9dbb1c704">UpdateObject</a> (float deltaTime)</td></tr>
+<tr class="memdesc:a979ee47492bad6df63ba32b9dbb1c704 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that redirects the update call but checks if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a979ee47492bad6df63ba32b9dbb1c704">More...</a><br /></td></tr>
+<tr class="separator:a979ee47492bad6df63ba32b9dbb1c704 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93e0af97c09b5a4bb6b7d21abc4e8350 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a93e0af97c09b5a4bb6b7d21abc4e8350">InternalOnInitialCollisionDetected</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
+<tr class="memdesc:a93e0af97c09b5a4bb6b7d21abc4e8350 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a93e0af97c09b5a4bb6b7d21abc4e8350">More...</a><br /></td></tr>
+<tr class="separator:a93e0af97c09b5a4bb6b7d21abc4e8350 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a927f618d553d6eaeada24c096ad62abd inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a927f618d553d6eaeada24c096ad62abd">InternalOnCollisionEnded</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler)</td></tr>
+<tr class="memdesc:a927f618d553d6eaeada24c096ad62abd inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a927f618d553d6eaeada24c096ad62abd">More...</a><br /></td></tr>
+<tr class="separator:a927f618d553d6eaeada24c096ad62abd inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1dd16b173ac8e708da957ddefc0d8804 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a1dd16b173ac8e708da957ddefc0d8804">InternalOnContactRemoved</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
+<tr class="memdesc:a1dd16b173ac8e708da957ddefc0d8804 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a1dd16b173ac8e708da957ddefc0d8804">More...</a><br /></td></tr>
+<tr class="separator:a1dd16b173ac8e708da957ddefc0d8804 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aedc20f2d6087d8ad5b400f761e70feb5 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aedc20f2d6087d8ad5b400f761e70feb5">InternalOnContactCreated</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> handler, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
+<tr class="memdesc:aedc20f2d6087d8ad5b400f761e70feb5 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal Function that is redirecting the Event but checking if the object has been woken up first  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#aedc20f2d6087d8ad5b400f761e70feb5">More...</a><br /></td></tr>
+<tr class="separator:aedc20f2d6087d8ad5b400f761e70feb5 inherit pac_methods_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td colspan="2" onclick="javascript:toggleInherit('pac_attribs_class_engine_1_1_core_1_1_abstract_component')"><img src="../../closed.png" alt="-"/>&#160;Package Attributes inherited from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">Engine.Core.AbstractComponent</a></td></tr>
-<tr class="memitem:af85b8ed2cf54afdc62ff26c97327f747 inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af85b8ed2cf54afdc62ff26c97327f747">_destructionPending</a></td></tr>
-<tr class="memdesc:af85b8ed2cf54afdc62ff26c97327f747 inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is set to true if the Component or the owning game object is beeing destroyed  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#af85b8ed2cf54afdc62ff26c97327f747">More...</a><br /></td></tr>
-<tr class="separator:af85b8ed2cf54afdc62ff26c97327f747 inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5268f3a62a905de3ef98d17f423824fd inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a5268f3a62a905de3ef98d17f423824fd">DestructionPending</a></td></tr>
+<tr class="memdesc:a5268f3a62a905de3ef98d17f423824fd inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is set to true if the Component or the owning game object is beeing destroyed  <a href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a5268f3a62a905de3ef98d17f423824fd">More...</a><br /></td></tr>
+<tr class="separator:a5268f3a62a905de3ef98d17f423824fd inherit pac_attribs_class_engine_1_1_core_1_1_abstract_component"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html" title="Collider Component that is used to Connect the physics engine to the game systems ...">Collider</a> Component that is used to Connect the physics engine to the game systems </p>
@@ -316,33 +302,6 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aaec632d66d8a2a602830eab289f29c56"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaec632d66d8a2a602830eab289f29c56">&#9670;&nbsp;</a></span>~Collider()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Engine.Physics.Collider.~Collider </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Destructor that will log a crash when the collider was not removed when the object is being garbage collected </p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a21902074545a798453c3772718995ebf"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a21902074545a798453c3772718995ebf">&#9670;&nbsp;</a></span>Awake()</h2>
@@ -370,60 +329,6 @@ Additional Inherited Members</h2></td></tr>
 <p>Awake override that initially sets the physicsshape to the position of the gameobject </p>
 
 <p>Reimplemented from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#ac08030b2dc64ba2616e2f0169783ac94">Engine.Core.AbstractComponent</a>.</p>
-
-</div>
-</div>
-<a id="af901e9a04c984c1a4b31ac5c8f484429"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af901e9a04c984c1a4b31ac5c8f484429">&#9670;&nbsp;</a></span>enforceRotationConstraints()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Physics.Collider.enforceRotationConstraints </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Function that will modify the angular velocity(indirectly) to satisfy the constraints by setting the InertiaTensorInverse to 0 on the specified axes(effectively having infinite rotational friction) </p>
-
-</div>
-</div>
-<a id="ae963c5a3a45183b683f7bbef63fe176a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae963c5a3a45183b683f7bbef63fe176a">&#9670;&nbsp;</a></span>enforceTranslationConstraints()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Physics.Collider.enforceTranslationConstraints </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Function that will modify the linear velocity to satisfy the constraints </p>
 
 </div>
 </div>
@@ -541,31 +446,6 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Reimplemented from <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html#a722ed3fc01bf56e3cfca6a25c80f8b81">Engine.Core.AbstractComponent</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a1fa792c371c2d46bd6191fea762f45a4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fa792c371c2d46bd6191fea762f45a4">&#9670;&nbsp;</a></span>_colliderRemoved</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Physics.Collider._colliderRemoved</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Private flag if the collider has been removed from the physics engine </p>
 
 </div>
 </div>

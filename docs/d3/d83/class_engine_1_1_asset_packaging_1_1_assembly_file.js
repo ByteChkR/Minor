@@ -7,6 +7,6 @@ var class_engine_1_1_asset_packaging_1_1_assembly_file =
     [ "ReadSplittedFile", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ab91ae2b48280468dc5091db8712db5c6", null ],
     [ "UncompressZip", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#abe539d3d8b541b9df427fd1dde3b94f9", null ],
     [ "Assembly", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#ae8a19a4569ffa32f5580cabe470611c9", null ],
-    [ "Compression", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#a6d945408e6f239e327852ba3f990e8bd", null ],
-    [ "ManifestFilepaths", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#abc6fe126cbdaa4c0fa5588ebf80f1123", null ]
+    [ "ManifestFilepaths", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#abc6fe126cbdaa4c0fa5588ebf80f1123", null ],
+    [ "Compression", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html#a6d945408e6f239e327852ba3f990e8bd", null ]
 ];

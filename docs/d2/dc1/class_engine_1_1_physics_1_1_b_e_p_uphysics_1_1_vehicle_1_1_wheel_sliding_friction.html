@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -94,7 +94,6 @@ $(document).ready(function(){initNavTree('d2/dc1/class_engine_1_1_physics_1_1_b_
 <a href="#pac-methods">Package Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d6/dfe/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_sliding_friction-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Vehicle.WheelSlidingFriction Class Reference</div>  </div>
@@ -166,19 +165,19 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>accumulatedImpulse</
 <tr class="memitem:a4daa69c378267eb8808e5792d6ab7ab1"><td class="memItemLeft" align="right" valign="top"><a id="a4daa69c378267eb8808e5792d6ab7ab1"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b> = true</td></tr>
 <tr class="separator:a4daa69c378267eb8808e5792d6ab7ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f1fd7bce5eff9ffdc9fc39efbf1fa8b"><td class="memItemLeft" align="right" valign="top"><a id="a8f1fd7bce5eff9ffdc9fc39efbf1fa8b"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>numIterationsAtZeroImpulse</b></td></tr>
+<tr class="separator:a8f1fd7bce5eff9ffdc9fc39efbf1fa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7302ced876d0df1e732dacaf005b5c3"><td class="memItemLeft" align="right" valign="top"><a id="af7302ced876d0df1e732dacaf005b5c3"></a>
 <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>slidingFrictionAxis</b></td></tr>
 <tr class="separator:af7302ced876d0df1e732dacaf005b5c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abeb3dc6a772a8f7b1f1128c7feccf939"><td class="memItemLeft" align="right" valign="top"><a id="abeb3dc6a772a8f7b1f1128c7feccf939"></a>
 <a class="el" href="../../da/d4e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_settings.html">SolverSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solverSettings</b> = new <a class="el" href="../../da/d4e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_settings.html">SolverSettings</a>()</td></tr>
 <tr class="separator:abeb3dc6a772a8f7b1f1128c7feccf939"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8f1fd7bce5eff9ffdc9fc39efbf1fa8b"><td class="memItemLeft" align="right" valign="top"><a id="a8f1fd7bce5eff9ffdc9fc39efbf1fa8b"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>numIterationsAtZeroImpulse</b></td></tr>
-<tr class="separator:a8f1fd7bce5eff9ffdc9fc39efbf1fa8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a127e9a307f626956d0fc24c3c56e8b7e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_sliding_friction.html#a127e9a307f626956d0fc24c3c56e8b7e">BlendedCoefficient</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a127e9a307f626956d0fc24c3c56e8b7e"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_sliding_friction.html#a127e9a307f626956d0fc24c3c56e8b7e">BlendedCoefficient</a><code> [get]</code></td></tr>
 <tr class="memdesc:a127e9a307f626956d0fc24c3c56e8b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the coefficient of sliding friction between the wheel and support. This coefficient is the blended result of the supporting entity's friction and the wheel's friction.  <a href="#a127e9a307f626956d0fc24c3c56e8b7e">More...</a><br /></td></tr>
 <tr class="separator:a127e9a307f626956d0fc24c3c56e8b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6f249178c626a22ccf437d96291aa76"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_sliding_friction.html#ab6f249178c626a22ccf437d96291aa76">KineticCoefficient</a><code> [get, set]</code></td></tr>
@@ -203,56 +202,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>RelativeVelocity</b>
 <tr class="memitem:af9984e2928b2d56c9bca37d1573c77d9 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../da/d4e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_settings.html">SolverSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dc2/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings.html#af9984e2928b2d56c9bca37d1573c77d9">SolverSettings</a><code> [get]</code></td></tr>
 <tr class="memdesc:af9984e2928b2d56c9bca37d1573c77d9 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the solver settings for this constraint.  <a href="../../d5/dc2/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings.html#af9984e2928b2d56c9bca37d1573c77d9">More...</a><br /></td></tr>
 <tr class="separator:af9984e2928b2d56c9bca37d1573c77d9 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i_solver_settings"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a3cbb7457b71c6c0a95b1a81742e2b859"><td class="memItemLeft" align="right" valign="top"><a id="a3cbb7457b71c6c0a95b1a81742e2b859"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularAX</b></td></tr>
-<tr class="separator:a3cbb7457b71c6c0a95b1a81742e2b859"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4615e619dc85a8cb331839c183199eb"><td class="memItemLeft" align="right" valign="top"><a id="ab4615e619dc85a8cb331839c183199eb"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularAY</b></td></tr>
-<tr class="separator:ab4615e619dc85a8cb331839c183199eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7afce155ae4e9aa5f57d8ef92a432b6b"><td class="memItemLeft" align="right" valign="top"><a id="a7afce155ae4e9aa5f57d8ef92a432b6b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularAZ</b></td></tr>
-<tr class="separator:a7afce155ae4e9aa5f57d8ef92a432b6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a309207e52e2a7b09b0bcee2a47233d2f"><td class="memItemLeft" align="right" valign="top"><a id="a309207e52e2a7b09b0bcee2a47233d2f"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularBX</b></td></tr>
-<tr class="separator:a309207e52e2a7b09b0bcee2a47233d2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0d063b571b0e3d37e6bb41d8213b9fe"><td class="memItemLeft" align="right" valign="top"><a id="ae0d063b571b0e3d37e6bb41d8213b9fe"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularBY</b></td></tr>
-<tr class="separator:ae0d063b571b0e3d37e6bb41d8213b9fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ea1a9092fd3d0ddfed4e26a659c286d"><td class="memItemLeft" align="right" valign="top"><a id="a3ea1a9092fd3d0ddfed4e26a659c286d"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>angularBZ</b></td></tr>
-<tr class="separator:a3ea1a9092fd3d0ddfed4e26a659c286d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a827e4af1a54f29896dacf55ca37f6231"><td class="memItemLeft" align="right" valign="top"><a id="a827e4af1a54f29896dacf55ca37f6231"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>linearAX</b></td></tr>
-<tr class="separator:a827e4af1a54f29896dacf55ca37f6231"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18979e36eb2df0a1da509484fe6c28b6"><td class="memItemLeft" align="right" valign="top"><a id="a18979e36eb2df0a1da509484fe6c28b6"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>linearAY</b></td></tr>
-<tr class="separator:a18979e36eb2df0a1da509484fe6c28b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6efdf3d4f5f258a590ec6537ed5a3287"><td class="memItemLeft" align="right" valign="top"><a id="a6efdf3d4f5f258a590ec6537ed5a3287"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>linearAZ</b></td></tr>
-<tr class="separator:a6efdf3d4f5f258a590ec6537ed5a3287"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acba37828b7d815627bc16e58e4af9fd6"><td class="memItemLeft" align="right" valign="top"><a id="acba37828b7d815627bc16e58e4af9fd6"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>kineticCoefficient</b></td></tr>
-<tr class="separator:acba37828b7d815627bc16e58e4af9fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a258f60927f386bfb4b38634d94da97ce"><td class="memItemLeft" align="right" valign="top"><a id="a258f60927f386bfb4b38634d94da97ce"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>staticCoefficient</b></td></tr>
-<tr class="separator:a258f60927f386bfb4b38634d94da97ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5594c92cb47d2ec9360a8d1f2672b41a"><td class="memItemLeft" align="right" valign="top"><a id="a5594c92cb47d2ec9360a8d1f2672b41a"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>staticFrictionVelocityThreshold</b> = 5</td></tr>
-<tr class="separator:a5594c92cb47d2ec9360a8d1f2672b41a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d369197172013878123a29335a24cff"><td class="memItemLeft" align="right" valign="top"><a id="a0d369197172013878123a29335a24cff"></a>
-<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>vehicleEntity</b></td></tr>
-<tr class="separator:a0d369197172013878123a29335a24cff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad2d801b6c8d747a8b06f2528f04d0808"><td class="memItemLeft" align="right" valign="top"><a id="ad2d801b6c8d747a8b06f2528f04d0808"></a>
-<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>supportEntity</b></td></tr>
-<tr class="separator:ad2d801b6c8d747a8b06f2528f04d0808"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adc301c0bdd97d7d289d965cfd4afecb6"><td class="memItemLeft" align="right" valign="top"><a id="adc301c0bdd97d7d289d965cfd4afecb6"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityToImpulse</b></td></tr>
-<tr class="separator:adc301c0bdd97d7d289d965cfd4afecb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5752eedb61b926a6c5c8f6a877d05edd"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/dc1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_sliding_friction.html#a5752eedb61b926a6c5c8f6a877d05edd">supportIsDynamic</a></td></tr>
-<tr class="separator:a5752eedb61b926a6c5c8f6a877d05edd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Attempts to resist sliding motion of a vehicle. </p>
@@ -412,29 +361,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityToImpulse</b
 
 </div>
 </div>
-<a id="a5752eedb61b926a6c5c8f6a877d05edd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5752eedb61b926a6c5c8f6a877d05edd">&#9670;&nbsp;</a></span>supportIsDynamic</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Physics.BEPUphysics.Vehicle.WheelSlidingFriction.supportIsDynamic</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets the relative velocity along the sliding direction at the wheel contact. /summary&gt; </p>
-
-</div>
-</div>
 <a id="ad57b9b7e1eacf658fae859e5e2a8a5b8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad57b9b7e1eacf658fae859e5e2a8a5b8">&#9670;&nbsp;</a></span>TotalImpulse</h2>
 
@@ -467,7 +393,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityToImpulse</b
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -593,6 +519,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityToImpulse</b
 </div><div class="memdoc">
 
 <p>Gets the wheel that this sliding friction applies to. </p>
+<p>summary&gt; Gets the relative velocity along the sliding direction at the wheel contact. /summary&gt; </p>
 
 </div>
 </div>

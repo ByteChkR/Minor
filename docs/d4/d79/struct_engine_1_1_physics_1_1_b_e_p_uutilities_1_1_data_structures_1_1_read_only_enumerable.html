@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('d4/d79/struct_engine_1_1_physics_1_1_b
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../dd/ddd/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_read_only_enumerable-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUutilities.DataStructures.ReadOnlyEnumerable&lt; T &gt; Struct Template Reference</div>  </div>
@@ -109,7 +108,7 @@ Inheritance diagram for Engine.Physics.BEPUutilities.DataStructures.ReadOnlyEnum
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:af39eff467ddff3bb442d390c2682af76"><td class="memItemLeft" align="right" valign="top"><a id="af39eff467ddff3bb442d390c2682af76"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>ReadOnlyEnumerable</b> (IEnumerable&lt; T &gt; <a class="el" href="../../d4/d79/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_read_only_enumerable.html#a8826f20f48c64a3c60ef168626991484">enumerable</a>)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ReadOnlyEnumerable</b> (IEnumerable&lt; T &gt; enumerable)</td></tr>
 <tr class="separator:af39eff467ddff3bb442d390c2682af76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acb6b237b1306e1982efe2ca44b374d2f"><td class="memItemLeft" align="right" valign="top">IEnumerator&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d79/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_read_only_enumerable.html#acb6b237b1306e1982efe2ca44b374d2f">GetEnumerator</a> ()</td></tr>
 <tr class="memdesc:acb6b237b1306e1982efe2ca44b374d2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns an enumerator that iterates through the collection.  <a href="#acb6b237b1306e1982efe2ca44b374d2f">More...</a><br /></td></tr>
@@ -117,11 +116,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a142e30f5cc87992c7dd8c54491957dca"><td class="memItemLeft" align="right" valign="top"><a id="a142e30f5cc87992c7dd8c54491957dca"></a>
 IEnumerator IEnumerable.&#160;</td><td class="memItemRight" valign="bottom"><b>GetEnumerator</b> ()</td></tr>
 <tr class="separator:a142e30f5cc87992c7dd8c54491957dca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a8826f20f48c64a3c60ef168626991484"><td class="memItemLeft" align="right" valign="top">readonly IEnumerable&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/d79/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_read_only_enumerable.html#a8826f20f48c64a3c60ef168626991484">enumerable</a></td></tr>
-<tr class="separator:a8826f20f48c64a3c60ef168626991484"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Wraps an enumerable in a temporary enumeration struct. /summary&gt; typeparam name="T"&gt;Type of the enumerable being iterated.</p>
@@ -144,30 +138,6 @@ Private Attributes</h2></td></tr>
 <p>Returns an enumerator that iterates through the collection. </p>
 <dl class="section return"><dt>Returns</dt><dd>A T:System.Collections.Generic.IEnumerator`1 that can be used to iterate through the collection. </dd></dl>
 <p>&lt;filterpriority&gt;1&lt;/filterpriority&gt; </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8826f20f48c64a3c60ef168626991484"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8826f20f48c64a3c60ef168626991484">&#9670;&nbsp;</a></span>enumerable</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly IEnumerable&lt;T&gt; <a class="el" href="../../d4/d79/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_read_only_enumerable.html">Engine.Physics.BEPUutilities.DataStructures.ReadOnlyEnumerable</a>&lt; T &gt;.enumerable</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Constructs a new read only enumerable. /summary&gt; param name="enumerable"&gt;Enumerable to wrap.</p>
 
 </div>
 </div>

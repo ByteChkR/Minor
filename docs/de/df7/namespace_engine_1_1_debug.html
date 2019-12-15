@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -105,8 +105,14 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d34/class_engine_1_1_debug_1_1_engine_stage_information.html">EngineStageInformation</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="../../d1/db6/namespace_engine.html">Engine</a> Stage information that holds all informations regarding a Stage in the engine  <a href="../../de/d34/class_engine_1_1_debug_1_1_engine_stage_information.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d47/class_engine_1_1_debug_1_1_engine_statistics_manager.html">EngineStatisticsManager</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that keeps track of all possible statistics during the run of the engine  <a href="../../d8/d47/class_engine_1_1_debug_1_1_engine_statistics_manager.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html">GraphDrawingComponent</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Graph Drawing Component  <a href="../../d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d5d/class_engine_1_1_debug_1_1_graph_layout.html">GraphLayout</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Class that contains information on how the graph component will be set up  <a href="../../db/d5d/class_engine_1_1_debug_1_1_graph_layout.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html">Logger</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logging Class that binds the ADL Debugging framework and is used for all Console Output/Crashes.  <a href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html#details">More...</a><br /></td></tr>
@@ -120,56 +126,78 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:a05b1dc162a9a39654ddb4d4361b3f133"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">DebugChannel</a> : int { <br />
-&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133ace0be71e33226e4c1db2bcea5959f16b">DebugChannel.Log</a> = 1, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133a0eaadb4fcb48a0a0ed7bc9868be9fbaa">DebugChannel.Warning</a> = 1 &lt;&lt; 1, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133a902b0d55fddef6f8d651fe1035b7d4bd">DebugChannel.Error</a> = 1 &lt;&lt; 2, 
-<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133a63d72051e901c069f8aa1b32aa0c43bb">DebugChannel.Game</a> = 1 &lt;&lt; 3, 
+<tr class="memitem:a6b25a16804f9bf5c7b7f0d7a40a9a4a7"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">DebugChannel</a> { <br />
+&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7ace0be71e33226e4c1db2bcea5959f16b">DebugChannel.Log</a> = 1, 
+<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a0eaadb4fcb48a0a0ed7bc9868be9fbaa">DebugChannel.Warning</a> = 1 &lt;&lt; 1, 
+<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a902b0d55fddef6f8d651fe1035b7d4bd">DebugChannel.Error</a> = 1 &lt;&lt; 2, 
+<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a63d72051e901c069f8aa1b32aa0c43bb">DebugChannel.Game</a> = 1 &lt;&lt; 3, 
 <br />
-&#160;&#160;<b>UNNAMED_CHANNEL0</b> = 1 &lt;&lt; 4, 
-<b>UNNAMED_CHANNEL1</b> = 1 &lt;&lt; 5, 
-<b>UNNAMED_CHANNEL2</b> = 1 &lt;&lt; 6, 
-<b>UNNAMED_CHANNEL3</b> = 1 &lt;&lt; 7, 
+&#160;&#160;<a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7a0a40e3c91a3a55c9a37428c6d194d0e5">DebugChannel.AI</a> = 1 &lt;&lt; 4, 
+<b>AssetPackaging</b> = 1 &lt;&lt; 5, 
+<b>Audio</b> = 1 &lt;&lt; 6, 
+<b>Core</b> = 1 &lt;&lt; 7, 
 <br />
-&#160;&#160;<b>UNNAMED_CHANNEL4</b> = 1 &lt;&lt; 8, 
-<b>UNNAMED_CHANNEL5</b> = 1 &lt;&lt; 9, 
-<b>UNNAMED_CHANNEL6</b> = 1 &lt;&lt; 10, 
-<b>UNNAMED_CHANNEL7</b> = 1 &lt;&lt; 11, 
+&#160;&#160;<b>Debug</b> = 1 &lt;&lt; 8, 
+<b>IO</b> = 1 &lt;&lt; 9, 
+<b>OpenCL</b> = 1 &lt;&lt; 10, 
+<b>OpenGL</b> = 1 &lt;&lt; 11, 
 <br />
-&#160;&#160;<b>UNNAMED_CHANNEL8</b> = 1 &lt;&lt; 12, 
-<b>UNNAMED_CHANNEL9</b> = 1 &lt;&lt; 13, 
-<b>UNNAMED_CHANNEL10</b> = 1 &lt;&lt; 14, 
-<b>UNNAMED_CHANNEL11</b> = 1 &lt;&lt; 15, 
+&#160;&#160;<b>OpenFL</b> = 1 &lt;&lt; 12, 
+<b>Physics</b> = 1 &lt;&lt; 13, 
+<b>Rendering</b> = 1 &lt;&lt; 14, 
+<b>TextProcessor</b> = 1 &lt;&lt; 15, 
 <br />
-&#160;&#160;<b>UNNAMED_CHANNEL12</b> = 1 &lt;&lt; 16, 
-<b>Physics</b> = 1 &lt;&lt; 17, 
-<b>Exception</b> = 1 &lt;&lt; 18, 
-<b>Core</b> = 1 &lt;&lt; 19, 
+&#160;&#160;<b>UI</b> = 1 &lt;&lt; 16, 
+<b>Animations</b> = 1 &lt;&lt; 17, 
+<b>WFC</b> = 1 &lt;&lt; 18, 
+<b>Exception</b> = 1 &lt;&lt; 19, 
 <br />
-&#160;&#160;<b>Rendering</b> = 1 &lt;&lt; 20, 
-<b>TextProcessor</b> = 1 &lt;&lt; 21, 
-<b>OpenFL</b> = 1 &lt;&lt; 22, 
-<b>OpenCL</b> = 1 &lt;&lt; 23, 
+&#160;&#160;<b>Engine</b> = 1 &lt;&lt; 20, 
+<b>EngineAI</b> = Engine | AI, 
+<b>EngineAssetPackaging</b> = Engine | AssetPackaging, 
+<b>EngineAudio</b> = Engine | Audio, 
 <br />
-&#160;&#160;<b>OpenGL</b> = 1 &lt;&lt; 24, 
-<b>UI</b> = 1 &lt;&lt; 25, 
-<b>Audio</b> = 1 &lt;&lt; 26, 
-<b>Engine</b> = 1 &lt;&lt; 27, 
+&#160;&#160;<b>EngineCore</b> = Engine | Core, 
+<b>EngineDebug</b> = Engine | Debug, 
+<b>EngineIO</b> = Engine | IO, 
+<b>EngineOpenCL</b> = Engine | OpenCL, 
 <br />
-&#160;&#160;<b>Debug</b> = 1 &lt;&lt; 28, 
-<b>IO</b> = 1 &lt;&lt; 29, 
-<b>WFC</b> = 1 &lt;&lt; 30, 
-<b>EngineCore</b> = Engine | Core, 
+&#160;&#160;<b>EngineOpenGL</b> = Engine | OpenGL, 
+<b>EngineOpenFL</b> = Engine | OpenFL, 
+<b>EnginePhysics</b> = Engine | Physics, 
+<b>EngineRendering</b> = Engine | Rendering, 
 <br />
-&#160;&#160;<b>EngineRendering</b> = Engine | Rendering
+&#160;&#160;<b>EngineTextProcessor</b> = Engine | TextProcessor, 
+<b>EngineUI</b> = Engine | UI, 
+<b>EngineUIAnimations</b> = EngineUI | Animations, 
+<b>EngineWFC</b> = Engine | WFC, 
+<br />
+&#160;&#160;<b>GameAI</b> = Game | AI, 
+<b>GameAssetPackaging</b> = Game | AssetPackaging, 
+<b>GameAudio</b> = Game | Audio, 
+<b>GameCore</b> = Game | Core, 
+<br />
+&#160;&#160;<b>GameDebug</b> = Game | Debug, 
+<b>GameIO</b> = Game | IO, 
+<b>GameOpenCL</b> = Game | OpenCL, 
+<b>GameOpenGL</b> = Game | OpenGL, 
+<br />
+&#160;&#160;<b>GameOpenFL</b> = Game | OpenFL, 
+<b>GamePhysics</b> = Game | Physics, 
+<b>GameRendering</b> = Game | Rendering, 
+<b>GameTextProcessor</b> = Game | TextProcessor, 
+<br />
+&#160;&#160;<b>GameUI</b> = Game | UI, 
+<b>GameUIAnimations</b> = GameUI | Animations, 
+<b>GameWFC</b> = Game | WFC
 <br />
  }</td></tr>
-<tr class="memdesc:a05b1dc162a9a39654ddb4d4361b3f133"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of Channels that can be used to send logs  <a href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">More...</a><br /></td></tr>
-<tr class="separator:a05b1dc162a9a39654ddb4d4361b3f133"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memdesc:a6b25a16804f9bf5c7b7f0d7a40a9a4a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">An enum of Channels that can be used to send logs  <a href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">More...</a><br /></td></tr>
+<tr class="separator:a6b25a16804f9bf5c7b7f0d7a40a9a4a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="a05b1dc162a9a39654ddb4d4361b3f133"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a05b1dc162a9a39654ddb4d4361b3f133">&#9670;&nbsp;</a></span>DebugChannel</h2>
+<a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">&#9670;&nbsp;</a></span>DebugChannel</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -178,7 +206,7 @@ Enumerations</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">enum <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">Engine.Debug.DebugChannel</a> : int</td>
+          <td class="memname">enum <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">Engine.Debug.DebugChannel</a></td>
         </tr>
       </table>
   </td>
@@ -190,13 +218,15 @@ Enumerations</h2></td></tr>
 
 <p>An enum of Channels that can be used to send logs </p>
 <table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133ace0be71e33226e4c1db2bcea5959f16b"></a>Log&#160;</td><td class="fielddoc"><p>Used to Write Logs to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
+<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7ace0be71e33226e4c1db2bcea5959f16b"></a>Log&#160;</td><td class="fielddoc"><p>Used to Write Logs to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133a0eaadb4fcb48a0a0ed7bc9868be9fbaa"></a>Warning&#160;</td><td class="fielddoc"><p>Used to Write Warnings to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
+<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a0eaadb4fcb48a0a0ed7bc9868be9fbaa"></a>Warning&#160;</td><td class="fielddoc"><p>Used to Write Warnings to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Used to Write Errors to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
+<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a902b0d55fddef6f8d651fe1035b7d4bd"></a>Error&#160;</td><td class="fielddoc"><p>Used to Write Errors to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
 </td></tr>
-<tr><td class="fieldname"><a id="a05b1dc162a9a39654ddb4d4361b3f133a63d72051e901c069f8aa1b32aa0c43bb"></a>Game&#160;</td><td class="fielddoc"><p>Used to Write Logs from Game Code to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
+<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a63d72051e901c069f8aa1b32aa0c43bb"></a>Game&#160;</td><td class="fielddoc"><p>Used to Write Logs from Game Code to the <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html">Debug</a> System </p>
+</td></tr>
+<tr><td class="fieldname"><a id="a6b25a16804f9bf5c7b7f0d7a40a9a4a7a0a40e3c91a3a55c9a37428c6d194d0e5"></a>AI&#160;</td><td class="fielddoc"><p>Namespaces. </p>
 </td></tr>
 </table>
 

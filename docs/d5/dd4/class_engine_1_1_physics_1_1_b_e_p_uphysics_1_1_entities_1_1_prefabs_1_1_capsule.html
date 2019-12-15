@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('d5/dd4/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="../../d7/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_capsule-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Entities.Prefabs.Capsule Class Reference</div>  </div>
@@ -130,7 +129,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a31fcfb78082ccff7ba62f6ebe01d0b24"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_capsule.html#a31fcfb78082ccff7ba62f6ebe01d0b24">GetCapsuleInformation</a> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> start, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> end, out <a class="el" href="../../db/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_quaternion.html">Quaternion</a> orientation, out float length)</td></tr>
+<tr class="memitem:a31fcfb78082ccff7ba62f6ebe01d0b24"><td class="memItemLeft" align="right" valign="top"><a id="a31fcfb78082ccff7ba62f6ebe01d0b24"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetCapsuleInformation</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> start, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> end, out <a class="el" href="../../db/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_quaternion.html">Quaternion</a> orientation, out float length)</td></tr>
 <tr class="separator:a31fcfb78082ccff7ba62f6ebe01d0b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -141,66 +141,12 @@ Properties</h2></td></tr>
 <tr class="memitem:ad291a7c6c8575f639b843087dd8a6293"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_capsule.html#ad291a7c6c8575f639b843087dd8a6293">Radius</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ad291a7c6c8575f639b843087dd8a6293"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the radius of the capsule.  <a href="#ad291a7c6c8575f639b843087dd8a6293">More...</a><br /></td></tr>
 <tr class="separator:ad291a7c6c8575f639b843087dd8a6293"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a81c491ebd5b771869fa0de6bb9c44f12"><td class="memItemLeft" align="right" valign="top"><a id="a81c491ebd5b771869fa0de6bb9c44f12"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Capsule</b> (float len, float rad)</td></tr>
-<tr class="separator:a81c491ebd5b771869fa0de6bb9c44f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a57a049373e2ea90ac76fb9b6db47c9f6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_capsule.html#a57a049373e2ea90ac76fb9b6db47c9f6">Capsule</a> (float len, float rad, float mass)</td></tr>
-<tr class="separator:a57a049373e2ea90ac76fb9b6db47c9f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Pill-shaped object that can collide and move. After making an entity, add it to a <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a> so that the engine can manage it. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a57a049373e2ea90ac76fb9b6db47c9f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a57a049373e2ea90ac76fb9b6db47c9f6">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[1/6]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Engine.Physics.BEPUphysics.Entities.Prefabs.Capsule.Capsule </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>len</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>rad</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>mass</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Computes an orientation and length from a line segment. /summary&gt; param name="start"&gt;Starting point of the line segment.</p>
-<p>param name="end"&gt;Endpoint of the line segment.</p>
-<p>param name="orientation"&gt;Orientation of a line that fits the line segment.</p>
-<p>param name="length"&gt;Length of the line segment.</p>
-
-</div>
-</div>
 <a id="ada6d34596ebc1578d44eb26c0c1154c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada6d34596ebc1578d44eb26c0c1154c7">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[2/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ada6d34596ebc1578d44eb26c0c1154c7">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[1/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -243,7 +189,7 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a69263fd27b168d1f213f85d5686b5dcb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69263fd27b168d1f213f85d5686b5dcb">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[3/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a69263fd27b168d1f213f85d5686b5dcb">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[2/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -294,7 +240,7 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a72db760de7dfce65ee27fb20249cec65"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72db760de7dfce65ee27fb20249cec65">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[4/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a72db760de7dfce65ee27fb20249cec65">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[3/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -338,7 +284,7 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="a59170624aa1327aea5d22e5fb49d6c95"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59170624aa1327aea5d22e5fb49d6c95">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[5/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a59170624aa1327aea5d22e5fb49d6c95">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[4/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -389,7 +335,7 @@ Private Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="ac2684f2e67f621f7abfd4b1bd713a01c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac2684f2e67f621f7abfd4b1bd713a01c">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[6/6]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2684f2e67f621f7abfd4b1bd713a01c">&#9670;&nbsp;</a></span>Capsule() <span class="overload">[5/5]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -429,58 +375,6 @@ Private Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a31fcfb78082ccff7ba62f6ebe01d0b24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a31fcfb78082ccff7ba62f6ebe01d0b24">&#9670;&nbsp;</a></span>GetCapsuleInformation()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.Physics.BEPUphysics.Entities.Prefabs.Capsule.GetCapsuleInformation </td>
-          <td>(</td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>start</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td>
-          <td class="paramname"><em>end</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out <a class="el" href="../../db/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_quaternion.html">Quaternion</a>&#160;</td>
-          <td class="paramname"><em>orientation</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out float&#160;</td>
-          <td class="paramname"><em>length</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Constructs a new kinematic capsule. /summary&gt; param name="start"&gt;Line segment start point.</p>
-<p>param name="end"&gt;Line segment end point.</p>
-<p>param name="radius"&gt;Radius of the capsule to expand the line segment by.</p>
 
 </div>
 </div>
@@ -530,6 +424,10 @@ Private Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Gets or sets the radius of the capsule. </p>
+<p>summary&gt; Computes an orientation and length from a line segment. /summary&gt; param name="start"&gt;Starting point of the line segment.</p>
+<p>param name="end"&gt;Endpoint of the line segment.</p>
+<p>param name="orientation"&gt;Orientation of a line that fits the line segment.</p>
+<p>param name="length"&gt;Length of the line segment.</p>
 
 </div>
 </div>

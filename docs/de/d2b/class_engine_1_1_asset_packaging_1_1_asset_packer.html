@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,12 +90,14 @@ $(document).ready(function(){initNavTree('de/d2b/class_engine_1_1_asset_packagin
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../d6/dc3/class_engine_1_1_asset_packaging_1_1_asset_packer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.AssetPackaging.AssetPacker Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Main Class that is used to interface with the Asset Packaging Library  
+ <a href="../../de/d2b/class_engine_1_1_asset_packaging_1_1_asset_packer.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
@@ -111,29 +113,22 @@ static Dictionary&lt; string, Tuple&lt; int, MemoryStream &gt; &gt;&#160;</td><t
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:acf1d88b1f78a87569821b474db396445"><td class="memItemLeft" align="right" valign="top"><a id="acf1d88b1f78a87569821b474db396445"></a>
-const int&#160;</td><td class="memItemRight" valign="bottom"><b>KILOBYTE</b> = 1024</td></tr>
-<tr class="separator:acf1d88b1f78a87569821b474db396445"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab23c177542d958e681131e56fec18316"><td class="memItemLeft" align="right" valign="top"><a id="ab23c177542d958e681131e56fec18316"></a>
+const int&#160;</td><td class="memItemRight" valign="bottom"><b>Kilobyte</b> = 1024</td></tr>
+<tr class="separator:ab23c177542d958e681131e56fec18316"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
-<tr class="memitem:a3ec0746a2a75dcb552e432d39cff1868"><td class="memItemLeft" align="right" valign="top"><a id="a3ec0746a2a75dcb552e432d39cff1868"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>MAXSIZE_KILOBYTES</b> = 1024</td></tr>
-<tr class="separator:a3ec0746a2a75dcb552e432d39cff1868"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a086734c01469fcaa827a909bc4f41b46"><td class="memItemLeft" align="right" valign="top"><a id="a086734c01469fcaa827a909bc4f41b46"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>PACK_SIZE</b> =&gt; KILOBYTE * MAXSIZE_KILOBYTES</td></tr>
-<tr class="separator:a086734c01469fcaa827a909bc4f41b46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:aa9c8f189003389d484facbcc028c880a"><td class="memItemLeft" align="right" valign="top"><a id="aa9c8f189003389d484facbcc028c880a"></a>
-static <a class="el" href="../../dc/d94/class_engine_1_1_asset_packaging_1_1_asset_result.html">AssetResult</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParseResult</b> (Stream s)</td></tr>
-<tr class="separator:aa9c8f189003389d484facbcc028c880a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0a77ff12cb3776929b57ff45b1b5563"><td class="memItemLeft" align="right" valign="top"><a id="af0a77ff12cb3776929b57ff45b1b5563"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetID</b> (string[] path, int id)</td></tr>
-<tr class="separator:af0a77ff12cb3776929b57ff45b1b5563"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f28f978e722388dab2d6655b97233a7"><td class="memItemLeft" align="right" valign="top"><a id="a7f28f978e722388dab2d6655b97233a7"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>MaxsizeKilobytes</b> = 1024</td></tr>
+<tr class="separator:a7f28f978e722388dab2d6655b97233a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6061a97bedb4621aa26254ac1a143383"><td class="memItemLeft" align="right" valign="top"><a id="a6061a97bedb4621aa26254ac1a143383"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>PackSize</b> =&gt; Kilobyte * MaxsizeKilobytes</td></tr>
+<tr class="separator:a6061a97bedb4621aa26254ac1a143383"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Main Class that is used to interface with the Asset Packaging Library </p>
+</div><hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine.AssetPackaging/AssetPacker.cs</li>
 </ul>
 </div><!-- contents -->

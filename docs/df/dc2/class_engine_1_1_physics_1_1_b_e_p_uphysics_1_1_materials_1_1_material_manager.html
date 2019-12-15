@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('df/dc2/class_engine_1_1_physics_1_1_b_
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../d4/da6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Materials.MaterialManager Class Reference</div>  </div>
@@ -99,7 +98,8 @@ $(document).ready(function(){initNavTree('df/dc2/class_engine_1_1_physics_1_1_b_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ac60e4fbb0428fde0a79b1a5bd2b0956c"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#ac60e4fbb0428fde0a79b1a5bd2b0956c">GetInteractionProperties</a> (<a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a> materialA, <a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a> materialB, out <a class="el" href="../../d2/d0b/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_interaction_properties.html">InteractionProperties</a> properties)</td></tr>
+<tr class="memitem:ac60e4fbb0428fde0a79b1a5bd2b0956c"><td class="memItemLeft" align="right" valign="top"><a id="ac60e4fbb0428fde0a79b1a5bd2b0956c"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetInteractionProperties</b> (<a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a> materialA, <a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a> materialB, out <a class="el" href="../../d2/d0b/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_interaction_properties.html">InteractionProperties</a> properties)</td></tr>
 <tr class="separator:ac60e4fbb0428fde0a79b1a5bd2b0956c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac946cd15a82e53a979ce3fb44276328b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#ac946cd15a82e53a979ce3fb44276328b">DefaultMaterialBlender</a> (<a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a> a, <a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a> b, out <a class="el" href="../../d2/d0b/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_interaction_properties.html">InteractionProperties</a> properties)</td></tr>
 <tr class="memdesc:ac946cd15a82e53a979ce3fb44276328b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Blender used to combine materials into a pair's interaction properties.  <a href="#ac946cd15a82e53a979ce3fb44276328b">More...</a><br /></td></tr>
@@ -120,44 +120,9 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>DefaultBounci
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a6f12f521be37c2ec5e51e35a4e301eed"><td class="memItemLeft" align="right" valign="top"><a id="a6f12f521be37c2ec5e51e35a4e301eed"></a>
-static Dictionary&lt; <a class="el" href="../../d3/d54/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_pair.html">MaterialPair</a>, <a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a613e8b87f8180c938786570d726723c5">MaterialBlender</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>MaterialInteractions</b><code> [get, set]</code></td></tr>
+<tr class="memitem:a6f12f521be37c2ec5e51e35a4e301eed"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; <a class="el" href="../../d3/d54/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_pair.html">MaterialPair</a>, <a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a613e8b87f8180c938786570d726723c5">MaterialBlender</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a6f12f521be37c2ec5e51e35a4e301eed">MaterialInteractions</a><code> [get, set]</code></td></tr>
 <tr class="separator:a6f12f521be37c2ec5e51e35a4e301eed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a8068cd5136dec621b91d43d217e910f4"><td class="memItemLeft" align="right" valign="top">static&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a8068cd5136dec621b91d43d217e910f4">MaterialManager</a> ()</td></tr>
-<tr class="separator:a8068cd5136dec621b91d43d217e910f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a8068cd5136dec621b91d43d217e910f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8068cd5136dec621b91d43d217e910f4">&#9670;&nbsp;</a></span>MaterialManager()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static Engine.Physics.BEPUphysics.Materials.MaterialManager.MaterialManager </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Computes the interaction properties between two materials. /summary&gt; param name="materialA"&gt;First material of the pair.</p>
-<p>param name="materialB"&gt;Second material of the pair.</p>
-<p>param name="properties"&gt;Interaction properties between two materials.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac946cd15a82e53a979ce3fb44276328b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac946cd15a82e53a979ce3fb44276328b">&#9670;&nbsp;</a></span>DefaultMaterialBlender()</h2>
@@ -208,49 +173,6 @@ Static Private Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="ac60e4fbb0428fde0a79b1a5bd2b0956c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac60e4fbb0428fde0a79b1a5bd2b0956c">&#9670;&nbsp;</a></span>GetInteractionProperties()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.Physics.BEPUphysics.Materials.MaterialManager.GetInteractionProperties </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a>&#160;</td>
-          <td class="paramname"><em>materialA</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/db5/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material.html">Material</a>&#160;</td>
-          <td class="paramname"><em>materialB</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">out <a class="el" href="../../d2/d0b/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_interaction_properties.html">InteractionProperties</a>&#160;</td>
-          <td class="paramname"><em>properties</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets or sets the material interactions dictionary. This dictionary contains all the special relationships between specific materials. These interaction properties will override properties obtained by normal blending. /summary&gt; </p>
 
 </div>
 </div>
@@ -323,6 +245,32 @@ Static Private Member Functions</h2></td></tr>
 
 <p>Delegate used to blend two materials together when there is no special handler defined in the MaterialInteractions dictionary. </p>
 <p>summary&gt; Default coefficient of kinetic friction. Defaults to 0.8. /summary&gt; </p>
+
+</div>
+</div>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="a6f12f521be37c2ec5e51e35a4e301eed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f12f521be37c2ec5e51e35a4e301eed">&#9670;&nbsp;</a></span>MaterialInteractions</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Dictionary&lt;<a class="el" href="../../d3/d54/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_pair.html">MaterialPair</a>, <a class="el" href="../../df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a613e8b87f8180c938786570d726723c5">MaterialBlender</a>&gt; Engine.Physics.BEPUphysics.Materials.MaterialManager.MaterialInteractions</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>summary&gt; Computes the interaction properties between two materials. /summary&gt; param name="materialA"&gt;First material of the pair.</p>
+<p>param name="materialB"&gt;Second material of the pair.</p>
+<p>param name="properties"&gt;Interaction properties between two materials.</p>
 
 </div>
 </div>

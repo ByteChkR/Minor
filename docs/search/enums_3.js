@@ -1,7 +1,7 @@
 var searchData=
 [
   ['datatypes',['DataTypes',['../d5/da2/namespace_engine_1_1_open_c_l_1_1_type_enums.html#adf36ddfd616b5963efae55dff063c4f5',1,'Engine::OpenCL::TypeEnums']]],
-  ['debugchannel',['DebugChannel',['../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133',1,'Engine::Debug']]],
+  ['debugchannel',['DebugChannel',['../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7',1,'Engine::Debug']]],
   ['deviceaffinitydomain',['DeviceAffinityDomain',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#a87e6c594162f72440661cfca7aa8e3bf',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],
   ['deviceexecutioncapabilities',['DeviceExecutionCapabilities',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#a2ae729a631c311064b08273335919c31',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],
   ['devicefloatingpointconfiguration',['DeviceFloatingPointConfiguration',['../d9/d89/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices.html#abc54c921f4cfb0b969d1fb7d757e67a6',1,'Engine::OpenCL::DotNetCore::Interop::Devices']]],

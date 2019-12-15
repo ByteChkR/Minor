@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -99,15 +99,15 @@ $(document).ready(function(){initNavTree('d0/d13/class_engine_1_1_physics_1_1_b_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
+<tr class="memitem:a717a0fa382886dbd839210cc96431955"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html#a717a0fa382886dbd839210cc96431955">AccumulatedTime</a></td></tr>
+<tr class="memdesc:a717a0fa382886dbd839210cc96431955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Amount of time accumulated by previous calls to <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html#aa11bb03cd9a5f9ea38736ac1b4ea3349" title="Performs as many timesteps as necessary to get as close to the elapsed time as possible. ">Space.Update(float)</a> that has not yet been simulated.  <a href="#a717a0fa382886dbd839210cc96431955">More...</a><br /></td></tr>
+<tr class="separator:a717a0fa382886dbd839210cc96431955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a167f4d70c912a137927d75a6d0833358"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html#a167f4d70c912a137927d75a6d0833358">MaximumTimeStepsPerFrame</a> = 3</td></tr>
 <tr class="memdesc:a167f4d70c912a137927d75a6d0833358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum number of timesteps to perform during a given frame when <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html#aa11bb03cd9a5f9ea38736ac1b4ea3349" title="Performs as many timesteps as necessary to get as close to the elapsed time as possible. ">Space.Update(float)</a> is used. The unsimulated time will be accumulated for subsequent calls to <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html#aa11bb03cd9a5f9ea38736ac1b4ea3349" title="Performs as many timesteps as necessary to get as close to the elapsed time as possible. ">Space.Update(float)</a>. Defaults to 3.  <a href="#a167f4d70c912a137927d75a6d0833358">More...</a><br /></td></tr>
 <tr class="separator:a167f4d70c912a137927d75a6d0833358"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07d946c57cae352494408150099fe295"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html#a07d946c57cae352494408150099fe295">TimeStepDuration</a> = 1f / 60</td></tr>
 <tr class="memdesc:a07d946c57cae352494408150099fe295"><td class="mdescLeft">&#160;</td><td class="mdescRight">Length of each integration step. Calling a <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a>'s Update() method moves time forward this much. The other method, <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html#aa11bb03cd9a5f9ea38736ac1b4ea3349" title="Performs as many timesteps as necessary to get as close to the elapsed time as possible. ">Space.Update(float)</a>, will try to move time forward by the amount specified in the parameter by taking steps of TimeStepDuration size. Defaults to 1/60.  <a href="#a07d946c57cae352494408150099fe295">More...</a><br /></td></tr>
 <tr class="separator:a07d946c57cae352494408150099fe295"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a717a0fa382886dbd839210cc96431955"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html#a717a0fa382886dbd839210cc96431955">AccumulatedTime</a></td></tr>
-<tr class="memdesc:a717a0fa382886dbd839210cc96431955"><td class="mdescLeft">&#160;</td><td class="mdescRight">Amount of time accumulated by previous calls to <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html#aa11bb03cd9a5f9ea38736ac1b4ea3349" title="Performs as many timesteps as necessary to get as close to the elapsed time as possible. ">Space.Update(float)</a> that has not yet been simulated.  <a href="#a717a0fa382886dbd839210cc96431955">More...</a><br /></td></tr>
-<tr class="separator:a717a0fa382886dbd839210cc96431955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains settings for the instance's time step. /summary&gt; </p>

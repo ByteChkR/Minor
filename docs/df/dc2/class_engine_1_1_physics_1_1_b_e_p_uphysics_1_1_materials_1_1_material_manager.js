@@ -1,6 +1,5 @@
 var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager =
 [
-    [ "MaterialManager", "df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a8068cd5136dec621b91d43d217e910f4", null ],
     [ "DefaultMaterialBlender", "df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#ac946cd15a82e53a979ce3fb44276328b", null ],
     [ "GetInteractionProperties", "df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#ac60e4fbb0428fde0a79b1a5bd2b0956c", null ],
     [ "DefaultBounciness", "df/dc2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_material_manager.html#a633c005c9b11d3ab0b8a7764a0bd87d5", null ],

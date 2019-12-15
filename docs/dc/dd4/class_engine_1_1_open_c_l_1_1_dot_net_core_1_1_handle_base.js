@@ -1,7 +1,6 @@
 var class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base =
 [
     [ "HandleBase", "dc/dd4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base.html#a92619caad6f6f408217463bc30566c53", null ],
-    [ "~HandleBase", "dc/dd4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base.html#a42df6dd923e373ffac509d2ba31439cc", null ],
     [ "Dispose", "dc/dd4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base.html#a2b501f6625fd1cdfc19fa1a7c5602eb4", null ],
     [ "Dispose", "dc/dd4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base.html#a7c3e7a0922a502a6e81f7209e233248d", null ],
     [ "Equals", "dc/dd4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base.html#a3f2d7af737367ce859ac02b20a1ea6cd", null ],

@@ -1,8 +1,5 @@
 var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node =
 [
-    [ "XComparer", "d8/dea/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_x_comparer.html", "d8/dea/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_x_comparer" ],
-    [ "YComparer", "d8/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_y_comparer.html", "d8/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_y_comparer" ],
-    [ "ZComparer", "d1/dfd/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_z_comparer.html", "d1/dfd/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_z_comparer" ],
     [ "Analyze", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a5644d328d80d733b111882281b1ac69a", null ],
     [ "CollectMultithreadingNodes", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#ae91fe7c8dbd602c58b068681484fef22", null ],
     [ "GetMultithreadedOverlaps", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a5dd8e44789c7b62af2c8eb592fda8034", null ],
@@ -12,7 +9,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hier
     [ "GetOverlaps", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#ac7fd52a71a422fed7eca003ad36a400e", null ],
     [ "MeasureSubtreeCost", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a6726751cf3ba63825c2bf8466b46aac5", null ],
     [ "PostRefit", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a16e9b602b37b43184157d67054a3aa2d", null ],
-    [ "Reconstruct", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#adb0c5c6ef3ed810f818ecd3033629826", null ],
     [ "Refit", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a45095ed8b68a46f19708b6bcbcb7afa7", null ],
     [ "Remove", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a548ac453f1dac99efdb14d887c3477cc", null ],
     [ "RemoveFast", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a5f77b5cacc12f563cf2b4955932f56d9", null ],
@@ -30,8 +26,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hier
     [ "maximumVolume", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#aace9e1fb7441751248a9cb02eac91028", null ],
     [ "MaximumVolumeScale", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#aaa1e7e5ac4e4906a909036485dc6e64b", null ],
     [ "nodeListPool", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a38f9cfbaee339e296216f9ead1ac03cf", null ],
-    [ "nodePool", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a6d0e96080d2850912b5e10f03edec2fb", null ],
-    [ "xComparer", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#aa67a56793ed6f6bbf3848298b9564b31", null ],
-    [ "yComparer", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a90bcc612ab85dac6ddb5ffc9f409dd7d", null ],
-    [ "zComparer", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a50b2fc939e67f7902fef61ff3f9dcd09", null ]
+    [ "nodePool", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html#a6d0e96080d2850912b5e10f03edec2fb", null ]
 ];

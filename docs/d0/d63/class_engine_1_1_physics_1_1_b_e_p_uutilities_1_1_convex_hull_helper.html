@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('d0/d63/class_engine_1_1_physics_1_1_b_
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../db/df0/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_convex_hull_helper-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUutilities.ConvexHullHelper Class Reference</div>  </div>
@@ -144,33 +143,6 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:ac9e782b4e4b7b4dc0fae460d5bfdd01e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../dc/d4f/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_locking_resource_pool.html">LockingResourcePool</a>&lt; HashSet&lt; <a class="el" href="../../dc/d30/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_convex_hull_helper_1_1_blocked_cell.html">BlockedCell</a> &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d63/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_convex_hull_helper.html#ac9e782b4e4b7b4dc0fae460d5bfdd01e">BlockedCellSets</a></td></tr>
 <tr class="memdesc:ac9e782b4e4b7b4dc0fae460d5bfdd01e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains and manufactures cell sets used by the redundant point remover. To minimize memory usage, this can be cleared after using the RemoveRedundantPoints if it isn't going to be used again.  <a href="#ac9e782b4e4b7b4dc0fae460d5bfdd01e">More...</a><br /></td></tr>
 <tr class="separator:ac9e782b4e4b7b4dc0fae460d5bfdd01e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:af17ab55dbb02568fdef9b56f8d86d494"><td class="memItemLeft" align="right" valign="top"><a id="af17ab55dbb02568fdef9b56f8d86d494"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>MaintainEdge</b> (int a, int b, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; edges)</td></tr>
-<tr class="separator:af17ab55dbb02568fdef9b56f8d86d494"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a082cc57505723cea404564909243e6e1"><td class="memItemLeft" align="right" valign="top"><a id="a082cc57505723cea404564909243e6e1"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetExtremePoint</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> direction, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; outsidePoints)</td></tr>
-<tr class="separator:a082cc57505723cea404564909243e6e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5a2f973c9e3a3648aaafbd9cf0135739"><td class="memItemLeft" align="right" valign="top"><a id="a5a2f973c9e3a3648aaafbd9cf0135739"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>GetExtremePoints</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> direction, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, out float maximumDot, out float minimumDot, out int maximumIndex, out int minimumIndex)</td></tr>
-<tr class="separator:a5a2f973c9e3a3648aaafbd9cf0135739"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dd91b0046b7aaaea210213f7ae05242"><td class="memItemLeft" align="right" valign="top"><a id="a9dd91b0046b7aaaea210213f7ae05242"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeInitialTetrahedron</b> (<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; outsidePointCandidates, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; triangleIndices, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> centroid)</td></tr>
-<tr class="separator:a9dd91b0046b7aaaea210213f7ae05242"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1a52ebb61cc25aea72c552110bb7c60"><td class="memItemLeft" align="right" valign="top"><a id="ad1a52ebb61cc25aea72c552110bb7c60"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveInsidePoints</b> (<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; triangleIndices, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; outsidePoints)</td></tr>
-<tr class="separator:ad1a52ebb61cc25aea72c552110bb7c60"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aacefbfdb16546b8493890584cb5346dd"><td class="memItemLeft" align="right" valign="top"><a id="aacefbfdb16546b8493890584cb5346dd"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>FindNormal</b> (<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; indices, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, int triangleIndex, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> normal)</td></tr>
-<tr class="separator:aacefbfdb16546b8493890584cb5346dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a564444ac62c669e4442d92c70bb6bd9f"><td class="memItemLeft" align="right" valign="top"><a id="a564444ac62c669e4442d92c70bb6bd9f"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsTriangleVisibleFromPoint</b> (<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; indices, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, int triangleIndex, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> point)</td></tr>
-<tr class="separator:a564444ac62c669e4442d92c70bb6bd9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a01f71ebc4a53ab7821e61a07330b5eeb"><td class="memItemLeft" align="right" valign="top"><a id="a01f71ebc4a53ab7821e61a07330b5eeb"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>VerifyWindings</b> (<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; int &gt; newIndices, <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> &gt; points, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> centroid)</td></tr>
-<tr class="separator:a01f71ebc4a53ab7821e61a07330b5eeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Processes vertex data into convex hulls. </p>

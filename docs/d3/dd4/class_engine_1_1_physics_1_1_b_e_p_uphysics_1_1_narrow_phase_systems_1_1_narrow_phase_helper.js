@@ -1,6 +1,5 @@
 var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_helper =
 [
-    [ "NarrowPhaseHelper", "d3/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_helper.html#a88a6df1947a98eecb696e127bd2ebbf9", null ],
     [ "GetPairHandler", "d3/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_helper.html#a0390a2c007f73493a6fdf32732eab603", null ],
     [ "GetPairHandler", "d3/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_helper.html#ab362e5d73cca727ad75b74d7fde03011", null ],
     [ "GetPairHandler", "d3/dd4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_helper.html#a706ce0bb63ad9a35f98096090b49d0d2", null ],

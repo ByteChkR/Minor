@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -93,17 +93,20 @@ $(document).ready(function(){initNavTree('da/d21/class_engine_1_1_core_1_1_inter
 <div class="title">Engine.Core.Interpolations Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>A Class containing smoothing functions and other smoothing related functionality  
+ <a href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a308d7348ad1bbf439fd8464b8a63b2ac"><td class="memItemLeft" align="right" valign="top"><a id="a308d7348ad1bbf439fd8464b8a63b2ac"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>FakePow</b> (float basis, float exp)</td></tr>
+<tr class="memitem:a308d7348ad1bbf439fd8464b8a63b2ac"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#a308d7348ad1bbf439fd8464b8a63b2ac">FakePow</a> (float basis, float exp)</td></tr>
+<tr class="memdesc:a308d7348ad1bbf439fd8464b8a63b2ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Uses a smart way to approximate a Math.Pow call. Only accurrate in range [0,1]  <a href="#a308d7348ad1bbf439fd8464b8a63b2ac">More...</a><br /></td></tr>
 <tr class="separator:a308d7348ad1bbf439fd8464b8a63b2ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae3f74697734e6b0b05dada32f215cb78"><td class="memItemLeft" align="right" valign="top"><a id="ae3f74697734e6b0b05dada32f215cb78"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>IntPow</b> (float basis, int exp)</td></tr>
+<tr class="memitem:ae3f74697734e6b0b05dada32f215cb78"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#ae3f74697734e6b0b05dada32f215cb78">IntPow</a> (float basis, int exp)</td></tr>
+<tr class="memdesc:ae3f74697734e6b0b05dada32f215cb78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer Pow Function that is a lot faster than Math.Pow  <a href="#ae3f74697734e6b0b05dada32f215cb78">More...</a><br /></td></tr>
 <tr class="separator:ae3f74697734e6b0b05dada32f215cb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4eb69020bf82f17bc59b48f38ba22f28"><td class="memItemLeft" align="right" valign="top"><a id="a4eb69020bf82f17bc59b48f38ba22f28"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>InverseLerp</b> (float min, float max, float value)</td></tr>
+<tr class="memitem:a4eb69020bf82f17bc59b48f38ba22f28"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#a4eb69020bf82f17bc59b48f38ba22f28">InverseLerp</a> (float min, float max, float value)</td></tr>
+<tr class="memdesc:a4eb69020bf82f17bc59b48f38ba22f28"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs an inverse lerp between min and max  <a href="#a4eb69020bf82f17bc59b48f38ba22f28">More...</a><br /></td></tr>
 <tr class="separator:a4eb69020bf82f17bc59b48f38ba22f28"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51582d5f3e7f7b7f9deb809afcd486a5"><td class="memItemLeft" align="right" valign="top"><a id="a51582d5f3e7f7b7f9deb809afcd486a5"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>Slerp</b> (float t)</td></tr>
@@ -147,19 +150,294 @@ static float&#160;</td><td class="memItemRight" valign="bottom"><b>SmoothStepArc
 <tr class="memitem:a17fec63e4e9722f73721d4858d1c6302"><td class="memItemLeft" align="right" valign="top"><a id="a17fec63e4e9722f73721d4858d1c6302"></a>
 static float&#160;</td><td class="memItemRight" valign="bottom"><b>BellCurve</b> (float t, float smoothness=1)</td></tr>
 <tr class="separator:a17fec63e4e9722f73721d4858d1c6302"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08c1c47c77c57d0ae99d5e9c0ad0f140"><td class="memItemLeft" align="right" valign="top"><a id="a08c1c47c77c57d0ae99d5e9c0ad0f140"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>NormalizedBezier</b> (float B, float C, float t)</td></tr>
-<tr class="separator:a08c1c47c77c57d0ae99d5e9c0ad0f140"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3c506e1ff2788bd844395c52f311301"><td class="memItemLeft" align="right" valign="top"><a id="ad3c506e1ff2788bd844395c52f311301"></a>
-static Vector3 []&#160;</td><td class="memItemRight" valign="bottom"><b>Chaikin</b> (Vector3[] pts, int smoothness)</td></tr>
+<tr class="memitem:afb40447e0cb8f425af96923039313da7"><td class="memItemLeft" align="right" valign="top"><a id="afb40447e0cb8f425af96923039313da7"></a>
+static float&#160;</td><td class="memItemRight" valign="bottom"><b>NormalizedBezier</b> (float b, float c, float t)</td></tr>
+<tr class="separator:afb40447e0cb8f425af96923039313da7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad3c506e1ff2788bd844395c52f311301"><td class="memItemLeft" align="right" valign="top">static Vector3 []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#ad3c506e1ff2788bd844395c52f311301">Chaikin</a> (Vector3[] pts, int smoothness)</td></tr>
+<tr class="memdesc:ad3c506e1ff2788bd844395c52f311301"><td class="mdescLeft">&#160;</td><td class="mdescRight">Wrapper for the Chaikin Algorithm that enables executing it multiple times and as such increasing the smoothness of the line  <a href="#ad3c506e1ff2788bd844395c52f311301">More...</a><br /></td></tr>
 <tr class="separator:ad3c506e1ff2788bd844395c52f311301"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae00783efbcf0843d1f732b31ee8c4a85"><td class="memItemLeft" align="right" valign="top"><a id="ae00783efbcf0843d1f732b31ee8c4a85"></a>
-static Vector3 []&#160;</td><td class="memItemRight" valign="bottom"><b>Chaikin</b> (Vector3[] pts)</td></tr>
+<tr class="memitem:ae00783efbcf0843d1f732b31ee8c4a85"><td class="memItemLeft" align="right" valign="top">static Vector3 []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#ae00783efbcf0843d1f732b31ee8c4a85">Chaikin</a> (Vector3[] pts)</td></tr>
+<tr class="memdesc:ae00783efbcf0843d1f732b31ee8c4a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">A not commonly known smoothing algorithm that is really fast  <a href="#ae00783efbcf0843d1f732b31ee8c4a85">More...</a><br /></td></tr>
 <tr class="separator:ae00783efbcf0843d1f732b31ee8c4a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac905a94c0e4451a4642905389760a5ee"><td class="memItemLeft" align="right" valign="top"><a id="ac905a94c0e4451a4642905389760a5ee"></a>
-static List&lt; Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SmoothLine</b> (List&lt; Vector3 &gt; cornerPoints, float smoothness)</td></tr>
+<tr class="memitem:ac905a94c0e4451a4642905389760a5ee"><td class="memItemLeft" align="right" valign="top">static List&lt; Vector3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d21/class_engine_1_1_core_1_1_interpolations.html#ac905a94c0e4451a4642905389760a5ee">SmoothLine</a> (List&lt; Vector3 &gt; cornerPoints, float smoothness)</td></tr>
+<tr class="memdesc:ac905a94c0e4451a4642905389760a5ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">A more conventional (yet still fast) line smoothing algorithm  <a href="#ac905a94c0e4451a4642905389760a5ee">More...</a><br /></td></tr>
 <tr class="separator:ac905a94c0e4451a4642905389760a5ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>A Class containing smoothing functions and other smoothing related functionality </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad3c506e1ff2788bd844395c52f311301"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad3c506e1ff2788bd844395c52f311301">&#9670;&nbsp;</a></span>Chaikin() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Vector3 [] Engine.Core.Interpolations.Chaikin </td>
+          <td>(</td>
+          <td class="paramtype">Vector3 []&#160;</td>
+          <td class="paramname"><em>pts</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>smoothness</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Wrapper for the Chaikin Algorithm that enables executing it multiple times and as such increasing the smoothness of the line </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pts</td><td></td></tr>
+    <tr><td class="paramname">smoothness</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ae00783efbcf0843d1f732b31ee8c4a85"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae00783efbcf0843d1f732b31ee8c4a85">&#9670;&nbsp;</a></span>Chaikin() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Vector3 [] Engine.Core.Interpolations.Chaikin </td>
+          <td>(</td>
+          <td class="paramtype">Vector3 []&#160;</td>
+          <td class="paramname"><em>pts</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A not commonly known smoothing algorithm that is really fast </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pts</td><td>the points to smooth</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the smoothed points(note: the new array size is now (pts.Length - 2) * 2 + 2</dd></dl>
+
+</div>
+</div>
+<a id="a308d7348ad1bbf439fd8464b8a63b2ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a308d7348ad1bbf439fd8464b8a63b2ac">&#9670;&nbsp;</a></span>FakePow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Engine.Core.Interpolations.FakePow </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>basis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>exp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Uses a smart way to approximate a Math.Pow call. Only accurrate in range [0,1] </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">basis</td><td></td></tr>
+    <tr><td class="paramname">exp</td><td>exponent</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>basis ^ exponent</dd></dl>
+
+</div>
+</div>
+<a id="ae3f74697734e6b0b05dada32f215cb78"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3f74697734e6b0b05dada32f215cb78">&#9670;&nbsp;</a></span>IntPow()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Engine.Core.Interpolations.IntPow </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>basis</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>exp</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Integer Pow Function that is a lot faster than Math.Pow </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">basis</td><td></td></tr>
+    <tr><td class="paramname">exp</td><td>exponent</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>basis ^ exponent</dd></dl>
+
+</div>
+</div>
+<a id="a4eb69020bf82f17bc59b48f38ba22f28"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4eb69020bf82f17bc59b48f38ba22f28">&#9670;&nbsp;</a></span>InverseLerp()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static float Engine.Core.Interpolations.InverseLerp </td>
+          <td>(</td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>min</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>max</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>value</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Performs an inverse lerp between min and max </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">min</td><td>minimum value</td></tr>
+    <tr><td class="paramname">max</td><td>maximum value</td></tr>
+    <tr><td class="paramname">value</td><td>T</td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="ac905a94c0e4451a4642905389760a5ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac905a94c0e4451a4642905389760a5ee">&#9670;&nbsp;</a></span>SmoothLine()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static List&lt;Vector3&gt; Engine.Core.Interpolations.SmoothLine </td>
+          <td>(</td>
+          <td class="paramtype">List&lt; Vector3 &gt;&#160;</td>
+          <td class="paramname"><em>cornerPoints</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">float&#160;</td>
+          <td class="paramname"><em>smoothness</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A more conventional (yet still fast) line smoothing algorithm </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">cornerPoints</td><td>the points to smooth</td></tr>
+    <tr><td class="paramname">smoothness</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine/Core/Interpolations.cs</li>
 </ul>

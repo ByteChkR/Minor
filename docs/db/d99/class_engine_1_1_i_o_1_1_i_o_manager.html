@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -93,22 +93,255 @@ $(document).ready(function(){initNavTree('db/d99/class_engine_1_1_i_o_1_1_i_o_ma
 <div class="title">Engine.IO.IOManager Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Wrapper for Specific System.IO Calls It will resolve the filename either with files from the disk or with files embedded in an assembly  
+ <a href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:ad825dd50131b2863a5258db3bcf41ad2"><td class="memItemLeft" align="right" valign="top"><a id="ad825dd50131b2863a5258db3bcf41ad2"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>Exists</b> (string filename)</td></tr>
+<tr class="memitem:ad825dd50131b2863a5258db3bcf41ad2"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#ad825dd50131b2863a5258db3bcf41ad2">Exists</a> (string filename)</td></tr>
+<tr class="memdesc:ad825dd50131b2863a5258db3bcf41ad2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the file exists on either the disk or in the assembly  <a href="#ad825dd50131b2863a5258db3bcf41ad2">More...</a><br /></td></tr>
 <tr class="separator:ad825dd50131b2863a5258db3bcf41ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a443c188a516aa153ba0e6f726265bce4"><td class="memItemLeft" align="right" valign="top"><a id="a443c188a516aa153ba0e6f726265bce4"></a>
-static bool&#160;</td><td class="memItemRight" valign="bottom"><b>FolderExists</b> (string foldername)</td></tr>
+<tr class="memitem:a443c188a516aa153ba0e6f726265bce4"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#a443c188a516aa153ba0e6f726265bce4">FolderExists</a> (string foldername)</td></tr>
+<tr class="memdesc:a443c188a516aa153ba0e6f726265bce4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns true if the folder exists on either the disk or in the assembly  <a href="#a443c188a516aa153ba0e6f726265bce4">More...</a><br /></td></tr>
 <tr class="separator:a443c188a516aa153ba0e6f726265bce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9450f0488fd83f1f77875613e1de1010"><td class="memItemLeft" align="right" valign="top"><a id="a9450f0488fd83f1f77875613e1de1010"></a>
-static string []&#160;</td><td class="memItemRight" valign="bottom"><b>GetFiles</b> (string foldername, string searchPattern)</td></tr>
+<tr class="memitem:a5cea9af5cf1eb8c8d6289954029141bf"><td class="memItemLeft" align="right" valign="top">static string []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#a5cea9af5cf1eb8c8d6289954029141bf">ReadAllLines</a> (string path)</td></tr>
+<tr class="memdesc:a5cea9af5cf1eb8c8d6289954029141bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads all lines from the file provided  <a href="#a5cea9af5cf1eb8c8d6289954029141bf">More...</a><br /></td></tr>
+<tr class="separator:a5cea9af5cf1eb8c8d6289954029141bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d677c66eae58124b54b1c2f3ac17ec"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#a00d677c66eae58124b54b1c2f3ac17ec">ReadAllText</a> (string path)</td></tr>
+<tr class="memdesc:a00d677c66eae58124b54b1c2f3ac17ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads all Text from a file  <a href="#a00d677c66eae58124b54b1c2f3ac17ec">More...</a><br /></td></tr>
+<tr class="separator:a00d677c66eae58124b54b1c2f3ac17ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9450f0488fd83f1f77875613e1de1010"><td class="memItemLeft" align="right" valign="top">static string []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#a9450f0488fd83f1f77875613e1de1010">GetFiles</a> (string foldername, string searchPattern)</td></tr>
+<tr class="memdesc:a9450f0488fd83f1f77875613e1de1010"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns files in a specfied directory  <a href="#a9450f0488fd83f1f77875613e1de1010">More...</a><br /></td></tr>
 <tr class="separator:a9450f0488fd83f1f77875613e1de1010"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7d7212cf42770e7f11ce5ab5167c0782"><td class="memItemLeft" align="right" valign="top"><a id="a7d7212cf42770e7f11ce5ab5167c0782"></a>
-static Stream&#160;</td><td class="memItemRight" valign="bottom"><b>GetStream</b> (string filename)</td></tr>
+<tr class="memitem:a7d7212cf42770e7f11ce5ab5167c0782"><td class="memItemLeft" align="right" valign="top">static Stream&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html#a7d7212cf42770e7f11ce5ab5167c0782">GetStream</a> (string filename)</td></tr>
+<tr class="memdesc:a7d7212cf42770e7f11ce5ab5167c0782"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the byte stream of the file specified  <a href="#a7d7212cf42770e7f11ce5ab5167c0782">More...</a><br /></td></tr>
 <tr class="separator:a7d7212cf42770e7f11ce5ab5167c0782"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Wrapper for Specific System.IO Calls It will resolve the filename either with files from the disk or with files embedded in an assembly </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="ad825dd50131b2863a5258db3bcf41ad2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad825dd50131b2863a5258db3bcf41ad2">&#9670;&nbsp;</a></span>Exists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Engine.IO.IOManager.Exists </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the file exists on either the disk or in the assembly </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a443c188a516aa153ba0e6f726265bce4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a443c188a516aa153ba0e6f726265bce4">&#9670;&nbsp;</a></span>FolderExists()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static bool Engine.IO.IOManager.FolderExists </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>foldername</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns true if the folder exists on either the disk or in the assembly </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">foldername</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a9450f0488fd83f1f77875613e1de1010"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9450f0488fd83f1f77875613e1de1010">&#9670;&nbsp;</a></span>GetFiles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string [] Engine.IO.IOManager.GetFiles </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>foldername</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>searchPattern</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns files in a specfied directory </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">foldername</td><td></td></tr>
+    <tr><td class="paramname">searchPattern</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a7d7212cf42770e7f11ce5ab5167c0782"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d7212cf42770e7f11ce5ab5167c0782">&#9670;&nbsp;</a></span>GetStream()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static Stream Engine.IO.IOManager.GetStream </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the byte stream of the file specified </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a5cea9af5cf1eb8c8d6289954029141bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5cea9af5cf1eb8c8d6289954029141bf">&#9670;&nbsp;</a></span>ReadAllLines()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string [] Engine.IO.IOManager.ReadAllLines </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads all lines from the file provided </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a00d677c66eae58124b54b1c2f3ac17ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a00d677c66eae58124b54b1c2f3ac17ec">&#9670;&nbsp;</a></span>ReadAllText()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static string Engine.IO.IOManager.ReadAllText </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>path</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reads all Text from a file </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">path</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine/IO/IOManager.cs</li>
 </ul>
