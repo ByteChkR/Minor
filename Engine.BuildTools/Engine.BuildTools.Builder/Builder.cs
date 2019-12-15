@@ -186,6 +186,9 @@ namespace Engine.BuildTools.Builder
                     if (bs.BuildFlags == BuildType.Copy)
                     {
                         Console.WriteLine("Copying Assets to output");
+                        string buildAssetDir = assetFolder.Replace(projectFolder, buildOutput);
+                        Directory.CreateDirectory(buildAssetDir);
+
                         foreach (string dirPath in Directory.GetDirectories(assetFolder, "*",
                             SearchOption.AllDirectories))
                             Directory.CreateDirectory(dirPath.Replace(projectFolder, buildOutput));
