@@ -39,15 +39,13 @@ This is a C# Game Engine Project that is made for the specialization phase for u
 	- ...
 * The WaveCollapse Function
 
-## [Project Structure](resources/ProjectStructure.md)
-
 ## [Documentation / Reference Pages](https://bytechkr.github.io/Minor/index.html)
+
+## [Getting Started Pages/Repository](https://github.com/ByteChkR/MinorDemoAndTutorial)
 
 ## Minor Engine Installation instructions
 
 ### Required Files:
-These files can be installed manually or can be 
-
 Graphics Card that supports OpenGL 3 and OpenCL 1.2
 Nvidia and AMD include their implementations with their drivers(no setup needed)
 Alternatively the dll can be dropped in the release folder of Minor/MinorEngine/MinorEngine
@@ -56,45 +54,11 @@ Git for Windows
 This is only required to have the git command in regular windows CMD (for all the batch scripts to work)
 https://git-scm.com/download/win
 
-.NET Core SDK >= 2.2
+.NET Core SDK >= 2.1
 For compiling / running C# code
-https://dotnet.microsoft.com/download/dotnet-core/2.2
+https://dotnet.microsoft.com/download/dotnet-core/2.1
 
 
-### Installation:
-#### Engine Installer:
-Is the install script. When launched it will ask the user to specify a branch at origin
-It will clone the git repo and sub repos and call start_engine.bat on the repositoy.
-
-#### Install_$Branchname$:
-Is a shortcut that skips the user input by piping the $Branchname$ into the batch file.
-
-#### Start Engine:
-Has a (poor) check if the project has been built, and will call build_project.bat
-Starts the engine
-
-#### Build Project:
-Calls build_submodules.bat
-and builds/tests the Engine
-
-### Installation Manual:
-
-Visual Studio:
-
-	1. Build ADL(Not possible to build all modules since a few of them require .NET Framework):
-	- ADL/ADL/ADL/ADL.csproj in release mode
-	- ADL/ADL/ADL.Crash/ADL.Crash.csproj in release mode
-	- ADL/ADL/ADL.Network.Shared/ADL.Network.Shared.csproj in release mode
-	- ADL/ADL/ADL.Network.Client/ADL.Network.Client.csproj in release mode
-	- ADL/ADL/ADL.Network.Server/ADL.Network.Server.csproj in release mode
-	2. Build ext_pp Preprocessor(ext-pp/ext-pp.sln in release mode)
-	3. Build and Start MinorEngine/MinorEngine.sln 
-
-### Default Commands for the Console:
-	help / h -> Display All commands
-	q/quit/exit -> Close the console(Pressing ESC while the text input is empty does the same thing)
-	cls/clear -> Clears the console output
-	lmem -> Lists the statistics of the different stages of all collected frames
-	llmem -> Lists the last complete stage(Update or Render)
-	cmd <command> -> Writes the Output of the specified command(including arguments) to the Engine Debug System.
-	tg/togglegraph -> shows/hides the delta time graph
+# Cloning the repository
+1. `git clone --recurse-submodules https://github.com/ByteChkR/Minor`
+2. Execute `Minor/build_submodules.bat`
