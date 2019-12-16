@@ -11,4 +11,5 @@
   <PackSize>1024</PackSize>
   <Project>Engine.Demo.csproj</Project>
   <UnpackFiles />
+  <PackagerVersion>v2</PackagerVersion>
 </BuildSettings>
