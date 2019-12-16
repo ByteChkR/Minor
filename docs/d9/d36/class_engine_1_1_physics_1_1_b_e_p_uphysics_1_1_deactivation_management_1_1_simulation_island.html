@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -92,8 +92,6 @@ $(document).ready(function(){initNavTree('d9/d36/class_engine_1_1_physics_1_1_b_
 <a href="#pac-methods">Package Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../dd/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland Class Reference</div>  </div>
@@ -115,7 +113,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>Remove</b> (<a class=
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a4fcbd9ce526337ebad735414807027d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a4fcbd9ce526337ebad735414807027d9">MemberCount</a> =&gt; memberCount</td></tr>
+<tr class="memitem:a4fcbd9ce526337ebad735414807027d9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a4fcbd9ce526337ebad735414807027d9">MemberCount</a> =&gt; <a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a529990d601e88781a0e9ad2cde0a8bd0">memberCount</a></td></tr>
 <tr class="memdesc:a4fcbd9ce526337ebad735414807027d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the number of simulation island members within this simulation island.  <a href="#a4fcbd9ce526337ebad735414807027d9">More...</a><br /></td></tr>
 <tr class="separator:a4fcbd9ce526337ebad735414807027d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdeaaa3ff8a375f78b360c0710b4b880"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#abdeaaa3ff8a375f78b360c0710b4b880">DeactivationCandidateCount</a> =&gt; deactivationCandidateCount</td></tr>
@@ -130,52 +128,28 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>CleanUp</b> ()</td></
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-attribs"></a>
 Package Attributes</h2></td></tr>
-<tr class="memitem:af28b14438606888a4ce88fc1eb22e56a"><td class="memItemLeft" align="right" valign="top"><a id="af28b14438606888a4ce88fc1eb22e56a"></a>
-<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td><td class="memItemRight" valign="bottom"><b>immediateParent</b></td></tr>
-<tr class="separator:af28b14438606888a4ce88fc1eb22e56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b84083087043787bc98d5475a2e8565"><td class="memItemLeft" align="right" valign="top"><a id="a0b84083087043787bc98d5475a2e8565"></a>
-<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Parent</b> =&gt; immediateParent == this ? this : immediateParent.Parent</td></tr>
-<tr class="separator:a0b84083087043787bc98d5475a2e8565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a87fa25a0c5f1c20159cd62ab3b2a7e83"><td class="memItemLeft" align="right" valign="top"><a id="a87fa25a0c5f1c20159cd62ab3b2a7e83"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>allowDeactivation</b> = true</td></tr>
 <tr class="separator:a87fa25a0c5f1c20159cd62ab3b2a7e83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63a50284fe66991e5c63a5953099f36c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a63a50284fe66991e5c63a5953099f36c">isActive</a> = true</td></tr>
-<tr class="separator:a63a50284fe66991e5c63a5953099f36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a529990d601e88781a0e9ad2cde0a8bd0"><td class="memItemLeft" align="right" valign="top"><a id="a529990d601e88781a0e9ad2cde0a8bd0"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>memberCount</b></td></tr>
-<tr class="separator:a529990d601e88781a0e9ad2cde0a8bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75cfb1c11293d9461359ef68680320ee"><td class="memItemLeft" align="right" valign="top"><a id="a75cfb1c11293d9461359ef68680320ee"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>deactivationCandidateCount</b></td></tr>
 <tr class="separator:a75cfb1c11293d9461359ef68680320ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af28b14438606888a4ce88fc1eb22e56a"><td class="memItemLeft" align="right" valign="top"><a id="af28b14438606888a4ce88fc1eb22e56a"></a>
+<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td><td class="memItemRight" valign="bottom"><b>immediateParent</b></td></tr>
+<tr class="separator:af28b14438606888a4ce88fc1eb22e56a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a50284fe66991e5c63a5953099f36c"><td class="memItemLeft" align="right" valign="top"><a id="a63a50284fe66991e5c63a5953099f36c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b> = true</td></tr>
+<tr class="separator:a63a50284fe66991e5c63a5953099f36c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a529990d601e88781a0e9ad2cde0a8bd0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a529990d601e88781a0e9ad2cde0a8bd0">memberCount</a></td></tr>
+<tr class="separator:a529990d601e88781a0e9ad2cde0a8bd0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b84083087043787bc98d5475a2e8565"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a0b84083087043787bc98d5475a2e8565">Parent</a> =&gt; immediateParent == this ? this : immediateParent.Parent</td></tr>
+<tr class="separator:a0b84083087043787bc98d5475a2e8565"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:a40a46882583073bd92a545244010425d"><td class="memItemLeft" align="right" valign="top"><a id="a40a46882583073bd92a545244010425d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsActive</b><code> [get, set]</code></td></tr>
 <tr class="separator:a40a46882583073bd92a545244010425d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a6024c765170db65c8f6243eb76c0eac5"><td class="memItemLeft" align="right" valign="top"><a id="a6024c765170db65c8f6243eb76c0eac5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MemberActivated</b> (<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> member)</td></tr>
-<tr class="separator:a6024c765170db65c8f6243eb76c0eac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9bd0de33719a45dd63dc136ef4fa77a6"><td class="memItemLeft" align="right" valign="top"><a id="a9bd0de33719a45dd63dc136ef4fa77a6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>BecameDeactivationCandidate</b> (<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> member)</td></tr>
-<tr class="separator:a9bd0de33719a45dd63dc136ef4fa77a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2b17e121c418b42c28e5003bdb871cf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#af2b17e121c418b42c28e5003bdb871cf">BecameNonDeactivationCandidate</a> (<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> member)</td></tr>
-<tr class="separator:af2b17e121c418b42c28e5003bdb871cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a292e885fff00febeb30eb844e07a1572"><td class="memItemLeft" align="right" valign="top"><a id="a292e885fff00febeb30eb844e07a1572"></a>
-Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>memberActivatedDelegate</b></td></tr>
-<tr class="separator:a292e885fff00febeb30eb844e07a1572"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a030807071cfc748477668c2036f07322"><td class="memItemLeft" align="right" valign="top"><a id="a030807071cfc748477668c2036f07322"></a>
-Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>becameDeactivationCandidateDelegate</b></td></tr>
-<tr class="separator:a030807071cfc748477668c2036f07322"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62d5dbb87fb81867d3000a2c784f291c"><td class="memItemLeft" align="right" valign="top"><a id="a62d5dbb87fb81867d3000a2c784f291c"></a>
-Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>becameNonDeactivationCandidateDelegate</b></td></tr>
-<tr class="separator:a62d5dbb87fb81867d3000a2c784f291c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A collection of simulation island members bound together with connections. An island is activated and deactivated as a group. /summary&gt; </p>
@@ -197,33 +171,6 @@ Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_u
 </div><div class="memdoc">
 <p>summary&gt; Removes a member from the simulation island. /summary&gt; param name="member"&gt;Member to remove.</p>
 <p>exception cref="Exception"&gt;Thrown when the member does not belong to this simulation island.</p>
-
-</div>
-</div>
-<a id="af2b17e121c418b42c28e5003bdb871cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af2b17e121c418b42c28e5003bdb871cf">&#9670;&nbsp;</a></span>BecameNonDeactivationCandidate()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland.BecameNonDeactivationCandidate </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&#160;</td>
-          <td class="paramname"><em>member</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Attempts to deactivate the simulation island. Only deactivates if the island is settled and ready to go to sleep. /summary&gt; returns&gt;Whether or not the simulation island was successfully deactivated.</p>
 
 </div>
 </div>
@@ -260,12 +207,11 @@ Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_u
 </div><div class="memdoc">
 
 <p>Gets the number of simulation island members in the simulation island which are prepared to go to sleep. </p>
-<p>summary&gt; Constructs a simulation island. /summary&gt; </p>
 
 </div>
 </div>
-<a id="a63a50284fe66991e5c63a5953099f36c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a63a50284fe66991e5c63a5953099f36c">&#9670;&nbsp;</a></span>isActive</h2>
+<a id="a529990d601e88781a0e9ad2cde0a8bd0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a529990d601e88781a0e9ad2cde0a8bd0">&#9670;&nbsp;</a></span>memberCount</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -274,7 +220,7 @@ Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_u
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland.isActive = true</td>
+          <td class="memname">int Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland.memberCount</td>
         </tr>
       </table>
   </td>
@@ -283,7 +229,7 @@ Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_u
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets or sets whether or not the island is currently active. /summary&gt; </p>
+<p>summary&gt; Constructs a simulation island. /summary&gt; </p>
 
 </div>
 </div>
@@ -294,12 +240,35 @@ Action&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_u
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland.MemberCount =&gt; memberCount</td>
+          <td class="memname">int Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland.MemberCount =&gt; <a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html#a529990d601e88781a0e9ad2cde0a8bd0">memberCount</a></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>Gets the number of simulation island members within this simulation island. </p>
+
+</div>
+</div>
+<a id="a0b84083087043787bc98d5475a2e8565"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b84083087043787bc98d5475a2e8565">&#9670;&nbsp;</a></span>Parent</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland.Parent =&gt; immediateParent == this ? this : immediateParent.Parent</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>summary&gt; Gets or sets whether or not the island is currently active. /summary&gt; </p>
 
 </div>
 </div>

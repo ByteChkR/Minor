@@ -4,6 +4,9 @@ using OpenTK;
 
 namespace Engine.Rendering
 {
+    /// <summary>
+    /// Abstract Rendering Component that implements all tasks that all renderer components have in common
+    /// </summary>
     public abstract class RenderingComponent : AbstractComponent, IComparable<RenderingComponent>
     {
         /// <summary>

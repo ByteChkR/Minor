@@ -6,6 +6,9 @@ using System.Xml;
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Class containing the logic for Embedding and unembedding Files into .csproj files 
+    /// </summary>
     public static class AssemblyEmbedder
     {
         public static void UnEmbedFilesFromProject(string csFile)
@@ -78,6 +81,7 @@ namespace Engine.BuildTools.Common
 
         private static List<Tuple<string, string>> ParseFileList(string[] args)
         {
+            if(args == null || args.Length==0)return  new List<Tuple<string, string>>();
             string[] lines;
             if (args[0].StartsWith("@"))
             {

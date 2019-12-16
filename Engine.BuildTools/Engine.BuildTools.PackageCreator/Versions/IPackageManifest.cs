@@ -1,5 +1,8 @@
 ﻿namespace Engine.BuildTools.PackageCreator.Versions
 {
+    /// <summary>
+    /// Interface of the Package Manifest
+    /// </summary>
     public interface IPackageManifest
     {
         string PackageVersion { get; set; }

@@ -2,11 +2,15 @@
 using System.Collections.Generic;
 using Engine.DataTypes;
 using Engine.IO;
+using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
 using Engine.OpenFL;
 
-namespace Engine.OpenCL.Runner
+namespace Engine.OpenFL.Runner
 {
+    /// <summary>
+    /// Contains the Context in which the FL Runner is executing the enqueued items
+    /// </summary>
     public struct FlExecutionContext
     {
         public string Filename;
@@ -42,15 +46,18 @@ namespace Engine.OpenCL.Runner
         }
     }
 
+    /// <summary>
+    /// Single Threaded FL Runner Implementation
+    /// </summary>
     public class FlRunner
     {
         protected KernelDatabase Db;
         
         protected Clapi Instance;
         protected Queue<FlExecutionContext> ProcessQueue;
-
+        public int ItemsInQueue => ProcessQueue.Count;
         public FlRunner(
-            Clapi instance, TypeEnums.DataTypes dataTypes = TypeEnums.DataTypes.Uchar1, string kernelFolder = "assets/kernel/")
+            Clapi instance, OpenCL.TypeEnums.DataTypes dataTypes = OpenCL.TypeEnums.DataTypes.Uchar1, string kernelFolder = "assets/kernel/")
         {
             Instance = instance;
             Db = new KernelDatabase(instance, kernelFolder, dataTypes);

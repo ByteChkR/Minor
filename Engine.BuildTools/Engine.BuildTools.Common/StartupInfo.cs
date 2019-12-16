@@ -2,8 +2,11 @@
 using System.IO;
 using System.Linq;
 
-namespace Engine.BuildTools.Builder
+namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Contains the Logic that contains logic for CLI argument parsing
+    /// </summary>
     public class StartupInfo
     {
         private Dictionary<string, List<string>> _values = new Dictionary<string, List<string>>();

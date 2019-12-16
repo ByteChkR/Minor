@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('de/d5e/class_engine_1_1_physics_1_1_b_
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../de/d69/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_helper-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables.CompoundHelper Class Reference</div>  </div>
@@ -127,15 +126,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:ab56d37f025487055347ed39d522b7dbf"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html">CompoundCollidable</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d5e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_helper.html#ab56d37f025487055347ed39d522b7dbf">CreatePartialCompoundCollidable</a> (<a class="el" href="../../d6/df7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_compound_shape.html">CompoundShape</a> shape, IList&lt; int &gt; childIndices)</td></tr>
 <tr class="memdesc:ab56d37f025487055347ed39d522b7dbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a compound collidable containing only the specified subset of children.  <a href="#ab56d37f025487055347ed39d522b7dbf">More...</a><br /></td></tr>
 <tr class="separator:ab56d37f025487055347ed39d522b7dbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a7b674c71f9998504be1ddaddceda6a74"><td class="memItemLeft" align="right" valign="top"><a id="a7b674c71f9998504be1ddaddceda6a74"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>SplitReposition</b> (<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a> a, <a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a> b, ref <a class="el" href="../../de/d2f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_shape_distribution_information.html">ShapeDistributionInformation</a> distributionInfoA, ref <a class="el" href="../../de/d2f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_shape_distribution_information.html">ShapeDistributionInformation</a> distributionInfoB, float weightA, float weightB)</td></tr>
-<tr class="separator:a7b674c71f9998504be1ddaddceda6a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d2f1f3024cdc56e3d37f83e2856add1"><td class="memItemLeft" align="right" valign="top"><a id="a0d2f1f3024cdc56e3d37f83e2856add1"></a>
-static void&#160;</td><td class="memItemRight" valign="bottom"><b>RemoveReposition</b> (<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a> compound, ref <a class="el" href="../../de/d2f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_shape_distribution_information.html">ShapeDistributionInformation</a> distributionInfo, float weight, float removedWeight, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> removedCenter)</td></tr>
-<tr class="separator:a0d2f1f3024cdc56e3d37f83e2856add1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains methods to help with splitting compound objects into multiple pieces. </p>

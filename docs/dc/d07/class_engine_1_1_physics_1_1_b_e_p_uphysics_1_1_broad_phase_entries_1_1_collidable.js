@@ -9,8 +9,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_coll
     [ "pairs", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#af449414aabbcf079505e56995f03f632", null ],
     [ "Pairs", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#a87f839b4c9869b21b504b29628bb7b44", null ],
     [ "shape", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#a50ed524fbedcb2e11c82f0b085c0d9f3", null ],
-    [ "shapeChangedDelegate", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#aeaf11364f765de3f67fb40b1a8d0f58f", null ],
-    [ "shapeChangedHooked", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#a671ce4b49fd3788cd8cdc44800823a46", null ],
     [ "EventTriggerer", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#ab90a26ea5a929be897e22090802dab40", null ],
     [ "IgnoreShapeChanges", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#afc4a5aeb559a9d3aef3aa53a8fa54bff", null ],
     [ "Shape", "dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html#ada54970f9352dfdd3c396886b0624e17", null ],

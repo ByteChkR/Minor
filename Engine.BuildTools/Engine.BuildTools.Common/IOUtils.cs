@@ -4,6 +4,9 @@ using System.IO;
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Utils Class containing code that is used multiple times in the Building Process
+    /// </summary>
     public static class IoUtils
     {
         public static void CreateDirectoryPath(string dirPath)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Xml.Serialization;
 using Engine.AssetPackaging;
@@ -11,6 +12,10 @@ using Engine.BuildTools.PackageCreator;
 
 namespace Engine.BuildTools.Builder
 {
+
+    /// <summary>
+    /// Class Containing the Building Logic that is used in the CLI and GUI Wrappers
+    /// </summary>
     public static class Builder
     {
         private static BuildSettings LoadSettings(string path)
@@ -24,36 +29,47 @@ namespace Engine.BuildTools.Builder
 
         public static void RunCommand(string args)
         {
-            string[] a = args.Split(' ', '\n');
-            RunCommand(a);
+            RunCommand(args.Split(' '));
         }
+
 
         public static void RunCommand(string[] args)
         {
-            StartupInfo info = new StartupInfo(args);
-            info = new StartupInfo(args);
-            if (!info.HasFlag("noflag"))
-            {
-                if (info.HasFlag("--help"))
-                {
-                    Console.WriteLine("--help -> Displays this Text.");
-                    Console.WriteLine("--packer -> Packs Assets into the Package Format.");
-                    Console.WriteLine("--embed -> Embeds Files into the .csproj File of the game.");
-                    Console.WriteLine("--build -> Builds the specified .csproj File");
-                    Console.WriteLine("--unembed -> Restores the Project when previously embedded with --embed.");
-                    Console.WriteLine(
-                        "--create-package -> Creates a Game Package that is executable by the Engine.Player");
-                }
 
-                _Main(info);
-            }
-            else
+            Command def = Command.CreateCommand(BuildWithXML, "--xml <Path/To/File.xml>", "--xml");
+            CommandRunner.SetDefaultCommand(def);
+
+            CommandRunner.AddCommand(Command.CreateCommand(_CreatePatch, "--create-patch <folder> <destinationFile>", "--create-patch", "-cpatch"));
+            CommandRunner.AddCommand(Command.CreateCommand(_CreatePatchDelta, "--create-patch <oldFile> <newFile> <destinationFile>", "--create-patch-delta", "-cpatchdelta"));
+            CommandRunner.AddCommand(Command.CreateCommand(_HelpCommand, "Display this help message", "--help", "-h"));
+            CommandRunner.AddCommand(Command.CreateCommand(_PatchPackage, "--patch <targetFile> <patchFile>\nApplies the patch to the file.", "--patch", "-p"));
+            CommandRunner.AddCommand(Command.CreateCommand(_PatchPackagePermanent, "--patch-permanent <targetFile> <patchFile>\nApplies the patch to the file permanently.", "--patch-permanent", "-pp"));
+            CommandRunner.AddCommand(Command.CreateCommand(_PackAssets, "--packer <outputFolder> <packSize> <fileExtensions> <unpackFileExtensions> <assetFolder>\nPackage the Asset Files", "--pack-assets", "--packer"));
+            CommandRunner.AddCommand(Command.CreateCommand(_EmbedFiles, "--embed <Path/To/CSProj/File> <Folder/To/Embed>\nEmbeds the files in the specified folder into the .csproj file of the game project.", "--embed", "-e"));
+
+            CommandRunner.AddCommand(Command.CreateCommand(_Build, "--build <Path/To/CSProj/File> <OutputDirectory>\nBuilds the Specified csproj file and moves all output to the output folder.", "--build", "-b"));
+            CommandRunner.AddCommand(Command.CreateCommand(_UnembedFiles, "--unembed <Path/To/CSProj/File>\nUnembeds that were embedded into the .csproj file of the game project.", "--unembed", "-u"));
+            CommandRunner.AddCommand(Command.CreateCommand(_CreateGamePackage, "--create-package <BuildFolderOfGame> <GameName> <OutputFile> <CopyAssetsOnError> <CopyPacksOnError> <optional:FileList>\nCreates a Package from a build output of the --build command\n--packer-override-engine-version <Version> can be used to override the required engine version\n--packager-version <packagerVersion> overrides the packager version that is used.\n--set-start-args <args> can be used to specify the startup command manually.", "--create-package", "-cp"));
+            CommandRunner.AddCommand(Command.CreateCommand(_CreateEnginePackage, "--create-engine-package <Engine.csproj file> <OutputFile> <optional:FileList>\nCreates an Engine Package from an Engine.csproj file\n--packager-version <packagerVersion> overrides the packager version that is used.", "--create-engine-package", "-cep"));
+
+            CommandRunner.AddCommand(def);
+
+
+            CommandRunner.RunCommands(args);
+
+        }
+
+        private static void _HelpCommand(StartupInfo info, string[] args)
+        {
+            Console.WriteLine("Commands:");
+            for (int i = 0; i < CommandRunner.CommandCount; i++)
             {
-                BuildWithXML(args, info);
+                Console.WriteLine(CommandRunner.GetCommandAt(i));
             }
         }
 
-        private static void BuildWithXML(string[] args, StartupInfo info)
+
+        private static void BuildWithXML(StartupInfo info, string[] args)
         {
             if (args.Length != 0)
             {
@@ -107,7 +123,7 @@ namespace Engine.BuildTools.Builder
 
 
                     bool packsCreated = false;
-                    if (bs.BuildFlags == BuildType.PackEmbed || bs.BuildFlags == BuildType.PackOnly)
+                    if ((bs.BuildFlags == BuildType.PackEmbed || bs.BuildFlags == BuildType.PackOnly) && Directory.Exists(assetFolder))
                     {
                         PackAssets(packFolder, bs.PackSize, bs.MemoryFiles, bs.UnpackFiles,
                             assetFolder, false);
@@ -167,10 +183,26 @@ namespace Engine.BuildTools.Builder
                         Directory.Delete(projectFolder + outputPackFolder, true);
                     }
 
+                    if (bs.BuildFlags == BuildType.Copy)
+                    {
+                        Console.WriteLine("Copying Assets to output");
+                        string buildAssetDir = assetFolder.Replace(projectFolder, buildOutput);
+                        Directory.CreateDirectory(buildAssetDir);
+
+                        foreach (string dirPath in Directory.GetDirectories(assetFolder, "*",
+                            SearchOption.AllDirectories))
+                            Directory.CreateDirectory(dirPath.Replace(projectFolder, buildOutput));
+
+                        //Copy all the files & Replaces any files with the same name
+                        foreach (string newPath in Directory.GetFiles(assetFolder, "*.*",
+                            SearchOption.AllDirectories))
+                            File.Copy(newPath, newPath.Replace(projectFolder, buildOutput), true);
+                    }
+
 
                     if (bs.CreateGamePackage)
                     {
-                        string packagerVersion = Creator.DefaultVersion;
+                        string packagerVersion = string.IsNullOrEmpty(bs.PackagerVersion) ? Creator.DefaultVersion : bs.PackagerVersion;
                         if (info.HasValueFlag("--packager-version"))
                         {
                             packagerVersion = info.GetValues("--packager-version")[0];
@@ -197,7 +229,7 @@ namespace Engine.BuildTools.Builder
 
                         FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(buildOutput + "/Engine.dll");
                         string[] files = ParseFileList(bs.GamePackageFileList, buildOutput, projectName,
-                            bs.BuildFlags == BuildType.Embed, bs.BuildFlags == BuildType.PackOnly, false);
+                            bs.BuildFlags == BuildType.Copy, bs.BuildFlags == BuildType.PackOnly, false);
                         Creator.CreateGamePackage(projectName, startArg, outputFolder + "/" + projectName + ".game",
                             buildOutput, files,
                             fvi.FileVersion, packagerVersion);
@@ -206,37 +238,127 @@ namespace Engine.BuildTools.Builder
             }
         }
 
+        private static void _CreatePatch(StartupInfo info, string[] args)
+        {
+            if (args.Length != 2)
+            {
+                throw new ApplicationException("Invalid Input");
+            }
+
+            try
+            {
+                Creator.CreatePatchFromFolder(args[0], args[1]);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Input Error", e);
+            }
+        }
+
+        private static void _PatchPackage(StartupInfo info, string[] args)
+        {
+            if (args.Length != 2)
+            {
+                throw new ApplicationException("Invalid Input");
+
+            }
+
+            try
+            {
+                Creator.PatchPackage(args[0], args[1]);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Input Error", e);
+            }
+        }
+
+        private static void _PatchPackagePermanent(StartupInfo info, string[] args)
+        {
+            if (args.Length != 2)
+            {
+                throw new ApplicationException("Invalid Input");
+            }
+
+            try
+            {
+                Creator.PatchPackagePermanent(args[0], args[1]);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Input Error", e);
+            }
+        }
+
+        private static void _CreatePatchDelta(StartupInfo info, string[] args)
+        {
+            if (args.Length != 3)
+            {
+                throw new ApplicationException("Invalid Input");
+            }
+
+            try
+            {
+                Creator.CreatePatchFromDelta(args[0], args[1], args[2]);
+            }
+            catch (Exception e)
+            {
+                throw new ApplicationException("Input Error", e);
+            }
+        }
+
+
         private static void _Main(StartupInfo info)
         {
-            if (info.HasValueFlag("--packer"))
-            {
-                _PackAssets(info);
-            }
+            //if (info.HasValueFlag("--create-patch"))
+            //{
+            //    _CreatePatch(info);
+            //}
 
-            if (info.HasValueFlag("--embed"))
-            {
-                _EmbedFiles(info);
-            }
+            //if (info.HasValueFlag("--create-patch-delta"))
+            //{
+            //    _CreatePatchDelta(info);
+            //}
 
-            if (info.HasValueFlag("--build"))
-            {
-                _Build(info);
-            }
+            //if (info.HasValueFlag("--patch"))
+            //{
+            //    _PatchPackage(info);
+            //}
 
-            if (info.HasValueFlag("--unembed"))
-            {
-                _UnembedFiles(info);
-            }
+            //if (info.HasValueFlag("--patch-permanent"))
+            //{
+            //    _PatchPackagePermanent(info);
+            //}
 
-            if (info.HasValueFlag("--create-package"))
-            {
-                _CreateGamePackage(info);
-            }
+            //if (info.HasValueFlag("--packer"))
+            //{
+            //    _PackAssets(info);
+            //}
 
-            if (info.HasValueFlag("--create-engine-package"))
-            {
-                _CreateEnginePackage(info);
-            }
+            //if (info.HasValueFlag("--embed"))
+            //{
+            //    _EmbedFiles(info);
+            //}
+
+            //if (info.HasValueFlag("--build"))
+            //{
+            //    _Build(info);
+            //}
+
+            //if (info.HasValueFlag("--unembed"))
+            //{
+            //    _UnembedFiles(info);
+            //}
+
+            //if (info.HasValueFlag("--create-package"))
+            //{
+            //    _CreateGamePackage(info);
+            //}
+
+            //if (info.HasValueFlag("--create-engine-package"))
+            //{
+            //    _CreateEnginePackage(info);
+            //}
         }
 
         private static void BuildProject(string filepath)
@@ -266,7 +388,7 @@ namespace Engine.BuildTools.Builder
                 null);
         }
 
-        private static void _CreateEnginePackage(StartupInfo info)
+        private static void _CreateEnginePackage(StartupInfo info, string[] args)
         {
             //1 Directory of unpacked game build
             //2 The Project Name(Must have the same name as the dll that is used to start)
@@ -274,7 +396,6 @@ namespace Engine.BuildTools.Builder
             //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
             //5 Optional File List
 
-            string[] args = info.GetValues("--create-engine-package").ToArray();
             try
             {
                 Console.WriteLine(Path.GetFullPath(args[0]));
@@ -317,14 +438,12 @@ namespace Engine.BuildTools.Builder
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not Create Engine Package. Wrong Arguments?");
-                Console.WriteLine("Arguments: <CSProjFile of engine> <TheOutputFile> <optional: file list.>");
-                Console.WriteLine(e);
-                throw;
+
+                throw new ApplicationException("Input Error", e);
             }
         }
 
-        private static void _CreateGamePackage(StartupInfo info)
+        private static void _CreateGamePackage(StartupInfo info, string[] args)
         {
             //1 Directory of unpacked game build
             //2 The Project Name(Must have the same name as the dll that is used to start)
@@ -332,7 +451,6 @@ namespace Engine.BuildTools.Builder
             //4 True/False flag that enables copying asset files from the project dir if no filelist has been given.
             //5 Optional File List
 
-            string[] args = info.GetValues("--create-package").ToArray();
             try
             {
                 Console.WriteLine(Path.GetFullPath(args[0]));
@@ -391,17 +509,13 @@ namespace Engine.BuildTools.Builder
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not Create Game Package. Wrong Arguments?");
-                Console.WriteLine(
-                    "Arguments: <DirectoryOfUnpackedBuild> <ProjectName> <TheOutputFile> <CopyAssetsOnError(bool)> <CopyPacksOnError(bool)> <optional: file list.>");
-                Console.WriteLine(e);
-                throw;
+
+                throw new ApplicationException("Input Error", e);
             }
         }
 
-        private static void _EmbedFiles(StartupInfo info)
+        private static void _EmbedFiles(StartupInfo info, string[] args)
         {
-            string[] args = info.GetValues("--embed").ToArray();
             try
             {
                 string[] files = Directory.GetFiles(Path.GetFullPath(args[1]), "*", SearchOption.AllDirectories);
@@ -409,33 +523,26 @@ namespace Engine.BuildTools.Builder
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not Embed Folder into Project. Wrong Arguments?");
-                Console.WriteLine(
-                    "Arguments: <ProjectFile(.csproj)> <DirectoryToEmbed(Has to be in subdirectories of the ProjectFile>");
-                Console.WriteLine(e);
-                throw;
+
+                throw new ApplicationException("Input Error", e);
             }
         }
 
-        private static void _UnembedFiles(StartupInfo info)
+        private static void _UnembedFiles(StartupInfo info, string[] args)
         {
-            string[] args = info.GetValues("--unembed").ToArray();
             try
             {
                 AssemblyEmbedder.UnEmbedFilesFromProject(Path.GetFullPath(args[0]));
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not Unembed Assets from Project. Wrong Arguments/No Backup File?");
-                Console.WriteLine("Arguments: <ProjectFile(.csproj)>");
-                Console.WriteLine(e);
-                throw;
+
+                throw new ApplicationException("Input Error", e);
             }
         }
 
-        private static void _Build(StartupInfo info)
+        private static void _Build(StartupInfo info, string[] args)
         {
-            string[] args = info.GetValues("--build").ToArray();
             try
             {
                 string projectFolder = Path.GetDirectoryName(Path.GetFullPath(args[0]));
@@ -454,7 +561,7 @@ namespace Engine.BuildTools.Builder
                 }
 
                 BuildProject(args[0]);
-                
+
 
                 //Making sure that the root path Path is existing
                 IoUtils.CreateDirectoryPath(Path.GetFullPath(args[1]));
@@ -470,16 +577,13 @@ namespace Engine.BuildTools.Builder
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not Build or Copy Project Project. Wrong Arguments/No Backup File?");
-                Console.WriteLine("Arguments: <ProjectFile(.csproj)> <OutputFolder>");
-                Console.WriteLine(e);
-                throw;
+
+                throw new ApplicationException("Input Error", e);
             }
         }
 
-        private static void _PackAssets(StartupInfo info)
+        private static void _PackAssets(StartupInfo info, string[] args)
         {
-            string[] args = info.GetValues("--packer").ToArray();
             try
             {
                 PackAssets(Path.GetFullPath(args[0]), int.Parse(args[1]), args[2], args[3],
@@ -487,10 +591,8 @@ namespace Engine.BuildTools.Builder
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not Package Assets. Wrong Arguments?");
-                Console.WriteLine("Arguments: <OutputFolder> <PackSize> <memoryExts> <unpackExts> <assetFolder>");
-                Console.WriteLine(e);
-                throw;
+
+                throw new ApplicationException("Input Error", e);
             }
         }
 
@@ -607,7 +709,7 @@ namespace Engine.BuildTools.Builder
                 {
                     f.Add(helper);
                 }
-                
+
                 if (isStandalone)
                 {
                     string[] ff = ParseEngineFileList(fileList, projectFolder);

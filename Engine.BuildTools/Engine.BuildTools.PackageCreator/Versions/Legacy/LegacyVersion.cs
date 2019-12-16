@@ -5,6 +5,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.Legacy
 {
+    /// <summary>
+    /// Legacy Package Version
+    /// </summary>
     public class LegacyVersion : IPackageVersion
     {
         public string ManifestPath => "EngineVersion";
@@ -41,6 +44,14 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             return true;
         }
 
+        public IPackageManifest ReadManifest(Stream s)
+        {
+            TextReader tr = new StreamReader(s);
+            string v = tr.ReadLine();
+            tr.Close();
+            return new PackageManifest("", v);
+        }
+
         public IPackageManifest GetPackageManifest(string path)
         {
             string name = "Engine";
@@ -62,6 +73,10 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
         {
             ZipFile.ExtractToDirectory(file, outPutDir);
             File.Delete(outPutDir + "/" + ManifestPath);
+            if (Directory.Exists(outPutDir + "/patches"))
+            {
+                Creator.ApplyPatches(outPutDir);
+            }
         }
 
         public void CreateGamePackage(string packageName, string executable, string outputFile, string workingDir,

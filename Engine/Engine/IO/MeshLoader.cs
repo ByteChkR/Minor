@@ -53,12 +53,20 @@ namespace Engine.IO
         /// Loads a model with assimp
         /// </summary>
         /// <param name="stream">the input stream for assimp</param>
+        /// <param name="hint">File extension(obj, fbx, ...)</param>
+        /// <param name="path">Path to the file</param>
         /// <returns></returns>
         internal static List<Mesh> LoadModel(Stream stream, string hint = "", string path = "")
         {
             return LoadAssimpScene(LoadInternalAssimpScene(stream, hint), path);
         }
 
+        /// <summary>
+        /// Loads an Assimp Scene from Stream
+        /// </summary>
+        /// <param name="s">Stream</param>
+        /// <param name="hint">File extension(obj, fbx, ...)</param>
+        /// <returns></returns>
         internal static Scene LoadInternalAssimpScene(Stream s, string hint = "")
         {
             AssimpContext context = new AssimpContext();
@@ -69,7 +77,7 @@ namespace Engine.IO
         /// <summary>
         /// Loads a Assimp Model From File
         /// </summary>
-        /// <param name="filename">The path to the file</param>
+        /// <param name="path">The path to the file</param>
         /// <returns>The loaded AssimpModel</returns>
         private static List<Mesh> LoadModel(string path)
         {
@@ -103,9 +111,9 @@ namespace Engine.IO
             }
 
 
-            Logger.Log("Loading Assimp Scene Finished.", DebugChannel.Log | DebugChannel.Io, 5);
+            Logger.Log("Loading Assimp Scene Finished.", DebugChannel.Log | DebugChannel.EngineIO, 5);
 
-            Logger.Log("Processing Nodes...", DebugChannel.Log | DebugChannel.Io, 6);
+            Logger.Log("Processing Nodes...", DebugChannel.Log | DebugChannel.EngineIO, 6);
 
             List<Mesh> ret = new List<Mesh>();
 
@@ -123,10 +131,10 @@ namespace Engine.IO
         /// <param name="dir">The Relative directory of the Mesh File</param>
         private static void processNode(Node node, Scene s, List<Mesh> meshes, string dir)
         {
-            Logger.Log("Processing Node: " + node.Name, DebugChannel.Log | DebugChannel.Io, 4);
+            Logger.Log("Processing Node: " + node.Name, DebugChannel.Log | DebugChannel.EngineIO, 4);
             if (node.HasMeshes)
             {
-                Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log | DebugChannel.Io, 4);
+                Logger.Log("Adding " + node.MeshCount + " Meshes...", DebugChannel.Log | DebugChannel.EngineIO, 4);
                 for (int i = 0; i < node.MeshCount; i++)
                 {
                     meshes.Add(processMesh(s.Meshes[node.MeshIndices[i]], s, dir));
@@ -158,10 +166,10 @@ namespace Engine.IO
 
 
             Logger.Log("Converting Imported Mesh File Structure to GameEngine Engine Structure",
-                DebugChannel.Log | DebugChannel.Io, 3);
+                DebugChannel.Log | DebugChannel.EngineIO, 3);
 
 
-            Logger.Log("Copying Vertex Data...", DebugChannel.Log | DebugChannel.Io, 2);
+            Logger.Log("Copying Vertex Data...", DebugChannel.Log | DebugChannel.EngineIO, 2);
             for (int i = 0; i < mesh.VertexCount; i++)
             {
                 Vector3D vert = mesh.Vertices[i];
@@ -183,7 +191,7 @@ namespace Engine.IO
             }
 
 
-            Logger.Log("Calculating Indices...", DebugChannel.Log | DebugChannel.Io, 2);
+            Logger.Log("Calculating Indices...", DebugChannel.Log | DebugChannel.EngineIO, 2);
 
             for (int i = 0; i < mesh.FaceCount; i++)
             {
@@ -194,7 +202,7 @@ namespace Engine.IO
 
             Material m = s.Materials[mesh.MaterialIndex];
 
-            Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log | DebugChannel.Io, 2);
+            Logger.Log("Loading Baked Material: " + m.Name, DebugChannel.Log | DebugChannel.EngineIO, 2);
 
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Diffuse, dir));
             textures.AddRange(TextureLoader.LoadMaterialTextures(m, TextureType.Specular, dir));

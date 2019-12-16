@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -92,9 +92,6 @@ $(document).ready(function(){initNavTree('df/d5f/class_engine_1_1_physics_1_1_b_
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../d9/d48/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager Class Reference</div>  </div>
@@ -117,8 +114,7 @@ Inheritance diagram for Engine.Physics.BEPUphysics.DeactivationManagement.Deacti
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ace082236233c5806bc659432762356c3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#ace082236233c5806bc659432762356c3">DeactivationManager</a> (<a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html">TimeStepSettings</a> timeStepSettings)</td></tr>
 <tr class="separator:ace082236233c5806bc659432762356c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b7dcdcc3723622c17f63d29529ee963"><td class="memItemLeft" align="right" valign="top"><a id="a0b7dcdcc3723622c17f63d29529ee963"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>DeactivationManager</b> (<a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html">TimeStepSettings</a> timeStepSettings, <a class="el" href="../../db/d6d/interface_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading_1_1_i_parallel_looper.html">IParallelLooper</a> parallelLooper)</td></tr>
+<tr class="memitem:a0b7dcdcc3723622c17f63d29529ee963"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a0b7dcdcc3723622c17f63d29529ee963">DeactivationManager</a> (<a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html">TimeStepSettings</a> timeStepSettings, <a class="el" href="../../db/d6d/interface_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading_1_1_i_parallel_looper.html">IParallelLooper</a> parallelLooper)</td></tr>
 <tr class="separator:a0b7dcdcc3723622c17f63d29529ee963"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8cd7826bfcc7db6b43707ede0680b3b"><td class="memItemLeft" align="right" valign="top"><a id="ae8cd7826bfcc7db6b43707ede0680b3b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Add</b> (<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> simulationIslandMember)</td></tr>
@@ -158,16 +154,17 @@ override void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateSingle
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-attribs"></a>
 Package Attributes</h2></td></tr>
+<tr class="memitem:a4c3ec133671bdf9cca6716b690933b68"><td class="memItemLeft" align="right" valign="top"><a id="a4c3ec133671bdf9cca6716b690933b68"></a>
+float&#160;</td><td class="memItemRight" valign="bottom"><b>lowVelocityTimeMinimum</b> = 1f</td></tr>
+<tr class="separator:a4c3ec133671bdf9cca6716b690933b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20f7821b337d66cb8dcfbdeb2018cb18"><td class="memItemLeft" align="right" valign="top"><a id="a20f7821b337d66cb8dcfbdeb2018cb18"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>useStabilization</b> = true</td></tr>
+<tr class="separator:a20f7821b337d66cb8dcfbdeb2018cb18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ee66bdc0ae7c0f121edf5b69e7b4161"><td class="memItemLeft" align="right" valign="top"><a id="a1ee66bdc0ae7c0f121edf5b69e7b4161"></a>
 float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityLowerLimit</b> = .26f</td></tr>
 <tr class="separator:a1ee66bdc0ae7c0f121edf5b69e7b4161"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad66687c68a22cc4de7a4fa3581496916"><td class="memItemLeft" align="right" valign="top"><a id="ad66687c68a22cc4de7a4fa3581496916"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>velocityLowerLimitSquared</b> = .26f * .26f</td></tr>
+<tr class="memitem:ad66687c68a22cc4de7a4fa3581496916"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#ad66687c68a22cc4de7a4fa3581496916">velocityLowerLimitSquared</a> = .26f * .26f</td></tr>
 <tr class="separator:ad66687c68a22cc4de7a4fa3581496916"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c3ec133671bdf9cca6716b690933b68"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a4c3ec133671bdf9cca6716b690933b68">lowVelocityTimeMinimum</a> = 1f</td></tr>
-<tr class="separator:a4c3ec133671bdf9cca6716b690933b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a20f7821b337d66cb8dcfbdeb2018cb18"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a20f7821b337d66cb8dcfbdeb2018cb18">useStabilization</a> = true</td></tr>
-<tr class="separator:a20f7821b337d66cb8dcfbdeb2018cb18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -177,8 +174,7 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>VelocityLowerLimit</
 <tr class="memitem:a965839b6a2936916376411aadfdc56b7"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a965839b6a2936916376411aadfdc56b7">LowVelocityTimeMinimum</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a965839b6a2936916376411aadfdc56b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the time limit above which the deactivation system will consider objects to be deactivation candidates (if their velocity stays below the VelocityLowerLimit for the duration). Defaults to 1.  <a href="#a965839b6a2936916376411aadfdc56b7">More...</a><br /></td></tr>
 <tr class="separator:a965839b6a2936916376411aadfdc56b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab88b91e98a76b1363e09ae163f0d9d6e"><td class="memItemLeft" align="right" valign="top"><a id="ab88b91e98a76b1363e09ae163f0d9d6e"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseStabilization</b><code> [get, set]</code></td></tr>
+<tr class="memitem:ab88b91e98a76b1363e09ae163f0d9d6e"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#ab88b91e98a76b1363e09ae163f0d9d6e">UseStabilization</a><code> [get, set]</code></td></tr>
 <tr class="separator:ab88b91e98a76b1363e09ae163f0d9d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8b93d353d82a09eb6374ddd8a094c4a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#ae8b93d353d82a09eb6374ddd8a094c4a">MaximumDeactivationAttemptsPerFrame</a> = 100<code> [get, set]</code></td></tr>
 <tr class="separator:ae8b93d353d82a09eb6374ddd8a094c4a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,66 +195,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>UseStabilization</b><
 <tr class="memitem:a0d8396ea88f7d58bb135a4c0358d3048 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_multithreaded_processing_stage"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d6d/interface_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading_1_1_i_parallel_looper.html">IParallelLooper</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d15/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_multithreaded_processing_stage.html#a0d8396ea88f7d58bb135a4c0358d3048">ParallelLooper</a><code> [get, set]</code></td></tr>
 <tr class="separator:a0d8396ea88f7d58bb135a4c0358d3048 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_multithreaded_processing_stage"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a7e7aeac35faefc541c54426839f48318"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a7e7aeac35faefc541c54426839f48318">GiveBackIsland</a> (<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> island)</td></tr>
-<tr class="separator:a7e7aeac35faefc541c54426839f48318"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2746109e8b14fee59a416d8b17ad8cc"><td class="memItemLeft" align="right" valign="top"><a id="ab2746109e8b14fee59a416d8b17ad8cc"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MultithreadedCandidacyLoop</b> (int i)</td></tr>
-<tr class="separator:ab2746109e8b14fee59a416d8b17ad8cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a883d1c8b4e16ea8379629051bf2f9e03"><td class="memItemLeft" align="right" valign="top"><a id="a883d1c8b4e16ea8379629051bf2f9e03"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>FlushSplits</b> ()</td></tr>
-<tr class="separator:a883d1c8b4e16ea8379629051bf2f9e03"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa80ee70be26b74b792d5e69cf7d45627"><td class="memItemLeft" align="right" valign="top"><a id="aa80ee70be26b74b792d5e69cf7d45627"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>DeactivateObjects</b> ()</td></tr>
-<tr class="separator:aa80ee70be26b74b792d5e69cf7d45627"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab02bc1f32c132d06d3e934d7b8bf1b5f"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#ab02bc1f32c132d06d3e934d7b8bf1b5f">Merge</a> (<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> s1, <a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> s2)</td></tr>
-<tr class="separator:ab02bc1f32c132d06d3e934d7b8bf1b5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43197b883a4f4beb0239f8da6399d690"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a43197b883a4f4beb0239f8da6399d690">TryToSplit</a> (<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> member1, <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> member2)</td></tr>
-<tr class="memdesc:a43197b883a4f4beb0239f8da6399d690"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to split connections between the two island members.  <a href="#a43197b883a4f4beb0239f8da6399d690">More...</a><br /></td></tr>
-<tr class="separator:a43197b883a4f4beb0239f8da6399d690"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:afb204aeed5338dd55e1a14be2d73d0a8"><td class="memItemLeft" align="right" valign="top"><a id="afb204aeed5338dd55e1a14be2d73d0a8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>deactivationIslandIndex</b></td></tr>
-<tr class="separator:afb204aeed5338dd55e1a14be2d73d0a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2a705645dffc2ce1d168c54e85e15c08"><td class="memItemLeft" align="right" valign="top"><a id="a2a705645dffc2ce1d168c54e85e15c08"></a>
-Queue&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>member1Friends</b> = new Queue&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt;()</td></tr>
-<tr class="separator:a2a705645dffc2ce1d168c54e85e15c08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2904546ea10a2b967c102a1a12673b0c"><td class="memItemLeft" align="right" valign="top"><a id="a2904546ea10a2b967c102a1a12673b0c"></a>
-Queue&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>member2Friends</b> = new Queue&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt;()</td></tr>
-<tr class="separator:a2904546ea10a2b967c102a1a12673b0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67634320eb74946b4eaf0d22ca77f914"><td class="memItemLeft" align="right" valign="top"><a id="a67634320eb74946b4eaf0d22ca77f914"></a>
-List&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>searchedMembers1</b> = new List&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt;()</td></tr>
-<tr class="separator:a67634320eb74946b4eaf0d22ca77f914"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f0cd7d3b2d54e9ee80144c95378a5f2"><td class="memItemLeft" align="right" valign="top">List&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a5f0cd7d3b2d54e9ee80144c95378a5f2">searchedMembers2</a> = new List&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt;()</td></tr>
-<tr class="separator:a5f0cd7d3b2d54e9ee80144c95378a5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3f0bcf753d8edc590a4dfdfc41bd4c1"><td class="memItemLeft" align="right" valign="top"><a id="ab3f0bcf753d8edc590a4dfdfc41bd4c1"></a>
-<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>simulationIslandMembers</b> = new <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt;()</td></tr>
-<tr class="separator:ab3f0bcf753d8edc590a4dfdfc41bd4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a749c8ffab615040c73fad41447b5dcdf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a749c8ffab615040c73fad41447b5dcdf">simulationIslands</a> = new <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt;<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&gt;()</td></tr>
-<tr class="separator:a749c8ffab615040c73fad41447b5dcdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f4b3b5666b83a6ad6457b5be8e11b7e"><td class="memItemLeft" align="right" valign="top"><a id="a1f4b3b5666b83a6ad6457b5be8e11b7e"></a>
-<a class="el" href="../../db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html">UnsafeResourcePool</a>&lt; <a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>islandPool</b> = new <a class="el" href="../../db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html">UnsafeResourcePool</a>&lt;<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&gt;()</td></tr>
-<tr class="separator:a1f4b3b5666b83a6ad6457b5be8e11b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae5153ea189d28d74070ff706002d14d0"><td class="memItemLeft" align="right" valign="top"><a id="ae5153ea189d28d74070ff706002d14d0"></a>
-Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>multithreadedCandidacyLoopDelegate</b></td></tr>
-<tr class="separator:ae5153ea189d28d74070ff706002d14d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38ee42543338725c215a8f3a166e0ee7"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt; <a class="el" href="../../d6/d92/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_connection.html">SimulationIslandConnection</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>splitAttempts</b></td></tr>
-<tr class="separator:a38ee42543338725c215a8f3a166e0ee7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3e56fd53ae8e4e236bb59e3c8238c483"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/d22/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_spin_lock.html">SpinLock</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a3e56fd53ae8e4e236bb59e3c8238c483">addLocker</a> = new <a class="el" href="../../d4/d22/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_spin_lock.html">SpinLock</a>()</td></tr>
-<tr class="separator:a3e56fd53ae8e4e236bb59e3c8238c483"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a19f0ec3f93bca67da4794a9fd2f8ebd1"><td class="memItemLeft" align="right" valign="top"><a id="a19f0ec3f93bca67da4794a9fd2f8ebd1"></a>
-static float&#160;</td><td class="memItemRight" valign="bottom"><b>maximumSplitAttemptsFraction</b> = .01f</td></tr>
-<tr class="separator:a19f0ec3f93bca67da4794a9fd2f8ebd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a27feb09a1733c117e31a8b3d1f65b412"><td class="memItemLeft" align="right" valign="top"><a id="a27feb09a1733c117e31a8b3d1f65b412"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>minimumSplitAttempts</b> = 3</td></tr>
-<tr class="separator:a27feb09a1733c117e31a8b3d1f65b412"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pro_attribs_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_multithreaded_processing_stage"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_multithreaded_processing_stage')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../de/d15/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_multithreaded_processing_stage.html">Engine.Physics.BEPUphysics.MultithreadedProcessingStage</a></td></tr>
@@ -276,7 +212,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
 <div class="textblock"><p>Manages the sleeping states of objects. /summary&gt; </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ace082236233c5806bc659432762356c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace082236233c5806bc659432762356c3">&#9670;&nbsp;</a></span>DeactivationManager()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#ace082236233c5806bc659432762356c3">&#9670;&nbsp;</a></span>DeactivationManager() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,55 +236,23 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
 
 </div>
 </div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a7e7aeac35faefc541c54426839f48318"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7e7aeac35faefc541c54426839f48318">&#9670;&nbsp;</a></span>GiveBackIsland()</h2>
+<a id="a0b7dcdcc3723622c17f63d29529ee963"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b7dcdcc3723622c17f63d29529ee963">&#9670;&nbsp;</a></span>DeactivationManager() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.GiveBackIsland </td>
+          <td class="memname">Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.DeactivationManager </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td>
-          <td class="paramname"><em>island</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Adds a simulation island member to the manager. /summary&gt; param name="simulationIslandMember"&gt;Member to add.</p>
-<p>exception cref="Exception"&gt;Thrown if the member already belongs to a manager.</p>
-
-</div>
-</div>
-<a id="ab02bc1f32c132d06d3e934d7b8bf1b5f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab02bc1f32c132d06d3e934d7b8bf1b5f">&#9670;&nbsp;</a></span>Merge()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a> Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.Merge </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td>
-          <td class="paramname"><em>s1</em>, </td>
+          <td class="paramtype"><a class="el" href="../../d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html">TimeStepSettings</a>&#160;</td>
+          <td class="paramname"><em>timeStepSettings</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&#160;</td>
-          <td class="paramname"><em>s2</em>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../db/d6d/interface_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading_1_1_i_parallel_looper.html">IParallelLooper</a>&#160;</td>
+          <td class="paramname"><em>parallelLooper</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -356,17 +260,12 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
           <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>summary&gt; Removes a simulation island connection from the manager. /summary&gt; param name="connection"&gt;Connection to remove from the manager.</p>
-<p>exception cref="ArgumentException"&gt;Thrown if the connection does not belong to this manager.</p>
+<p>summary&gt; Gets or sets the velocity under which the deactivation system will consider objects to be deactivation candidates (if their velocity stays below the limit for the LowVelocityTimeMinimum). Defaults to 0.26. /summary&gt; </p>
 
 </div>
 </div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="a04c26fc9269700103dc1f8a39a840ad5"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a04c26fc9269700103dc1f8a39a840ad5">&#9670;&nbsp;</a></span>Remove()</h2>
 
@@ -413,147 +312,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
 
 </div>
 </div>
-<a id="a43197b883a4f4beb0239f8da6399d690"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a43197b883a4f4beb0239f8da6399d690">&#9670;&nbsp;</a></span>TryToSplit()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.TryToSplit </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&#160;</td>
-          <td class="paramname"><em>member1</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&#160;</td>
-          <td class="paramname"><em>member2</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tries to split connections between the two island members. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">member1</td><td>First island member.</td></tr>
-    <tr><td class="paramname">member2</td><td>Second island member.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>Whether a split operation was run. This does not mean a split was successful, just that the expensive test was performed.</dd></dl>
-<p>summary&gt; Strips a member of its simulation island. /summary&gt; param name="member"&gt;Member to be stripped.</p>
-
-</div>
-</div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a3e56fd53ae8e4e236bb59e3c8238c483"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3e56fd53ae8e4e236bb59e3c8238c483">&#9670;&nbsp;</a></span>addLocker</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d4/d22/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_spin_lock.html">SpinLock</a> Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.addLocker = new <a class="el" href="../../d4/d22/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_spin_lock.html">SpinLock</a>()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Adds a simulation island connection to the deactivation manager. /summary&gt; param name="connection"&gt;Connection to add.</p>
-<p>exception cref="ArgumentException"&gt;Thrown if the connection already belongs to a manager.</p>
-
-</div>
-</div>
-<a id="a4c3ec133671bdf9cca6716b690933b68"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c3ec133671bdf9cca6716b690933b68">&#9670;&nbsp;</a></span>lowVelocityTimeMinimum</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.lowVelocityTimeMinimum = 1f</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets or sets the velocity under which the deactivation system will consider objects to be deactivation candidates (if their velocity stays below the limit for the LowVelocityTimeMinimum). Defaults to 0.26. /summary&gt; </p>
-
-</div>
-</div>
-<a id="a5f0cd7d3b2d54e9ee80144c95378a5f2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5f0cd7d3b2d54e9ee80144c95378a5f2">&#9670;&nbsp;</a></span>searchedMembers2</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt; Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.searchedMembers2 = new List&lt;<a class="el" href="../../d8/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_member.html">SimulationIslandMember</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets or sets the maximum number of objects to attempt to deactivate each frame. Defaults to 100. /summary&gt; </p>
-
-</div>
-</div>
-<a id="a749c8ffab615040c73fad41447b5dcdf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a749c8ffab615040c73fad41447b5dcdf">&#9670;&nbsp;</a></span>simulationIslands</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt;<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&gt; Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.simulationIslands = new <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt;<a class="el" href="../../d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html">SimulationIsland</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets the simulation islands currently in the manager. /summary&gt; </p>
-
-</div>
-</div>
 <a id="ab4aa7e0ea33040edd8b50942eb823d2f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab4aa7e0ea33040edd8b50942eb823d2f">&#9670;&nbsp;</a></span>SimulationIslands</h2>
 
@@ -565,11 +324,11 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=&gt;</div><div class="line">            <span class="keyword">new</span> ReadOnlyList&lt;SimulationIsland&gt;(<a class="code" href="../../df/d5f/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_deactivation_manager.html#a749c8ffab615040c73fad41447b5dcdf">simulationIslands</a>)</div></div><!-- fragment -->
+<b>Initial value:</b><div class="fragment"><div class="line">=&gt;</div><div class="line">            <span class="keyword">new</span> ReadOnlyList&lt;SimulationIsland&gt;(simulationIslands)</div></div><!-- fragment -->
 </div>
 </div>
-<a id="a38ee42543338725c215a8f3a166e0ee7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a38ee42543338725c215a8f3a166e0ee7">&#9670;&nbsp;</a></span>splitAttempts</h2>
+<a id="ad66687c68a22cc4de7a4fa3581496916"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad66687c68a22cc4de7a4fa3581496916">&#9670;&nbsp;</a></span>velocityLowerLimitSquared</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -578,29 +337,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../d6/d92/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island_connection.html">SimulationIslandConnection</a>&gt; Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.splitAttempts</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <span class="keyword">new</span> ConcurrentDeque&lt;SimulationIslandConnection&gt;()</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a20f7821b337d66cb8dcfbdeb2018cb18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a20f7821b337d66cb8dcfbdeb2018cb18">&#9670;&nbsp;</a></span>useStabilization</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.useStabilization = true</td>
+          <td class="memname">float Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.velocityLowerLimitSquared = .26f * .26f</td>
         </tr>
       </table>
   </td>
@@ -609,7 +346,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets or sets whether or not to use a stabilization effect on nearly motionless objects. This removes a lot of energy from a system when things are settling down, allowing them to go to sleep faster. It also makes most simulations appear a lot more robust. Defaults to true. /summary&gt; </p>
+<p>summary&gt; Constructs a deactivation manager. /summary&gt; param name="timeStepSettings"&gt;The time step settings used by the manager.</p>
 
 </div>
 </div>
@@ -635,6 +372,7 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
 </div><div class="memdoc">
 
 <p>Gets or sets the time limit above which the deactivation system will consider objects to be deactivation candidates (if their velocity stays below the VelocityLowerLimit for the duration). Defaults to 1. </p>
+<p>summary&gt; Gets or sets whether or not to use a stabilization effect on nearly motionless objects. This removes a lot of energy from a system when things are settling down, allowing them to go to sleep faster. It also makes most simulations appear a lot more robust. Defaults to true. /summary&gt; </p>
 
 </div>
 </div>
@@ -728,7 +466,30 @@ Action&#160;</td><td class="memItemRight" valign="bottom"><b>Starting</b></td></
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Constructs a deactivation manager. /summary&gt; param name="timeStepSettings"&gt;The time step settings used by the manager.</p>
+<p>summary&gt; Gets the simulation islands currently in the manager. /summary&gt; </p>
+
+</div>
+</div>
+<a id="ab88b91e98a76b1363e09ae163f0d9d6e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab88b91e98a76b1363e09ae163f0d9d6e">&#9670;&nbsp;</a></span>UseStabilization</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool Engine.Physics.BEPUphysics.DeactivationManagement.DeactivationManager.UseStabilization</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>summary&gt; Gets or sets the maximum number of objects to attempt to deactivate each frame. Defaults to 100. /summary&gt; </p>
 
 </div>
 </div>

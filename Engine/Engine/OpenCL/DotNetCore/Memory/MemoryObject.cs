@@ -78,6 +78,7 @@ namespace Engine.OpenCL.DotNetCore.Memory
         /// Initializes a new <see cref="MemoryObject"/> instance.
         /// </summary>
         /// <param name="handle">The handle to the OpenCL memory object.</param>
+        ///<param name="bytes">Size of the Memory Object(For Statistics)</param>
         internal MemoryObject(IntPtr handle, long bytes)
             : base(handle)
         {

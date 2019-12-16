@@ -1,5 +1,9 @@
 ﻿namespace Engine.Debug
 {
+
+    /// <summary>
+    /// Class that keeps track of all possible statistics during the run of the engine
+    /// </summary>
     public static class EngineStatisticsManager
     {
         public static int TotalUpdates { get; private set; }

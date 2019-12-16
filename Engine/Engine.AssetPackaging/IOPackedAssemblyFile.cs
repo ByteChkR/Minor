@@ -2,6 +2,9 @@
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// Assembly File Class that is used when the pack file is on disk
+    /// </summary>
     public class IoPackedAssemblyFile : AssemblyFile
     {
         private AssetPointer _ptr;
@@ -9,13 +12,13 @@ namespace Engine.AssetPackaging
         public IoPackedAssemblyFile(bool compressed, string packFilepath, AssetPointer ptr) : base(compressed,
             packFilepath, null)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
         public IoPackedAssemblyFile(bool compressed, string[] packFilepaths, AssetPointer ptr) : base(compressed,
             packFilepaths, null)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
         public override Stream GetResourceStream(int index)

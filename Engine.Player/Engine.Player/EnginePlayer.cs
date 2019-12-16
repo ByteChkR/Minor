@@ -9,7 +9,6 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading;
-using Engine.BuildTools.Builder;
 using Engine.BuildTools.Common;
 using Engine.BuildTools.PackageCreator;
 using Engine.BuildTools.PackageCreator.Versions;
@@ -24,12 +23,14 @@ namespace Engine.Player
         private static List<string> _engineversions = new List<string>();
         private static Process _p;
         private static bool _dontReadLine;
-        private static StartupInfo _info;
         public static WebClient Wc = new WebClient();
 
         private static string _engineVersion;
 
         private static int _last;
+
+        private static Version[] AvailableVersionsOnServer;
+
 
         [DllImport("user32.dll")]
         public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
@@ -205,11 +206,6 @@ namespace Engine.Player
             AddEngine(args[0]);
         }
 
-        private static void UpdateEngineCommand(StartupInfo info, string[] args)
-        {
-            CheckUpdates();
-        }
-
         private static void DownloadEngineCommand(StartupInfo info, string[] args)
         {
             if (!IsEngineVersionAvailable(args[0]))
@@ -307,7 +303,6 @@ namespace Engine.Player
 
         private static void Main(string[] args)
         {
-            _info = new StartupInfo(args);
 
 
             Wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
@@ -322,25 +317,25 @@ namespace Engine.Player
                 Directory.CreateDirectory("engine");
             }
 
+            GetEngineServerVersion();
             _engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly)
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 
 
-            Command def = Command.CreateCommand(DefaultCommand, "--run");
+            Command def = Command.CreateCommand(DefaultCommand,"--run <Path/To/File.game>", "--run");
             CommandRunner.SetDefaultCommand(def);
 
-            CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "--set-default-program", "-sD"));
-            CommandRunner.AddCommand(Command.CreateCommand(NoHaltCommand, "--no-halt", "-nH"));
-            CommandRunner.AddCommand(Command.CreateCommand(HelpCommand, "--help", "-h"));
-            CommandRunner.AddCommand(Command.CreateCommand(UpdateEngineCommand, "--update", "-u"));
-            CommandRunner.AddCommand(Command.CreateCommand(SetEnginePathCommand, "--engine-path", "-eP"));
-            CommandRunner.AddCommand(Command.CreateCommand(SetEngineVersionCommand, "--engine", "-e"));
-            CommandRunner.AddCommand(Command.CreateCommand(ListPackageInfo, "--list-info", "-l"));
+            CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "Requires Admin Permissions", "--set-default-program", "-sD"));
+            CommandRunner.AddCommand(Command.CreateCommand(NoHaltCommand, "Does not wait for user input before exiting", "--no-halt", "-nH"));
+            CommandRunner.AddCommand(Command.CreateCommand(HelpCommand, "Display this help message", "--help", "-h"));
+            CommandRunner.AddCommand(Command.CreateCommand(SetEnginePathCommand, "--engine-path <Path/To/File.game>\nSpecify a manual path to a .engine file", "--engine-path", "-eP"));
+            CommandRunner.AddCommand(Command.CreateCommand(SetEngineVersionCommand, "--engine <Version>\nSpecify a manual version", "--engine", "-e"));
+            CommandRunner.AddCommand(Command.CreateCommand(ListPackageInfo, "--list-info <<Path/To/File>\nLists Information about the .engine or .game file.", "--list-info", "-l"));
 
-            CommandRunner.AddCommand(Command.CreateCommand(RemoveEngineCommand, "--remove-engine", "-r"));
-            CommandRunner.AddCommand(Command.CreateCommand(ClearCacheCommand, "--clear-cache", "-cC"));
-            CommandRunner.AddCommand(Command.CreateCommand(AddEngineCommand, "--add-engine", "-a"));
-            CommandRunner.AddCommand(Command.CreateCommand(DownloadEngineCommand, "--download-engine", "-d"));
+            CommandRunner.AddCommand(Command.CreateCommand(RemoveEngineCommand , "--remove-engine <Version>\nRemoves an engine Version from the engine cache", "--remove-engine", "-r"));
+            CommandRunner.AddCommand(Command.CreateCommand(ClearCacheCommand, "--clear-cache\nClears all engines in the cache", "--clear-cache", "-cC"));
+            CommandRunner.AddCommand(Command.CreateCommand(AddEngineCommand, "--add-engine <<Path/To/File.engine>\nAdds an engine file to the engine cache", "--add-engine", "-a"));
+            CommandRunner.AddCommand(Command.CreateCommand(DownloadEngineCommand, "--download-engine <Version>\n Tries to download a specified engine version", "--download-engine", "-d"));
 
             CommandRunner.AddCommand(def);
 
@@ -352,14 +347,6 @@ namespace Engine.Player
         private static void ConsoleOnCancelKeyPress(object sender, ConsoleCancelEventArgs e)
         {
             e.Cancel = true;
-        }
-
-        private static string GetRequiredEngineVersion(ZipArchive archive)
-        {
-            TextReader tr = new StreamReader(archive.GetEntry("EngineVersion").Open());
-            string ver = tr.ReadToEnd().Replace("\r\n", "");
-            tr.Close();
-            return ver;
         }
 
         private static void CreateFolder(string path)
@@ -382,22 +369,26 @@ namespace Engine.Player
             }
         }
 
-        private static void CheckUpdates()
+        private static void GetEngineServerVersion()
         {
-            Console.WriteLine("Checking for Updates...");
-            string s = Wc.DownloadString(
-                "http://213.109.162.193/apps/EngineArchives/newest.version");
+            Console.WriteLine("Downloading Version List..");
+            string s = Wc.DownloadString("http://213.109.162.193/apps/EngineArchives/version.list");
 
-            if (!_engineversions.Contains(s))
+            string[] versions = s.Split('\n');
+            List<Version> versionList = new List<Version>();
+            for (int i = 0; i < versions.Length; i++)
             {
-                Console.WriteLine("Newest Version is not on Disk...");
-                _engineversions.Add(s);
-                DownloadEngineVersion(s);
+                if (Version.TryParse(versions[i], out Version parsedResult))
+                {
+                    versionList.Add(parsedResult);
+                }
             }
 
-
-            Console.WriteLine("Newest Engine Version Installed.");
+            versionList.Sort();
+            AvailableVersionsOnServer = versionList.ToArray();
+            Console.WriteLine("Fetched Version from Server");
         }
+
 
         private static void DownloadEngineVersion(string version)
         {
@@ -421,7 +412,7 @@ namespace Engine.Player
             {
                 int d = e.ProgressPercentage - _last;
                 float m = Console.WindowWidth / 100f;
-                int fd = (int) (m * d);
+                int fd = (int)(m * d);
                 for (int j = 0; j < fd; j++)
                 {
                     Console.Write("#");
@@ -497,7 +488,28 @@ namespace Engine.Player
                     }
                     else
                     {
-                        throw new ArgumentException("Could not locate engine version : " + version);
+
+                        Console.WriteLine("Could not locate engine version : " + version);
+                        Console.WriteLine("Finding Compatible..");
+
+                        if (!Version.TryParse(version, out Version v))
+                            throw new ArgumentException("Could not locate engine version : " + version);
+
+                        bool foundVersion = false;
+                        Version vx = new Version(v.Major, v.Minor, v.Build, 0);
+                        for (int i = 0; i < AvailableVersionsOnServer.Length; i++)
+                        {
+                            Version avx = new Version(AvailableVersionsOnServer[i].Major, AvailableVersionsOnServer[i].Minor, AvailableVersionsOnServer[i].Build, 0);
+                            if (v != AvailableVersionsOnServer[i] && vx == avx)
+                            {
+                                DownloadEngineVersion(AvailableVersionsOnServer[i].ToString());
+                                version = AvailableVersionsOnServer[i].ToString();
+                                foundVersion = true;
+                                break;
+                            }
+                        }
+                        if (!foundVersion)
+                            throw new ArgumentException("Could not locate engine version : " + v);
                     }
                 }
 
@@ -506,6 +518,7 @@ namespace Engine.Player
 
 
             Console.WriteLine("Loading Engine Version: " + version);
+
             Creator.UnpackPackage(filePath, "game");
         }
 
@@ -513,13 +526,13 @@ namespace Engine.Player
         {
             string addr = $"http://213.109.162.193/apps/EngineArchives/{version}.engine";
             HttpWebResponse response = null;
-            HttpWebRequest request = (HttpWebRequest) WebRequest.Create(addr);
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(addr);
             request.Method = "HEAD";
 
             bool ret = false;
             try
             {
-                response = (HttpWebResponse) request.GetResponse();
+                response = (HttpWebResponse)request.GetResponse();
                 ret = true;
             }
             catch (Exception)

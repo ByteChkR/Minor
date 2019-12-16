@@ -5,7 +5,7 @@ using Engine.Debug;
 using Engine.IO;
 using Engine.OpenCL;
 using Engine.OpenCL.DotNetCore.Memory;
-using Engine.OpenCL.Runner;
+using Engine.OpenFL.Runner;
 using Engine.Rendering;
 
 namespace Engine.OpenFL
@@ -52,6 +52,7 @@ namespace Engine.OpenFL
         /// <param name="previews">List of previews</param>
         /// <param name="width">Width/height of the output texture</param>
         /// <param name="height"></param>
+        /// <param name="multiThread">Flag that determines the way the FL Scripts gets executed</param>
         public FlGeneratorComponent(List<LitMeshRendererComponent> previews, int width, int height,
             bool multiThread = false)
         {
@@ -237,7 +238,7 @@ namespace Engine.OpenFL
         /// <summary>
         /// Runs a FL Script in stepped mode
         /// </summary>
-        /// <param name="filename">Path to the FL Script</param>
+        /// <param name="args">commands</param>
         private string cmd_RunFLStepped(string[] args)
         {
             if (args.Length == 0)

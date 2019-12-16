@@ -9,7 +9,7 @@ var class_engine_1_1_core_1_1_interpolations =
     [ "IntPow", "da/d21/class_engine_1_1_core_1_1_interpolations.html#ae3f74697734e6b0b05dada32f215cb78", null ],
     [ "InverseLerp", "da/d21/class_engine_1_1_core_1_1_interpolations.html#a4eb69020bf82f17bc59b48f38ba22f28", null ],
     [ "Mix", "da/d21/class_engine_1_1_core_1_1_interpolations.html#a00db049fc57e9b55dd94981c3e07c9ec", null ],
-    [ "NormalizedBezier", "da/d21/class_engine_1_1_core_1_1_interpolations.html#a08c1c47c77c57d0ae99d5e9c0ad0f140", null ],
+    [ "NormalizedBezier", "da/d21/class_engine_1_1_core_1_1_interpolations.html#afb40447e0cb8f425af96923039313da7", null ],
     [ "Scale", "da/d21/class_engine_1_1_core_1_1_interpolations.html#a395fc568ce4d65880923a2183eee7734", null ],
     [ "Slerp", "da/d21/class_engine_1_1_core_1_1_interpolations.html#a51582d5f3e7f7b7f9deb809afcd486a5", null ],
     [ "SmoothLine", "da/d21/class_engine_1_1_core_1_1_interpolations.html#ac905a94c0e4451a4642905389760a5ee", null ],

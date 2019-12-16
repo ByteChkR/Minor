@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -91,7 +91,6 @@ $(document).ready(function(){initNavTree('d4/dc7/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="#pac-types">Package Types</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d5/d51/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.EntityStateManagement.EntityStateWriteBuffer Class Reference</div>  </div>
@@ -147,11 +146,6 @@ Package Types</h2></td></tr>
 <b>AngularVelocity</b>
  }</td></tr>
 <tr class="separator:ad4e02390526b3a17a0f811af42948bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a8d1941bf5a5ee8c99fdd47d0a566f171"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt; <a class="el" href="../../df/d65/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer_1_1_entity_state_change.html">EntityStateChange</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer.html#a8d1941bf5a5ee8c99fdd47d0a566f171">stateChanges</a> = new <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../df/d65/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer_1_1_entity_state_change.html">EntityStateChange</a>&gt;()</td></tr>
-<tr class="separator:a8d1941bf5a5ee8c99fdd47d0a566f171"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -275,30 +269,6 @@ Additional Inherited Members</h2></td></tr>
 </div><div class="memdoc">
 <p>summary&gt; Enqueues a change to an entity's orientation. /summary&gt; param name="entity"&gt;Entity to target.</p>
 <p>param name="newOrientationQuaternion"&gt;New orientation of the entity.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8d1941bf5a5ee8c99fdd47d0a566f171"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d1941bf5a5ee8c99fdd47d0a566f171">&#9670;&nbsp;</a></span>stateChanges</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../df/d65/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer_1_1_entity_state_change.html">EntityStateChange</a>&gt; Engine.Physics.BEPUphysics.EntityStateManagement.EntityStateWriteBuffer.stateChanges = new <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../df/d65/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_state_write_buffer_1_1_entity_state_change.html">EntityStateChange</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Constructs the write buffer. /summary&gt; </p>
 
 </div>
 </div>

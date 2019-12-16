@@ -7,6 +7,6 @@ var namespace_engine_1_1_asset_packaging =
     [ "AssetPacker", "de/d2b/class_engine_1_1_asset_packaging_1_1_asset_packer.html", "de/d2b/class_engine_1_1_asset_packaging_1_1_asset_packer" ],
     [ "AssetPointer", "d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer.html", "d3/d7e/class_engine_1_1_asset_packaging_1_1_asset_pointer" ],
     [ "AssetResult", "dc/d94/class_engine_1_1_asset_packaging_1_1_asset_result.html", "dc/d94/class_engine_1_1_asset_packaging_1_1_asset_result" ],
-    [ "IOPackedAssemblyFile", "d3/d2f/class_engine_1_1_asset_packaging_1_1_i_o_packed_assembly_file.html", "d3/d2f/class_engine_1_1_asset_packaging_1_1_i_o_packed_assembly_file" ],
+    [ "IoPackedAssemblyFile", "d0/d23/class_engine_1_1_asset_packaging_1_1_io_packed_assembly_file.html", "d0/d23/class_engine_1_1_asset_packaging_1_1_io_packed_assembly_file" ],
     [ "PackedAssemblyFile", "d4/d5b/class_engine_1_1_asset_packaging_1_1_packed_assembly_file.html", "d4/d5b/class_engine_1_1_asset_packaging_1_1_packed_assembly_file" ]
 ];

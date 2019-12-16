@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,8 +89,6 @@ $(document).ready(function(){initNavTree('d1/dce/class_engine_1_1_physics_1_1_b_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../da/d37/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.UpdateableSystems.FluidVolume Class Reference</div>  </div>
@@ -117,18 +115,18 @@ Inheritance diagram for Engine.Physics.BEPUphysics.UpdateableSystems.FluidVolume
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a4e7214799a7c6e79a7775341b6a80e16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a4e7214799a7c6e79a7775341b6a80e16">FluidVolume</a> (<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> <a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#aa1fb16a3805a84f52a92bce76efbe0cf">upVector</a>, float gravity, List&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>[]&gt; surfaceTriangles, float depth, float fluidDensity, float linearDamping, float angularDamping)</td></tr>
+<tr class="memitem:a4e7214799a7c6e79a7775341b6a80e16"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a4e7214799a7c6e79a7775341b6a80e16">FluidVolume</a> (<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> upVector, float gravity, List&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>[]&gt; surfaceTriangles, float depth, float fluidDensity, float linearDamping, float angularDamping)</td></tr>
 <tr class="memdesc:a4e7214799a7c6e79a7775341b6a80e16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a fluid volume.  <a href="#a4e7214799a7c6e79a7775341b6a80e16">More...</a><br /></td></tr>
 <tr class="separator:a4e7214799a7c6e79a7775341b6a80e16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d6e92532d29a51bb9902763cc57fba4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a1d6e92532d29a51bb9902763cc57fba4">RecalculateBoundingBox</a> ()</td></tr>
-<tr class="memdesc:a1d6e92532d29a51bb9902763cc57fba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculates the bounding box of the fluid based on its depth, surface normal, and surface triangles.  <a href="#a1d6e92532d29a51bb9902763cc57fba4">More...</a><br /></td></tr>
-<tr class="separator:a1d6e92532d29a51bb9902763cc57fba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80c07b68ed94ba4a7fe2710ac02aefcd"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a80c07b68ed94ba4a7fe2710ac02aefcd">OnAdditionToSpace</a> (<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> newSpace)</td></tr>
 <tr class="memdesc:a80c07b68ed94ba4a7fe2710ac02aefcd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called after the object is added to a space.  <a href="#a80c07b68ed94ba4a7fe2710ac02aefcd">More...</a><br /></td></tr>
 <tr class="separator:a80c07b68ed94ba4a7fe2710ac02aefcd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:add217aa21612ad6c5ec4781148104a12"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#add217aa21612ad6c5ec4781148104a12">OnRemovalFromSpace</a> (<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> oldSpace)</td></tr>
 <tr class="memdesc:add217aa21612ad6c5ec4781148104a12"><td class="mdescLeft">&#160;</td><td class="mdescRight">Called before an object is removed from its space.  <a href="#add217aa21612ad6c5ec4781148104a12">More...</a><br /></td></tr>
 <tr class="separator:add217aa21612ad6c5ec4781148104a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d6e92532d29a51bb9902763cc57fba4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a1d6e92532d29a51bb9902763cc57fba4">RecalculateBoundingBox</a> ()</td></tr>
+<tr class="memdesc:a1d6e92532d29a51bb9902763cc57fba4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Recalculates the bounding box of the fluid based on its depth, surface normal, and surface triangles.  <a href="#a1d6e92532d29a51bb9902763cc57fba4">More...</a><br /></td></tr>
+<tr class="separator:a1d6e92532d29a51bb9902763cc57fba4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -138,7 +136,7 @@ Properties</h2></td></tr>
 <tr class="memitem:afe6fdb4b23a286796006e081b2be6470"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; <a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>, float &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#afe6fdb4b23a286796006e081b2be6470">DensityMultipliers</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:afe6fdb4b23a286796006e081b2be6470"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the dictionary storing density multipliers for the fluid volume. If a value is specified for an entity, the density of the object is effectively scaled to match. Higher values make entities sink more, lower values make entities float more.  <a href="#afe6fdb4b23a286796006e081b2be6470">More...</a><br /></td></tr>
 <tr class="separator:afe6fdb4b23a286796006e081b2be6470"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d96ec7bc69fa9f8f99764789ebf4e74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html">BoundingBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a6d96ec7bc69fa9f8f99764789ebf4e74">BoundingBox</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a6d96ec7bc69fa9f8f99764789ebf4e74"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html">BoundingBox</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a6d96ec7bc69fa9f8f99764789ebf4e74">BoundingBox</a><code> [get]</code></td></tr>
 <tr class="memdesc:a6d96ec7bc69fa9f8f99764789ebf4e74"><td class="mdescLeft">&#160;</td><td class="mdescRight">Bounding box surrounding the surface triangles and entire depth of the object.  <a href="#a6d96ec7bc69fa9f8f99764789ebf4e74">More...</a><br /></td></tr>
 <tr class="separator:a6d96ec7bc69fa9f8f99764789ebf4e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa686b9090c2131e5183c8637ca37c7c2"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#aa686b9090c2131e5183c8637ca37c7c2">MaxDepth</a><code> [get, set]</code></td></tr>
@@ -165,8 +163,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a8967db0fc6845286a2810348ce4b8f3b"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a8967db0fc6845286a2810348ce4b8f3b">MaxFlowSpeed</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8967db0fc6845286a2810348ce4b8f3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Maximum speed of the flow; objects will not be accelerated by the flow force beyond this speed. flowForce and flowDirection must have valid values as well for the flow to work.  <a href="#a8967db0fc6845286a2810348ce4b8f3b">More...</a><br /></td></tr>
 <tr class="separator:a8967db0fc6845286a2810348ce4b8f3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37c1e00b2906071f88d569a8600c2c11"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/df5/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_i_query_accelerator.html">IQueryAccelerator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a37c1e00b2906071f88d569a8600c2c11">QueryAccelerator</a><code> [get, set]</code></td></tr>
-<tr class="separator:a37c1e00b2906071f88d569a8600c2c11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3835d4bf5d5d407f5cc18a14a9ac09f0"><td class="memItemLeft" align="right" valign="top"><a id="a3835d4bf5d5d407f5cc18a14a9ac09f0"></a>
 <a class="el" href="../../db/d6d/interface_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading_1_1_i_parallel_looper.html">IParallelLooper</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ParallelLooper</b><code> [get, set]</code></td></tr>
 <tr class="separator:a3835d4bf5d5d407f5cc18a14a9ac09f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,10 +182,8 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>Gravity</b><code> [g
 <tr class="memitem:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aa0bbc0ac8f31f06d970e307f7c566ae4">IsUpdating</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets and sets whether or not the updateable should be updated by its manager.  <a href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aa0bbc0ac8f31f06d970e307f7c566ae4">More...</a><br /></td></tr>
 <tr class="separator:aa0bbc0ac8f31f06d970e307f7c566ae4 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa4e18a9d919a2b42975b02d5e125c9e inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> ISpaceObject.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#aaa4e18a9d919a2b42975b02d5e125c9e">Space</a><code> [get, set]</code></td></tr>
-<tr class="separator:aaa4e18a9d919a2b42975b02d5e125c9e inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2ce25afdd55f39cfd61d863c18410e85 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top"><a id="a2ce25afdd55f39cfd61d863c18410e85"></a>
-<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Space</b><code> [get, private set]</code></td></tr>
+<a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Space</b><code> [get]</code></td></tr>
 <tr class="separator:a2ce25afdd55f39cfd61d863c18410e85 inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4827e811e50dec509acb5348f251d3ab inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="memItemLeft" align="right" valign="top">object&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#a4827e811e50dec509acb5348f251d3ab">Tag</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a4827e811e50dec509acb5348f251d3ab inherit properties_class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the user data associated with this object.  <a href="../../d8/ddb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_updateable.html#a4827e811e50dec509acb5348f251d3ab">More...</a><br /></td></tr>
@@ -216,53 +210,6 @@ List&lt; <a class="el" href="../../d8/d24/class_engine_1_1_physics_1_1_b_e_p_uph
 <a class="el" href="../../d7/dd1/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_rules.html">CollisionRules</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dd/d13/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner.html#ac1791fd6e531eab17c8b8bec110caff1">CollisionRules</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:ac1791fd6e531eab17c8b8bec110caff1 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner"><td class="mdescLeft">&#160;</td><td class="mdescRight">Collision rules owned by the object. /summary&gt; <br /></td></tr>
 <tr class="separator:ac1791fd6e531eab17c8b8bec110caff1 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_i_collision_rules_owner"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a027a27028d4c1b5e8be467e0e8a5850c"><td class="memItemLeft" align="right" valign="top">void IDuringForcesUpdateable.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#a027a27028d4c1b5e8be467e0e8a5850c">Update</a> (float dt)</td></tr>
-<tr class="memdesc:a027a27028d4c1b5e8be467e0e8a5850c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies buoyancy forces to appropriate objects. Called automatically when needed by the owning <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a>.  <a href="#a027a27028d4c1b5e8be467e0e8a5850c">More...</a><br /></td></tr>
-<tr class="separator:a027a27028d4c1b5e8be467e0e8a5850c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a617a95526d5dd629dd01eab3130628c8"><td class="memItemLeft" align="right" valign="top"><a id="a617a95526d5dd629dd01eab3130628c8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AnalyzeEntry</b> (int i)</td></tr>
-<tr class="separator:a617a95526d5dd629dd01eab3130628c8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87514db40a2e18a2c8e3ea8643b2043f"><td class="memItemLeft" align="right" valign="top"><a id="a87514db40a2e18a2c8e3ea8643b2043f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetBuoyancyInformation</b> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> collidable, out float submergedVolume, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> submergedCenter)</td></tr>
-<tr class="separator:a87514db40a2e18a2c8e3ea8643b2043f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b145e05db7e2c1de2f1ba7fafae07aa"><td class="memItemLeft" align="right" valign="top"><a id="a6b145e05db7e2c1de2f1ba7fafae07aa"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>GetSamplingOrigin</b> (ref <a class="el" href="../../d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html">BoundingBox</a> entityBoundingBox, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> xSpacing, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> zSpacing, out float perColumnArea, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> origin)</td></tr>
-<tr class="separator:a6b145e05db7e2c1de2f1ba7fafae07aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a28169eaa7055d7bd06cb152c5dcab3a5"><td class="memItemLeft" align="right" valign="top"><a id="a28169eaa7055d7bd06cb152c5dcab3a5"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubmergedHeight</b> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> collidable, float maxLength, float boundingBoxHeight, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> rayOrigin, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> xSpacing, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> zSpacing, int i, int j, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> volumeCenter)</td></tr>
-<tr class="separator:a28169eaa7055d7bd06cb152c5dcab3a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:af97f64d8e5e1cf852825e4307aa9927e"><td class="memItemLeft" align="right" valign="top"><a id="af97f64d8e5e1cf852825e4307aa9927e"></a>
-<a class="el" href="../../d0/d84/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_rigid_transform.html">RigidTransform</a>&#160;</td><td class="memItemRight" valign="bottom"><b>surfaceTransform</b></td></tr>
-<tr class="separator:af97f64d8e5e1cf852825e4307aa9927e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa3db18eaa3b729483dcb08317d63f417"><td class="memItemLeft" align="right" valign="top"><a id="aa3db18eaa3b729483dcb08317d63f417"></a>
-<a class="el" href="../../da/df5/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_matrix3x3.html">Matrix3x3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>toSurfaceRotationMatrix</b></td></tr>
-<tr class="separator:aa3db18eaa3b729483dcb08317d63f417"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa1fb16a3805a84f52a92bce76efbe0cf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html#aa1fb16a3805a84f52a92bce76efbe0cf">upVector</a></td></tr>
-<tr class="separator:aa1fb16a3805a84f52a92bce76efbe0cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34744c83ca237f5839f260b0c821ddb8"><td class="memItemLeft" align="right" valign="top"><a id="a34744c83ca237f5839f260b0c821ddb8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>maxDepth</b></td></tr>
-<tr class="separator:a34744c83ca237f5839f260b0c821ddb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac43e02c36781c701086433318bd972fe"><td class="memItemLeft" align="right" valign="top"><a id="ac43e02c36781c701086433318bd972fe"></a>
-<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>flowDirection</b></td></tr>
-<tr class="separator:ac43e02c36781c701086433318bd972fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a918ace016e75558234de03abb6fde834"><td class="memItemLeft" align="right" valign="top"><a id="a918ace016e75558234de03abb6fde834"></a>
-List&lt; <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a>[]&gt;&#160;</td><td class="memItemRight" valign="bottom"><b>surfaceTriangles</b></td></tr>
-<tr class="separator:a918ace016e75558234de03abb6fde834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75b36589c132d45e4f083fa4f2cf9bef"><td class="memItemLeft" align="right" valign="top"><a id="a75b36589c132d45e4f083fa4f2cf9bef"></a>
-List&lt; <a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>broadPhaseEntries</b> = new List&lt;<a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a>&gt;()</td></tr>
-<tr class="separator:a75b36589c132d45e4f083fa4f2cf9bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a632496ba2e9c984eb67d1ae943a77848"><td class="memItemLeft" align="right" valign="top"><a id="a632496ba2e9c984eb67d1ae943a77848"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>dt</b></td></tr>
-<tr class="separator:a632496ba2e9c984eb67d1ae943a77848"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c55d91570eabae8aa503b30657545d3"><td class="memItemLeft" align="right" valign="top"><a id="a9c55d91570eabae8aa503b30657545d3"></a>
-Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>analyzeCollisionEntryDelegate</b></td></tr>
-<tr class="separator:a9c55d91570eabae8aa503b30657545d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Volume in which physically simulated objects have a buoyancy force applied to them based on their density and volume. </p>
@@ -336,6 +283,7 @@ Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>analyz
   </table>
   </dd>
 </dl>
+<p>summary&gt; Gets or sets the up vector of the fluid volume. /summary&gt; </p>
 
 </div>
 </div>
@@ -431,66 +379,6 @@ Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>analyz
 
 </div>
 </div>
-<a id="a027a27028d4c1b5e8be467e0e8a5850c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a027a27028d4c1b5e8be467e0e8a5850c">&#9670;&nbsp;</a></span>Update()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void IDuringForcesUpdateable. Engine.Physics.BEPUphysics.UpdateableSystems.FluidVolume.Update </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>dt</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Applies buoyancy forces to appropriate objects. Called automatically when needed by the owning <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html" title="Main simulation class of BEPUphysics. Contains various updating stages addition/removal methods for g...">Space</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">dt</td><td>Time since last frame in physical logic.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="../../d0/de6/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_i_during_forces_updateable.html#a5e278e72a132277a7fab48cbad85be45">Engine.Physics.BEPUphysics.UpdateableSystems.IDuringForcesUpdateable</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="aa1fb16a3805a84f52a92bce76efbe0cf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa1fb16a3805a84f52a92bce76efbe0cf">&#9670;&nbsp;</a></span>upVector</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> Engine.Physics.BEPUphysics.UpdateableSystems.FluidVolume.upVector</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets or sets the up vector of the fluid volume. /summary&gt; </p>
-
-</div>
-</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="af0fa58492d3150edf6fa5559e96edee6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af0fa58492d3150edf6fa5559e96edee6">&#9670;&nbsp;</a></span>AngularDamping</h2>
@@ -531,7 +419,7 @@ Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>analyz
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -729,29 +617,6 @@ Action&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>analyz
 </div><div class="memdoc">
 
 <p>Maximum speed of the flow; objects will not be accelerated by the flow force beyond this speed. flowForce and flowDirection must have valid values as well for the flow to work. </p>
-
-</div>
-</div>
-<a id="a37c1e00b2906071f88d569a8600c2c11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37c1e00b2906071f88d569a8600c2c11">&#9670;&nbsp;</a></span>QueryAccelerator</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d3/df5/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_i_query_accelerator.html">IQueryAccelerator</a> Engine.Physics.BEPUphysics.UpdateableSystems.FluidVolume.QueryAccelerator</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Gets or sets the parallel loop provider used by the fluid volume. /summary&gt; </p>
 
 </div>
 </div>

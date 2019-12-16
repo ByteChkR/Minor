@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,7 +89,6 @@ $(document).ready(function(){initNavTree('de/d4d/class_engine_1_1_physics_1_1_b_
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../d0/dd6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.InertiaHelper Class Reference</div>  </div>
@@ -122,7 +121,8 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a6b4ae14fd8658d0adb72c6a317068aaa"><td class="memItemLeft" align="right" valign="top">static float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html#a6b4ae14fd8658d0adb72c6a317068aaa">InertiaTensorScale</a> = 2.5f</td></tr>
 <tr class="memdesc:a6b4ae14fd8658d0adb72c6a317068aaa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Value to scale any created entities' inertia tensors by. Larger tensors (above 1) improve stiffness of constraints and contacts, while smaller values (towards 1) are closer to 'realistic' behavior. Defaults to 2.5.  <a href="#a6b4ae14fd8658d0adb72c6a317068aaa">More...</a><br /></td></tr>
 <tr class="separator:a6b4ae14fd8658d0adb72c6a317068aaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12b3ce3b6c2a68dee3fc82c76767030e"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html#a12b3ce3b6c2a68dee3fc82c76767030e">NumberOfSamplesPerDimension</a> = 10</td></tr>
+<tr class="memitem:a12b3ce3b6c2a68dee3fc82c76767030e"><td class="memItemLeft" align="right" valign="top"><a id="a12b3ce3b6c2a68dee3fc82c76767030e"></a>
+static int&#160;</td><td class="memItemRight" valign="bottom"><b>NumberOfSamplesPerDimension</b> = 10</td></tr>
 <tr class="separator:a12b3ce3b6c2a68dee3fc82c76767030e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acfc77b7445d84f2f17466b64aefa27f4"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html#acfc77b7445d84f2f17466b64aefa27f4">SampleDirections</a></td></tr>
 <tr class="memdesc:acfc77b7445d84f2f17466b64aefa27f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set of directions sampled by the inertia helper when constructing a mesh representation of a convex object.  <a href="#acfc77b7445d84f2f17466b64aefa27f4">More...</a><br /></td></tr>
@@ -130,138 +130,10 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:a6e5e244a305a3f59af583f21805b2d07"><td class="memItemLeft" align="right" valign="top">static int []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html#a6e5e244a305a3f59af583f21805b2d07">SampleTriangleIndices</a></td></tr>
 <tr class="memdesc:a6e5e244a305a3f59af583f21805b2d07"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set of triangles represented by groups of three indices into the SampleDirections array.  <a href="#a6e5e244a305a3f59af583f21805b2d07">More...</a><br /></td></tr>
 <tr class="separator:a6e5e244a305a3f59af583f21805b2d07"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:ad4defb68ff4f18e2d7bc801d8e28e25e"><td class="memItemLeft" align="right" valign="top"><a id="ad4defb68ff4f18e2d7bc801d8e28e25e"></a>
-static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetExpectedVertexCount</b> (int subdivisionCount)</td></tr>
-<tr class="separator:ad4defb68ff4f18e2d7bc801d8e28e25e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1aab2973affc257eb38a47e3789a962e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html#a1aab2973affc257eb38a47e3789a962e">Add&lt; T &gt;</a> (this T[] array, T item, ref int count)</td></tr>
-<tr class="memdesc:a1aab2973affc257eb38a47e3789a962e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Treats an array like a list and adds an element to it. Does not perform any resizing.  <a href="#a1aab2973affc257eb38a47e3789a962e">More...</a><br /></td></tr>
-<tr class="separator:a1aab2973affc257eb38a47e3789a962e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9a9533823f4b651e8b42e506ed2d56e"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html#ad9a9533823f4b651e8b42e506ed2d56e">Add&lt; T &gt;</a> (this T[] array, ref T item, ref int count)</td></tr>
-<tr class="memdesc:ad9a9533823f4b651e8b42e506ed2d56e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Treats an array like a list and adds an element to it. Does not perform any resizing.  <a href="#ad9a9533823f4b651e8b42e506ed2d56e">More...</a><br /></td></tr>
-<tr class="separator:ad9a9533823f4b651e8b42e506ed2d56e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helper class used to compute volume distribution information, which is in turn used to compute inertia tensor information. /summary&gt; </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1aab2973affc257eb38a47e3789a962e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1aab2973affc257eb38a47e3789a962e">&#9670;&nbsp;</a></span>Add&lt; T &gt;() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.InertiaHelper.Add&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">this T []&#160;</td>
-          <td class="paramname"><em>array</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">T&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Treats an array like a list and adds an element to it. Does not perform any resizing. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>Type of the array.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">array</td><td>Array to add an item to.</td></tr>
-    <tr><td class="paramname">item</td><td>The item to add.</td></tr>
-    <tr><td class="paramname">count</td><td>Length of the array. Will be incremented.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad9a9533823f4b651e8b42e506ed2d56e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad9a9533823f4b651e8b42e506ed2d56e">&#9670;&nbsp;</a></span>Add&lt; T &gt;() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.InertiaHelper.Add&lt; T &gt; </td>
-          <td>(</td>
-          <td class="paramtype">this T []&#160;</td>
-          <td class="paramname"><em>array</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref T&#160;</td>
-          <td class="paramname"><em>item</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">ref int&#160;</td>
-          <td class="paramname"><em>count</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Treats an array like a list and adds an element to it. Does not perform any resizing. </p>
-<dl class="tparams"><dt>Template Parameters</dt><dd>
-  <table class="tparams">
-    <tr><td class="paramname">T</td><td>Type of the array.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">array</td><td>Array to add an item to.</td></tr>
-    <tr><td class="paramname">item</td><td>The item to add.</td></tr>
-    <tr><td class="paramname">count</td><td>Length of the array. Will be incremented.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a2b3b717631a22bc2ebc2d5d55726c674"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2b3b717631a22bc2ebc2d5d55726c674">&#9670;&nbsp;</a></span>ComputeMinimumRadius()</h2>
 
@@ -514,32 +386,6 @@ static int&#160;</td><td class="memItemRight" valign="bottom"><b>GetExpectedVert
 
 <p>Value to scale any created entities' inertia tensors by. Larger tensors (above 1) improve stiffness of constraints and contacts, while smaller values (towards 1) are closer to 'realistic' behavior. Defaults to 2.5. </p>
 <p>summary&gt; Number of samples the system takes along a side of an object's AABB when voxelizing it. /summary&gt; </p>
-
-</div>
-</div>
-<a id="a12b3ce3b6c2a68dee3fc82c76767030e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a12b3ce3b6c2a68dee3fc82c76767030e">&#9670;&nbsp;</a></span>NumberOfSamplesPerDimension</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.InertiaHelper.NumberOfSamplesPerDimension = 10</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Computes the volume contribution of a point. /summary&gt; param name="pointWeight"&gt;Weight of the point.</p>
-<p>param name="center"&gt;Location to use as the center for the purposes of computing the contribution.</p>
-<p>param name="point"&gt;Point to compute the contribution of.</p>
-<p>param name="contribution"&gt;Contribution of the point.</p>
 
 </div>
 </div>

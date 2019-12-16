@@ -1,4 +1,5 @@
-﻿using Engine.Physics;
+﻿using Engine.Debug;
+using Engine.Physics;
 using Engine.Physics.BEPUphysics.CollisionTests;
 using Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs;
 using OpenTK;
@@ -40,7 +41,7 @@ namespace Engine.Core
             {
                 return;
             }
-
+            Logger.Log($"Adding {this} to Remove List", DebugChannel.EngineCore|DebugChannel.Log, 7);
             DestructionPending = true;
         }
 
@@ -165,7 +166,8 @@ namespace Engine.Core
         /// <param name="deltaTime">Delta Time in Seconds</param>
         internal void UpdateObject(float deltaTime)
         {
-            if (!awake)
+            if (!
+                awake)
             {
                 Awake();
                 awake = true;
@@ -197,6 +199,7 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
+        /// <param name="contact">The Contact Point that is removed</param>
         protected virtual void OnContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
         {
         }
@@ -206,6 +209,7 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
+        /// <param name="contact">The Contact point that was added</param>
         protected virtual void OnContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
         {
         }
@@ -247,6 +251,7 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
+        /// <param name="contact">The Contact point that was removed</param>
         internal void InternalOnContactRemoved(Collider other, CollidablePairHandler handler, ContactData contact)
         {
             if (!awake)
@@ -263,6 +268,7 @@ namespace Engine.Core
         /// </summary>
         /// <param name="other">The other game object</param>
         /// <param name="handler">The Handler Containing Collision Data</param>
+        /// <param name="contact">The Contact point that was added</param>
         internal void InternalOnContactCreated(Collider other, CollidablePairHandler handler, ContactData contact)
         {
             if (!awake)

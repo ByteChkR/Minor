@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -103,7 +103,8 @@ $(document).ready(function(){initNavTree('dc/d12/class_engine_1_1_physics_1_1_b_
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aaa01231a1a537f19928898ceb8e21087"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html#aaa01231a1a537f19928898ceb8e21087">RawValueList</a> ()</td></tr>
 <tr class="separator:aaa01231a1a537f19928898ceb8e21087"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a51210a2e8578e68b39d2e5dd392c9633"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html#a51210a2e8578e68b39d2e5dd392c9633">RawValueList</a> (int initialCapacity)</td></tr>
+<tr class="memitem:a51210a2e8578e68b39d2e5dd392c9633"><td class="memItemLeft" align="right" valign="top"><a id="a51210a2e8578e68b39d2e5dd392c9633"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>RawValueList</b> (int initialCapacity)</td></tr>
 <tr class="separator:a51210a2e8578e68b39d2e5dd392c9633"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a866461fe4373c9d596c91fa20738ae27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html#a866461fe4373c9d596c91fa20738ae27">RemoveAt</a> (int index)</td></tr>
 <tr class="separator:a866461fe4373c9d596c91fa20738ae27"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -119,9 +120,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>IndexOf</b> (ref T ite
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a767fdbc2932b41ef4dbad921e18d31bf"><td class="memItemLeft" align="right" valign="top"><a id="a767fdbc2932b41ef4dbad921e18d31bf"></a>
-T []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html#a767fdbc2932b41ef4dbad921e18d31bf">Elements</a></td></tr>
-<tr class="memdesc:a767fdbc2932b41ef4dbad921e18d31bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directly accessible array of elements in the list. Be careful about which operations are applied to the array; if in doubt, use the regular access methods. /summary&gt; <br /></td></tr>
+<tr class="memitem:a767fdbc2932b41ef4dbad921e18d31bf"><td class="memItemLeft" align="right" valign="top">T []&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html#a767fdbc2932b41ef4dbad921e18d31bf">Elements</a></td></tr>
+<tr class="memdesc:a767fdbc2932b41ef4dbad921e18d31bf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Directly accessible array of elements in the list. Be careful about which operations are applied to the array; if in doubt, use the regular access methods. /summary&gt;  <a href="#a767fdbc2932b41ef4dbad921e18d31bf">More...</a><br /></td></tr>
 <tr class="separator:a767fdbc2932b41ef4dbad921e18d31bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
@@ -144,7 +144,7 @@ Properties</h2></td></tr>
 </div>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aaa01231a1a537f19928898ceb8e21087"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa01231a1a537f19928898ceb8e21087">&#9670;&nbsp;</a></span>RawValueList() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa01231a1a537f19928898ceb8e21087">&#9670;&nbsp;</a></span>RawValueList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -159,26 +159,6 @@ Properties</h2></td></tr>
 </div><div class="memdoc">
 <p>summary&gt; Constructs an empty list. /summary&gt; param name="initialCapacity"&gt;Initial capacity of the list.</p>
 <p>exception cref="ArgumentException"&gt;Thrown when the initial capcity is less than or equal to zero.</p>
-
-</div>
-</div>
-<a id="a51210a2e8578e68b39d2e5dd392c9633"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a51210a2e8578e68b39d2e5dd392c9633">&#9670;&nbsp;</a></span>RawValueList() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html">Engine.Physics.BEPUutilities.DataStructures.RawValueList</a>&lt; T &gt;.<a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html">RawValueList</a> </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>initialCapacity</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>summary&gt; Removes an element from the list. /summary&gt; param name="index"&gt;Index of the element to remove.</p>
-<p>exception cref="ArgumentOutOfRangeException"&gt;Thrown when the index is not present in the list.</p>
 
 </div>
 </div>
@@ -256,7 +236,25 @@ Properties</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets or sets the current size allocated for the list. /summary&gt; </p>
+<p>summary&gt; Adds an element to the list. /summary&gt; param name="item"&gt;Item to add.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="a767fdbc2932b41ef4dbad921e18d31bf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a767fdbc2932b41ef4dbad921e18d31bf">&#9670;&nbsp;</a></span>Elements</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">T [] <a class="el" href="../../dc/d12/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_value_list.html">Engine.Physics.BEPUutilities.DataStructures.RawValueList</a>&lt; T &gt;.Elements</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Directly accessible array of elements in the list. Be careful about which operations are applied to the array; if in doubt, use the regular access methods. /summary&gt; </p>
+<p>summary&gt; Constructs an empty list. /summary&gt; </p>
 
 </div>
 </div>
@@ -280,7 +278,8 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Adds an element to the list. /summary&gt; param name="item"&gt;Item to add.</p>
+<p>summary&gt; Removes an element from the list. /summary&gt; param name="index"&gt;Index of the element to remove.</p>
+<p>exception cref="ArgumentOutOfRangeException"&gt;Thrown when the index is not present in the list.</p>
 
 </div>
 </div>
@@ -306,7 +305,7 @@ Properties</h2></td></tr>
 
 <p>Gets the number of elements contained in the T:System.Collections.Generic.ICollection`1. Can also be set; setting the count is a direct change to the count integer and does not change the state of the array. </p>
 <dl class="section return"><dt>Returns</dt><dd>The number of elements contained in the T:System.Collections.Generic.ICollection`1. </dd></dl>
-<p>summary&gt; Constructs an empty list. /summary&gt; </p>
+<p>summary&gt; Gets or sets the current size allocated for the list. /summary&gt; </p>
 
 </div>
 </div>

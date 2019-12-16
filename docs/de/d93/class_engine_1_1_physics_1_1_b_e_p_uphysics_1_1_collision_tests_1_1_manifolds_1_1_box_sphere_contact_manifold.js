@@ -10,7 +10,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifold
     [ "box", "de/d93/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_box_sphere_contact_manifold.html#a98c88807a2e3513cf202b5adcf1f4624", null ],
     [ "CollidableA", "de/d93/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_box_sphere_contact_manifold.html#a382c74be51965809d77956ccce2ec1b3", null ],
     [ "CollidableB", "de/d93/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_box_sphere_contact_manifold.html#a074ca474696b2d1986086876b2d203cc", null ],
-    [ "contact", "de/d93/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_box_sphere_contact_manifold.html#ad4712651e4ba064a9ed0da1b56361b7a", null ],
-    [ "previouslyColliding", "de/d93/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_box_sphere_contact_manifold.html#af860b70b39c96a8e0727bcdfcb28e237", null ],
     [ "sphere", "de/d93/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_box_sphere_contact_manifold.html#a7d51f43fe5cef6a9dc8f91532bf3530e", null ]
 ];

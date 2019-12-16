@@ -10,8 +10,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_
     [ "GetCollidableInstance", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#ab20cda831d711233ee45e47f017589e6", null ],
     [ "GetLocalExtremePointWithoutMargin", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#a9fb8b78ef36aa84ea065d5638a8457aa", null ],
     [ "OnShapeChanged", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#af3e5fbafec3d51cfe24988a7a7078b24", null ],
-    [ "unexpandedMaximumRadius", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#ae223835702fced6bb77a69b238f8f781", null ],
-    [ "unexpandedMinimumRadius", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#af5c87325ab26830c88a3fec8c759dde1", null ],
-    [ "Vertices", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#ae1dc42088b9f15dbea23d98081580290", null ],
-    [ "vertices", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#a93a970ef7e51da39c084f0e2fed7be11", null ]
+    [ "Vertices", "d8/de3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_convex_hull_shape.html#ae1dc42088b9f15dbea23d98081580290", null ]
 ];

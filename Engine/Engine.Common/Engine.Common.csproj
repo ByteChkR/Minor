@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <Configurations>Debug;Release;Release_CollectLogs;Release_TravisTest;Release_Trace;Debug_Trace;TravisTest;Debug_FullTrace</Configurations>
@@ -8,28 +7,25 @@
     <PackageId>Engine.Common</PackageId>
     <AssemblyName>Engine.Common</AssemblyName>
     <RootNamespace>Engine.Common</RootNamespace>
+    <AssemblyVersion>0.2.0.48</AssemblyVersion>
+    <FileVersion>0.2.0.48</FileVersion>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_TravisTest|AnyCPU'">
     <DefineConstants>TRACE;TRAVIS_TEST</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='TravisTest|AnyCPU'">
     <DefineConstants>TRACE;NO_CL</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>TRACE;LEAK_TRACE;TRACE_TIME_ONLY</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_FullTrace|AnyCPU'">
     <DefineConstants>TRACE;LEAK_TRACE</DefineConstants>
   </PropertyGroup>
-
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;FORCEINLINE</DefineConstants>
   </PropertyGroup>
-
   <ItemGroup>
     <Reference Include="ADL">
       <HintPath>..\..\ADL\ADL\ADL\bin\Release\netstandard2.0\ADL.dll</HintPath>
@@ -53,5 +49,4 @@
       <HintPath>..\..\ext-pp\ext_pp_plugins\bin\Release\netcoreapp2.1\ext_pp_plugins.dll</HintPath>
     </Reference>
   </ItemGroup>
-
 </Project>

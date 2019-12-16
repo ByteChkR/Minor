@@ -3,18 +3,37 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Text;
 
 namespace Engine.AssetPackaging
 {
+
+    /// <summary>
+    /// Container Class used to Group Files by Assembly
+    /// </summary>
     public class AssemblyFile
     {
+        /// <summary>
+        /// The Assembly containing all files in this object
+        /// </summary>
         public readonly Assembly Assembly;
 
+        /// <summary>
+        /// All files in this object
+        /// </summary>
         public readonly string[] ManifestFilepaths;
 
-
+        /// <summary>
+        /// If the assembly has compressed files
+        /// </summary>
         public bool Compression { get; }
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="compression"></param>
+        /// <param name="manifestFilepath"></param>
+        /// <param name="assembly"></param>
         public AssemblyFile(bool compression, string manifestFilepath, Assembly assembly) : this(compression,
             new[] {manifestFilepath}, assembly)
         {
@@ -87,10 +106,12 @@ namespace Engine.AssetPackaging
                 Stream str = GetResourceStream(i);
                 if (i == 0)
                 {
+                    int readLength = ptr.PackageSize - ptr.Offset;
                     str.Position = ptr.Offset;
                     byte[] rbuf = new byte[ptr.PackageSize - ptr.Offset];
                     str.Read(rbuf, 0, rbuf.Length);
                     ret.AddRange(rbuf);
+                    bytesRead += readLength;
                 }
                 else
                 {
@@ -109,6 +130,7 @@ namespace Engine.AssetPackaging
                 str.Close();
             }
 
+            string r = Encoding.UTF8.GetString(ret.ToArray());
             return new MemoryStream(ret.ToArray());
         }
     }

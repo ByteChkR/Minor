@@ -144,6 +144,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
             }
 
             // Builds (compiles and links) the program and checks if it was successful, if not, then an exception is thrown
+            Result result1 = result;
             result = ProgramsNativeApi.BuildProgram(programPointer, 0, null, null,
                 Marshal.GetFunctionPointerForDelegate(new BuildProgramCallback((builtProgramPointer, userData) =>
                 {
@@ -176,7 +177,7 @@ namespace Engine.OpenCL.DotNetCore.Contexts
                                     $" Build log for device \"{keyValuePair.Key}\":{Environment.NewLine}{keyValuePair.Value}"));
                             taskCompletionSource.TrySetException(new OpenClException(
                                 $"The program could not be compiled and linked.{Environment.NewLine}{Environment.NewLine}{buildLogString}",
-                                result));
+                                result1));
                         }
 
                         // Since the build was successful, the program is created and the task completion source is resolved with it Creates the new program and returns it

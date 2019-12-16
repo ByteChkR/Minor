@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,8 +88,6 @@ $(document).ready(function(){initNavTree('de/de7/class_engine_1_1_physics_1_1_la
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../d1/d37/class_engine_1_1_physics_1_1_layer_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.LayerManager Class Reference</div>  </div>
@@ -116,21 +114,6 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:aa17434b093beef8dcadd8946975fc8ac"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/de7/class_engine_1_1_physics_1_1_layer_manager.html#aa17434b093beef8dcadd8946975fc8ac">AllowCollision</a> (int layerA, int layerB)</td></tr>
 <tr class="memdesc:aa17434b093beef8dcadd8946975fc8ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if the two colliders are allowed to collide  <a href="#aa17434b093beef8dcadd8946975fc8ac">More...</a><br /></td></tr>
 <tr class="separator:aa17434b093beef8dcadd8946975fc8ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a24afc491d682c5faa5ac6eeb60253fca"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html">Layer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/de7/class_engine_1_1_physics_1_1_layer_manager.html#a24afc491d682c5faa5ac6eeb60253fca">IDToInternalLayer</a> (int layer)</td></tr>
-<tr class="memdesc:a24afc491d682c5faa5ac6eeb60253fca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resolves layer id to <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html" title="Bit masks which control whether different members of a group of objects can collide with each other...">Layer</a> conversion  <a href="#a24afc491d682c5faa5ac6eeb60253fca">More...</a><br /></td></tr>
-<tr class="separator:a24afc491d682c5faa5ac6eeb60253fca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:ab23fb675885ed1bab38a5bc279ed3dfe"><td class="memItemLeft" align="right" valign="top">static List&lt; Tuple&lt; <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html">Layer</a>, string &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/de7/class_engine_1_1_physics_1_1_layer_manager.html#ab23fb675885ed1bab38a5bc279ed3dfe">_internalLayerStore</a> = new List&lt;Tuple&lt;<a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html">Layer</a>, string&gt;&gt;()</td></tr>
-<tr class="memdesc:ab23fb675885ed1bab38a5bc279ed3dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html" title="Bit masks which control whether different members of a group of objects can collide with each other...">Layer</a> to Name Register  <a href="#ab23fb675885ed1bab38a5bc279ed3dfe">More...</a><br /></td></tr>
-<tr class="separator:ab23fb675885ed1bab38a5bc279ed3dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a77d299d35ff7afc46c912b529009a944"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; string, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/de7/class_engine_1_1_physics_1_1_layer_manager.html#a77d299d35ff7afc46c912b529009a944">_registeredLayers</a> = new Dictionary&lt;string, int&gt;()</td></tr>
-<tr class="memdesc:a77d299d35ff7afc46c912b529009a944"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Name to Index(of _internalLayerStore) Register that enables fast reverse lookup  <a href="#a77d299d35ff7afc46c912b529009a944">More...</a><br /></td></tr>
-<tr class="separator:a77d299d35ff7afc46c912b529009a944"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Static class that has the purpose of managing the layers for all the objects and gets queried by the renderer </p>
@@ -222,41 +205,6 @@ Static Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a24afc491d682c5faa5ac6eeb60253fca"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24afc491d682c5faa5ac6eeb60253fca">&#9670;&nbsp;</a></span>IDToInternalLayer()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html">Layer</a> Engine.Physics.LayerManager.IDToInternalLayer </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>layer</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Resolves layer id to <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html" title="Bit masks which control whether different members of a group of objects can collide with each other...">Layer</a> conversion </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">layer</td><td>the layer index</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>The layer associated with the index</dd></dl>
 
 </div>
 </div>
@@ -373,55 +321,6 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd></dd></dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab23fb675885ed1bab38a5bc279ed3dfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab23fb675885ed1bab38a5bc279ed3dfe">&#9670;&nbsp;</a></span>_internalLayerStore</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt;Tuple&lt;<a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html">Layer</a>, string&gt; &gt; Engine.Physics.LayerManager._internalLayerStore = new List&lt;Tuple&lt;<a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html">Layer</a>, string&gt;&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The <a class="el" href="../../dd/da9/struct_engine_1_1_physics_1_1_layer.html" title="Bit masks which control whether different members of a group of objects can collide with each other...">Layer</a> to Name Register </p>
-
-</div>
-</div>
-<a id="a77d299d35ff7afc46c912b529009a944"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a77d299d35ff7afc46c912b529009a944">&#9670;&nbsp;</a></span>_registeredLayers</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Dictionary&lt;string, int&gt; Engine.Physics.LayerManager._registeredLayers = new Dictionary&lt;string, int&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The Name to Index(of _internalLayerStore) Register that enables fast reverse lookup </p>
 
 </div>
 </div>

@@ -11,6 +11,9 @@ The software is provided "as is", without warranty of any kind, express or impli
 
 namespace Engine.WFC
 {
+    /// <summary>
+    /// The Implementation of the base Wave Collapse Function
+    /// </summary>
     public abstract class WaveFunctionCollapse
     {
         protected static readonly int[] Dx = {-1, 0, 1, 0};
@@ -221,7 +224,7 @@ namespace Engine.WFC
             {
                 if (l % 250 == 0)
                 {
-                    Logger.Log("Starting Iteration: " + l, DebugChannel.Log | DebugChannel.Wfc, 6);
+                    Logger.Log("Starting Iteration: " + l, DebugChannel.Log | DebugChannel.EngineWFC, 6);
                 }
 
                 bool? result = Observe();

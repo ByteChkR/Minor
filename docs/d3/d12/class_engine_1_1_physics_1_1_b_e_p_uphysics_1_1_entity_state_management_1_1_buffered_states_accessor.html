@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('d3/d12/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="../../d3/d00/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.EntityStateManagement.BufferedStatesAccessor Class Reference</div>  </div>
@@ -102,8 +101,7 @@ $(document).ready(function(){initNavTree('d3/d12/class_engine_1_1_physics_1_1_b_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1f211ed611d44dbea4f364faa99d3ca6"><td class="memItemLeft" align="right" valign="top"><a id="a1f211ed611d44dbea4f364faa99d3ca6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BufferedStatesAccessor</b> (<a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html">EntityBufferedStates</a> <a class="el" href="../../d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html#a93d00c025216cef1eded3ea31483c16d">bufferedStates</a>)</td></tr>
+<tr class="memitem:a1f211ed611d44dbea4f364faa99d3ca6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html#a1f211ed611d44dbea4f364faa99d3ca6">BufferedStatesAccessor</a> (<a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html">EntityBufferedStates</a> <a class="el" href="../../d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html#a93d00c025216cef1eded3ea31483c16d">bufferedStates</a>)</td></tr>
 <tr class="separator:a1f211ed611d44dbea4f364faa99d3ca6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-attribs"></a>
@@ -130,41 +128,26 @@ Properties</h2></td></tr>
 <tr class="memitem:aed0217cec4572edda8f8efd23dcc1a09"><td class="memItemLeft" align="right" valign="top"><a id="aed0217cec4572edda8f8efd23dcc1a09"></a>
 <a class="el" href="../../dd/d7e/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_motion_state.html">MotionState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>MotionState</b><code> [get, set]</code></td></tr>
 <tr class="separator:aed0217cec4572edda8f8efd23dcc1a09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a89a24c06e9008862a0f449a0214d2077"><td class="memItemLeft" align="right" valign="top"><a id="a89a24c06e9008862a0f449a0214d2077"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsReadBufferAccessible</b> ()</td></tr>
-<tr class="separator:a89a24c06e9008862a0f449a0214d2077"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9782db09c0e051d44566d683e0c68e82"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html#a9782db09c0e051d44566d683e0c68e82">IsWriteBufferAccessible</a> ()</td></tr>
-<tr class="separator:a9782db09c0e051d44566d683e0c68e82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Acts as an entity's view into the buffered states system. Buffered states are updated each frame and contain the latest known states. These states can also be written to. Writes will not be immediately visible; the next frame's write buffer flush will write the changes to the entities. /summary&gt; </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9782db09c0e051d44566d683e0c68e82"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9782db09c0e051d44566d683e0c68e82">&#9670;&nbsp;</a></span>IsWriteBufferAccessible()</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a1f211ed611d44dbea4f364faa99d3ca6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f211ed611d44dbea4f364faa99d3ca6">&#9670;&nbsp;</a></span>BufferedStatesAccessor()</h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool Engine.Physics.BEPUphysics.EntityStateManagement.BufferedStatesAccessor.IsWriteBufferAccessible </td>
+          <td class="memname">Engine.Physics.BEPUphysics.EntityStateManagement.BufferedStatesAccessor.BufferedStatesAccessor </td>
           <td>(</td>
-          <td class="paramname"></td><td>)</td>
+          <td class="paramtype"><a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html">EntityBufferedStates</a>&#160;</td>
+          <td class="paramname"><em>bufferedStates</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
-<p>summary&gt; Gets or sets the buffered position of the entity. /summary&gt; </p>
+<p>summary&gt; Gets and sets the states write buffer used when buffered properties are written. /summary&gt; </p>
 
 </div>
 </div>
@@ -188,7 +171,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsReadBufferAccessibl
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets and sets the states write buffer used when buffered properties are written. /summary&gt; </p>
+<p>summary&gt; Constructs a new accessor. /summary&gt; param name="bufferedStates"&gt;The owning states system.</p>
 
 </div>
 </div>
@@ -350,7 +333,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsReadBufferAccessibl
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Constructs a new accessor. /summary&gt; param name="bufferedStates"&gt;The owning states system.</p>
+<p>summary&gt; Gets or sets the buffered position of the entity. /summary&gt; </p>
 
 </div>
 </div>

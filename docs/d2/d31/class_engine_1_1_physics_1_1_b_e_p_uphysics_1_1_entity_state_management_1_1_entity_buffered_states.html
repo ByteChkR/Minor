@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -112,12 +112,10 @@ Package Attributes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
 <tr class="memitem:acaa529d406b5c61d3f74d2655543c727"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dac/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_manager.html">BufferedStatesManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html#acaa529d406b5c61d3f74d2655543c727">BufferedStatesManager</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:acaa529d406b5c61d3f74d2655543c727"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the buffered states manager that owns this entry. /summary&gt;  <a href="#acaa529d406b5c61d3f74d2655543c727">More...</a><br /></td></tr>
 <tr class="separator:acaa529d406b5c61d3f74d2655543c727"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa31755d10561a1085d21c93593c7d2e2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html">BufferedStatesAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html#aa31755d10561a1085d21c93593c7d2e2">States</a><code> [get]</code></td></tr>
 <tr class="separator:aa31755d10561a1085d21c93593c7d2e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ee160efdc618ad3710b9476a5204fa9"><td class="memItemLeft" align="right" valign="top"><a id="a1ee160efdc618ad3710b9476a5204fa9"></a>
-<a class="el" href="../../d1/d8a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_interpolated_states_accessor.html">InterpolatedStatesAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><b>InterpolatedStates</b><code> [get]</code></td></tr>
+<tr class="memitem:a1ee160efdc618ad3710b9476a5204fa9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d1/d8a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_interpolated_states_accessor.html">InterpolatedStatesAccessor</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html#a1ee160efdc618ad3710b9476a5204fa9">InterpolatedStates</a><code> [get]</code></td></tr>
 <tr class="separator:a1ee160efdc618ad3710b9476a5204fa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e770c59e02ed253e985d390ddd0fcc4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d31/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_entity_buffered_states.html#a2e770c59e02ed253e985d390ddd0fcc4">MotionStateIndex</a><code> [get, set]</code></td></tr>
 <tr class="separator:a2e770c59e02ed253e985d390ddd0fcc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -143,7 +141,7 @@ Properties</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets the entity owning this entry. /summary&gt; </p>
+<p>summary&gt; Gets the buffered states manager that owns this entry. /summary&gt; </p>
 
 </div>
 </div>
@@ -167,7 +165,7 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Gets the motion state index of this entity. /summary&gt; </p>
+<p>summary&gt; Constructs a new buffered states entry. /summary&gt; param name="entity"&gt;Owning entity.</p>
 
 </div>
 </div>
@@ -191,9 +189,30 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-
-<p>Gets the buffered states manager that owns this entry. /summary&gt; </p>
 <p>summary&gt; Gets the buffered states accessor for this entity. Contains the current snapshot of the entity's states. /summary&gt; </p>
+
+</div>
+</div>
+<a id="a1ee160efdc618ad3710b9476a5204fa9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ee160efdc618ad3710b9476a5204fa9">&#9670;&nbsp;</a></span>InterpolatedStates</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d1/d8a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_interpolated_states_accessor.html">InterpolatedStatesAccessor</a> Engine.Physics.BEPUphysics.EntityStateManagement.EntityBufferedStates.InterpolatedStates</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>summary&gt; Gets the motion state index of this entity. /summary&gt; </p>
 
 </div>
 </div>
@@ -216,7 +235,7 @@ Properties</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Constructs a new buffered states entry. /summary&gt; param name="entity"&gt;Owning entity.</p>
+<p>summary&gt; Gets the entity owning this entry. /summary&gt; </p>
 
 </div>
 </div>

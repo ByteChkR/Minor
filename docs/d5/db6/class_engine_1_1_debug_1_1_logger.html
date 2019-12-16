@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('d5/db6/class_engine_1_1_debug_1_1_logg
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a39a60abcaa5accda2489d24b2e88f74f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html#a39a60abcaa5accda2489d24b2e88f74f">Log</a> (string message, <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">DebugChannel</a> channel, int importance)</td></tr>
+<tr class="memitem:a39a60abcaa5accda2489d24b2e88f74f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html#a39a60abcaa5accda2489d24b2e88f74f">Log</a> (string message, <a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">DebugChannel</a> channel, int importance)</td></tr>
 <tr class="memdesc:a39a60abcaa5accda2489d24b2e88f74f"><td class="mdescLeft">&#160;</td><td class="mdescRight">A static extension to receive logs from every point in the code base.  <a href="#a39a60abcaa5accda2489d24b2e88f74f">More...</a><br /></td></tr>
 <tr class="separator:a39a60abcaa5accda2489d24b2e88f74f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03f68dcc6333b82232d982c0752de30b"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/db6/class_engine_1_1_debug_1_1_logger.html#a03f68dcc6333b82232d982c0752de30b">Crash</a> (<a class="el" href="../../d9/d18/class_engine_1_1_exceptions_1_1_engine_exception.html">EngineException</a> ex, bool recoverable)</td></tr>
@@ -146,8 +146,8 @@ Static Public Member Functions</h2></td></tr>
 <p>A static extension to throw exceptions at one place to have a better control what to throw and when to throw </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">obj</td><td>The object throwing the exception</td></tr>
     <tr><td class="paramname">ex</td><td>The exception that led to the crash</td></tr>
+    <tr><td class="paramname">recoverable</td><td>Flag that determines if the Program Should Terminate</td></tr>
   </table>
   </dd>
 </dl>
@@ -172,7 +172,7 @@ Static Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a05b1dc162a9a39654ddb4d4361b3f133">DebugChannel</a>&#160;</td>
+          <td class="paramtype"><a class="el" href="../../de/df7/namespace_engine_1_1_debug.html#a6b25a16804f9bf5c7b7f0d7a40a9a4a7">DebugChannel</a>&#160;</td>
           <td class="paramname"><em>channel</em>, </td>
         </tr>
         <tr>
@@ -199,6 +199,7 @@ Static Public Member Functions</h2></td></tr>
   <table class="params">
     <tr><td class="paramname">message</td><td>The message</td></tr>
     <tr><td class="paramname">channel</td><td>The Channel on where the message is sent(Can be multiple)</td></tr>
+    <tr><td class="paramname">importance</td><td>The importance of the debug message</td></tr>
   </table>
   </dd>
 </dl>

@@ -5,6 +5,9 @@ using System.Threading;
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Redirects Console output of another application
+    /// </summary>
     public class ConsoleRedirector
     {
         private TextReader _cEOut;

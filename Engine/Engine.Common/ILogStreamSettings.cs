@@ -2,6 +2,9 @@
 
 namespace Engine.Common
 {
+    /// <summary>
+    /// The Stream Type of the Debug Log Stream
+    /// </summary>
     internal enum StreamType
     {
         Console,
@@ -9,6 +12,9 @@ namespace Engine.Common
         Network
     }
 
+    /// <summary>
+    /// The Log Stream Settings as they are added to the Debug Log System
+    /// </summary>
     public interface ILogStreamSettings
     {
         int StreamType { get; set; }

@@ -7,6 +7,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_un
     [ "GiveBack", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html#abc758e4d87fb4cb01b02cb68f2a8dfee", null ],
     [ "Initialize", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html#a9c0035f4f46a57d17610b69bd1b77593", null ],
     [ "Take", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html#a1200cf8574227af82d34440ea767a8fe", null ],
-    [ "Count", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html#ac992054dfa6b3e37e378779566aca33c", null ],
-    [ "stack", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html#a651f97c98e5d1c0a5d7a214ecc58c921", null ]
+    [ "Count", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html#ac992054dfa6b3e37e378779566aca33c", null ]
 ];

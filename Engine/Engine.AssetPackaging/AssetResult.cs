@@ -6,6 +6,9 @@ using System.Xml.Serialization;
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// The Result Class for the Packing Process
+    /// </summary>
     [Serializable]
     public class AssetResult
     {

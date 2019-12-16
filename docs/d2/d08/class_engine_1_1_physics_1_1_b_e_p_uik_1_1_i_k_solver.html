@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,7 +89,6 @@ $(document).ready(function(){initNavTree('d2/d08/class_engine_1_1_physics_1_1_b_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../de/da6/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_solver-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUik.IKSolver Class Reference</div>  </div>
@@ -112,15 +111,15 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac24d58b2220130e43b2cf80a9371a239"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d08/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_solver.html#ac24d58b2220130e43b2cf80a9371a239">IKSolver</a> ()</td></tr>
 <tr class="memdesc:ac24d58b2220130e43b2cf80a9371a239"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a new <a class="el" href="../../d2/d08/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_solver.html">IKSolver</a>.  <a href="#ac24d58b2220130e43b2cf80a9371a239">More...</a><br /></td></tr>
 <tr class="separator:ac24d58b2220130e43b2cf80a9371a239"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e761c453866e2a164d52d67686cb7ef"><td class="memItemLeft" align="right" valign="top"><a id="a0e761c453866e2a164d52d67686cb7ef"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Dispose</b> ()</td></tr>
+<tr class="separator:a0e761c453866e2a164d52d67686cb7ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a37ec4e914236098e127d907b4ccc132c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d08/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_solver.html#a37ec4e914236098e127d907b4ccc132c">Solve</a> (List&lt; <a class="el" href="../../d1/d41/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_joint.html">IKJoint</a> &gt; joints)</td></tr>
 <tr class="memdesc:a37ec4e914236098e127d907b4ccc132c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the positions of bones acted upon by the joints given to this solver. This variant of the solver can be used when there are no goal-driven controls in the simulation. This amounts to running just the 'fixer iterations' of a normal control-driven solve.  <a href="#a37ec4e914236098e127d907b4ccc132c">More...</a><br /></td></tr>
 <tr class="separator:a37ec4e914236098e127d907b4ccc132c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a262abfb777b282e3a9c65520f92b2c16"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d08/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_solver.html#a262abfb777b282e3a9c65520f92b2c16">Solve</a> (List&lt; <a class="el" href="../../d5/d97/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_control.html">Control</a> &gt; controls)</td></tr>
 <tr class="memdesc:a262abfb777b282e3a9c65520f92b2c16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Updates the positions of bones acted upon by the controls given to this solver.  <a href="#a262abfb777b282e3a9c65520f92b2c16">More...</a><br /></td></tr>
 <tr class="separator:a262abfb777b282e3a9c65520f92b2c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e761c453866e2a164d52d67686cb7ef"><td class="memItemLeft" align="right" valign="top"><a id="a0e761c453866e2a164d52d67686cb7ef"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Dispose</b> ()</td></tr>
-<tr class="separator:a0e761c453866e2a164d52d67686cb7ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
@@ -145,15 +144,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a2089924e449cfaed70f1719c96bb031a"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d08/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_solver.html#a2089924e449cfaed70f1719c96bb031a">TimeStepDuration</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a2089924e449cfaed70f1719c96bb031a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the time step duration elapsed by each position iteration.  <a href="#a2089924e449cfaed70f1719c96bb031a">More...</a><br /></td></tr>
 <tr class="separator:a2089924e449cfaed70f1719c96bb031a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a4c08b5f9e6015d9f5e28b834709c4e47"><td class="memItemLeft" align="right" valign="top"><a id="a4c08b5f9e6015d9f5e28b834709c4e47"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>timeStepDuration</b> = 1f</td></tr>
-<tr class="separator:a4c08b5f9e6015d9f5e28b834709c4e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abce68f834f5902c75b3335d8139e96b1"><td class="memItemLeft" align="right" valign="top"><a id="abce68f834f5902c75b3335d8139e96b1"></a>
-<a class="el" href="../../d7/df7/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_permutation_mapper.html">PermutationMapper</a>&#160;</td><td class="memItemRight" valign="bottom"><b>permutationMapper</b> = new <a class="el" href="../../d7/df7/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_permutation_mapper.html">PermutationMapper</a>()</td></tr>
-<tr class="separator:abce68f834f5902c75b3335d8139e96b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This is a little experimental project designed to iteratively converge to a decent solution to full body inverse kinematics subject to a variety of constraints. </p>

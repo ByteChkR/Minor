@@ -13,6 +13,7 @@ namespace Engine.Debug
         /// </summary>
         /// <param name="message">The message</param>
         /// <param name="channel">The Channel on where the message is sent(Can be multiple)</param>
+        /// <param name="importance">The importance of the debug message</param>
         public static void Log(string message, DebugChannel channel, int importance)
         {
             if (!DebugHelper.Init)
@@ -27,8 +28,8 @@ namespace Engine.Debug
         /// <summary>
         /// A static extension to throw exceptions at one place to have a better control what to throw and when to throw
         /// </summary>
-        /// <param name="obj">The object throwing the exception</param>
         /// <param name="ex">The exception that led to the crash</param>
+        /// <param name="recoverable">Flag that determines if the Program Should Terminate</param>
         public static void Crash(EngineException ex, bool recoverable)
         {
             DebugHelper.Crash(ex, recoverable);

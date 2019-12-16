@@ -7,6 +7,9 @@ using System.Xml.Serialization;
 
 namespace Engine.BuildTools.PackageCreator.Versions.v2
 {
+    /// <summary>
+    /// Package Version 2
+    /// </summary>
     public class Version2 : IPackageVersion
     {
         private MD5 _md5 = MD5.Create();
@@ -21,6 +24,11 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             if (!CheckHashes((PackageManifest) GetPackageManifest(file), outPutDir))
             {
                 Console.WriteLine("Checksum verification failed!");
+            }
+
+            if (Directory.Exists(outPutDir + "/patches"))
+            {
+                Creator.ApplyPatches(outPutDir);
             }
         }
 
@@ -57,13 +65,19 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
             xs.Serialize(s, manifest);
         }
 
+        public IPackageManifest ReadManifest(Stream s)
+        {
+            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
+            PackageManifest pm = (PackageManifest) xs.Deserialize(s);
+            s.Close();
+            return pm;
+        }
+
         public IPackageManifest GetPackageManifest(string path)
         {
             ZipArchive pack = ZipFile.OpenRead(path);
             Stream s = pack.GetEntry(ManifestPath).Open();
-            XmlSerializer xs = new XmlSerializer(typeof(PackageManifest));
-            PackageManifest pm = (PackageManifest) xs.Deserialize(s);
-            s.Close();
+            PackageManifest pm = (PackageManifest) ReadManifest(s);
             pack.Dispose();
             return pm;
         }

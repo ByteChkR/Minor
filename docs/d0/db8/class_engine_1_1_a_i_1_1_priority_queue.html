@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,61 +89,370 @@ $(document).ready(function(){initNavTree('d0/db8/class_engine_1_1_a_i_1_1_priori
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d5/d89/class_engine_1_1_a_i_1_1_priority_queue-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.AI.PriorityQueue&lt; T &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
+
+<p>Simple Priority Queue implementation  
+ <a href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#details">More...</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aba0f885d4a19c708d1e2c1107c1fec9a"><td class="memItemLeft" align="right" valign="top"><a id="aba0f885d4a19c708d1e2c1107c1fec9a"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PriorityQueue</b> (bool isdesc)</td></tr>
-<tr class="separator:aba0f885d4a19c708d1e2c1107c1fec9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abb14899c0b2eecc074b70f3ac7084eb9"><td class="memItemLeft" align="right" valign="top"><a id="abb14899c0b2eecc074b70f3ac7084eb9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PriorityQueue</b> (int capacity)</td></tr>
+<tr class="memitem:ada20e562a87640c0f1714c18f503a1c2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#ada20e562a87640c0f1714c18f503a1c2">PriorityQueue</a> ()</td></tr>
+<tr class="memdesc:ada20e562a87640c0f1714c18f503a1c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default Constructor  <a href="#ada20e562a87640c0f1714c18f503a1c2">More...</a><br /></td></tr>
+<tr class="separator:ada20e562a87640c0f1714c18f503a1c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35b85bd602b320a9a04da2df95c36a25"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a35b85bd602b320a9a04da2df95c36a25">PriorityQueue</a> (bool isDescending)</td></tr>
+<tr class="memdesc:a35b85bd602b320a9a04da2df95c36a25"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public constructor  <a href="#a35b85bd602b320a9a04da2df95c36a25">More...</a><br /></td></tr>
+<tr class="separator:a35b85bd602b320a9a04da2df95c36a25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb14899c0b2eecc074b70f3ac7084eb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#abb14899c0b2eecc074b70f3ac7084eb9">PriorityQueue</a> (int capacity)</td></tr>
+<tr class="memdesc:abb14899c0b2eecc074b70f3ac7084eb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public constructor  <a href="#abb14899c0b2eecc074b70f3ac7084eb9">More...</a><br /></td></tr>
 <tr class="separator:abb14899c0b2eecc074b70f3ac7084eb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d5b3aedf96a026f6ac335642d281934"><td class="memItemLeft" align="right" valign="top"><a id="a4d5b3aedf96a026f6ac335642d281934"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PriorityQueue</b> (IEnumerable&lt; T &gt; collection)</td></tr>
+<tr class="memitem:a4d5b3aedf96a026f6ac335642d281934"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a4d5b3aedf96a026f6ac335642d281934">PriorityQueue</a> (IEnumerable&lt; T &gt; collection)</td></tr>
+<tr class="memdesc:a4d5b3aedf96a026f6ac335642d281934"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public constructor  <a href="#a4d5b3aedf96a026f6ac335642d281934">More...</a><br /></td></tr>
 <tr class="separator:a4d5b3aedf96a026f6ac335642d281934"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75cea025430b7888c1de0aeaee679680"><td class="memItemLeft" align="right" valign="top"><a id="a75cea025430b7888c1de0aeaee679680"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PriorityQueue</b> (int capacity, bool isdesc)</td></tr>
-<tr class="separator:a75cea025430b7888c1de0aeaee679680"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab438fc8df559ecd67d95bb03542aa06d"><td class="memItemLeft" align="right" valign="top"><a id="ab438fc8df559ecd67d95bb03542aa06d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>PriorityQueue</b> (IEnumerable&lt; T &gt; collection, bool isdesc)</td></tr>
-<tr class="separator:ab438fc8df559ecd67d95bb03542aa06d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1f6bf8e28fea836eec791b8e055a5f8f"><td class="memItemLeft" align="right" valign="top"><a id="a1f6bf8e28fea836eec791b8e055a5f8f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Enqueue</b> (T x)</td></tr>
+<tr class="memitem:ac1ba8941cbaf39c1712b9e1046d77715"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#ac1ba8941cbaf39c1712b9e1046d77715">PriorityQueue</a> (int capacity, bool isDescending)</td></tr>
+<tr class="memdesc:ac1ba8941cbaf39c1712b9e1046d77715"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public constructor  <a href="#ac1ba8941cbaf39c1712b9e1046d77715">More...</a><br /></td></tr>
+<tr class="separator:ac1ba8941cbaf39c1712b9e1046d77715"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fa46e67240378a97ec37b742c66718"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a24fa46e67240378a97ec37b742c66718">PriorityQueue</a> (IEnumerable&lt; T &gt; collection, bool isDescending)</td></tr>
+<tr class="memdesc:a24fa46e67240378a97ec37b742c66718"><td class="mdescLeft">&#160;</td><td class="mdescRight">Public constructor  <a href="#a24fa46e67240378a97ec37b742c66718">More...</a><br /></td></tr>
+<tr class="separator:a24fa46e67240378a97ec37b742c66718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f6bf8e28fea836eec791b8e055a5f8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a1f6bf8e28fea836eec791b8e055a5f8f">Enqueue</a> (T x)</td></tr>
+<tr class="memdesc:a1f6bf8e28fea836eec791b8e055a5f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enqueues an item into a queue  <a href="#a1f6bf8e28fea836eec791b8e055a5f8f">More...</a><br /></td></tr>
 <tr class="separator:a1f6bf8e28fea836eec791b8e055a5f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e7d352173dbf78b9854763e5bb49a3"><td class="memItemLeft" align="right" valign="top"><a id="a06e7d352173dbf78b9854763e5bb49a3"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>Dequeue</b> ()</td></tr>
+<tr class="memitem:a06e7d352173dbf78b9854763e5bb49a3"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a06e7d352173dbf78b9854763e5bb49a3">Dequeue</a> ()</td></tr>
+<tr class="memdesc:a06e7d352173dbf78b9854763e5bb49a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dequeues an item  <a href="#a06e7d352173dbf78b9854763e5bb49a3">More...</a><br /></td></tr>
 <tr class="separator:a06e7d352173dbf78b9854763e5bb49a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa06324e2ac59f5e6f2d057aa97c9ba4b"><td class="memItemLeft" align="right" valign="top"><a id="aa06324e2ac59f5e6f2d057aa97c9ba4b"></a>
-T&#160;</td><td class="memItemRight" valign="bottom"><b>Peek</b> ()</td></tr>
+<tr class="memitem:aa06324e2ac59f5e6f2d057aa97c9ba4b"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#aa06324e2ac59f5e6f2d057aa97c9ba4b">Peek</a> ()</td></tr>
 <tr class="separator:aa06324e2ac59f5e6f2d057aa97c9ba4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6e8b6755dea8bac27ede950f7d83a355"><td class="memItemLeft" align="right" valign="top"><a id="a6e8b6755dea8bac27ede950f7d83a355"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Clear</b> ()</td></tr>
+<tr class="memitem:a6e8b6755dea8bac27ede950f7d83a355"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a6e8b6755dea8bac27ede950f7d83a355">Clear</a> ()</td></tr>
+<tr class="memdesc:a6e8b6755dea8bac27ede950f7d83a355"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clears the complete queue  <a href="#a6e8b6755dea8bac27ede950f7d83a355">More...</a><br /></td></tr>
 <tr class="separator:a6e8b6755dea8bac27ede950f7d83a355"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ac85f06a750c209c18c515096004352"><td class="memItemLeft" align="right" valign="top"><a id="a9ac85f06a750c209c18c515096004352"></a>
-List&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetData</b> ()</td></tr>
+<tr class="memitem:a9ac85f06a750c209c18c515096004352"><td class="memItemLeft" align="right" valign="top">List&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#a9ac85f06a750c209c18c515096004352">GetData</a> ()</td></tr>
+<tr class="memdesc:a9ac85f06a750c209c18c515096004352"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns all items in the queue  <a href="#a9ac85f06a750c209c18c515096004352">More...</a><br /></td></tr>
 <tr class="separator:a9ac85f06a750c209c18c515096004352"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:aff1c7cd46c46f59cf8e0b7a0502da0f3"><td class="memItemLeft" align="right" valign="top"><a id="aff1c7cd46c46f59cf8e0b7a0502da0f3"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Count</b> =&gt; list.Count</td></tr>
-<tr class="separator:aff1c7cd46c46f59cf8e0b7a0502da0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a413cba1b2f8e4c926fca677abfee24f6"><td class="memItemLeft" align="right" valign="top"><a id="a413cba1b2f8e4c926fca677abfee24f6"></a>
 readonly bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsDescending</b></td></tr>
 <tr class="separator:a413cba1b2f8e4c926fca677abfee24f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:adf56ce9e288dbe39340e1eedc0cfaa18"><td class="memItemLeft" align="right" valign="top"><a id="adf56ce9e288dbe39340e1eedc0cfaa18"></a>
-List&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>list</b></td></tr>
-<tr class="separator:adf56ce9e288dbe39340e1eedc0cfaa18"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff1c7cd46c46f59cf8e0b7a0502da0f3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html#aff1c7cd46c46f59cf8e0b7a0502da0f3">Count</a> =&gt; list.Count</td></tr>
+<tr class="memdesc:aff1c7cd46c46f59cf8e0b7a0502da0f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of items in the queue  <a href="#aff1c7cd46c46f59cf8e0b7a0502da0f3">More...</a><br /></td></tr>
+<tr class="separator:aff1c7cd46c46f59cf8e0b7a0502da0f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Simple Priority Queue implementation </p>
+<dl class="tparams"><dt>Template Parameters</dt><dd>
+  <table class="tparams">
+    <tr><td class="paramname">T</td><td>Type of Queue Item</td></tr>
+  </table>
+  </dd>
+</dl>
+<div class="typeconstraint">
+<dl><dt><b>Type Constraints</b></dt><dd>
+<table border="0" cellspacing="2" cellpadding="0">
+<tr><td valign="top"><em>T</em></td><td>&#160;:</td><td valign="top"><em>IComparable&lt;T&gt;</em></td><td>&#160;</td></tr>
+</table>
+</dd>
+</dl>
+</div>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ada20e562a87640c0f1714c18f503a1c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ada20e562a87640c0f1714c18f503a1c2">&#9670;&nbsp;</a></span>PriorityQueue() <span class="overload">[1/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a> </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Default Constructor </p>
+
+</div>
+</div>
+<a id="a35b85bd602b320a9a04da2df95c36a25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a35b85bd602b320a9a04da2df95c36a25">&#9670;&nbsp;</a></span>PriorityQueue() <span class="overload">[2/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a> </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isDescending</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Public constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">isDescending</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="abb14899c0b2eecc074b70f3ac7084eb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb14899c0b2eecc074b70f3ac7084eb9">&#9670;&nbsp;</a></span>PriorityQueue() <span class="overload">[3/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a> </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>capacity</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Public constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">capacity</td><td>internal capacity</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a4d5b3aedf96a026f6ac335642d281934"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d5b3aedf96a026f6ac335642d281934">&#9670;&nbsp;</a></span>PriorityQueue() <span class="overload">[4/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a> </td>
+          <td>(</td>
+          <td class="paramtype">IEnumerable&lt; T &gt;&#160;</td>
+          <td class="paramname"><em>collection</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Public constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">collection</td><td>Base Collection. Needs to be Sorted</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="ac1ba8941cbaf39c1712b9e1046d77715"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1ba8941cbaf39c1712b9e1046d77715">&#9670;&nbsp;</a></span>PriorityQueue() <span class="overload">[5/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a> </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>capacity</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isDescending</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Public constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">capacity</td><td>internal capacity</td></tr>
+    <tr><td class="paramname">isDescending</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a24fa46e67240378a97ec37b742c66718"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a24fa46e67240378a97ec37b742c66718">&#9670;&nbsp;</a></span>PriorityQueue() <span class="overload">[6/6]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.<a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">PriorityQueue</a> </td>
+          <td>(</td>
+          <td class="paramtype">IEnumerable&lt; T &gt;&#160;</td>
+          <td class="paramname"><em>collection</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>isDescending</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Public constructor </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">collection</td><td>Base Collection. Needs to be Sorted</td></tr>
+    <tr><td class="paramname">isDescending</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a6e8b6755dea8bac27ede950f7d83a355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e8b6755dea8bac27ede950f7d83a355">&#9670;&nbsp;</a></span>Clear()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.Clear </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Clears the complete queue </p>
+
+</div>
+</div>
+<a id="a06e7d352173dbf78b9854763e5bb49a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06e7d352173dbf78b9854763e5bb49a3">&#9670;&nbsp;</a></span>Dequeue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.Dequeue </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Dequeues an item </p>
+<dl class="section return"><dt>Returns</dt><dd></dd></dl>
+
+</div>
+</div>
+<a id="a1f6bf8e28fea836eec791b8e055a5f8f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f6bf8e28fea836eec791b8e055a5f8f">&#9670;&nbsp;</a></span>Enqueue()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.Enqueue </td>
+          <td>(</td>
+          <td class="paramtype">T&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Enqueues an item into a queue </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>The item to Enqueue</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a9ac85f06a750c209c18c515096004352"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ac85f06a750c209c18c515096004352">&#9670;&nbsp;</a></span>GetData()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt;T&gt; <a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.GetData </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns all items in the queue </p>
+<dl class="section return"><dt>Returns</dt><dd>the data as a list of type T</dd></dl>
+
+</div>
+</div>
+<a id="aa06324e2ac59f5e6f2d057aa97c9ba4b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa06324e2ac59f5e6f2d057aa97c9ba4b">&#9670;&nbsp;</a></span>Peek()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">T <a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.Peek </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p></p>
+<dl class="section return"><dt>Returns</dt><dd>Item in the first position of the queue</dd></dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aff1c7cd46c46f59cf8e0b7a0502da0f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff1c7cd46c46f59cf8e0b7a0502da0f3">&#9670;&nbsp;</a></span>Count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int <a class="el" href="../../d0/db8/class_engine_1_1_a_i_1_1_priority_queue.html">Engine.AI.PriorityQueue</a>&lt; T &gt;.Count =&gt; list.Count</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Number of items in the queue </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>Engine/Engine/AI/PriorityQueue.cs</li>
 </ul>

@@ -1,6 +1,9 @@
 var hierarchy =
 [
     [ "Engine.Physics.BEPUutilities.AffineTransform", "d2/dc7/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_affine_transform.html", null ],
+    [ "Engine.UI.Animations.Animation", "d3/d78/class_engine_1_1_u_i_1_1_animations_1_1_animation.html", [
+      [ "Engine.UI.Animations.AnimationTypes.LinearAnimation", "d5/dd9/class_engine_1_1_u_i_1_1_animations_1_1_animation_types_1_1_linear_animation.html", null ]
+    ] ],
     [ "ApplicationException", null, [
       [ "Engine.Common.TextProcessingException", "d8/da2/class_engine_1_1_common_1_1_text_processing_exception.html", null ],
       [ "Engine.Exceptions.EngineException", "d9/d18/class_engine_1_1_exceptions_1_1_engine_exception.html", [
@@ -19,14 +22,17 @@ var hierarchy =
         [ "Engine.Exceptions.PossibleMemoryLeakException", "de/d28/class_engine_1_1_exceptions_1_1_possible_memory_leak_exception.html", null ]
       ] ]
     ] ],
-    [ "Engine.Common.TextProcessorAPI.APreProcessorConfig", "d2/d8c/class_engine_1_1_common_1_1_text_processor_a_p_i_1_1_a_pre_processor_config.html", [
-      [ "Engine.Common.TextProcessorAPI.DefaultPreProcessorConfig", "d6/d43/class_engine_1_1_common_1_1_text_processor_a_p_i_1_1_default_pre_processor_config.html", null ],
-      [ "Engine.Common.TextProcessorAPI.FLPreProcessorConfig", "de/dbe/class_engine_1_1_common_1_1_text_processor_a_p_i_1_1_f_l_pre_processor_config.html", null ],
-      [ "Engine.Common.TextProcessorAPI.GLCLPreProcessorConfig", "da/dda/class_engine_1_1_common_1_1_text_processor_a_p_i_1_1_g_l_c_l_pre_processor_config.html", null ]
+    [ "ApplicationSettingsBase", null, [
+      [ "Engine.BuildTools.Builder.GUI.Properties.Settings", "d4/df5/class_engine_1_1_build_tools_1_1_builder_1_1_g_u_i_1_1_properties_1_1_settings.html", null ]
+    ] ],
+    [ "Engine.Common.TextProcessorApi.APreProcessorConfig", "d9/d0c/class_engine_1_1_common_1_1_text_processor_api_1_1_a_pre_processor_config.html", [
+      [ "Engine.Common.TextProcessorApi.DefaultPreProcessorConfig", "df/d7e/class_engine_1_1_common_1_1_text_processor_api_1_1_default_pre_processor_config.html", null ],
+      [ "Engine.Common.TextProcessorApi.FlPreProcessorConfig", "da/da1/class_engine_1_1_common_1_1_text_processor_api_1_1_fl_pre_processor_config.html", null ],
+      [ "Engine.Common.TextProcessorApi.GlclPreProcessorConfig", "d6/dd5/class_engine_1_1_common_1_1_text_processor_api_1_1_glcl_pre_processor_config.html", null ]
     ] ],
     [ "Engine.BuildTools.Common.AssemblyEmbedder", "df/d6b/class_engine_1_1_build_tools_1_1_common_1_1_assembly_embedder.html", null ],
     [ "Engine.AssetPackaging.AssemblyFile", "d3/d83/class_engine_1_1_asset_packaging_1_1_assembly_file.html", [
-      [ "Engine.AssetPackaging.IOPackedAssemblyFile", "d3/d2f/class_engine_1_1_asset_packaging_1_1_i_o_packed_assembly_file.html", null ],
+      [ "Engine.AssetPackaging.IoPackedAssemblyFile", "d0/d23/class_engine_1_1_asset_packaging_1_1_io_packed_assembly_file.html", null ],
       [ "Engine.AssetPackaging.PackedAssemblyFile", "d4/d5b/class_engine_1_1_asset_packaging_1_1_packed_assembly_file.html", null ]
     ] ],
     [ "Engine.AssetPackaging.AssetFileInfo", "d0/d05/class_engine_1_1_asset_packaging_1_1_asset_file_info.html", null ],
@@ -43,13 +49,11 @@ var hierarchy =
     [ "Engine.IO.AudioLoader", "df/d7a/class_engine_1_1_i_o_1_1_audio_loader.html", null ],
     [ "Engine.Audio.AudioManager", "d8/de5/class_engine_1_1_audio_1_1_audio_manager.html", null ],
     [ "Engine.Physics.BEPUik.Bone", "da/d62/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_bone.html", null ],
-    [ "Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.BoundarySets", "d4/de2/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_triangle_mesh35611331ed746949b2e7547b9703e7d5.html", null ],
     [ "Engine.Physics.BEPUutilities.BoundingBox", "d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html", null ],
     [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >", "d8/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree.html", null ],
     [ "Engine.Physics.BEPUutilities.BoundingSphere", "dc/daf/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_sphere.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxBoxCollider", "d1/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxContactDataCache", "d2/d9a/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_contact_data_cache.html", null ],
-    [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxBoxCollider.BoxFace", "d2/d35/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_box_face.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxSphereTester", "dc/d44/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_sphere_tester.html", null ],
     [ "Engine.Physics.BEPUphysics.EntityStateManagement.BufferedStatesAccessor", "d3/d12/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_accessor.html", null ],
     [ "Engine.Physics.BEPUphysics.EntityStateManagement.BufferedStatesManager", "d3/dac/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_buffered_states_manager.html", null ],
@@ -60,16 +64,16 @@ var hierarchy =
     [ "Engine.Physics.BEPUutilities.ResourceManagement.BufferPool< TKey >", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.BufferPool< TValue >", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pool.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.BufferPools< T >", "dd/d64/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_buffer_pools.html", null ],
-    [ "Engine.BuildTools.Builder.BuildSettings", "d8/dc5/class_engine_1_1_build_tools_1_1_builder_1_1_build_settings.html", null ],
+    [ "Engine.BuildTools.Builder.Builder", "d6/d7c/class_engine_1_1_build_tools_1_1_builder_1_1_builder.html", null ],
+    [ "Engine.BuildTools.Common.BuildSettings", "dc/da6/class_engine_1_1_build_tools_1_1_common_1_1_build_settings.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK.CachedSimplex", "db/d5e/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_cached_simplex.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.CharacterContact", "d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.CharacterContactCategorizer", "de/d0b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact_categorizer.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.CharacterPairLocker", "d5/d41/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_pair_locker.html", null ],
-    [ "Engine.OpenCL.CLAPI", "d9/db6/class_engine_1_1_open_c_l_1_1_c_l_a_p_i.html", null ],
-    [ "Engine.OpenFL.CLBufferInfo", "db/d51/class_engine_1_1_open_f_l_1_1_c_l_buffer_info.html", null ],
+    [ "Engine.OpenFL.ClBufferInfo", "d6/dc0/class_engine_1_1_open_f_l_1_1_cl_buffer_info.html", null ],
     [ "Engine.OpenCL.CLKernel", "df/d82/class_engine_1_1_open_c_l_1_1_c_l_kernel.html", null ],
-    [ "Engine.OpenCL.CLProgram", "d3/dda/class_engine_1_1_open_c_l_1_1_c_l_program.html", null ],
-    [ "Engine.OpenFL.CLTypeConverter", "d0/de1/class_engine_1_1_open_f_l_1_1_c_l_type_converter.html", null ],
+    [ "Engine.OpenCL.ClProgram", "d4/d27/class_engine_1_1_open_c_l_1_1_cl_program.html", null ],
+    [ "Engine.OpenFL.ClTypeConverter", "dd/d0c/class_engine_1_1_open_f_l_1_1_cl_type_converter.html", null ],
     [ "Engine.Physics.ColliderConstraints", "d1/d29/struct_engine_1_1_physics_1_1_collider_constraints.html", null ],
     [ "Engine.Physics.BEPUphysics.Settings.CollisionDetectionSettings", "d4/d62/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_settings_1_1_collision_detection_settings.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionRuleManagement.CollisionGroup", "d1/d80/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_group.html", null ],
@@ -97,7 +101,9 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.CollisionShapes.StaticMeshShape", "db/d86/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_static_mesh_shape.html", null ],
       [ "Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html", null ]
     ] ],
+    [ "Engine.BuildTools.Common.Command", "d0/da9/class_engine_1_1_build_tools_1_1_common_1_1_command.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.CommandQueues.CommandQueuesNativeApi", "d8/dd5/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_command_queues_1_1_command_queues_native_api.html", null ],
+    [ "Engine.BuildTools.Common.CommandRunner", "db/d7b/class_engine_1_1_build_tools_1_1_common_1_1_command_runner.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.CommonResources", "da/da4/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_common_resources.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables.CompoundChildData", "d6/d8c/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_child_data.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables.CompoundHelper", "de/d5e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_helper.html", null ],
@@ -114,8 +120,8 @@ var hierarchy =
     [ "Engine.Physics.BEPUutilities.DataStructures.ConcurrentDeque< Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EventStoragePairUpdated >", "d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.ConcurrentDeque< Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIslandConnection >", "d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.ConcurrentDeque< Engine.Physics.BEPUphysics.EntityStateManagement.EntityStateWriteBuffer.EntityStateChange >", "d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html", null ],
-    [ "Engine.Physics.BEPUutilities.DataStructures.ConcurrentDeque< Engine.Physics.BEPUphysics.OtherSpaceStages.SpaceObjectBuffer.SpaceObjectChange >", "d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.ConcurrentDeque< NarrowPhasePair >", "d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html", null ],
+    [ "Engine.Physics.BEPUutilities.DataStructures.ConcurrentDeque< SpaceObjectChange >", "d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html", null ],
     [ "Engine.BuildTools.Common.ConsoleRedirector", "d8/d71/class_engine_1_1_build_tools_1_1_common_1_1_console_redirector.html", null ],
     [ "Engine.Physics.BEPUphysics.Paths.ConstantSpeedCurve< Quaternion >", "d3/dcd/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_constant_speed_curve.html", [
       [ "Engine.Physics.BEPUphysics.Paths.ConstantAngularSpeedCurve", "d6/d75/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_constant_angular_speed_curve.html", null ]
@@ -161,7 +167,6 @@ var hierarchy =
     [ "Engine.Physics.BEPUphysics.CollisionTests.ContactReducer", "df/d6d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_reducer.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.ContactRefresher", "df/de9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_refresher.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.ContactSupplementData", "d6/d07/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_supplement_data.html", null ],
-    [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.DetectorVolume.ContainmentChange", "d0/d0e/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_detector_volume_1_1_containment_change.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.ContainmentState", "df/d4e/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_containment_state.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Contexts.ContextsNativeApi", "dd/d05/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_contexts_1_1_contexts_native_api.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK.ContributingShapeSimplex", "dd/d91/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_fc47f6f9b5bf679ea1344ce5582ffe1c.html", null ],
@@ -198,12 +203,13 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Paths.LinearInterpolationCurve3D", "da/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_linear_interpolation_curve3_d.html", null ]
     ] ],
     [ "Engine.Common.DebugHelper", "dc/d0c/class_engine_1_1_common_1_1_debug_helper.html", null ],
+    [ "Engine.DataTypes.DefaultFilepaths", "d9/da4/class_engine_1_1_data_types_1_1_default_filepaths.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Devices.DevicesNativeApi", "d0/d94/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices_1_1_devices_native_api.html", null ],
-    [ "Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.EdgeContact", "d0/dbc/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_triangle_mesh019b81716464ca0a2832e14391b60ada.html", null ],
     [ "Engine.Core.EngineConfig", "df/dad/class_engine_1_1_core_1_1_engine_config.html", null ],
     [ "Engine.Player.EnginePlayer", "d3/d45/class_engine_1_1_player_1_1_engine_player.html", null ],
     [ "Engine.Core.EngineSettings", "d1/d8d/class_engine_1_1_core_1_1_engine_settings.html", null ],
     [ "Engine.Debug.EngineStageInformation", "de/d34/class_engine_1_1_debug_1_1_engine_stage_information.html", null ],
+    [ "Engine.Debug.EngineStatisticsManager", "d8/d47/class_engine_1_1_debug_1_1_engine_statistics_manager.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.EnqueuedCommands.EnqueuedCommandsNativeApi", "d4/d38/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_enqueued_commands_1_1_enqueued_commands_native_api.html", null ],
     [ "Entity", null, [
       [ "Engine.Physics.BEPUphysics.Entities.Entity< T >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", [
@@ -259,10 +265,14 @@ var hierarchy =
     ] ],
     [ "Engine.OpenCL.DotNetCore.Interop.Extensions.ExtensionsNativeApi", "d3/d9a/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_extensions_1_1_extensions_native_api.html", null ],
     [ "Engine.Physics.BEPUphysics.NarrowPhaseSystems.Factories", "dd/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_factories.html", null ],
-    [ "Engine.OpenFL.FLDataObjects.FLArgumentData", "d3/d67/struct_engine_1_1_open_f_l_1_1_f_l_data_objects_1_1_f_l_argument_data.html", null ],
-    [ "Engine.OpenFL.FLFunctionInfo", "d4/d69/struct_engine_1_1_open_f_l_1_1_f_l_function_info.html", null ],
-    [ "Engine.OpenFL.FLDataObjects.FLInstructionData", "d8/dd0/struct_engine_1_1_open_f_l_1_1_f_l_data_objects_1_1_f_l_instruction_data.html", null ],
-    [ "Engine.OpenFL.FLDataObjects.FLScriptData", "de/d60/struct_engine_1_1_open_f_l_1_1_f_l_data_objects_1_1_f_l_script_data.html", null ],
+    [ "Engine.OpenFL.FLDataObjects.FlArgumentData", "d3/d04/struct_engine_1_1_open_f_l_1_1_f_l_data_objects_1_1_fl_argument_data.html", null ],
+    [ "Engine.OpenFL.Runner.FlExecutionContext", "d5/dd2/struct_engine_1_1_open_f_l_1_1_runner_1_1_fl_execution_context.html", null ],
+    [ "Engine.OpenFL.FlFunctionInfo", "d1/dd7/struct_engine_1_1_open_f_l_1_1_fl_function_info.html", null ],
+    [ "Engine.OpenFL.FLDataObjects.FlInstructionData", "d9/dfc/struct_engine_1_1_open_f_l_1_1_f_l_data_objects_1_1_fl_instruction_data.html", null ],
+    [ "Engine.OpenFL.Runner.FlRunner", "d0/d6b/class_engine_1_1_open_f_l_1_1_runner_1_1_fl_runner.html", [
+      [ "Engine.OpenFL.Runner.FlMultiThreadRunner", "d5/d9a/class_engine_1_1_open_f_l_1_1_runner_1_1_fl_multi_thread_runner.html", null ]
+    ] ],
+    [ "Engine.OpenFL.FLDataObjects.FlScriptData", "df/de6/struct_engine_1_1_open_f_l_1_1_f_l_data_objects_1_1_fl_script_data.html", null ],
     [ "Engine.UI.FontLibrary", "d9/dfe/class_engine_1_1_u_i_1_1_font_library.html", null ],
     [ "Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields.ForceFieldShape", "d9/d77/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_force_fields_1_1_force_field_shape.html", [
       [ "Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields.BoundingBoxForceFieldShape", "df/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_force_fields_1_1_bounding_box_force_field_shape.html", null ],
@@ -270,11 +280,16 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields.InfiniteForceFieldShape", "d7/d2d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_force_fields_1_1_infinite_force_field_shape.html", null ],
       [ "Engine.Physics.BEPUphysics.UpdateableSystems.ForceFields.VolumeForceFieldShape", "da/da9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_force_fields_1_1_volume_force_field_shape.html", null ]
     ] ],
+    [ "Form", null, [
+      [ "Engine.BuildTools.Builder.GUI.frmMain", "df/dbc/class_engine_1_1_build_tools_1_1_builder_1_1_g_u_i_1_1frm_main.html", null ]
+    ] ],
     [ "Engine.Core.GameEngine", "da/d95/class_engine_1_1_core_1_1_game_engine.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GeneralConvexPairTester", "d5/d03/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_general_convex_pair_tester.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK.GJKToolbox", "df/d09/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_g_j_k_toolbox.html", null ],
+    [ "Engine.Debug.GraphLayout", "db/d5d/class_engine_1_1_debug_1_1_graph_layout.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep.Grid2DEntry", "dc/d25/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_sort_and_sweep_1_1_grid2_d_entry.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep.GridCell2D", "df/d9c/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_sort_and_sweep_1_1_grid_cell2_d.html", null ],
+    [ "Engine.BuildTools.PackageCreator.Versions.v2.HashEntry", "d7/d47/struct_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1v2_1_1_hash_entry.html", null ],
     [ "Engine.Physics.BEPUphysics.Constraints.I1DImpulseConstraint", "da/d7f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i1_d_impulse_constraint.html", [
       [ "Engine.Physics.BEPUphysics.Constraints.I1DImpulseConstraintWithError", "d8/d8e/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_i1_d_impulse_constraint_with_error.html", [
         [ "Engine.Physics.BEPUphysics.Constraints.TwoEntity.JointLimits.DistanceLimit", "d7/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_joint_limits_1_1_distance_limit.html", null ],
@@ -334,7 +349,7 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors.AngularMotor", "d3/d48/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_motors_1_1_angular_motor.html", null ]
     ] ],
     [ "Engine.IO.IAudioFormatLoader", "d2/d4c/interface_engine_1_1_i_o_1_1_i_audio_format_loader.html", [
-      [ "Engine.IO.audioformats.WAVLoader", "df/def/class_engine_1_1_i_o_1_1audioformats_1_1_w_a_v_loader.html", null ]
+      [ "Engine.IO.audioformats.WavLoader", "da/d46/class_engine_1_1_i_o_1_1audioformats_1_1_wav_loader.html", null ]
     ] ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.IBoundingBoxOwner", "d7/dcf/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_i_bounding_box_owner.html", [
       [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.BroadPhaseEntry", "d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html", [
@@ -357,6 +372,9 @@ var hierarchy =
       ] ],
       [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables.CompoundChild", "d8/dd2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_child.html", null ]
     ] ],
+    [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.IBroadPhaseEntryOwner", "d4/d1e/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_i_broad_phase_entry_owner.html", [
+      [ "Engine.Physics.BEPUphysics.Entities.Entity< T >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
+    ] ],
     [ "IBroadPhaseEntryOwner", null, [
       [ "Engine.Physics.BEPUphysics.Entities.Entity< CompoundCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", [
         [ "Engine.Physics.BEPUphysics.Entities.Prefabs.CompoundBody", "da/df6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_compound_body.html", null ]
@@ -364,9 +382,6 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Entities.Entity< MobileMeshCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", [
         [ "Engine.Physics.BEPUphysics.Entities.Prefabs.MobileMesh", "d0/d05/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_mobile_mesh.html", null ]
       ] ]
-    ] ],
-    [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.IBroadPhaseEntryOwner", "d4/d1e/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_i_broad_phase_entry_owner.html", [
-      [ "Engine.Physics.BEPUphysics.Entities.Entity< T >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
     ] ],
     [ "Engine.Rendering.ICamera", "d7/d2b/interface_engine_1_1_rendering_1_1_i_camera.html", [
       [ "Engine.Rendering.BasicCamera", "d2/d88/class_engine_1_1_rendering_1_1_basic_camera.html", null ],
@@ -393,29 +408,22 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Entities.Entity< MobileMeshCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
     ] ],
     [ "IComparable", null, [
-      [ "Engine.AI.AINode", "d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html", null ],
+      [ "Engine.AI.AiNode", "d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html", null ],
       [ "Engine.Rendering.RenderingComponent", "db/d35/class_engine_1_1_rendering_1_1_rendering_component.html", [
         [ "Engine.Rendering.LitMeshRendererComponent", "dd/d75/class_engine_1_1_rendering_1_1_lit_mesh_renderer_component.html", null ],
         [ "Engine.Rendering.MeshRendererComponent", "d8/d9c/class_engine_1_1_rendering_1_1_mesh_renderer_component.html", null ],
-        [ "Engine.UI.UIElement", "d4/ddf/class_engine_1_1_u_i_1_1_u_i_element.html", [
+        [ "Engine.UI.UiElement", "d6/d95/class_engine_1_1_u_i_1_1_ui_element.html", [
           [ "Engine.Debug.GraphDrawingComponent", "d6/df8/class_engine_1_1_debug_1_1_graph_drawing_component.html", null ],
-          [ "Engine.UI.UIImageRendererComponent", "d8/dc0/class_engine_1_1_u_i_1_1_u_i_image_renderer_component.html", [
+          [ "Engine.UI.UiImageRendererComponent", "d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html", [
             [ "Engine.UI.EventSystems.Button", "da/dde/class_engine_1_1_u_i_1_1_event_systems_1_1_button.html", null ]
           ] ],
-          [ "Engine.UI.UITextRendererComponent", "d9/d5e/class_engine_1_1_u_i_1_1_u_i_text_renderer_component.html", null ]
+          [ "Engine.UI.UiTextRendererComponent", "d7/d88/class_engine_1_1_u_i_1_1_ui_text_renderer_component.html", null ]
         ] ]
       ] ],
       [ "Engine.Rendering.RenderTarget", "d2/d7d/class_engine_1_1_rendering_1_1_render_target.html", null ]
     ] ],
     [ "IComparable< CurveControlPoint< TValue >>", null, [
       [ "Engine.Physics.BEPUphysics.Paths.CurveControlPoint< TValue >", "d4/d98/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_curve_control_point.html", null ]
-    ] ],
-    [ "IComparer", null, [
-      [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.InternalNode.XComparer", "d8/dea/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_x_comparer.html", null ],
-      [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.InternalNode.YComparer", "d8/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_y_comparer.html", null ],
-      [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.InternalNode.ZComparer", "d1/dfd/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node_1_1_z_comparer.html", null ],
-      [ "Engine.Physics.BEPUphysics.Character.CharacterPairLocker.Comparer", "d7/d59/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_pair_locker_1_1_comparer.html", null ],
-      [ "Engine.Physics.BEPUphysics.Constraints.SolverUpdateable.EntityComparer", "d3/d04/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable_1_1_entity_comparer.html", null ]
     ] ],
     [ "Engine.Common.IDebugSettings", "d2/dc7/interface_engine_1_1_common_1_1_i_debug_settings.html", [
       [ "Engine.Debug.DebugSettings", "d0/d54/class_engine_1_1_debug_1_1_debug_settings.html", null ]
@@ -436,17 +444,18 @@ var hierarchy =
     ] ],
     [ "Engine.Core.IDestroyable", "dc/d1f/interface_engine_1_1_core_1_1_i_destroyable.html", [
       [ "Engine.Core.AbstractComponent", "d5/d12/class_engine_1_1_core_1_1_abstract_component.html", [
-        [ "Engine.AI.AINode", "d7/d9f/class_engine_1_1_a_i_1_1_a_i_node.html", null ],
+        [ "Engine.AI.AiNode", "d7/d1c/class_engine_1_1_a_i_1_1_ai_node.html", null ],
         [ "Engine.Audio.AbstractAudioSource", "d8/d6c/class_engine_1_1_audio_1_1_abstract_audio_source.html", [
           [ "Engine.Audio.AudioSourceComponent", "d2/d30/class_engine_1_1_audio_1_1_audio_source_component.html", null ],
           [ "Engine.Audio.BackgroundMusicSource", "d1/d01/class_engine_1_1_audio_1_1_background_music_source.html", null ]
         ] ],
         [ "Engine.Audio.AudioListener", "d6/dad/class_engine_1_1_audio_1_1_audio_listener.html", null ],
         [ "Engine.Debug.DebugConsoleComponent", "d1/dd8/class_engine_1_1_debug_1_1_debug_console_component.html", null ],
-        [ "Engine.OpenFL.FLGeneratorComponent", "d7/d9a/class_engine_1_1_open_f_l_1_1_f_l_generator_component.html", null ],
+        [ "Engine.OpenFL.FlGeneratorComponent", "d9/daa/class_engine_1_1_open_f_l_1_1_fl_generator_component.html", null ],
         [ "Engine.Physics.Collider", "dc/d20/class_engine_1_1_physics_1_1_collider.html", null ],
         [ "Engine.Rendering.LightComponent", "d3/d41/class_engine_1_1_rendering_1_1_light_component.html", null ],
-        [ "Engine.Rendering.RenderingComponent", "db/d35/class_engine_1_1_rendering_1_1_rendering_component.html", null ]
+        [ "Engine.Rendering.RenderingComponent", "db/d35/class_engine_1_1_rendering_1_1_rendering_component.html", null ],
+        [ "Engine.UI.Animations.Animator", "d3/d25/class_engine_1_1_u_i_1_1_animations_1_1_animator.html", null ]
       ] ],
       [ "Engine.Core.GameObject", "d3/dbf/class_engine_1_1_core_1_1_game_object.html", [
         [ "Engine.Core.AbstractScene", "d6/d34/class_engine_1_1_core_1_1_abstract_scene.html", null ],
@@ -465,6 +474,7 @@ var hierarchy =
       [ "Engine.DataTypes.Mesh", "d8/d39/class_engine_1_1_data_types_1_1_mesh.html", null ],
       [ "Engine.DataTypes.TextCharacter", "da/db3/class_engine_1_1_data_types_1_1_text_character.html", null ],
       [ "Engine.DataTypes.Texture", "df/de2/class_engine_1_1_data_types_1_1_texture.html", null ],
+      [ "Engine.OpenCL.Clapi", "d4/d8c/class_engine_1_1_open_c_l_1_1_clapi.html", null ],
       [ "Engine.OpenCL.DotNetCore.HandleBase", "dc/dd4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_handle_base.html", [
         [ "Engine.OpenCL.DotNetCore.CommandQueues.CommandQueue", "dd/d55/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_command_queues_1_1_command_queue.html", null ],
         [ "Engine.OpenCL.DotNetCore.Contexts.Context", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html", null ],
@@ -535,7 +545,6 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.CollidablePair", "db/dc6/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable_pair.html", null ],
       [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.BroadPhaseOverlap", "d6/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_broad_phase_overlap.html", null ],
       [ "Engine.Physics.BEPUphysics.CollisionRuleManagement.CollisionGroupPair", "d1/d87/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_rule_management_1_1_collision_group_pair.html", null ],
-      [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxBoxCollider.FaceEdge", "d6/dbd/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_box_collider_1_1_face_edge.html", null ],
       [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.BoxContactData", "de/d95/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_box_contact_data.html", null ],
       [ "Engine.Physics.BEPUphysics.CollisionTests.ContactData", "da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html", null ],
       [ "Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.Edge", "de/d85/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_triangle_mesh047a5a5cfe3de0d235777eb50dde908c.html", null ],
@@ -556,7 +565,7 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Entities.Entity< MobileMeshCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
     ] ],
     [ "IFileContent", null, [
-      [ "Engine.Common.TextProcessorAPI.FileContent", "db/d3f/class_engine_1_1_common_1_1_text_processor_a_p_i_1_1_file_content.html", null ]
+      [ "Engine.Common.TextProcessorApi.FileContent", "d4/d90/class_engine_1_1_common_1_1_text_processor_api_1_1_file_content.html", null ]
     ] ],
     [ "Engine.Physics.BEPUphysics.OtherSpaceStages.IForceUpdateable", "d2/da8/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_force_updateable.html", [
       [ "Engine.Physics.BEPUphysics.Entities.Entity< T >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
@@ -565,7 +574,7 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Entities.Entity< CompoundCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ],
       [ "Engine.Physics.BEPUphysics.Entities.Entity< MobileMeshCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
     ] ],
-    [ "Engine.Common.IIOCallback", "d8/d60/interface_engine_1_1_common_1_1_i_i_o_callback.html", [
+    [ "Engine.Common.IIoCallback", "d7/dd2/interface_engine_1_1_common_1_1_i_io_callback.html", [
       [ "Engine.IO.PPIOCallbacks", "de/ddb/class_engine_1_1_i_o_1_1_p_p_i_o_callbacks.html", null ]
     ] ],
     [ "Engine.Physics.BEPUik.IKConstraint", "d1/dc0/class_engine_1_1_physics_1_1_b_e_p_uik_1_1_i_k_constraint.html", [
@@ -620,13 +629,31 @@ var hierarchy =
     [ "Engine.OpenCL.DotNetCore.InteropConverter", "d0/d68/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_converter.html", null ],
     [ "Engine.Physics.BEPUphysics.EntityStateManagement.InterpolatedStatesAccessor", "d1/d8a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entity_state_management_1_1_interpolated_states_accessor.html", null ],
     [ "Engine.Core.Interpolations", "da/d21/class_engine_1_1_core_1_1_interpolations.html", null ],
+    [ "Engine.UI.Animations.Interpolator", "d7/ddb/class_engine_1_1_u_i_1_1_animations_1_1_interpolator.html", [
+      [ "Engine.UI.Animations.Interpolators.Arc2Interpolator", "d0/daf/class_engine_1_1_u_i_1_1_animations_1_1_interpolators_1_1_arc2_interpolator.html", null ],
+      [ "Engine.UI.Animations.Interpolators.BellInterpolator", "d5/d46/class_engine_1_1_u_i_1_1_animations_1_1_interpolators_1_1_bell_interpolator.html", null ],
+      [ "Engine.UI.Animations.Interpolators.LinearInterpolator", "d8/d5d/class_engine_1_1_u_i_1_1_animations_1_1_interpolators_1_1_linear_interpolator.html", null ],
+      [ "Engine.UI.Animations.Interpolators.SmoothInterpolator", "d1/d10/class_engine_1_1_u_i_1_1_animations_1_1_interpolators_1_1_smooth_interpolator.html", null ],
+      [ "Engine.UI.Animations.Interpolators.SphericalInterpolator", "d1/d90/class_engine_1_1_u_i_1_1_animations_1_1_interpolators_1_1_spherical_interpolator.html", null ],
+      [ "Engine.UI.Animations.Interpolators.StaticInterpolator", "d6/dd8/class_engine_1_1_u_i_1_1_animations_1_1_interpolators_1_1_static_interpolator.html", null ]
+    ] ],
     [ "Engine.OpenFL.Interpreter", "d7/d7f/class_engine_1_1_open_f_l_1_1_interpreter.html", null ],
     [ "Engine.OpenFL.InterpreterState", "d3/dbf/class_engine_1_1_open_f_l_1_1_interpreter_state.html", null ],
     [ "IOCallbacks", null, [
-      [ "Engine.Common.PPCallbacks", "dd/df9/class_engine_1_1_common_1_1_p_p_callbacks.html", null ]
+      [ "Engine.Common.PpCallbacks", "d2/d16/class_engine_1_1_common_1_1_pp_callbacks.html", null ]
     ] ],
     [ "Engine.IO.IOManager", "db/d99/class_engine_1_1_i_o_1_1_i_o_manager.html", null ],
-    [ "Engine.BuildTools.Common.IOUtils", "d4/d7e/class_engine_1_1_build_tools_1_1_common_1_1_i_o_utils.html", null ],
+    [ "Engine.BuildTools.Common.IoUtils", "de/de6/class_engine_1_1_build_tools_1_1_common_1_1_io_utils.html", null ],
+    [ "Engine.BuildTools.PackageCreator.Versions.IPackageManifest", "d4/dd1/interface_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1_i_package_manifest.html", [
+      [ "Engine.BuildTools.PackageCreator.Versions.Legacy.PackageManifest", "da/de1/class_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1_legacy_1_1_package_manifest.html", null ],
+      [ "Engine.BuildTools.PackageCreator.Versions.v1.PackageManifest", "de/deb/class_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1v1_1_1_package_manifest.html", null ],
+      [ "Engine.BuildTools.PackageCreator.Versions.v2.PackageManifest", "d6/d1d/class_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1v2_1_1_package_manifest.html", null ]
+    ] ],
+    [ "Engine.BuildTools.PackageCreator.Versions.IPackageVersion", "d0/df8/interface_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1_i_package_version.html", [
+      [ "Engine.BuildTools.PackageCreator.Versions.Legacy.LegacyVersion", "d9/d01/class_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1_legacy_1_1_legacy_version.html", null ],
+      [ "Engine.BuildTools.PackageCreator.Versions.v1.Version1", "d2/d29/class_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1v1_1_1_version1.html", null ],
+      [ "Engine.BuildTools.PackageCreator.Versions.v2.Version2", "dd/ddf/class_engine_1_1_build_tools_1_1_package_creator_1_1_versions_1_1v2_1_1_version2.html", null ]
+    ] ],
     [ "Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs.IPairHandlerParent", "d0/d92/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_i_pair_handler_parent.html", [
       [ "Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs.GroupPairHandler", "d8/dc9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_group_pair_handler.html", [
         [ "Engine.Physics.BEPUphysics.NarrowPhaseSystems.Pairs.CompoundGroupPairHandler", "d5/d1b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_compound_group_pair_handler.html", [
@@ -789,6 +816,9 @@ var hierarchy =
         [ "Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors.ServoSettingsOrientation", "d8/d8e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_motors_1_1_servo_settings_orientation.html", null ]
       ] ],
       [ "Engine.Physics.BEPUphysics.Vehicle.WheelSuspension", "da/df4/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel_suspension.html", null ]
+    ] ],
+    [ "Engine.Core.IThreadManager", "da/d6f/interface_engine_1_1_core_1_1_i_thread_manager.html", [
+      [ "Engine.Core.ThreadManager< T >", "d0/d3c/class_engine_1_1_core_1_1_thread_manager.html", null ]
     ] ],
     [ "Engine.OpenCL.DotNetCore.DataTypes.IVectorType", "db/de6/interface_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1_i_vector_type.html", [
       [ "Engine.OpenCL.DotNetCore.DataTypes.char16", "d4/dde/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_data_types_1_1char16.html", null ],
@@ -958,23 +988,20 @@ var hierarchy =
     [ "Engine.Physics.BEPUphysics.NarrowPhaseSystems.NarrowPhasePairFactory", "d1/d60/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_pair_factory.html", [
       [ "Engine.Physics.BEPUphysics.NarrowPhaseSystems.NarrowPhasePairFactory< T >", "d1/d60/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_narrow_phase_pair_factory.html", null ]
     ] ],
-    [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >.Node", "d3/d2b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree_1_1_node.html", [
-      [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >.InternalNode", "d9/dc8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree_1_1_internal_node.html", null ],
-      [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >.LeafNode", "d2/d73/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree_1_1_leaf_node.html", null ]
-    ] ],
-    [ "Engine.Physics.BEPUphysics.DataStructures.MeshBoundingBoxTree.Node", "da/d73/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_node.html", [
-      [ "Engine.Physics.BEPUphysics.DataStructures.MeshBoundingBoxTree.InternalNode", "d9/dfa/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_internal_node.html", null ],
-      [ "Engine.Physics.BEPUphysics.DataStructures.MeshBoundingBoxTree.LeafNode", "d0/d75/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_leaf_node.html", null ]
-    ] ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.Node", "da/dc0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_node.html", [
       [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.InternalNode", "d0/d2e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_internal_node.html", null ],
       [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.LeafNode", "de/ddf/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_leaf_node.html", null ]
+    ] ],
+    [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >.Node", "d3/d2b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree_1_1_node.html", [
+      [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >.InternalNode", "d9/dc8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree_1_1_internal_node.html", null ],
+      [ "Engine.Physics.BEPUphysics.DataStructures.BoundingBoxTree< T >.LeafNode", "d2/d73/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_bounding_box_tree_1_1_leaf_node.html", null ]
     ] ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.DynamicHierarchy.NodePair", "d9/de4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_1_1_node_pair.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.ObservableDictionary< TKey, TValue >", "d6/d1f/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_dictionary.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.ObservableDictionary< Engine.Physics.BEPUphysics.CollisionRuleManagement.CollisionRules, CollisionRule >", "d6/d1f/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_dictionary.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.ObservableList< ConvexShapeEntry >", "d0/d56/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_observable_list.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.OrientedConvexShapeEntry", "da/d05/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_oriented_convex_shape_entry.html", null ],
+    [ "Engine.BuildTools.PackageCreator.PackageManifestHeader", "d9/d22/class_engine_1_1_build_tools_1_1_package_creator_1_1_package_manifest_header.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK.PairSimplex", "dc/d9e/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_pair_simplex.html", null ],
     [ "Engine.Physics.BEPUphysics.Paths.Path< TValue >", "da/d9e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_path.html", [
       [ "Engine.Physics.BEPUphysics.Paths.Curve< TValue >", "d6/dda/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_curve.html", null ],
@@ -1000,12 +1027,13 @@ var hierarchy =
     ] ],
     [ "Engine.BuildTools.Common.ProcessUtils", "d8/dcf/class_engine_1_1_build_tools_1_1_common_1_1_process_utils.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Profiling.ProfilingNativeApi", "da/dc4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_profiling_1_1_profiling_native_api.html", null ],
-    [ "Engine.BuildTools.Builder.Program", "d7/d23/class_engine_1_1_build_tools_1_1_builder_1_1_program.html", null ],
+    [ "Engine.BuildTools.Builder.GUI.Program", "d5/d7f/class_engine_1_1_build_tools_1_1_builder_1_1_g_u_i_1_1_program.html", null ],
+    [ "Engine.BuildTools.Builder.CLI.Program", "d6/d86/class_engine_1_1_build_tools_1_1_builder_1_1_c_l_i_1_1_program.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Programs.ProgramsNativeApi", "d1/d81/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_programs_1_1_programs_native_api.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.QueryManager", "d8/d50/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_query_manager.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.QuickDictionary< Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.TriangleIndices, TrianglePairTester >", "d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html", null ],
-    [ "Engine.Physics.BEPUutilities.DataStructures.QuickList< Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.EdgeContact >", "d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html", null ],
-    [ "Engine.Physics.BEPUutilities.DataStructures.QuickList< Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.VertexContact >", "d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html", null ],
+    [ "Engine.Physics.BEPUutilities.DataStructures.QuickList< EdgeContact >", "d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html", null ],
+    [ "Engine.Physics.BEPUutilities.DataStructures.QuickList< VertexContact >", "d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.QuickSet< Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.Edge >", "d7/d91/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_set.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.QuickSet< int >", "d7/d91/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_set.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.RawList< BroadPhaseEntry >", "d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html", null ],
@@ -1077,11 +1105,13 @@ var hierarchy =
       [ "Engine.Physics.BEPUutilities.ResourceManagement.LockingResourcePool< T >", "dc/d4f/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_locking_resource_pool.html", null ],
       [ "Engine.Physics.BEPUutilities.ResourceManagement.UnsafeResourcePool< T >", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html", null ]
     ] ],
+    [ "Engine.BuildTools.Builder.GUI.Properties.Resources", "da/d2f/class_engine_1_1_build_tools_1_1_builder_1_1_g_u_i_1_1_properties_1_1_resources.html", null ],
     [ "Engine.Physics.BEPUutilities.RigidTransform", "d0/d84/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_rigid_transform.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Samplers.SamplersNativeApi", "dc/dbf/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_samplers_1_1_samplers_native_api.html", null ],
     [ "SerializableDictionary", null, [
       [ "Engine.Common.CrashLogDictionary", "d7/d4b/class_engine_1_1_common_1_1_crash_log_dictionary.html", null ]
     ] ],
+    [ "Engine.DataTypes.ShaderPath", "d6/d61/struct_engine_1_1_data_types_1_1_shader_path.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionShapes.ShapeDistributionInformation", "de/d2f/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_shape_distribution_information.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.GJK.SimpleSimplex", "d1/daa/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_simple_simplex.html", null ],
     [ "Engine.Physics.BEPUphysics.DeactivationManagement.SimulationIsland", "d9/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_deactivation_management_1_1_simulation_island.html", null ],
@@ -1091,21 +1121,21 @@ var hierarchy =
     [ "Engine.Physics.BEPUphysics.Constraints.SolverUpdateableChange", "d7/d37/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_solver_updateable_change.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep.SortedGrid2DSet", "dd/d5b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_sort_and_sweep_1_1_sorted_grid2_d_set.html", null ],
     [ "Engine.Physics.BEPUphysics.Space", "dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html", null ],
-    [ "Engine.Physics.BEPUphysics.OtherSpaceStages.SpaceObjectBuffer.SpaceObjectChange", "dc/dd4/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_space_object_buffer_1_1_space_object_change.html", null ],
     [ "Engine.Physics.BEPUphysics.Paths.SpeedControlledCurveSample", "d6/d21/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_paths_1_1_speed_controlled_curve_sample.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.SphereTester", "d5/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_sphere_tester.html", null ],
     [ "Engine.Physics.BEPUutilities.SpinLock", "d4/d22/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_spin_lock.html", null ],
     [ "Engine.Physics.BEPUphysics.Constraints.SpringAdvancedSettings", "de/d4b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_advanced_settings.html", null ],
     [ "Engine.Physics.BEPUphysics.Constraints.SpringSettings", "d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.StanceManager", "de/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_stance_manager.html", null ],
-    [ "Engine.BuildTools.Builder.Program.StartupInfo", "de/d12/class_engine_1_1_build_tools_1_1_builder_1_1_program_1_1_startup_info.html", null ],
+    [ "Engine.BuildTools.Common.StartupInfo", "d0/d8a/class_engine_1_1_build_tools_1_1_common_1_1_startup_info.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.StepManager", "d0/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_step_manager.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.SupportData", "d7/dc2/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_data.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.SupportFinder", "d3/d6e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_finder.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.SupportRayData", "d7/d17/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_ray_data.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.SvmAllocations.SvmAllocationsNativeApi", "d2/d62/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_svm_allocations_1_1_svm_allocations_native_api.html", null ],
+    [ "Engine.Core.TaskReference< T >", "d5/d00/class_engine_1_1_core_1_1_task_reference.html", null ],
     [ "Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TerrainVertexIndices", "da/d1e/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_terrain_vertex_indices.html", null ],
-    [ "Engine.Common.TextProcessorAPI", "d8/d33/class_engine_1_1_common_1_1_text_processor_a_p_i.html", null ],
+    [ "Engine.Common.TextProcessorApi", "d9/d68/class_engine_1_1_common_1_1_text_processor_api.html", null ],
     [ "Engine.IO.TextureLoader", "d8/d84/class_engine_1_1_i_o_1_1_texture_loader.html", null ],
     [ "Engine.Physics.BEPUphysics.TimeStepSettings", "d0/d13/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_time_step_settings.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.TinyList< T >", "d9/db0/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_tiny_list.html", null ],
@@ -1119,7 +1149,6 @@ var hierarchy =
       ] ],
       [ "Engine.Physics.BEPUphysics.CollisionTests.CollisionAlgorithms.TriangleSpherePairTester", "d4/d86/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_triangle_sphere_pair_tester.html", null ]
     ] ],
-    [ "Engine.UI.UIHelper", "db/d26/class_engine_1_1_u_i_1_1_u_i_helper.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.UnsafeResourcePool< Engine.Physics.BEPUphysics.BroadPhaseSystems.Hierarchies.LeafNode >", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.UnsafeResourcePool< Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep.Grid2DEntry >", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.UnsafeResourcePool< Engine.Physics.BEPUphysics.BroadPhaseSystems.SortAndSweep.GridCell2D >", "db/df8/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_unsafe_resource_pool.html", null ],
@@ -1168,10 +1197,9 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.Constraints.TwoEntity.Motors.VelocityMotorSettings3D", "d8/d77/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_motors_1_1_velocity_motor_settings3_d.html", null ]
     ] ],
     [ "Engine.OpenCL.DotNetCore.Platforms.Version", "d5/d67/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_platforms_1_1_version.html", null ],
-    [ "Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.VertexContact", "de/d41/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_triangle_mesh0fdc3284cb52c26baa7403abeba06b87.html", null ],
     [ "Engine.WFC.WaveCollapseUtils", "d3/ddd/class_engine_1_1_w_f_c_1_1_wave_collapse_utils.html", null ],
     [ "Engine.WFC.WaveFunctionCollapse", "d8/d51/class_engine_1_1_w_f_c_1_1_wave_function_collapse.html", [
-      [ "Engine.WFC.WFCOverlayMode", "d4/d43/class_engine_1_1_w_f_c_1_1_w_f_c_overlay_mode.html", null ]
+      [ "Engine.WFC.WfcOverlayMode", "de/d8e/class_engine_1_1_w_f_c_1_1_wfc_overlay_mode.html", null ]
     ] ],
     [ "Engine.Physics.BEPUphysics.Vehicle.Wheel", "dd/dff/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_vehicle_1_1_wheel.html", null ]
 ];

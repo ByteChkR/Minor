@@ -47,6 +47,12 @@ namespace Engine.Rendering
             GL.DeleteProgram(prgId);
         }
 
+        /// <summary>
+        /// Tries to Create a Shader from source
+        /// </summary>
+        /// <param name="subshaders">Dictionary of ShaderType, Path To File</param>
+        /// <param name="program">Resulting Shader Program</param>
+        /// <returns>The Success State of the Compilation</returns>
         internal static bool TryCreateFromSource(Dictionary<ShaderType, string> subshaders, out ShaderProgram program)
         {
             bool ret = true;
@@ -139,6 +145,10 @@ namespace Engine.Rendering
             return loc;
         }
 
+        /// <summary>
+        /// Adds a Name to the uniform cache to prevent duplicate GL Calls
+        /// </summary>
+        /// <param name="name"></param>
         public void AddUniformCache(string name)
         {
             if (uniformCache.ContainsKey(name))
@@ -163,6 +173,11 @@ namespace Engine.Rendering
             //return loc;
         }
 
+        /// <summary>
+        /// Returns the Uniform Location uncached
+        /// </summary>
+        /// <param name="name">Name of the uniform</param>
+        /// <returns></returns>
         public int GetUniformLocationUncached(string name)
 
         {

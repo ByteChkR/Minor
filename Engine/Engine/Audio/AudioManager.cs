@@ -1,4 +1,5 @@
-﻿using OpenTK.Audio;
+﻿using Engine.Debug;
+using OpenTK.Audio;
 using OpenTK.Audio.OpenAL;
 
 namespace Engine.Audio
@@ -23,6 +24,8 @@ namespace Engine.Audio
         /// </summary>
         public static void Initialize()
         {
+
+            Logger.Log($"Initializing OpenAL", DebugChannel.EngineAudio | DebugChannel.Log, 10);
             _context = new AudioContext();
         }
     }

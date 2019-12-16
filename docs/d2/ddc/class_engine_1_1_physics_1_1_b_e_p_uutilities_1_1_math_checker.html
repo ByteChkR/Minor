@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,7 +88,6 @@ $(document).ready(function(){initNavTree('d2/ddc/class_engine_1_1_physics_1_1_b_
 <div class="header">
   <div class="summary">
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
 <a href="../../d7/da9/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_math_checker-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUutilities.MathChecker Class Reference</div>  </div>
@@ -136,51 +135,10 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a0a728bb295dbe12d610531706dc90875"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddc/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_math_checker.html#a0a728bb295dbe12d610531706dc90875">Validate</a> (this <a class="el" href="../../dc/daf/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_sphere.html">BoundingSphere</a> b)</td></tr>
 <tr class="memdesc:a0a728bb295dbe12d610531706dc90875"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks the value to see if it is a NaN or infinite. If it is, an exception is thrown. This is only run when the CHECKMATH symbol is defined.  <a href="#a0a728bb295dbe12d610531706dc90875">More...</a><br /></td></tr>
 <tr class="separator:a0a728bb295dbe12d610531706dc90875"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a808e600b7693e46829aedc0c7afddafe"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/ddc/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_math_checker.html#a808e600b7693e46829aedc0c7afddafe">IsInvalid</a> (float f)</td></tr>
-<tr class="memdesc:a808e600b7693e46829aedc0c7afddafe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks a single float for validity. Separate from the extension method to avoid throwing exceptions deep in a call tree.  <a href="#a808e600b7693e46829aedc0c7afddafe">More...</a><br /></td></tr>
-<tr class="separator:a808e600b7693e46829aedc0c7afddafe"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Contains conditional extensions to check for bad values in various structures. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a808e600b7693e46829aedc0c7afddafe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a808e600b7693e46829aedc0c7afddafe">&#9670;&nbsp;</a></span>IsInvalid()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Engine.Physics.BEPUutilities.MathChecker.IsInvalid </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>f</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Checks a single float for validity. Separate from the extension method to avoid throwing exceptions deep in a call tree. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">f</td><td>Value to validate.</td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the value is invalid, false if it is valid.</dd></dl>
-
-</div>
-</div>
 <a id="a6388905220817405ca7726e261aba170"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6388905220817405ca7726e261aba170">&#9670;&nbsp;</a></span>Validate() <span class="overload">[1/12]</span></h2>
 

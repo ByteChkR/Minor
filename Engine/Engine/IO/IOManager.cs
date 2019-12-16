@@ -7,8 +7,17 @@ using Engine.Exceptions;
 
 namespace Engine.IO
 {
+    /// <summary>
+    /// Wrapper for Specific System.IO Calls
+    /// It will resolve the filename either with files from the disk or with files embedded in an assembly
+    /// </summary>
     public static class IOManager
     {
+        /// <summary>
+        /// Returns true if the file exists on either the disk or in the assembly
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static bool Exists(string filename)
         {
             bool isFile = File.Exists(filename);
@@ -16,6 +25,11 @@ namespace Engine.IO
             return isFile || isManifest;
         }
 
+        /// <summary>
+        /// Returns true if the folder exists on either the disk or in the assembly
+        /// </summary>
+        /// <param name="foldername"></param>
+        /// <returns></returns>
         public static bool FolderExists(string foldername)
         {
             bool isFile = Directory.Exists(foldername);
@@ -23,11 +37,21 @@ namespace Engine.IO
             return isFile || isManifest;
         }
 
+        /// <summary>
+        /// Reads all lines from the file provided
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string[] ReadAllLines(string path)
         {
             return ReadAllText(path).Split('\n');
         }
 
+        /// <summary>
+        /// Reads all Text from a file
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
         public static string ReadAllText(string path)
         {
             TextReader tr = new StreamReader(GetStream(path));
@@ -36,6 +60,12 @@ namespace Engine.IO
             return ret;
         }
 
+        /// <summary>
+        /// Returns files in a specfied directory
+        /// </summary>
+        /// <param name="foldername"></param>
+        /// <param name="searchPattern"></param>
+        /// <returns></returns>
         public static string[] GetFiles(string foldername, string searchPattern)
         {
             bool folderExists = FolderExists(foldername);
@@ -62,6 +92,11 @@ namespace Engine.IO
             return files.ToArray();
         }
 
+        /// <summary>
+        /// Returns the byte stream of the file specified
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
         public static Stream GetStream(string filename)
         {
             if (File.Exists(filename))

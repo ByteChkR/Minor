@@ -1,5 +1,4 @@
 var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_static_mesh_sphere_pair_handler =
 [
-    [ "contactManifold", "db/d20/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_static_mesh_sphere_pair_handler.html#a4acbe36d222d747b6a371060396851d7", null ],
     [ "MeshManifold", "db/d20/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_static_mesh_sphere_pair_handler.html#a15f559097de213f8bda9f5d74649bf8d", null ]
 ];

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -99,7 +99,7 @@ $(document).ready(function(){initNavTree('da/dc4/class_engine_1_1_open_c_l_1_1_d
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:abd0b01f592e3b100843434b48abeb231"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdad">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_profiling_1_1_profiling_native_api.html#abd0b01f592e3b100843434b48abeb231">GetEventProfilingInformation</a> ([In] IntPtr eventHandle, [In] [MarshalAs(UnmanagedType.U4)] <a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ad6a2065270f7b9e805e7b0b82f394fd4">ProfilingInformation</a> parameterName, [In] UIntPtr parameterValueSize, [Out] byte[] parameterValue, [Out] out UIntPtr parameterValueSizeReturned)</td></tr>
+<tr class="memitem:abd0b01f592e3b100843434b48abeb231"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98">Result</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/dc4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_profiling_1_1_profiling_native_api.html#abd0b01f592e3b100843434b48abeb231">GetEventProfilingInformation</a> ([In] IntPtr eventHandle, [In] [MarshalAs(UnmanagedType.U4)] <a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ad6a2065270f7b9e805e7b0b82f394fd4">ProfilingInformation</a> parameterName, [In] UIntPtr parameterValueSize, [Out] byte[] parameterValue, [Out] out UIntPtr parameterValueSizeReturned)</td></tr>
 <tr class="memdesc:abd0b01f592e3b100843434b48abeb231"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns profiling information for the command associated with event if profiling is enabled.  <a href="#abd0b01f592e3b100843434b48abeb231">More...</a><br /></td></tr>
 <tr class="separator:abd0b01f592e3b100843434b48abeb231"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -113,7 +113,7 @@ Public Member Functions</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static <a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdad">Result</a> Engine.OpenCL.DotNetCore.Interop.Profiling.ProfilingNativeApi.GetEventProfilingInformation </td>
+          <td class="memname">static <a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98">Result</a> Engine.OpenCL.DotNetCore.Interop.Profiling.ProfilingNativeApi.GetEventProfilingInformation </td>
           <td>(</td>
           <td class="paramtype">[In] IntPtr&#160;</td>
           <td class="paramname"><em>eventHandle</em>, </td>
@@ -161,12 +161,12 @@ Public Member Functions</h2></td></tr>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd><p class="startdd">Returns <code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdada505a83f220c02df2f85c3810cd9ceb38" title="The function is executed successfully. ">Result.Success</a></code> if the function executed successfully, or one of the errors below:</p>
-<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdadabecd92b184fae585e77a27383cbaecd7">Result.ProfilingInformationNotAvailable</a></code> if the <code>CommandQueueProperty.ProfilingEnable</code> flag is not set for the command-queue, if the execution status of the command identified by event is not complete or if event refers to the EnqueueSvmFree command or is a user event object.</p>
-<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdada42fee7e7a62b3ca0a0addab64d81a6ba">Result.InvalidEvent</a></code> if eventHandle is not a valid event.</p>
-<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdada223e81e8afa42c41346a6696560ecc7b" title="One or more of the provided arguments has an invalid value. ">Result.InvalidValue</a></code> if parameterName is not one of the supported values or if size in bytes specified by parameterValueSize is less than the size of the return type parameterValue is not a <code>null</code> value.</p>
-<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdada4bd8e65b6b284b50eacb833c41dfd959" title="There was a failure to allocate resources required by the OpenCL implementation on the on the device...">Result.OutOfResources</a></code> if there is a failure to allocate resources required by the <a class="el" href="../../d2/d5b/namespace_engine_1_1_open_c_l.html">OpenCL</a> implementation on the device.</p>
-<p class="enddd"><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#a18f6910d4c39980677299dcbed9ebdada1a974d190fc90edd0babc2a5a021e3f0" title="There was a failure to allocate resources required by the OpenCL implementation on the host...">Result.OutOfHostMemory</a></code> if there is a failure to allocate resources required by the <a class="el" href="../../d2/d5b/namespace_engine_1_1_open_c_l.html">OpenCL</a> implementation on the host. </p>
+<dl class="section return"><dt>Returns</dt><dd><p class="startdd">Returns <code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98a505a83f220c02df2f85c3810cd9ceb38" title="The function is executed successfully. ">Result.Success</a></code> if the function executed successfully, or one of the errors below:</p>
+<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98abecd92b184fae585e77a27383cbaecd7">Result.ProfilingInformationNotAvailable</a></code> if the <code>CommandQueueProperty.ProfilingEnable</code> flag is not set for the command-queue, if the execution status of the command identified by event is not complete or if event refers to the EnqueueSvmFree command or is a user event object.</p>
+<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98a42fee7e7a62b3ca0a0addab64d81a6ba">Result.InvalidEvent</a></code> if eventHandle is not a valid event.</p>
+<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98a223e81e8afa42c41346a6696560ecc7b" title="One or more of the provided arguments has an invalid value. ">Result.InvalidValue</a></code> if parameterName is not one of the supported values or if size in bytes specified by parameterValueSize is less than the size of the return type parameterValue is not a <code>null</code> value.</p>
+<p><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98a4bd8e65b6b284b50eacb833c41dfd959" title="There was a failure to allocate resources required by the OpenCL implementation on the on the device...">Result.OutOfResources</a></code> if there is a failure to allocate resources required by the <a class="el" href="../../d2/d5b/namespace_engine_1_1_open_c_l.html">OpenCL</a> implementation on the device.</p>
+<p class="enddd"><code><a class="el" href="../../d4/dba/namespace_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop.html#ada2e9ca5b8eb18fb51fd8e6af9aebc98a1a974d190fc90edd0babc2a5a021e3f0" title="There was a failure to allocate resources required by the OpenCL implementation on the host...">Result.OutOfHostMemory</a></code> if there is a failure to allocate resources required by the <a class="el" href="../../d2/d5b/namespace_engine_1_1_open_c_l.html">OpenCL</a> implementation on the host. </p>
 </dd></dl>
 
 </div>

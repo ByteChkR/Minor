@@ -16,7 +16,14 @@ namespace Engine.OpenFL
         /// <summary>
         /// Define handler that loads defined scripts
         /// </summary>
-        /// <param name="arg">The Line of the definition</param>
+        /// <param name="instance">Clapi Instance of the Current Thread</param>
+        /// <param name="arg">Args from the FL Script</param>
+        /// <param name="defines">Defines</param>
+        /// <param name="width">width of the input buffer</param>
+        /// <param name="height">height of the input buffer</param>
+        /// <param name="depth">depth of the input buffer</param>
+        /// <param name="channelCount">channel count of the input buffer</param>
+        /// <param name="kernelDb">the kernel database to use</param>
         private static void DefineScript(Clapi instance, string[] arg, Dictionary<string, ClBufferInfo> defines,
             int width, int height,
             int depth, int channelCount, KernelDatabase kernelDb)
@@ -30,7 +37,7 @@ namespace Engine.OpenFL
             string varname = arg[0].Trim();
             if (defines.ContainsKey(varname))
             {
-                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.OpenFl, 10);
+                Logger.Log("Overwriting " + varname, DebugChannel.Warning | DebugChannel.EngineOpenFL, 10);
                 defines.Remove(varname);
             }
 
@@ -43,7 +50,7 @@ namespace Engine.OpenFL
 
             if (IsSurroundedBy(filename, FilepathIndicator))
             {
-                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.OpenFl, 10);
+                Logger.Log("Loading SubScript...", DebugChannel.Log | DebugChannel.EngineOpenFL, 10);
 
                 MemoryBuffer buf =
                     Clapi.CreateEmpty<byte>(instance, inputBufferSize, MemoryFlag.ReadWrite);

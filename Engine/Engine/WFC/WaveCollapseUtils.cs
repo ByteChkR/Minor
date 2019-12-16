@@ -2,6 +2,9 @@
 
 namespace Engine.WFC
 {
+    /// <summary>
+    /// Utilities for the Wave Collapse Function
+    /// </summary>
     public static class WaveCollapseUtils
     {
         public static int Random(this double[] a, double r)

@@ -2,6 +2,9 @@
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// Pointer Structure used to find a file in a raw byte stream
+    /// </summary>
     [Serializable]
     public class AssetPointer
     {

@@ -15,12 +15,14 @@ namespace Engine.DataTypes
         private bool disposed;
 
         private bool dontDispose;
+
         private readonly long bytes;
 
         /// <summary>
         /// Internal Constructor to Create a Texture Object from a GL Texture Handle
         /// </summary>
         /// <param name="textureId"></param>
+        /// <param name="bytes">Size of the Texture(for statistics)</param>
         internal Texture(int textureId, long bytes)
         {
             this.bytes = bytes;

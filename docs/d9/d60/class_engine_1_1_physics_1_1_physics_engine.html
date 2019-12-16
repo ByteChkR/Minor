@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,8 +90,6 @@ $(document).ready(function(){initNavTree('d9/d60/class_engine_1_1_physics_1_1_ph
 <a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pac-static-methods">Static Package Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../dd/d4f/class_engine_1_1_physics_1_1_physics_engine-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.PhysicsEngine Class Reference</div>  </div>
@@ -139,21 +137,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a8839da059337057c6320f5f7b268c311"><td class="memItemLeft" align="right" valign="top">static TKVector3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d60/class_engine_1_1_physics_1_1_physics_engine.html#a8839da059337057c6320f5f7b268c311">Gravity</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a8839da059337057c6320f5f7b268c311"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Gravity that is applied to the colliders  <a href="#a8839da059337057c6320f5f7b268c311">More...</a><br /></td></tr>
 <tr class="separator:a8839da059337057c6320f5f7b268c311"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a7f3f1aa996f3d67fefae52fa7abd1d62"><td class="memItemLeft" align="right" valign="top">static bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d60/class_engine_1_1_physics_1_1_physics_engine.html#a7f3f1aa996f3d67fefae52fa7abd1d62">FilterFunc</a> (<a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a> entry, int layerInfo)</td></tr>
-<tr class="memdesc:a7f3f1aa996f3d67fefae52fa7abd1d62"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private Function that is used to filter Collisions by tags  <a href="#a7f3f1aa996f3d67fefae52fa7abd1d62">More...</a><br /></td></tr>
-<tr class="separator:a7f3f1aa996f3d67fefae52fa7abd1d62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:aeae6483842210f82f1e1d8e6bcdbca7e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d60/class_engine_1_1_physics_1_1_physics_engine.html#aeae6483842210f82f1e1d8e6bcdbca7e">_space</a></td></tr>
-<tr class="memdesc:aeae6483842210f82f1e1d8e6bcdbca7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Space the simulation takes place  <a href="#aeae6483842210f82f1e1d8e6bcdbca7e">More...</a><br /></td></tr>
-<tr class="separator:aeae6483842210f82f1e1d8e6bcdbca7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a328b43804b289f3aa36247dc96ba55db"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="../../d4/d56/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_force_updater.html">ForceUpdater</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d60/class_engine_1_1_physics_1_1_physics_engine.html#a328b43804b289f3aa36247dc96ba55db">_fu</a></td></tr>
-<tr class="memdesc:a328b43804b289f3aa36247dc96ba55db"><td class="mdescLeft">&#160;</td><td class="mdescRight">The Force updater that is used to apply gravity to the colliders  <a href="#a328b43804b289f3aa36247dc96ba55db">More...</a><br /></td></tr>
-<tr class="separator:a328b43804b289f3aa36247dc96ba55db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Static class that serves as a wrapper for the physics engine, providing all much used functions and the initialization code to start a physics simulation </p>
@@ -224,52 +207,6 @@ Static Private Attributes</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>A ray from origin to mouse position in world coordinates</dd></dl>
-
-</div>
-</div>
-<a id="a7f3f1aa996f3d67fefae52fa7abd1d62"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f3f1aa996f3d67fefae52fa7abd1d62">&#9670;&nbsp;</a></span>FilterFunc()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static bool Engine.Physics.PhysicsEngine.FilterFunc </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a>&#160;</td>
-          <td class="paramname"><em>entry</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>layerInfo</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Private Function that is used to filter Collisions by tags </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">entry</td><td></td></tr>
-    <tr><td class="paramname">layerInfo</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>True if the objects are allowed to collide; False if they are not</dd></dl>
 
 </div>
 </div>
@@ -605,55 +542,6 @@ Static Private Attributes</h2></td></tr>
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a328b43804b289f3aa36247dc96ba55db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a328b43804b289f3aa36247dc96ba55db">&#9670;&nbsp;</a></span>_fu</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d4/d56/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_force_updater.html">ForceUpdater</a> Engine.Physics.PhysicsEngine._fu</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The Force updater that is used to apply gravity to the colliders </p>
-
-</div>
-</div>
-<a id="aeae6483842210f82f1e1d8e6bcdbca7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeae6483842210f82f1e1d8e6bcdbca7e">&#9670;&nbsp;</a></span>_space</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../dc/d0a/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_space.html">Space</a> Engine.Physics.PhysicsEngine._space</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The Space the simulation takes place </p>
 
 </div>
 </div>

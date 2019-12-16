@@ -5,10 +5,19 @@ using OpenTK;
 
 namespace Engine.UI.EventSystems
 {
+    /// <summary>
+    /// EventSystem handles all Selectable UI Elements in the Game
+    /// </summary>
     public class EventSystem
     {
+
+
         private List<ISelectable> selectables = new List<ISelectable>();
 
+        /// <summary>
+        /// Registers an element
+        /// </summary>
+        /// <param name="element">Element to register</param>
         public void Register(ISelectable element)
         {
             if (!selectables.Contains(element))
@@ -17,6 +26,10 @@ namespace Engine.UI.EventSystems
             }
         }
 
+        /// <summary>
+        /// Unregisters an element
+        /// </summary>
+        /// <param name="element">Element to unregister</param>
         public void Unregister(ISelectable element)
         {
             if (selectables.Contains(element))
@@ -25,7 +38,10 @@ namespace Engine.UI.EventSystems
             }
         }
 
-
+        /// <summary>
+        /// Updates the Event System
+        /// And Changes the states of the Registered elements
+        /// </summary>
         public void Update()
         {
             Vector2 mpos = GameEngine.Instance.MousePosition - GameEngine.Instance.WindowSize / 2;

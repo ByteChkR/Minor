@@ -12,6 +12,9 @@ namespace Engine.Debug
     [Serializable]
     public class DebugSettings : IDebugSettings
     {
+        /// <summary>
+        /// The Settings for the single log streams that get hooked up to the debug framework
+        /// </summary>
         [XmlElement(ElementName = "LogStreamConfig")]
         public LogStreamSettings[] LogStreamSettings { get; set; }
 
@@ -70,7 +73,8 @@ namespace Engine.Debug
             List<string> stageNames = new List<string>();
             for (int i = 0; i < 31; i++)
             {
-                stageNames.Add("[" + Enum.GetName(typeof(DebugChannel), 1 << i) + "]");
+                string name = Enum.GetName(typeof(DebugChannel), 1 << i);
+                stageNames.Add("[" + name + "]");
             }
 
             return new DebugSettings
@@ -82,7 +86,7 @@ namespace Engine.Debug
                 SeverityFilter = 6,
                 StageNames = stageNames.ToArray(),
                 PrefixLookupFlags = 1 | 2 | 8,
-                Streams = new[] {new LogStreamSettings {Mask = -1, Timestamp = true}}
+                Streams = new[] { new LogStreamSettings { Mask = -1, Timestamp = true } }
                     .Cast<ILogStreamSettings>().ToArray()
             };
         }

@@ -28,4 +28,49 @@
   <ItemGroup>
     <ProjectReference Include="..\Engine\Engine.csproj" />
   </ItemGroup>
+  <ItemGroup>
+  <EmbeddedResource Include="assets/textures/TEST.png" />
+  <EmbeddedResource Include="assets/WFCTiles/brick.png" />
+  <EmbeddedResource Include="assets/WFCTiles/testtile.png" />
+  <EmbeddedResource Include="assets/WFCTiles/testtile1.png" />
+  <EmbeddedResource Include="assets/WFCTiles/testtile2.png" />
+  <EmbeddedResource Include="assets/WFCTiles/testtile3.png" />
+  <EmbeddedResource Include="assets/WFCTiles/testtile4.png" />
+  <EmbeddedResource Include="assets/textures/stone1.jpg" />
+  <EmbeddedResource Include="assets/textures/wood1.jpg" />
+  <EmbeddedResource Include="assets/models/plane.obj" />
+  <EmbeddedResource Include="assets/sounds/test_mono_16.wav" />
+  <EmbeddedResource Include="assets/configs/camera.xml" />
+  <EmbeddedResource Include="assets/configs/camera_astardemo.xml" />
+  <EmbeddedResource Include="assets/configs/camera_fldemo.xml" />
+  <EmbeddedResource Include="assets/configs/camera_physics_test.xml" />
+  <EmbeddedResource Include="assets/filter/examples/bricks.fl" />
+  <EmbeddedResource Include="assets/filter/examples/cobble_clean.fl" />
+  <EmbeddedResource Include="assets/filter/examples/cobble_grass.fl" />
+  <EmbeddedResource Include="assets/filter/examples/finegrass.fl" />
+  <EmbeddedResource Include="assets/filter/examples/grass.fl" />
+  <EmbeddedResource Include="assets/filter/examples/tennisball.fl" />
+  <EmbeddedResource Include="assets/filter/examples/test.fl" />
+  <EmbeddedResource Include="assets/filter/examples/testface.fl" />
+  <EmbeddedResource Include="assets/filter/examples/testfaceclean.fl" />
+  <EmbeddedResource Include="assets/filter/examples/testface_gen.fl" />
+  <EmbeddedResource Include="assets/filter/examples/woodstone.fl" />
+  <EmbeddedResource Include="assets/filter/fldemo/grass.fl" />
+  <EmbeddedResource Include="assets/filter/tests/addtex.fl" />
+  <EmbeddedResource Include="assets/filter/tests/addval.fl" />
+  <EmbeddedResource Include="assets/filter/tests/int_tests.fl" />
+  <EmbeddedResource Include="assets/filter/tests/invert.fl" />
+  <EmbeddedResource Include="assets/filter/tests/multex.fl" />
+  <EmbeddedResource Include="assets/filter/tests/mulval.fl" />
+  <EmbeddedResource Include="assets/filter/tests/perlin.fl" />
+  <EmbeddedResource Include="assets/filter/tests/pp_tests.fl" />
+  <EmbeddedResource Include="assets/filter/tests/settex.fl" />
+  <EmbeddedResource Include="assets/filter/tests/setval.fl" />
+  <EmbeddedResource Include="assets/filter/tests/smooth.fl" />
+  <EmbeddedResource Include="assets/filter/tests/subtex.fl" />
+  <EmbeddedResource Include="assets/filter/tests/subval.fl" />
+  <EmbeddedResource Include="assets/filter/tests/wfc.fl" />
+  <EmbeddedResource Include="assets/filter/tests/inttests/script.fl" />
+  <EmbeddedResource Include="assets/filter/tests/pptests/include.fl" />
+  <EmbeddedResource Include="assets/filter/tests/pptests/includeinl.fl" /></ItemGroup>
 </Project>

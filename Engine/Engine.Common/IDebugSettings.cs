@@ -1,5 +1,9 @@
 ﻿namespace Engine.Common
 {
+
+    /// <summary>
+    /// Interface of a Debug Setting File
+    /// </summary>
     public interface IDebugSettings
     {
         bool Enabled { get; set; }

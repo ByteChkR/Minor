@@ -11,6 +11,9 @@ using MatchType = ADL.MatchType;
 
 namespace Engine.Common
 {
+    /// <summary>
+    /// Helper Class that Communicates with the ADL Library
+    /// </summary>
     public static class DebugHelper
     {
         public static int SeverityFilter;
@@ -20,12 +23,14 @@ namespace Engine.Common
         public static void ApplySettings(IDebugSettings settings)
         {
             Init = true;
-            Debug.RemoveAllOutputStreams();
+
+            if (Debug.LogStreamCount != 0)
+                Debug.RemoveAllOutputStreams();
             Debug.RemoveAllPrefixes();
 
             IOCallbacks.Callback = new PpCallbacks();
 
-            Debug.PrefixLookupMode = (PrefixLookupSettings) settings.PrefixLookupFlags;
+            Debug.PrefixLookupMode = (PrefixLookupSettings)settings.PrefixLookupFlags;
 
             SeverityFilter = settings.SeverityFilter;
 
@@ -36,7 +41,14 @@ namespace Engine.Common
             Debug.SendWarnings = settings.SendInternalWarnings;
             Debug.UpdateMask = -1;
 
-            Debug.SetAllPrefixes(settings.StageNames);
+            for (int i = 0; i < settings.StageNames.Length; i++)
+            {
+                if (settings.StageNames[i] != "[]")
+                {
+                    Debug.AddPrefixForMask(1 << i, settings.StageNames[i]);
+                }
+            }
+            //Debug.SetAllPrefixes(settings.StageNames);
 
             Debug.AddPrefixForMask(0, "[Silent]");
 
@@ -61,19 +73,19 @@ namespace Engine.Common
             }
 
             return new LogTextStream(File.OpenWrite(settings.Destination), settings.Mask,
-                (MatchType) settings.MatchMode, settings.Timestamp);
+                (MatchType)settings.MatchMode, settings.Timestamp);
         }
 
         private static LogStream OpenConsoleStream(ILogStreamSettings settings)
         {
-            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType) settings.MatchMode,
+            return new LogTextStream(Console.OpenStandardOutput(), settings.Mask, (MatchType)settings.MatchMode,
                 settings.Timestamp);
         }
 
         private static LogStream OpenNetworkStream(ILogStreamSettings settings)
         {
             NetLogStream nls = NetUtils.CreateNetworkStream(settings.NetworkAppId, settings.NetworkAuthVersion,
-                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType) settings.MatchMode,
+                settings.Destination, settings.NetworkPort, settings.Mask, (MatchType)settings.MatchMode,
                 settings.Timestamp);
             return nls;
         }

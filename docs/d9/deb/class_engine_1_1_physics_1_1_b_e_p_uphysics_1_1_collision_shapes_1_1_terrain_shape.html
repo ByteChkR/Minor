@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -90,7 +90,6 @@ $(document).ready(function(){initNavTree('d9/deb/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pac-methods">Package Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d9/d91/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape Class Reference</div>  </div>
@@ -113,7 +112,8 @@ Inheritance diagram for Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape:
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aeb7497d5a9d3a900268a168bd4e3404d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#aeb7497d5a9d3a900268a168bd4e3404d">TerrainShape</a> (float[,] heights, <a class="el" href="../../d5/db1/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes.html#a289a8d2f68dfae7c0a94ca47024e7dec">QuadTriangleOrganization</a> triangleOrganization)</td></tr>
 <tr class="separator:aeb7497d5a9d3a900268a168bd4e3404d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7645cd47cf841ff66fc127d090517e60"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#a7645cd47cf841ff66fc127d090517e60">TerrainShape</a> (float[,] heights)</td></tr>
+<tr class="memitem:a7645cd47cf841ff66fc127d090517e60"><td class="memItemLeft" align="right" valign="top"><a id="a7645cd47cf841ff66fc127d090517e60"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>TerrainShape</b> (float[,] heights)</td></tr>
 <tr class="separator:a7645cd47cf841ff66fc127d090517e60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a77f4e28a8c9e3287bd7847d459d03127"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#a77f4e28a8c9e3287bd7847d459d03127">GetBoundingBox</a> (ref <a class="el" href="../../d2/dc7/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_affine_transform.html">AffineTransform</a> transform, out <a class="el" href="../../d9/d3d/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_bounding_box.html">BoundingBox</a> boundingBox)</td></tr>
 <tr class="separator:a77f4e28a8c9e3287bd7847d459d03127"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -148,20 +148,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>GetLocalIndices</b> (
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:ab982a88bf02ed254b1db96b27c15ded9"><td class="memItemLeft" align="right" valign="top"><a id="ab982a88bf02ed254b1db96b27c15ded9"></a>
-float [,]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#ab982a88bf02ed254b1db96b27c15ded9">Heights</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:ab982a88bf02ed254b1db96b27c15ded9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the height field of the terrain shape. /summary&gt; <br /></td></tr>
+<tr class="memitem:ab982a88bf02ed254b1db96b27c15ded9"><td class="memItemLeft" align="right" valign="top">float [,]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#ab982a88bf02ed254b1db96b27c15ded9">Heights</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ab982a88bf02ed254b1db96b27c15ded9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the height field of the terrain shape. /summary&gt;  <a href="#ab982a88bf02ed254b1db96b27c15ded9">More...</a><br /></td></tr>
 <tr class="separator:ab982a88bf02ed254b1db96b27c15ded9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90c1c2903ed7bf7dd41c63f10472f7b3"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/db1/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes.html#a289a8d2f68dfae7c0a94ca47024e7dec">QuadTriangleOrganization</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#a90c1c2903ed7bf7dd41c63f10472f7b3">QuadTriangleOrganization</a><code> [get, set]</code></td></tr>
 <tr class="separator:a90c1c2903ed7bf7dd41c63f10472f7b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:aec04c02d4b345cebf7ccdb675a9bccea"><td class="memItemLeft" align="right" valign="top"><a id="aec04c02d4b345cebf7ccdb675a9bccea"></a>
-float [,]&#160;</td><td class="memItemRight" valign="bottom"><b>heights</b></td></tr>
-<tr class="separator:aec04c02d4b345cebf7ccdb675a9bccea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abd12d997691e4fab50367b11138f4a3c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d5/db1/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes.html#a289a8d2f68dfae7c0a94ca47024e7dec">QuadTriangleOrganization</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#abd12d997691e4fab50367b11138f4a3c">quadTriangleOrganization</a></td></tr>
-<tr class="separator:abd12d997691e4fab50367b11138f4a3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -179,7 +170,7 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 <div class="textblock"><p>The local space data needed by a Terrain collidable. Contains the Heightmap and other information. /summary&gt; </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="aeb7497d5a9d3a900268a168bd4e3404d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeb7497d5a9d3a900268a168bd4e3404d">&#9670;&nbsp;</a></span>TerrainShape() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb7497d5a9d3a900268a168bd4e3404d">&#9670;&nbsp;</a></span>TerrainShape()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -204,26 +195,6 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
       </table>
 </div><div class="memdoc">
 <p>summary&gt; Constructs a <a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html" title="The local space data needed by a Terrain collidable. Contains the Heightmap and other information...">TerrainShape</a>. /summary&gt; param name="heights"&gt;Heights array used for the shape.</p>
-
-</div>
-</div>
-<a id="a7645cd47cf841ff66fc127d090517e60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7645cd47cf841ff66fc127d090517e60">&#9670;&nbsp;</a></span>TerrainShape() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape.TerrainShape </td>
-          <td>(</td>
-          <td class="paramtype">float&#160;</td>
-          <td class="paramname"><em>heights</em>[,]</td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>summary&gt; Constructs the bounding box of the terrain given a transform. /summary&gt; param name="transform"&gt;Transform to apply to the terrain during the bounding box calculation.</p>
-<p>param name="boundingBox"&gt;Bounding box of the terrain shape when transformed.</p>
 
 </div>
 </div>
@@ -611,9 +582,9 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="abd12d997691e4fab50367b11138f4a3c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abd12d997691e4fab50367b11138f4a3c">&#9670;&nbsp;</a></span>quadTriangleOrganization</h2>
+<h2 class="groupheader">Property Documentation</h2>
+<a id="ab982a88bf02ed254b1db96b27c15ded9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab982a88bf02ed254b1db96b27c15ded9">&#9670;&nbsp;</a></span>Heights</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -622,20 +593,21 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="../../d5/db1/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes.html#a289a8d2f68dfae7c0a94ca47024e7dec">QuadTriangleOrganization</a> Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape.quadTriangleOrganization</td>
+          <td class="memname">float [,] Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape.Heights</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
+
+<p>Gets or sets the height field of the terrain shape. /summary&gt; </p>
 <p>summary&gt; Gets or sets the quad triangle organization. /summary&gt; </p>
 
 </div>
 </div>
-<h2 class="groupheader">Property Documentation</h2>
 <a id="a90c1c2903ed7bf7dd41c63f10472f7b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a90c1c2903ed7bf7dd41c63f10472f7b3">&#9670;&nbsp;</a></span>QuadTriangleOrganization</h2>
 
@@ -655,9 +627,8 @@ Action&lt; <a class="el" href="../../d5/ddf/class_engine_1_1_physics_1_1_b_e_p_u
   </tr>
 </table>
 </div><div class="memdoc">
-<p>summary&gt; Constructs a <a class="el" href="../../d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html" title="The local space data needed by a Terrain collidable. Contains the Heightmap and other information...">TerrainShape</a>. /summary&gt; param name="heights"&gt;Heights array used for the shape.</p>
-<p>param name="triangleOrganization"&gt;Triangle organization of each quad.</p>
-<p>exception cref="ArgumentException"&gt;Thrown if the heights array has less than 2x2 vertices.</p>
+<p>summary&gt; Constructs the bounding box of the terrain given a transform. /summary&gt; param name="transform"&gt;Transform to apply to the terrain during the bounding box calculation.</p>
+<p>param name="boundingBox"&gt;Bounding box of the terrain shape when transformed.</p>
 
 </div>
 </div>

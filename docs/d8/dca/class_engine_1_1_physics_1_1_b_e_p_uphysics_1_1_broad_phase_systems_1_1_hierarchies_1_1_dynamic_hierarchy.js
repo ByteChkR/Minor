@@ -8,9 +8,7 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hier
     [ "ForceRebuild", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a605939f46e4b4a1b4e6e11f77133ef78", null ],
     [ "GetSplitDepth", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a8b79cf348d8a941ef2d4dd2885e89fb8", null ],
     [ "MeasureCostMetric", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#ad38894d23a5e89c7dec1aa4e9273badb", null ],
-    [ "MultithreadedOverlap", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a875c6a5ee650fb2cd91ee7a3ef5b5cb2", null ],
     [ "MultithreadedOverlapPhase", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#aa5b78922eabd2ec8fe3d37b6d5f90e37", null ],
-    [ "MultithreadedRefit", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a7213f5bf3511e369d7be6f242582d258", null ],
     [ "MultithreadedRefitPhase", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a9b7ab6f153eda0d2836f2d6c91728fb1", null ],
     [ "Remove", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a1b327abf8fac6bfed1547ef115781487", null ],
     [ "RemoveBrute", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#af362ace3afcbf9590c71da7ecb76c5a5", null ],
@@ -19,11 +17,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hier
     [ "SingleThreadedRefitPhase", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#ac177f13b40ed892a3446dde6faa874b8", null ],
     [ "UpdateMultithreaded", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a031970256fa910c77ce4cb2e0c90f145", null ],
     [ "UpdateSingleThreaded", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a52427c61d67f6fe6072e3749d7e1b9b4", null ],
-    [ "leafNodes", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a5b48bb831fadfa8df136b9072ab56c5b", null ],
-    [ "multithreadedOverlap", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#ac168700ac32f1b3f7fa7c7395ac603d3", null ],
-    [ "multithreadedRefit", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a79ca569d2c120ac13fb94994630ee662", null ],
-    [ "multithreadingSourceNodes", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#a8b45086dc2ce2ed1219257923bfac193", null ],
-    [ "multithreadingSourceOverlaps", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#aca74cc69a52c646c081032af7f26ae47", null ],
-    [ "root", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#aeb192572b2ff9d0abf91745412632a86", null ],
-    [ "threadSplitOffsets", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#ac85b002f4117064cfa12ff4e26f8c525", null ]
+    [ "root", "d8/dca/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy.html#aeb192572b2ff9d0abf91745412632a86", null ]
 ];

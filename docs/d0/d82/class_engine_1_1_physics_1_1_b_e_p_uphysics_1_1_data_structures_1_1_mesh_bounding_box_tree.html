@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -91,8 +91,6 @@ $(document).ready(function(){initNavTree('d0/d82/class_engine_1_1_physics_1_1_b_
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d6/d32/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.DataStructures.MeshBoundingBoxTree Class Reference</div>  </div>
@@ -102,15 +100,6 @@ $(document).ready(function(){initNavTree('d0/d82/class_engine_1_1_physics_1_1_b_
 <p>Acceleration structure of triangles surrounded by axis aligned bounding boxes, supporting various speedy queries. /summary&gt;  
  <a href="../../d0/d82/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
-Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dfa/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_internal_node.html">InternalNode</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d75/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_leaf_node.html">LeafNode</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../da/d73/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_node.html">Node</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:aef10c90ca2e19726c8dd3514b9a09159"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d82/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree.html#aef10c90ca2e19726c8dd3514b9a09159">MeshBoundingBoxTree</a> (<a class="el" href="../../de/dc9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_data.html">MeshBoundingBoxTreeData</a> data)</td></tr>
@@ -149,24 +138,6 @@ Properties</h2></td></tr>
 <tr class="memitem:aa5564f26d7b09b08acdef96da2a24487"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../de/dc9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_data.html">MeshBoundingBoxTreeData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d82/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree.html#aa5564f26d7b09b08acdef96da2a24487">Data</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aa5564f26d7b09b08acdef96da2a24487"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the data used to construct the tree. When set, the tree will be reconstructed.  <a href="#aa5564f26d7b09b08acdef96da2a24487">More...</a><br /></td></tr>
 <tr class="separator:aa5564f26d7b09b08acdef96da2a24487"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:afdaccc9d9c8570ce2b36ef4c8b4a670a"><td class="memItemLeft" align="right" valign="top"><a id="afdaccc9d9c8570ce2b36ef4c8b4a670a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Analyze</b> (out List&lt; int &gt; depths, out int minDepth, out int maxDepth, out int nodeCount)</td></tr>
-<tr class="separator:afdaccc9d9c8570ce2b36ef4c8b4a670a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a106ab0e18b48454ba506d8ccb1cefea6"><td class="memItemLeft" align="right" valign="top"><a id="a106ab0e18b48454ba506d8ccb1cefea6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Insert</b> (int triangleIndex)</td></tr>
-<tr class="separator:a106ab0e18b48454ba506d8ccb1cefea6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:ad29480cc5193acf43024d4894ed89e8f"><td class="memItemLeft" align="right" valign="top"><a id="ad29480cc5193acf43024d4894ed89e8f"></a>
-<a class="el" href="../../de/dc9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_data.html">MeshBoundingBoxTreeData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>data</b></td></tr>
-<tr class="separator:ad29480cc5193acf43024d4894ed89e8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f450390dd2872e861d6eeabaa518505"><td class="memItemLeft" align="right" valign="top"><a id="a5f450390dd2872e861d6eeabaa518505"></a>
-<a class="el" href="../../da/d73/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_mesh_bounding_box_tree_1_1_node.html">Node</a>&#160;</td><td class="memItemRight" valign="bottom"><b>root</b></td></tr>
-<tr class="separator:a5f450390dd2872e861d6eeabaa518505"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Acceleration structure of triangles surrounded by axis aligned bounding boxes, supporting various speedy queries. /summary&gt; </p>

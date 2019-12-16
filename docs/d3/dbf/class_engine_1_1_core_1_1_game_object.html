@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -95,10 +95,6 @@ $(document).ready(function(){initNavTree('d3/dbf/class_engine_1_1_core_1_1_game_
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#pac-static-attribs">Static Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-static-methods">Static Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
-<a href="#pri-static-attribs">Static Private Attributes</a> &#124;
 <a href="../../d6/d88/class_engine_1_1_core_1_1_game_object-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Core.GameObject Class Reference</div>  </div>
@@ -121,9 +117,6 @@ Inheritance diagram for Engine.Core.GameObject:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5b1f950c72dc46e0750ea04c19378c27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a5b1f950c72dc46e0750ea04c19378c27">Destroy</a> ()</td></tr>
-<tr class="memdesc:a5b1f950c72dc46e0750ea04c19378c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this game object to the list of game objects that will be removed at the end of the frame  <a href="#a5b1f950c72dc46e0750ea04c19378c27">More...</a><br /></td></tr>
-<tr class="separator:a5b1f950c72dc46e0750ea04c19378c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c240cf7e9361b633fd253df8c835103"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a8c240cf7e9361b633fd253df8c835103">GameObject</a> (Vector3 localPosition, string name, <a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a> parent)</td></tr>
 <tr class="memdesc:a8c240cf7e9361b633fd253df8c835103"><td class="mdescLeft">&#160;</td><td class="mdescRight">public constructor  <a href="#a8c240cf7e9361b633fd253df8c835103">More...</a><br /></td></tr>
 <tr class="separator:a8c240cf7e9361b633fd253df8c835103"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,6 +126,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a45d504c7089929875331409ae2595107"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a45d504c7089929875331409ae2595107">GameObject</a> (string name)</td></tr>
 <tr class="memdesc:a45d504c7089929875331409ae2595107"><td class="mdescLeft">&#160;</td><td class="mdescRight">public constructor  <a href="#a45d504c7089929875331409ae2595107">More...</a><br /></td></tr>
 <tr class="separator:a45d504c7089929875331409ae2595107"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b1f950c72dc46e0750ea04c19378c27"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a5b1f950c72dc46e0750ea04c19378c27">Destroy</a> ()</td></tr>
+<tr class="memdesc:a5b1f950c72dc46e0750ea04c19378c27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds this game object to the list of game objects that will be removed at the end of the frame  <a href="#a5b1f950c72dc46e0750ea04c19378c27">More...</a><br /></td></tr>
+<tr class="separator:a5b1f950c72dc46e0750ea04c19378c27"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a41b85526eacb98002d38301569e1c882"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a41b85526eacb98002d38301569e1c882">AddComponent</a> (<a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">AbstractComponent</a> component)</td></tr>
 <tr class="memdesc:a41b85526eacb98002d38301569e1c882"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a component to the object  <a href="#a41b85526eacb98002d38301569e1c882">More...</a><br /></td></tr>
 <tr class="separator:a41b85526eacb98002d38301569e1c882"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,7 +213,7 @@ Static Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a58c4a376b5fc7997d487e7ccfdd0fae7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a58c4a376b5fc7997d487e7ccfdd0fae7">ChildCount</a> =&gt; _children.Count</td></tr>
+<tr class="memitem:a58c4a376b5fc7997d487e7ccfdd0fae7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a58c4a376b5fc7997d487e7ccfdd0fae7">ChildCount</a> =&gt; children.Count</td></tr>
 <tr class="memdesc:a58c4a376b5fc7997d487e7ccfdd0fae7"><td class="mdescLeft">&#160;</td><td class="mdescRight">The amount of children in this object  <a href="#a58c4a376b5fc7997d487e7ccfdd0fae7">More...</a><br /></td></tr>
 <tr class="separator:a58c4a376b5fc7997d487e7ccfdd0fae7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -229,12 +225,12 @@ Package Functions</h2></td></tr>
 <tr class="memitem:a690635722b22eb60fbd307b4d1decec8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a690635722b22eb60fbd307b4d1decec8">RemoveDestroyedObjects</a> ()</td></tr>
 <tr class="memdesc:a690635722b22eb60fbd307b4d1decec8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal function that removes the gameobjects and components in its hierarchy that have the _destructionPending flag set to true  <a href="#a690635722b22eb60fbd307b4d1decec8">More...</a><br /></td></tr>
 <tr class="separator:a690635722b22eb60fbd307b4d1decec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add2c1cb5db0bf90966c970085c07b2de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#add2c1cb5db0bf90966c970085c07b2de">registerCollider</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> coll)</td></tr>
-<tr class="memdesc:add2c1cb5db0bf90966c970085c07b2de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a collider from the game object.  <a href="#add2c1cb5db0bf90966c970085c07b2de">More...</a><br /></td></tr>
-<tr class="separator:add2c1cb5db0bf90966c970085c07b2de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a927a1d39e0d5964c53d80a3157f0834f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a927a1d39e0d5964c53d80a3157f0834f">unregisterCollider</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> coll)</td></tr>
-<tr class="memdesc:a927a1d39e0d5964c53d80a3157f0834f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters a collider from the game object.  <a href="#a927a1d39e0d5964c53d80a3157f0834f">More...</a><br /></td></tr>
-<tr class="separator:a927a1d39e0d5964c53d80a3157f0834f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d71d2ddfe1d886383e7515dfb46c613"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a7d71d2ddfe1d886383e7515dfb46c613">RegisterCollider</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> coll)</td></tr>
+<tr class="memdesc:a7d71d2ddfe1d886383e7515dfb46c613"><td class="mdescLeft">&#160;</td><td class="mdescRight">Registers a collider from the game object.  <a href="#a7d71d2ddfe1d886383e7515dfb46c613">More...</a><br /></td></tr>
+<tr class="separator:a7d71d2ddfe1d886383e7515dfb46c613"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afcc4b7a028cadb17e7bd1b57f3bca6fa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#afcc4b7a028cadb17e7bd1b57f3bca6fa">UnregisterCollider</a> (<a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> coll)</td></tr>
+<tr class="memdesc:afcc4b7a028cadb17e7bd1b57f3bca6fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unregisters a collider from the game object.  <a href="#afcc4b7a028cadb17e7bd1b57f3bca6fa">More...</a><br /></td></tr>
+<tr class="separator:afcc4b7a028cadb17e7bd1b57f3bca6fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-methods"></a>
 Static Package Functions</h2></td></tr>
@@ -250,9 +246,9 @@ Static Package Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-attribs"></a>
 Package Attributes</h2></td></tr>
-<tr class="memitem:ac3f23bde10afeccc23523854df9fb0f1"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ac3f23bde10afeccc23523854df9fb0f1">_worldTransformCache</a></td></tr>
-<tr class="memdesc:ac3f23bde10afeccc23523854df9fb0f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal cache for the world transform  <a href="#ac3f23bde10afeccc23523854df9fb0f1">More...</a><br /></td></tr>
-<tr class="separator:ac3f23bde10afeccc23523854df9fb0f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab74915c7790fad15c8862b6d684a1fd6"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ab74915c7790fad15c8862b6d684a1fd6">WorldTransformCache</a></td></tr>
+<tr class="memdesc:ab74915c7790fad15c8862b6d684a1fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal cache for the world transform  <a href="#ab74915c7790fad15c8862b6d684a1fd6">More...</a><br /></td></tr>
+<tr class="separator:ab74915c7790fad15c8862b6d684a1fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-attribs"></a>
 Static Package Attributes</h2></td></tr>
@@ -262,7 +258,7 @@ Static Package Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a7020e4baccf59f308ebe14047bf2622c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">RenderingComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a7020e4baccf59f308ebe14047bf2622c">RenderingComponent</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a7020e4baccf59f308ebe14047bf2622c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../db/d35/class_engine_1_1_rendering_1_1_rendering_component.html">RenderingComponent</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a7020e4baccf59f308ebe14047bf2622c">RenderingComponent</a><code> [get]</code></td></tr>
 <tr class="memdesc:a7020e4baccf59f308ebe14047bf2622c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The IRenderingComponent that will be set to a value when a renderer is added and set to null when a renderer is removed  <a href="#a7020e4baccf59f308ebe14047bf2622c">More...</a><br /></td></tr>
 <tr class="separator:a7020e4baccf59f308ebe14047bf2622c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa34cfd61f16c29c6e384f84e093e17f6"><td class="memItemLeft" align="right" valign="top">Matrix4&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#aa34cfd61f16c29c6e384f84e093e17f6">Transform</a><code> [get]</code></td></tr>
@@ -283,136 +279,19 @@ Properties</h2></td></tr>
 <tr class="memitem:a5705256d4d1e5bd53f84e3fc1189653c"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a5705256d4d1e5bd53f84e3fc1189653c">Name</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a5705256d4d1e5bd53f84e3fc1189653c"><td class="mdescLeft">&#160;</td><td class="mdescRight">The object name  <a href="#a5705256d4d1e5bd53f84e3fc1189653c">More...</a><br /></td></tr>
 <tr class="separator:a5705256d4d1e5bd53f84e3fc1189653c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6878cae2b087d1ea0598aa7a5ab3a8f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a6878cae2b087d1ea0598aa7a5ab3a8f7">Destroyed</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a6878cae2b087d1ea0598aa7a5ab3a8f7"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a6878cae2b087d1ea0598aa7a5ab3a8f7">Destroyed</a><code> [get]</code></td></tr>
 <tr class="memdesc:a6878cae2b087d1ea0598aa7a5ab3a8f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Flag that indicates if an object is truly removed from all systems  <a href="#a6878cae2b087d1ea0598aa7a5ab3a8f7">More...</a><br /></td></tr>
 <tr class="separator:a6878cae2b087d1ea0598aa7a5ab3a8f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a18887a8c235229b0461ba11cfbeb05f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a18887a8c235229b0461ba11cfbeb05f1">Parent</a><code> [get, private set]</code></td></tr>
+<tr class="memitem:a18887a8c235229b0461ba11cfbeb05f1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a18887a8c235229b0461ba11cfbeb05f1">Parent</a><code> [get]</code></td></tr>
 <tr class="memdesc:a18887a8c235229b0461ba11cfbeb05f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent of the object  <a href="#a18887a8c235229b0461ba11cfbeb05f1">More...</a><br /></td></tr>
 <tr class="separator:a18887a8c235229b0461ba11cfbeb05f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a884c415e656ee25b849c5f0aad2e50f2"><td class="memItemLeft" align="right" valign="top"><a id="a884c415e656ee25b849c5f0aad2e50f2"></a>
 <a class="el" href="../../d6/de8/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector4.html">Engine.Physics.BEPUutilities.Vector4</a>&#160;</td><td class="memItemRight" valign="bottom"><b>AxisAngle</b><code> [get, set]</code></td></tr>
 <tr class="separator:a884c415e656ee25b849c5f0aad2e50f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a603e94c27eb5505e90b52a07d7fff41d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a603e94c27eb5505e90b52a07d7fff41d">~GameObject</a> ()</td></tr>
-<tr class="memdesc:a603e94c27eb5505e90b52a07d7fff41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor that will create a warning if undestroyed objects get garbage collected  <a href="#a603e94c27eb5505e90b52a07d7fff41d">More...</a><br /></td></tr>
-<tr class="separator:a603e94c27eb5505e90b52a07d7fff41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0dbdc578c8e113e889fb2a4afd527abb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a0dbdc578c8e113e889fb2a4afd527abb">RemoveFromRenderLoop</a> ()</td></tr>
-<tr class="memdesc:a0dbdc578c8e113e889fb2a4afd527abb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Removes an object from the render loop  <a href="#a0dbdc578c8e113e889fb2a4afd527abb">More...</a><br /></td></tr>
-<tr class="separator:a0dbdc578c8e113e889fb2a4afd527abb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2b153a49b8a235432b447dff3dc837f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#aa2b153a49b8a235432b447dff3dc837f">innerRemove</a> (<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a> child)</td></tr>
-<tr class="memdesc:aa2b153a49b8a235432b447dff3dc837f"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that removes the child from the _children list and sets the parent to null  <a href="#aa2b153a49b8a235432b447dff3dc837f">More...</a><br /></td></tr>
-<tr class="separator:aa2b153a49b8a235432b447dff3dc837f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91efaafd559e51b1f41ffa098d7e661f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a91efaafd559e51b1f41ffa098d7e661f">applyRenderHierarchy</a> (bool hasRenderer)</td></tr>
-<tr class="memdesc:a91efaafd559e51b1f41ffa098d7e661f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optimization. If a Renderer Was attached to this object or one object in the children we set the Has Renderer flag to true. The other way around if a Renderer gets removed(but we stop unsetting the flag when we found another child with a renderer attached) This way we know which matrixes we need to compute and which ones we can discard since they wont show up in the renderer anyway  <a href="#a91efaafd559e51b1f41ffa098d7e661f">More...</a><br /></td></tr>
-<tr class="separator:a91efaafd559e51b1f41ffa098d7e661f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0d396251ca22737278ade705606dd51c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a0d396251ca22737278ade705606dd51c">applyRenderHierarchyFromBelow</a> (bool hasRenderer)</td></tr>
-<tr class="memdesc:a0d396251ca22737278ade705606dd51c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Optimization. If a Renderer Was attached to this object or one object in the children we set the Has Renderer flag to true. The other way around if a Renderer gets removed(but we stop unsetting the flag when we found another child with a renderer attached) This way we know which matrixes we need to compute and which ones we can discard since they wont show up in the renderer anyway  <a href="#a0d396251ca22737278ade705606dd51c">More...</a><br /></td></tr>
-<tr class="separator:a0d396251ca22737278ade705606dd51c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ace8dafdb7ce75690793bae6e41f86978"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ace8dafdb7ce75690793bae6e41f86978">innerAdd</a> (<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a> child)</td></tr>
-<tr class="memdesc:ace8dafdb7ce75690793bae6e41f86978"><td class="mdescLeft">&#160;</td><td class="mdescRight">internal function that adds the child to the _children list and sets the parent  <a href="#ace8dafdb7ce75690793bae6e41f86978">More...</a><br /></td></tr>
-<tr class="separator:ace8dafdb7ce75690793bae6e41f86978"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba29ee6def37708e921a892c5caca167"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#aba29ee6def37708e921a892c5caca167">Events_InitialCollisionDetected</a> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> sender, <a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> pair)</td></tr>
-<tr class="memdesc:aba29ee6def37708e921a892c5caca167"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives events from the physics engine when it has a collider attached  <a href="#aba29ee6def37708e921a892c5caca167">More...</a><br /></td></tr>
-<tr class="separator:aba29ee6def37708e921a892c5caca167"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f37d3572df0d7b9adae86e7206f9873"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a2f37d3572df0d7b9adae86e7206f9873">Events_CollisionEnded</a> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> sender, <a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> pair)</td></tr>
-<tr class="memdesc:a2f37d3572df0d7b9adae86e7206f9873"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives events from the physics engine when it has a collider attached  <a href="#a2f37d3572df0d7b9adae86e7206f9873">More...</a><br /></td></tr>
-<tr class="separator:a2f37d3572df0d7b9adae86e7206f9873"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a226b2bafdcbe56900e56575c8a8cafd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a226b2bafdcbe56900e56575c8a8cafd4">Events_ContactRemoved</a> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> sender, <a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> pair, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:a226b2bafdcbe56900e56575c8a8cafd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives events from the physics engine when it has a collider attached  <a href="#a226b2bafdcbe56900e56575c8a8cafd4">More...</a><br /></td></tr>
-<tr class="separator:a226b2bafdcbe56900e56575c8a8cafd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae44824154839eee60a3442b50fd9b0d6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ae44824154839eee60a3442b50fd9b0d6">Events_ContactCreated</a> (<a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a> sender, <a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a> other, <a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a> pair, <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="memdesc:ae44824154839eee60a3442b50fd9b0d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Receives events from the physics engine when it has a collider attached  <a href="#ae44824154839eee60a3442b50fd9b0d6">More...</a><br /></td></tr>
-<tr class="separator:ae44824154839eee60a3442b50fd9b0d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a10981674774ea7ae717b3efb13c7ad75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a10981674774ea7ae717b3efb13c7ad75">OnKeyPress</a> (object sender, KeyPressEventArgs e)</td></tr>
-<tr class="memdesc:a10981674774ea7ae717b3efb13c7ad75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets Called whenever a KeyPress Event gets raised  <a href="#a10981674774ea7ae717b3efb13c7ad75">More...</a><br /></td></tr>
-<tr class="separator:a10981674774ea7ae717b3efb13c7ad75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4532c8bed5de1f369431953da9bbdb2a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a4532c8bed5de1f369431953da9bbdb2a">OnKeyUp</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a4532c8bed5de1f369431953da9bbdb2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets Called whenever a KeyUp Event gets raised  <a href="#a4532c8bed5de1f369431953da9bbdb2a">More...</a><br /></td></tr>
-<tr class="separator:a4532c8bed5de1f369431953da9bbdb2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a53ba91e50817120390f6430be1f6128a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a53ba91e50817120390f6430be1f6128a">OnKeyDown</a> (object sender, KeyboardKeyEventArgs e)</td></tr>
-<tr class="memdesc:a53ba91e50817120390f6430be1f6128a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets Called whenever a KeyDown Event gets raised  <a href="#a53ba91e50817120390f6430be1f6128a">More...</a><br /></td></tr>
-<tr class="separator:a53ba91e50817120390f6430be1f6128a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7318846694bc67bf0d42db2935ac0104"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a7318846694bc67bf0d42db2935ac0104">setSceneRecursively</a> (<a class="el" href="../../d6/d34/class_engine_1_1_core_1_1_abstract_scene.html">AbstractScene</a> newScene)</td></tr>
-<tr class="memdesc:a7318846694bc67bf0d42db2935ac0104"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the scene recursively for all children  <a href="#a7318846694bc67bf0d42db2935ac0104">More...</a><br /></td></tr>
-<tr class="separator:a7318846694bc67bf0d42db2935ac0104"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-methods"></a>
-Static Private Member Functions</h2></td></tr>
-<tr class="memitem:a8bc36b14705fd938bd9f2cbf11b42dfe"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a8bc36b14705fd938bd9f2cbf11b42dfe">addObjCount</a> ()</td></tr>
-<tr class="memdesc:a8bc36b14705fd938bd9f2cbf11b42dfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the object count is used for giving objects names that are different  <a href="#a8bc36b14705fd938bd9f2cbf11b42dfe">More...</a><br /></td></tr>
-<tr class="separator:a8bc36b14705fd938bd9f2cbf11b42dfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a77c3f1a919ce49c0a33ac32ea7ce6985"><td class="memItemLeft" align="right" valign="top"><a id="a77c3f1a919ce49c0a33ac32ea7ce6985"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>transformChanged</b> = true</td></tr>
-<tr class="separator:a77c3f1a919ce49c0a33ac32ea7ce6985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aefb3cddbc8a16afad8587cd78ee45b09"><td class="memItemLeft" align="right" valign="top"><a id="aefb3cddbc8a16afad8587cd78ee45b09"></a>
-Matrix4&#160;</td><td class="memItemRight" valign="bottom"><b>_transform</b> = Matrix4.Identity</td></tr>
-<tr class="separator:aefb3cddbc8a16afad8587cd78ee45b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c4dbddb75c20cf5fe64ff1d90720985"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; Type, <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">AbstractComponent</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a2c4dbddb75c20cf5fe64ff1d90720985">_components</a> = new Dictionary&lt;Type, <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">AbstractComponent</a>&gt;()</td></tr>
-<tr class="memdesc:a2c4dbddb75c20cf5fe64ff1d90720985"><td class="mdescLeft">&#160;</td><td class="mdescRight">the list of components in the object  <a href="#a2c4dbddb75c20cf5fe64ff1d90720985">More...</a><br /></td></tr>
-<tr class="separator:a2c4dbddb75c20cf5fe64ff1d90720985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab07c3e40b11ce5e3bb6e27fb181f1e1f"><td class="memItemLeft" align="right" valign="top">readonly List&lt; <a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#ab07c3e40b11ce5e3bb6e27fb181f1e1f">_children</a> = new List&lt;<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&gt;()</td></tr>
-<tr class="memdesc:ab07c3e40b11ce5e3bb6e27fb181f1e1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of children of this object  <a href="#ab07c3e40b11ce5e3bb6e27fb181f1e1f">More...</a><br /></td></tr>
-<tr class="separator:ab07c3e40b11ce5e3bb6e27fb181f1e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdb1e105c16e6f7d3d45ad063d085b33"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#acdb1e105c16e6f7d3d45ad063d085b33">_hasRendererInHierarchy</a></td></tr>
-<tr class="memdesc:acdb1e105c16e6f7d3d45ad063d085b33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal flag that is used to increase performance by not calculating matrices for objects that wont show up anyway  <a href="#acdb1e105c16e6f7d3d45ad063d085b33">More...</a><br /></td></tr>
-<tr class="separator:acdb1e105c16e6f7d3d45ad063d085b33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d62aa4c9cdfefd013eae183be351877"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a8d62aa4c9cdfefd013eae183be351877">_destructionPending</a></td></tr>
-<tr class="memdesc:a8d62aa4c9cdfefd013eae183be351877"><td class="mdescLeft">&#160;</td><td class="mdescRight">Private flag that indicates that the object has been destroyed but is not yet removed from the systems  <a href="#a8d62aa4c9cdfefd013eae183be351877">More...</a><br /></td></tr>
-<tr class="separator:a8d62aa4c9cdfefd013eae183be351877"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a535b9a6a6014afe54532c3e0bcc3adad"><td class="memItemLeft" align="right" valign="top"><a id="a535b9a6a6014afe54532c3e0bcc3adad"></a>
-<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Physics.BEPUutilities.Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_localPosition</b></td></tr>
-<tr class="separator:a535b9a6a6014afe54532c3e0bcc3adad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37c55aca74f945eb74c04490ccbe0602"><td class="memItemLeft" align="right" valign="top"><a id="a37c55aca74f945eb74c04490ccbe0602"></a>
-<a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Physics.BEPUutilities.Vector3</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_scale</b> = new <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Physics.BEPUutilities.Vector3</a>(1f, 1f, 1f)</td></tr>
-<tr class="separator:a37c55aca74f945eb74c04490ccbe0602"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a112598e5406f3f36afafbf9520630390"><td class="memItemLeft" align="right" valign="top"><a id="a112598e5406f3f36afafbf9520630390"></a>
-<a class="el" href="../../db/def/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_quaternion.html">Physics.BEPUutilities.Quaternion</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_rotation</b> = Quaternion.Identity</td></tr>
-<tr class="separator:a112598e5406f3f36afafbf9520630390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-static-attribs"></a>
-Static Private Attributes</h2></td></tr>
-<tr class="memitem:a4a0224e715d4fcba17c1bbdcbf6b65b2"><td class="memItemLeft" align="right" valign="top">static Dictionary&lt; <a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a4a0224e715d4fcba17c1bbdcbf6b65b2">ObjsWithAttachedColliders</a></td></tr>
-<tr class="memdesc:a4a0224e715d4fcba17c1bbdcbf6b65b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Internal cache of objects with colliders to loop through them quickly  <a href="#a4a0224e715d4fcba17c1bbdcbf6b65b2">More...</a><br /></td></tr>
-<tr class="separator:a4a0224e715d4fcba17c1bbdcbf6b65b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a14387814c99d3af1a1584437a9b8bac6"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html#a14387814c99d3af1a1584437a9b8bac6">_objId</a></td></tr>
-<tr class="memdesc:a14387814c99d3af1a1584437a9b8bac6"><td class="mdescLeft">&#160;</td><td class="mdescRight">An object counter to <em>almost</em> never have name collisions  <a href="#a14387814c99d3af1a1584437a9b8bac6">More...</a><br /></td></tr>
-<tr class="separator:a14387814c99d3af1a1584437a9b8bac6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>The Object is implementing the transform logic and contains the components </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a603e94c27eb5505e90b52a07d7fff41d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a603e94c27eb5505e90b52a07d7fff41d">&#9670;&nbsp;</a></span>~GameObject()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Engine.Core.GameObject.~GameObject </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Destructor that will create a warning if undestroyed objects get garbage collected </p>
-
-</div>
-</div>
 <a id="a8c240cf7e9361b633fd253df8c835103"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c240cf7e9361b633fd253df8c835103">&#9670;&nbsp;</a></span>GameObject() <span class="overload">[1/3]</span></h2>
 
@@ -735,101 +614,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a8bc36b14705fd938bd9f2cbf11b42dfe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8bc36b14705fd938bd9f2cbf11b42dfe">&#9670;&nbsp;</a></span>addObjCount()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">static void Engine.Core.GameObject.addObjCount </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Adds the object count is used for giving objects names that are different </p>
-
-</div>
-</div>
-<a id="a91efaafd559e51b1f41ffa098d7e661f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91efaafd559e51b1f41ffa098d7e661f">&#9670;&nbsp;</a></span>applyRenderHierarchy()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.applyRenderHierarchy </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>hasRenderer</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Optimization. If a Renderer Was attached to this object or one object in the children we set the Has Renderer flag to true. The other way around if a Renderer gets removed(but we stop unsetting the flag when we found another child with a renderer attached) This way we know which matrixes we need to compute and which ones we can discard since they wont show up in the renderer anyway </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hasRenderer</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a0d396251ca22737278ade705606dd51c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0d396251ca22737278ade705606dd51c">&#9670;&nbsp;</a></span>applyRenderHierarchyFromBelow()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.applyRenderHierarchyFromBelow </td>
-          <td>(</td>
-          <td class="paramtype">bool&#160;</td>
-          <td class="paramname"><em>hasRenderer</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Optimization. If a Renderer Was attached to this object or one object in the children we set the Has Renderer flag to true. The other way around if a Renderer gets removed(but we stop unsetting the flag when we found another child with a renderer attached) This way we know which matrixes we need to compute and which ones we can discard since they wont show up in the renderer anyway </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">hasRenderer</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a2d810e0b81da62a7daeec360f85dece2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2d810e0b81da62a7daeec360f85dece2">&#9670;&nbsp;</a></span>ComputeWorldTransformCache()</h2>
 
@@ -893,228 +677,6 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Destroys all child objects while leaving the current one intact(useful for container objects) </p>
-
-</div>
-</div>
-<a id="a2f37d3572df0d7b9adae86e7206f9873"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2f37d3572df0d7b9adae86e7206f9873">&#9670;&nbsp;</a></span>Events_CollisionEnded()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.Events_CollisionEnded </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a>&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>pair</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Receives events from the physics engine when it has a collider attached </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td>Event data</td></tr>
-    <tr><td class="paramname">other</td><td>Other Collidable Object(physics internal)</td></tr>
-    <tr><td class="paramname">pair</td><td>The Pair Handler</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ae44824154839eee60a3442b50fd9b0d6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae44824154839eee60a3442b50fd9b0d6">&#9670;&nbsp;</a></span>Events_ContactCreated()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.Events_ContactCreated </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a>&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>pair</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&#160;</td>
-          <td class="paramname"><em>contact</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Receives events from the physics engine when it has a collider attached </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td>Event data</td></tr>
-    <tr><td class="paramname">other</td><td>Other Collidable Object(physics internal)</td></tr>
-    <tr><td class="paramname">pair</td><td>The Pair Handler</td></tr>
-    <tr><td class="paramname">contact</td><td>The Contact that has been created</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a226b2bafdcbe56900e56575c8a8cafd4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a226b2bafdcbe56900e56575c8a8cafd4">&#9670;&nbsp;</a></span>Events_ContactRemoved()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.Events_ContactRemoved </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a>&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>pair</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&#160;</td>
-          <td class="paramname"><em>contact</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Receives events from the physics engine when it has a collider attached </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td>Event data</td></tr>
-    <tr><td class="paramname">other</td><td>Other Collidable Object(physics internal)</td></tr>
-    <tr><td class="paramname">pair</td><td>The Pair Handler</td></tr>
-    <tr><td class="paramname">contact</td><td>The Contact that has been removed</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aba29ee6def37708e921a892c5caca167"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba29ee6def37708e921a892c5caca167">&#9670;&nbsp;</a></span>Events_InitialCollisionDetected()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.Events_InitialCollisionDetected </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d7/df0/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_entity_collidable.html">EntityCollidable</a>&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a>&#160;</td>
-          <td class="paramname"><em>other</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../dc/df2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_collidable_pair_handler.html">CollidablePairHandler</a>&#160;</td>
-          <td class="paramname"><em>pair</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Receives events from the physics engine when it has a collider attached </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td>Event data</td></tr>
-    <tr><td class="paramname">other</td><td>Other Collidable Object(physics internal)</td></tr>
-    <tr><td class="paramname">pair</td><td>The Pair Handler</td></tr>
-  </table>
-  </dd>
-</dl>
 
 </div>
 </div>
@@ -1339,74 +901,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ace8dafdb7ce75690793bae6e41f86978"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace8dafdb7ce75690793bae6e41f86978">&#9670;&nbsp;</a></span>innerAdd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.innerAdd </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td>
-          <td class="paramname"><em>child</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>internal function that adds the child to the _children list and sets the parent </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">child</td><td>The child to add</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="aa2b153a49b8a235432b447dff3dc837f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2b153a49b8a235432b447dff3dc837f">&#9670;&nbsp;</a></span>innerRemove()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.innerRemove </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&#160;</td>
-          <td class="paramname"><em>child</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>internal function that removes the child from the _children list and sets the parent to null </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">child</td><td>The child to remove</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a9cd7b46ffa40b2e3a45c91d8b5785fef"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9cd7b46ffa40b2e3a45c91d8b5785fef">&#9670;&nbsp;</a></span>LookAt() <span class="overload">[1/2]</span></h2>
 
@@ -1459,8 +953,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a53ba91e50817120390f6430be1f6128a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a53ba91e50817120390f6430be1f6128a">&#9670;&nbsp;</a></span>OnKeyDown()</h2>
+<a id="a7d71d2ddfe1d886383e7515dfb46c613"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d71d2ddfe1d886383e7515dfb46c613">&#9670;&nbsp;</a></span>RegisterCollider()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1469,142 +963,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.Core.GameObject.OnKeyDown </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">KeyboardKeyEventArgs&#160;</td>
-          <td class="paramname"><em>e</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets Called whenever a KeyDown Event gets raised </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td></td></tr>
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a10981674774ea7ae717b3efb13c7ad75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a10981674774ea7ae717b3efb13c7ad75">&#9670;&nbsp;</a></span>OnKeyPress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.OnKeyPress </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">KeyPressEventArgs&#160;</td>
-          <td class="paramname"><em>e</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets Called whenever a KeyPress Event gets raised </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td></td></tr>
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a4532c8bed5de1f369431953da9bbdb2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4532c8bed5de1f369431953da9bbdb2a">&#9670;&nbsp;</a></span>OnKeyUp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.OnKeyUp </td>
-          <td>(</td>
-          <td class="paramtype">object&#160;</td>
-          <td class="paramname"><em>sender</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">KeyboardKeyEventArgs&#160;</td>
-          <td class="paramname"><em>e</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Gets Called whenever a KeyUp Event gets raised </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">sender</td><td></td></tr>
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="add2c1cb5db0bf90966c970085c07b2de"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#add2c1cb5db0bf90966c970085c07b2de">&#9670;&nbsp;</a></span>registerCollider()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.registerCollider </td>
+          <td class="memname">void Engine.Core.GameObject.RegisterCollider </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
           <td class="paramname"><em>coll</em></td><td>)</td>
@@ -1745,33 +1104,6 @@ Static Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Internal function that removes the gameobjects and components in its hierarchy that have the _destructionPending flag set to true </p>
-
-</div>
-</div>
-<a id="a0dbdc578c8e113e889fb2a4afd527abb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0dbdc578c8e113e889fb2a4afd527abb">&#9670;&nbsp;</a></span>RemoveFromRenderLoop()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.RemoveFromRenderLoop </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Removes an object from the render loop </p>
 
 </div>
 </div>
@@ -1916,40 +1248,6 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a7318846694bc67bf0d42db2935ac0104"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7318846694bc67bf0d42db2935ac0104">&#9670;&nbsp;</a></span>setSceneRecursively()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void Engine.Core.GameObject.setSceneRecursively </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d6/d34/class_engine_1_1_core_1_1_abstract_scene.html">AbstractScene</a>&#160;</td>
-          <td class="paramname"><em>newScene</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets the scene recursively for all children </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">newScene</td><td>Scene to set</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <a id="a95859f5b0d64071df8d1adf64782a618"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a95859f5b0d64071df8d1adf64782a618">&#9670;&nbsp;</a></span>TransformToWorld()</h2>
 
@@ -2014,8 +1312,8 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a927a1d39e0d5964c53d80a3157f0834f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a927a1d39e0d5964c53d80a3157f0834f">&#9670;&nbsp;</a></span>unregisterCollider()</h2>
+<a id="afcc4b7a028cadb17e7bd1b57f3bca6fa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afcc4b7a028cadb17e7bd1b57f3bca6fa">&#9670;&nbsp;</a></span>UnregisterCollider()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2024,7 +1322,7 @@ Static Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Engine.Core.GameObject.unregisterCollider </td>
+          <td class="memname">void Engine.Core.GameObject.UnregisterCollider </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&#160;</td>
           <td class="paramname"><em>coll</em></td><td>)</td>
@@ -2075,150 +1373,6 @@ Static Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ab07c3e40b11ce5e3bb6e27fb181f1e1f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab07c3e40b11ce5e3bb6e27fb181f1e1f">&#9670;&nbsp;</a></span>_children</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly List&lt;<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&gt; Engine.Core.GameObject._children = new List&lt;<a class="el" href="../../d3/dbf/class_engine_1_1_core_1_1_game_object.html">GameObject</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The list of children of this object </p>
-
-</div>
-</div>
-<a id="a2c4dbddb75c20cf5fe64ff1d90720985"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c4dbddb75c20cf5fe64ff1d90720985">&#9670;&nbsp;</a></span>_components</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly Dictionary&lt;Type, <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">AbstractComponent</a>&gt; Engine.Core.GameObject._components = new Dictionary&lt;Type, <a class="el" href="../../d5/d12/class_engine_1_1_core_1_1_abstract_component.html">AbstractComponent</a>&gt;()</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>the list of components in the object </p>
-
-</div>
-</div>
-<a id="a8d62aa4c9cdfefd013eae183be351877"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d62aa4c9cdfefd013eae183be351877">&#9670;&nbsp;</a></span>_destructionPending</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Core.GameObject._destructionPending</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Private flag that indicates that the object has been destroyed but is not yet removed from the systems </p>
-
-</div>
-</div>
-<a id="acdb1e105c16e6f7d3d45ad063d085b33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acdb1e105c16e6f7d3d45ad063d085b33">&#9670;&nbsp;</a></span>_hasRendererInHierarchy</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool Engine.Core.GameObject._hasRendererInHierarchy</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal flag that is used to increase performance by not calculating matrices for objects that wont show up anyway </p>
-
-</div>
-</div>
-<a id="a14387814c99d3af1a1584437a9b8bac6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14387814c99d3af1a1584437a9b8bac6">&#9670;&nbsp;</a></span>_objId</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int Engine.Core.GameObject._objId</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>An object counter to <em>almost</em> never have name collisions </p>
-
-</div>
-</div>
-<a id="ac3f23bde10afeccc23523854df9fb0f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3f23bde10afeccc23523854df9fb0f1">&#9670;&nbsp;</a></span>_worldTransformCache</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Matrix4 Engine.Core.GameObject._worldTransformCache</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Internal cache for the world transform </p>
-
-</div>
-</div>
 <a id="a58c4a376b5fc7997d487e7ccfdd0fae7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a58c4a376b5fc7997d487e7ccfdd0fae7">&#9670;&nbsp;</a></span>ChildCount</h2>
 
@@ -2226,36 +1380,12 @@ Static Private Attributes</h2></td></tr>
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Engine.Core.GameObject.ChildCount =&gt; _children.Count</td>
+          <td class="memname">int Engine.Core.GameObject.ChildCount =&gt; children.Count</td>
         </tr>
       </table>
 </div><div class="memdoc">
 
 <p>The amount of children in this object </p>
-
-</div>
-</div>
-<a id="a4a0224e715d4fcba17c1bbdcbf6b65b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a0224e715d4fcba17c1bbdcbf6b65b2">&#9670;&nbsp;</a></span>ObjsWithAttachedColliders</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Dictionary&lt;<a class="el" href="../../dc/d07/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_collidable.html">Collidable</a>, <a class="el" href="../../dc/d20/class_engine_1_1_physics_1_1_collider.html">Collider</a>&gt; Engine.Core.GameObject.ObjsWithAttachedColliders</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <span class="keyword">new</span> Dictionary&lt;Collidable, Collider&gt;()</div></div><!-- fragment -->
-<p>Internal cache of objects with colliders to loop through them quickly </p>
 
 </div>
 </div>
@@ -2283,6 +1413,30 @@ Static Private Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="ab74915c7790fad15c8862b6d684a1fd6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab74915c7790fad15c8862b6d684a1fd6">&#9670;&nbsp;</a></span>WorldTransformCache</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Matrix4 Engine.Core.GameObject.WorldTransformCache</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Internal cache for the world transform </p>
+
+</div>
+</div>
 <h2 class="groupheader">Property Documentation</h2>
 <a id="a6878cae2b087d1ea0598aa7a5ab3a8f7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6878cae2b087d1ea0598aa7a5ab3a8f7">&#9670;&nbsp;</a></span>Destroyed</h2>
@@ -2299,7 +1453,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2371,7 +1525,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2395,7 +1549,7 @@ Static Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

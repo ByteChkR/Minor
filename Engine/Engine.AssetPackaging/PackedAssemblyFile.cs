@@ -3,6 +3,9 @@ using System.Reflection;
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// Assembly File Class that is used when the pack files are embedded in an assembly
+    /// </summary>
     public class PackedAssemblyFile : AssemblyFile
     {
         private AssetPointer _ptr;
@@ -11,14 +14,14 @@ namespace Engine.AssetPackaging
             base(compression, manifestFilepath,
                 assembly)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
         public PackedAssemblyFile(bool compression, string[] manifestFilepaths, Assembly assembly, AssetPointer ptr) :
             base(compression, manifestFilepaths,
                 assembly)
         {
-            this._ptr = ptr;
+            _ptr = ptr;
         }
 
 

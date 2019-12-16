@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -92,8 +92,6 @@ $(document).ready(function(){initNavTree('d1/df8/class_engine_1_1_physics_1_1_b_
 <a href="#pac-attribs">Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="#events">Events</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d2/d88/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager&lt; T &gt; Class Template Reference</div>  </div>
@@ -149,14 +147,12 @@ Package Attributes</h2></td></tr>
 <tr class="memitem:aaa42c3eb1536448f7cf58ab3dbbcf734"><td class="memItemLeft" align="right" valign="top"><a id="aaa42c3eb1536448f7cf58ab3dbbcf734"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>childDeferredEventCreators</b></td></tr>
 <tr class="separator:aaa42c3eb1536448f7cf58ab3dbbcf734"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3c335d797394d22f5aa65075a1e3b8b"><td class="memItemLeft" align="right" valign="top">T&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#ac3c335d797394d22f5aa65075a1e3b8b">owner</a></td></tr>
+<tr class="memitem:ac3c335d797394d22f5aa65075a1e3b8b"><td class="memItemLeft" align="right" valign="top"><a id="ac3c335d797394d22f5aa65075a1e3b8b"></a>
+T&#160;</td><td class="memItemRight" valign="bottom"><b>owner</b></td></tr>
 <tr class="separator:ac3c335d797394d22f5aa65075a1e3b8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:adb7796ce92332eb4a777b61f6c036e51"><td class="memItemLeft" align="right" valign="top">int IDeferredEventCreator.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#adb7796ce92332eb4a777b61f6c036e51">ChildDeferredEventCreators</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:adb7796ce92332eb4a777b61f6c036e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Number of child deferred event creators.  <a href="#adb7796ce92332eb4a777b61f6c036e51">More...</a><br /></td></tr>
-<tr class="separator:adb7796ce92332eb4a777b61f6c036e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeebfbb381aae040fd561a728308272d5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/d08/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_compound_event_manager.html">CompoundEventManager</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#aeebfbb381aae040fd561a728308272d5">Parent</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:aeebfbb381aae040fd561a728308272d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">The parent of the event manager, if any.  <a href="#aeebfbb381aae040fd561a728308272d5">More...</a><br /></td></tr>
 <tr class="separator:aeebfbb381aae040fd561a728308272d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -172,16 +168,12 @@ T&#160;</td><td class="memItemRight" valign="bottom"><b>Owner</b><code> [get, se
 <tr class="memitem:a61ed64dc93684ee1cb79f60baf7151be"><td class="memItemLeft" align="right" valign="top">PairUpdatedEventHandler&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a61ed64dc93684ee1cb79f60baf7151be">PairUpdated</a></td></tr>
 <tr class="memdesc:a61ed64dc93684ee1cb79f60baf7151be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when a pair is updated.  <a href="#a61ed64dc93684ee1cb79f60baf7151be">More...</a><br /></td></tr>
 <tr class="separator:a61ed64dc93684ee1cb79f60baf7151be"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad055dfef815a03cfe0ee5d4ac80c8576"><td class="memItemLeft" align="right" valign="top"><a id="ad055dfef815a03cfe0ee5d4ac80c8576"></a>
-<a class="el" href="../../d9/db9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_deferred_event_dispatcher.html">DeferredEventDispatcher</a> IDeferredEventCreator.&#160;</td><td class="memItemRight" valign="bottom"><b>DeferredEventDispatcher</b><code> [get, set]</code></td></tr>
-<tr class="separator:ad055dfef815a03cfe0ee5d4ac80c8576"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8904d14be62085934279685f967c43c5"><td class="memItemLeft" align="right" valign="top">bool IDeferredEventCreator.&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a8904d14be62085934279685f967c43c5">IsActive</a><code> [get, set]</code></td></tr>
-<tr class="separator:a8904d14be62085934279685f967c43c5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td colspan="2" onclick="javascript:toggleInherit('properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator')"><img src="../../closed.png" alt="-"/>&#160;Properties inherited from <a class="el" href="../../d5/d6f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator.html">Engine.Physics.BEPUphysics.OtherSpaceStages.IDeferredEventCreator</a></td></tr>
 <tr class="memitem:a3adcaa0cf98ace4cc59d0181f9561e9f inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d9/db9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_deferred_event_dispatcher.html">DeferredEventDispatcher</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator.html#a3adcaa0cf98ace4cc59d0181f9561e9f">DeferredEventDispatcher</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a3adcaa0cf98ace4cc59d0181f9561e9f inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the deferred event dispatcher that owns this creator. /summary&gt;  <a href="../../d5/d6f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator.html#a3adcaa0cf98ace4cc59d0181f9561e9f">More...</a><br /></td></tr>
 <tr class="separator:a3adcaa0cf98ace4cc59d0181f9561e9f inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:add72e38c894d2400ba0fac686f95e5b7 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator.html#add72e38c894d2400ba0fac686f95e5b7">IsActive</a><code> [get, set]</code></td></tr>
+<tr class="memitem:add72e38c894d2400ba0fac686f95e5b7 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="memItemLeft" align="right" valign="top"><a id="add72e38c894d2400ba0fac686f95e5b7"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsActive</b><code> [get, set]</code></td></tr>
 <tr class="separator:add72e38c894d2400ba0fac686f95e5b7 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afdce48bef486815a73d66cfa178843d5 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d5/d6f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator.html#afdce48bef486815a73d66cfa178843d5">ChildDeferredEventCreators</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:afdce48bef486815a73d66cfa178843d5 inherit properties_interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the number of child deferred event creators.  <a href="../../d5/d6f/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_i_deferred_event_creator.html#afdce48bef486815a73d66cfa178843d5">More...</a><br /></td></tr>
@@ -198,39 +190,6 @@ Events</h2></td></tr>
 <tr class="memitem:a6bab9870b02164a2bcac7d0263baa91f"><td class="memItemLeft" align="right" valign="top">RemovingPairEventHandler&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html#a6bab9870b02164a2bcac7d0263baa91f">RemovingPair</a></td></tr>
 <tr class="memdesc:a6bab9870b02164a2bcac7d0263baa91f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fires when this entity's bounding box no longer overlaps another entity's bounding box. Unlike the PairRemoved event, this event will run inline instead of at the end of the space's update. Some operations are unsupported while the engine is updating, and be especially careful if internal multithreading is enabled.  <a href="#a6bab9870b02164a2bcac7d0263baa91f">More...</a><br /></td></tr>
 <tr class="separator:a6bab9870b02164a2bcac7d0263baa91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a03ccc23a802fcfe4d79366840ebde9ba"><td class="memItemLeft" align="right" valign="top"><a id="a03ccc23a802fcfe4d79366840ebde9ba"></a>
-PairCreatedEventHandler&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>InternalPairCreated</b></td></tr>
-<tr class="separator:a03ccc23a802fcfe4d79366840ebde9ba"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa93fbacc0ae336aee5e320e2f092630b"><td class="memItemLeft" align="right" valign="top"><a id="aa93fbacc0ae336aee5e320e2f092630b"></a>
-PairRemovedEventHandler&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>InternalPairRemoved</b></td></tr>
-<tr class="separator:aa93fbacc0ae336aee5e320e2f092630b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a765c4ae34b82dccfc17a231d17d6e8fa"><td class="memItemLeft" align="right" valign="top"><a id="a765c4ae34b82dccfc17a231d17d6e8fa"></a>
-PairUpdatedEventHandler&lt; T &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>InternalPairUpdated</b></td></tr>
-<tr class="separator:a765c4ae34b82dccfc17a231d17d6e8fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:ac801a0a48a4520bf50976e18f18322a3"><td class="memItemLeft" align="right" valign="top"><a id="ac801a0a48a4520bf50976e18f18322a3"></a>
-void IDeferredEventCreator.&#160;</td><td class="memItemRight" valign="bottom"><b>DispatchEvents</b> ()</td></tr>
-<tr class="separator:ac801a0a48a4520bf50976e18f18322a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a8d0e084b847a75d7071a34f184174eb5"><td class="memItemLeft" align="right" valign="top"><a id="a8d0e084b847a75d7071a34f184174eb5"></a>
-<a class="el" href="../../d9/d08/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_compound_event_manager.html">CompoundEventManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>parent</b></td></tr>
-<tr class="separator:a8d0e084b847a75d7071a34f184174eb5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb116b94aca1cf7487c86930b1703e6d"><td class="memItemLeft" align="right" valign="top"><a id="aeb116b94aca1cf7487c86930b1703e6d"></a>
-<a class="el" href="../../d9/db9/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_other_space_stages_1_1_deferred_event_dispatcher.html">DeferredEventDispatcher</a>&#160;</td><td class="memItemRight" valign="bottom"><b>deferredEventDispatcher</b></td></tr>
-<tr class="separator:aeb116b94aca1cf7487c86930b1703e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1bacb7c0dcb3bb521427cd9062ee0da8"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt; <a class="el" href="../../dd/d11/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_event_storage_pair_created.html">EventStoragePairCreated</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>eventStoragePairCreated</b></td></tr>
-<tr class="separator:a1bacb7c0dcb3bb521427cd9062ee0da8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a445980837b23f91fe395c5300781be59"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt; <a class="el" href="../../da/d2b/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_event_storage_pair_removed.html">EventStoragePairRemoved</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>eventStoragePairRemoved</b></td></tr>
-<tr class="separator:a445980837b23f91fe395c5300781be59"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6b36b81479b63561b64ff47203427098"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt; <a class="el" href="../../d3/ded/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_event_storage_pair_updated.html">EventStoragePairUpdated</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>eventStoragePairUpdated</b></td></tr>
-<tr class="separator:a6b36b81479b63561b64ff47203427098"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea515af8659cefbe90a0be31ce0c27df"><td class="memItemLeft" align="right" valign="top"><a id="aea515af8659cefbe90a0be31ce0c27df"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b></td></tr>
-<tr class="separator:aea515af8659cefbe90a0be31ce0c27df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Event manager for <a class="el" href="../../da/d22/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries.html">BroadPhaseEntries</a> (all types that live in the broad phase). /summary&gt; typeparam name="T"&gt;Some <a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html" title="Superclass of all objects which live inside the broad phase. The BroadPhase will generate pairs betwe...">BroadPhaseEntry</a> subclass.</p>
@@ -376,144 +335,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b></td></tr
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a1bacb7c0dcb3bb521427cd9062ee0da8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1bacb7c0dcb3bb521427cd9062ee0da8">&#9670;&nbsp;</a></span>eventStoragePairCreated</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../dd/d11/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_event_storage_pair_created.html">EventStoragePairCreated</a>&gt; <a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager</a>&lt; T &gt;.eventStoragePairCreated</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <span class="keyword">new</span> ConcurrentDeque&lt;EventStoragePairCreated&gt;(0)</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a445980837b23f91fe395c5300781be59"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a445980837b23f91fe395c5300781be59">&#9670;&nbsp;</a></span>eventStoragePairRemoved</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../da/d2b/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_event_storage_pair_removed.html">EventStoragePairRemoved</a>&gt; <a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager</a>&lt; T &gt;.eventStoragePairRemoved</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <span class="keyword">new</span> ConcurrentDeque&lt;EventStoragePairRemoved&gt;(0)</div></div><!-- fragment -->
-</div>
-</div>
-<a id="a6b36b81479b63561b64ff47203427098"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6b36b81479b63561b64ff47203427098">&#9670;&nbsp;</a></span>eventStoragePairUpdated</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="../../d3/de1/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_concurrent_deque.html">ConcurrentDeque</a>&lt;<a class="el" href="../../d3/ded/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_event_storage_pair_updated.html">EventStoragePairUpdated</a>&gt; <a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager</a>&lt; T &gt;.eventStoragePairUpdated</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">            <span class="keyword">new</span> ConcurrentDeque&lt;EventStoragePairUpdated&gt;(0)</div></div><!-- fragment -->
-</div>
-</div>
-<a id="ac3c335d797394d22f5aa65075a1e3b8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3c335d797394d22f5aa65075a1e3b8b">&#9670;&nbsp;</a></span>owner</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">T <a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager</a>&lt; T &gt;.owner</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Owner of the event manager. /summary&gt; </p>
-
-</div>
-</div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="adb7796ce92332eb4a777b61f6c036e51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb7796ce92332eb4a777b61f6c036e51">&#9670;&nbsp;</a></span>ChildDeferredEventCreators</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int IDeferredEventCreator. <a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager</a>&lt; T &gt;.ChildDeferredEventCreators</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Number of child deferred event creators. </p>
-
-</div>
-</div>
-<a id="a8904d14be62085934279685f967c43c5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8904d14be62085934279685f967c43c5">&#9670;&nbsp;</a></span>IsActive</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool IDeferredEventCreator. <a class="el" href="../../d1/df8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_events_1_1_entry_event_manager.html">Engine.Physics.BEPUphysics.BroadPhaseEntries.Events.EntryEventManager</a>&lt; T &gt;.IsActive</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>summary&gt; Removes all event hooks from the manager. /summary&gt; </p>
-
-</div>
-</div>
 <a id="ab65bde564e5ce1436625b0b78ae17961"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab65bde564e5ce1436625b0b78ae17961">&#9670;&nbsp;</a></span>PairCreated</h2>
 
@@ -607,6 +429,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>isActive</b></td></tr
 </div><div class="memdoc">
 
 <p>The parent of the event manager, if any. </p>
+<p>summary&gt; Owner of the event manager. /summary&gt; </p>
 
 </div>
 </div>

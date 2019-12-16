@@ -9,6 +9,9 @@ using ext_pp_plugins;
 
 namespace Engine.Common
 {
+    /// <summary>
+    /// IO Callbacks for the IO Operations of the Text Processor
+    /// </summary>
     public class PpCallbacks : IOCallbacks
     {
         public override bool FileExists(string file)
@@ -119,7 +122,10 @@ namespace Engine.Common
             return sb.ToString();
         }
 
-        public class FileContent : IFileContent // For the commits on ext_pp repo that are not ready yet.
+        /// <summary>
+        /// File Content that is used as an abstraction to files
+        /// </summary>
+        public class FileContent : IFileContent
         {
             private readonly string incDir;
             private readonly string[] lines;
@@ -161,6 +167,9 @@ namespace Engine.Common
             }
         }
 
+        /// <summary>
+        /// Abstract PreProcessor Configuration
+        /// </summary>
         public abstract class APreProcessorConfig
         {
             protected abstract Verbosity VerbosityLevel { get; }
@@ -201,7 +210,9 @@ namespace Engine.Common
             }
         }
 
-
+        /// <summary>
+        /// The Default PreProcessor Configuration
+        /// </summary>
         public class DefaultPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();
@@ -230,7 +241,9 @@ namespace Engine.Common
                 return "#include " + filename + " " + gens;
             }
         }
-
+        /// <summary>
+        /// The PreProcessor Configuration used for OpenGL and OpenCL files
+        /// </summary>
         public class GlclPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();
@@ -261,6 +274,9 @@ namespace Engine.Common
             }
         }
 
+        /// <summary>
+        /// The PreProcessor Configuration used for OpenFL files
+        /// </summary>
         public class FlPreProcessorConfig : APreProcessorConfig
         {
             private static StringBuilder _sb = new StringBuilder();

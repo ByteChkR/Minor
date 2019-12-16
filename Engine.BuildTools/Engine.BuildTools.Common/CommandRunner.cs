@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Engine.BuildTools.Builder;
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Contains the Logic for Running Commands
+    /// </summary>
     public static class CommandRunner
     {
         private static List<Command> _commands = new List<Command>();

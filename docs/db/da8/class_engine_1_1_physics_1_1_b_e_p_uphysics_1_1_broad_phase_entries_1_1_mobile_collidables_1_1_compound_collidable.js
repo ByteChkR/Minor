@@ -10,8 +10,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobi
     [ "ConvexCast", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#ab09d611c2d66ea732c6378fd1fc639d5", null ],
     [ "ConvexCast", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#abc1cb977fde75923af9073d6b64c6e56", null ],
     [ "ConvexCast", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#af9b307e94786c68d72568c8d7901009a", null ],
-    [ "GetChild", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#a0b9ad8f0efb5b149f1d2d8b8c6218896", null ],
-    [ "GetChild", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#a83247cc869c0072bb45571b3f44ca138", null ],
     [ "OnEntityChanged", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#a9d0d37c01e4f71f730bcac812a856eb4", null ],
     [ "RayCast", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#a4b1730bba6ed5649a16a639e6949c5ae", null ],
     [ "RayCast", "db/da8/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_collidable.html#ac64bbd166a8b4b4512d4808ecbcc7c76", null ],

@@ -1,7 +1,6 @@
 var class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context =
 [
     [ "Context", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a2b234df976c8bdefbeb55ad5d3b63f5d", null ],
-    [ "BuildProgramCallback", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a42342aecc75d8acf47bc9599377ec585", null ],
     [ "CreateAndBuildProgramFromFile", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#aaa136263f9a67745c91e8f926048f43b", null ],
     [ "CreateAndBuildProgramFromFile", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a6ad7ac4cd23a3ff7e13b1ffe3fc5015f", null ],
     [ "CreateAndBuildProgramFromFileAsync", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a7a6f8765665991319560615b59032e9d", null ],
@@ -21,6 +20,5 @@ var class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context =
     [ "CreateContext", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a8a8b3b3e5f5d49232878486e3b00e1e4", null ],
     [ "CreateContext", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#af11500125fb08ab2ebfffb66548d0ca2", null ],
     [ "Dispose", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a5e240cab137595ad9172bdaec9e6382e", null ],
-    [ "GetProgramBuildInformation< T >", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a49704932473c60b422428c30bda2f72d", null ],
     [ "Devices", "dc/dcc/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_contexts_1_1_context.html#a0608b787b9aab1e34ff86eb65dcfe88e", null ]
 ];

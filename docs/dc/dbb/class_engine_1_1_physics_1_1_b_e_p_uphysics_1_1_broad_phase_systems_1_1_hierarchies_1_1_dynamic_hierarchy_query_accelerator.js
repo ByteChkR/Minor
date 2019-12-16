@@ -5,6 +5,5 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hier
     [ "GetEntries", "dc/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_query_accelerator.html#afeafdcb736ebd0818edf14c03078b827", null ],
     [ "RayCast", "dc/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_query_accelerator.html#ad11f5be18f08aff4379531917aab2e6f", null ],
     [ "RayCast", "dc/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_query_accelerator.html#a24425316e91d4893c412912c4d86db75", null ],
-    [ "BroadPhase", "dc/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_query_accelerator.html#a908c720d92cdd4647d90ccb46b31cb20", null ],
-    [ "hierarchy", "dc/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_query_accelerator.html#a99dc9696e87bff730fd178f6f0262b0a", null ]
+    [ "BroadPhase", "dc/dbb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_systems_1_1_hierarchies_1_1_dynamic_hierarchy_query_accelerator.html#a908c720d92cdd4647d90ccb46b31cb20", null ]
 ];

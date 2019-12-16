@@ -2,6 +2,9 @@
 
 namespace Engine.BuildTools.Common
 {
+    /// <summary>
+    /// Contains all settings needed to build a csproj file with the game engine
+    /// </summary>
     [Serializable]
     public class BuildSettings
     {
@@ -16,5 +19,7 @@ namespace Engine.BuildTools.Common
         public int PackSize { get; set; } = 1024;
         public string Project { get; set; } = "";
         public string UnpackFiles { get; set; } = "";
+        public string PackagerVersion { get; set; } = "v2";
+
     }
 }

@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -88,8 +88,6 @@ $(document).ready(function(){initNavTree('d8/d50/class_engine_1_1_physics_1_1_b_
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d3/db6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_query_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Character.QueryManager Class Reference</div>  </div>
@@ -119,24 +117,6 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0b6e2b5e732e4ebb1a23d5ca9b11835a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d50/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_query_manager.html#a0b6e2b5e732e4ebb1a23d5ca9b11835a">AnalyzeSupportState</a> (ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; tractionContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; supportContacts, out <a class="el" href="../../d2/d03/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character.html#a85ea7fb69627a0de456760ae48ff923f">CharacterContactPositionState</a> state, out <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> supportContact)</td></tr>
 <tr class="memdesc:a0b6e2b5e732e4ebb1a23d5ca9b11835a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Analyzes the support state of the character based on the speculative input support and traction contacts.  <a href="#a0b6e2b5e732e4ebb1a23d5ca9b11835a">More...</a><br /></td></tr>
 <tr class="separator:a0b6e2b5e732e4ebb1a23d5ca9b11835a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a861ca69d46973cdaa83466b30623484d"><td class="memItemLeft" align="right" valign="top"><a id="a861ca69d46973cdaa83466b30623484d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>SupportRayFilterFunction</b> (<a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a> entry)</td></tr>
-<tr class="separator:a861ca69d46973cdaa83466b30623484d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a25ce6b05c888176d6248402fd96ccc7f"><td class="memItemLeft" align="right" valign="top"><a id="a25ce6b05c888176d6248402fd96ccc7f"></a>
-<a class="el" href="../../db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html">Entity</a>&#160;</td><td class="memItemRight" valign="bottom"><b>characterBody</b></td></tr>
-<tr class="separator:a25ce6b05c888176d6248402fd96ccc7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c4b31b44114a548ee80cbb4d32fb795"><td class="memItemLeft" align="right" valign="top"><a id="a2c4b31b44114a548ee80cbb4d32fb795"></a>
-<a class="el" href="../../de/d0b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact_categorizer.html">CharacterContactCategorizer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>contactCategorizer</b></td></tr>
-<tr class="separator:a2c4b31b44114a548ee80cbb4d32fb795"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a848b87716ea20f8e7c012b771083c2"><td class="memItemLeft" align="right" valign="top"><a id="a3a848b87716ea20f8e7c012b771083c2"></a>
-Func&lt; <a class="el" href="../../d9/ddc/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_broad_phase_entry.html">BroadPhaseEntry</a>, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>SupportRayFilter</b></td></tr>
-<tr class="separator:a3a848b87716ea20f8e7c012b771083c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Helps a character identify supports by finding contacts and ray cast intersections with its immediate surroundings. </p>

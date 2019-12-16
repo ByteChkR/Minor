@@ -3,6 +3,9 @@ using Engine.Common;
 
 namespace Engine.IO
 {
+    /// <summary>
+    /// Callback CLass that is used to make the text preprocessor compatible with the IO Wrapper system.
+    /// </summary>
     public class PPIOCallbacks : IIoCallback
     {
         public bool FileExists(string file)

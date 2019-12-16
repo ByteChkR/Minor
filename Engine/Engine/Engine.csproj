@@ -4,8 +4,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <LangVersion>latest</LangVersion>
     <Configurations>Debug;Release;TravisTest;Debug_FullTrace;Release_CollectLogs</Configurations>
-    <AssemblyVersion>0.2.1.10</AssemblyVersion>
-    <FileVersion>0.2.1.10</FileVersion>
+    <AssemblyVersion>0.2.2.47</AssemblyVersion>
+    <FileVersion>0.2.2.47</FileVersion>
     <Version>0.2</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>github.com/ByteChkR/Minor</RepositoryUrl>

@@ -13,12 +13,18 @@ namespace Engine.Rendering
     /// </summary>
     public class Renderer
     {
+        /// <summary>
+        /// Different Render Types
+        /// </summary>
         public enum RenderType
         {
             Opaque,
             Transparent
         }
 
+        /// <summary>
+        /// List of Light Components in the Scene
+        /// </summary>
         internal static List<LightComponent> Lights = new List<LightComponent>();
 
         /// <summary>
@@ -182,6 +188,7 @@ namespace Engine.Rendering
         /// Renders the Render Queue
         /// </summary>
         /// <param name="contexts">The Queue of Render Contexts</param>
+        /// <param name="viewM">the Viewing Matrix</param>
         /// <param name="cam">The ICamera</param>
         public static void Render(List<RenderingComponent> contexts, Matrix4 viewM, ICamera cam)
         {

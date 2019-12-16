@@ -2,6 +2,9 @@
 
 namespace Engine.OpenFL.FLDataObjects
 {
+    /// <summary>
+    /// Contains information on the FL Script
+    /// </summary>
     public struct FlScriptData
     {
         public List<string> Source;

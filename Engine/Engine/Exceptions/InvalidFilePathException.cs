@@ -22,7 +22,7 @@ namespace Engine.Exceptions
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="Filepath">The File that was not found</param>
+        /// <param name="filePath">The File that was not found</param>
         public InvalidFilePathException(string filePath) : this(filePath, null)
         {
             Logger.Log("Files:", DebugChannel.Error, 10);

@@ -6,6 +6,9 @@ using OpenTK.Graphics.OpenGL;
 
 namespace Engine.Debug
 {
+    /// <summary>
+    /// Class that contains information on how the graph component will be set up
+    /// </summary>
     public class GraphLayout
     {
         public string Key;

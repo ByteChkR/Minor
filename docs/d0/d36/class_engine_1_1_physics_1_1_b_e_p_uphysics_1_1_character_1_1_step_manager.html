@@ -30,7 +30,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Minor Engine
-   &#160;<span id="projectnumber">0.2</span>
+   &#160;<span id="projectnumber">0.3</span>
    </div>
   </td>
  </tr>
@@ -89,8 +89,6 @@ $(document).ready(function(){initNavTree('d0/d36/class_engine_1_1_physics_1_1_b_
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="../../d2/dac/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_step_manager-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.Physics.BEPUphysics.Character.StepManager Class Reference</div>  </div>
@@ -120,68 +118,6 @@ Properties</h2></td></tr>
 <tr class="memitem:a67b0b0cbd1ed25a51b5c0b0f11a8e093"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_step_manager.html#a67b0b0cbd1ed25a51b5c0b0f11a8e093">MinimumDownStepHeight</a><code> [get, set]</code></td></tr>
 <tr class="memdesc:a67b0b0cbd1ed25a51b5c0b0f11a8e093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets or sets the minimum down step height. Down steps which are smaller than this are simply ignored by the step system; instead, the character falls. If the new step location has traction, the intermediate falling will not remove traction from the character. The only difference is that the character isn't teleported down when the step is too small.  <a href="#a67b0b0cbd1ed25a51b5c0b0f11a8e093">More...</a><br /></td></tr>
 <tr class="separator:a67b0b0cbd1ed25a51b5c0b0f11a8e093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a76647f509a5a75c084be8b84d4506aff"><td class="memItemLeft" align="right" valign="top"><a id="a76647f509a5a75c084be8b84d4506aff"></a>
-<a class="el" href="../../d3/d6e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_finder.html">SupportFinder</a>&#160;</td><td class="memItemRight" valign="bottom"><b>SupportFinder</b><code> [get]</code></td></tr>
-<tr class="separator:a76647f509a5a75c084be8b84d4506aff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35a1886c567abfaa584eb9c17d50a1ad"><td class="memItemLeft" align="right" valign="top"><a id="a35a1886c567abfaa584eb9c17d50a1ad"></a>
-<a class="el" href="../../d8/d50/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_query_manager.html">QueryManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>QueryManager</b><code> [get]</code></td></tr>
-<tr class="separator:a35a1886c567abfaa584eb9c17d50a1ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a74e3ed3df11322e729795bc0d2776271"><td class="memItemLeft" align="right" valign="top"><a id="a74e3ed3df11322e729795bc0d2776271"></a>
-<a class="el" href="../../de/d0b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact_categorizer.html">CharacterContactCategorizer</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ContactCategorizer</b><code> [get]</code></td></tr>
-<tr class="separator:a74e3ed3df11322e729795bc0d2776271"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a30b6afe09b497ec5e58650cdd4b250"><td class="memItemLeft" align="right" valign="top"><a id="a9a30b6afe09b497ec5e58650cdd4b250"></a>
-<a class="el" href="../../d8/d02/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_horizontal_motion_constraint.html">HorizontalMotionConstraint</a>&#160;</td><td class="memItemRight" valign="bottom"><b>HorizontalMotionConstraint</b><code> [get]</code></td></tr>
-<tr class="separator:a9a30b6afe09b497ec5e58650cdd4b250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a86ff19b8b39bbe8e8fc01b130f952f8f"><td class="memItemLeft" align="right" valign="top"><a id="a86ff19b8b39bbe8e8fc01b130f952f8f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsDownStepObstructed</b> (ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; sideContacts)</td></tr>
-<tr class="separator:a86ff19b8b39bbe8e8fc01b130f952f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c0b7427e085358f89863ef968d5f02e"><td class="memItemLeft" align="right" valign="top"><a id="a6c0b7427e085358f89863ef968d5f02e"></a>
-<a class="el" href="../../d2/d03/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character.html#a85ea7fb69627a0de456760ae48ff923f">CharacterContactPositionState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TryDownStepPosition</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> position, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> down, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; tractionContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; supportContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; sideContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; headContacts, out float hintOffset)</td></tr>
-<tr class="separator:a6c0b7427e085358f89863ef968d5f02e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4b2ef50db5d5bb61a88688470eb323c"><td class="memItemLeft" align="right" valign="top"><a id="ab4b2ef50db5d5bb61a88688470eb323c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>FindUpStepCandidates</b> (<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> &gt; outputStepCandidates, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> down)</td></tr>
-<tr class="separator:ab4b2ef50db5d5bb61a88688470eb323c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84ddedd098c767cb8785f9aecfc1701f"><td class="memItemLeft" align="right" valign="top"><a id="a84ddedd098c767cb8785f9aecfc1701f"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>TryToStepUsingContact</b> (ref <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> down, out <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> newPosition)</td></tr>
-<tr class="separator:a84ddedd098c767cb8785f9aecfc1701f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d7a3c0b5ae19f2054893c761259ef5c"><td class="memItemLeft" align="right" valign="top"><a id="a5d7a3c0b5ae19f2054893c761259ef5c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>PrepareQueryObject</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> position)</td></tr>
-<tr class="separator:a5d7a3c0b5ae19f2054893c761259ef5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62598e9292890eed254a8d13f1b4cbab"><td class="memItemLeft" align="right" valign="top"><a id="a62598e9292890eed254a8d13f1b4cbab"></a>
-<a class="el" href="../../d2/d03/namespace_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character.html#a85ea7fb69627a0de456760ae48ff923f">CharacterContactPositionState</a>&#160;</td><td class="memItemRight" valign="bottom"><b>TryUpStepPosition</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sideNormal, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> position, ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> down, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; tractionContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; supportContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; sideContacts, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; headContacts, out float hintOffset)</td></tr>
-<tr class="separator:a62598e9292890eed254a8d13f1b4cbab"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a22991defc946fedf4783780a431a5714"><td class="memItemLeft" align="right" valign="top"><a id="a22991defc946fedf4783780a431a5714"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsUpStepObstructedBySideContacts</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sideNormal, ref <a class="el" href="../../d1/d94/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_list.html">QuickList</a>&lt; <a class="el" href="../../d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html">CharacterContact</a> &gt; sideContacts)</td></tr>
-<tr class="separator:a22991defc946fedf4783780a431a5714"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a43fc9f2a6484f51054ebfc0cc8f600fa"><td class="memItemLeft" align="right" valign="top"><a id="a43fc9f2a6484f51054ebfc0cc8f600fa"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsObstructiveToUpStepping</b> (ref <a class="el" href="../../d6/dfe/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_vector3.html">Vector3</a> sideNormal, ref <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> contact)</td></tr>
-<tr class="separator:a43fc9f2a6484f51054ebfc0cc8f600fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a61d0e6d37d956133ad42f491de8cd4e5"><td class="memItemLeft" align="right" valign="top"><a id="a61d0e6d37d956133ad42f491de8cd4e5"></a>
-<a class="el" href="../../dc/dba/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_prefabs_1_1_cylinder.html">Cylinder</a>&#160;</td><td class="memItemRight" valign="bottom"><b>characterBody</b></td></tr>
-<tr class="separator:a61d0e6d37d956133ad42f491de8cd4e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa30c1452d9165f1cf5e7daad94abbaf1"><td class="memItemLeft" align="right" valign="top"><a id="aa30c1452d9165f1cf5e7daad94abbaf1"></a>
-<a class="el" href="../../da/d48/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_convex_collidable.html">ConvexCollidable</a>&lt; <a class="el" href="../../db/d52/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_cylinder_shape.html">CylinderShape</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>currentQueryObject</b></td></tr>
-<tr class="separator:aa30c1452d9165f1cf5e7daad94abbaf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17a07e38565acefc1505e5c1ce8731e8"><td class="memItemLeft" align="right" valign="top"><a id="a17a07e38565acefc1505e5c1ce8731e8"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>maximumStepHeight</b> = 1f</td></tr>
-<tr class="separator:a17a07e38565acefc1505e5c1ce8731e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63d27042ef7ce233b269e0d7bc7b915b"><td class="memItemLeft" align="right" valign="top"><a id="a63d27042ef7ce233b269e0d7bc7b915b"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>minimumDownStepHeight</b> = .1f</td></tr>
-<tr class="separator:a63d27042ef7ce233b269e0d7bc7b915b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3af7cadc09cc1a3872da0c64000683ca"><td class="memItemLeft" align="right" valign="top"><a id="a3af7cadc09cc1a3872da0c64000683ca"></a>
-float&#160;</td><td class="memItemRight" valign="bottom"><b>minimumUpStepHeight</b></td></tr>
-<tr class="separator:a3af7cadc09cc1a3872da0c64000683ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65d65f3b78bc012a78be180c168904b8"><td class="memItemLeft" align="right" valign="top"><a id="a65d65f3b78bc012a78be180c168904b8"></a>
-<a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt; <a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>stepContacts</b> = new <a class="el" href="../../d1/d0c/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_raw_list.html">RawList</a>&lt;<a class="el" href="../../da/dc9/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_contact_data.html">ContactData</a>&gt;()</td></tr>
-<tr class="separator:a65d65f3b78bc012a78be180c168904b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3f10e4be049a92dfdaa15f589603812"><td class="memItemLeft" align="right" valign="top">float&#160;</td><td class="memItemRight" valign="bottom"><b>upStepMargin</b></td></tr>
-<tr class="separator:ad3f10e4be049a92dfdaa15f589603812"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Checks to see if a character is capable of stepping up or down onto a new support object. </p>
@@ -297,29 +233,6 @@ float&#160;</td><td class="memItemRight" valign="bottom"><b>minimumUpStepHeight<
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>Whether or not the character should attempt to step up.</dd></dl>
 
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad3f10e4be049a92dfdaa15f589603812"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3f10e4be049a92dfdaa15f589603812">&#9670;&nbsp;</a></span>upStepMargin</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">float Engine.Physics.BEPUphysics.Character.StepManager.upStepMargin</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div><div class="line">                .1f</div></div><!-- fragment -->
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>

@@ -5,6 +5,9 @@ using System.Xml.Serialization;
 
 namespace Engine.AssetPackaging
 {
+    /// <summary>
+    /// Main Class that is used to interface with the Asset Packaging Library
+    /// </summary>
     public static class AssetPacker
     {
         public const int Kilobyte = 1024;

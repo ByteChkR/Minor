@@ -2,6 +2,9 @@
 
 namespace Engine.BuildTools.PackageCreator.Versions
 {
+    /// <summary>
+    /// Interface of a Package Version
+    /// </summary>
     public interface IPackageVersion
     {
         string ManifestPath { get; }
@@ -16,6 +19,8 @@ namespace Engine.BuildTools.PackageCreator.Versions
 
         void UnpackPackage(string file, string outPutDir);
         IPackageManifest GetPackageManifest(string path);
+
+        IPackageManifest ReadManifest(Stream s);
 
         void WriteManifest(Stream s, IPackageManifest manifest);
     }

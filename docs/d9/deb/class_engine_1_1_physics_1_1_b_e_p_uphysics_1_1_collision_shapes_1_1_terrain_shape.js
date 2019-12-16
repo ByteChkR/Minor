@@ -13,8 +13,6 @@ var class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain
     [ "GetTriangle", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#a6285f2c40983ef79c77525ad20863abd", null ],
     [ "RayCast", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#aab48a68f9c5401e0598fb7add47d2c98", null ],
     [ "RayCast", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#a34dadcb4299293f539741655dc49a10a", null ],
-    [ "heights", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#aec04c02d4b345cebf7ccdb675a9bccea", null ],
-    [ "quadTriangleOrganization", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#abd12d997691e4fab50367b11138f4a3c", null ],
     [ "Heights", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#ab982a88bf02ed254b1db96b27c15ded9", null ],
     [ "QuadTriangleOrganization", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html#a90c1c2903ed7bf7dd41c63f10472f7b3", null ]
 ];
