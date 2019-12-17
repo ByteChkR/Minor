@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Xml.Serialization;
@@ -39,6 +40,7 @@ namespace Engine.BuildTools.Builder
             Command def = Command.CreateCommand(BuildWithXML, "--xml <Path/To/File.xml>", "--xml");
             CommandRunner.SetDefaultCommand(def);
 
+            CommandRunner.AddCommand(Command.CreateCommand(_Update, "--update Updates the Build Tools", "--update"));
             CommandRunner.AddCommand(Command.CreateCommand(_CreatePatch, "--create-patch <folder> <destinationFile>", "--create-patch", "-cpatch"));
             CommandRunner.AddCommand(Command.CreateCommand(_CreatePatchDelta, "--create-patch <oldFile> <newFile> <destinationFile>", "--create-patch-delta", "-cpatchdelta"));
             CommandRunner.AddCommand(Command.CreateCommand(_HelpCommand, "Display this help message", "--help", "-h"));
@@ -57,6 +59,18 @@ namespace Engine.BuildTools.Builder
 
             CommandRunner.RunCommands(args);
 
+        }
+
+
+        private static void _Update(StartupInfo info, string[] args)
+        {
+            WebClient wc = new WebClient();
+            Console.WriteLine("Updating Build Tools...");
+            string destination = Path.GetTempFileName() + ".exe";
+            wc.DownloadFile(@"http://213.109.162.193/apps/Installer.exe", destination);
+            Process.Start(destination, "/Q " + Process.GetCurrentProcess().Id);
+            wc.Dispose();
+            Console.WriteLine("Update Downloaded. Update will be applied when application exits.");
         }
 
         private static void _HelpCommand(StartupInfo info, string[] args)

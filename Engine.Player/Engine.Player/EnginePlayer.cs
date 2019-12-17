@@ -223,6 +223,17 @@ namespace Engine.Player
             }
         }
 
+        private static void _Update(StartupInfo info, string[] args)
+        {
+            WebClient wc = new WebClient();
+            Console.WriteLine("Updating Build Tools...");
+            string destination = Path.GetTempFileName() + ".exe";
+            wc.DownloadFile(@"http://213.109.162.193/apps/Installer.exe", destination);
+            Process.Start(destination, "/Q " + Process.GetCurrentProcess().Id);
+            wc.Dispose();
+            Console.WriteLine("Update Downloaded. Update will be applied when application exits.");
+        }
+
         private static void NoHaltCommand(StartupInfo info, string[] args)
         {
             _dontReadLine = true;
@@ -329,6 +340,7 @@ namespace Engine.Player
             Command def = Command.CreateCommand(DefaultCommand, "--run <Path/To/File.game>", "--run");
             CommandRunner.SetDefaultCommand(def);
 
+            CommandRunner.AddCommand(Command.CreateCommand(_Update, "--update Updates the Build Tools", "--update"));
             CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "Requires Admin Permissions", "--set-default-program", "-sD"));
             CommandRunner.AddCommand(Command.CreateCommand(NoHaltCommand, "Does not wait for user input before exiting", "--no-halt", "-nH"));
             CommandRunner.AddCommand(Command.CreateCommand(HelpCommand, "Display this help message", "--help", "-h"));
