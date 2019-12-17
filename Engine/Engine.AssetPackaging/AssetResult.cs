@@ -21,6 +21,28 @@ namespace Engine.AssetPackaging
 
         [XmlIgnore] public List<AssetPack> Packs = new List<AssetPack>();
 
+        private string OutputFolder;
+
+        public AssetResult()
+        {
+
+        }
+
+        public AssetResult(string outputFolder)
+        {
+            OutputFolder = outputFolder;
+
+            if (!Directory.Exists(OutputFolder))
+            {
+                Directory.CreateDirectory(OutputFolder);
+            }
+
+            if (!Directory.Exists(OutputFolder + "\\packs"))
+            {
+                Directory.CreateDirectory(OutputFolder + "\\packs");
+            }
+        }
+
         public void AddFile(string file, string packPath, AssetPackageType type)
         {
             FileStream fs = new FileStream(file, FileMode.Open);
@@ -37,9 +59,9 @@ namespace Engine.AssetPackaging
             AssetPointer ap = new AssetPointer
             {
                 PackageId = firstPack,
-                Offset = Packs[firstPack].Content.Count,
+                Offset = (int)Packs[firstPack].BytesWritten,
                 PackageSize = AssetPacker.PackSize,
-                Length = (int) s.Length,
+                Length = (int)s.Length,
                 Path = packPath,
                 PackageType = type
             };
@@ -59,7 +81,7 @@ namespace Engine.AssetPackaging
 
                 byte[] b = new byte[write];
                 s.Read(b, 0, write);
-                Packs[packid].Content.AddRange(b);
+                Packs[packid].Write(b, 0, b.Length);
                 bytesLeft -= write;
                 if (bytesLeft != 0)
                 {
@@ -74,47 +96,42 @@ namespace Engine.AssetPackaging
         {
             if (Packs.Count == 0 || Packs[Packs.Count - 1].SpaceLeft == 0)
             {
-                Packs.Add(new AssetPack());
+                FileStream fs = new FileStream(OutputFolder + "/packs/" + Packs.Count + ".pack", FileMode.CreateNew);
+                Packs.Add(new AssetPack(fs));
             }
 
             return Packs.Count - 1;
         }
 
-        public void Save(string outputFolder)
+        public void Save()
         {
-            if (!Directory.Exists(outputFolder))
-            {
-                Directory.CreateDirectory(outputFolder);
-            }
 
-            if (!Directory.Exists(outputFolder + "\\packs"))
-            {
-                Directory.CreateDirectory(outputFolder + "\\packs");
-            }
 
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
-            FileStream fs = new FileStream(outputFolder + "\\packs\\index.xml", FileMode.Create);
+            FileStream fs = new FileStream(OutputFolder + "\\packs\\index.xml", FileMode.Create);
             xs.Serialize(fs, this);
             fs.Close();
             for (int i = 0; i < Packs.Count; i++)
             {
-                string path = outputFolder + "\\packs\\" + i + ".pack";
-                byte[] buf = Packs[i].Content.ToArray();
-                if (Compression)
-                {
-                    MemoryStream ms = new MemoryStream();
-                    GZipStream gzs = new GZipStream(ms, CompressionLevel.Optimal);
-                    gzs.Write(buf, 0, buf.Length);
-                    buf = new byte[ms.Length];
-                    ms.Position = 0;
-                    ms.Read(buf, 0, buf.Length);
-                    gzs.Close();
-                    ms.Close();
-                }
+                //string path = outputFolder + "\\packs\\" + i + ".pack";
+                Packs[i].Save();
 
-                FileStream packstream = new FileStream(path, FileMode.Create);
-                packstream.Write(buf, 0, buf.Length);
-                packstream.Close();
+                //byte[] buf = Packs[i].Content.ToArray();
+                //if (Compression)
+                //{
+                //    MemoryStream ms = new MemoryStream();
+                //    GZipStream gzs = new GZipStream(ms, CompressionLevel.Optimal);
+                //    gzs.Write(buf, 0, buf.Length);
+                //    buf = new byte[ms.Length];
+                //    ms.Position = 0;
+                //    ms.Read(buf, 0, buf.Length);
+                //    gzs.Close();
+                //    ms.Close();
+                //}
+
+                //FileStream packstream = new FileStream(path, FileMode.Create);
+                //packstream.Write(buf, 0, buf.Length);
+                //packstream.Close();
             }
         }
     }

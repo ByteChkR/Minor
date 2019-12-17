@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 
 namespace Engine.AssetPackaging
 {
@@ -7,13 +8,25 @@ namespace Engine.AssetPackaging
     /// </summary>
     public class AssetPack
     {
-        public List<byte> Content = new List<byte>();
-
-        public AssetPack()
+        private Stream Content;
+        public int BytesWritten { get; private set; }
+        public AssetPack(Stream s)
         {
-            Content = new List<byte>();
+            Content = s;
         }
 
-        public int SpaceLeft => AssetPacker.MaxsizeKilobytes * AssetPacker.Kilobyte - Content.Count;
+        public void Save()
+
+        {
+            Content.Close();
+        }
+
+        public void Write(byte[] buf, int start, int count)
+        {
+            Content.Write(buf, start, count);
+            BytesWritten += count;
+        }
+
+        public int SpaceLeft => AssetPacker.MaxsizeKilobytes * AssetPacker.Kilobyte - BytesWritten;
     }
 }

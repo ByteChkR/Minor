@@ -15,9 +15,9 @@ namespace Engine.AssetPackaging
         public static int PackSize => Kilobyte * MaxsizeKilobytes;
 
         public static AssetResult
-            PackAssets(string assetFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
+            PackAssets(string assetFolder, string outputFolder, AssetPackageInfo info, bool compression = false) // [...]/assets
         {
-            AssetResult ret = new AssetResult();
+            AssetResult ret = new AssetResult(outputFolder);
             ret.Compression = compression;
             Uri assetPath = new Uri(assetFolder);
             foreach (KeyValuePair<string, AssetFileInfo> assetFileInfo in info.FileInfos)

@@ -640,11 +640,11 @@ namespace Engine.BuildTools.Builder
             AssetPackageInfo info = CreatePackageInfo(memoryFileExts, unpackedFileExts);
 
             Console.WriteLine("Creating Asset Pack(" + assetFolder + ")...");
-            AssetResult ret = AssetPacker.PackAssets(assetFolder, info, compression);
+            AssetResult ret = AssetPacker.PackAssets(assetFolder, outputFolder, info, compression);
             Console.WriteLine("Packaging " + ret.IndexList.Count + " Assets in " + ret.Packs.Count + " Packs.");
 
             Console.WriteLine("Saving Asset Pack to " + outputFolder);
-            ret.Save(outputFolder);
+            ret.Save();
 
             Console.WriteLine("Packaging Assets Finished.");
         }

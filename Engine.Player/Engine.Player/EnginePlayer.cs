@@ -26,6 +26,10 @@ namespace Engine.Player
         public static WebClient Wc = new WebClient();
 
         private static string _engineVersion;
+        private static string _engineDir = AppDomain.CurrentDomain.BaseDirectory + "/engine";
+        private static string _gameTempDir = AppDomain.CurrentDomain.BaseDirectory + "/_game";
+        private static string _gameDir = AppDomain.CurrentDomain.BaseDirectory + "/game";
+
 
         private static int _last;
 
@@ -94,18 +98,18 @@ namespace Engine.Player
 
         private static void SetUpDirectoryStructure()
         {
-            if (Directory.Exists("game"))
+            if (Directory.Exists(_gameDir))
             {
-                Directory.Delete("game", true);
+                Directory.Delete(_gameDir, true);
             }
 
-            if (Directory.Exists("_game"))
+            if (Directory.Exists(_gameTempDir))
             {
-                Directory.Delete("_game", true);
+                Directory.Delete(_gameTempDir, true);
             }
 
-            DirectoryInfo di = Directory.CreateDirectory("game");
-            DirectoryInfo tempUnpackForGame = Directory.CreateDirectory("_game");
+            DirectoryInfo di = Directory.CreateDirectory(_gameDir);
+            DirectoryInfo tempUnpackForGame = Directory.CreateDirectory(_gameTempDir);
             if ((di.Attributes & FileAttributes.Hidden) != FileAttributes.Hidden)
             {
                 //Add Hidden flag    
@@ -121,7 +125,7 @@ namespace Engine.Player
 
         private static string GetEnginePath(string version)
         {
-            return "engine/" + version + ".engine";
+            return _engineDir + "/" + version + ".engine";
         }
 
         private static void RunGameCommand(StartupInfo info, string[] args)
@@ -150,8 +154,8 @@ namespace Engine.Player
             }
             catch (Exception e)
             {
-                Directory.Delete("_game", true);
-                Directory.Delete("game", true);
+                Directory.Delete(_gameTempDir, true);
+                Directory.Delete(_gameDir, true);
                 Console.WriteLine("Error Unpacking File.");
                 Console.WriteLine(e);
             }
@@ -167,7 +171,7 @@ namespace Engine.Player
             psi.UseShellExecute = false;
             psi.CreateNoWindow = true;
             psi.Arguments = "/C " + startCommand;
-            psi.WorkingDirectory = Directory.GetCurrentDirectory() + "/game";
+            psi.WorkingDirectory = _gameDir;
             _p.StartInfo = psi;
             _p.Start();
 
@@ -183,7 +187,7 @@ namespace Engine.Player
 
             crd.StopThreads();
             Console.WriteLine(crd.GetRemainingLogs());
-            Directory.Delete("game", true);
+            Directory.Delete(_gameDir, true);
         }
 
         private static void HelpCommand(StartupInfo info, string[] args)
@@ -268,7 +272,7 @@ namespace Engine.Player
             if (IsEngineVersionAvailable(args[0]))
             {
                 Console.WriteLine("Deleting Version " + args[0]);
-                File.Delete("engine/" + args[0] + ".engine");
+                File.Delete(_engineDir + "/" + args[0] + ".engine");
             }
             else
             {
@@ -279,9 +283,9 @@ namespace Engine.Player
         private static void ClearCacheCommand(StartupInfo info, string[] args)
         {
             Console.WriteLine("Deleting Engine Cache...");
-            if (Directory.Exists("engine"))
+            if (Directory.Exists(_engineDir))
             {
-                string[] files = Directory.GetFiles("engine", "*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "/engine", "*", SearchOption.AllDirectories);
                 for (int i = 0; i < files.Length; i++)
                 {
                     File.Delete(files[i]);
@@ -304,25 +308,25 @@ namespace Engine.Player
         private static void Main(string[] args)
         {
 
+            string callDir = Directory.GetCurrentDirectory();
 
             Wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
             Wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
 
-
-            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+            string homeDir = AppDomain.CurrentDomain.BaseDirectory;
 
             Console.CancelKeyPress += ConsoleOnCancelKeyPress;
-            if (!Directory.Exists("engine"))
+            if (!Directory.Exists(_engineDir))
             {
-                Directory.CreateDirectory("engine");
+                Directory.CreateDirectory(_engineDir);
             }
 
             GetEngineServerVersion();
-            _engineversions = Directory.GetFiles("engine", "*.engine", SearchOption.TopDirectoryOnly)
+            _engineversions = Directory.GetFiles(_engineDir, "*.engine", SearchOption.TopDirectoryOnly)
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 
 
-            Command def = Command.CreateCommand(DefaultCommand,"--run <Path/To/File.game>", "--run");
+            Command def = Command.CreateCommand(DefaultCommand, "--run <Path/To/File.game>", "--run");
             CommandRunner.SetDefaultCommand(def);
 
             CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "Requires Admin Permissions", "--set-default-program", "-sD"));
@@ -332,7 +336,7 @@ namespace Engine.Player
             CommandRunner.AddCommand(Command.CreateCommand(SetEngineVersionCommand, "--engine <Version>\nSpecify a manual version", "--engine", "-e"));
             CommandRunner.AddCommand(Command.CreateCommand(ListPackageInfo, "--list-info <<Path/To/File>\nLists Information about the .engine or .game file.", "--list-info", "-l"));
 
-            CommandRunner.AddCommand(Command.CreateCommand(RemoveEngineCommand , "--remove-engine <Version>\nRemoves an engine Version from the engine cache", "--remove-engine", "-r"));
+            CommandRunner.AddCommand(Command.CreateCommand(RemoveEngineCommand, "--remove-engine <Version>\nRemoves an engine Version from the engine cache", "--remove-engine", "-r"));
             CommandRunner.AddCommand(Command.CreateCommand(ClearCacheCommand, "--clear-cache\nClears all engines in the cache", "--clear-cache", "-cC"));
             CommandRunner.AddCommand(Command.CreateCommand(AddEngineCommand, "--add-engine <<Path/To/File.engine>\nAdds an engine file to the engine cache", "--add-engine", "-a"));
             CommandRunner.AddCommand(Command.CreateCommand(DownloadEngineCommand, "--download-engine <Version>\n Tries to download a specified engine version", "--download-engine", "-d"));
@@ -353,11 +357,13 @@ namespace Engine.Player
         {
             List<string> s = new List<string>();
             string curpath = Path.GetDirectoryName(path);
+            Console.WriteLine("Path: "+ curpath);
             do
             {
                 s.Add(curpath);
                 curpath = Path.GetDirectoryName(curpath);
-            } while (curpath != "");
+                Console.WriteLine("Adding: " + curpath);
+            } while (curpath != null && curpath.Trim() != "");
 
             s.Reverse();
             for (int i = 0; i < s.Count; i++)
@@ -396,7 +402,7 @@ namespace Engine.Player
             {
                 Console.WriteLine("Downloading Version: " + version);
                 Wc.DownloadFile(new Uri("http://213.109.162.193/apps/EngineArchives/" + version + ".engine"),
-                    "engine/" + version + ".engine");
+                    _engineDir + "/" + version + ".engine");
             }
         }
 
@@ -432,7 +438,7 @@ namespace Engine.Player
                 {
                     Console.WriteLine("Adding Engine: " + pm);
                     _engineversions.Add(pm.Version);
-                    File.Copy(path, "engine/" + pm.Version + ".engine");
+                    File.Copy(path, _engineDir + "/" + pm.Version + ".engine");
                 }
             }
             catch (Exception e)
@@ -445,24 +451,24 @@ namespace Engine.Player
 
         private static bool IsEngineVersionAvailable(string version)
         {
-            return File.Exists("engine/" + version + ".engine");
+            return File.Exists(_engineDir + "/" + version + ".engine");
         }
 
         private static void LoadGame(string gamePath, IPackageManifest pm)
         {
             //Load Game
-            Creator.UnpackPackage(gamePath, "_game");
-            string[] files = Directory.GetFiles("_game", "*", SearchOption.AllDirectories);
+            Creator.UnpackPackage(gamePath, _gameTempDir);
+            string[] files = Directory.GetFiles(_gameTempDir, "*", SearchOption.AllDirectories);
             foreach (string file in files)
             {
-                bool over = File.Exists(file.Replace("_game", "game"));
+                bool over = File.Exists(file.Replace(_gameTempDir, _gameDir));
 
-                CreateFolder(file.Replace("_game", "game"));
+                CreateFolder(file.Replace(_gameTempDir, _gameDir));
 
-                File.Copy(file, file.Replace("_game", "game"), over);
+                File.Copy(file, file.Replace(_gameTempDir, _gameDir), over);
             }
 
-            Directory.Delete("_game", true);
+            Directory.Delete(_gameTempDir, true);
         }
 
         private static void LoadEngine(string version)
@@ -493,7 +499,7 @@ namespace Engine.Player
                         Console.WriteLine("Finding Compatible..");
 
                         if (!Version.TryParse(version, out Version v))
-                            throw new ArgumentException("Could not locate engine version : " + version);
+                            throw new ArgumentException("Could not parse engine version : " + version);
 
                         bool foundVersion = false;
                         Version vx = new Version(v.Major, v.Minor, v.Build, 0);
@@ -519,7 +525,7 @@ namespace Engine.Player
 
             Console.WriteLine("Loading Engine Version: " + version);
 
-            Creator.UnpackPackage(filePath, "game");
+            Creator.UnpackPackage(filePath, _gameDir);
         }
 
         private static bool IsVersionUrlCorrect(string version)
