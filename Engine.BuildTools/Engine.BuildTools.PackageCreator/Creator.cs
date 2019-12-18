@@ -280,7 +280,6 @@ namespace Engine.BuildTools.PackageCreator
 
                 }
             }
-            //ZipFile.ExtractToDirectory(patchFile, folder);
         }
     }
 }

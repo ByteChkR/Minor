@@ -68,7 +68,7 @@ namespace Engine.BuildTools.Builder
             Console.WriteLine("Updating Build Tools...");
             string destination = Path.GetTempFileName() + ".exe";
             wc.DownloadFile(@"http://213.109.162.193/apps/Installer.exe", destination);
-            Process.Start(destination, "/Q " + Process.GetCurrentProcess().Id);
+            Process.Start(destination, "--silent --pid " + Process.GetCurrentProcess().Id);
             wc.Dispose();
             Console.WriteLine("Update Downloaded. Update will be applied when application exits.");
         }

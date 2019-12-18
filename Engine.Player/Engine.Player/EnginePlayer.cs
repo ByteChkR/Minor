@@ -64,6 +64,59 @@ namespace Engine.Player
             key.Close();
         }
 
+        private static void AddToPathVariable()
+        {
+            const string name = "PATH";
+            string pathvar = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Machine);
+            string appPath = AppDomain.CurrentDomain.BaseDirectory;
+            appPath = appPath.Remove(appPath.Length - 1, 1);
+            Console.WriteLine("Adding Path: " + appPath);
+            var value = pathvar + ";" + appPath;
+            var target = EnvironmentVariableTarget.Machine;
+            System.Environment.SetEnvironmentVariable(name, value, target);
+        }
+
+        private static void UpdatePathVariable()
+        {
+            const string name = "PATH";
+            string pathvar = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Machine);
+            Console.WriteLine(pathvar);
+            string appPath = AppDomain.CurrentDomain.BaseDirectory;
+            appPath = appPath.Remove(appPath.Length - 1, 1);
+            string[] paths = pathvar.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            string val = "";
+            for (int i = 0; i < paths.Length; i++)
+            {
+                if (File.Exists(paths[i] + "\\Engine.BuildTools.Builder.dll"))
+                {
+                    Console.WriteLine("Updating Path: " + paths[i] + " >> " + appPath);
+                    paths[i] = appPath;
+                }
+
+                val += paths[i] + ";";
+            }
+
+            var target = EnvironmentVariableTarget.Machine;
+            System.Environment.SetEnvironmentVariable(name, val, target);
+
+        }
+
+        private static bool IsInPathVariable()
+        {
+            const string name = "PATH";
+            string pathvar = System.Environment.GetEnvironmentVariable(name, EnvironmentVariableTarget.Machine);
+            string[] paths = pathvar.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < paths.Length; i++)
+            {
+                if (File.Exists(paths[i] + "\\Engine.BuildTools.Builder.dll"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+
+        }
         private static void RegisterExtensions()
         {
             RegisterExtension(".game");
@@ -229,7 +282,7 @@ namespace Engine.Player
             Console.WriteLine("Updating Build Tools...");
             string destination = Path.GetTempFileName() + ".exe";
             wc.DownloadFile(@"http://213.109.162.193/apps/Installer.exe", destination);
-            Process.Start(destination, "/Q " + Process.GetCurrentProcess().Id);
+            Process.Start(destination, "--silent --pid " + Process.GetCurrentProcess().Id);
             wc.Dispose();
             Console.WriteLine("Update Downloaded. Update will be applied when application exits.");
         }
@@ -244,6 +297,20 @@ namespace Engine.Player
             try
             {
                 RegisterExtensions();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Could not access registry. Administrator rights are reequired once.");
+                Console.WriteLine(e);
+            }
+        }
+
+        private static void AddToPathVariable(StartupInfo info, string[] args)
+        {
+            try
+            {
+                if (IsInPathVariable()) UpdatePathVariable();
+                else AddToPathVariable();
             }
             catch (Exception e)
             {
@@ -296,7 +363,7 @@ namespace Engine.Player
             Console.WriteLine("Deleting Engine Cache...");
             if (Directory.Exists(_engineDir))
             {
-                string[] files = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory + "/engine", "*", SearchOption.AllDirectories);
+                string[] files = Directory.GetFiles(_engineDir, "*", SearchOption.AllDirectories);
                 for (int i = 0; i < files.Length; i++)
                 {
                     File.Delete(files[i]);
@@ -318,7 +385,6 @@ namespace Engine.Player
 
         private static void Main(string[] args)
         {
-
             string callDir = Directory.GetCurrentDirectory();
 
             Wc.DownloadProgressChanged += WcOnDownloadProgressChanged;
@@ -342,6 +408,7 @@ namespace Engine.Player
 
             CommandRunner.AddCommand(Command.CreateCommand(_Update, "--update Updates the Build Tools", "--update"));
             CommandRunner.AddCommand(Command.CreateCommand(SetDefaultProgramCommand, "Requires Admin Permissions", "--set-default-program", "-sD"));
+            CommandRunner.AddCommand(Command.CreateCommand(AddToPathVariable, "Requires Admin Permissions", "--add-to-path"));
             CommandRunner.AddCommand(Command.CreateCommand(NoHaltCommand, "Does not wait for user input before exiting", "--no-halt", "-nH"));
             CommandRunner.AddCommand(Command.CreateCommand(HelpCommand, "Display this help message", "--help", "-h"));
             CommandRunner.AddCommand(Command.CreateCommand(SetEnginePathCommand, "--engine-path <Path/To/File.game>\nSpecify a manual path to a .engine file", "--engine-path", "-eP"));
@@ -369,7 +436,7 @@ namespace Engine.Player
         {
             List<string> s = new List<string>();
             string curpath = Path.GetDirectoryName(path);
-            Console.WriteLine("Path: "+ curpath);
+            Console.WriteLine("Path: " + curpath);
             do
             {
                 s.Add(curpath);
