@@ -136,11 +136,11 @@ namespace Engine.UI
 
                     bmp.UnlockBits(data);
 
-                    bmp.RotateFlip(RotateFlipType.RotateNoneFlipY); //Rotating hack
+                    //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY); //Rotating hack
 
                     data = bmp.LockBits(new Rectangle(0, 0, g.RenderWidth, g.RenderHeight),
                         ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
+                    
                     Texture tex = TextureLoader.ParameterToTexture(bmp.Width, bmp.Height);
                     glTex = tex;
                     GL.BindTexture(TextureTarget.Texture2D, tex.TextureId);

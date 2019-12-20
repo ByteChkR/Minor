@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using ext_pp;
 using ext_pp_base;
@@ -82,6 +83,26 @@ namespace Engine.Common
         internal static string[] PreprocessLines(IFileContent file, Dictionary<string, bool> defs)
         {
             string ext = new string(file.GetFilePath().TakeLast(3).ToArray());
+            string key = "";
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                key = "WIN";
+            }
+            else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                key = "OSX";
+            }
+            else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                key = "LINUX";
+            }
+
+            if (defs == null) defs = new Dictionary<string, bool>();
+            if (!defs.ContainsKey(key))
+            {
+                defs.Add(key, true);
+            }
+
             if (_configs.ContainsKey(ext))
             {
                 DebugHelper.Log("Found Matching PreProcessor Config for: " + ext, 1 | (1 << 21));
@@ -223,7 +244,7 @@ namespace Engine.Common
                 {
                     new FakeGenericsPlugin(),
                     new IncludePlugin(),
-                    new ConditionalPlugin(),
+                    new ConditionalPlugin{EnableDefine = true},
                     new ExceptionPlugin(),
                     new MultiLinePlugin()
                 };

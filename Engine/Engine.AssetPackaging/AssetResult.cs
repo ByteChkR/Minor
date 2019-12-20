@@ -37,9 +37,9 @@ namespace Engine.AssetPackaging
                 Directory.CreateDirectory(OutputFolder);
             }
 
-            if (!Directory.Exists(OutputFolder + "\\packs"))
+            if (!Directory.Exists(OutputFolder + "/packs"))
             {
-                Directory.CreateDirectory(OutputFolder + "\\packs");
+                Directory.CreateDirectory(OutputFolder + "/packs");
             }
         }
 
@@ -108,7 +108,7 @@ namespace Engine.AssetPackaging
 
 
             XmlSerializer xs = new XmlSerializer(typeof(AssetResult));
-            FileStream fs = new FileStream(OutputFolder + "\\packs\\index.xml", FileMode.Create);
+            FileStream fs = new FileStream(OutputFolder + "/packs/index.xml", FileMode.Create);
             xs.Serialize(fs, this);
             fs.Close();
             for (int i = 0; i < Packs.Count; i++)

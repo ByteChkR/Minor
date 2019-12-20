@@ -107,7 +107,7 @@ namespace Engine.Rendering
                 TextReader tr = new StreamReader(s);
                 string dirName = Path.GetDirectoryName(subshader.Value);
                 StringBuilder src = new StringBuilder();
-                string[] lines = TextProcessorApi.PreprocessLines(tr.ReadToEnd().Split('\n'), dirName, null);
+                string[] lines = TextProcessorApi.PreprocessLines(tr.ReadToEnd().Replace("\r", "").Split('\n'), dirName, null);
                 tr.Close();
                 for (int i = 0; i < lines.Length; i++)
                 {
