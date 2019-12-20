@@ -11,17 +11,9 @@ void main()
 {
 	//vec2(TexCoords.x, 1-TexCoords.y) < When changing how font loading works (flipping y)
 
-#if WIN
-
 	float x = TexCoords.x;
 	float y = 1-TexCoords.y;
 
-#elseif OSX || LINUX
-
-	float x = TexCoords.x;
-	float y = TexCoords.y;
-
-#endif
 
 	vec2 tcoords = vec2(x,y);
 	float f = texture(sourceTexture, tcoords).r;
