@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Xml.Serialization;
 using Engine.AssetPackaging;
@@ -19,6 +20,7 @@ namespace Engine.BuildTools.Builder
     /// </summary>
     public static class Builder
     {
+        private static bool IsWindows => Type.GetType("Mono.Runtime") == null;
         private static BuildSettings LoadSettings(string path)
         {
             XmlSerializer xs = new XmlSerializer(typeof(BuildSettings));
@@ -37,6 +39,7 @@ namespace Engine.BuildTools.Builder
         public static void RunCommand(string[] args)
         {
 
+            Console.WriteLine("Windows: " + IsWindows);
             Command def = Command.CreateCommand(BuildWithXML, "--xml <Path/To/File.xml>", "--xml");
             CommandRunner.SetDefaultCommand(def);
 
@@ -392,13 +395,21 @@ namespace Engine.BuildTools.Builder
 
         private static int BuildCommand(string filepath)
         {
-            return ProcessUtils.RunProcess("cmd.exe", $"/C dotnet build {filepath} -c Release",
+            string exec = IsWindows ? "cmd.exe" : "dotnet";
+            string extra = IsWindows ? "/C dotnet " : "";
+            Console.WriteLine("Windows: " + IsWindows);
+            Console.WriteLine("Using Shell: " + exec);
+            return ProcessUtils.RunProcess(exec, $"{extra}build {filepath} -c Release",
                 null);
         }
 
         private static int PublishCommand(string filepath)
         {
-            return ProcessUtils.RunProcess("cmd.exe", $"/C dotnet publish {filepath} -c Release",
+            string exec = IsWindows ? "cmd.exe" : "dotnet";
+            string extra = IsWindows ? "/C dotnet " : "";
+            Console.WriteLine("Windows: " + IsWindows);
+            Console.WriteLine("Using Shell: " + exec);
+            return ProcessUtils.RunProcess(exec, $"{extra}publish {filepath} -c Release",
                 null);
         }
 

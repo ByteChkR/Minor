@@ -1,4 +1,4 @@
-@echo off
+
 
 echo Setting up ADL:
 

@@ -1,5 +1,3 @@
-@echo off
-
 echo Building Project:
 
 echo Setting up Submodules:

@@ -190,6 +190,8 @@ namespace Engine.Player
             }
 
             SetUpDirectoryStructure();
+            
+
             IPackageManifest pm = null;
             try
             {
@@ -212,9 +214,12 @@ namespace Engine.Player
                 Console.WriteLine("Error Unpacking File.");
                 Console.WriteLine(e);
             }
-
             string startCommand = pm.StartCommand;
-            DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), ScClose, MfBycommand);
+            if (Type.GetType("Mono.Runtime") == null) //Not Running Mono = Windows, Running Mono = Linux
+            {
+                Console.WriteLine("Remove Close Button.");
+                DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), ScClose, MfBycommand);
+            }
             _p = new Process();
 
             ProcessStartInfo psi = new ProcessStartInfo();
@@ -401,7 +406,7 @@ namespace Engine.Player
             GetEngineServerVersion();
             _engineversions = Directory.GetFiles(_engineDir, "*.engine", SearchOption.TopDirectoryOnly)
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
-
+            
 
             Command def = Command.CreateCommand(DefaultCommand, "--run <Path/To/File.game>", "--run");
             CommandRunner.SetDefaultCommand(def);
