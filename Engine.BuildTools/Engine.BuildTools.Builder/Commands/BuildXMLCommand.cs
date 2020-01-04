@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -10,6 +11,19 @@ namespace Engine.BuildTools.Builder.Commands
 {
     public class BuildXMLCommand :AbstractCommand
     {
+
+        private static string[] CreateFileList(string path, string searchPatterns, char separator = '+')
+        {
+            string[] patterns = searchPatterns.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> ret = new List<string>();
+            for (int i = 0; i < patterns.Length; i++)
+            {
+                ret.AddRange(Directory.GetFiles(path, patterns[i], SearchOption.AllDirectories));
+            }
+
+            return ret.ToArray();
+        }
+
         private static void BuildXML(StartupInfo info, string[] args)
         {
             if (args.Length != 0)
@@ -86,7 +100,7 @@ namespace Engine.BuildTools.Builder.Commands
                         else
                         {
                             Console.WriteLine("Embedding Files.");
-                            files = Builder.CreateFileList(assetFolder, filePatterns);
+                            files = CreateFileList(assetFolder, filePatterns);
                         }
 
                         AssemblyEmbedder.EmbedFilesIntoProject(projectFile, files);

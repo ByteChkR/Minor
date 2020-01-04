@@ -7,7 +7,7 @@ namespace Engine.Player.Commands
 
         private static void NoHalt(StartupInfo info, string[] args)
         {
-            EnginePlayer.DontReadLine = true;
+            EnginePlayer.ReadLine = false;
         }
 
 

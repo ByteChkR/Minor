@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -44,11 +45,7 @@ namespace Engine.Player.Commands
             {
                 if (!EnginePlayer.IsEngineVersionAvailable(version))
                 {
-                    if (EnginePlayer.IsVersionUrlCorrect(version))
-                    {
-                        EnginePlayer.DownloadEngineVersion(version);
-                    }
-                    else
+                    if (!EnginePlayer.DownloadEngineVersion(version))
                     {
                         Console.WriteLine("Could not locate engine version : " + version);
                         Console.WriteLine("Finding Compatible..");
@@ -76,7 +73,7 @@ namespace Engine.Player.Commands
                     }
                 }
 
-                filePath = EnginePlayer.GetEnginePath(version);
+                filePath = GetEnginePath(version);
             }
 
 
@@ -85,6 +82,31 @@ namespace Engine.Player.Commands
             Creator.UnpackPackage(filePath, EnginePlayer.GameDir);
         }
 
+
+        private static void CreateFolder(string path)
+        {
+            List<string> s = new List<string>();
+            string curpath = Path.GetDirectoryName(path);
+            Console.WriteLine("Path: " + curpath);
+            do
+            {
+                s.Add(curpath);
+                curpath = Path.GetDirectoryName(curpath);
+            } while (curpath != null && curpath.Trim() != "");
+
+            s.Reverse();
+            for (int i = 0; i < s.Count; i++)
+            {
+                if (!Directory.Exists(s[i]))
+                {
+                    Directory.CreateDirectory(s[i]);
+                }
+            }
+        }
+        private static string GetEnginePath(string version)
+        {
+            return EnginePlayer.EngineDir + "/" + version + ".engine";
+        }
 
         private static void LoadGame(string gamePath, IPackageManifest pm)
         {
@@ -95,7 +117,7 @@ namespace Engine.Player.Commands
             {
                 bool over = File.Exists(file.Replace(EnginePlayer.GameTempDir, EnginePlayer.GameDir));
 
-                EnginePlayer.CreateFolder(file.Replace(EnginePlayer.GameTempDir, EnginePlayer.GameDir));
+                CreateFolder(file.Replace(EnginePlayer.GameTempDir, EnginePlayer.GameDir));
 
                 File.Copy(file, file.Replace(EnginePlayer.GameTempDir, EnginePlayer.GameDir), over);
             }

@@ -1,18 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-using System.Threading;
 using System.Xml.Serialization;
 using CommandRunner;
 using Engine.AssetPackaging;
 using Engine.BuildTools.Common;
-using Engine.BuildTools.PackageCreator;
 
 namespace Engine.BuildTools.Builder
 {
@@ -103,22 +97,7 @@ namespace Engine.BuildTools.Builder
                 null);
         }
 
-        
-
-
-        public static string[] CreateFileList(string path, string searchPatterns, char separator = '+')
-        {
-            string[] patterns = searchPatterns.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries);
-            List<string> ret = new List<string>();
-            for (int i = 0; i < patterns.Length; i++)
-            {
-                ret.AddRange(Directory.GetFiles(path, patterns[i], SearchOption.AllDirectories));
-            }
-
-            return ret.ToArray();
-        }
-
-        public static AssetPackageInfo CreatePackageInfo(string memoryFileExts, string unpackedFileExts,
+        private static AssetPackageInfo CreatePackageInfo(string memoryFileExts, string unpackedFileExts,
             char separator = '+')
         {
             AssetPackageInfo info = new AssetPackageInfo();
