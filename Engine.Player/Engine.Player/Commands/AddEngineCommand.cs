@@ -38,7 +38,7 @@ namespace Engine.Player.Commands
             AddEngine(args[0]);
         }
 
-        public AddEngineCommand() : base(AddEngine, new[] { "--add-engine", "-a" }, "--add-engine <<Path/To/File.engine>\nAdds an engine file to the engine cache", true)
+        public AddEngineCommand() : base(AddEngine, new[] { "--add-engine", "-a" }, "--add-engine <<Path/To/File.engine>\nAdds an engine file to the engine cache", false)
         {
 
         }

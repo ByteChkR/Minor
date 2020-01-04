@@ -18,7 +18,7 @@ namespace Engine.Player.Commands
             }
         }
 
-        public SetEnginePathCommand() : base(SetEnginePath, new[] { "--engine-path", "-eP" }, "--engine-path <Path/To/File.game>\nSpecify a manual path to a .engine file", true)
+        public SetEnginePathCommand() : base(SetEnginePath, new[] { "--engine-path", "-eP" }, "--engine-path <Path/To/File.game>\nSpecify a manual path to a .engine file", false)
         {
 
         }

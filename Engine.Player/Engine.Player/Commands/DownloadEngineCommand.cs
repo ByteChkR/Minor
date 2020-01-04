@@ -19,7 +19,7 @@ namespace Engine.Player.Commands
             }
         }
 
-        public DownloadEngineCommand() : base(DownloadEngine, new[] { "--download-engine", "-d" }, "--download-engine <Version>\n Tries to download a specified engine version", true)
+        public DownloadEngineCommand() : base(DownloadEngine, new[] { "--download-engine", "-d" }, "--download-engine <Version>\n Tries to download a specified engine version", false)
         {
 
         }

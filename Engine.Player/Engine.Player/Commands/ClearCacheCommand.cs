@@ -19,7 +19,7 @@ namespace Engine.Player.Commands
                 }
             }
         }
-        public ClearCacheCommand() : base(ClearCache, new[] { "--clear-cache", "-cC" }, "--clear-cache\nClears all engines in the cache", true)
+        public ClearCacheCommand() : base(ClearCache, new[] { "--clear-cache", "-cC" }, "--clear-cache\nClears all engines in the cache", false)
         {
 
         }

@@ -20,7 +20,7 @@ namespace Engine.Player.Commands
             }
         }
 
-        public RemoveEngineCommand() : base(RemoveEngine, new[] { "--remove-engine", "-r" }, "--remove-engine <Version>\nRemoves an engine Version from the engine cache", true)
+        public RemoveEngineCommand() : base(RemoveEngine, new[] { "--remove-engine", "-r" }, "--remove-engine <Version>\nRemoves an engine Version from the engine cache", false)
         {
 
         }

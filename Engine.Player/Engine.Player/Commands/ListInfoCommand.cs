@@ -22,7 +22,7 @@ namespace Engine.Player.Commands
             IPackageManifest pm = Creator.ReadManifest(args[0]);
             Console.WriteLine(pm);
         }
-        public ListInfoCommand() : base(ListInfo, new[] { "--list-info", "-l" }, "--list-info <<Path/To/File>\nLists Information about the .engine or .game file.", true)
+        public ListInfoCommand() : base(ListInfo, new[] { "--list-info", "-l" }, "--list-info <<Path/To/File>\nLists Information about the .engine or .game file.", false)
         {
 
         }

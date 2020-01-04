@@ -15,7 +15,7 @@ namespace Engine.Player.Commands
             }
         }
 
-        public HelpCommand() : base(Help, new[] { "--help", "-h", "-?" }, "Display this help message", true)
+        public HelpCommand() : base(Help, new[] { "--help", "-h", "-?" }, "Display this help message", false)
         {
 
         }
