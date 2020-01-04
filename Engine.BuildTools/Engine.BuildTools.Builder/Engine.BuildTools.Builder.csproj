@@ -9,6 +9,7 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CommandRunner\CommandRunner\CommandRunner.csproj" />
     <ProjectReference Include="..\..\Engine\Engine.AssetPackaging\Engine.AssetPackaging.csproj" />
     <ProjectReference Include="..\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj" />
     <ProjectReference Include="..\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj" />

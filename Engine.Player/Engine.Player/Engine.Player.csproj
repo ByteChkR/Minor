@@ -65,6 +65,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\AddEngineCommand.cs" />
+    <Compile Include="Commands\AddToPathCommand.cs" />
+    <Compile Include="Commands\ClearCacheCommand.cs" />
+    <Compile Include="Commands\DefaultCommand.cs" />
+    <Compile Include="Commands\DownloadEngineCommand.cs" />
+    <Compile Include="Commands\HelpCommand.cs" />
+    <Compile Include="Commands\ListInfoCommand.cs" />
+    <Compile Include="Commands\NoHaltCommand.cs" />
+    <Compile Include="Commands\RemoveEngineCommand.cs" />
+    <Compile Include="Commands\RunCommand.cs" />
+    <Compile Include="Commands\SetDefaultProgramCommand.cs" />
+    <Compile Include="Commands\SetEnginePathCommand.cs" />
+    <Compile Include="Commands\SetEngineVersionCommand.cs" />
+    <Compile Include="Commands\UpdateCommand.cs" />
     <Compile Include="EnginePlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -87,6 +101,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CommandRunner\CommandRunner\CommandRunner.csproj">
+      <Project>{1b189bb5-d358-41c1-8491-11eaa80e8c3a}</Project>
+      <Name>CommandRunner</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj">
       <Project>{94a1fe92-60c7-44ad-9f80-2ed2f7a0e899}</Project>
       <Name>Engine.BuildTools.Common</Name>

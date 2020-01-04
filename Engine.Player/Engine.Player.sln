@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.BuildTools.Common", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Engine.BuildTools.PackageCreator", "..\Engine.BuildTools\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj", "{10FF8554-36B7-4BC4-928D-9137A9196C2A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandRunner", "..\CommandRunner\CommandRunner\CommandRunner.csproj", "{1B189BB5-D358-41C1-8491-11EAA80E8C3A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{10FF8554-36B7-4BC4-928D-9137A9196C2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10FF8554-36B7-4BC4-928D-9137A9196C2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10FF8554-36B7-4BC4-928D-9137A9196C2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B189BB5-D358-41C1-8491-11EAA80E8C3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B189BB5-D358-41C1-8491-11EAA80E8C3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B189BB5-D358-41C1-8491-11EAA80E8C3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B189BB5-D358-41C1-8491-11EAA80E8C3A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
