@@ -44,4 +44,7 @@
 @RD .\ext-pp\ext_pp_plugins\obj /S /Q
 @RD .\ext-pp\ext_pp_tests\bin /S /Q
 @RD .\ext-pp\ext_pp_tests\obj /S /Q
+
+@RD .\CommandRunner\CommandRunner\obj /S /Q
+@RD .\CommandRunner\CommandRunner\bin /S /Q
 pause

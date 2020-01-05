@@ -21,7 +21,20 @@ namespace Engine.Player
         public static string GameTempDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "_game");
         public static string GameDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "game");
 
-        public static Version[] AvailableVersionsOnServer;
+        private static Version[] _availableVersionsOnServer = null;
+
+        public static Version[] AvailableVersionsOnServer
+        {
+            get
+            {
+                if (_availableVersionsOnServer == null)
+                {
+                    _availableVersionsOnServer =  GetEngineServerVersion();
+                }
+
+                return _availableVersionsOnServer;
+            }
+        }
 
 
         private static void readLine()
@@ -36,19 +49,15 @@ namespace Engine.Player
 
         private static void Main(string[] args)
         {
-            string callDir = Directory.GetCurrentDirectory();
-
             Wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
-
-            string homeDir = AppDomain.CurrentDomain.BaseDirectory;
+            
 
             Console.CancelKeyPress += ConsoleOnCancelKeyPress;
             if (!Directory.Exists(EngineDir))
             {
                 Directory.CreateDirectory(EngineDir);
             }
-
-            GetEngineServerVersion();
+            
             EngineVersions = Directory.GetFiles(EngineDir, "*.engine", SearchOption.TopDirectoryOnly)
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 
@@ -63,7 +72,7 @@ namespace Engine.Player
             e.Cancel = true;
         }
 
-        private static void GetEngineServerVersion()
+        private static Version[] GetEngineServerVersion()
         {
             Console.WriteLine("Downloading Version List..");
             string s = Wc.DownloadString("http://213.109.162.193/apps/EngineArchives/version.list");
@@ -79,8 +88,8 @@ namespace Engine.Player
             }
 
             versionList.Sort();
-            AvailableVersionsOnServer = versionList.ToArray();
             Console.WriteLine("Fetched Version from Server");
+            return versionList.ToArray();
         }
 
 
