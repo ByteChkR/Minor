@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Commands\ve-B36A.tmp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CommandRunner\CommandRunner\CommandRunner.csproj" />
+    <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj" />
+    <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj" />
+  </ItemGroup>
+
+</Project>

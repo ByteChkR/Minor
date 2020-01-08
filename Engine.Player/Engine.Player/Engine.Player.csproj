@@ -65,7 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EnginePlayer.cs" />
+    <Compile Include="Commands\AddToPathCommand.cs" />
+    <Compile Include="Commands\SetDefaultProgramCommand.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -87,13 +89,13 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.Common\Engine.BuildTools.Common.csproj">
-      <Project>{94a1fe92-60c7-44ad-9f80-2ed2f7a0e899}</Project>
-      <Name>Engine.BuildTools.Common</Name>
+    <ProjectReference Include="..\..\CommandRunner\CommandRunner\CommandRunner.csproj">
+      <Project>{1b189bb5-d358-41c1-8491-11eaa80e8c3a}</Project>
+      <Name>CommandRunner</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Engine.BuildTools\Engine.BuildTools.PackageCreator\Engine.BuildTools.PackageCreator.csproj">
-      <Project>{10ff8554-36b7-4bc4-928d-9137a9196c2a}</Project>
-      <Name>Engine.BuildTools.PackageCreator</Name>
+    <ProjectReference Include="..\Engine.Player.Core\Engine.Player.Core.csproj">
+      <Project>{14f77009-a039-4e36-aa2c-c69ec32622af}</Project>
+      <Name>Engine.Player.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

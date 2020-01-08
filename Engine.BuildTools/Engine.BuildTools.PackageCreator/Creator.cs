@@ -55,6 +55,7 @@ namespace Engine.BuildTools.PackageCreator
                 }
             }
 
+            if (path.EndsWith(".patch")) return null; //Patches CAN but DONT need a Manifest
             throw new IOException("The file is not a supported format.");
         }
 
@@ -123,14 +124,14 @@ namespace Engine.BuildTools.PackageCreator
 
         }
 
-        public static void ApplyPatches(string folder)
+        public static void ApplyPatches(string folder, string packageVersion)
         {
             Console.WriteLine("Applying Patches on folder " + folder);
             string[] patches = Directory.GetFiles(folder + "/patches", "*.patch");
             for (int i = 0; i < patches.Length; i++)
             {
                 Console.WriteLine("Applying Patch:" + patches[i]);
-                PatchFolder(folder, patches[i]);
+                PatchFolder(folder, patches[i], packageVersion);
             }
         }
 
@@ -212,7 +213,7 @@ namespace Engine.BuildTools.PackageCreator
             {
                 if (!fileList.Contains(za.Entries[i].FullName))
                 {
-                    Console.WriteLine("Removing File: "+ za.Entries[i].FullName);
+                    Console.WriteLine("Removing File: " + za.Entries[i].FullName);
                     za.Entries[i].Delete();
                 }
             }
@@ -234,7 +235,8 @@ namespace Engine.BuildTools.PackageCreator
 
             Console.WriteLine($"Permanently Applying {patchFile} to {mainFile}");
             string dirPath = UnpackForPatching(mainFile);
-            PatchFolder(dirPath, Path.GetFullPath(patchFile));
+            IPackageManifest pm = ReadManifest(mainFile);
+            PatchFolder(dirPath, Path.GetFullPath(patchFile), pm.PackageVersion);
             File.Delete(Path.GetFullPath(mainFile));
             Console.WriteLine($"Repackaging {mainFile}");
             ZipFile.CreateFromDirectory(dirPath, Path.GetFullPath(mainFile));
@@ -264,9 +266,9 @@ namespace Engine.BuildTools.PackageCreator
             ZipFile.CreateFromDirectory(dirPath, mainFile);
         }
 
-        public static void PatchFolder(string folder, string patchFile)
+        public static void PatchFolder(string folder, string patchFile, string folderManifestVersion)
         {
-
+            
             Console.WriteLine($"Patching Folder {patchFile} => {folder}");
             using (ZipArchive zip1 = ZipFile.OpenRead(patchFile))
             {
@@ -278,6 +280,17 @@ namespace Engine.BuildTools.PackageCreator
                     // here, we extract every entry, but we could extract conditionally
                     // based on entry name, size, date, checkbox status, etc.  
 
+                }
+            }
+
+            IPackageManifest pm = ReadManifest(patchFile);
+            if (pm != null) //New Package File included
+            {
+                if (_packageVersions[pm.PackageVersion].ManifestPath !=
+                    _packageVersions[folderManifestVersion].ManifestPath)
+                {
+                    string oldFile = Path.Combine(folder, _packageVersions[folderManifestVersion].ManifestPath);
+                    File.Delete(oldFile);
                 }
             }
         }
