@@ -75,7 +75,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.Legacy
             File.Delete(outPutDir + "/" + ManifestPath);
             if (Directory.Exists(outPutDir + "/patches"))
             {
-                Creator.ApplyPatches(outPutDir);
+                Creator.ApplyPatches(outPutDir, PackageVersion);
             }
         }
 

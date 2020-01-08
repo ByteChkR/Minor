@@ -25,7 +25,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v1
             File.Delete(outPutDir + "/" + ManifestPath);
             if (Directory.Exists(outPutDir + "/patches"))
             {
-                Creator.ApplyPatches(outPutDir);
+                Creator.ApplyPatches(outPutDir, PackageVersion);
             }
         }
 

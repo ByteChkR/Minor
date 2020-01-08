@@ -28,7 +28,7 @@ namespace Engine.BuildTools.PackageCreator.Versions.v2
 
             if (Directory.Exists(outPutDir + "/patches"))
             {
-                Creator.ApplyPatches(outPutDir);
+                Creator.ApplyPatches(outPutDir, PackageVersion);
             }
         }
 
