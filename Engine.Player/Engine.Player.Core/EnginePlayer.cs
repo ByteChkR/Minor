@@ -7,9 +7,9 @@ using System.Net;
 using System.Reflection;
 using CommandRunner;
 
-namespace Engine.Player
+namespace Engine.Player.Core
 {
-    internal static class EnginePlayer
+    public class EnginePlayer
     {
 
         public static List<string> EngineVersions = new List<string>();
@@ -29,7 +29,7 @@ namespace Engine.Player
             {
                 if (_availableVersionsOnServer == null)
                 {
-                    _availableVersionsOnServer =  GetEngineServerVersion();
+                    _availableVersionsOnServer = GetEngineServerVersion();
                 }
 
                 return _availableVersionsOnServer;
@@ -47,17 +47,17 @@ namespace Engine.Player
         }
 
 
-        private static void Main(string[] args)
+        public static void RunCommands(string[] args)
         {
             Wc.DownloadFileCompleted += WcOnDownloadFileCompleted;
-            
+
 
             Console.CancelKeyPress += ConsoleOnCancelKeyPress;
             if (!Directory.Exists(EngineDir))
             {
                 Directory.CreateDirectory(EngineDir);
             }
-            
+
             EngineVersions = Directory.GetFiles(EngineDir, "*.engine", SearchOption.TopDirectoryOnly)
                 .Select(x => Path.GetFileNameWithoutExtension(x)).ToList();
 

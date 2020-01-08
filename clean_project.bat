@@ -40,11 +40,15 @@
 @RD .\ext-pp\ext_pp_base\obj /S /Q
 @RD .\ext-pp\ext_pp_cli\bin /S /Q
 @RD .\ext-pp\ext_pp_cli\obj /S /Q
+@RD .\ext-pp\ext_pp_cli_core\bin /S /Q
+@RD .\ext-pp\ext_pp_cli_core\obj /S /Q
 @RD .\ext-pp\ext_pp_plugins\bin /S /Q
 @RD .\ext-pp\ext_pp_plugins\obj /S /Q
 @RD .\ext-pp\ext_pp_tests\bin /S /Q
 @RD .\ext-pp\ext_pp_tests\obj /S /Q
 
-@RD .\CommandRunner\CommandRunner\obj /S /Q
-@RD .\CommandRunner\CommandRunner\bin /S /Q
+@RD .\ext-pp\CommandRunner\CommandRunner\obj /S /Q
+@RD .\ext-pp\CommandRunner\CommandRunner\bin /S /Q
+@RD .\ext-pp\CommandRunner\CommandRunner\obj /S /Q
+@RD .\ext-pp\CommandRunner\CommandRunner\bin /S /Q
 pause

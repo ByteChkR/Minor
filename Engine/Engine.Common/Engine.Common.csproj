@@ -40,13 +40,13 @@
       <HintPath>..\..\ADL\ADL\ADL.Network.Shared\bin\Release\netstandard2.0\ADL.Network.Shared.dll</HintPath>
     </Reference>
     <Reference Include="ext_pp">
-      <HintPath>..\..\ext-pp\ext_pp\bin\Release\netcoreapp2.1\ext_pp.dll</HintPath>
+      <HintPath>..\..\ext-pp\ext_pp\bin\Release\netstandard2.0\ext_pp.dll</HintPath>
     </Reference>
     <Reference Include="ext_pp_base">
-      <HintPath>..\..\ext-pp\ext_pp_base\bin\Release\netcoreapp2.1\ext_pp_base.dll</HintPath>
+      <HintPath>..\..\ext-pp\ext_pp_base\bin\Release\netstandard2.0\ext_pp_base.dll</HintPath>
     </Reference>
     <Reference Include="ext_pp_plugins">
-      <HintPath>..\..\ext-pp\ext_pp_plugins\bin\Release\netcoreapp2.1\ext_pp_plugins.dll</HintPath>
+      <HintPath>..\..\ext-pp\ext_pp_plugins\bin\Release\netstandard2.0\ext_pp_plugins.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

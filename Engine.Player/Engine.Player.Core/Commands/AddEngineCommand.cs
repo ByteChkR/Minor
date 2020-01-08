@@ -4,7 +4,7 @@ using CommandRunner;
 using Engine.BuildTools.PackageCreator;
 using Engine.BuildTools.PackageCreator.Versions;
 
-namespace Engine.Player.Commands
+namespace Engine.Player.Core.Commands
 {
     public class AddEngineCommand : AbstractCommand
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using CommandRunner;
 
-namespace Engine.Player.Commands
+namespace Engine.Player.Core.Commands
 {
     public class DownloadEngineCommand : AbstractCommand
     {

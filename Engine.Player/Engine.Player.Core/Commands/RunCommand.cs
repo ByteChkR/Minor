@@ -9,31 +9,13 @@ using Engine.BuildTools.Common;
 using Engine.BuildTools.PackageCreator;
 using Engine.BuildTools.PackageCreator.Versions;
 
-namespace Engine.Player.Commands
+namespace Engine.Player.Core.Commands
 {
     public class RunCommand : AbstractCommand
     {
         public static Process _p;
 
-        public const int MfDisabled = 2;
-        public const int MfEnabled = 0x00000000;
-        public const int MfBycommand = 0x00000000;
-        public const int ScClose = 0xF060;
-
-        [DllImport("user32")]
-        public static extern bool EnableMenuItem(IntPtr hMenu, uint uIDEnableItem, uint uEnable);
-
-        [DllImport("user32.dll")]
-        public static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
-
-        [DllImport("user32.dll")]
-        public static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
-
-        [DllImport("kernel32.dll", ExactSpelling = true)]
-        public static extern IntPtr GetConsoleWindow();
-
-
-
+        
         private static void LoadEngine(string version)
         {
             if (version == "standalone")
@@ -198,9 +180,6 @@ namespace Engine.Player.Commands
             {
                 startCommand = "/C " + pm.StartCommand;
                 cli = "cmd.exe";
-                Console.WriteLine("Remove Close Button.");
-                EnableMenuItem(GetSystemMenu(GetConsoleWindow(), false), ScClose, MfBycommand | MfDisabled);
-                //DeleteMenu(GetSystemMenu(GetConsoleWindow(), false), ScClose, MfBycommand);
             }
 
             _p = new Process();
@@ -230,10 +209,6 @@ namespace Engine.Player.Commands
             Console.WriteLine(crd.GetRemainingLogs());
             Directory.Delete(EnginePlayer.GameDir, true);
 
-            if (Type.GetType("Mono.Runtime") == null) //Not Running Mono = Windows, Running Mono = Linux
-            {
-                EnableMenuItem(GetSystemMenu(GetConsoleWindow(), false), ScClose, MfBycommand | MfEnabled);
-            }
 
         }
 
