@@ -107,7 +107,7 @@ namespace Engine.OpenCL
             List<Device> devs = new List<Device>();
             for (int i = 0; i < platforms.Count(); i++)
             {
-                IEnumerable<Device> ds = platforms.ElementAt(i).GetDevices(DeviceType.All);
+                IEnumerable<Device> ds = platforms.ElementAt(i).GetDevices(DeviceType.Default);
 
                 for (int j = 0; j < ds.Count(); j++)
                 {
@@ -116,7 +116,7 @@ namespace Engine.OpenCL
                 }
 
             }
-
+            
             Device chosenDevice = null;
 
             for (int i = 0; i < devs.Count; i++)
@@ -142,7 +142,7 @@ namespace Engine.OpenCL
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                throw new Exception("Could not Create Context with Device: " + chosenDevice.Name + "@" + chosenDevice.Vendor, e);
+                throw new Exception("Could not initialize OpenCL with Device: " + chosenDevice.Name + "@" + chosenDevice.Vendor + "\n\t" + e.Message, e);
             }
 
         }
