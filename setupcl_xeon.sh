@@ -3,5 +3,5 @@
     tar -xvf l_opencl_p_18.1.0.015.tgz
     chmod +x l_opencl_p_18.1.0.015/*.sh
     cd l_opencl_p_18.1.0.015
-    bash install.sh
+    bash install.sh -s
     cd ..
