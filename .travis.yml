@@ -20,8 +20,8 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
-  - sudo chmod +x setupcl.sh
-  - sudo bash setupcl.sh
+  - sudo chmod +x setupcl_xeon.sh
+  - sudo bash setupcl_xeon.sh
 
 
   #Restore Projects
