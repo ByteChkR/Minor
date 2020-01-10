@@ -10,6 +10,9 @@ addons:
         - fakeroot
         - libgdiplus
         - libalut0
+        - mesa-opencl-icd
+        - ocl-icd-opencl-dev
+        - libgl-dev
 
 matrix:
   include:
@@ -20,9 +23,7 @@ matrix:
 
 #Restore the Submodules and the Project
 install:
-  - sudo chmod +x setupcl.sh
-  - sudo apt update
-  - sudo apt install ocl-icd-opencl-dev opencl-icd libgl-dev libpoclu-dev
+  #- sudo chmod +x setupcl.sh
   #- sudo bash setupcl.sh
 
 
