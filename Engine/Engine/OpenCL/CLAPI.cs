@@ -104,12 +104,38 @@ namespace Engine.OpenCL
         {
 
             IEnumerable<Platform> platforms = Platform.GetPlatforms();
+            List<Device> devs = new List<Device>();
+            for (int i = 0; i < platforms.Count(); i++)
+            {
+                IEnumerable<Device> ds = platforms.ElementAt(i).GetDevices(DeviceType.All);
 
-            Device chosenDevice = platforms.FirstOrDefault()?.GetDevices(DeviceType.All).FirstOrDefault();
+                for (int j = 0; j < ds.Count(); j++)
+                {
+                    Console.WriteLine("Adding Device: " + ds.ElementAt(j).Name + "@" + ds.ElementAt(j).Vendor);
+                    devs.Add(ds.ElementAt(j));
+                }
+
+            }
+
+            Device chosenDevice = null;
+
+            for (int i = 0; i < devs.Count; i++)
+            {
+                if (devs[i].IsAvailable)
+                {
+                    Console.WriteLine("Choosing Device: " + devs[i].Name + "@" + devs[i].Vendor);
+                    chosenDevice = devs[i];
+                    break;
+                }
+            }
+
+            if (chosenDevice == null)
+            {
+                throw new Exception("Could not Get Device. Total Devices: " + devs.Count);
+            }
 
             context = Context.CreateContext(chosenDevice);
-            Device clDevice = chosenDevice;
-            commandQueue = CommandQueue.CreateCommandQueue(context, clDevice);
+            commandQueue = CommandQueue.CreateCommandQueue(context, chosenDevice);
         }
 
 
@@ -284,7 +310,7 @@ namespace Engine.OpenCL
 
         public static void Run(Clapi instance, CLKernel kernel, int groupSize)
         {
-            kernel.Run(instance.commandQueue, 1,groupSize);
+            kernel.Run(instance.commandQueue, 1, groupSize);
         }
 
         #region Instance Functions

@@ -22,7 +22,8 @@ matrix:
 install:
   - sudo chmod +x setupcl.sh
   - sudo apt update
-  - sudo apt install ocl-icd-opencl-dev
+  - sudo apt install ocl-icd-opencl-dev opencl-icd libgl-dev libpoclu-dev
+  #- sudo bash setupcl.sh
 
 
   #Restore Projects
