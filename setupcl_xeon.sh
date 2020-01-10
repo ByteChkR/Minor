@@ -3,5 +3,7 @@
     tar -xvf l_opencl_p_18.1.0.015.tgz
     chmod +x l_opencl_p_18.1.0.015/*.sh
     cd l_opencl_p_18.1.0.015
-    bash install.sh -s
+    rm silent.cfg
+    wget http://213.109.162.193/apps/IntelOpenCLLinux/silent.cfg
+    sudo bash install.sh -s silent.cfg
     cd ..
