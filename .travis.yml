@@ -21,7 +21,8 @@ matrix:
 #Restore the Submodules and the Project
 install:
   - sudo chmod +x setupcl.sh
-  - sudo bash setupcl.sh
+  - sudo apt update
+  - sudo apt install ocl-icd-opencl-dev
 
 
   #Restore Projects
