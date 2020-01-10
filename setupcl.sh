@@ -1,26 +1,12 @@
-# apt-get setup and toolset installation
-    sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test
-    sudo apt-get update -qq -y
-    sudo apt-get install -qq mesa-common-dev alien libnuma1 opencl-headers
-
     # download and unpack base opencl Intel drivers
-    wget http://registrationcenter.intel.com/irc_nas/4181/opencl_runtime_14.2_x64_4.5.0.8.tgz
-    tar -xvf opencl_runtime_14.2_x64_4.5.0.8.tgz
+    wget http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz
+    tar -xvf l_opencl_p_18.1.0.015.tgz
+    chmod +x l_opencl_p_18.1.0.015/*.sh
+    cd l_opencl_p_18.1.0.015
 
-    # convert opencl drivers from rpm to deb package and install
-    cd pset_opencl_runtime_14.1_x64_4.5.0.8/rpm
-    for f in *.rpm; do
-        fakeroot alien --to-deb $f
-    done
-    for f in *.deb; do
-        sudo dpkg -i $f
-    done
+    # Replacing the default silent.cfg with a config file that accepts the eula.
+    rm silent.cfg
+    wget http://213.109.162.193/apps/IntelOpenCLLinux/silent.cfg
 
-    # link drivers
-    sudo mkdir /etc/OpenCL
-    sudo mkdir /etc/OpenCL/vendors
-    sudo ln -s /opt/intel/opencl-1.2-4.5.0.8/etc/intel64.icd /etc/OpenCL/vendors/intel64.icd
-    sudo ln -s /opt/intel/opencl-1.2-4.5.0.8/lib64/libOpenCL.so /usr/lib/libOpenCL.so
-    sudo ln -s /opt/intel/opencl-1.2-4.5.0.8/lib64/libOpenCL.so.1 /usr/lib/libOpenCL.so.1
-    sudo ldconfig
-cd ../..
+    sudo bash install.sh -s silent.cfg
+    cd ..
