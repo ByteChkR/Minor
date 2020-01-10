@@ -134,8 +134,17 @@ namespace Engine.OpenCL
                 throw new Exception("Could not Get Device. Total Devices: " + devs.Count);
             }
 
-            context = Context.CreateContext(chosenDevice);
-            commandQueue = CommandQueue.CreateCommandQueue(context, chosenDevice);
+            try
+            {
+                context = Context.CreateContext(chosenDevice);
+                commandQueue = CommandQueue.CreateCommandQueue(context, chosenDevice);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw new Exception("Could not Create Context with Device: " + chosenDevice.Name + "@" + chosenDevice.Vendor, e);
+            }
+
         }
 
 
