@@ -1,5 +1,38 @@
 var hierarchy =
 [
+    [ "AbstractCmdModuleInfo", null, [
+      [ "Engine.BuildTools.Builder.ModuleInfo", "d8/d72/class_engine_1_1_build_tools_1_1_builder_1_1_module_info.html", null ],
+      [ "Engine.Player.Core.ModuleInfo", "dc/de1/class_engine_1_1_player_1_1_core_1_1_module_info.html", null ]
+    ] ],
+    [ "AbstractCommand", null, [
+      [ "Engine.BuildTools.Builder.Commands.BuildCommand", "d9/d55/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_build_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.BuildXMLCommand", "d7/dc3/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_build_x_m_l_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.CreateEnginePackageCommand", "dd/d19/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_create_engine_package_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.CreatePackageCommand", "db/de7/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_create_package_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.CreatePatchCommand", "dc/d12/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_create_patch_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.CreatePatchDeltaCommand", "d7/d2c/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_create_patch_delta_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.EmbedCommand", "d1/dc6/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_embed_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.HelpCommand", "d7/dfb/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_help_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.PackerCommand", "da/d1c/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_packer_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.PatchCommand", "d8/d2b/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_patch_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.PatchPermanentCommand", "d3/dcb/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_patch_permanent_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.UnEmbedCommand", "db/d79/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_un_embed_command.html", null ],
+      [ "Engine.BuildTools.Builder.Commands.UpdateCommand", "da/d81/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_update_command.html", null ],
+      [ "Engine.Player.Commands.AddToPathCommand", "da/de7/class_engine_1_1_player_1_1_commands_1_1_add_to_path_command.html", null ],
+      [ "Engine.Player.Commands.SetDefaultProgramCommand", "d0/d22/class_engine_1_1_player_1_1_commands_1_1_set_default_program_command.html", null ],
+      [ "Engine.Player.Core.Commands.AddEngineCommand", "d0/dcb/class_engine_1_1_player_1_1_core_1_1_commands_1_1_add_engine_command.html", null ],
+      [ "Engine.Player.Core.Commands.ClearCacheCommand", "df/db4/class_engine_1_1_player_1_1_core_1_1_commands_1_1_clear_cache_command.html", null ],
+      [ "Engine.Player.Core.Commands.DefaultCommand", "d9/dbc/class_engine_1_1_player_1_1_core_1_1_commands_1_1_default_command.html", null ],
+      [ "Engine.Player.Core.Commands.DownloadEngineCommand", "d9/dc7/class_engine_1_1_player_1_1_core_1_1_commands_1_1_download_engine_command.html", null ],
+      [ "Engine.Player.Core.Commands.HelpCommand", "d8/d7b/class_engine_1_1_player_1_1_core_1_1_commands_1_1_help_command.html", null ],
+      [ "Engine.Player.Core.Commands.ListInfoCommand", "df/df9/class_engine_1_1_player_1_1_core_1_1_commands_1_1_list_info_command.html", null ],
+      [ "Engine.Player.Core.Commands.NoHaltCommand", "d7/dfb/class_engine_1_1_player_1_1_core_1_1_commands_1_1_no_halt_command.html", null ],
+      [ "Engine.Player.Core.Commands.RemoveEngineCommand", "d6/d03/class_engine_1_1_player_1_1_core_1_1_commands_1_1_remove_engine_command.html", null ],
+      [ "Engine.Player.Core.Commands.RunCommand", "d6/da5/class_engine_1_1_player_1_1_core_1_1_commands_1_1_run_command.html", null ],
+      [ "Engine.Player.Core.Commands.SetEnginePathCommand", "dd/daf/class_engine_1_1_player_1_1_core_1_1_commands_1_1_set_engine_path_command.html", null ],
+      [ "Engine.Player.Core.Commands.SetEngineVersionCommand", "da/dcf/class_engine_1_1_player_1_1_core_1_1_commands_1_1_set_engine_version_command.html", null ],
+      [ "Engine.Player.Core.Commands.UpdateCommand", "da/d84/class_engine_1_1_player_1_1_core_1_1_commands_1_1_update_command.html", null ]
+    ] ],
     [ "Engine.Physics.BEPUutilities.AffineTransform", "d2/dc7/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_affine_transform.html", null ],
     [ "Engine.UI.Animations.Animation", "d3/d78/class_engine_1_1_u_i_1_1_animations_1_1_animation.html", [
       [ "Engine.UI.Animations.AnimationTypes.LinearAnimation", "d5/dd9/class_engine_1_1_u_i_1_1_animations_1_1_animation_types_1_1_linear_animation.html", null ]
@@ -101,9 +134,7 @@ var hierarchy =
       [ "Engine.Physics.BEPUphysics.CollisionShapes.StaticMeshShape", "db/d86/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_static_mesh_shape.html", null ],
       [ "Engine.Physics.BEPUphysics.CollisionShapes.TerrainShape", "d9/deb/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_terrain_shape.html", null ]
     ] ],
-    [ "Engine.BuildTools.Common.Command", "d0/da9/class_engine_1_1_build_tools_1_1_common_1_1_command.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.CommandQueues.CommandQueuesNativeApi", "d8/dd5/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_command_queues_1_1_command_queues_native_api.html", null ],
-    [ "Engine.BuildTools.Common.CommandRunner", "db/d7b/class_engine_1_1_build_tools_1_1_common_1_1_command_runner.html", null ],
     [ "Engine.Physics.BEPUutilities.ResourceManagement.CommonResources", "da/da4/class_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_resource_management_1_1_common_resources.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables.CompoundChildData", "d6/d8c/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_child_data.html", null ],
     [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.MobileCollidables.CompoundHelper", "de/d5e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_mobile_collidables_1_1_compound_helper.html", null ],
@@ -206,7 +237,7 @@ var hierarchy =
     [ "Engine.DataTypes.DefaultFilepaths", "d9/da4/class_engine_1_1_data_types_1_1_default_filepaths.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Devices.DevicesNativeApi", "d0/d94/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_devices_1_1_devices_native_api.html", null ],
     [ "Engine.Core.EngineConfig", "df/dad/class_engine_1_1_core_1_1_engine_config.html", null ],
-    [ "Engine.Player.EnginePlayer", "d3/d45/class_engine_1_1_player_1_1_engine_player.html", null ],
+    [ "Engine.Player.Core.EnginePlayer", "d6/d97/class_engine_1_1_player_1_1_core_1_1_engine_player.html", null ],
     [ "Engine.Core.EngineSettings", "d1/d8d/class_engine_1_1_core_1_1_engine_settings.html", null ],
     [ "Engine.Debug.EngineStageInformation", "de/d34/class_engine_1_1_debug_1_1_engine_stage_information.html", null ],
     [ "Engine.Debug.EngineStatisticsManager", "d8/d47/class_engine_1_1_debug_1_1_engine_statistics_manager.html", null ],
@@ -614,13 +645,13 @@ var hierarchy =
       [ "Engine.Debug.LogStreamSettings", "d6/ded/struct_engine_1_1_debug_1_1_log_stream_settings.html", null ]
     ] ],
     [ "Engine.OpenCL.DotNetCore.Interop.Memory.ImageFormat", "d2/dd1/struct_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_memory_1_1_image_format.html", null ],
-    [ "IMaterialOwner", null, [
-      [ "Engine.Physics.BEPUphysics.Entities.Entity< CompoundCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ],
-      [ "Engine.Physics.BEPUphysics.Entities.Entity< MobileMeshCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
-    ] ],
     [ "Engine.Physics.BEPUphysics.Materials.IMaterialOwner", "da/d38/interface_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_materials_1_1_i_material_owner.html", [
       [ "Engine.Physics.BEPUphysics.BroadPhaseEntries.StaticCollidable", "df/db2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_broad_phase_entries_1_1_static_collidable.html", null ],
       [ "Engine.Physics.BEPUphysics.Entities.Entity< T >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
+    ] ],
+    [ "IMaterialOwner", null, [
+      [ "Engine.Physics.BEPUphysics.Entities.Entity< CompoundCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ],
+      [ "Engine.Physics.BEPUphysics.Entities.Entity< MobileMeshCollidable >", "db/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_entities_1_1_entity.html", null ]
     ] ],
     [ "Engine.Physics.BEPUphysics.CollisionShapes.ConvexShapes.InertiaHelper", "de/d4d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_inertia_helper.html", null ],
     [ "Engine.Core.Input", "d7/db3/class_engine_1_1_core_1_1_input.html", null ],
@@ -1029,6 +1060,7 @@ var hierarchy =
     [ "Engine.OpenCL.DotNetCore.Interop.Profiling.ProfilingNativeApi", "da/dc4/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_profiling_1_1_profiling_native_api.html", null ],
     [ "Engine.BuildTools.Builder.GUI.Program", "d5/d7f/class_engine_1_1_build_tools_1_1_builder_1_1_g_u_i_1_1_program.html", null ],
     [ "Engine.BuildTools.Builder.CLI.Program", "d6/d86/class_engine_1_1_build_tools_1_1_builder_1_1_c_l_i_1_1_program.html", null ],
+    [ "Engine.Player.Program", "d7/dcf/class_engine_1_1_player_1_1_program.html", null ],
     [ "Engine.OpenCL.DotNetCore.Interop.Programs.ProgramsNativeApi", "d1/d81/class_engine_1_1_open_c_l_1_1_dot_net_core_1_1_interop_1_1_programs_1_1_programs_native_api.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.QueryManager", "d8/d50/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_query_manager.html", null ],
     [ "Engine.Physics.BEPUutilities.DataStructures.QuickDictionary< Engine.Physics.BEPUphysics.CollisionTests.Manifolds.TriangleMeshConvexContactManifold.TriangleIndices, TrianglePairTester >", "d5/dcb/struct_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_data_structures_1_1_quick_dictionary.html", null ],
@@ -1127,7 +1159,6 @@ var hierarchy =
     [ "Engine.Physics.BEPUphysics.Constraints.SpringAdvancedSettings", "de/d4b/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_advanced_settings.html", null ],
     [ "Engine.Physics.BEPUphysics.Constraints.SpringSettings", "d4/dc3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_spring_settings.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.StanceManager", "de/dee/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_stance_manager.html", null ],
-    [ "Engine.BuildTools.Common.StartupInfo", "d0/d8a/class_engine_1_1_build_tools_1_1_common_1_1_startup_info.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.StepManager", "d0/d36/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_step_manager.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.SupportData", "d7/dc2/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_data.html", null ],
     [ "Engine.Physics.BEPUphysics.Character.SupportFinder", "d3/d6e/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_support_finder.html", null ],

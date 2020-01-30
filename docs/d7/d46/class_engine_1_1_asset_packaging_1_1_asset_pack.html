@@ -87,7 +87,9 @@ $(document).ready(function(){initNavTree('d7/d46/class_engine_1_1_asset_packagin
 
 <div class="header">
   <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#properties">Properties</a> &#124;
 <a href="../../da/d63/class_engine_1_1_asset_packaging_1_1_asset_pack-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">Engine.AssetPackaging.AssetPack Class Reference</div>  </div>
@@ -97,14 +99,29 @@ $(document).ready(function(){initNavTree('d7/d46/class_engine_1_1_asset_packagin
 <p>A Container for the raw byte content of a package  
  <a href="../../d7/d46/class_engine_1_1_asset_packaging_1_1_asset_pack.html#details">More...</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:ad5aacf6466404c262fa40b282bf12a80"><td class="memItemLeft" align="right" valign="top"><a id="ad5aacf6466404c262fa40b282bf12a80"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>AssetPack</b> (Stream s)</td></tr>
+<tr class="separator:ad5aacf6466404c262fa40b282bf12a80"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59bbc5fe14810d506fff06ae438e0917"><td class="memItemLeft" align="right" valign="top"><a id="a59bbc5fe14810d506fff06ae438e0917"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Save</b> ()</td></tr>
+<tr class="separator:a59bbc5fe14810d506fff06ae438e0917"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac6bdd740b6115175d20d71f6c3ab96cd"><td class="memItemLeft" align="right" valign="top"><a id="ac6bdd740b6115175d20d71f6c3ab96cd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>Write</b> (byte[] buf, int start, int count)</td></tr>
+<tr class="separator:ac6bdd740b6115175d20d71f6c3ab96cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a6311ec12908d6884b0c74c96d3390926"><td class="memItemLeft" align="right" valign="top"><a id="a6311ec12908d6884b0c74c96d3390926"></a>
-List&lt; byte &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Content</b> = new List&lt;byte&gt;()</td></tr>
-<tr class="separator:a6311ec12908d6884b0c74c96d3390926"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb790f3192fc0daf955be0836d8f5000"><td class="memItemLeft" align="right" valign="top"><a id="abb790f3192fc0daf955be0836d8f5000"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>SpaceLeft</b> =&gt; AssetPacker.MaxsizeKilobytes * AssetPacker.Kilobyte - Content.Count</td></tr>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>SpaceLeft</b> =&gt; AssetPacker.MaxsizeKilobytes * AssetPacker.Kilobyte - BytesWritten</td></tr>
 <tr class="separator:abb790f3192fc0daf955be0836d8f5000"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
+Properties</h2></td></tr>
+<tr class="memitem:a5c153b648634e3cbcdd46a634b930428"><td class="memItemLeft" align="right" valign="top"><a id="a5c153b648634e3cbcdd46a634b930428"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>BytesWritten</b><code> [get]</code></td></tr>
+<tr class="separator:a5c153b648634e3cbcdd46a634b930428"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A Container for the raw byte content of a package </p>

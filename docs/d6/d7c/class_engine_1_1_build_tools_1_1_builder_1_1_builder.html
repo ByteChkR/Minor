@@ -99,18 +99,27 @@ $(document).ready(function(){initNavTree('d6/d7c/class_engine_1_1_build_tools_1_
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a5e19753aa3c8a535c840bd106c5cf16c"><td class="memItemLeft" align="right" valign="top"><a id="a5e19753aa3c8a535c840bd106c5cf16c"></a>
+static <a class="el" href="../../dc/da6/class_engine_1_1_build_tools_1_1_common_1_1_build_settings.html">BuildSettings</a>&#160;</td><td class="memItemRight" valign="bottom"><b>LoadSettings</b> (string path)</td></tr>
+<tr class="separator:a5e19753aa3c8a535c840bd106c5cf16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c50fe72a5474764174ded60aa469f82"><td class="memItemLeft" align="right" valign="top"><a id="a7c50fe72a5474764174ded60aa469f82"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RunCommand</b> (string args)</td></tr>
 <tr class="separator:a7c50fe72a5474764174ded60aa469f82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bbb79687de16bd23f7e558f01179d4f"><td class="memItemLeft" align="right" valign="top"><a id="a9bbb79687de16bd23f7e558f01179d4f"></a>
 static void&#160;</td><td class="memItemRight" valign="bottom"><b>RunCommand</b> (string[] args)</td></tr>
 <tr class="separator:a9bbb79687de16bd23f7e558f01179d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8bef7af9300f8c31471eb3751b5fe309"><td class="memItemLeft" align="right" valign="top"><a id="a8bef7af9300f8c31471eb3751b5fe309"></a>
-static string []&#160;</td><td class="memItemRight" valign="bottom"><b>CreateFileList</b> (string path, string searchPatterns, char separator='+')</td></tr>
-<tr class="separator:a8bef7af9300f8c31471eb3751b5fe309"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acdc11b87bdd581ccfc37e701c1965a34"><td class="memItemLeft" align="right" valign="top"><a id="acdc11b87bdd581ccfc37e701c1965a34"></a>
-static <a class="el" href="../../dc/d6b/class_engine_1_1_asset_packaging_1_1_asset_package_info.html">AssetPackageInfo</a>&#160;</td><td class="memItemRight" valign="bottom"><b>CreatePackageInfo</b> (string memoryFileExts, string unpackedFileExts, char separator='+')</td></tr>
-<tr class="separator:acdc11b87bdd581ccfc37e701c1965a34"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1292926e0b3cad7e155ac78afedba7e"><td class="memItemLeft" align="right" valign="top"><a id="af1292926e0b3cad7e155ac78afedba7e"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>BuildProject</b> (string filepath)</td></tr>
+<tr class="separator:af1292926e0b3cad7e155ac78afedba7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21e05275e0b7f65d36561e8894d753f9"><td class="memItemLeft" align="right" valign="top"><a id="a21e05275e0b7f65d36561e8894d753f9"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>PackAssets</b> (string outputFolder, int packSize, string memoryFileExts, string unpackedFileExts, string assetFolder, bool compression)</td></tr>
+<tr class="separator:a21e05275e0b7f65d36561e8894d753f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52d4bdf4eea0b482ec2b49a9486e4e28"><td class="memItemLeft" align="right" valign="top"><a id="a52d4bdf4eea0b482ec2b49a9486e4e28"></a>
+static string []&#160;</td><td class="memItemRight" valign="bottom"><b>ParseFileList</b> (string fileList, string projectFolder, string projectName, bool copyAssetsWhenError, bool copyPacksWhenError, bool isStandalone)</td></tr>
+<tr class="separator:a52d4bdf4eea0b482ec2b49a9486e4e28"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac961614ba707615327b421cbbe279ceb"><td class="memItemLeft" align="right" valign="top"><a id="ac961614ba707615327b421cbbe279ceb"></a>
+static string []&#160;</td><td class="memItemRight" valign="bottom"><b>ParseEngineFileList</b> (string fileList, string projectFolder)</td></tr>
+<tr class="separator:ac961614ba707615327b421cbbe279ceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class Containing the Building Logic that is used in the <a class="el" href="../../dd/d49/namespace_engine_1_1_build_tools_1_1_builder_1_1_c_l_i.html">CLI</a> and <a class="el" href="../../d7/da0/namespace_engine_1_1_build_tools_1_1_builder_1_1_g_u_i.html">GUI</a> Wrappers </p>

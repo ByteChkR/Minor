@@ -1,12 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"d1/daa/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_simple_simplex.html#ad75a53870437e92551d055ef72a6a04e":[1,0,0,12,1,5,0,0,5,10],
-"d1/daa/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_simple_simplex.html#af1504d870998828ca66babe7f350cfe1":[1,0,0,12,1,5,0,0,5,4],
-"d1/daa/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_g_j_k_1_1_simple_simplex.html#af4e3c18ee51afa1b2e2881d1d87b81e3":[1,0,0,12,1,5,0,0,5,0],
-"d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html":[1,0,0,12,1,12,0,29],
-"d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html#a0b66988a32911c4b80c71861840f9547":[1,0,0,12,1,12,0,29,4],
-"d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html#a0c10db8751f360a4d72f27c0839dc743":[1,0,0,12,1,12,0,29,5],
-"d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html#a13cee7d91f704d34112238b429d54264":[1,0,0,12,1,12,0,29,2],
 "d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html#a24a10936ba64fe76df8ffd6d1fb23e04":[1,0,0,12,1,12,0,29,0],
 "d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html#a5a0d8ff0c24099b00a7ddaad22c337f1":[1,0,0,12,1,12,0,29,3],
 "d1/db3/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_narrow_phase_systems_1_1_pairs_1_1_mobile_mesh_mesh_pair_handler.html#aa74b58b7fe529edcf4b6fafedabe375f":[1,0,0,12,1,12,0,29,1],
@@ -33,6 +26,8 @@ var NAVTREEINDEX3 =
 "d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html":[1,0,0,12,1,2,0],
 "d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html#ac005363bf37bd9d5c6627802e2bdd369":[1,0,0,12,1,2,0,1],
 "d1/dc3/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_character_1_1_character_contact.html#ad585ce7810ea60e32ac45ff62adcb99e":[1,0,0,12,1,2,0,0],
+"d1/dc6/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_embed_command.html":[1,0,0,3,0,1,6],
+"d1/dc6/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_embed_command.html#a12d6c499243fce800731f603e00dd768":[1,0,0,3,0,1,6,0],
 "d1/dc8/namespace_engine_1_1_build_tools.html":[0,0,0,3],
 "d1/dc8/namespace_engine_1_1_build_tools.html":[1,0,0,3],
 "d1/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_fluid_volume.html":[1,0,0,12,1,17,8],
@@ -105,8 +100,8 @@ var NAVTREEINDEX3 =
 "d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a4a9755cbd4c6853dd7969a3dc9d9803d":[1,0,0,15,4,1],
 "d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#a63f15a9c1f262a190e26958e8458011f":[1,0,0,15,4,2],
 "d1/dde/class_engine_1_1_u_i_1_1_ui_image_renderer_component.html#ac4700a1c9838dfe6b64341a1b57efe10":[1,0,0,15,4,3],
-"d1/ddf/namespace_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading.html":[0,0,0,12,2,2],
 "d1/ddf/namespace_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading.html":[1,0,0,12,2,2],
+"d1/ddf/namespace_engine_1_1_physics_1_1_b_e_p_uutilities_1_1_threading.html":[0,0,0,12,2,2],
 "d1/de2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_triangle_mesh.html":[1,0,0,12,1,7,6],
 "d1/de2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_triangle_mesh.html#a35eb90df527e97321ef713dfad5b19dc":[1,0,0,12,1,7,6,3],
 "d1/de2/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_data_structures_1_1_triangle_mesh.html#a6203c33b31798562a88a4c7904ed5561":[1,0,0,12,1,7,6,9],
@@ -249,5 +244,10 @@ var NAVTREEINDEX3 =
 "d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html#abcc4adeb6b3fd2b0fe84d25471c5d81b":[1,0,0,12,1,4,0,0,16],
 "d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html#ac1821779f881b21167a41ff0c44acbf5":[1,0,0,12,1,4,0,0,2],
 "d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html#ac2123982cdf73a4c3a4ad801c576b9cf":[1,0,0,12,1,4,0,0,5],
-"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html#ad1ce081fb09648cf72553de207d025d0":[1,0,0,12,1,4,0,0,0]
+"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html#ad1ce081fb09648cf72553de207d025d0":[1,0,0,12,1,4,0,0,0],
+"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_shapes_1_1_convex_shapes_1_1_box_shape.html#ad335e2c2a585863149ee24f58159a752":[1,0,0,12,1,4,0,0,7],
+"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_minkowski_toolbox.html":[1,0,0,12,1,5,0,6],
+"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_minkowski_toolbox.html#a0a8221bc2507de84dc7d83cff2efc588":[1,0,0,12,1,5,0,6,5],
+"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_minkowski_toolbox.html#a0ff1d19996207703defe2c88ba8dc590":[1,0,0,12,1,5,0,6,2],
+"d2/d1d/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_collision_algorithms_1_1_minkowski_toolbox.html#a2e31e2f466eaafd1f81c5b4d1bd64c2d":[1,0,0,12,1,5,0,6,1]
 };

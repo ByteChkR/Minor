@@ -2,11 +2,12 @@ var searchData=
 [
   ['edge',['Edge',['../de/d85/struct_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_collision_tests_1_1_manifolds_1_1_triangle_mesh047a5a5cfe3de0d235777eb50dde908c.html',1,'Engine::Physics::BEPUphysics::CollisionTests::Manifolds::TriangleMeshConvexContactManifold']]],
   ['ellipseswinglimit',['EllipseSwingLimit',['../db/dc7/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_constraints_1_1_two_entity_1_1_joint_limits_1_1_ellipse_swing_limit.html',1,'Engine::Physics::BEPUphysics::Constraints::TwoEntity::JointLimits']]],
+  ['embedcommand',['EmbedCommand',['../d1/dc6/class_engine_1_1_build_tools_1_1_builder_1_1_commands_1_1_embed_command.html',1,'Engine::BuildTools::Builder::Commands']]],
   ['endofframeupdateablemanager',['EndOfFrameUpdateableManager',['../db/da6/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_end_of_frame_updateable_manager.html',1,'Engine::Physics::BEPUphysics::UpdateableSystems']]],
   ['endoftimestepupdateablemanager',['EndOfTimeStepUpdateableManager',['../d9/dce/class_engine_1_1_physics_1_1_b_e_p_uphysics_1_1_updateable_systems_1_1_end_of_time_step_updateable_manager.html',1,'Engine::Physics::BEPUphysics::UpdateableSystems']]],
   ['engineconfig',['EngineConfig',['../df/dad/class_engine_1_1_core_1_1_engine_config.html',1,'Engine::Core']]],
   ['engineexception',['EngineException',['../d9/d18/class_engine_1_1_exceptions_1_1_engine_exception.html',1,'Engine::Exceptions']]],
-  ['engineplayer',['EnginePlayer',['../d3/d45/class_engine_1_1_player_1_1_engine_player.html',1,'Engine::Player']]],
+  ['engineplayer',['EnginePlayer',['../d6/d97/class_engine_1_1_player_1_1_core_1_1_engine_player.html',1,'Engine::Player::Core']]],
   ['enginesettings',['EngineSettings',['../d1/d8d/class_engine_1_1_core_1_1_engine_settings.html',1,'Engine::Core']]],
   ['enginestageinformation',['EngineStageInformation',['../de/d34/class_engine_1_1_debug_1_1_engine_stage_information.html',1,'Engine::Debug']]],
   ['enginestatisticsmanager',['EngineStatisticsManager',['../d8/d47/class_engine_1_1_debug_1_1_engine_statistics_manager.html',1,'Engine::Debug']]],
